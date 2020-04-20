@@ -195,7 +195,7 @@ subprojects {
 		user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
 		key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
 		publications = ["${archivesBaseName}_mavenJava"]
-		publish = false
+		publish = true
 		pkg {
 			repo = "Legacy-Fabric-Maven"
 			name = archivesBaseName
@@ -231,7 +231,7 @@ bintray {
 	user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
 	key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
 	publications = ["mavenJava"]
-	publish = false
+	publish = true
 	pkg {
 		repo = "Legacy-Fabric-Maven"
 		name = "fabric"
