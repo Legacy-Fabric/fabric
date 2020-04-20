@@ -45,7 +45,7 @@ public final class NbtType {
 	/**
 	 * Any numeric value: byte, short, int, long, float, double.
 	 *
-	 * @see CompoundTag#containsKey(String, int)
+	 * @see CompoundTag#contains(String, int)
 	 */
 	public static final int NUMBER = 99;
 

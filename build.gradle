@@ -12,9 +12,9 @@ plugins {
 def ENV = System.getenv()
 
 class Globals {
-	static def baseVersion = "0.5.12"
-	static def mcVersion = "1.15.2"
-	static def yarnVersion = "+build.1"
+	static def baseVersion = "0.1.0"
+	static def mcVersion = "1.8.9"
+	static def yarnVersion = "+build.202004131615"
 }
 
 version = Globals.baseVersion + "+" + (ENV.BUILD_NUMBER ? ("build." + ENV.BUILD_NUMBER) : "local") + "-" + getBranch()
@@ -57,10 +57,23 @@ allprojects {
 
 	group = "net.fabricmc.fabric-api"
 
+	repositories {
+		maven { url "https://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven" }
+	}
+
+	minecraft {
+		intermediaryUrl = {
+			return "https://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven/net/fabricmc/intermediary/" + it + "/intermediary-" + it + "-v2.jar";
+		}
+	}
+
 	dependencies {
+		compile "com.google.guava:guava:23.5-jre"
 		minecraft "com.mojang:minecraft:$Globals.mcVersion"
 		mappings "net.fabricmc:yarn:${Globals.mcVersion}${Globals.yarnVersion}:v2"
-		modCompile "net.fabricmc:fabric-loader:0.7.9+build.190"
+		modCompile("net.fabricmc:fabric-loader-1.8.9:0.8.2+build.202004131640") {
+			exclude module: "guava"
+		}
 	}
 
 	configurations {
