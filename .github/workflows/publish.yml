@@ -1,5 +1,4 @@
-  IntelliJ IDEA
-  name: Java CI
+  name: Java CI+
 
   on:
     push:
