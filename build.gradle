@@ -52,6 +52,9 @@ def getBranch() {
 allprojects {
 	apply plugin: 'checkstyle'
 	apply plugin: 'maven-publish'
+	apply plugin: 'maven'
+	apply plugin: 'signing'
+	apply plugin: 'com.jfrog.bintray'
 	apply plugin: 'fabric-loom'
 	apply plugin: 'net.minecrell.licenser'
 
