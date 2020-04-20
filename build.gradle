@@ -7,6 +7,9 @@ plugins {
 	id 'net.minecrell.licenser' version '0.4.1'
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
+	id 'maven'
+	id 'signing'
+	id 'com.jfrog.bintray' version '1.8.4'
 }
 
 def ENV = System.getenv()
@@ -17,7 +20,7 @@ class Globals {
 	static def yarnVersion = "+build.202004200445"
 }
 
-version = Globals.baseVersion + "+" + (ENV.BUILD_NUMBER ? ("build." + ENV.BUILD_NUMBER) : "local") + "-" + getBranch()
+version = Globals.baseVersion + "-" + getBranch()
 logger.lifecycle("Building Fabric: " + version)
 
 import org.apache.commons.codec.digest.DigestUtils
@@ -172,7 +175,7 @@ subprojects {
 
 	publishing {
 		publications {
-			mavenJava(MavenPublication) {
+			create("${archivesBaseName}_mavenJava", MavenPublication) {
 				afterEvaluate {
 					artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
 						builtBy remapMavenJar
@@ -183,8 +186,29 @@ subprojects {
 				}
 			}
 		}
+	}
 
-		setupRepositories(repositories)
+	bintray {
+		user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+		key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
+		publications = ["${archivesBaseName}_mavenJava"]
+		publish = false
+		pkg {
+			repo = "Legacy-Fabric-Maven"
+			name = archivesBaseName
+			userOrg = "legacy-fabric"
+			licenses = ["Apache-2.0"]
+			version {
+				released = new Date()
+				githubRepo = 'Legacy-Fabric/fabric'
+				websiteUrl = 'https://github.com/Legacy-Fabric/fabric'
+				issueTrackerUrl = 'https://github.com/Legacy-Fabric/fabric/issues'
+				vcsUrl = 'https://github.com/Legacy-Fabric/fabric.git'
+				gpg {
+					sign = true
+				}
+			}
+		}
 	}
 
 	javadoc.enabled = false
@@ -195,6 +219,29 @@ task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
 		input = file("${project.buildDir}/libs/${archivesBaseName}-${version}-dev.jar")
 		archiveName = "${archivesBaseName}-${version}-maven.jar"
 		addNestedDependencies = false
+	}
+}
+
+bintray {
+	user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+	key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
+	publications = ["mavenJava"]
+	publish = false
+	pkg {
+		repo = "Legacy-Fabric-Maven"
+		name = "fabric"
+		userOrg = "legacy-fabric"
+		licenses = ["Apache-2.0"]
+		version {
+			released = new Date()
+			githubRepo = 'Legacy-Fabric/fabric'
+			websiteUrl = 'https://github.com/Legacy-Fabric/fabric'
+			issueTrackerUrl = 'https://github.com/Legacy-Fabric/fabric/issues'
+			vcsUrl = 'https://github.com/Legacy-Fabric/fabric.git'
+			gpg {
+				sign = true
+			}
+		}
 	}
 }
 
@@ -217,21 +264,6 @@ publishing {
 					depNode.appendNode("version", it.version)
 					depNode.appendNode("scope", "compile")
 				}
-			}
-		}
-	}
-
-	setupRepositories(repositories)
-}
-
-void setupRepositories(RepositoryHandler repositories) {
-	//repositories.mavenLocal() // uncomment for testing
-	if (project.hasProperty('mavenPass')) {
-		repositories.maven {
-			url "http://mavenupload.modmuss50.me/"
-			credentials {
-				username 'buildslave'
-				password project.getProperty('mavenPass')
 			}
 		}
 	}
