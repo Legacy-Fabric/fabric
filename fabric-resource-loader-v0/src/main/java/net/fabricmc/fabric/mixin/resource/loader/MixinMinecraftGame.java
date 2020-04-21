@@ -17,6 +17,8 @@
 package net.fabricmc.fabric.mixin.resource.loader;
 
 import com.google.common.collect.Lists;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.impl.resource.loader.ModResourcePackUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.DefaultResourcePack;
@@ -35,11 +37,12 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftGame {
 	@Shadow
 	private ReloadableResourceManager resourceManager;
-	
+
 	private void fabric_modifyResourcePackList(List<ResourcePack> list) {
 		List<ResourcePack> oldList = Lists.newArrayList(list);
 		list.clear();
