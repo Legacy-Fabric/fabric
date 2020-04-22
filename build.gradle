@@ -15,9 +15,9 @@ plugins {
 def ENV = System.getenv()
 
 class Globals {
-	static def baseVersion = "0.1.0"
+	static def baseVersion = "0.1.1"
 	static def mcVersion = "1.8.9"
-	static def yarnVersion = "+build.202004221013"
+	static def yarnVersion = "+build.202004210746"
 }
 
 version = Globals.baseVersion + "-" + getBranch()
@@ -77,7 +77,7 @@ allprojects {
 		compile "com.google.guava:guava:23.5-jre"
 		minecraft "com.mojang:minecraft:$Globals.mcVersion"
 		mappings "net.fabricmc:yarn:${Globals.mcVersion}${Globals.yarnVersion}:v2"
-		modCompile("net.fabricmc:fabric-loader-1.8.9:0.8.2+build.202004131640") {
+		modCompile("net.fabricmc:fabric-loader-1.8.9:0.8.2+build.202004210808") {
 			exclude module: "guava"
 		}
 	}
