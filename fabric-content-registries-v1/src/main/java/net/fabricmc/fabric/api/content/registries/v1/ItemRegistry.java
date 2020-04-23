@@ -7,8 +7,8 @@ import net.minecraft.util.Identifier;
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
 public final class ItemRegistry {
-
-	private ItemRegistry() {}
+	private ItemRegistry() {
+	}
 
 	public static Item register(Identifier id, Item item) {
 		return ContentRegistryImpl.registerItem(id, item);
