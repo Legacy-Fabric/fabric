@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.mixin.content.registries",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ItemAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

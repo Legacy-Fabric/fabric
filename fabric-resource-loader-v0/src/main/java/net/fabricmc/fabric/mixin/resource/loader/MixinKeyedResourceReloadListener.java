@@ -16,34 +16,36 @@
 
 package net.fabricmc.fabric.mixin.resource.loader;
 
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Locale;
+
+import org.spongepowered.asm.mixin.Mixin;
+
 import net.minecraft.class_1254;
 import net.minecraft.class_1255;
-import net.minecraft.class_1270;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.BakedModelManager;
+import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.chunk.ChunkCache;
-import org.spongepowered.asm.mixin.Mixin;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Locale;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 
 public class MixinKeyedResourceReloadListener {
 	@Mixin({
-			       SoundManager.class, GameRenderer.class, class_1270.class, class_1255.class, class_1254.class, TextureManager.class,
-			       WorldRenderer.class, BlockRenderManager.class, ItemRenderer.class, ChunkCache.class, TextRenderer.class
-	       })
+			SoundManager.class, GameRenderer.class, LanguageManager.class, class_1255.class, class_1254.class, TextureManager.class,
+			WorldRenderer.class, BlockRenderManager.class, ItemRenderer.class, BakedModelManager.class, TextRenderer.class
+	})
 	public abstract static class Client implements IdentifiableResourceReloadListener {
 		private Collection<Identifier> fabric_idDeps;
 		private Identifier fabric_id;
-		
+
 		@Override
 		@SuppressWarnings({"ConstantConditions", "RedundantCast"})
 		public Collection<Identifier> getFabricDependencies() {
@@ -58,10 +60,10 @@ public class MixinKeyedResourceReloadListener {
 				fabric_idDeps = Collections.emptyList();
 //				}
 			}
-			
+
 			return fabric_idDeps;
 		}
-		
+
 		@Override
 		@SuppressWarnings({"ConstantConditions", "RedundantCast"})
 		public Identifier getFabricId() {
@@ -82,7 +84,7 @@ public class MixinKeyedResourceReloadListener {
 				fabric_id = new Identifier("minecraft", "private/" + self.getClass().getSimpleName().toLowerCase(Locale.ROOT));
 //				}
 			}
-			
+
 			return fabric_id;
 		}
 	}

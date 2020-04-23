@@ -13,5 +13,6 @@ pluginManagement {
 rootProject.name = "fabric-api"
 
 include 'fabric-api-base'
+include 'fabric-content-registries-v1'
 include 'fabric-crash-report-info-v1'
 include 'fabric-resource-loader-v0'
