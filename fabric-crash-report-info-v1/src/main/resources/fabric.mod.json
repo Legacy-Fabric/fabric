@@ -18,6 +18,12 @@
   "depends": {
     "fabricloader": ">=0.4.0"
   },
+  "entrypoints": {
+    "main": [
+      "net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl",
+      "net.fabricmc.fabric.impl.content.registries.TestMod"
+    ]
+  },
   "description": "Adds Fabric-related debug info to crash reports.",
   "mixins": [
     "fabric-crash-report-info-v1.mixins.json"
