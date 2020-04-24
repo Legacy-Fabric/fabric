@@ -35,11 +35,10 @@ public class WorldMixin {
 						BufferedReader br=new BufferedReader(fr);
 						StringBuffer sb=new StringBuffer();
 						String line;
-						int idIndex = 199;
 						while((line=br.readLine())!=null)
 						{
-							idMap.put(new Identifier(line), idIndex);
-							idIndex++;
+							String[] splitString = line.split("\t");
+							idMap.put(new Identifier(splitString[0]), Integer.valueOf(splitString[1]));
 						}
 						fr.close();
 						ContentRegistryImpl.registerBlocks(idMap);
@@ -57,11 +56,10 @@ public class WorldMixin {
 						BufferedReader br=new BufferedReader(fr);
 						StringBuffer sb=new StringBuffer();
 						String line;
-						int idIndex = 199;
 						while((line=br.readLine())!=null)
 						{
-							idMap.put(new Identifier(line), idIndex);
-							idIndex++;
+							String[] splitString = line.split("\t");
+							idMap.put(new Identifier(splitString[0]), Integer.valueOf(splitString[1]));
 						}
 						fr.close();
 						ContentRegistryImpl.registerItems(idMap);
