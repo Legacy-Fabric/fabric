@@ -17,7 +17,7 @@ def ENV = System.getenv()
 class Globals {
 	static def baseVersion = "0.1.0"
 	static def mcVersion = "1.8.9"
-	static def yarnVersion = "+build.202004230013"
+	static def yarnVersion = "+build.202004240415"
 }
 
 version = Globals.baseVersion + "-" + getBranch()
@@ -84,10 +84,6 @@ allprojects {
 
 	configurations {
 		dev
-	}
-
-	repositories {
-		mavenLocal()
 	}
 
 	jar {

@@ -15,7 +15,7 @@ import net.fabricmc.fabric.api.content.registries.v1.ItemRegistry;
 public class TestMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		Block block = new Block(Material.DIRT, MaterialColor.YELLOW).setTranslationKey("test:cool_item");
+		Block block = new Block(Material.DIRT, MaterialColor.YELLOW).setTranslationKey("test:cool_item").setItemGroup(ItemGroup.FOOD);
 		BlockRegistry.register(new Identifier(block.getTranslationKey()), block);
 		Item item = new BlockItem(block).setItemGroup(ItemGroup.FOOD);
 		ItemRegistry.registerBlockItem(new Identifier(block.getTranslationKey()), item);

@@ -3,7 +3,8 @@
   "package": "net.fabricmc.fabric.mixin.content.registries",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "ItemAccessor"
+    "ItemAccessor",
+    "WorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1

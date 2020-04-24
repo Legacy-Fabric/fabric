@@ -41,25 +41,27 @@ public abstract class MixinCrashReport {
 	@Final
 	private CrashReportSection field_3598;
 
+	public String getFabricMods(){
+		Map<String, String> mods = new TreeMap<>();
+
+		for (ModContainer container : FabricLoader.getInstance().getAllMods()) {
+			mods.put(container.getMetadata().getId(), container.getMetadata().getName() + " " + container.getMetadata().getVersion().getFriendlyString());
+		}
+
+		StringBuilder modString = new StringBuilder();
+
+		for (String id : mods.keySet()) {
+			modString.append("\n\t\t");
+			modString.append(id);
+			modString.append(": ");
+			modString.append(mods.get(id));
+		}
+
+		return modString.toString();
+	}
+
 	@Inject(at = @At("RETURN"), method = "fillSystemDetails")
 	private void fillSystemDetails(CallbackInfo info) {
-		this.field_3598.add("Fabric Mods", () -> {
-			Map<String, String> mods = new TreeMap<>();
-
-			for (ModContainer container : FabricLoader.getInstance().getAllMods()) {
-				mods.put(container.getMetadata().getId(), container.getMetadata().getName() + " " + container.getMetadata().getVersion().getFriendlyString());
-			}
-
-			StringBuilder modString = new StringBuilder();
-
-			for (String id : mods.keySet()) {
-				modString.append("\n\t\t");
-				modString.append(id);
-				modString.append(": ");
-				modString.append(mods.get(id));
-			}
-
-			return modString.toString();
-		});
+		this.field_3598.addElement("Fabric Mods", getFabricMods());
 	}
 }
