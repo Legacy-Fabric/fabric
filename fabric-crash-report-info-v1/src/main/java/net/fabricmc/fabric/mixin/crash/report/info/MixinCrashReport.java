@@ -34,12 +34,10 @@ import net.fabricmc.loader.api.ModContainer;
 
 @Mixin(CrashReport.class)
 public abstract class MixinCrashReport {
-	@Shadow
-	public abstract CrashReportSection getSystemDetailsSection();
 
 	@Shadow
 	@Final
-	private CrashReportSection field_3598;
+	private CrashReportSection systemDetailsSection;
 
 	public String getFabricMods(){
 		Map<String, String> mods = new TreeMap<>();
@@ -62,6 +60,6 @@ public abstract class MixinCrashReport {
 
 	@Inject(at = @At("RETURN"), method = "fillSystemDetails")
 	private void fillSystemDetails(CallbackInfo info) {
-		this.field_3598.addElement("Fabric Mods", getFabricMods());
+		this.systemDetailsSection.addElement("Fabric Mods", getFabricMods());
 	}
 }
