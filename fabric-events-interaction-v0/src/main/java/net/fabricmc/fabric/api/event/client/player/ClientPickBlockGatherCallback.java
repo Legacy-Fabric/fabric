@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.api.event.client.player;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.HitResult;
@@ -34,12 +35,12 @@ public interface ClientPickBlockGatherCallback {
 				for (ClientPickBlockGatherCallback event : listeners) {
 					ItemStack stack = event.pick(player, result);
 
-					if (stack != ItemStack.EMPTY && !stack.isEmpty()) {
+					if (!stack.equals(new ItemStack(Blocks.AIR)) && !stack.isEmpty()) {
 						return stack;
 					}
 				}
 
-				return ItemStack.EMPTY;
+				return new ItemStack(Blocks.AIR);
 			}
 	);
 

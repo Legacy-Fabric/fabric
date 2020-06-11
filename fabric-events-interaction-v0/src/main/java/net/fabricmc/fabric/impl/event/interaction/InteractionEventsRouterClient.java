@@ -16,13 +16,13 @@
 
 package net.fabricmc.fabric.impl.event.interaction;
 
+import net.fabricmc.fabric.impl.util.BlockHitResult;
+import net.fabricmc.fabric.impl.util.EntityHitResult;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.block.BlockPickInteractionAware;
@@ -34,12 +34,11 @@ public class InteractionEventsRouterClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ClientPickBlockGatherCallback.EVENT.register(((player, result) -> {
 			if (result instanceof BlockHitResult) {
-				BlockView view = player.getEntityWorld();
 				BlockPos pos = ((BlockHitResult) result).getBlockPos();
-				BlockState state = view.getBlockState(pos);
+				BlockState state = player.getWorld().getBlockState(pos);
 
 				if (state.getBlock() instanceof BlockPickInteractionAware) {
-					return (((BlockPickInteractionAware) state.getBlock()).getPickedStack(state, view, pos, player, result));
+					return (((BlockPickInteractionAware) state.getBlock()).getPickedStack(state, pos, player, result));
 				}
 			} else if (result instanceof EntityHitResult) {
 				Entity entity = ((EntityHitResult) result).getEntity();
@@ -49,7 +48,7 @@ public class InteractionEventsRouterClient implements ClientModInitializer {
 				}
 			}
 
-			return ItemStack.EMPTY;
+			return new ItemStack(Blocks.AIR);
 		}));
 	}
 }

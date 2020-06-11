@@ -16,11 +16,10 @@
 
 package net.fabricmc.fabric.api.event.player;
 
+import net.fabricmc.fabric.impl.base.util.ActionResult;
+import net.fabricmc.fabric.impl.util.EntityHitResult;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.event.Event;
@@ -37,9 +36,9 @@ import net.fabricmc.fabric.api.event.EventFactory;
  */
 public interface AttackEntityCallback {
 	Event<AttackEntityCallback> EVENT = EventFactory.createArrayBacked(AttackEntityCallback.class,
-			(listeners) -> (player, world, hand, entity, hitResult) -> {
+			(listeners) -> (player, world, entity, hitResult) -> {
 				for (AttackEntityCallback event : listeners) {
-					ActionResult result = event.interact(player, world, hand, entity, hitResult);
+					ActionResult result = event.interact(player, world, entity, hitResult);
 
 					if (result != ActionResult.PASS) {
 						return result;
@@ -50,5 +49,5 @@ public interface AttackEntityCallback {
 			}
 	);
 
-	ActionResult interact(PlayerEntity player, World world, Hand hand, Entity entity, /* Nullable */ EntityHitResult hitResult);
+	ActionResult interact(PlayerEntity player, World world, Entity entity, /* Nullable */ EntityHitResult hitResult);
 }

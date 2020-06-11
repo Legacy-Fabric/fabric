@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.mixin.event.interaction;
 
+import net.fabricmc.fabric.impl.base.util.ActionResult;
+import net.fabricmc.fabric.impl.util.EntityHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,8 +28,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.network.packet.PlayerInteractEntityC2SPacket;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
@@ -37,7 +37,7 @@ public class MixinServerPlayNetworkHandler {
 	@Shadow
 	public ServerPlayerEntity player;
 
-	@Inject(method = "onPlayerInteractEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;interactAt(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;"), cancellable = true)
+	@Inject(method = "onPlayerInteractEntity", at = @At(value = "INVOKE", target = "method_8017"), cancellable = true)
 	public void onPlayerInteractEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo info) {
 		World world = player.getEntityWorld();
 		Entity entity = packet.getEntity(world);

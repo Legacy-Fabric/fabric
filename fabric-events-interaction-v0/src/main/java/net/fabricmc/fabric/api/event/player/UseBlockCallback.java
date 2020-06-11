@@ -16,10 +16,9 @@
 
 package net.fabricmc.fabric.api.event.player;
 
+import net.fabricmc.fabric.impl.base.util.ActionResult;
+import net.fabricmc.fabric.impl.util.BlockHitResult;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.event.Event;
@@ -36,9 +35,9 @@ import net.fabricmc.fabric.api.event.EventFactory;
  */
 public interface UseBlockCallback {
 	Event<UseBlockCallback> EVENT = EventFactory.createArrayBacked(UseBlockCallback.class,
-			(listeners) -> (player, world, hand, hitResult) -> {
+			(listeners) -> (player, world, hitResult) -> {
 				for (UseBlockCallback event : listeners) {
-					ActionResult result = event.interact(player, world, hand, hitResult);
+					ActionResult result = event.interact(player, world, hitResult);
 
 					if (result != ActionResult.PASS) {
 						return result;
@@ -49,5 +48,5 @@ public interface UseBlockCallback {
 			}
 	);
 
-	ActionResult interact(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult);
+	ActionResult interact(PlayerEntity player, World world, BlockHitResult hitResult);
 }
