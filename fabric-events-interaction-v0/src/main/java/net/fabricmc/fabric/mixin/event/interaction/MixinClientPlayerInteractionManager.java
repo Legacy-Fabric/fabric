@@ -59,7 +59,7 @@ public class MixinClientPlayerInteractionManager {
 	@Shadow
 	private LevelInfo.GameMode gameMode;
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/GameMode;isCreative()Z", ordinal = 0), method = "attackBlock", cancellable = true)
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/LevelInfo$GameMode;isCreative()Z", ordinal = 0), method = "attackBlock", cancellable = true)
 	public void attackBlock(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> info) {
 		ActionResult result = AttackBlockCallback.EVENT.invoker().interact(client.player, client.world, pos, direction);
 
@@ -69,7 +69,7 @@ public class MixinClientPlayerInteractionManager {
 		}
 	}
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/GameMode;isCreative()Z", ordinal = 0), method = "updateBlockBreakingProgress", cancellable = true)
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/LevelInfo$GameMode;isCreative()Z", ordinal = 0), method = "updateBlockBreakingProgress", cancellable = true)
 	public void method_2902(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> info) {
 		if (!gameMode.isCreative()) {
 			return;
@@ -82,33 +82,16 @@ public class MixinClientPlayerInteractionManager {
 			info.cancel();
 		}
 	}
-
-	@Inject(at = @At(value = "INVOKE", target = "g", ordinal = 0), method = "attackBlock", cancellable = true)
-	public void interactBlock(ClientPlayerEntity player, ClientWorld world, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> info) {
-		ActionResult result = UseBlockCallback.EVENT.invoker().interact(player, world, blockHitResult);
-
-		if (result != ActionResult.PASS) {
-			if (result == ActionResult.SUCCESS) {
-				this.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(blockHitResult));
-			}
-
-			info.setReturnValue(result);
-			info.cancel();
-		}
-	}
-
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V", ordinal = 0), method = "interactItem", cancellable = true)
 	public void interactItem(PlayerEntity player, World world, CallbackInfoReturnable<ActionResult> info) {
 		TypedActionResult<ItemStack> result = UseItemCallback.EVENT.invoker().interact(player, world);
 
 		if (result.getResult() != ActionResult.PASS) {
 			if (result.getResult() == ActionResult.SUCCESS) {
-				this.networkHandler.sendPacket(new PlayerInteractItemC2SPacket());
+				return;
 			}
 
 			info.setReturnValue(result.getResult());
 			info.cancel();
-			return;
 		}
 	}
 

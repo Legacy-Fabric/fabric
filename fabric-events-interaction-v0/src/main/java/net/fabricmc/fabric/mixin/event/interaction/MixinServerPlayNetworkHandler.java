@@ -18,6 +18,8 @@ package net.fabricmc.fabric.mixin.event.interaction;
 
 import net.fabricmc.fabric.impl.base.util.ActionResult;
 import net.fabricmc.fabric.impl.util.EntityHitResult;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,26 +28,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.network.packet.PlayerInteractEntityC2SPacket;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class MixinServerPlayNetworkHandler {
+
 	@Shadow
 	public ServerPlayerEntity player;
 
-	@Inject(method = "onPlayerInteractEntity", at = @At(value = "INVOKE", target = "method_8017"), cancellable = true)
+	@Inject(method = "onPlayerInteractEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;squaredDistanceTo(Lnet/minecraft/entity/Entity;)D", shift = At.Shift.AFTER), cancellable = true)
 	public void onPlayerInteractEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo info) {
-		World world = player.getEntityWorld();
+		World world = player.getServerWorld();
 		Entity entity = packet.getEntity(world);
 
 		if (entity != null) {
-			EntityHitResult hitResult = new EntityHitResult(entity, packet.getHitPosition().add(entity.getX(), entity.getY(), entity.getZ()));
+			EntityHitResult hitResult = new EntityHitResult(entity, packet.getHitPosition().add(entity.x, entity.y, entity.z));
 
-			ActionResult result = UseEntityCallback.EVENT.invoker().interact(player, world, packet.getHand(), entity, hitResult);
+			ActionResult result = UseEntityCallback.EVENT.invoker().interact(player, world, entity, hitResult);
 
 			if (result != ActionResult.PASS) {
 				info.cancel();

@@ -8,8 +8,7 @@
     "MixinServerPlayNetworkHandler"
   ],
   "client": [
-    "MixinClientPlayerInteractionManager",
-    "MixinMinecraftClient"
+    "MixinClientPlayerInteractionManager"
   ],
   "injectors": {
     "defaultRequire": 1
