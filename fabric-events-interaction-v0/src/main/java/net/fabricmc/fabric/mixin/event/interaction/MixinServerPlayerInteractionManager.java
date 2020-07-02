@@ -27,8 +27,10 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerInteractionManager;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -56,9 +58,9 @@ public class MixinServerPlayerInteractionManager {
 		}
 	}
 
-	@Inject(at = @At("HEAD"), method = "interactBlock", cancellable = true)
-	public void interactBlock(PlayerEntity player, World world, ItemStack stack, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> info) {
-		ActionResult result = UseBlockCallback.EVENT.invoker().interact(player, world, blockHitResult);
+	@Inject(at = @At("HEAD"), method = "method_6091", cancellable = true)
+	public void interactBlock(PlayerEntity playerEntity, World world, ItemStack itemStack, BlockPos blockPos, Direction direction, float f, float g, float h,CallbackInfoReturnable<ActionResult> info) {
+		ActionResult result = UseBlockCallback.EVENT.invoker().interact(player, world, BlockHitResult.createMissed(new Vec3d(blockPos.getX(),blockPos.getY(),blockPos.getZ()),direction,blockPos));
 
 		if (result != ActionResult.PASS) {
 			info.setReturnValue(result);
@@ -67,7 +69,7 @@ public class MixinServerPlayerInteractionManager {
 		}
 	}
 
-	@Inject(at = @At("HEAD"), method = "interactItem", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "method_6090", cancellable = true)
 	public void interactItem(PlayerEntity player, World world, ItemStack stack, CallbackInfoReturnable<ActionResult> info) {
 		TypedActionResult<ItemStack> result = UseItemCallback.EVENT.invoker().interact(player, world);
 
