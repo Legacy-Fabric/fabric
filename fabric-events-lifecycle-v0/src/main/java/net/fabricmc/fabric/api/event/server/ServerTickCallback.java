@@ -20,14 +20,30 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.server.MinecraftServer;
 
-public interface ServerStopCallback {
-	Event<ServerStopCallback> EVENT = EventFactory.createArrayBacked(ServerStopCallback.class,
-			(listeners) -> (server) -> {
-				for (ServerStopCallback event : listeners) {
-					event.onStopServer(server);
+public interface ServerTickCallback {
+	Event<ServerTickCallback> EVENT = EventFactory.createArrayBacked(ServerTickCallback.class,
+			(listeners) -> {
+				if (EventFactory.isProfilingEnabled()) {
+					return (server) -> {
+						server.profiler.push("fabricServerTick");
+
+						for (ServerTickCallback event : listeners) {
+							server.profiler.push(EventFactory.getHandlerName(event));
+							event.tick(server);
+							server.profiler.pop();
+						}
+
+						server.profiler.pop();
+					};
+				} else {
+					return (server) -> {
+						for (ServerTickCallback event : listeners) {
+							event.tick(server);
+						}
+					};
 				}
 			}
 	);
 
-	void onStopServer(MinecraftServer server);
+	void tick(MinecraftServer server);
 }
