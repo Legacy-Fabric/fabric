@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.mixin.event.lifecycle;
 
 import net.fabricmc.fabric.api.event.server.ServerStartCallback;
+import net.fabricmc.fabric.api.event.server.ServerStopCallback;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,5 +29,10 @@ public class MixinMinecraftServer {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setServerMeta(Lnet/minecraft/server/ServerMetadata;)V", ordinal = 0), method = "run")
 	public void afterSetupServer(CallbackInfo info) {
 		ServerStartCallback.EVENT.invoker().onStartServer((MinecraftServer) (Object) this);
+	}
+
+	@Inject(at = @At("HEAD"), method = "shutdown")
+	public void beforeShutdownServer(CallbackInfo info) {
+		ServerStopCallback.EVENT.invoker().onStopServer((MinecraftServer) (Object) this);
 	}
 }
