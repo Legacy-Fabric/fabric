@@ -24,6 +24,7 @@ import com.google.common.collect.HashBiMap;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -88,9 +89,10 @@ public class WorldMixin {
 		}
 	}
 
-	private void writeIdsToFile(BiMap<Integer, Identifier> idMap, File blockIds) throws IOException {
-		if (blockIds.exists()) {
-			FileReader fileReader = new FileReader(blockIds);
+	@Unique
+	private void writeIdsToFile(BiMap<Integer, Identifier> idMap, File file) throws IOException {
+		if (file.exists()) {
+			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line;
 

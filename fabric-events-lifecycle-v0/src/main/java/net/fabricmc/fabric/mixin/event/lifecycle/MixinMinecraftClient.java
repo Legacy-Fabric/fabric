@@ -18,6 +18,7 @@ package net.fabricmc.fabric.mixin.event.lifecycle;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.event.client.ClientStartCallback;
 import net.fabricmc.fabric.api.event.client.ClientStopCallback;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 import net.minecraft.client.MinecraftClient;
@@ -41,6 +42,6 @@ public class MixinMinecraftClient {
 
 	@Inject(at = @At("HEAD"),method = "run")
 	public void start(CallbackInfo info){
-		ClientStopCallback.EVENT.invoker().onStopClient((MinecraftClient) (Object) this);
+		ClientStartCallback.EVENT.invoker().onStartClient((MinecraftClient) (Object) this);
 	}
 }
