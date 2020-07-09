@@ -6,6 +6,7 @@
     "MixinEntity",
     "MixinMinecraftServer",
     "MixinPlayerManager",
+    "MixinThreadedAnvilChunkStorage",
     "MixinWorld"
   ],
   "client": [
