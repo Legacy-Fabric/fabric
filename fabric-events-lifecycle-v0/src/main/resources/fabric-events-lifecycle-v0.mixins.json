@@ -6,6 +6,7 @@
     "MixinDamageTracker",
     "MixinEntity",
     "MixinMinecraftServer",
+    "MixinServerPlayerEntity",
     "MixinPlayerManager",
     "MixinThreadedAnvilChunkStorage",
     "MixinWorld"
@@ -14,6 +15,9 @@
     "MixinIntegratedServer",
     "MixinItem",
     "MixinMinecraftClient"
+  ],
+  "server": [
+    "MixinMinecraftDedicatedServer"
   ],
   "injectors": {
     "defaultRequire": 1
