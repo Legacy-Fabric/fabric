@@ -50,9 +50,7 @@ def getBranch() {
 }
 
 allprojects {
-//	if ( !(it.name == "fabric-content-registries-v1")) {
-//		apply plugin: 'checkstyle'
-//	}
+	apply plugin: 'checkstyle'
 	apply plugin: 'maven-publish'
 	apply plugin: 'maven'
 	apply plugin: 'signing'
@@ -126,10 +124,10 @@ allprojects {
 		from sourceSets.main.allSource
 	}
 
-//	checkstyle {
-//		configFile = rootProject.file("checkstyle.xml")
-//		toolVersion = '8.31'
-//	}
+	checkstyle {
+		configFile = rootProject.file("checkstyle.xml")
+		toolVersion = '8.31'
+	}
 }
 
 javadoc {
