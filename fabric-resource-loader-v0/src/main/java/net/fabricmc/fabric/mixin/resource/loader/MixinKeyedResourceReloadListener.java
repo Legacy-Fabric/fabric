@@ -25,10 +25,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.class_1254;
 import net.minecraft.class_1255;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.EntityRenderer;
 import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.sound.SoundManager;
@@ -39,7 +39,7 @@ import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 
 public class MixinKeyedResourceReloadListener {
 	@Mixin({
-			SoundManager.class, GameRenderer.class, LanguageManager.class, class_1255.class, class_1254.class, TextureManager.class,
+			SoundManager.class, EntityRenderer.class, LanguageManager.class, class_1255.class, class_1254.class, TextureManager.class,
 			WorldRenderer.class, BlockRenderManager.class, ItemRenderer.class, BakedModelManager.class, TextRenderer.class
 	})
 	public abstract static class Client implements IdentifiableResourceReloadListener {

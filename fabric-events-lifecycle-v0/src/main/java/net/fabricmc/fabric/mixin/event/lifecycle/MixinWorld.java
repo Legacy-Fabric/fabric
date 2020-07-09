@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.content.registries.v1;
+package net.fabricmc.fabric.mixin.event.lifecycle;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.event.world.WorldTickCallback;
+import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.fabricmc.fabric.api.event.registries.v1.RegistryBlockAddedCallback;
-import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
-
-public final class BlockRegistry {
-	public static boolean blockIdsSetup = false;
-
-	private BlockRegistry() {
-	}
-
-	public static Block register(Identifier id, Block block) {
-		RegistryBlockAddedCallback.EVENT.invoker().blockAdded(id,block);
-		return ContentRegistryImpl.registerBlock(id, block);
+@Mixin(World.class)
+public class MixinWorld {
+	@Inject(at = @At("HEAD"), method = "tick")
+	public void tickBlockEntitiesAfter(CallbackInfo info) {
+		WorldTickCallback.EVENT.invoker().tick((World)(Object)this);
 	}
 }

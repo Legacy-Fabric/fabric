@@ -14,23 +14,26 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.event.interaction;
+package net.fabricmc.fabric.mixin.event.lifecycle;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.fabricmc.fabric.api.event.client.ItemTooltipCallback;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ServerPlayerEntity.class)
+import java.util.List;
+
 @Environment(EnvType.CLIENT)
-public class MixinServerPlayerEntity {
-//	@Inject(method = "attack", at = @At("HEAD"), cancellable = true)
-//	public void onPlayerInteractEntity(Entity target, CallbackInfo info) {
-//		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-//		ActionResult result = AttackEntityCallback.EVENT.invoker().interact(player, player.getWorld(), target, null);
-//
-//		if (result != ActionResult.PASS) {
-//			info.cancel();
-//		}
-//	}
+@Mixin(Item.class)
+public class MixinItem {
+	@Inject(method = "method_8265", at = @At("RETURN"))
+	private void getTooltip(ItemStack itemStack, PlayerEntity playerEntity, List<String> list, boolean bl, CallbackInfo info) {
+		ItemTooltipCallback.EVENT.invoker().getTooltip(new ItemStack((Item)(Object)this), playerEntity, list);
+	}
 }

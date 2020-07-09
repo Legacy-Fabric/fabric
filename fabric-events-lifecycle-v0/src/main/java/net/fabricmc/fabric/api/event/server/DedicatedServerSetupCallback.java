@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.content.registries.v1;
+package net.fabricmc.fabric.api.event.server;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.server.dedicated.DedicatedServer;
 
-import net.fabricmc.fabric.api.event.registries.v1.RegistryBlockAddedCallback;
-import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
+public interface DedicatedServerSetupCallback {
 
-public final class BlockRegistry {
-	public static boolean blockIdsSetup = false;
+	Event<DedicatedServerSetupCallback> EVENT = EventFactory.createArrayBacked(DedicatedServerSetupCallback.class,
+			(listeners) -> (server) -> {
+				for (DedicatedServerSetupCallback event : listeners) {
+					event.onServerSetup(server);
+				}
+			}
+	);
 
-	private BlockRegistry() {
-	}
+	void onServerSetup(DedicatedServer server);
 
-	public static Block register(Identifier id, Block block) {
-		RegistryBlockAddedCallback.EVENT.invoker().blockAdded(id,block);
-		return ContentRegistryImpl.registerBlock(id, block);
-	}
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.fabricmc.fabric.impl.content.registries;
 
 import java.util.HashMap;
@@ -48,7 +64,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 		unsortedBlocks.put(id, block);
 		Block.REGISTRY.add(unorderedNextBlockId, id, block);
 
-		for (BlockState state : block.method_630().method_1228()) {
+		for (BlockState state : block.getStateManager().method_1228()) {
 			Block.BLOCK_STATES.set(state, unorderedNextBlockId << 4 | block.getData(state));
 		}
 
@@ -128,7 +144,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 			Block block = unsortedBlocks.get(entry.getValue());
 			Block.REGISTRY.add(entry.getKey(), entry.getValue(), block);
 
-			for (BlockState state : block.method_630().method_1228()) {
+			for (BlockState state : block.getStateManager().method_1228()) {
 				states.set(state, unorderedNextBlockId << 4 | block.getData(state));
 			}
 		}

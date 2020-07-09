@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.content.registries.v1;
+package net.fabricmc.fabric.api.event.client;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 
-import net.fabricmc.fabric.api.event.registries.v1.RegistryBlockAddedCallback;
-import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
+import java.util.List;
 
-public final class BlockRegistry {
-	public static boolean blockIdsSetup = false;
+public interface ItemTooltipCallback {
 
-	private BlockRegistry() {
-	}
+	Event<ItemTooltipCallback> EVENT = EventFactory.createArrayBacked(ItemTooltipCallback.class, (listeners) -> (stack,player, lines) -> {
+		for (ItemTooltipCallback callback : listeners) {
+			callback.getTooltip(stack, player,lines);
+		}
+	});
 
-	public static Block register(Identifier id, Block block) {
-		RegistryBlockAddedCallback.EVENT.invoker().blockAdded(id,block);
-		return ContentRegistryImpl.registerBlock(id, block);
-	}
+	void getTooltip(ItemStack stack, PlayerEntity player, List<String> lines);
+
 }

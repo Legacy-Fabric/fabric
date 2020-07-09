@@ -1,10 +1,22 @@
+/*
+ * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.fabricmc.fabric.mixin.content.registries;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Map;
 
 import com.google.common.collect.BiMap;
@@ -12,11 +24,12 @@ import com.google.common.collect.HashBiMap;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.class_635;
+import net.minecraft.world.SaveHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.world.World;
@@ -34,28 +47,14 @@ public class WorldMixin {
 	public boolean isClient;
 
 	@Inject(at = @At("RETURN"), method = "<init>")
-	public void init(class_635 arg, LevelProperties levelProperties, Dimension dimension, Profiler profiler, boolean client, CallbackInfo ci) {
+	public void init(SaveHandler arg, LevelProperties levelProperties, Dimension dimension, Profiler profiler, boolean client, CallbackInfo ci) {
 		if (!isClient) {
 			try {
 				if (!BlockRegistry.blockIdsSetup) {
 					File blockIds = new File(arg.getDataFile("blocks").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
 					blockIds.getParentFile().mkdirs();
 					BiMap<Integer, Identifier> idMap = HashBiMap.create();
-
-					if (blockIds.exists()) {
-						FileReader fileReader = new FileReader(blockIds);
-						BufferedReader bufferedReader = new BufferedReader(fileReader);
-						String line;
-
-						while ((line = bufferedReader.readLine()) != null) {
-							if (line.isEmpty()) continue;
-							int index = Integer.parseInt(line.substring(0, line.indexOf('\t')));
-							String id = line.substring(line.indexOf('\t') + 1);
-							idMap.put(index, new Identifier(id));
-						}
-
-						fileReader.close();
-					}
+					this.writeIdsToFile(idMap, blockIds);
 
 					ContentRegistryImpl.fillBlocksMapWithUnknownEntries(idMap);
 					PrintWriter writer = new PrintWriter(new FileOutputStream(blockIds, false));
@@ -72,21 +71,7 @@ public class WorldMixin {
 					File itemIds = new File(arg.getDataFile("items").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
 					itemIds.getParentFile().mkdirs();
 					BiMap<Integer, Identifier> idMap = HashBiMap.create();
-
-					if (itemIds.exists()) {
-						FileReader fileReader = new FileReader(itemIds);
-						BufferedReader bufferedReader = new BufferedReader(fileReader);
-						String line;
-
-						while ((line = bufferedReader.readLine()) != null) {
-							if (line.isEmpty()) continue;
-							int index = Integer.parseInt(line.substring(0, line.indexOf('\t')));
-							String id = line.substring(line.indexOf('\t') + 1);
-							idMap.put(index, new Identifier(id));
-						}
-
-						fileReader.close();
-					}
+					this.writeIdsToFile(idMap, itemIds);
 
 					ContentRegistryImpl.fillItemsMapWithUnknownEntries(idMap);
 					PrintWriter writer = new PrintWriter(new FileOutputStream(itemIds, false));
@@ -101,6 +86,24 @@ public class WorldMixin {
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
+		}
+	}
+
+	@Unique
+	private void writeIdsToFile(BiMap<Integer, Identifier> idMap, File file) throws IOException {
+		if (file.exists()) {
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line;
+
+			while ((line = bufferedReader.readLine()) != null) {
+				if (line.isEmpty()) continue;
+				int index = Integer.parseInt(line.substring(0, line.indexOf('\t')));
+				String id = line.substring(line.indexOf('\t') + 1);
+				idMap.put(index, new Identifier(id));
+			}
+
+			fileReader.close();
 		}
 	}
 }

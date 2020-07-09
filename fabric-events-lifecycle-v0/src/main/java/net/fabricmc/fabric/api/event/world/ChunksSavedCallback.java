@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.content.registries.v1;
+package net.fabricmc.fabric.api.event.world;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
-import net.fabricmc.fabric.api.event.registries.v1.RegistryBlockAddedCallback;
-import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
+public interface ChunksSavedCallback {
+	Event<ChunksSavedCallback> EVENT = EventFactory.createArrayBacked(ChunksSavedCallback.class, (listeners) -> () -> {
+		for (ChunksSavedCallback callback : listeners) {
+			callback.chunksSaved();
+		}
+	});
 
-public final class BlockRegistry {
-	public static boolean blockIdsSetup = false;
-
-	private BlockRegistry() {
-	}
-
-	public static Block register(Identifier id, Block block) {
-		RegistryBlockAddedCallback.EVENT.invoker().blockAdded(id,block);
-		return ContentRegistryImpl.registerBlock(id, block);
-	}
+	void chunksSaved();
 }

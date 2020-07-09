@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.event.interaction;
+package net.fabricmc.fabric.mixin.event.lifecycle;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.event.server.PlayerConnectCallback;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.server.PlayerManager;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ServerPlayerEntity.class)
-@Environment(EnvType.CLIENT)
-public class MixinServerPlayerEntity {
-//	@Inject(method = "attack", at = @At("HEAD"), cancellable = true)
-//	public void onPlayerInteractEntity(Entity target, CallbackInfo info) {
-//		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-//		ActionResult result = AttackEntityCallback.EVENT.invoker().interact(player, player.getWorld(), target, null);
-//
-//		if (result != ActionResult.PASS) {
-//			info.cancel();
-//		}
-//	}
+@Mixin(PlayerManager.class)
+public class MixinPlayerManager {
+	@Inject(at=@At("HEAD"),method = "onPlayerConnect")
+	public void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info){
+		PlayerConnectCallback.EVENT.invoker().playerJoin(connection,player);
+	}
 }

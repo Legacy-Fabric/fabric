@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.event.interaction;
+package net.fabricmc.fabric.mixin.event.lifecycle;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.fabricmc.fabric.api.event.server.DedicatedServerSetupCallback;
+import net.minecraft.server.dedicated.DedicatedServer;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ServerPlayerEntity.class)
-@Environment(EnvType.CLIENT)
-public class MixinServerPlayerEntity {
-//	@Inject(method = "attack", at = @At("HEAD"), cancellable = true)
-//	public void onPlayerInteractEntity(Entity target, CallbackInfo info) {
-//		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-//		ActionResult result = AttackEntityCallback.EVENT.invoker().interact(player, player.getWorld(), target, null);
-//
-//		if (result != ActionResult.PASS) {
-//			info.cancel();
-//		}
-//	}
+@Environment(EnvType.SERVER)
+@Mixin(DedicatedServer.class)
+public class MixinDedicatedServer {
+	@Inject(at=@At("TAIL"),method="setupServer")
+	public void setupServer(CallbackInfoReturnable<Boolean> info){
+		DedicatedServerSetupCallback.EVENT.invoker().onServerSetup((DedicatedServer) (Object)this);
+	}
 }
