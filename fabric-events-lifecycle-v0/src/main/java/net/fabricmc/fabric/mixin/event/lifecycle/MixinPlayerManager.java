@@ -16,7 +16,7 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle;
 
-import net.fabricmc.fabric.api.event.server.PlayerJoinCallback;
+import net.fabricmc.fabric.api.event.server.PlayerConnectCallback;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
@@ -29,6 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinPlayerManager {
 	@Inject(at=@At("HEAD"),method = "onPlayerConnect")
 	public void onPlayerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info){
-		PlayerJoinCallback.EVENT.invoker().playerJoin(connection,player);
+		PlayerConnectCallback.EVENT.invoker().playerJoin(connection,player);
 	}
 }

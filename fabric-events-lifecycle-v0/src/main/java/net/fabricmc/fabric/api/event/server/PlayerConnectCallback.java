@@ -21,10 +21,10 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.ClientConnection;
 
-public interface PlayerJoinCallback {
+public interface PlayerConnectCallback {
 
-	Event<PlayerJoinCallback> EVENT = EventFactory.createArrayBacked(PlayerJoinCallback.class, (listeners) -> (conn,player) -> {
-		for (PlayerJoinCallback callback : listeners) {
+	Event<PlayerConnectCallback> EVENT = EventFactory.createArrayBacked(PlayerConnectCallback.class, (listeners) -> (conn, player) -> {
+		for (PlayerConnectCallback callback : listeners) {
 			callback.playerJoin(conn,player);
 		}
 	});
