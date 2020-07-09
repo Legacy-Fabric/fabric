@@ -34,7 +34,7 @@ public class MixinMinecraftClient {
 		ClientTickCallback.EVENT.invoker().tick((MinecraftClient) (Object) this);
 	}
 
-	@Inject(at = @At("HEAD"),method = "run")
+	@Inject(at = @At("HEAD"),method = "scheduleStop")
 	public void start(CallbackInfo info){
 		ClientStopCallback.EVENT.invoker().onStopClient((MinecraftClient) (Object) this);
 	}
