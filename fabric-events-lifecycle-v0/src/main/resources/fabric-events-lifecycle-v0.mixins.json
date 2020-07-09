@@ -3,6 +3,7 @@
   "package": "net.fabricmc.fabric.mixin.event.lifecycle",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MixinDamageTracker",
     "MixinEntity",
     "MixinMinecraftServer",
     "MixinPlayerManager",
