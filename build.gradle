@@ -17,7 +17,7 @@ def ENV = System.getenv()
 class Globals {
 	static def baseVersion = "0.1.1"
 	static def mcVersion = "1.8.9"
-	static def yarnVersion = "+build.202005150113"
+	static def yarnVersion = "+build.202007090605"
 }
 
 version = Globals.baseVersion + "-" + getBranch()
@@ -50,7 +50,9 @@ def getBranch() {
 }
 
 allprojects {
-	apply plugin: 'checkstyle'
+//	if ( !(it.name == "fabric-content-registries-v1")) {
+//		apply plugin: 'checkstyle'
+//	}
 	apply plugin: 'maven-publish'
 	apply plugin: 'maven'
 	apply plugin: 'signing'
@@ -124,10 +126,10 @@ allprojects {
 		from sourceSets.main.allSource
 	}
 
-	checkstyle {
-		configFile = rootProject.file("checkstyle.xml")
-		toolVersion = '8.31'
-	}
+//	checkstyle {
+//		configFile = rootProject.file("checkstyle.xml")
+//		toolVersion = '8.31'
+//	}
 }
 
 javadoc {

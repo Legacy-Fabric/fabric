@@ -18,17 +18,8 @@ package net.fabricmc.fabric.mixin.event.interaction;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.impl.base.util.ActionResult;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.server.network.ServerPlayerEntity;
-
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 
 @Mixin(ServerPlayerEntity.class)
 @Environment(EnvType.CLIENT)

@@ -17,7 +17,7 @@
     "MixinMinecraftClient"
   ],
   "server": [
-    "MixinMinecraftDedicatedServer"
+    "MixinDedicatedServer"
   ],
   "injectors": {
     "defaultRequire": 1

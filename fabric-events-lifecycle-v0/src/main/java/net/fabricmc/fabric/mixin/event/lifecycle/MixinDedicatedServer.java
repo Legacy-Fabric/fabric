@@ -16,17 +16,20 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle;
 
-import net.fabricmc.fabric.api.event.world.EntityKilledCallback;
-import net.minecraft.entity.Entity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.event.server.DedicatedServerSetupCallback;
+import net.minecraft.server.dedicated.DedicatedServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(Entity.class)
-public class MixinEntity {
-	@Inject(at=@At("HEAD"),method="kill")
-	public void entityKilled(CallbackInfo info){
-		EntityKilledCallback.EVENT.invoker().entityKilled((Entity)(Object)this);
+@Environment(EnvType.SERVER)
+@Mixin(DedicatedServer.class)
+public class MixinDedicatedServer {
+	@Inject(at=@At("TAIL"),method="setupServer")
+	public void setupServer(CallbackInfoReturnable<Boolean> info){
+		DedicatedServerSetupCallback.EVENT.invoker().onServerSetup((DedicatedServer) (Object)this);
 	}
 }

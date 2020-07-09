@@ -34,12 +34,11 @@ import net.fabricmc.loader.api.ModContainer;
 
 @Mixin(CrashReport.class)
 public abstract class MixinCrashReport {
-
 	@Shadow
 	@Final
 	private CrashReportSection systemDetailsSection;
 
-	public String getFabricMods(){
+	public String getFabricMods() {
 		Map<String, String> mods = new TreeMap<>();
 
 		for (ModContainer container : FabricLoader.getInstance().getAllMods()) {
