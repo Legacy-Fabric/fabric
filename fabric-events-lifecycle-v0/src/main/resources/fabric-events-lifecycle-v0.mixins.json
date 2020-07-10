@@ -6,12 +6,13 @@
     "MixinDamageTracker",
     "MixinEntity",
     "MixinMinecraftServer",
-    "MixinServerPlayerEntity",
     "MixinPlayerManager",
+    "MixinServerPlayerEntity",
     "MixinThreadedAnvilChunkStorage",
     "MixinWorld"
   ],
   "client": [
+    "MixinGameOptions",
     "MixinIntegratedServer",
     "MixinItem",
     "MixinMinecraftClient"
