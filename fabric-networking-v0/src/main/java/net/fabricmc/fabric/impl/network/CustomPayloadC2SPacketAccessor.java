@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.network;
+package net.fabricmc.fabric.impl.network;
 
-import net.minecraft.network.Packet;
 import net.minecraft.util.PacketByteBuf;
 
-public interface PacketRegistry {
-	Packet<?> toPacket(String id, PacketByteBuf buf);
+public interface CustomPayloadC2SPacketAccessor {
+	String getChannel();
 
-	void register(String id, PacketConsumer consumer);
-
-	void unregister(String id);
+	PacketByteBuf getData();
 }

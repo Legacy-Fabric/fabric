@@ -19,15 +19,14 @@ package net.fabricmc.fabric.api.network;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import net.minecraft.network.Packet;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 
 public interface ClientSidePacketRegistry extends PacketRegistry {
-	boolean canServerReceive(Identifier id);
+	boolean canServerReceive(String id);
 
 	void sendToServer(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> completionListener);
 
-	default void sendToServer(Identifier id, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> completionListener) {
+	default void sendToServer(String id, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> completionListener) {
 		sendToServer(this.toPacket(id, buf), completionListener);
 	}
 
@@ -35,7 +34,7 @@ public interface ClientSidePacketRegistry extends PacketRegistry {
 		sendToServer(packet, null);
 	}
 
-	default void sendToServer(Identifier id, PacketByteBuf buf) {
+	default void sendToServer(String id, PacketByteBuf buf) {
 		sendToServer(id, buf, null);
 	}
 }
