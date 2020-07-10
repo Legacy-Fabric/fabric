@@ -18,10 +18,13 @@ package net.fabricmc.fabric.api.network;
 
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import net.fabricmc.fabric.impl.network.ClientSidePacketRegistryImpl;
 import net.minecraft.network.Packet;
 import net.minecraft.util.PacketByteBuf;
 
 public interface ClientSidePacketRegistry extends PacketRegistry {
+	ClientSidePacketRegistry INSTANCE = new ClientSidePacketRegistryImpl();
+
 	boolean canServerReceive(String id);
 
 	void sendToServer(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> completionListener);
