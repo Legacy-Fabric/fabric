@@ -35,22 +35,6 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 @Mixin(ServerPlayNetworkHandler.class)
 public class MixinServerPlayNetworkHandler {
 
-	@Shadow
-	public ServerPlayerEntity player;
-
-	@Inject(method = "onPlayerInteractEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;squaredDistanceTo(Lnet/minecraft/entity/Entity;)D", shift = At.Shift.AFTER), cancellable = true)
-	public void onPlayerInteractEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo info) {
-		World world = player.getServerWorld();
-		Entity entity = packet.getEntity(world);
-
-		if (entity != null) {
-			EntityHitResult hitResult = new EntityHitResult(entity, packet.getHitPosition().add(entity.x, entity.y, entity.z));
-
-			ActionResult result = UseEntityCallback.EVENT.invoker().interact(player, world, entity, hitResult);
-
-			if (result != ActionResult.PASS) {
-				info.cancel();
-			}
-		}
-	}
+//	@Shadow
+//	public ServerPlayerEntity player;
 }
