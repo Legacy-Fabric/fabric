@@ -5,6 +5,7 @@
   "mixins": [
     "MixinDamageTracker",
     "MixinEntity",
+    "MixinLightningBoltEntity",
     "MixinMinecraftServer",
     "MixinPlayerManager",
     "MixinServerPlayerEntity",
