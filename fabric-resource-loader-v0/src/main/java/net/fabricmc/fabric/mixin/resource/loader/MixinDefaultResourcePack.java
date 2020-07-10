@@ -16,48 +16,49 @@
 
 package net.fabricmc.fabric.mixin.resource.loader;
 
-import net.minecraft.resource.DefaultResourcePack;
-import net.minecraft.util.Identifier;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.minecraft.resource.DefaultResourcePack;
+import net.minecraft.util.Identifier;
+
 @Mixin(DefaultResourcePack.class)
 public class MixinDefaultResourcePack {
 	@Inject(method = "method_4350", at = @At("HEAD"), cancellable = true)
 	protected void onFindInputStream(Identifier identifier, CallbackInfoReturnable<InputStream> callback) {
-//		if (DefaultResourcePack.resourcePath != null) {
-			// Fall through to Vanilla logic, they have a special case here.
-//			return;
-//		}
-		
+		//		if (DefaultResourcePack.resourcePath != null) {
+		// Fall through to Vanilla logic, they have a special case here.
+		//			return;
+		//		}
+
 		String path = "assets/" + identifier.getNamespace() + "/" + identifier.getPath();
 		URL found = null;
-		
+
 		try {
 			Enumeration<URL> candidates = DefaultResourcePack.class.getClassLoader().getResources(path);
-			
+
 			// Get the last element
 			while (candidates.hasMoreElements()) {
 				found = candidates.nextElement();
 			}
-			
+
 			if (found == null) {
 				// Mimics vanilla behavior
-				
+
 				callback.setReturnValue(null);
 				return;
 			}
 		} catch (IOException var6) {
 			// Default path
 		}
-		
+
 		try {
 			if (found != null) {
 				callback.setReturnValue(found.openStream());

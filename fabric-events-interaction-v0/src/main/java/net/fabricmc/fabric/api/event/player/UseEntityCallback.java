@@ -16,14 +16,14 @@
 
 package net.fabricmc.fabric.api.event.player;
 
-import net.fabricmc.fabric.impl.base.util.ActionResult;
-import net.fabricmc.fabric.impl.util.EntityHitResult;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.impl.base.util.ActionResult;
 
 /**
  * Callback for right-clicking ("using") an entity.
@@ -49,5 +49,5 @@ public interface UseEntityCallback {
 			}
 	);
 
-	ActionResult interact(PlayerEntity player, World world,  Entity entity, /* Nullable */ EntityHitResult hitResult);
+	ActionResult interact(PlayerEntity player, World world, Entity entity, /* Nullable */ HitResult hitResult);
 }

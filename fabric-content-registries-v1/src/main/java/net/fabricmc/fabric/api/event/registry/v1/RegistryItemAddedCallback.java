@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.event.client;
+package net.fabricmc.fabric.api.event.registry.v1;
 
-import java.util.List;
-
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
-public interface ItemTooltipCallback {
-	Event<ItemTooltipCallback> EVENT = EventFactory.createArrayBacked(ItemTooltipCallback.class, (listeners) -> (stack, player, lines) -> {
-		for (ItemTooltipCallback callback : listeners) {
-			callback.getTooltip(stack, player, lines);
+public interface RegistryItemAddedCallback {
+	Event<RegistryItemAddedCallback> EVENT = EventFactory.createArrayBacked(RegistryItemAddedCallback.class, (listeners) -> (id, item) -> {
+		for (RegistryItemAddedCallback callback : listeners) {
+			callback.itemAdded(id, item);
 		}
 	});
 
-	void getTooltip(ItemStack stack, PlayerEntity player, List<String> lines);
+	void itemAdded(Identifier id, Item item);
 }

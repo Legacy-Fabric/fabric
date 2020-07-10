@@ -16,21 +16,29 @@
 
 package net.fabricmc.fabric.mixin.event.interaction;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import org.spongepowered.asm.mixin.Mixin;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.impl.base.util.ActionResult;
 
 @Mixin(ServerPlayerEntity.class)
 @Environment(EnvType.CLIENT)
 public class MixinServerPlayerEntity {
-//	@Inject(method = "attack", at = @At("HEAD"), cancellable = true)
-//	public void onPlayerInteractEntity(Entity target, CallbackInfo info) {
-//		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-//		ActionResult result = AttackEntityCallback.EVENT.invoker().interact(player, player.getWorld(), target, null);
-//
-//		if (result != ActionResult.PASS) {
-//			info.cancel();
-//		}
-//	}
+	@Inject(method = "method_8038", at = @At("HEAD"), cancellable = true)
+	public void onPlayerInteractEntity(Entity target, CallbackInfo info) {
+		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+		ActionResult result = AttackEntityCallback.EVENT.invoker().attack(player, player.getWorld(), target, null);
+
+		if (result != ActionResult.PASS) {
+			info.cancel();
+		}
+	}
 }

@@ -25,10 +25,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.class_1254;
 import net.minecraft.class_1255;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.render.EntityRenderer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.EntityRenderer;
 import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.sound.SoundManager;
@@ -47,42 +47,40 @@ public class MixinKeyedResourceReloadListener {
 		private Identifier fabric_id;
 
 		@Override
-		@SuppressWarnings({"ConstantConditions", "RedundantCast"})
 		public Collection<Identifier> getFabricDependencies() {
 			if (fabric_idDeps == null) {
 				Object self = this;
 
-//				if (self instanceof BakedModelManager || self instanceof WorldRenderer) {
-//					fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.TEXTURES);
-//				} else if (self instanceof ItemRenderer || self instanceof BlockRenderManager) {
-//					fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.MODELS);
-//				} else {
+				//				if (self instanceof BakedModelManager || self instanceof WorldRenderer) {
+				//					fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.TEXTURES);
+				//				} else if (self instanceof ItemRenderer || self instanceof BlockRenderManager) {
+				//					fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.MODELS);
+				//				} else {
+				//				}
 				fabric_idDeps = Collections.emptyList();
-//				}
 			}
 
 			return fabric_idDeps;
 		}
 
 		@Override
-		@SuppressWarnings({"ConstantConditions", "RedundantCast"})
 		public Identifier getFabricId() {
 			if (fabric_id == null) {
 				Object self = this;
 
-//				if (self instanceof SoundLoader) {
-//					fabric_id = ResourceReloadListenerKeys.SOUNDS;
-//				} else if (self instanceof FontManager) {
-//					fabric_id = ResourceReloadListenerKeys.FONTS;
-//				} else if (self instanceof BakedModelManager) {
-//					fabric_id = ResourceReloadListenerKeys.MODELS;
-//				} else if (self instanceof class_1270) {
-//					fabric_id = ResourceReloadListenerKeys.LANGUAGES;
-//				} else if (self instanceof TextureManager) {
-//					fabric_id = ResourceReloadListenerKeys.TEXTURES;
-//				} else {
+				//				if (self instanceof SoundLoader) {
+				//					fabric_id = ResourceReloadListenerKeys.SOUNDS;
+				//				} else if (self instanceof FontManager) {
+				//					fabric_id = ResourceReloadListenerKeys.FONTS;
+				//				} else if (self instanceof BakedModelManager) {
+				//					fabric_id = ResourceReloadListenerKeys.MODELS;
+				//				} else if (self instanceof class_1270) {
+				//					fabric_id = ResourceReloadListenerKeys.LANGUAGES;
+				//				} else if (self instanceof TextureManager) {
+				//					fabric_id = ResourceReloadListenerKeys.TEXTURES;
+				//				} else {
+				//				}
 				fabric_id = new Identifier("minecraft", "private/" + self.getClass().getSimpleName().toLowerCase(Locale.ROOT));
-//				}
 			}
 
 			return fabric_id;

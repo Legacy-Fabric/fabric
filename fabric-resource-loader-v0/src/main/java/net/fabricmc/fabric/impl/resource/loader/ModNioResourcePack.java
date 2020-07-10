@@ -16,12 +16,6 @@
 
 package net.fabricmc.fabric.impl.resource.loader;
 
-import net.fabricmc.fabric.api.resource.ModResourcePack;
-import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.resource.AbstractFileResourcePack;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,6 +28,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.minecraft.resource.AbstractFileResourcePack;
+
+import net.fabricmc.fabric.api.resource.ModResourcePack;
+import net.fabricmc.loader.api.metadata.ModMetadata;
+
 public class ModNioResourcePack extends AbstractFileResourcePack implements ModResourcePack, Closeable {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Pattern RESOURCE_PACK_PATH = Pattern.compile("[a-z0-9-_]+");
@@ -42,7 +44,7 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	private final boolean cacheable;
 	private final AutoCloseable closer;
 	private final String separator;
-	
+
 	public ModNioResourcePack(ModMetadata modInfo, Path path, AutoCloseable closer) {
 		super(null);
 		this.modInfo = modInfo;
@@ -51,59 +53,59 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 		this.closer = closer;
 		this.separator = basePath.getFileSystem().getSeparator();
 	}
-	
+
 	private Path getPath(String filename) {
 		Path childPath = basePath.resolve(filename.replace("/", separator)).toAbsolutePath().normalize();
-		
+
 		if (childPath.startsWith(basePath) && Files.exists(childPath)) {
 			return childPath;
 		} else {
 			return null;
 		}
 	}
-	
+
 	@Override
 	protected InputStream openFile(String filename) throws IOException {
 		InputStream stream;
-		
+
 		if (DeferredNioExecutionHandler.shouldDefer()) {
 			stream = DeferredNioExecutionHandler.submit(() -> {
 				Path path = getPath(filename);
-				
+
 				if (path != null && Files.isRegularFile(path)) {
 					return new DeferredInputStream(Files.newInputStream(path));
 				} else {
 					return null;
 				}
 			});
-			
+
 			if (stream != null) {
 				return stream;
 			}
 		} else {
 			Path path = getPath(filename);
-			
+
 			if (path != null && Files.isRegularFile(path)) {
 				return Files.newInputStream(path);
 			}
 		}
-		
+
 		stream = ModResourcePackUtil.openDefault(modInfo, filename);
-		
+
 		if (stream != null) {
 			return stream;
 		}
-		
+
 		// ReloadableResourceManagerImpl gets away with FileNotFoundException.
 		throw new FileNotFoundException("\"" + filename + "\" in Fabric mod \"" + modInfo.getId() + "\"");
 	}
-	
+
 	@Override
 	protected boolean containsFile(String filename) {
 		if (ModResourcePackUtil.containsDefault(modInfo, filename)) {
 			return true;
 		}
-		
+
 		if (DeferredNioExecutionHandler.shouldDefer()) {
 			try {
 				return DeferredNioExecutionHandler.submit(() -> {
@@ -119,65 +121,65 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 		}
 	}
 
-//	@Override
-//	public Collection<Identifier> findResources(String namespace, String path, int depth, Predicate<String> predicate) {
-//		List<Identifier> ids = new ArrayList<>();
-//		String nioPath = path.replace("/", separator);
-//
-//		Path namespacePath = getPath("assets/" + namespace);
-//
-//		if (namespacePath != null) {
-//			Path searchPath = namespacePath.resolve(nioPath).toAbsolutePath().normalize();
-//
-//			if (Files.exists(searchPath)) {
-//				try {
-//					Files.walk(searchPath, depth)
-//							.filter(Files::isRegularFile)
-//							.filter((p) -> {
-//								String filename = p.getFileName().toString();
-//								return !filename.endsWith(".mcmeta") && predicate.test(filename);
-//							})
-//							.map(namespacePath::relativize)
-//							.map((p) -> p.toString().replace(separator, "/"))
-//							.forEach((s) -> {
-//								ids.add(new Identifier(namespace, s));
-//							});
-//				} catch (IOException e) {
-//					LOGGER.warn("findResources at " + path + " in namespace " + namespace + ", mod " + modInfo.getId() + " failed!", e);
-//				}
-//			}
-//		}
-//
-//		return ids;
-//	}
-	
+	//	@Override
+	//	public Collection<Identifier> findResources(String namespace, String path, int depth, Predicate<String> predicate) {
+	//		List<Identifier> ids = new ArrayList<>();
+	//		String nioPath = path.replace("/", separator);
+	//
+	//		Path namespacePath = getPath("assets/" + namespace);
+	//
+	//		if (namespacePath != null) {
+	//			Path searchPath = namespacePath.resolve(nioPath).toAbsolutePath().normalize();
+	//
+	//			if (Files.exists(searchPath)) {
+	//				try {
+	//					Files.walk(searchPath, depth)
+	//							.filter(Files::isRegularFile)
+	//							.filter((p) -> {
+	//								String filename = p.getFileName().toString();
+	//								return !filename.endsWith(".mcmeta") && predicate.test(filename);
+	//							})
+	//							.map(namespacePath::relativize)
+	//							.map((p) -> p.toString().replace(separator, "/"))
+	//							.forEach((s) -> {
+	//								ids.add(new Identifier(namespace, s));
+	//							});
+	//				} catch (IOException e) {
+	//					LOGGER.warn("findResources at " + path + " in namespace " + namespace + ", mod " + modInfo.getId() + " failed!", e);
+	//				}
+	//			}
+	//		}
+	//
+	//		return ids;
+	//	}
+
 	private Set<String> namespaceCache;
-	
+
 	protected void warnInvalidNamespace(String s) {
 		LOGGER.warn("Fabric NioResourcePack: ignored invalid namespace: {} in mod ID {}", s, modInfo.getId());
 	}
-	
+
 	@Override
 	public Set<String> method_4372() {
 		if (namespaceCache != null) {
 			return namespaceCache;
 		}
-		
+
 		try {
 			Path typePath = getPath("assets");
-			
+
 			if (typePath == null || !(Files.isDirectory(typePath))) {
 				return Collections.emptySet();
 			}
-			
+
 			Set<String> namespaces = new HashSet<>();
-			
+
 			try (DirectoryStream<Path> stream = Files.newDirectoryStream(typePath, Files::isDirectory)) {
 				for (Path path : stream) {
 					String s = path.getFileName().toString();
 					// s may contain trailing slashes, remove them
 					s = s.replace(separator, "");
-					
+
 					if (RESOURCE_PACK_PATH.matcher(s).matches()) {
 						namespaces.add(s);
 					} else {
@@ -185,18 +187,18 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 					}
 				}
 			}
-			
+
 			if (cacheable) {
 				namespaceCache = namespaces;
 			}
-			
+
 			return namespaces;
 		} catch (IOException e) {
 			LOGGER.warn("getNamespaces in mod " + modInfo.getId() + " failed!", e);
 			return Collections.emptySet();
 		}
 	}
-	
+
 	@Override
 	public void close() throws IOException {
 		if (closer != null) {
@@ -209,12 +211,12 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 			}
 		}
 	}
-	
+
 	@Override
 	public ModMetadata getFabricModMetadata() {
 		return modInfo;
 	}
-	
+
 	@Override
 	public String getName() {
 		return ModResourcePackUtil.getName(modInfo);

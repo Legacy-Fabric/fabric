@@ -16,13 +16,13 @@
 
 package net.fabricmc.fabric.api.event.player;
 
-import net.fabricmc.fabric.impl.base.util.ActionResult;
-import net.fabricmc.fabric.impl.util.BlockHitResult;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.impl.base.util.ActionResult;
 
 /**
  * Callback for right-clicking ("using") a block.
@@ -48,5 +48,5 @@ public interface UseBlockCallback {
 			}
 	);
 
-	ActionResult interact(PlayerEntity player, World world, BlockHitResult hitResult);
+	ActionResult interact(PlayerEntity player, World world, HitResult hitResult);
 }

@@ -16,12 +16,12 @@
 
 package net.fabricmc.fabric.api.event.server;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.server.MinecraftServer;
 
-public interface ServerStartCallback {
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
+public interface ServerStartCallback {
 	Event<ServerStartCallback> EVENT = EventFactory.createArrayBacked(ServerStartCallback.class,
 			(listeners) -> (server) -> {
 				for (ServerStartCallback event : listeners) {

@@ -16,12 +16,13 @@
 
 package net.fabricmc.fabric.mixin.event.interaction;
 
-import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.fabricmc.fabric.impl.base.util.ActionResult;
-import net.fabricmc.fabric.impl.base.util.TypedActionResult;
-import net.fabricmc.fabric.impl.util.BlockHitResult;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -32,16 +33,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.impl.base.util.ActionResult;
+import net.fabricmc.fabric.impl.base.util.TypedActionResult;
 
 @Mixin(ServerPlayerInteractionManager.class)
 public class MixinServerPlayerInteractionManager {
-
 	@Shadow
 	public ServerPlayerEntity player;
 
@@ -51,6 +51,7 @@ public class MixinServerPlayerInteractionManager {
 	@Inject(at = @At("HEAD"), method = "processBlockBreakingAction", cancellable = true)
 	public void startBlockBreak(BlockPos pos, Direction direction, CallbackInfo info) {
 		ActionResult result = AttackBlockCallback.EVENT.invoker().interact(player, world, pos, direction);
+
 		if (result != ActionResult.PASS) {
 			// The client might have broken the block on its side, so make sure to let it know.
 			this.player.networkHandler.sendPacket(new BlockUpdateS2CPacket(world, pos));
@@ -59,13 +60,12 @@ public class MixinServerPlayerInteractionManager {
 	}
 
 	@Inject(at = @At("HEAD"), method = "method_6091", cancellable = true)
-	public void interactBlock(PlayerEntity playerEntity, World world, ItemStack itemStack, BlockPos blockPos, Direction direction, float f, float g, float h,CallbackInfoReturnable<ActionResult> info) {
-		ActionResult result = UseBlockCallback.EVENT.invoker().interact(player, world, BlockHitResult.createMissed(new Vec3d(blockPos.getX(),blockPos.getY(),blockPos.getZ()),direction,blockPos));
+	public void interactBlock(PlayerEntity playerEntity, World world, ItemStack itemStack, BlockPos blockPos, Direction direction, float f, float g, float h, CallbackInfoReturnable<ActionResult> info) {
+		ActionResult result = UseBlockCallback.EVENT.invoker().interact(player, world, new HitResult(HitResult.Type.MISS, new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), direction, blockPos));
 
 		if (result != ActionResult.PASS) {
 			info.setReturnValue(result);
 			info.cancel();
-			return;
 		}
 	}
 
@@ -76,7 +76,6 @@ public class MixinServerPlayerInteractionManager {
 		if (result.getResult() != ActionResult.PASS) {
 			info.setReturnValue(result.getResult());
 			info.cancel();
-			return;
 		}
 	}
 }

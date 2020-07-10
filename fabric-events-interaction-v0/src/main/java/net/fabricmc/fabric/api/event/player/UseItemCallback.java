@@ -16,8 +16,6 @@
 
 package net.fabricmc.fabric.api.event.player;
 
-import net.fabricmc.fabric.impl.base.util.ActionResult;
-import net.fabricmc.fabric.impl.base.util.TypedActionResult;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -25,6 +23,8 @@ import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.impl.base.util.ActionResult;
+import net.fabricmc.fabric.impl.base.util.TypedActionResult;
 
 /**
  * Callback for right-clicking ("using") an item.

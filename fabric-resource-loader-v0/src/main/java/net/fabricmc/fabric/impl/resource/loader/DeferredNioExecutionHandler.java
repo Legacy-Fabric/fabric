@@ -65,9 +65,9 @@ class DeferredNioExecutionHandler {
 	public static <V> V submit(Callable<V> callable) throws IOException {
 		if (EXECUTOR_SERVICE == null) {
 			EXECUTOR_SERVICE = Executors.newSingleThreadExecutor(
-				new ThreadFactoryBuilder()
-					.setNameFormat("Fabric Deferred I/O Thread")
-					.build()
+					new ThreadFactoryBuilder()
+							.setNameFormat("Fabric Deferred I/O Thread")
+							.build()
 			);
 		}
 

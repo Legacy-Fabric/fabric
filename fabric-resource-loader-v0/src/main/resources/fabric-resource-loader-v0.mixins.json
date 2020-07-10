@@ -7,7 +7,7 @@
   ],
   "client": [
     "MixinKeyedResourceReloadListener$Client",
-    "MixinMinecraftGame"
+    "MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1

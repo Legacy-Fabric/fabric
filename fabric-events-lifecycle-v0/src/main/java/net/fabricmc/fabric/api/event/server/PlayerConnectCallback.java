@@ -16,19 +16,18 @@
 
 package net.fabricmc.fabric.api.event.server;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.ClientConnection;
 
-public interface PlayerConnectCallback {
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
+public interface PlayerConnectCallback {
 	Event<PlayerConnectCallback> EVENT = EventFactory.createArrayBacked(PlayerConnectCallback.class, (listeners) -> (conn, player) -> {
 		for (PlayerConnectCallback callback : listeners) {
-			callback.playerConnect(conn,player);
+			callback.playerConnect(conn, player);
 		}
 	});
 
 	void playerConnect(ClientConnection connection, ServerPlayerEntity player);
-
 }
