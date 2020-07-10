@@ -18,17 +18,30 @@ package net.fabricmc.fabric.api.event.server;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.util.LoginMessage;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.text.Text;
 
-public interface PlayerConnectCallback {
+import java.util.ArrayList;
+import java.util.List;
 
-	Event<PlayerConnectCallback> EVENT = EventFactory.createArrayBacked(PlayerConnectCallback.class, (listeners) -> (conn, player) -> {
-		for (PlayerConnectCallback callback : listeners) {
-			callback.playerConnect(conn,player);
+public interface PlayerJoinCallback {
+
+	/**
+	 * this is currently the best way to be able to cancel the login message. any suggestions are open.
+	 */
+	Event<PlayerJoinCallback> EVENT = EventFactory.createArrayBacked(PlayerJoinCallback.class, (listeners) -> (message, player) -> {
+		List<Text> joinMessages = new ArrayList<>();
+		for (PlayerJoinCallback callback : listeners) {
+			joinMessages.add(callback.playerJoin(message,player));
 		}
+		if(joinMessages.size() > 0){
+			return joinMessages.get(0);
+		}
+		return message;
 	});
 
-	void playerConnect(ClientConnection connection, ServerPlayerEntity player);
+	Text playerJoin(Text message, ServerPlayerEntity player);
 
 }

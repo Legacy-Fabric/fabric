@@ -20,8 +20,7 @@
   },
   "entrypoints": {
     "main": [
-      "net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl",
-      "net.fabricmc.fabric.impl.content.registries.TestMod"
+      "net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl"
     ]
   },
   "description": "Adds Fabric-related debug info to crash reports.",

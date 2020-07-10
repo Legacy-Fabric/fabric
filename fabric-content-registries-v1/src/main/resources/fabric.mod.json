@@ -16,9 +16,6 @@
     "Legacy-Fabric"
   ],
   "entrypoints": {
-    "main": [
-      "net.fabricmc.fabric.impl.content.registries.TestMod"
-    ]
   },
   "description": "Adds registries to content.",
   "mixins": [
