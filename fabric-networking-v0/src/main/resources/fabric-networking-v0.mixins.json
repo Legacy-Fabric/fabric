@@ -4,9 +4,12 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinClass1639",
-    "MixinCustomPayloadC2SPacket"
+    "MixinCustomPayloadC2SPacket",
+    "MixinPlayerManager",
+    "MixinServerPlayNetworkHandler"
   ],
   "client": [
+    "MixinClientPlayNetworkHandler",
     "MixinMinecraftClient"
   ],
   "injectors": {
