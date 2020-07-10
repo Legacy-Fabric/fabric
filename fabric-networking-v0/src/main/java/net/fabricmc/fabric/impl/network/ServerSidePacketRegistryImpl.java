@@ -16,12 +16,19 @@
 
 package net.fabricmc.fabric.impl.network;
 
+import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.WeakHashMap;
+import java.util.function.Consumer;
+
 import com.google.common.collect.Sets;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import net.fabricmc.fabric.api.event.network.C2SPacketTypeCallback;
-import net.fabricmc.fabric.api.network.PacketContext;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.Packet;
@@ -30,9 +37,9 @@ import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.PacketByteBuf;
 
-import java.lang.ref.WeakReference;
-import java.util.*;
-import java.util.function.Consumer;
+import net.fabricmc.fabric.api.event.network.C2SPacketTypeCallback;
+import net.fabricmc.fabric.api.network.PacketContext;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements ServerSidePacketRegistry {
 	private final WeakHashMap<PlayerEntity, Collection<String>> playerPayloadIds = new WeakHashMap<>();

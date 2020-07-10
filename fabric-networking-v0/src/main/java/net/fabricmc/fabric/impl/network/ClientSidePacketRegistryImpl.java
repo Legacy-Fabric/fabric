@@ -16,22 +16,24 @@
 
 package net.fabricmc.fabric.impl.network;
 
-import com.google.common.collect.Sets;
+import java.util.Collection;
+import java.util.Collections;
+
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.event.network.S2CPacketTypeCallback;
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-import net.fabricmc.fabric.api.network.PacketContext;
+import com.google.common.collect.Sets;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.util.PacketByteBuf;
 
-import java.util.Collection;
-import java.util.Collections;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.event.network.S2CPacketTypeCallback;
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
+import net.fabricmc.fabric.api.network.PacketContext;
 
 @Environment(EnvType.CLIENT)
 public class ClientSidePacketRegistryImpl extends PacketRegistryImpl implements ClientSidePacketRegistry {
@@ -96,6 +98,6 @@ public class ClientSidePacketRegistryImpl extends PacketRegistryImpl implements 
 
 	@Override
 	public Packet<?> toPacket(String id, PacketByteBuf buf) {
-		return new CustomPayloadC2SPacket(id,buf);
+		return new CustomPayloadC2SPacket(id, buf);
 	}
 }

@@ -16,12 +16,12 @@
 
 package net.fabricmc.fabric.api.event.network;
 
+import java.util.Collection;
+
+import net.minecraft.entity.player.PlayerEntity;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
-
-import java.util.Collection;
 
 public interface C2SPacketTypeCallback {
 	Event<C2SPacketTypeCallback> REGISTERED = EventFactory.createArrayBacked(

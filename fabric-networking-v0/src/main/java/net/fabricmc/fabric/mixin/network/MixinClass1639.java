@@ -16,14 +16,16 @@
 
 package net.fabricmc.fabric.mixin.network;
 
-import net.fabricmc.fabric.api.network.server.EntityTrackerStreamAccessor;
-import net.minecraft.class_1639;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import java.util.Set;
+import java.util.stream.Stream;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.Set;
-import java.util.stream.Stream;
+import net.minecraft.class_1639;
+import net.minecraft.entity.player.ServerPlayerEntity;
+
+import net.fabricmc.fabric.api.network.server.EntityTrackerStreamAccessor;
 
 @Mixin(class_1639.class)
 public class MixinClass1639 implements EntityTrackerStreamAccessor {

@@ -18,10 +18,15 @@ package net.fabricmc.fabric.api.network;
 
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import net.fabricmc.fabric.impl.network.ClientSidePacketRegistryImpl;
-import net.minecraft.network.Packet;
-import net.minecraft.util.PacketByteBuf;
 
+import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.Packet;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.impl.network.ClientSidePacketRegistryImpl;
+
+@Environment(EnvType.CLIENT)
 public interface ClientSidePacketRegistry extends PacketRegistry {
 	ClientSidePacketRegistry INSTANCE = new ClientSidePacketRegistryImpl();
 

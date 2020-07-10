@@ -16,16 +16,17 @@
 
 package net.fabricmc.fabric.api.server;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.List;
-import java.util.stream.Stream;
 
 public final class PlayerStream {
 	private PlayerStream() {
@@ -54,8 +55,8 @@ public final class PlayerStream {
 
 		Stream<PlayerEntity> playerEntityStream = ((ServerWorld) world).playerEntities.stream();
 		List<PlayerEntity> playerEntityList = Lists.newArrayList();
-		playerEntityStream.forEach((player)->{
-			if(((player.x - pos.getX()) < 32 || (player.z - pos.getZ()) < 32) && (player.y - pos.getY()) < 32){
+		playerEntityStream.forEach((player) -> {
+			if (((player.x - pos.getX()) < 32 || (player.z - pos.getZ()) < 32) && (player.y - pos.getY()) < 32) {
 				playerEntityList.add(player);
 			}
 		});

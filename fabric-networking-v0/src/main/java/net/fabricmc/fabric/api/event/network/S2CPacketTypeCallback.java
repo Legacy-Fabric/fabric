@@ -16,10 +16,10 @@
 
 package net.fabricmc.fabric.api.event.network;
 
+import java.util.Collection;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-
-import java.util.Collection;
 
 public interface S2CPacketTypeCallback {
 	Event<S2CPacketTypeCallback> REGISTERED = EventFactory.createArrayBacked(
