@@ -3,9 +3,11 @@
   "package": "net.fabricmc.fabric.mixin.network",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MixinClass1639",
     "MixinCustomPayloadC2SPacket"
   ],
   "client": [
+    "MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1
