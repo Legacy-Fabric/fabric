@@ -28,7 +28,7 @@ import net.fabricmc.fabric.api.event.world.LightningStruckCallback;
 
 @Mixin(LightningBoltEntity.class)
 public class MixinLightningBoltEntity {
-	@Inject(at = @At("HEAD"), method = "<init>")
+	@Inject(at = @At("TAIL"), method = "<init>")
 	public void onLightningStrike(World world, double d, double e, double f, CallbackInfo info) {
 		LightningStruckCallback.EVENT.invoker().onLightningStrike(world, d, e, f);
 	}
