@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.api.event.client;
 
+import net.minecraft.client.MinecraftClient;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.MinecraftClient;
 
 public interface ClientStopCallback {
 	Event<ClientStopCallback> EVENT = EventFactory.createArrayBacked(ClientStopCallback.class,

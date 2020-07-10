@@ -16,20 +16,22 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.event.server.DedicatedServerSetupCallback;
-import net.minecraft.server.dedicated.DedicatedServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.minecraft.server.dedicated.DedicatedServer;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.event.server.DedicatedServerSetupCallback;
+
 @Environment(EnvType.SERVER)
 @Mixin(DedicatedServer.class)
 public class MixinDedicatedServer {
-	@Inject(at=@At("TAIL"),method="setupServer")
-	public void setupServer(CallbackInfoReturnable<Boolean> info){
-		DedicatedServerSetupCallback.EVENT.invoker().onServerSetup((DedicatedServer) (Object)this);
+	@Inject(at = @At("TAIL"), method = "setupServer")
+	public void setupServer(CallbackInfoReturnable<Boolean> info) {
+		DedicatedServerSetupCallback.EVENT.invoker().onServerSetup((DedicatedServer) (Object) this);
 	}
 }

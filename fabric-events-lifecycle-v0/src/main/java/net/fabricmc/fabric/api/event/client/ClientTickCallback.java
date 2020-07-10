@@ -16,14 +16,14 @@
 
 package net.fabricmc.fabric.api.event.client;
 
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.MinecraftClient;
 
-public interface ClientTickCallback {
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
-	Event<ClientTickCallback> EVENT = EventFactory.createArrayBacked(ClientTickCallback.class,(listeners)->{
-		if(EventFactory.isProfilingEnabled()){
+public interface ClientTickCallback {
+	Event<ClientTickCallback> EVENT = EventFactory.createArrayBacked(ClientTickCallback.class, (listeners) -> {
+		if (EventFactory.isProfilingEnabled()) {
 			return (client) -> {
 				client.profiler.push("fabricClientTick");
 
@@ -35,7 +35,7 @@ public interface ClientTickCallback {
 
 				client.profiler.pop();
 			};
-		} else{
+		} else {
 			return (client) -> {
 				for (ClientTickCallback event : listeners) {
 					event.tick(client);

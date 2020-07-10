@@ -26,7 +26,7 @@ import java.util.concurrent.Callable;
  */
 class DeferredInputStream extends InputStream {
 	private final InputStream stream;
-	
+
 	public static InputStream deferIfNeeded(Callable<InputStream> streamSupplier) throws IOException {
 		if (DeferredNioExecutionHandler.shouldDefer()) {
 			return new DeferredInputStream(streamSupplier);
@@ -34,38 +34,38 @@ class DeferredInputStream extends InputStream {
 			return DeferredNioExecutionHandler.submit(streamSupplier, false);
 		}
 	}
-	
+
 	DeferredInputStream(Callable<InputStream> streamSupplier) throws IOException {
 		stream = DeferredNioExecutionHandler.submit(streamSupplier);
-		
+
 		if (stream == null) {
 			throw new IOException("Something happened while trying to create an InputStream!");
 		}
 	}
-	
+
 	DeferredInputStream(InputStream stream) throws IOException {
 		this.stream = stream;
-		
+
 		if (this.stream == null) {
 			throw new IOException("Something happened while trying to create an InputStream!");
 		}
 	}
-	
+
 	@Override
 	public int available() throws IOException {
 		return DeferredNioExecutionHandler.submit(stream::available);
 	}
-	
+
 	@Override
 	public boolean markSupported() {
 		return stream.markSupported();
 	}
-	
+
 	@Override
 	public void mark(int readLimit) {
 		stream.mark(readLimit);
 	}
-	
+
 	@Override
 	public void reset() throws IOException {
 		DeferredNioExecutionHandler.submit(() -> {
@@ -73,27 +73,27 @@ class DeferredInputStream extends InputStream {
 			return null;
 		});
 	}
-	
+
 	@Override
 	public long skip(long n) throws IOException {
 		return DeferredNioExecutionHandler.submit(() -> stream.skip(n));
 	}
-	
+
 	@Override
 	public int read() throws IOException {
 		return DeferredNioExecutionHandler.submit(stream::read);
 	}
-	
+
 	@Override
 	public int read(byte[] b) throws IOException {
 		return DeferredNioExecutionHandler.submit(() -> stream.read(b));
 	}
-	
+
 	@Override
 	public int read(byte[] b, int offset, int length) throws IOException {
 		return DeferredNioExecutionHandler.submit(() -> stream.read(b, offset, length));
 	}
-	
+
 	@Override
 	public void close() throws IOException {
 		DeferredNioExecutionHandler.submit(() -> {

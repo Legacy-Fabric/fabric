@@ -29,6 +29,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.registry.v1.RegistryBlockAddedCallback;
+import net.fabricmc.fabric.api.event.registry.v1.RegistryItemAddedCallback;
 import net.fabricmc.fabric.mixin.content.registries.BlockAccessor;
 import net.fabricmc.fabric.mixin.content.registries.MutableRegistryAccessor;
 import net.fabricmc.fabric.mixin.content.registries.SimpleRegistryAccessor;
@@ -61,6 +63,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 	}
 
 	public static Block registerBlock(Identifier id, Block block) {
+		RegistryBlockAddedCallback.EVENT.invoker().blockAdded(id, block);
 		unsortedBlocks.put(id, block);
 		Block.REGISTRY.add(unorderedNextBlockId, id, block);
 
@@ -73,6 +76,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 	}
 
 	public static Item registerItem(Identifier id, Item item) {
+		RegistryItemAddedCallback.EVENT.invoker().itemAdded(id, item);
 		unsortedItems.put(id, item);
 		Item.REGISTRY.add(unorderedNextItemId, id, item);
 		unorderedNextItemId++;

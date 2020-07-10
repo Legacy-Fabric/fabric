@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.content.registries.v1;
+package net.fabricmc.fabric.api.content.registry.v1;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 
-import net.fabricmc.fabric.api.event.registries.v1.RegistryItemAddedCallback;
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
 public final class ItemRegistry {
@@ -29,12 +28,10 @@ public final class ItemRegistry {
 	}
 
 	public static Item register(Identifier id, Item item) {
-		RegistryItemAddedCallback.EVENT.invoker().itemAdded(id,item);
 		return ContentRegistryImpl.registerItem(id, item);
 	}
 
 	public static Item registerBlockItem(Identifier id, Item item) {
-		RegistryItemAddedCallback.EVENT.invoker().itemAdded(id,item);
 		return ContentRegistryImpl.registerItem(id, item);
 	}
 }

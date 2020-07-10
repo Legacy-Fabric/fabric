@@ -16,12 +16,12 @@
 
 package net.fabricmc.fabric.impl.event.interaction;
 
-import net.fabricmc.fabric.impl.base.util.ActionResult;
 import net.minecraft.block.BlockState;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.block.BlockAttackInteractionAware;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
+import net.fabricmc.fabric.impl.base.util.ActionResult;
 
 public class InteractionEventsRouter implements ModInitializer {
 	@Override

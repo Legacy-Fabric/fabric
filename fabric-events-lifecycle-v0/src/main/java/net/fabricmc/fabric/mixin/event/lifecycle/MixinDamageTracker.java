@@ -16,10 +16,6 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle;
 
-import net.fabricmc.fabric.api.event.world.EntityHurtCallback;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTracker;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,14 +23,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTracker;
+
+import net.fabricmc.fabric.api.event.world.EntityHurtCallback;
+
 @Mixin(DamageTracker.class)
 public class MixinDamageTracker {
 	@Shadow
 	@Final
 	private LivingEntity entity;
 
-	@Inject(at=@At("HEAD"),method="onDamage")
-	public void onDamage(DamageSource damageSource, float originalHealth, float damage, CallbackInfo info){
-		EntityHurtCallback.EVENT.invoker().chunksSaved(this.entity,damageSource,originalHealth,damage);
+	@Inject(at = @At("HEAD"), method = "onDamage")
+	public void onDamage(DamageSource damageSource, float originalHealth, float damage, CallbackInfo info) {
+		EntityHurtCallback.EVENT.invoker().hurtEntity(this.entity, damageSource, originalHealth, damage);
 	}
 }

@@ -16,7 +16,12 @@
 
 package net.fabricmc.fabric.mixin.content.registries;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import com.google.common.collect.BiMap;
@@ -29,15 +34,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.world.SaveHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.world.SaveHandler;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.level.LevelProperties;
 
-import net.fabricmc.fabric.api.content.registries.v1.BlockRegistry;
-import net.fabricmc.fabric.api.content.registries.v1.ItemRegistry;
+import net.fabricmc.fabric.api.content.registry.v1.BlockRegistry;
+import net.fabricmc.fabric.api.content.registry.v1.ItemRegistry;
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
 @Mixin(World.class)

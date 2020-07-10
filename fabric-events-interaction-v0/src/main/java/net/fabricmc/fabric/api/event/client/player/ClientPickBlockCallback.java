@@ -49,16 +49,17 @@ public interface ClientPickBlockCallback {
 		}
 	}
 
-	@Deprecated Event<ClientPickBlockCallback> EVENT = EventFactory.createArrayBacked(ClientPickBlockCallback.class,
-		(listeners) -> (player, result, container) -> {
-			for (ClientPickBlockCallback event : listeners) {
-				if (!event.pick(player, result, container)) {
-					return false;
+	@Deprecated
+	Event<ClientPickBlockCallback> EVENT = EventFactory.createArrayBacked(ClientPickBlockCallback.class,
+			(listeners) -> (player, result, container) -> {
+				for (ClientPickBlockCallback event : listeners) {
+					if (!event.pick(player, result, container)) {
+						return false;
+					}
 				}
-			}
 
-			return true;
-		}
+				return true;
+			}
 	);
 
 	boolean pick(PlayerEntity player, HitResult result, Container container);

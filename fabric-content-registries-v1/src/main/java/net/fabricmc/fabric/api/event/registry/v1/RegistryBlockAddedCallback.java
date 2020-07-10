@@ -14,30 +14,20 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.impl.util;
+package net.fabricmc.fabric.api.event.registry.v1;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.block.Block;
+import net.minecraft.util.Identifier;
 
-public class EntityHitResult extends HitResult {
-	private final Entity entity;
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
 
-	public EntityHitResult(Entity entity) {
-		this(entity, entity.getPos());
-	}
+public interface RegistryBlockAddedCallback {
+	Event<RegistryBlockAddedCallback> EVENT = EventFactory.createArrayBacked(RegistryBlockAddedCallback.class, (listeners) -> (id, block) -> {
+		for (RegistryBlockAddedCallback callback : listeners) {
+			callback.blockAdded(id, block);
+		}
+	});
 
-	public EntityHitResult(Entity entity, Vec3d pos) {
-		super(entity);
-		this.entity = entity;
-	}
-
-	public Entity getEntity() {
-		return this.entity;
-	}
-
-	public Type getType() {
-		return Type.ENTITY;
-	}
+	void blockAdded(Identifier id, Block block);
 }
-

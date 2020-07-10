@@ -16,62 +16,65 @@
 
 package net.fabricmc.fabric.impl.resource.loader;
 
-import com.google.common.base.Charsets;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.api.metadata.ModMetadata;
-import net.minecraft.resource.ResourcePack;
-import org.apache.commons.io.IOUtils;
-
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
+
+import com.google.common.base.Charsets;
+import org.apache.commons.io.IOUtils;
+
+import net.minecraft.resource.ResourcePack;
+
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.ModMetadata;
 
 /**
  * Internal utilities for managing resource packs.
  */
 public final class ModResourcePackUtil {
 	public static final int PACK_FORMAT_VERSION = 1;
-	
-	private ModResourcePackUtil() { }
-	
+
+	private ModResourcePackUtil() {
+	}
+
 	public static void appendModResourcePacks(List<ResourcePack> packList) {
 		for (ModContainer container : FabricLoader.getInstance().getAllMods()) {
 			if (container.getMetadata().getType().equals("builtin")) {
 				continue;
 			}
-			
+
 			Path path = container.getRootPath();
 			ResourcePack pack = new ModNioResourcePack(container.getMetadata(), path, null);
-			
+
 			if (!pack.method_4372().isEmpty()) {
 				packList.add(pack);
 			}
 		}
 	}
-	
+
 	public static boolean containsDefault(ModMetadata info, String filename) {
 		return "pack.mcmeta".equals(filename);
 	}
-	
+
 	public static InputStream openDefault(ModMetadata info, String filename) {
 		switch (filename) {
-			case "pack.mcmeta":
-				String description = info.getName();
-				
-				if (description == null) {
-					description = "";
-				} else {
-					description = description.replaceAll("\"", "\\\"");
-				}
-				
-				String pack = String.format("{\"pack\":{\"pack_format\":" + PACK_FORMAT_VERSION + ",\"description\":\"%s\"}}", description);
-				return IOUtils.toInputStream(pack, Charsets.UTF_8);
-			default:
-				return null;
+		case "pack.mcmeta":
+			String description = info.getName();
+
+			if (description == null) {
+				description = "";
+			} else {
+				description = description.replaceAll("\"", "\\\"");
+			}
+
+			String pack = String.format("{\"pack\":{\"pack_format\":" + PACK_FORMAT_VERSION + ",\"description\":\"%s\"}}", description);
+			return IOUtils.toInputStream(pack, Charsets.UTF_8);
+		default:
+			return null;
 		}
 	}
-	
+
 	public static String getName(ModMetadata info) {
 		if (info.getName() != null) {
 			return info.getName();

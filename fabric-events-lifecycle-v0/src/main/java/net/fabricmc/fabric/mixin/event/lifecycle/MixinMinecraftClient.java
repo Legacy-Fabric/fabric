@@ -16,18 +16,19 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle;
 
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.MinecraftClient;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.event.client.ClientStartCallback;
 import net.fabricmc.fabric.api.event.client.ClientStopCallback;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 import net.fabricmc.fabric.api.event.client.OutOfMemoryCallback;
-import net.minecraft.client.MinecraftClient;
-import org.checkerframework.checker.units.qual.A;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
@@ -37,13 +38,13 @@ public class MixinMinecraftClient {
 		ClientTickCallback.EVENT.invoker().tick((MinecraftClient) (Object) this);
 	}
 
-	@Inject(at = @At("HEAD"),method = "scheduleStop")
-	public void stop(CallbackInfo info){
+	@Inject(at = @At("HEAD"), method = "scheduleStop")
+	public void stop(CallbackInfo info) {
 		ClientStopCallback.EVENT.invoker().onStopClient((MinecraftClient) (Object) this);
 	}
 
-	@Inject(at = @At("HEAD"),method = "run")
-	public void start(CallbackInfo info){
+	@Inject(at = @At("HEAD"), method = "run")
+	public void start(CallbackInfo info) {
 		ClientStartCallback.EVENT.invoker().onStartClient((MinecraftClient) (Object) this);
 	}
 

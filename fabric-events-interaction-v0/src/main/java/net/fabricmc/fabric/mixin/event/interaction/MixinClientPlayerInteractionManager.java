@@ -16,18 +16,17 @@
 
 package net.fabricmc.fabric.mixin.event.interaction;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.event.player.*;
-import net.fabricmc.fabric.impl.base.util.ActionResult;
-import net.fabricmc.fabric.impl.base.util.TypedActionResult;
-import net.fabricmc.fabric.impl.util.BlockHitResult;
-import net.fabricmc.fabric.impl.util.EntityHitResult;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -39,21 +38,23 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.level.LevelInfo;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.impl.base.util.ActionResult;
+import net.fabricmc.fabric.impl.base.util.TypedActionResult;
 
 @Mixin(ClientPlayerInteractionManager.class)
 @Environment(EnvType.CLIENT)
 public class MixinClientPlayerInteractionManager {
-
 	@Final
 	@Shadow
 	private MinecraftClient client;
+	@Final
 	@Shadow
 	private ClientPlayNetworkHandler networkHandler;
 	@Shadow
@@ -82,6 +83,7 @@ public class MixinClientPlayerInteractionManager {
 			info.cancel();
 		}
 	}
+
 	public void interactItem(PlayerEntity player, World world, CallbackInfoReturnable<ActionResult> info) {
 		TypedActionResult<ItemStack> result = UseItemCallback.EVENT.invoker().interact(player, world);
 
@@ -97,7 +99,7 @@ public class MixinClientPlayerInteractionManager {
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V", ordinal = 0), method = "attackEntity", cancellable = true)
 	public void attackEntity(PlayerEntity player, Entity entity, CallbackInfo info) {
-		ActionResult result = AttackEntityCallback.EVENT.invoker().interact(player, player.getWorld() /* TODO */, entity, null);
+		ActionResult result = AttackEntityCallback.EVENT.invoker().attack(player, player.getWorld() /* TODO */, entity, null);
 
 		if (result != ActionResult.PASS) {
 			if (result == ActionResult.SUCCESS) {
@@ -110,7 +112,7 @@ public class MixinClientPlayerInteractionManager {
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V", ordinal = 0), method = "interactEntityAtLocation", cancellable = true)
 	public void interactEntityAtLocation(PlayerEntity player, Entity entity, HitResult hitResult, CallbackInfoReturnable<Boolean> info) {
-		ActionResult result = UseEntityCallback.EVENT.invoker().interact(player, player.getWorld(), entity, (EntityHitResult) hitResult);
+		ActionResult result = UseEntityCallback.EVENT.invoker().interact(player, player.getWorld(), entity, hitResult);
 
 		if (result != ActionResult.PASS) {
 			if (result == ActionResult.SUCCESS) {

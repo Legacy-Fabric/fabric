@@ -16,20 +16,21 @@
 
 package net.fabricmc.fabric.mixin.event.lifecycle;
 
-import net.fabricmc.fabric.api.event.server.PlayerConnectCallback;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.server.PlayerManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.server.PlayerManager;
+
+import net.fabricmc.fabric.api.event.server.PlayerConnectCallback;
+
 @Mixin(PlayerManager.class)
 public abstract class MixinPlayerManager {
-
-	@Inject(at=@At("HEAD"),method = "onPlayerConnect")
-	public void playerConnectCallback(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info){
-		PlayerConnectCallback.EVENT.invoker().playerConnect(connection,player);
+	@Inject(at = @At("RETURN"), method = "onPlayerConnect")
+	public void playerConnectCallback(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info) {
+		PlayerConnectCallback.EVENT.invoker().playerConnect(connection, player);
 	}
 }

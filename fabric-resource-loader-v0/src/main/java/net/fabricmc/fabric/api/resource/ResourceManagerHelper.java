@@ -16,8 +16,9 @@
 
 package net.fabricmc.fabric.api.resource;
 
-import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 import net.minecraft.resource.ResourceManager;
+
+import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
 /**
  * Helper for working with {@link ResourceManager} instances.
@@ -33,14 +34,14 @@ public interface ResourceManagerHelper {
 	default void addReloadListener(IdentifiableResourceReloadListener listener) {
 		registerReloadListener(listener);
 	}
-	
+
 	/**
 	 * Register a resource reload listener for a given resource manager type.
 	 *
 	 * @param listener The resource reload listener.
 	 */
 	void registerReloadListener(IdentifiableResourceReloadListener listener);
-	
+
 	/**
 	 * Get the ResourceManagerHelper instance for a given resource type.
 	 *
