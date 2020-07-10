@@ -48,9 +48,8 @@ public class MixinMinecraftClient {
 		ClientStartCallback.EVENT.invoker().onStartClient((MinecraftClient) (Object) this);
 	}
 
-	@Inject(at = @At(value = "INVOKE",target = "Lnet/minecraft/client/MinecraftClient;cleanHeap()V"),method = "run")
-	public void catchOutOfMemoryError(CallbackInfo info){
-		OutOfMemoryCallback.EVENT.invoker().onOutOfMemoryError((MinecraftClient)(Object)this);
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;cleanHeap()V"), method = "run")
+	public void catchOutOfMemoryError(CallbackInfo info) {
+		OutOfMemoryCallback.EVENT.invoker().onOutOfMemoryError((MinecraftClient) (Object) this);
 	}
-
 }
