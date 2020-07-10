@@ -21,7 +21,9 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.event.client.ClientStartCallback;
 import net.fabricmc.fabric.api.event.client.ClientStopCallback;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
+import net.fabricmc.fabric.api.event.client.OutOfMemoryCallback;
 import net.minecraft.client.MinecraftClient;
+import org.checkerframework.checker.units.qual.A;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -44,4 +46,10 @@ public class MixinMinecraftClient {
 	public void start(CallbackInfo info){
 		ClientStartCallback.EVENT.invoker().onStartClient((MinecraftClient) (Object) this);
 	}
+
+	@Inject(at = @At(value = "INVOKE",target = "Lnet/minecraft/client/MinecraftClient;cleanHeap()V"),method = "run")
+	public void catchOutOfMemoryError(CallbackInfo info){
+		OutOfMemoryCallback.EVENT.invoker().onOutOfMemoryError((MinecraftClient)(Object)this);
+	}
+
 }
