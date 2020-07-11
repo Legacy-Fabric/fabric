@@ -41,11 +41,11 @@ public class FabricCreativeGuiComponents {
 	}
 
 	public static class ItemGroupButtonWidget extends ButtonWidget {
-		CreativeGuiExtensions extensions;
+		CreativeInventoryScreenExtensions extensions;
 		CreativeInventoryScreen gui;
 		Type type;
 
-		public ItemGroupButtonWidget(int x, int y, Type type, CreativeGuiExtensions extensions) {
+		public ItemGroupButtonWidget(int x, int y, Type type, CreativeInventoryScreenExtensions extensions) {
 			super(50, x, y, 11, 10, type.text);
 			this.extensions = extensions;
 			this.type = type;
@@ -76,13 +76,13 @@ public class FabricCreativeGuiComponents {
 	}
 
 	public enum Type {
-		NEXT(">", CreativeGuiExtensions::fabric_nextPage),
-		PREVIOUS("<", CreativeGuiExtensions::fabric_previousPage);
+		NEXT(">", CreativeInventoryScreenExtensions::fabric_nextPage),
+		PREVIOUS("<", CreativeInventoryScreenExtensions::fabric_previousPage);
 
 		String text;
-		Consumer<CreativeGuiExtensions> clickConsumer;
+		Consumer<CreativeInventoryScreenExtensions> clickConsumer;
 
-		Type(String text, Consumer<CreativeGuiExtensions> clickConsumer) {
+		Type(String text, Consumer<CreativeInventoryScreenExtensions> clickConsumer) {
 			this.text = text;
 			this.clickConsumer = clickConsumer;
 		}

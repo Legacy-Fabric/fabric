@@ -16,7 +16,7 @@
 
 package net.fabricmc.fabric.impl.item.group;
 
-public interface CreativeGuiExtensions {
+public interface CreativeInventoryScreenExtensions {
 	void fabric_nextPage();
 
 	void fabric_previousPage();
