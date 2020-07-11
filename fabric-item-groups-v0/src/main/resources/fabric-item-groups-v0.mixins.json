@@ -3,9 +3,10 @@
   "package": "net.fabricmc.fabric.mixin.item.group",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MixinItemGroup"
   ],
   "client": [
-    "MixinScreen"
+    "client.MixinScreen"
   ],
   "injectors": {
     "defaultRequire": 1
