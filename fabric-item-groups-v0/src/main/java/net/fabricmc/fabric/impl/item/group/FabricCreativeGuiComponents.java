@@ -22,6 +22,7 @@ import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import net.fabricmc.fabric.mixin.item.group.MixinScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -67,7 +68,7 @@ public class FabricCreativeGuiComponents {
 				this.method_2443(this.x, this.y, u + (type == Type.NEXT ? 11 : 0), v, 11, 10);
 
 				if (isHovered) {
-					gui.renderTooltip(I18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, ((ItemGroup.GROUPS.length - 12) / 9) + 2), mouseX, mouseY);
+					((MixinScreen)gui).invokeRenderTooltip(I18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, ((ItemGroup.itemGroups.length - 12) / 9) + 2), mouseX, mouseY);
 				}
 			}
 		}
