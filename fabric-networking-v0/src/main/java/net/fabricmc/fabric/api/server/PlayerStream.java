@@ -48,18 +48,18 @@ public final class PlayerStream {
 		return ((ServerWorld) world).playerEntities.stream();
 	}
 
-	public static Stream<PlayerEntity> watching(World world, BlockPos pos) {
-		if (!(world instanceof ServerWorld)) {
-			throw new RuntimeException("Only supported on ServerWorld!");
-		}
-
-		Stream<PlayerEntity> playerEntityStream = ((ServerWorld) world).playerEntities.stream();
-		List<PlayerEntity> playerEntityList = Lists.newArrayList();
-		playerEntityStream.forEach((player) -> {
-			if (((player.x - pos.getX()) < 32 || (player.z - pos.getZ()) < 32) && (player.y - pos.getY()) < 32) {
-				playerEntityList.add(player);
-			}
-		});
-		return playerEntityList.stream();
-	}
+//	public static Stream<PlayerEntity> watching(World world, BlockPos pos) {
+//		if (!(world instanceof ServerWorld)) {
+//			throw new RuntimeException("Only supported on ServerWorld!");
+//		}
+//
+//		Stream<PlayerEntity> playerEntityStream = ((ServerWorld) world).playerEntities.stream();
+//		List<PlayerEntity> playerEntityList = Lists.newArrayList();
+//		playerEntityStream.forEach((player) -> {
+//			if (((player.x - pos.getX()) < 32 || (player.z - pos.getZ()) < 32) && (player.y - pos.getY()) < 32) {
+//				playerEntityList.add(player);
+//			}
+//		});
+//		return playerEntityList.stream();
+//	}
 }

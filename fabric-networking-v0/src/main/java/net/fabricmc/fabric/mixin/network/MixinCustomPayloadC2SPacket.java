@@ -22,10 +22,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 
-import net.fabricmc.fabric.impl.network.CustomPayloadC2SPacketAccessor;
+import net.fabricmc.fabric.impl.network.CustomPayloadPacketAccessor;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(CustomPayloadC2SPacket.class)
-public class MixinCustomPayloadC2SPacket implements CustomPayloadC2SPacketAccessor {
+@Mixin(value = CustomPayloadC2SPacket.class,priority = 500)
+public class MixinCustomPayloadC2SPacket implements CustomPayloadPacketAccessor {
 	@Shadow
 	private String field_6403;
 

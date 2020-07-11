@@ -18,7 +18,7 @@ package net.fabricmc.fabric.impl.network;
 
 import net.minecraft.util.PacketByteBuf;
 
-public interface CustomPayloadC2SPacketAccessor {
+public interface CustomPayloadPacketAccessor {
 	String getChannel();
 
 	PacketByteBuf getData();

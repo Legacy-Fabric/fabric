@@ -38,7 +38,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.impl.network.ClientSidePacketRegistryImpl;
-import net.fabricmc.fabric.impl.network.CustomPayloadC2SPacketAccessor;
+import net.fabricmc.fabric.impl.network.CustomPayloadPacketAccessor;
 import net.fabricmc.fabric.impl.network.PacketRegistryImpl;
 import net.fabricmc.fabric.impl.network.PacketTypes;
 
@@ -53,14 +53,14 @@ public abstract class MixinClientPlayNetworkHandler implements PacketContext {
 
 	@Inject(method = "onCustomPayload", at = @At("HEAD"), cancellable = true)
 	public void onCustomPayload(CustomPayloadS2CPacket packet, CallbackInfo info) {
-		if (((ClientSidePacketRegistryImpl) ClientSidePacketRegistry.INSTANCE).accept(((CustomPayloadC2SPacketAccessor) packet).getChannel(), this, packet::getData)) {
+		if (((ClientSidePacketRegistryImpl) ClientSidePacketRegistry.INSTANCE).accept(((CustomPayloadPacketAccessor) packet).getChannel(), this, packet::getData)) {
 			info.cancel();
 		}
 	}
 
 	@Inject(method = "onCustomPayload", at = @At(value = "CONSTANT", args = "stringValue=Unknown custom packed identifier: {}"), cancellable = true, locals = LocalCapture.CAPTURE_FAILSOFT, require = 0)
 	public void onCustomPayloadNotFound(CustomPayloadS2CPacket packet, CallbackInfo info, String id, PacketByteBuf buf) {
-		if (((CustomPayloadC2SPacketAccessor) packet).getChannel().equals(PacketTypes.REGISTER) || ((CustomPayloadC2SPacketAccessor) packet).getChannel().equals(PacketTypes.UNREGISTER)) {
+		if (((CustomPayloadPacketAccessor) packet).getChannel().equals(PacketTypes.REGISTER) || ((CustomPayloadPacketAccessor) packet).getChannel().equals(PacketTypes.UNREGISTER)) {
 			if (buf.refCnt() > 0) {
 				buf.release();
 			}

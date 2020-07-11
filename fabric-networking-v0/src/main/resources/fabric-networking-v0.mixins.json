@@ -5,6 +5,7 @@
   "mixins": [
     "MixinClass1639",
     "MixinCustomPayloadC2SPacket",
+    "MixinCustomPayloadS2CPacket",
     "MixinPlayerManager",
     "MixinServerPlayNetworkHandler"
   ],
