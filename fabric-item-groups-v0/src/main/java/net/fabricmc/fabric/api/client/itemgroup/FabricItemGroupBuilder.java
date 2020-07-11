@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.item.group;
+package net.fabricmc.fabric.api.client.itemgroup;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -29,7 +29,7 @@ import net.fabricmc.fabric.impl.item.group.ItemGroupExtensions;
 
 public class FabricItemGroupBuilder {
 	private final Identifier identifier;
-	private Supplier<ItemStack> stackSupplier = () -> new ItemStack((Item)null);
+	private Supplier<ItemStack> stackSupplier = () -> new ItemStack((Item) null);
 	private Consumer<List<ItemStack>> stacksForDisplay;
 
 	private FabricItemGroupBuilder(Identifier identifier) {

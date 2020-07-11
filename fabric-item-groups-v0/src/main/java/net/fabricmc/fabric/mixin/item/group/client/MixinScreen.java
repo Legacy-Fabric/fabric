@@ -16,9 +16,10 @@
 
 package net.fabricmc.fabric.mixin.item.group.client;
 
-import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
+
+import net.minecraft.client.gui.screen.Screen;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

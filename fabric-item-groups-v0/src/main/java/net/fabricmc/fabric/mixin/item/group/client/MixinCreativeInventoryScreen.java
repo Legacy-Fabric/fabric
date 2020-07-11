@@ -53,12 +53,12 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 	@Unique
 	private int getPageOffset(int page) {
 		switch (page) {
-			case 0:
-				return 0;
-			case 1:
-				return 12;
-			default:
-				return 12 + ((12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) * (page - 1));
+		case 0:
+			return 0;
+		case 1:
+			return 12;
+		default:
+			return 12 + ((12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) * (page - 1));
 		}
 	}
 
