@@ -16,7 +16,6 @@
 
 package net.fabricmc.fabric.mixin.item.group.client;
 
-import net.minecraft.client.gui.widget.ButtonWidget;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -29,6 +28,7 @@ import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.container.Container;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.client.gui.widget.ButtonWidget;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -142,18 +142,18 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 		int xPos = x + 116;
 		int yPos = y - 10;
 
-		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(50,xPos + 39, yPos, FabricCreativeGuiComponents.Type.NEXT, this));
+		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(50, xPos + 39, yPos, FabricCreativeGuiComponents.Type.NEXT, this));
 		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(51, xPos + 29, yPos, FabricCreativeGuiComponents.Type.PREVIOUS, this));
 	}
 
 	@Inject(method = "buttonPressed", at = @At("HEAD"), cancellable = true)
-	public void creativeButtonClicked(ButtonWidget button, CallbackInfo ci){
-		if(button.id == 50){
+	public void creativeButtonClicked(ButtonWidget button, CallbackInfo ci) {
+		if (button.id == 50) {
 			fabric_nextPage();
 			ci.cancel();
 		}
 
-		if(button.id ==  51){
+		if (button.id == 51) {
 			fabric_previousPage();
 			ci.cancel();
 		}
