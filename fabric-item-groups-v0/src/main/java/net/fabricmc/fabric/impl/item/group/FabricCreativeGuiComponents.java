@@ -27,6 +27,7 @@ import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.mixin.item.group.client.MixinScreen;
@@ -54,22 +55,22 @@ public class FabricCreativeGuiComponents {
 
 		@Override
 		public void render(MinecraftClient client, int mouseX, int mouseY) {
-			boolean isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+			this.focused = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 			this.visible = extensions.fabric_isButtonVisible(type);
 			this.active = extensions.fabric_isButtonEnabled(type);
 
 			if (this.visible) {
-				int u = active && isHovered ? 22 : 0;
+				int u = active && this.isFocused() ? 22 : 0;
 				int v = active ? 0 : 10;
 
 				MinecraftClient minecraftClient = MinecraftClient.getInstance();
 				minecraftClient.getTextureManager().bindTexture(BUTTON_TEX);
 				GlStateManager.disableLighting();
 				GlStateManager.color4f(1F, 1F, 1F, 1F);
-				this.method_2443(this.x, this.y, u + (type == Type.NEXT ? 11 : 0), v, 11, 10);
+				this.drawTexture(this.x, this.y, u + (type == Type.NEXT ? 11 : 0), v, 11, 10);
 
-				if (isHovered) {
-					((MixinScreen) gui).invokeRenderTooltip(I18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, ((ItemGroup.itemGroups.length - 12) / 9) + 2), mouseX, mouseY);
+				if (this.focused) {
+					((MixinScreen) gui).invokeRenderTooltip(new TranslatableText("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, ((ItemGroup.itemGroups.length - 12) / 9) + 2).asString(), mouseX, mouseY);
 				}
 			}
 		}
