@@ -50,14 +50,6 @@ public class FabricKeyBinding extends KeyBinding {
 		return this.categoryKey;
 	}
 
-	public boolean keyPressed() {
-		return this.isPressed() && !this.wasPressed();
-	}
-
-	public boolean keyReleased() {
-		return !this.isPressed() && this.wasPressed();
-	}
-
 	public static class Builder {
 		protected final FabricKeyBinding binding;
 
