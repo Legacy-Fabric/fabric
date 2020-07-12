@@ -36,6 +36,11 @@ public class FabricKeyBinding extends KeyBinding {
 	}
 
 	@Override
+	public int getDefaultCode() {
+		return this.keyCode;
+	}
+
+	@Override
 	public String getTranslationKey() {
 		return this.translationKey;
 	}
@@ -43,11 +48,6 @@ public class FabricKeyBinding extends KeyBinding {
 	@Override
 	public String getCategory() {
 		return this.categoryKey;
-	}
-
-	@Override
-	public int getCode() {
-		return this.keyCode;
 	}
 
 	public boolean keyPressed() {

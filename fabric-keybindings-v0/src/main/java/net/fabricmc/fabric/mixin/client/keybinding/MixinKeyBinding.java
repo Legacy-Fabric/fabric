@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.client.keybinding;
+package net.fabricmc.fabric.mixin.client.keybinding;
 
-import net.fabricmc.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
+import net.minecraft.client.options.KeyBinding;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
 
-public interface KeyBindingRegistry {
-	KeyBindingRegistry INSTANCE = new KeyBindingRegistryImpl();
+import java.util.Set;
 
-	boolean addCategory(String categoryName);
+@Mixin(KeyBinding.class)
+public class MixinKeyBinding {
 
-	boolean register(FabricKeyBinding binding);
+	@Shadow
+	@Final
+	@Mutable
+	private static Set<String> categories;
+
+	private static Set<String> fabric_getCategorySet() {
+		return categories;
+	}
 }
