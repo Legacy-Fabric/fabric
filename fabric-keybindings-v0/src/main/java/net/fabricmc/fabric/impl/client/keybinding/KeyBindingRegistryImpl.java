@@ -22,14 +22,13 @@ import net.minecraft.client.options.KeyBinding;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Method;
 import java.util.*;
 
 public class KeyBindingRegistryImpl implements KeyBindingRegistry {
 	public static final KeyBindingRegistryImpl INSTANCE = new KeyBindingRegistryImpl();
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	private Set<String> cachedCategoryMap;
+	private Set<String> categorySet;
 	private final List<FabricKeyBinding> fabricKeyBindingList;
 
 	public KeyBindingRegistryImpl() {
@@ -37,24 +36,14 @@ public class KeyBindingRegistryImpl implements KeyBindingRegistry {
 	}
 
 	private Set<String> getCategorySet() {
-		if (cachedCategoryMap == null) {
-			try {
-				//noinspection JavaReflectionMemberAccess
-				Method m = KeyBinding.class.getDeclaredMethod("fabric_getCategorySet");
-				m.setAccessible(true);
-
-				//noinspection unchecked
-				cachedCategoryMap = (Set<String>) m.invoke(null);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-
-			if (cachedCategoryMap == null) {
-				throw new RuntimeException("Cached key binding category map missing!");
+		if (categorySet == null) {
+			categorySet = KeyBinding.getCategories();
+			if (categorySet == null) {
+				throw new RuntimeException("Cached key binding category set missing!");
 			}
 		}
 
-		return cachedCategoryMap;
+		return categorySet;
 	}
 
 	private boolean hasCategory(String categoryName) {

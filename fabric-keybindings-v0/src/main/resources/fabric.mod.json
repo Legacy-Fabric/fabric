@@ -22,5 +22,10 @@
   "description": "Keybinding registry API.",
   "mixins": [
     "fabric-keybindings-v0.mixins.json"
-  ]
+  ],
+  "entrypoints": {
+    "main": [
+      "net.fabricmc.fabric.impl.client.keybinding.TestMod"
+    ]
+  }
 }

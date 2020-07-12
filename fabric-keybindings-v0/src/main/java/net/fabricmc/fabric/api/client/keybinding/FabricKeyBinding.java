@@ -61,7 +61,7 @@ public class FabricKeyBinding extends KeyBinding {
 	public static class Builder {
 		protected final FabricKeyBinding binding;
 
-		protected Builder(FabricKeyBinding binding) {
+		public Builder(FabricKeyBinding binding) {
 			this.binding = binding;
 		}
 
