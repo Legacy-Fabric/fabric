@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.mixin.command;
 
+import net.fabricmc.fabric.api.event.server.FabricCommandRegisteredCallback;
 import net.minecraft.command.AbstractCommand;
 import net.minecraft.command.CommandProvider;
 import net.minecraft.server.MinecraftServer;
@@ -46,7 +47,9 @@ public abstract class MixinCommandManager extends CommandRegistry implements Com
 				this.registerCommand(command);
 			}
 
-			AbstractCommand.setCommandProvider(this);
+			FabricCommandRegisteredCallback.EVENT.invoker().onCommandRegistered(MinecraftServer.getServer(), command, side);
 		});
+
+		AbstractCommand.setCommandProvider(this);
 	}
 }
