@@ -16,41 +16,39 @@
 
 package net.fabricmc.fabric.mixin.command;
 
-import net.fabricmc.fabric.api.registry.FabricCommandRegistry;
-import net.fabricmc.fabric.impl.command.CommandSide;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.CommandRegistry;
+import net.minecraft.command.AbstractCommand;
+import net.minecraft.command.CommandProvider;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.server.integrated.IntegratedServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.fabricmc.fabric.impl.command.CommandSide;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.CommandRegistry;
+
+import net.fabricmc.fabric.impl.command.FabricCommandRegistryImpl;
+
 @Mixin(CommandManager.class)
-public class MixinCommandManager extends CommandRegistry {
-	@Inject(method = "<init>", at = @At(value = "INVOKE",target = "Lnet/minecraft/command/AbstractCommand;setCommandProvider(Lnet/minecraft/command/CommandProvider;)V"))
+public abstract class MixinCommandManager extends CommandRegistry implements CommandProvider {
+	@Inject(method = "<init>", at = @At("TAIL"))
 	public void registerCommands(CallbackInfo info){
-		FabricCommandRegistry.FABRIC_COMMANDS.forEach((command, side)->{
-			if(side == CommandSide.BOTH && command != null){
+		FabricCommandRegistryImpl.getCommandMap().forEach((command, side)->{
+			boolean dedicated = MinecraftServer.getServer().isDedicated();
+			if (!(dedicated) && side == CommandSide.CLIENT) {
 				this.registerCommand(command);
 			}
-		});
-	}
+			else if (dedicated && side == CommandSide.SERVER){
+				this.registerCommand(command);
+			}
+			else {
+				this.registerCommand(command);
+			}
 
-	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/command/PublishCommand;<init>()V"))
-	public void registerClientCommands(CallbackInfo info){
-		FabricCommandRegistry.FABRIC_COMMANDS.forEach((command, side)->{
-			if(side == CommandSide.CLIENT && command != null){
-				this.registerCommand(command);
-			}
-		});
-	}
-
-	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/dedicated/command/OpCommand;<init>()V"))
-	public void registerServerCommands(CallbackInfo info){
-		FabricCommandRegistry.FABRIC_COMMANDS.forEach((command, side)->{
-			if(side == CommandSide.SERVER && command != null){
-				this.registerCommand(command);
-			}
+			AbstractCommand.setCommandProvider(this);
 		});
 	}
 }

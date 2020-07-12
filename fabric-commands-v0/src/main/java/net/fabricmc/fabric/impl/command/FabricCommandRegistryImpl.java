@@ -16,13 +16,23 @@
 
 package net.fabricmc.fabric.impl.command;
 
+import com.google.common.collect.Maps;
 import net.minecraft.command.AbstractCommand;
 
 import net.fabricmc.fabric.api.registry.FabricCommandRegistry;
 
+import java.util.Map;
+
 public class FabricCommandRegistryImpl implements FabricCommandRegistry {
+
+	private static final Map<AbstractCommand, CommandSide> FABRIC_COMMANDS = Maps.newHashMap();
+
 	@Override
 	public void register(AbstractCommand command, CommandSide side) {
 		FABRIC_COMMANDS.put(command, side);
+	}
+
+	public static Map<AbstractCommand, CommandSide> getCommandMap(){
+		return FABRIC_COMMANDS;
 	}
 }
