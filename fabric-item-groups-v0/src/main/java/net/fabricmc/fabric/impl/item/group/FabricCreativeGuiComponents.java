@@ -43,10 +43,10 @@ public class FabricCreativeGuiComponents {
 	public static class ItemGroupButtonWidget extends ButtonWidget {
 		CreativeInventoryScreenExtensions extensions;
 		CreativeInventoryScreen gui;
-		Type type;
+		public Type type;
 
-		public ItemGroupButtonWidget(int x, int y, Type type, CreativeInventoryScreenExtensions extensions) {
-			super(50, x, y, 11, 10, type.text);
+		public ItemGroupButtonWidget(int id, int x, int y, Type type, CreativeInventoryScreenExtensions extensions) {
+			super(id, x, y, 11, 10, type.text);
 			this.extensions = extensions;
 			this.type = type;
 			this.gui = (CreativeInventoryScreen) extensions;
@@ -73,6 +73,11 @@ public class FabricCreativeGuiComponents {
 				}
 			}
 		}
+
+		@Override
+		public void mouseReleased(int mouseX, int mouseY) {
+			super.mouseReleased(mouseX, mouseY);
+		}
 	}
 
 	public enum Type {
@@ -80,7 +85,7 @@ public class FabricCreativeGuiComponents {
 		PREVIOUS("<", CreativeInventoryScreenExtensions::fabric_previousPage);
 
 		String text;
-		Consumer<CreativeInventoryScreenExtensions> clickConsumer;
+		public Consumer<CreativeInventoryScreenExtensions> clickConsumer;
 
 		Type(String text, Consumer<CreativeInventoryScreenExtensions> clickConsumer) {
 			this.text = text;

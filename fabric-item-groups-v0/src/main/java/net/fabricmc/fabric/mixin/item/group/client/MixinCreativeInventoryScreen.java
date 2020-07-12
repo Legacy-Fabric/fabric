@@ -46,6 +46,12 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 	@Unique
 	private static int fabric_currentPage = 0;
 
+	@Unique
+	private FabricCreativeGuiComponents.ItemGroupButtonWidget next;
+
+	@Unique
+	private FabricCreativeGuiComponents.ItemGroupButtonWidget previous;
+
 	public MixinCreativeInventoryScreen(Container container) {
 		super(container);
 	}
@@ -72,8 +78,8 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 	}
 
 	@Unique
-	private void fabric_updateSelection() {
-		int minPos = this.getOffsetPage(fabric_currentPage);
+	private void updateSelection() {
+		int minPos = this.getPageOffset(fabric_currentPage);
 		int maxPos = this.getPageOffset(fabric_currentPage + 1) - 1;
 		int curPos = getSelectedTab();
 
@@ -98,7 +104,7 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 		}
 
 		fabric_currentPage++;
-		fabric_updateSelection();
+		updateSelection();
 	}
 
 	@Override
@@ -108,7 +114,7 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 		}
 
 		fabric_currentPage--;
-		fabric_updateSelection();
+		updateSelection();
 	}
 
 	@Override
@@ -136,13 +142,24 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 
 	@Inject(method = "init", at = @At("RETURN"), remap = false)
 	private void init(CallbackInfo info) {
-		fabric_updateSelection();
+		this.updateSelection();
 
 		int xPos = x + 170;
 		int yPos = y + 4;
 
-		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(xPos + 10, yPos, FabricCreativeGuiComponents.Type.NEXT, this));
-		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(xPos, yPos, FabricCreativeGuiComponents.Type.PREVIOUS, this));
+		this.buttons.add(next = new FabricCreativeGuiComponents.ItemGroupButtonWidget(50,xPos + 10, yPos - 4, FabricCreativeGuiComponents.Type.NEXT, this));
+		this.buttons.add(previous = new FabricCreativeGuiComponents.ItemGroupButtonWidget(51, xPos, yPos - 4, FabricCreativeGuiComponents.Type.PREVIOUS, this));
+	}
+
+	@Inject(method = "mouseClicked", at = @At("HEAD"))
+	public void creativeButtonClicked(int mouseX, int mouseY, int button, CallbackInfo ci){
+		if(button == 50){
+			next.type.clickConsumer.accept(this);
+		}
+
+		if(button ==  51){
+			previous.type.clickConsumer.accept(this);
+		}
 	}
 
 	@Inject(method = "setSelectedTab", at = @At("HEAD"), cancellable = true)
