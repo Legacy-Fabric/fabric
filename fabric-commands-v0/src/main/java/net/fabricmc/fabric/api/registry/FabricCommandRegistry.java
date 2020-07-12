@@ -20,17 +20,18 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
+import net.fabricmc.fabric.impl.command.CommandSide;
 import net.minecraft.command.AbstractCommand;
 
 import net.fabricmc.fabric.impl.command.FabricCommandRegistryImpl;
 
 public interface FabricCommandRegistry {
 	FabricCommandRegistry INSTANCE = new FabricCommandRegistryImpl();
-	Map<AbstractCommand, Boolean> FABRIC_COMMANDS = Maps.newHashMap();
+	Map<AbstractCommand, CommandSide> FABRIC_COMMANDS = Maps.newHashMap();
 
-	void register(AbstractCommand command, boolean dedicated);
+	void register(AbstractCommand command, CommandSide side);
 
 	default void register(AbstractCommand command){
-		this.register(command,false);
+		this.register(command, CommandSide.BOTH);
 	}
 }

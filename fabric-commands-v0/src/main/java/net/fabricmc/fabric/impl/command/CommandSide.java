@@ -16,13 +16,8 @@
 
 package net.fabricmc.fabric.impl.command;
 
-import net.minecraft.command.AbstractCommand;
-
-import net.fabricmc.fabric.api.registry.FabricCommandRegistry;
-
-public class FabricCommandRegistryImpl implements FabricCommandRegistry {
-	@Override
-	public void register(AbstractCommand command, CommandSide side) {
-		FABRIC_COMMANDS.put(command, side);
-	}
+public enum CommandSide {
+	CLIENT,
+	SERVER,
+	BOTH
 }
