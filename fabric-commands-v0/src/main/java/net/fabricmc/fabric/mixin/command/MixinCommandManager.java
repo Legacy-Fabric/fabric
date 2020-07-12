@@ -19,8 +19,6 @@ package net.fabricmc.fabric.mixin.command;
 import net.minecraft.command.AbstractCommand;
 import net.minecraft.command.CommandProvider;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.server.integrated.IntegratedServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -44,7 +42,7 @@ public abstract class MixinCommandManager extends CommandRegistry implements Com
 			else if (dedicated && side == CommandSide.SERVER){
 				this.registerCommand(command);
 			}
-			else {
+			else if (dedicated && side == CommandSide.COMMON){
 				this.registerCommand(command);
 			}
 

@@ -19,5 +19,5 @@ package net.fabricmc.fabric.impl.command;
 public enum CommandSide {
 	CLIENT,
 	SERVER,
-	BOTH
+	COMMON
 }

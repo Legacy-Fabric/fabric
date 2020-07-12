@@ -27,6 +27,6 @@ public interface FabricCommandRegistry {
 	void register(AbstractCommand command, CommandSide side);
 
 	default void register(AbstractCommand command){
-		this.register(command, CommandSide.BOTH);
+		this.register(command, CommandSide.COMMON);
 	}
 }
