@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.mixin.item.group.client;
 
+import net.minecraft.client.gui.widget.ButtonWidget;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -45,12 +46,6 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 
 	@Unique
 	private static int fabric_currentPage = 0;
-
-	@Unique
-	private FabricCreativeGuiComponents.ItemGroupButtonWidget next;
-
-	@Unique
-	private FabricCreativeGuiComponents.ItemGroupButtonWidget previous;
 
 	public MixinCreativeInventoryScreen(Container container) {
 		super(container);
@@ -144,21 +139,23 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 	private void init(CallbackInfo info) {
 		this.updateSelection();
 
-		int xPos = x + 170;
-		int yPos = y + 4;
+		int xPos = x + 116;
+		int yPos = y - 10;
 
-		this.buttons.add(next = new FabricCreativeGuiComponents.ItemGroupButtonWidget(50,xPos + 10, yPos - 4, FabricCreativeGuiComponents.Type.NEXT, this));
-		this.buttons.add(previous = new FabricCreativeGuiComponents.ItemGroupButtonWidget(51, xPos, yPos - 4, FabricCreativeGuiComponents.Type.PREVIOUS, this));
+		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(50,xPos + 39, yPos, FabricCreativeGuiComponents.Type.NEXT, this));
+		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(51, xPos + 29, yPos, FabricCreativeGuiComponents.Type.PREVIOUS, this));
 	}
 
-	@Inject(method = "mouseClicked", at = @At("HEAD"))
-	public void creativeButtonClicked(int mouseX, int mouseY, int button, CallbackInfo ci){
-		if(button == 50){
-			next.type.clickConsumer.accept(this);
+	@Inject(method = "buttonPressed", at = @At("HEAD"), cancellable = true)
+	public void creativeButtonClicked(ButtonWidget button, CallbackInfo ci){
+		if(button.id == 50){
+			fabric_nextPage();
+			ci.cancel();
 		}
 
-		if(button ==  51){
-			previous.type.clickConsumer.accept(this);
+		if(button.id ==  51){
+			fabric_previousPage();
+			ci.cancel();
 		}
 	}
 

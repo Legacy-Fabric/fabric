@@ -10,12 +10,19 @@ import net.minecraft.util.Identifier;
 public class ItemgroupTest implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		ItemGroup FOO = FabricItemGroupBuilder.create(new Identifier("foo","bar")).appendItems((stacks)->{
+		ItemGroup FOO = FabricItemGroupBuilder.create(new Identifier("foo:bar")).appendItems((stacks)->{
 			stacks.add(new ItemStack(Items.ARROW));
 			stacks.add(new ItemStack(Items.APPLE));
 			stacks.add(new ItemStack(Items.ARROW));
 			stacks.add(new ItemStack(Items.ARROW));
 			stacks.add(new ItemStack(Items.ARROW));
 		}).icon(()->new ItemStack(Items.ARMOR_STAND)).build();
+		ItemGroup BAR = FabricItemGroupBuilder.create(new Identifier("bar:foo")).appendItems((stacks)->{
+			stacks.add(new ItemStack(Items.CAKE));
+			stacks.add(new ItemStack(Items.SKULL));
+			stacks.add(new ItemStack(Items.FIREWORKS));
+			stacks.add(new ItemStack(Items.ARROW));
+			stacks.add(new ItemStack(Items.ARROW));
+		}).icon(()->new ItemStack(Items.CARROT)).build();
 	}
 }
