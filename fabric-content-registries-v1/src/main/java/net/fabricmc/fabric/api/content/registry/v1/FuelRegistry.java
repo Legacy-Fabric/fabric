@@ -31,7 +31,5 @@ public interface FuelRegistry {
 		this.register(fuel, 200);
 	}
 
-	default Map<Item, Integer> getFuelMap() {
-		return FuelRegistryImpl.fuels;
-	}
+	Map<Item, Integer> getFuelMap();
 }

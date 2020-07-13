@@ -31,4 +31,9 @@ public class FuelRegistryImpl implements FuelRegistry {
 	public void register(Item fuel, int burnTime) {
 		fuels.putIfAbsent(fuel, burnTime);
 	}
+
+	@Override
+	public Map<Item, Integer> getFuelMap() {
+		return this.fuels;
+	}
 }
