@@ -27,9 +27,5 @@ public interface FuelRegistry {
 
 	void register(Item fuel, int burnTime);
 
-	default void register(Item fuel) {
-		this.register(fuel, 200);
-	}
-
 	Map<Item, Integer> getFuelMap();
 }
