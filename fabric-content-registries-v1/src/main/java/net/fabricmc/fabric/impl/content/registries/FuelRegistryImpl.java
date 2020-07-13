@@ -25,10 +25,10 @@ import net.minecraft.item.Item;
 import net.fabricmc.fabric.api.content.registry.v1.FuelRegistry;
 
 public class FuelRegistryImpl implements FuelRegistry {
-	public static final Map<Item, Integer> FUELS = Maps.newHashMap();
+	public final Map<Item, Integer> fuels = Maps.newHashMap();
 
 	@Override
 	public void register(Item fuel, int burnTime) {
-		FUELS.putIfAbsent(fuel, burnTime);
+		fuels.putIfAbsent(fuel, burnTime);
 	}
 }

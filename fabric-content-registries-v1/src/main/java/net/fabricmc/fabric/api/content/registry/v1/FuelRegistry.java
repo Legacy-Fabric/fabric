@@ -32,6 +32,6 @@ public interface FuelRegistry {
 	}
 
 	default Map<Item, Integer> getFuelMap() {
-		return FuelRegistryImpl.FUELS;
+		return FuelRegistryImpl.fuels;
 	}
 }
