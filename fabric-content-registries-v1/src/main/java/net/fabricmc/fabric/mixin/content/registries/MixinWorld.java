@@ -46,7 +46,7 @@ import net.fabricmc.fabric.api.content.registry.v1.ItemRegistry;
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
 @Mixin(World.class)
-public class WorldMixin {
+public class MixinWorld {
 	@Shadow
 	@Final
 	public boolean isClient;
