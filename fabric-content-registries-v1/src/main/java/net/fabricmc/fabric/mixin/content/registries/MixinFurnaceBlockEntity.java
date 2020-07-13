@@ -30,10 +30,8 @@ import net.fabricmc.fabric.api.content.registry.v1.FuelRegistry;
 public class MixinFurnaceBlockEntity {
 	@Inject(at = @At("HEAD"), method = "method_1144", cancellable = true)
 	private static void registerFuels(ItemStack stack, CallbackInfoReturnable<Integer> info) {
-		FuelRegistry.INSTANCE.getFuelMap().forEach((item, time) -> {
-			if (stack.getItem() == item) {
-				info.setReturnValue(time);
-			}
-		});
+		if (FuelRegistry.INSTANCE.getFuelMap().containsKey(stack.getItem())) {
+			info.setReturnValue(FuelRegistry.INSTANCE.getFuelMap().get(stack.getItem()));
+		}
 	}
 }
