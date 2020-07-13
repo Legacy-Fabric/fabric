@@ -25,7 +25,6 @@ import net.minecraft.item.Item;
 import net.fabricmc.fabric.api.content.registry.v1.FuelRegistry;
 
 public class FuelRegistryImpl implements FuelRegistry {
-
 	public static final Map<Item, Integer> FUELS = Maps.newHashMap();
 
 	@Override

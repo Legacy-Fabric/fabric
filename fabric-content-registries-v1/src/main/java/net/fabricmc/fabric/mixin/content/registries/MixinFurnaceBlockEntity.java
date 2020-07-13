@@ -28,10 +28,10 @@ import net.fabricmc.fabric.api.content.registry.v1.FuelRegistry;
 
 @Mixin(FurnaceBlockEntity.class)
 public class MixinFurnaceBlockEntity {
-	@Inject(at = @At("HEAD"), method="method_1144", cancellable = true)
-	private static void registerFuels(ItemStack stack, CallbackInfoReturnable<Integer> info){
-		FuelRegistry.getFuelMap().forEach((item, time)->{
-			if(stack.getItem() == item){
+	@Inject(at = @At("HEAD"), method = "method_1144", cancellable = true)
+	private static void registerFuels(ItemStack stack, CallbackInfoReturnable<Integer> info) {
+		FuelRegistry.INSTANCE.getFuelMap().forEach((item, time) -> {
+			if (stack.getItem() == item) {
 				info.setReturnValue(time);
 			}
 		});

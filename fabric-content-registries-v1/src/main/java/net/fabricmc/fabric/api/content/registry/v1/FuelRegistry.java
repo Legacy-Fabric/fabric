@@ -27,11 +27,11 @@ public interface FuelRegistry {
 
 	void register(Item fuel, int burnTime);
 
-	default void register(Item fuel){
-		this.register(fuel,200);
+	default void register(Item fuel) {
+		this.register(fuel, 200);
 	}
 
-	static Map<Item, Integer> getFuelMap(){
+	default Map<Item, Integer> getFuelMap() {
 		return FuelRegistryImpl.FUELS;
 	}
 }
