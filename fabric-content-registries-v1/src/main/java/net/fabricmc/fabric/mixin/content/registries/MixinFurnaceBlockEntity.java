@@ -31,6 +31,7 @@ public class MixinFurnaceBlockEntity {
 	@Inject(at = @At("HEAD"), method = "method_1144", cancellable = true)
 	private static void registerFuels(ItemStack stack, CallbackInfoReturnable<Integer> info) {
 		Integer value = FuelRegistry.INSTANCE.getFuelMap().get(stack.getItem());
+
 		if (value != null) {
 			info.setReturnValue(value);
 		}
