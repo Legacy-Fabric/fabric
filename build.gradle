@@ -15,7 +15,7 @@ plugins {
 def ENV = System.getenv()
 
 class Globals {
-	static def baseVersion = "0.2.5"
+	static def baseVersion = "0.2.6"
 	static def mcVersion = "1.8.9"
 	static def yarnVersion = "+build.202007090605"
 }
@@ -62,6 +62,13 @@ allprojects {
 	targetCompatibility = 1.8
 
 	group = "net.fabricmc.fabric-api"
+
+	sourceSets {
+		testmod {
+			compileClasspath += main.compileClasspath
+			runtimeClasspath += main.runtimeClasspath
+		}
+	}
 
 	repositories {
 		maven { url "https://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven" }
@@ -164,6 +171,10 @@ task javadocJar(type: Jar) {
 build.dependsOn javadocJar
 
 subprojects {
+	dependencies {
+		testmodCompile sourceSets.main.output
+	}
+	
 	task remapMavenJar(type: Copy, dependsOn: remapJar) {
 		afterEvaluate {
 			from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
@@ -274,11 +285,17 @@ task licenseFormatAll
 subprojects { p -> licenseFormatAll.dependsOn("${p.path}:licenseFormat") }
 subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
 
+sourceSets {
+	testmod
+}
+
 dependencies {
 	afterEvaluate {
 		subprojects.each {
 			compile project(path: ":${it.name}", configuration: "dev")
 			include project("${it.name}:")
+
+			testmodCompile project("${it.name}:").sourceSets.testmod.output
 		}
 	}
 }
@@ -305,4 +322,4 @@ curseforge {
 	}
 }
 
-apply from: 'https://github.com/FabricMC/fabric-docs/raw/master/gradle/ideconfig.gradle'
+//apply from: 'https://github.com/FabricMC/fabric-docs/raw/master/gradle/ideconfig.gradle'
