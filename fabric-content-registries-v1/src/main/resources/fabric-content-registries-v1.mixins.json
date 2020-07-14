@@ -5,9 +5,10 @@
   "mixins": [
     "BlockAccessor",
     "ItemAccessor",
+    "MixinFurnaceBlockEntity",
+    "MixinWorld",
     "MutableRegistryAccessor",
-    "SimpleRegistryAccessor",
-    "WorldMixin"
+    "SimpleRegistryAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
