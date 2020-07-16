@@ -48,10 +48,6 @@ public class EntityRendererRegistry {
 			return textureManager;
 		}
 
-		public ReloadableResourceManager getResourceManager() {
-			return resourceManager;
-		}
-
 		public ItemRenderer getItemRenderer() {
 			return itemRenderer;
 		}
@@ -70,7 +66,7 @@ public class EntityRendererRegistry {
 				return;
 			}
 
-			Context context = new Context(textureManager, resourceManager, itemRenderer, map);
+			Context context = new Context(textureManager, itemRenderer, map);
 			renderManagerMap.put(manager, context);
 
 			for (Class<? extends Entity> c : renderSupplierMap.keySet()) {
