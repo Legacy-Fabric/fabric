@@ -23,13 +23,12 @@ import java.util.function.Supplier;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.render.model.json.ModelItemPropertyOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.ExtendedBlockView;
+import net.minecraft.world.WorldView;
 
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.fabricmc.fabric.impl.renderer.DamageModel;
@@ -43,7 +42,7 @@ public abstract class ForwardingBakedModel implements BakedModel, FabricBakedMod
 	protected BakedModel wrapped;
 
 	@Override
-	public void emitBlockQuads(ExtendedBlockView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
+	public void emitBlockQuads(WorldView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
 		((FabricBakedModel) wrapped).emitBlockQuads(blockView, state, pos, randomSupplier, context);
 	}
 
@@ -58,18 +57,23 @@ public abstract class ForwardingBakedModel implements BakedModel, FabricBakedMod
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(BlockState blockState, Direction face, Random rand) {
-		return wrapped.getQuads(blockState, face, rand);
-	}
-
-	@Override
 	public boolean useAmbientOcclusion() {
 		return wrapped.useAmbientOcclusion();
 	}
 
 	@Override
-	public boolean hasDepthInGui() {
-		return wrapped.hasDepthInGui();
+	public List<BakedQuad> method_4453(Direction direction) {
+		return wrapped.getQuads();
+	}
+
+	@Override
+	public List<BakedQuad> getQuads() {
+		return wrapped.getQuads();
+	}
+
+	@Override
+	public boolean hasDepth() {
+		return false;
 	}
 
 	@Override
@@ -85,10 +89,5 @@ public abstract class ForwardingBakedModel implements BakedModel, FabricBakedMod
 	@Override
 	public ModelTransformation getTransformation() {
 		return wrapped.getTransformation();
-	}
-
-	@Override
-	public ModelItemPropertyOverrideList getItemPropertyOverrides() {
-		return wrapped.getItemPropertyOverrides();
 	}
 }

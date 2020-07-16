@@ -20,6 +20,7 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
+import net.fabricmc.fabric.impl.renderer.SpriteFinderImpl;
 
 public interface SpriteFinder {
 
