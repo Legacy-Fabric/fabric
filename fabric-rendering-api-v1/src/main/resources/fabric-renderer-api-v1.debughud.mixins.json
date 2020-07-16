@@ -1,0 +1,10 @@
+{
+  "required": false,
+  "package": "net.fabricmc.fabric.mixin.renderer",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
