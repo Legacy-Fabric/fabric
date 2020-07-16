@@ -21,6 +21,8 @@ import org.lwjgl.util.vector.Vector3f;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.util.math.Direction;
 
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
+
 public interface QuadEmitter extends MutableQuadView {
 	@Override
 	QuadEmitter material(RenderMaterial material);
