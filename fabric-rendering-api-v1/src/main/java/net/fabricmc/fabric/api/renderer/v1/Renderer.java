@@ -16,12 +16,15 @@
 
 package net.fabricmc.fabric.api.renderer.v1;
 
+import com.google.common.annotations.Beta;
+
 import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.api.renderer.v1.material.MaterialFinder;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 
+@Beta
 public interface Renderer {
 	MeshBuilder meshBuilder();
 

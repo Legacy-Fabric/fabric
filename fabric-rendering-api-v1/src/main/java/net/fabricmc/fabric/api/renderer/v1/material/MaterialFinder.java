@@ -16,8 +16,11 @@
 
 package net.fabricmc.fabric.api.renderer.v1.material;
 
+import com.google.common.annotations.Beta;
+
 import net.minecraft.client.render.RenderLayer;
 
+@Beta
 public interface MaterialFinder {
 	RenderMaterial find();
 

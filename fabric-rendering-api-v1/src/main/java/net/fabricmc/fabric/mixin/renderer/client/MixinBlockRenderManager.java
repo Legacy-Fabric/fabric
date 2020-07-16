@@ -54,7 +54,7 @@ public abstract class MixinBlockRenderManager {
 	}
 
 	@Inject(method = "method_3594", cancellable = true,
-			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/model/BasicBakedModel$class_1295;method_4505()Lnet/minecraft/client/render/model/BakedModel;"))
+			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/class_1047;method_3585(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/render/model/BakedModel;"))
 	private void hookTesselateDamage(BlockState blockState, BlockPos blockPos, Sprite sprite, WorldView blockView, CallbackInfo ci) {
 		MutablePair<DamageModel, BakedModel> damageState = DAMAGE_STATE.get();
 

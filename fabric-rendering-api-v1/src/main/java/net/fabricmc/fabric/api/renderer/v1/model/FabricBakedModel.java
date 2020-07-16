@@ -19,6 +19,8 @@ package net.fabricmc.fabric.api.renderer.v1.model;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import com.google.common.annotations.Beta;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -26,6 +28,7 @@ import net.minecraft.world.WorldView;
 
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 
+@Beta
 public interface FabricBakedModel {
 	boolean isVanillaAdapter();
 

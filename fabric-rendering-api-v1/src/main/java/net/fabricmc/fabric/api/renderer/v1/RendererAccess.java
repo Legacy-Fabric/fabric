@@ -16,8 +16,11 @@
 
 package net.fabricmc.fabric.api.renderer.v1;
 
+import com.google.common.annotations.Beta;
+
 import net.fabricmc.fabric.impl.renderer.RendererAccessImpl;
 
+@Beta
 public interface RendererAccess {
 	RendererAccess INSTANCE = RendererAccessImpl.INSTANCE;
 

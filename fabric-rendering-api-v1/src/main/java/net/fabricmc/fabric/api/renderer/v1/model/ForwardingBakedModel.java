@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import com.google.common.annotations.Beta;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
@@ -31,12 +33,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldView;
 
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
-import net.fabricmc.fabric.impl.renderer.DamageModel;
 
-/**
- * Base class for specialized model implementations that need to wrap other baked models.
- * Avoids boilerplate code for pass-through methods. For example usage see {@link DamageModel}.
- */
+@Beta
 public abstract class ForwardingBakedModel implements BakedModel, FabricBakedModel {
 	/** implementations must set this somehow. */
 	protected BakedModel wrapped;

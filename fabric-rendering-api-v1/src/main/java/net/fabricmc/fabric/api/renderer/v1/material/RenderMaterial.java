@@ -16,8 +16,11 @@
 
 package net.fabricmc.fabric.api.renderer.v1.material;
 
+import com.google.common.annotations.Beta;
+
 import net.minecraft.util.Identifier;
 
+@Beta
 public interface RenderMaterial {
 	Identifier MATERIAL_STANDARD = new Identifier("fabric", "standard");
 

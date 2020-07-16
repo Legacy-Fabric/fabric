@@ -19,6 +19,7 @@ package net.fabricmc.fabric.api.renderer.v1.model;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.annotations.Beta;
 import com.google.common.collect.ImmutableList;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -32,6 +33,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 
+@Beta
 @Environment(EnvType.CLIENT)
 public abstract class ModelHelper {
 	private ModelHelper() { }

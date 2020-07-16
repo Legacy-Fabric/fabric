@@ -18,12 +18,15 @@ package net.fabricmc.fabric.api.renderer.v1.render;
 
 import java.util.function.Consumer;
 
+import com.google.common.annotations.Beta;
+
 import net.minecraft.client.render.model.BakedModel;
 
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 
+@Beta
 public interface RenderContext {
 	Consumer<Mesh> meshConsumer();
 

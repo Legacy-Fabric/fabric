@@ -16,6 +16,9 @@
 
 package net.fabricmc.fabric.api.renderer.v1.mesh;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public interface MeshBuilder {
 	QuadEmitter getEmitter();
 

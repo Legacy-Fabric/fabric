@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.api.renderer.v1.mesh;
 
+import com.google.common.annotations.Beta;
 import org.lwjgl.util.vector.Vector3f;
 
 import net.minecraft.client.render.model.BakedQuad;
@@ -23,6 +24,7 @@ import net.minecraft.util.math.Direction;
 
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 
+@Beta
 public interface QuadView {
 	void toVanilla(int spriteIndex, int[] target, int targetIndex, boolean isItem);
 

@@ -18,6 +18,9 @@ package net.fabricmc.fabric.api.renderer.v1.mesh;
 
 import java.util.function.Consumer;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public interface Mesh {
 	void forEach(Consumer<QuadView> consumer);
 }
