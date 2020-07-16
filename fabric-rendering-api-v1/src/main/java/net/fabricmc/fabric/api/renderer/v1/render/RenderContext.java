@@ -37,7 +37,6 @@ public interface RenderContext {
 
 	@FunctionalInterface
 	interface QuadTransform {
-
 		boolean transform(MutableQuadView quad);
 	}
 }

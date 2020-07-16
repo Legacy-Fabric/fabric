@@ -29,7 +29,7 @@ public class BlockEntityRendererRegistry {
 	private Map<Class<? extends BlockEntity>, BlockEntityRenderer<? extends BlockEntity>> renderers = null;
 	private Map<Class<? extends BlockEntity>, BlockEntityRenderer<? extends BlockEntity>> renderersTmp = new HashMap<>();
 
-	private BlockEntityRendererRegistry(){
+	private BlockEntityRendererRegistry() {
 	}
 
 	public void initialize(BlockEntityRenderDispatcher instance, Map<Class<? extends BlockEntity>, BlockEntityRenderer<? extends BlockEntity>> map) {

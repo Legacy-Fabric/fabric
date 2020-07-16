@@ -42,7 +42,6 @@ import net.fabricmc.fabric.impl.renderer.DamageModel;
 @Environment(EnvType.CLIENT)
 @Mixin(BlockRenderManager.class)
 public abstract class MixinBlockRenderManager {
-
 	@Shadow
 	@Final
 	private BlockModelRenderer blockModelRenderer;

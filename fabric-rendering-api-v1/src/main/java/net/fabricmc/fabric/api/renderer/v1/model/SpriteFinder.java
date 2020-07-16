@@ -23,7 +23,6 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
 import net.fabricmc.fabric.impl.renderer.SpriteFinderImpl;
 
 public interface SpriteFinder {
-
 	static SpriteFinder get(SpriteAtlasTexture atlas) {
 		return SpriteFinderImpl.get(atlas);
 	}

@@ -132,6 +132,7 @@ public class SpriteFinderImpl implements SpriteFinder {
 			} else if (quadrant instanceof Node) {
 				return ((Node) quadrant).find(u, v);
 			}
+
 			throw new RuntimeException();
 		}
 	}

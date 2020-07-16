@@ -27,7 +27,6 @@ import net.minecraft.world.WorldView;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 
 public interface FabricBakedModel {
-
 	boolean isVanillaAdapter();
 
 	void emitBlockQuads(WorldView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context);
