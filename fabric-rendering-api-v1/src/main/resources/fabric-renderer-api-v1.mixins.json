@@ -3,6 +3,8 @@
   "package": "net.fabricmc.fabric.mixin.renderer.client",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "MixinBakedModel",
+    "MixinBlockRenderManager"
   ],
   "injectors": {
     "defaultRequire": 1

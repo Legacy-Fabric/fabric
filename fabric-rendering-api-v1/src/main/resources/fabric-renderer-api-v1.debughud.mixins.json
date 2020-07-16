@@ -1,8 +1,9 @@
 {
   "required": false,
-  "package": "net.fabricmc.fabric.mixin.renderer",
+  "package": "net.fabricmc.fabric.mixin.renderer.client",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "MixinOverlayDebug"
   ],
   "injectors": {
     "defaultRequire": 1
