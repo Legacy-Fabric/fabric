@@ -84,7 +84,4 @@ public abstract class FabricToolItem extends Item {
 		multimap.put(EntityAttributes.ATTACK_DAMAGE.getId(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER_UUID, "Tool modifier", this.attackDamage, 0));
 		return multimap;
 	}
-
-	@Override
-	public abstract Item setTranslationKey(String translationKey);
 }
