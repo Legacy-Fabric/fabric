@@ -25,7 +25,7 @@ public class FabricSwordItem extends Item {
 	public FabricSwordItem(ToolMaterial material) {
 		this.material = material;
 		this.maxCount = 1;
-		this.setMaxDamage(material.getMaxDurability());
+		this.setMaxDamage(material.getDurability());
 		this.setItemGroup(ItemGroup.COMBAT);
 		this.attackMultiplier = 4.0F + material.getAttackMultiplier();
 	}

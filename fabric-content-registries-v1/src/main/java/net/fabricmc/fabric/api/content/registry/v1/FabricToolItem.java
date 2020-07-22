@@ -25,7 +25,7 @@ public abstract class FabricToolItem extends Item {
 		this.material = material;
 		this.effectiveMaterial = effectiveMaterial;
 		this.maxCount = 1;
-		this.setMaxDamage(material.getMaxDurability());
+		this.setMaxDamage(material.getDurability());
 		this.miningSpeed = material.getMiningSpeedMultiplier();
 		this.attackDamage = attackDamage + material.getAttackMultiplier();
 	}
@@ -33,7 +33,7 @@ public abstract class FabricToolItem extends Item {
 	protected FabricToolItem(float attackDamage, ToolMaterial material) {
 		this.material = material;
 		this.maxCount = 1;
-		this.setMaxDamage(material.getMaxDurability());
+		this.setMaxDamage(material.getDurability());
 		this.miningSpeed = material.getMiningSpeedMultiplier();
 		this.attackDamage = attackDamage + material.getAttackMultiplier();
 	}
@@ -79,7 +79,7 @@ public abstract class FabricToolItem extends Item {
 
 	@Override
 	public int getMaxDamage() {
-		return this.material.getMaxDurability();
+		return this.material.getDurability();
 	}
 
 	@Override

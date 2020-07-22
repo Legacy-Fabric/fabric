@@ -17,7 +17,7 @@ public class FabricHoeItem extends Item {
 	private ToolMaterial material;
 
 	public FabricHoeItem(ToolMaterial material) {
-		this(material.getMaxDurability());
+		this(material.getDurability());
 		this.material = material;
 	}
 

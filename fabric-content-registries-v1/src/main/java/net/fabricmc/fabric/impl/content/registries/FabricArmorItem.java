@@ -59,8 +59,8 @@ public class FabricArmorItem extends Item {
 		this.material = material;
 		this.slot = slot;
 		this.materialId = materialId;
-		this.protection = material.getDurability(slot);
-		this.setMaxDamage(material.getDurabilty(slot));
+		this.protection = material.getProtection(slot);
+		this.setMaxDamage(material.getDurability(slot));
 		this.maxCount = 1;
 		this.setItemGroup(ItemGroup.COMBAT);
 		DispenserBlock.SPECIAL_ITEMS.put(this, ARMOR_DISPENSER_BEHAVIOR);
