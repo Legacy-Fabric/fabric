@@ -74,7 +74,7 @@ public abstract class FabricToolItem extends Item {
 
 	@Override
 	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-		return this.material.getRepairIngredient() == ingredient.getItem() || super.canRepair(stack, ingredient);
+		return this.material.getRepairIngredient().get().getItem() == ingredient.getItem();
 	}
 
 	@Override

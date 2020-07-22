@@ -69,4 +69,12 @@ public class FabricHoeItem extends Item {
 	public String getMaterialAsString() {
 		return String.valueOf(this.material);
 	}
+
+	@Override
+	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
+		if(this.material == null) {
+			return false;
+		}
+		return this.material.getRepairIngredient().get().getItem() == ingredient.getItem();
+	}
 }
