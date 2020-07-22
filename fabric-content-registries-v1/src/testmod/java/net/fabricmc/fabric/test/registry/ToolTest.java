@@ -28,7 +28,7 @@ import net.fabricmc.fabric.api.content.registry.v1.ToolMaterial;
 import net.fabricmc.fabric.impl.content.registries.FabricPickaxeItem;
 
 public class ToolTest implements ModInitializer {
-	private static final FabricPickaxeItem PICKAXE = (FabricPickaxeItem) ItemRegistry.register(new Identifier("modid", "pig_iron_pickaxe"), new FabricPickaxeItem(3, new MinecartArmorMaterial()));
+	private static final FabricPickaxeItem PICKAXE = ItemRegistry.register(new Identifier("modid", "pig_iron_pickaxe"), new FabricPickaxeItem(3, new MinecartArmorMaterial()));
 
 	@Override
 	public void onInitialize() {
