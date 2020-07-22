@@ -6,6 +6,7 @@
     "BlockAccessor",
     "ItemAccessor",
     "MixinFurnaceBlockEntity",
+    "MixinBlock",
     "MixinWorld",
     "MutableRegistryAccessor",
     "SimpleRegistryAccessor"

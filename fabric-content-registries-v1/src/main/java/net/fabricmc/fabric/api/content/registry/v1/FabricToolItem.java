@@ -7,7 +7,8 @@ import net.minecraft.block.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -84,4 +85,7 @@ public abstract class FabricToolItem extends Item {
 		multimap.put(EntityAttributes.ATTACK_DAMAGE.getId(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER_UUID, "Tool modifier", this.attackDamage, 0));
 		return multimap;
 	}
+
+	@Override
+	public abstract boolean isEffectiveOn(Block block);
 }
