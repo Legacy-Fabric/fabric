@@ -11,6 +11,7 @@ import net.minecraft.block.MaterialColor;
 
 import net.fabricmc.fabric.api.block.FabricBlockMaterial;
 import net.fabricmc.fabric.impl.content.registries.FabricPickaxeItem;
+import net.fabricmc.fabric.impl.content.registries.FabricShovelItem;
 
 @Mixin(Block.class)
 public class MixinBlock {
@@ -22,6 +23,14 @@ public class MixinBlock {
 			}
 			else {
 				FabricPickaxeItem.MAP_ADDER.accept((Block) (Object) this, 0);
+			}
+		}
+		else if(!(FabricShovelItem.BLOCKS_BY_MINING_LEVEL.containsKey((Block) (Object) this)) && (material == Material.GRASS || material == Material.DIRT || material == Material.CLAY || material == Material.SNOW || material == Material.SNOW_LAYER || material == Material.NOTEBLOCK)){
+			if(material instanceof FabricBlockMaterial) {
+				FabricShovelItem.MAP_ADDER.accept((Block) (Object) this, ((FabricBlockMaterial) material).getMiningLevel());
+			}
+			else {
+				FabricShovelItem.MAP_ADDER.accept((Block) (Object) this, 0);
 			}
 		}
 	}

@@ -18,12 +18,20 @@ import net.fabricmc.api.Environment;
 public abstract class FabricToolItem extends Item {
 	protected final float miningSpeed;
 	protected final float attackDamage;
-	protected final Material effectiveMaterial;
+	protected Material effectiveMaterial;
 	protected final ToolMaterial material;
 
 	protected FabricToolItem(float attackDamage, ToolMaterial material, Material effectiveMaterial) {
 		this.material = material;
 		this.effectiveMaterial = effectiveMaterial;
+		this.maxCount = 1;
+		this.setMaxDamage(material.getMaxDurability());
+		this.miningSpeed = material.getMiningSpeedMultiplier();
+		this.attackDamage = attackDamage + material.getAttackMultiplier();
+	}
+
+	protected FabricToolItem(float attackDamage, ToolMaterial material) {
+		this.material = material;
 		this.maxCount = 1;
 		this.setMaxDamage(material.getMaxDurability());
 		this.miningSpeed = material.getMiningSpeedMultiplier();

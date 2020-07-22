@@ -7,7 +7,6 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.fabric.api.content.registry.v1.FabricToolItem;
@@ -20,7 +19,7 @@ public class FabricPickaxeItem extends FabricToolItem {
 	public static final BiConsumer<Block, Integer> MAP_REPLACER = BLOCKS_BY_MINING_LEVEL::replace;
 
 	public FabricPickaxeItem(float attackDamage, ToolMaterial material) {
-		super(attackDamage, material, null);
+		super(attackDamage, material);
 
 		if(!initialized) {
 			initialized = true;
@@ -40,20 +39,16 @@ public class FabricPickaxeItem extends FabricToolItem {
 			MAP_ADDER.accept(Blocks.DETECTOR_RAIL, 0);
 			MAP_ADDER.accept(Blocks.RAIL, 0);
 			MAP_ADDER.accept(Blocks.POWERED_RAIL, 0);
+			MAP_ADDER.accept(Blocks.PACKED_ICE, 0);
 		}
 	}
 
 	@Override
 	public boolean isEffectiveOn(Block block) {
 		if(BLOCKS_BY_MINING_LEVEL.containsKey(block)) {
-			return BLOCKS_BY_MINING_LEVEL.get(block) >= this.material.getMiningLevel();
+			return this.material.getMiningLevel() >= BLOCKS_BY_MINING_LEVEL.get(block);
 		}
-
-		if(block.getMaterial() == Material.STONE || block.getMaterial() == Material.IRON || block.getMaterial() == Material.IRON2) {
-			return true;
-		}
-
-		return this.material.getMiningLevel() != 0;
+		return false;
 	}
 
 	@Override
