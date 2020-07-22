@@ -10,6 +10,7 @@ import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 
 import net.fabricmc.fabric.api.block.FabricBlockMaterial;
+import net.fabricmc.fabric.impl.content.registries.FabricAxeItem;
 import net.fabricmc.fabric.impl.content.registries.FabricPickaxeItem;
 import net.fabricmc.fabric.impl.content.registries.FabricShovelItem;
 
@@ -31,6 +32,14 @@ public class MixinBlock {
 			}
 			else {
 				FabricShovelItem.MAP_ADDER.accept((Block) (Object) this, 0);
+			}
+		}
+		else if(!(FabricAxeItem.BLOCKS_BY_MINING_LEVEL.containsKey((Block) (Object) this)) && (material == Material.WOOD || material == Material.FOILAGE)){
+			if(material instanceof FabricBlockMaterial) {
+				FabricAxeItem.MAP_ADDER.accept((Block) (Object) this, ((FabricBlockMaterial) material).getMiningLevel());
+			}
+			else {
+				FabricAxeItem.MAP_ADDER.accept((Block) (Object) this, 0);
 			}
 		}
 	}
