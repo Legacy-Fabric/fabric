@@ -16,18 +16,12 @@
 
 package net.fabricmc.fabric.api.content.registry.v1;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Identifier;
+public interface ToolMaterial extends MaterialProvider {
+	int getDurability();
 
-import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
+	float getMiningSpeedMultiplier();
 
-public final class BlockRegistry {
-	public static boolean blockIdsSetup = false;
+	float getAttackMultiplier();
 
-	private BlockRegistry() {
-	}
-
-	public static <T extends Block> T register(Identifier id, T block) {
-		return ContentRegistryImpl.registerBlock(id, block);
-	}
+	int getMiningLevel();
 }

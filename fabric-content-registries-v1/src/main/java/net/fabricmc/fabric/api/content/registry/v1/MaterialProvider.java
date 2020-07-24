@@ -16,18 +16,12 @@
 
 package net.fabricmc.fabric.api.content.registry.v1;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.Identifier;
+import java.util.function.Supplier;
 
-import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
+import net.minecraft.item.ItemStack;
 
-public final class BlockRegistry {
-	public static boolean blockIdsSetup = false;
+interface MaterialProvider {
+	int getEnchantability();
 
-	private BlockRegistry() {
-	}
-
-	public static <T extends Block> T register(Identifier id, T block) {
-		return ContentRegistryImpl.registerBlock(id, block);
-	}
+	Supplier<ItemStack> getRepairIngredient();
 }
