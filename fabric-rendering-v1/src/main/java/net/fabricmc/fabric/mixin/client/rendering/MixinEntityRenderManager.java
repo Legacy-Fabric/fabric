@@ -29,7 +29,6 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.resource.ReloadableResourceManager;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
