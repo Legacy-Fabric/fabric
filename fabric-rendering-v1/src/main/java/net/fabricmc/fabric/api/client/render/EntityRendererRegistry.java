@@ -38,23 +38,17 @@ public class EntityRendererRegistry {
 
 	public static final class Context {
 		private final TextureManager textureManager;
-		private final ReloadableResourceManager resourceManager;
 		private final ItemRenderer itemRenderer;
 		private final Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> rendererMap;
 
-		private Context(TextureManager textureManager, ReloadableResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> rendererMap) {
+		private Context(TextureManager textureManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> rendererMap) {
 			this.textureManager = textureManager;
-			this.resourceManager = resourceManager;
 			this.itemRenderer = itemRenderer;
 			this.rendererMap = rendererMap;
 		}
 
 		public TextureManager getTextureManager() {
 			return textureManager;
-		}
-
-		public ReloadableResourceManager getResourceManager() {
-			return resourceManager;
 		}
 
 		public ItemRenderer getItemRenderer() {
@@ -69,13 +63,13 @@ public class EntityRendererRegistry {
 	private EntityRendererRegistry() {
 	}
 
-	public void initialize(EntityRenderDispatcher manager, TextureManager textureManager, ReloadableResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> map) {
+	public void initialize(EntityRenderDispatcher manager, TextureManager textureManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> map) {
 		synchronized (renderSupplierMap) {
 			if (renderManagerMap.containsKey(manager)) {
 				return;
 			}
 
-			Context context = new Context(textureManager, resourceManager, itemRenderer, map);
+			Context context = new Context(textureManager, itemRenderer, map);
 			renderManagerMap.put(manager, context);
 
 			for (Class<? extends Entity> c : renderSupplierMap.keySet()) {
