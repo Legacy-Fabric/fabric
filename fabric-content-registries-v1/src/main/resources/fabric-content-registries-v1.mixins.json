@@ -5,14 +5,10 @@
   "mixins": [
     "BlockAccessor",
     "ItemAccessor",
-    "MixinBlock",
     "MixinFurnaceBlockEntity",
     "MixinWorld",
     "MutableRegistryAccessor",
-    "SimpleRegistryAccessor",
-    "ToolMixins$MixinAxeItem",
-    "ToolMixins$MixinPickaxeItem",
-    "ToolMixins$MixinShovelItem"
+    "SimpleRegistryAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
