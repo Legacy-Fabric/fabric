@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 
 public interface ArmorMaterial {
-	void getEnchantability();
+	int getEnchantability();
 
 	Supplier<ItemStack> getRepairIngredient();
 
