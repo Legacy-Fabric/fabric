@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.fabricmc.fabric.impl.armor;
 
 import java.util.Random;
@@ -13,7 +29,7 @@ public class FabricArmorItem extends ArmorItem {
 	private final int slotId;
 
 	public FabricArmorItem(ArmorMaterial material, EquipmentSlot slot) {
-		super(null, new Random().nextInt(16777215), slot.getSlotId());
+		super(null, new Random().nextInt(16777216), slot.getSlotId());
 		this.material = material;
 		this.slotId = slot.getSlotId();
 		this.setMaxDamage(BASE_DURABILITY[this.slotId] * material.getDurabilityMultiplier());
@@ -44,12 +60,6 @@ public class FabricArmorItem extends ArmorItem {
 
 	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
 		return this.material.getRepairIngredient().get().getItem() == ingredient.getItem() || super.canRepair(stack, ingredient);
-	}
-
-	@Deprecated
-	@Override
-	public stack getMaterial() {
-		return null;
 	}
 
 	@Deprecated
