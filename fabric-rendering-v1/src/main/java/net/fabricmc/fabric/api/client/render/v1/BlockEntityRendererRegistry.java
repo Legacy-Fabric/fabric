@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.client.render;
+package net.fabricmc.fabric.api.client.render.v1;
 
 import java.util.HashMap;
 import java.util.Map;

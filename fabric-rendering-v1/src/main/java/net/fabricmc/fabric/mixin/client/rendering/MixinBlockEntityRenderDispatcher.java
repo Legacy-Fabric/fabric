@@ -30,7 +30,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.render.v1.BlockEntityRendererRegistry;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BlockEntityRenderDispatcher.class)

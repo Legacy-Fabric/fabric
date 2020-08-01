@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.gui.hud.InGameHud;
 
-import net.fabricmc.fabric.api.client.render.HudRenderCallback;
+import net.fabricmc.fabric.api.client.render.v1.HudRenderCallback;
 
 @Mixin(InGameHud.class)
 public class MixinInGameHud {
