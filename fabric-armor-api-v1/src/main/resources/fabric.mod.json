@@ -18,5 +18,9 @@
   "depends": {
     "fabricloader": ">=0.4.0"
   },
-  "description": "Tools for creating custom Armor"
+  "description": "Tools for creating custom Armor",
+  ,
+  "mixins": [
+
+  ]
 }

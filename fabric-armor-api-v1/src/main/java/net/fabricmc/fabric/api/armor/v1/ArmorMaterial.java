@@ -21,13 +21,16 @@ import java.util.function.Supplier;
 import net.minecraft.item.ItemStack;
 
 public interface ArmorMaterial {
+	/**
+	 * The value returned should be the prefix of the armor layer textures
+	 */
+	String getName();
+
 	int getEnchantability();
 
 	Supplier<ItemStack> getRepairIngredient();
 
 	int getDurabilityMultiplier();
 
-	int[] getProtectionValues();
-
-	String getName();
+	int getProtectionValue(int slot);
 }

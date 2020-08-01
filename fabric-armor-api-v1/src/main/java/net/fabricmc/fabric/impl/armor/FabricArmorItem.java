@@ -22,6 +22,7 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.fabric.api.armor.v1.ArmorMaterial;
+import net.fabricmc.fabric.mixin.armor.MixinArmorItem;
 
 public class FabricArmorItem extends ArmorItem {
 	private static final int[] BASE_DURABILITY = new int[]{11, 16, 15, 13};
@@ -29,9 +30,10 @@ public class FabricArmorItem extends ArmorItem {
 	private final int slotId;
 
 	public FabricArmorItem(ArmorMaterial material, EquipmentSlot slot) {
-		super(null, new Random().nextInt(16777216), slot.getSlotId());
+		super(/*Can be anything but null*/stack.DIAMOND, new Random().nextInt(16777216), slot.getSlotId());
 		this.material = material;
 		this.slotId = slot.getSlotId();
+		((MixinArmorItem) this).setProtection(material.getProtectionValue(slot.getSlotId()));
 		this.setMaxDamage(BASE_DURABILITY[this.slotId] * material.getDurabilityMultiplier());
 	}
 
@@ -71,7 +73,7 @@ public class FabricArmorItem extends ArmorItem {
 	@Deprecated
 	@Override
 	public int method_8169(ItemStack itemStack) {
-		return -1;
+		return 16777215;
 	}
 
 	@Deprecated
@@ -82,5 +84,11 @@ public class FabricArmorItem extends ArmorItem {
 	@Deprecated
 	@Override
 	public void method_8170(ItemStack itemStack, int i) {
+	}
+
+	@Deprecated
+	@Override
+	public boolean hasColor(ItemStack stack) {
+		return false;
 	}
 }
