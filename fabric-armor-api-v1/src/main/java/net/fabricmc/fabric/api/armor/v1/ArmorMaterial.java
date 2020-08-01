@@ -22,7 +22,7 @@ import net.minecraft.item.ItemStack;
 
 public interface ArmorMaterial {
 	/**
-	 * The value returned should be the prefix of the armor layer textures
+	 * The value returned should be the prefix of the armor layer textures.
 	 */
 	String getName();
 

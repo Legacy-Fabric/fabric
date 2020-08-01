@@ -19,8 +19,7 @@
     "fabricloader": ">=0.4.0"
   },
   "description": "Tools for creating custom Armor",
-  ,
   "mixins": [
-
+    "fabric-armor-api-v1.mixins.json"
   ]
 }

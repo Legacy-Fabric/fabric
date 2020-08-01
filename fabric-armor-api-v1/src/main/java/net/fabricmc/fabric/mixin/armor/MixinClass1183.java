@@ -33,9 +33,10 @@ import net.fabricmc.fabric.impl.armor.FabricArmorItem;
 public class MixinClass1183 {
 	@Redirect(at = @At(value = "INVOKE", target = "Ljava/lang/String;format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;"), method = "method_4092")
 	public String loadArmorTextures(String format, Object[] args, ArmorItem armorItem, boolean bl, String string) {
-		if(armorItem instanceof FabricArmorItem) {
+		if (armorItem instanceof FabricArmorItem) {
 			return String.format("%s:textures/models/armor/%s_layer_%d.png", Item.REGISTRY.getIdentifier(armorItem).getNamespace(), ((FabricArmorItem) armorItem).getArmorMaterial().getName(), bl ? 2 : 1);
 		}
+
 		return String.format("textures/models/armor/%s_layer_%d%s.png", armorItem.getMaterial().getTranslationKey(), bl ? 2 : 1, string == null ? "" : String.format("_%s", string));
 	}
 }
