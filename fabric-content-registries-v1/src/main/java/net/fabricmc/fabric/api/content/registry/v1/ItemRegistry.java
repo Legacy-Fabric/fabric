@@ -27,11 +27,11 @@ public final class ItemRegistry {
 	private ItemRegistry() {
 	}
 
-	public static <T extends Item> T register(Identifier id, T item) {
+	public static Item register(Identifier id, Item item) {
 		return ContentRegistryImpl.registerItem(id, item);
 	}
 
-	public static <T extends Item> T registerBlockItem(Identifier id, T item) {
+	public static Item registerBlockItem(Identifier id, Item item) {
 		return ContentRegistryImpl.registerItem(id, item);
 	}
 }

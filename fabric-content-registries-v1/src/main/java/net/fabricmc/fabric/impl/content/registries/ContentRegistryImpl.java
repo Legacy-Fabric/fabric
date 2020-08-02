@@ -62,7 +62,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 		}
 	}
 
-	public static <T extends Block> T registerBlock(Identifier id, T block) {
+	public static Block registerBlock(Identifier id, Block block) {
 		RegistryBlockAddedCallback.EVENT.invoker().blockAdded(id, block);
 		unsortedBlocks.put(id, block);
 		Block.REGISTRY.add(unorderedNextBlockId, id, block);
@@ -75,10 +75,10 @@ public final class ContentRegistryImpl implements ModInitializer {
 		return block;
 	}
 
-	public static <T extends Item> T registerItem(Identifier id, T item) {
-		RegistryItemAddedCallback.EVENT.invoker().itemAdded(id, (Item) item);
-		unsortedItems.put(id, (Item) item);
-		Item.REGISTRY.add(unorderedNextItemId, id, (Item) item);
+	public static Item registerItem(Identifier id, Item item) {
+		RegistryItemAddedCallback.EVENT.invoker().itemAdded(id, item);
+		unsortedItems.put(id, item);
+		Item.REGISTRY.add(unorderedNextItemId, id, item);
 		unorderedNextItemId++;
 		return item;
 	}
