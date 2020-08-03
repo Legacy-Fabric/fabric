@@ -11,7 +11,7 @@
     "fabric-content-registries-v1": "*"
   },
   "entrypoints": {
-    "client": [
+    "main": [
       "net.fabricmc.fabric.test.armor.ArmorTest"
     ]
   }
