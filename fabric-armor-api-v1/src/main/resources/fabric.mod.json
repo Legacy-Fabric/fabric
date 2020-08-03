@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "fabric-armor-api-v1",
+  "name": "Fabric Armor API (v1)",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/fabric-armor-api-v1/icon.png",
+  "contact": {
+    "homepage": "https://fabricmc.net",
+    "irc": "irc://irc.esper.net:6667/fabric",
+    "issues": "https://github.com/FabricMC/fabric/issues",
+    "sources": "https://github.com/FabricMC/fabric"
+  },
+  "authors": [
+    "FabricMC"
+  ],
+  "depends": {
+    "fabricloader": ">=0.4.0"
+  },
+  "description": "Tools for creating custom Armor",
+  "mixins": [
+    "fabric-armor-api-v1.mixins.json"
+  ]
+}
