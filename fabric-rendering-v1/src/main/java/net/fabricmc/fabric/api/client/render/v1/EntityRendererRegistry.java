@@ -16,8 +16,6 @@
 
 package net.fabricmc.fabric.api.client.render.v1;
 
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.entity.Entity;
 
 import net.fabricmc.fabric.impl.client.render.EntityRendererRegistryImpl;
