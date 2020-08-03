@@ -33,6 +33,7 @@ import net.minecraft.entity.Entity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.render.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.impl.client.render.EntityRendererRegistryImpl;
 
 @Environment(EnvType.CLIENT)
 @Mixin(EntityRenderDispatcher.class)
@@ -42,6 +43,6 @@ public class MixinEntityRenderManager {
 
 	@Inject(method = "<init>", at = @At("RETURN"), require = 0)
 	public void init(TextureManager textureManager, ItemRenderer itemRenderer, CallbackInfo ci) {
-		EntityRendererRegistry.INSTANCE.initialize((EntityRenderDispatcher) (Object) this, textureManager, itemRenderer, classMap);
+		((EntityRendererRegistryImpl) EntityRendererRegistry.INSTANCE).initialize((EntityRenderDispatcher) (Object) this, textureManager, itemRenderer, classMap);
 	}
 }

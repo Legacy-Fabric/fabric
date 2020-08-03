@@ -31,6 +31,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.render.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.impl.client.render.BlockEntityRendererRegistryImpl;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BlockEntityRenderDispatcher.class)
@@ -40,6 +41,6 @@ public class MixinBlockEntityRenderDispatcher {
 
 	@Inject(method = "<init>()V", at = @At("RETURN"))
 	public void init(CallbackInfo info) {
-		BlockEntityRendererRegistry.INSTANCE.initialize((BlockEntityRenderDispatcher) (Object) this, renderers);
+		((BlockEntityRendererRegistryImpl) BlockEntityRendererRegistry.INSTANCE).initialize((BlockEntityRenderDispatcher) (Object) this, renderers);
 	}
 }
