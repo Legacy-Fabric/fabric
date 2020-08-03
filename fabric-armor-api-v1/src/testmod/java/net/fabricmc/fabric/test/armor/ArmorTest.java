@@ -16,7 +16,7 @@
 
 package net.fabricmc.fabric.test.armor;
 
-import java.util.function.Supplier;
+import java.util.function.Predicate;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -37,8 +37,8 @@ public class ArmorTest implements ModInitializer {
 		}
 
 		@Override
-		public Supplier<ItemStack> getRepairIngredient() {
-			return () -> new ItemStack(Items.POTATO);
+		public Predicate<ItemStack> getRepairIngredient() {
+			return (stack) -> stack.getItem() == Items.POTATO;
 		}
 
 		@Override

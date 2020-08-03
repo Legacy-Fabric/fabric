@@ -61,7 +61,7 @@ public class FabricArmorItem extends ArmorItem {
 	}
 
 	public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-		return this.material.getRepairIngredient().get().getItem() == ingredient.getItem() || super.canRepair(stack, ingredient);
+		return this.material.getRepairIngredient().test(ingredient);
 	}
 
 	@Deprecated

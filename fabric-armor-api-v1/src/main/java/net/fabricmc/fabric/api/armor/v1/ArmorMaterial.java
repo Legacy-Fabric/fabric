@@ -16,7 +16,7 @@
 
 package net.fabricmc.fabric.api.armor.v1;
 
-import java.util.function.Supplier;
+import java.util.function.Predicate;
 
 import net.minecraft.item.ItemStack;
 
@@ -28,7 +28,7 @@ public interface ArmorMaterial {
 
 	int getEnchantability();
 
-	Supplier<ItemStack> getRepairIngredient();
+	Predicate<ItemStack> getRepairIngredient();
 
 	int getDurabilityMultiplier();
 
