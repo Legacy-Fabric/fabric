@@ -3,6 +3,7 @@
   "package": "net.fabricmc.fabric.mixin.gamerule",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MixinGameRules"
   ],
   "client": [
   ],
