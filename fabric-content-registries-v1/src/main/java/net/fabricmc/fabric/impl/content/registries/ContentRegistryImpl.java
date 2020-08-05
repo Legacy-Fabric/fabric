@@ -18,8 +18,10 @@ package net.fabricmc.fabric.impl.content.registries;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -30,7 +32,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.content.registry.v1.EntityRegistry;
 import net.fabricmc.fabric.api.event.registry.v1.RegistryBlockAddedCallback;
+import net.fabricmc.fabric.api.event.registry.v1.RegistryEntityAddedCallback;
 import net.fabricmc.fabric.api.event.registry.v1.RegistryItemAddedCallback;
 import net.fabricmc.fabric.mixin.content.registries.BlockAccessor;
 import net.fabricmc.fabric.mixin.content.registries.EntityTypeAccessor;
@@ -43,10 +47,12 @@ public final class ContentRegistryImpl implements ModInitializer {
 	public static Map<String, Class<? extends Entity>> unsortedEntities = new HashMap<>();
 	public static IdList<Pair<Identifier, Block>> vanillaBlocks = new IdList<>();
 	public static IdList<Pair<Identifier, Item>> vanillaItems = new IdList<>();
+	public static IdList<Pair<String, Class<? extends Entity>>> vanillaEntities = new IdList<>();
 	public static IdList<BlockState> vanillaBlockStates = new IdList<>();
 	public static int unorderedNextBlockId = 198;
 	public static int unorderedNextItemId = 4096;
 	public static int unorderedNextEntityId = 201;
+	public static Map<String, Class<? extends Entity>> moddedEntities = new HashMap<>();
 
 	static {
 		preserveVanillaEntries();
@@ -63,6 +69,10 @@ public final class ContentRegistryImpl implements ModInitializer {
 
 		for (BlockState state : Block.BLOCK_STATES) {
 			vanillaBlockStates.set(state, Block.BLOCK_STATES.getId(state));
+		}
+
+		for (Map.Entry<String, Class<? extends Entity>> entry : EntityTypeAccessor.getNameClassMap().entrySet()) {
+			vanillaEntities.set(new Pair<>(entry.getKey(), entry.getValue()), EntityTypeAccessor.getNameIdMap().get(entry.getKey()));
 		}
 	}
 
@@ -88,7 +98,10 @@ public final class ContentRegistryImpl implements ModInitializer {
 	}
 
 	public static void registerEntity(Class<? extends Entity> clazz, String name) {
+		RegistryEntityAddedCallback.EVENT.invoker().entityAdded(clazz, name);
+		unsortedEntities.put(name, clazz);
 		EntityTypeAccessor.invokeRegisterEntity(clazz, name, unorderedNextEntityId);
+		moddedEntities.put(name, clazz);
 		unorderedNextEntityId++;
 	}
 
@@ -114,6 +127,17 @@ public final class ContentRegistryImpl implements ModInitializer {
 		}
 	}
 
+	public static void fillEntitiesMapWithUnknownEntries(BiMap<Integer, String> idMap) {
+		idMap.values().removeIf(string -> !unsortedEntities.containsKey(string));
+
+		for (Map.Entry<String, Class<? extends Entity>> entry : unsortedEntities.entrySet()) {
+			if (!idMap.containsValue(entry.getKey())) {
+				int id = nextAvailableEntityId(idMap);
+				idMap.put(id, entry.getKey());
+			}
+		}
+	}
+
 	private static int nextAvailableBlockId(Map<Integer, Identifier> idMap) {
 		int i = 198;
 
@@ -131,6 +155,18 @@ public final class ContentRegistryImpl implements ModInitializer {
 
 		while (true) {
 			if ((i < 2256 || i > 2267) && !idMap.containsKey(i)) {
+				return i;
+			}
+
+			i++;
+		}
+	}
+
+	private static int nextAvailableEntityId(Map<Integer, String> idMap) {
+		int i = 201;
+
+		while (true) {
+			if (!idMap.containsKey(i)) {
 				return i;
 			}
 
@@ -176,6 +212,27 @@ public final class ContentRegistryImpl implements ModInitializer {
 
 		for (Map.Entry<Integer, Identifier> entry : idMap.entrySet()) {
 			Item.REGISTRY.add(entry.getKey(), entry.getValue(), unsortedItems.get(entry.getValue()));
+		}
+	}
+
+	public static void reorderEntityEntries(BiMap<Integer, String> idMap) {
+		EntityTypeAccessor.getNameIdMap().clear();
+		EntityTypeAccessor.getClassIdMap().clear();
+		EntityTypeAccessor.getIdClassMap().clear();
+		EntityTypeAccessor.setNameIdMap(Maps.newHashMap());
+		EntityTypeAccessor.setClassIdMap(Maps.newHashMap());
+		EntityTypeAccessor.setIdClassMap(Maps.newHashMap());
+
+		for (Pair<String, Class<? extends Entity>> pair : vanillaEntities) {
+			EntityTypeAccessor.getNameIdMap().put(pair.getLeft(), vanillaEntities.getId(pair));
+			EntityTypeAccessor.getClassIdMap().put(pair.getRight(), vanillaEntities.getId(pair));
+			EntityTypeAccessor.getIdClassMap().put(vanillaEntities.getId(pair), pair.getRight());
+		}
+
+		for (Map.Entry<Integer, String> entry : idMap.entrySet()) {
+			EntityTypeAccessor.getNameIdMap().put(entry.getValue(), entry.getKey());
+			EntityTypeAccessor.getClassIdMap().put(moddedEntities.get(entry.getValue()), entry.getKey());
+			EntityTypeAccessor.getIdClassMap().put(entry.getKey(), moddedEntities.get(entry.getValue()));
 		}
 	}
 

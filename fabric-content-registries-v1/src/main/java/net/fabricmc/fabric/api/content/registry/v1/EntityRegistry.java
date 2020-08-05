@@ -18,11 +18,15 @@ package net.fabricmc.fabric.api.content.registry.v1;
 
 import net.minecraft.entity.Entity;
 
+import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
+
 public final class EntityRegistry {
+	public static boolean entityIdsSetup = false;
+
 	private EntityRegistry() {
 	}
 
 	public void register(Class<? extends Entity> clazz, String name) {
-
+		ContentRegistryImpl.registerEntity(clazz, name);
 	}
 }

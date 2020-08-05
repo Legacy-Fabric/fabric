@@ -25,6 +25,9 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 
+/**
+ * Helper class that provides accessors for entity maps in {@link EntityType}
+ */
 @Mixin(EntityType.class)
 public interface EntityTypeAccessor {
 	@Accessor("NAME_CLASS_MAP")
@@ -55,10 +58,32 @@ public interface EntityTypeAccessor {
 		throw new AssertionError();
 	}
 
+	/**
+	 * For internal use only!
+	 */
+	@Accessor("ID_CLASS_MAP")
+	static void setIdClassMap(Map<Integer, Class<? extends Entity>> map) {
+		throw new AssertionError();
+	}
+
+	/**
+	 * For internal use only!
+	 */
+	@Accessor("CLASS_ID_MAP")
+	static void setClassIdMap(Map<Class<? extends Entity>, Integer> map) {
+		throw new AssertionError();
+	}
+
+	/**
+	 * For internal use only!
+	 */
+	@Accessor("NAME_ID_MAP")
+	static void setNameIdMap(Map<String, Integer> map) {
+		throw new AssertionError();
+	}
 
 	@Invoker
 	static void invokeRegisterEntity(Class<? extends Entity> clazz, String name, int id) {
 		throw new AssertionError();
 	}
-
 }

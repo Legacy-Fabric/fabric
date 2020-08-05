@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -42,6 +43,7 @@ import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.level.LevelProperties;
 
 import net.fabricmc.fabric.api.content.registry.v1.BlockRegistry;
+import net.fabricmc.fabric.api.content.registry.v1.EntityRegistry;
 import net.fabricmc.fabric.api.content.registry.v1.ItemRegistry;
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
@@ -88,6 +90,23 @@ public class MixinWorld {
 					writer.close();
 					ContentRegistryImpl.reorderItemEntries(idMap);
 				}
+
+				if (!EntityRegistry.entityIdsSetup) {
+					File entityIds = new File(arg.getDataFile("entities").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
+					entityIds.getParentFile().mkdirs();
+					BiMap<Integer, String> idMap = HashBiMap.create();
+					this.writeIdsToFile(entityIds, idMap);
+
+					ContentRegistryImpl.fillEntitiesMapWithUnknownEntries(idMap);
+					PrintWriter writer = new PrintWriter(new FileOutputStream(entityIds, false));
+
+					for (Map.Entry<Integer, String> entry : idMap.entrySet()) {
+						writer.write(entry.getKey() + "\t" + entry.getValue().toString() + "\n");
+					}
+
+					writer.close();
+					ContentRegistryImpl.reorderEntityEntries(idMap);
+				}
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -106,6 +125,24 @@ public class MixinWorld {
 				int index = Integer.parseInt(line.substring(0, line.indexOf('\t')));
 				String id = line.substring(line.indexOf('\t') + 1);
 				idMap.put(index, new Identifier(id));
+			}
+
+			fileReader.close();
+		}
+	}
+
+	@Unique
+	private void writeIdsToFile(File file, BiMap<Integer, String> idMap) throws IOException {
+		if (file.exists()) {
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line;
+
+			while ((line = bufferedReader.readLine()) != null) {
+				if (line.isEmpty()) continue;
+				int index = Integer.parseInt(line.substring(0, line.indexOf('\t')));
+				String id = line.substring(line.indexOf('\t') + 1);
+				idMap.put(index, id);
 			}
 
 			fileReader.close();
