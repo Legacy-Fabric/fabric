@@ -18,13 +18,15 @@ package net.fabricmc.fabric.impl.content.registries;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.Maps;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.IdList;
@@ -32,23 +34,21 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.content.registry.v1.EntityRegistry;
 import net.fabricmc.fabric.api.event.registry.v1.RegistryBlockAddedCallback;
+import net.fabricmc.fabric.api.event.registry.v1.RegistryBlockEntityAddedCallback;
 import net.fabricmc.fabric.api.event.registry.v1.RegistryEntityAddedCallback;
 import net.fabricmc.fabric.api.event.registry.v1.RegistryItemAddedCallback;
-import net.fabricmc.fabric.mixin.content.registries.BlockAccessor;
-import net.fabricmc.fabric.mixin.content.registries.EntityTypeAccessor;
-import net.fabricmc.fabric.mixin.content.registries.MutableRegistryAccessor;
-import net.fabricmc.fabric.mixin.content.registries.SimpleRegistryAccessor;
+import net.fabricmc.fabric.mixin.content.registries.*;
 
 public final class ContentRegistryImpl implements ModInitializer {
+	private static final Logger LOGGER = LogManager.getLogger();
 	public static Map<Identifier, Item> unsortedItems = new HashMap<>();
 	public static Map<Identifier, Block> unsortedBlocks = new HashMap<>();
 	public static Map<String, Class<? extends Entity>> unsortedEntities = new HashMap<>();
 	public static IdList<Pair<Identifier, Block>> vanillaBlocks = new IdList<>();
 	public static IdList<Pair<Identifier, Item>> vanillaItems = new IdList<>();
-	public static IdList<Pair<String, Class<? extends Entity>>> vanillaEntities = new IdList<>();
 	public static IdList<BlockState> vanillaBlockStates = new IdList<>();
+	public static IdList<Pair<String, Class<? extends Entity>>> vanillaEntities = new IdList<>();
 	public static int unorderedNextBlockId = 198;
 	public static int unorderedNextItemId = 4096;
 	public static int unorderedNextEntityId = 201;
@@ -103,6 +103,15 @@ public final class ContentRegistryImpl implements ModInitializer {
 		EntityTypeAccessor.invokeRegisterEntity(clazz, name, unorderedNextEntityId);
 		moddedEntities.put(name, clazz);
 		unorderedNextEntityId++;
+	}
+
+	public static void registerBlockEntity(Class<? extends BlockEntity> clazz, String name) {
+		if (BlockEntityAccessor.getStringClassMap().containsValue(name)) {
+			LOGGER.error("Duplicate block entity name found! Skipping registering");
+			return;
+		}
+		RegistryBlockEntityAddedCallback.EVENT.invoker().blockEntityAdded(clazz, name);
+		BlockEntityAccessor.invokeRegisterBlockEntity(clazz, name);
 	}
 
 	public static void fillBlocksMapWithUnknownEntries(BiMap<Integer, Identifier> idMap) {
