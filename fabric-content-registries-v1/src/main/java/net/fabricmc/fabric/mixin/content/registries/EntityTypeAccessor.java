@@ -28,20 +28,37 @@ import net.minecraft.entity.EntityType;
 @Mixin(EntityType.class)
 public interface EntityTypeAccessor {
 	@Accessor("NAME_CLASS_MAP")
-	Map<String, Class<? extends Entity>> getNameClassMap();
+	static Map<String, Class<? extends Entity>> getNameClassMap() {
+		throw new AssertionError();
+	}
 
 	@Accessor("CLASS_NAME_MAP")
-	Map<Class<? extends Entity>, String> getClassNameMap();
+	static Map<Class<? extends Entity>, String> getClassNameMap() {
+		throw new AssertionError();
+	}
+
 
 	@Accessor("ID_CLASS_MAP")
-	Map<Integer, Class<? extends Entity>> getIdClassMap();
+	static Map<Integer, Class<? extends Entity>> getIdClassMap() {
+		throw new AssertionError();
+	}
+
 
 	@Accessor("CLASS_ID_MAP")
-	Map<Class<? extends Entity>, Integer> getClassIdMap();
+	static Map<Class<? extends Entity>, Integer> getClassIdMap() {
+		throw new AssertionError();
+	}
+
 
 	@Accessor("NAME_ID_MAP")
-	Map<String, Integer> getNameIdMap();
+	static Map<String, Integer> getNameIdMap() {
+		throw new AssertionError();
+	}
+
 
 	@Invoker
-	void invokeRegisterEntity(Class<? extends Entity> clazz, String name, int id);
+	static void invokeRegisterEntity(Class<? extends Entity> clazz, String name, int id) {
+		throw new AssertionError();
+	}
+
 }
