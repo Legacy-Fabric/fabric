@@ -135,7 +135,7 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 		return false;
 	}
 
-	@Inject(method = "init", at = @At("RETURN"), remap = false)
+	@Inject(method = "init", at = @At("RETURN"))
 	private void init(CallbackInfo info) {
 		this.updateSelection();
 
