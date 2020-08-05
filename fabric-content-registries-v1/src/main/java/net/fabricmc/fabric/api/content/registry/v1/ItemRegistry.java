@@ -27,11 +27,7 @@ public final class ItemRegistry {
 	private ItemRegistry() {
 	}
 
-	public static Item register(Identifier id, Item item) {
-		return ContentRegistryImpl.registerItem(id, item);
-	}
-
-	public static Item registerBlockItem(Identifier id, Item item) {
+	public static <T extends Item> T register(Identifier id, T item) {
 		return ContentRegistryImpl.registerItem(id, item);
 	}
 }

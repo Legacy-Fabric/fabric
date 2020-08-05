@@ -27,7 +27,7 @@ public final class BlockRegistry {
 	private BlockRegistry() {
 	}
 
-	public static Block register(Identifier id, Block block) {
+	public static <T extends Block> T register(Identifier id, T block) {
 		return ContentRegistryImpl.registerBlock(id, block);
 	}
 }
