@@ -27,16 +27,16 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTracker;
 
-import net.fabricmc.fabric.api.event.world.EntityHurtCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 
 @Mixin(DamageTracker.class)
-public class MixinDamageTracker {
+public abstract class MixinDamageTracker {
 	@Shadow
 	@Final
 	private LivingEntity entity;
 
 	@Inject(at = @At("HEAD"), method = "onDamage")
 	public void onDamage(DamageSource damageSource, float originalHealth, float damage, CallbackInfo info) {
-		EntityHurtCallback.EVENT.invoker().hurtEntity(this.entity, damageSource, originalHealth, damage);
+		ServerEntityEvents.HURT.invoker().entityHurt(this.entity, damageSource, originalHealth, damage, damageSource.getAttacker());
 	}
 }

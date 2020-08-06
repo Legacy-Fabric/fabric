@@ -24,12 +24,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.entity.LightningBoltEntity;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.event.world.LightningStruckCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 
 @Mixin(LightningBoltEntity.class)
 public class MixinLightningBoltEntity {
 	@Inject(at = @At("TAIL"), method = "<init>")
 	public void onLightningStrike(World world, double d, double e, double f, CallbackInfo info) {
-		LightningStruckCallback.EVENT.invoker().onLightningStrike(world, d, e, f);
+		ServerEntityEvents.LIGHTNING_STRIKE.invoker().onLightningStrike((LightningBoltEntity) (Object) this, world, d, e, f);
 	}
 }

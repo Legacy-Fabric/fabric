@@ -30,8 +30,5 @@
     "fabricloader": ">=0.4.0",
     "fabric-api-base": "*"
   },
-  "description": "Events for the game's lifecycle.",
-  "mixins": [
-    "fabric-events-lifecycle-v0.mixins.json"
-  ]
+  "description": "Events for the game's lifecycle."
 }

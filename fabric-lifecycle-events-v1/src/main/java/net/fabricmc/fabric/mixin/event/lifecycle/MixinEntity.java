@@ -23,12 +23,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.Entity;
 
-import net.fabricmc.fabric.api.event.world.EntityKilledCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 
 @Mixin(Entity.class)
 public class MixinEntity {
 	@Inject(at = @At("HEAD"), method = "kill")
 	public void entityKilled(CallbackInfo info) {
-		EntityKilledCallback.EVENT.invoker().entityKilled((Entity) (Object) this);
+		ServerEntityEvents.KILLED.invoker().entityKilled((Entity) (Object) this);
 	}
 }
