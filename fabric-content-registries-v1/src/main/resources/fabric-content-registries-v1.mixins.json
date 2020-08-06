@@ -4,6 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BlockAccessor",
+    "BlockEntityAccessor",
+    "EntityTypeAccessor",
     "ItemAccessor",
     "MixinFurnaceBlockEntity",
     "MixinWorld",

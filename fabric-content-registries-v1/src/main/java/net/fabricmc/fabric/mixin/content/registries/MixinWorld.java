@@ -16,12 +16,7 @@
 
 package net.fabricmc.fabric.mixin.content.registries;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Map;
 
 import com.google.common.collect.BiMap;
@@ -42,6 +37,7 @@ import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.level.LevelProperties;
 
 import net.fabricmc.fabric.api.content.registry.v1.BlockRegistry;
+import net.fabricmc.fabric.api.content.registry.v1.EntityRegistry;
 import net.fabricmc.fabric.api.content.registry.v1.ItemRegistry;
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
@@ -59,7 +55,7 @@ public class MixinWorld {
 					File blockIds = new File(arg.getDataFile("blocks").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
 					blockIds.getParentFile().mkdirs();
 					BiMap<Integer, Identifier> idMap = HashBiMap.create();
-					this.writeIdsToFile(idMap, blockIds);
+					this.readIdsFromFile(idMap, blockIds);
 
 					ContentRegistryImpl.fillBlocksMapWithUnknownEntries(idMap);
 					PrintWriter writer = new PrintWriter(new FileOutputStream(blockIds, false));
@@ -76,7 +72,7 @@ public class MixinWorld {
 					File itemIds = new File(arg.getDataFile("items").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
 					itemIds.getParentFile().mkdirs();
 					BiMap<Integer, Identifier> idMap = HashBiMap.create();
-					this.writeIdsToFile(idMap, itemIds);
+					this.readIdsFromFile(idMap, itemIds);
 
 					ContentRegistryImpl.fillItemsMapWithUnknownEntries(idMap);
 					PrintWriter writer = new PrintWriter(new FileOutputStream(itemIds, false));
@@ -88,6 +84,23 @@ public class MixinWorld {
 					writer.close();
 					ContentRegistryImpl.reorderItemEntries(idMap);
 				}
+
+				if (!EntityRegistry.entityIdsSetup) {
+					File entityIds = new File(arg.getDataFile("entities").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
+					entityIds.getParentFile().mkdirs();
+					BiMap<Integer, String> idMap = HashBiMap.create();
+					this.readIdsFromFile(entityIds, idMap);
+
+					ContentRegistryImpl.fillEntitiesMapWithUnknownEntries(idMap);
+					PrintWriter writer = new PrintWriter(new FileOutputStream(entityIds, false));
+
+					for (Map.Entry<Integer, String> entry : idMap.entrySet()) {
+						writer.write(entry.getKey() + "\t" + entry.getValue().toString() + "\n");
+					}
+
+					writer.close();
+					ContentRegistryImpl.reorderEntityEntries(idMap);
+				}
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -95,7 +108,7 @@ public class MixinWorld {
 	}
 
 	@Unique
-	private void writeIdsToFile(BiMap<Integer, Identifier> idMap, File file) throws IOException {
+	private void readIdsFromFile(BiMap<Integer, Identifier> idMap, File file) throws IOException {
 		if (file.exists()) {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -106,6 +119,24 @@ public class MixinWorld {
 				int index = Integer.parseInt(line.substring(0, line.indexOf('\t')));
 				String id = line.substring(line.indexOf('\t') + 1);
 				idMap.put(index, new Identifier(id));
+			}
+
+			fileReader.close();
+		}
+	}
+
+	@Unique
+	private void readIdsFromFile(File file, BiMap<Integer, String> idMap) throws IOException {
+		if (file.exists()) {
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line;
+
+			while ((line = bufferedReader.readLine()) != null) {
+				if (line.isEmpty()) continue;
+				int index = Integer.parseInt(line.substring(0, line.indexOf('\t')));
+				String id = line.substring(line.indexOf('\t') + 1);
+				idMap.put(index, id);
 			}
 
 			fileReader.close();

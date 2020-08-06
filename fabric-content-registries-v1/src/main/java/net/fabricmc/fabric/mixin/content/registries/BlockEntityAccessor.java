@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.content.registry.v1;
+package net.fabricmc.fabric.mixin.content.registries;
 
-import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
+import java.util.Map;
 
-import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
-public final class ItemRegistry {
-	public static boolean itemIdsSetup = false;
+import net.minecraft.block.entity.BlockEntity;
 
-	private ItemRegistry() {
+@Mixin(BlockEntity.class)
+public interface BlockEntityAccessor {
+	@Invoker
+	static void invokeRegisterBlockEntity(Class<? extends BlockEntity> clazz, String name) {
+		throw new AssertionError();
 	}
 
-	public static <T extends Item> T register(Identifier id, T item) {
-		return ContentRegistryImpl.registerItem(id, item);
+	@Accessor("stringClassMap")
+	static Map<Class<? extends BlockEntity>, String> getStringClassMap() {
+		throw new AssertionError();
 	}
 }
-
