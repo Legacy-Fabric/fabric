@@ -6,7 +6,6 @@
     "MixinDamageTracker",
     "MixinEntity",
     "MixinLightningBoltEntity",
-    "MixinMinecraftServer",
     "MixinPlayerManager",
     "MixinServerPlayerEntity",
     "MixinServerPlayNetworkHandler",

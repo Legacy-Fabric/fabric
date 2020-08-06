@@ -18,10 +18,16 @@ package net.fabricmc.fabric.api.event.client;
 
 import net.minecraft.client.MinecraftClient;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+@Deprecated
 public interface ClientStartCallback {
+	/**
+	 * @deprecated Please use {@link ClientLifecycleEvents#CLIENT_STARTED}.
+	 */
+	@Deprecated
 	Event<ClientStartCallback> EVENT = EventFactory.createArrayBacked(ClientStartCallback.class,
 			(listeners) -> (client) -> {
 				for (ClientStartCallback event : listeners) {

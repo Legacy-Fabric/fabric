@@ -20,8 +20,14 @@ import net.minecraft.server.MinecraftServer;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 
+@Deprecated
 public interface ServerStartCallback {
+	/**
+	 * @deprecated Please use {@link ServerLifecycleEvents#SERVER_STARTED}
+	 */
+	@Deprecated
 	Event<ServerStartCallback> EVENT = EventFactory.createArrayBacked(ServerStartCallback.class,
 			(listeners) -> (server) -> {
 				for (ServerStartCallback event : listeners) {
