@@ -55,7 +55,7 @@ public class MixinWorld {
 					File blockIds = new File(arg.getDataFile("blocks").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
 					blockIds.getParentFile().mkdirs();
 					BiMap<Integer, Identifier> idMap = HashBiMap.create();
-					this.writeIdsToFile(idMap, blockIds);
+					this.readIdsFromFile(idMap, blockIds);
 
 					ContentRegistryImpl.fillBlocksMapWithUnknownEntries(idMap);
 					PrintWriter writer = new PrintWriter(new FileOutputStream(blockIds, false));
@@ -72,7 +72,7 @@ public class MixinWorld {
 					File itemIds = new File(arg.getDataFile("items").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
 					itemIds.getParentFile().mkdirs();
 					BiMap<Integer, Identifier> idMap = HashBiMap.create();
-					this.writeIdsToFile(idMap, itemIds);
+					this.readIdsFromFile(idMap, itemIds);
 
 					ContentRegistryImpl.fillItemsMapWithUnknownEntries(idMap);
 					PrintWriter writer = new PrintWriter(new FileOutputStream(itemIds, false));
@@ -89,7 +89,7 @@ public class MixinWorld {
 					File entityIds = new File(arg.getDataFile("entities").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
 					entityIds.getParentFile().mkdirs();
 					BiMap<Integer, String> idMap = HashBiMap.create();
-					this.writeIdsToFile(entityIds, idMap);
+					this.readIdsFromFile(entityIds, idMap);
 
 					ContentRegistryImpl.fillEntitiesMapWithUnknownEntries(idMap);
 					PrintWriter writer = new PrintWriter(new FileOutputStream(entityIds, false));
@@ -108,7 +108,7 @@ public class MixinWorld {
 	}
 
 	@Unique
-	private void writeIdsToFile(BiMap<Integer, Identifier> idMap, File file) throws IOException {
+	private void readIdsFromFile(BiMap<Integer, Identifier> idMap, File file) throws IOException {
 		if (file.exists()) {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -126,7 +126,7 @@ public class MixinWorld {
 	}
 
 	@Unique
-	private void writeIdsToFile(File file, BiMap<Integer, String> idMap) throws IOException {
+	private void readIdsFromFile(File file, BiMap<Integer, String> idMap) throws IOException {
 		if (file.exists()) {
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
