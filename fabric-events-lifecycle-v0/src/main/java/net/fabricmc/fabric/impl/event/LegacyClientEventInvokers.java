@@ -22,7 +22,13 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientItemEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.event.client.*;
+import net.fabricmc.fabric.api.event.client.ClientStartCallback;
+import net.fabricmc.fabric.api.event.client.ClientStopCallback;
+import net.fabricmc.fabric.api.event.client.ClientTickCallback;
+import net.fabricmc.fabric.api.event.client.GameOptionsSavedCallback;
+import net.fabricmc.fabric.api.event.client.ItemTooltipCallback;
+import net.fabricmc.fabric.api.event.client.LanServerPublishedCallback;
+import net.fabricmc.fabric.api.event.client.OutOfMemoryCallback;
 import net.fabricmc.fabric.api.event.world.WorldTickCallback;
 
 @Environment(EnvType.CLIENT)

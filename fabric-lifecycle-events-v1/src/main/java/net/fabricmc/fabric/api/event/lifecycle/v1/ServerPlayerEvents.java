@@ -67,7 +67,6 @@ public class ServerPlayerEvents {
 			}
 	);
 
-
 	public interface Connect {
 		void playerConnect(ClientConnection connection, ServerPlayerEntity player);
 	}

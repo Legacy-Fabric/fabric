@@ -38,7 +38,11 @@ import net.fabricmc.fabric.api.event.registry.v1.RegistryBlockAddedCallback;
 import net.fabricmc.fabric.api.event.registry.v1.RegistryBlockEntityAddedCallback;
 import net.fabricmc.fabric.api.event.registry.v1.RegistryEntityAddedCallback;
 import net.fabricmc.fabric.api.event.registry.v1.RegistryItemAddedCallback;
-import net.fabricmc.fabric.mixin.content.registries.*;
+import net.fabricmc.fabric.mixin.content.registries.MutableRegistryAccessor;
+import net.fabricmc.fabric.mixin.content.registries.BlockAccessor;
+import net.fabricmc.fabric.mixin.content.registries.BlockEntityAccessor;
+import net.fabricmc.fabric.mixin.content.registries.EntityTypeAccessor;
+import net.fabricmc.fabric.mixin.content.registries.SimpleRegistryAccessor;
 
 public final class ContentRegistryImpl implements ModInitializer {
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -110,6 +114,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 			LOGGER.error("Duplicate block entity name found! Skipping registering");
 			return;
 		}
+
 		RegistryBlockEntityAddedCallback.EVENT.invoker().blockEntityAdded(clazz, name);
 		BlockEntityAccessor.invokeRegisterBlockEntity(clazz, name);
 	}

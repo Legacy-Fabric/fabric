@@ -24,7 +24,6 @@ import net.fabricmc.fabric.api.server.event.lifecycle.v1.DedicatedServerLifecycl
 
 @Deprecated
 public interface DedicatedServerSetupCallback {
-
 	/**
 	 * @deprecated Please use {@link DedicatedServerLifecycleEvents#POST_SETUP}
 	 */

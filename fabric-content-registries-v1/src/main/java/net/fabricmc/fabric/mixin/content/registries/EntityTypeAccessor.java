@@ -26,7 +26,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 
 /**
- * Helper class that provides accessors for entity maps in {@link EntityType}
+ * Helper class that provides accessors for entity maps in {@link EntityType}.
  */
 @Mixin(EntityType.class)
 public interface EntityTypeAccessor {
@@ -40,18 +40,15 @@ public interface EntityTypeAccessor {
 		throw new AssertionError();
 	}
 
-
 	@Accessor("ID_CLASS_MAP")
 	static Map<Integer, Class<? extends Entity>> getIdClassMap() {
 		throw new AssertionError();
 	}
 
-
 	@Accessor("CLASS_ID_MAP")
 	static Map<Class<? extends Entity>, Integer> getClassIdMap() {
 		throw new AssertionError();
 	}
-
 
 	@Accessor("NAME_ID_MAP")
 	static Map<String, Integer> getNameIdMap() {

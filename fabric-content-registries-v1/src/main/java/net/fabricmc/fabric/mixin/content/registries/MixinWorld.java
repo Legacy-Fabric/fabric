@@ -16,7 +16,12 @@
 
 package net.fabricmc.fabric.mixin.content.registries;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import com.google.common.collect.BiMap;
