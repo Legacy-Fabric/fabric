@@ -3,6 +3,8 @@
   "package": "net.fabricmc.fabric.mixin.event.lifecycle",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MixinMinecraftServer",
+    "MixinServerWorld"
   ],
   "client": [
   ],
