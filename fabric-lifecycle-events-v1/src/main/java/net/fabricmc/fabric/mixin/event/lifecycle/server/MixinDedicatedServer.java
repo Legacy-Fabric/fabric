@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.event.lifecycle;
+package net.fabricmc.fabric.mixin.event.lifecycle.server;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,13 +25,13 @@ import net.minecraft.server.dedicated.DedicatedServer;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.event.server.DedicatedServerSetupCallback;
+import net.fabricmc.fabric.api.server.event.lifecycle.v1.DedicatedServerLifecycleEvents;
 
 @Environment(EnvType.SERVER)
 @Mixin(DedicatedServer.class)
 public class MixinDedicatedServer {
 	@Inject(at = @At("TAIL"), method = "setupServer")
 	public void setupServer(CallbackInfoReturnable<Boolean> info) {
-		DedicatedServerSetupCallback.EVENT.invoker().onServerSetup((DedicatedServer) (Object) this);
+		DedicatedServerLifecycleEvents.POST_SETUP.invoker().onServerSetup((DedicatedServer) (Object) this);
 	}
 }

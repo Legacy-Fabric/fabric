@@ -14,28 +14,30 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.event.server;
+package net.fabricmc.fabric.api.server.event.lifecycle.v1;
 
 import net.minecraft.server.dedicated.DedicatedServer;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.fabricmc.fabric.api.server.event.lifecycle.v1.DedicatedServerLifecycleEvents;
 
-@Deprecated
-public interface DedicatedServerSetupCallback {
-
+@Environment(EnvType.SERVER)
+public class DedicatedServerLifecycleEvents {
 	/**
-	 * @deprecated Please use {@link DedicatedServerLifecycleEvents#POST_SETUP}
+	 * Called after the properties have been read.
 	 */
-	@Deprecated
-	Event<DedicatedServerSetupCallback> EVENT = EventFactory.createArrayBacked(DedicatedServerSetupCallback.class,
+	public static final Event<ServerSetup> POST_SETUP = EventFactory.createArrayBacked(ServerSetup.class,
 			(listeners) -> (server) -> {
-				for (DedicatedServerSetupCallback event : listeners) {
+				for (ServerSetup event : listeners) {
 					event.onServerSetup(server);
 				}
 			}
 	);
 
-	void onServerSetup(DedicatedServer server);
+	@FunctionalInterface
+	public interface ServerSetup {
+		void onServerSetup(DedicatedServer server);
+	}
 }

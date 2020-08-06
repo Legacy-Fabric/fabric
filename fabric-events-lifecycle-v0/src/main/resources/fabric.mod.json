@@ -21,6 +21,9 @@
     ],
     "client": [
       "net.fabricmc.fabric.impl.event.LegacyClientEventInvokers"
+    ],
+    "server": [
+      "net.fabricmc.fabric.impl.event.LegacyServerEventInvokers"
     ]
   },
   "depends": {

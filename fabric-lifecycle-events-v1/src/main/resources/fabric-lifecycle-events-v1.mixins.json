@@ -10,6 +10,9 @@
     "client.MixinIntegratedServer",
     "client.MixinMinecraftClient"
   ],
+  "server": [
+    "server.MixinDedicatedServer"
+  ]
   "injectors": {
     "defaultRequire": 1
   }

@@ -16,9 +16,6 @@
     "MixinGameOptions",
     "MixinItem"
   ],
-  "server": [
-    "MixinDedicatedServer"
-  ],
   "injectors": {
     "defaultRequire": 1
   }
