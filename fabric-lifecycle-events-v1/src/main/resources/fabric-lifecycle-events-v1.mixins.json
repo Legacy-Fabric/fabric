@@ -8,11 +8,13 @@
     "MixinLightningBoltEntity",
     "MixinMinecraftServer",
     "MixinPlayerManager",
+    "MixinServerChunkCache",
     "MixinServerPlayerEntity",
     "MixinServerPlayNetworkHandler",
     "MixinServerWorld"
   ],
   "client": [
+    "client.MixinClientChunkCache",
     "client.MixinClientWorld",
     "client.MixinGameOptions",
     "client.MixinIntegratedServer",
