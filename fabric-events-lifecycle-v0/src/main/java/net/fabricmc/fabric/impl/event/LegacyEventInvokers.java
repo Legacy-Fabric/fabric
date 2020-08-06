@@ -17,14 +17,9 @@
 package net.fabricmc.fabric.impl.event;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerPlayerEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.*;
 import net.fabricmc.fabric.api.event.server.*;
-import net.fabricmc.fabric.api.event.world.ChunksSavedCallback;
-import net.fabricmc.fabric.api.event.world.ServerPlayerTickCallback;
-import net.fabricmc.fabric.api.event.world.WorldTickCallback;
+import net.fabricmc.fabric.api.event.world.*;
 
 public class LegacyEventInvokers implements ModInitializer {
 	@Override
@@ -37,5 +32,8 @@ public class LegacyEventInvokers implements ModInitializer {
 		ServerPlayerEvents.DISCONNECT.register(((connection, player, server) -> PlayerDisconnectCallback.EVENT.invoker().playerDisconnect(connection, player, server)));
 		ServerTickEvents.END_WORLD_TICK.register(world -> WorldTickCallback.EVENT.invoker().tick(world));
 		ServerWorldEvents.UNLOAD.register(((server, world) -> ChunksSavedCallback.EVENT.invoker().chunksSaved()));
+		ServerEntityEvents.LIGHTNING_STRIKE.register(((entity, world, x, y, z) -> LightningStruckCallback.EVENT.invoker().onLightningStrike(world, x, y, z)));
+		ServerEntityEvents.HURT.register(((entity, damageSource, originalHealth, damage, attacker) -> EntityHurtCallback.EVENT.invoker().hurtEntity(entity, damageSource, originalHealth, damage)));
+		ServerEntityEvents.KILLED.register(entity -> EntityKilledCallback.EVENT.invoker().entityKilled(entity));
 	}
 }

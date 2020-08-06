@@ -26,6 +26,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.explosion.Explosion;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 @Mixin(ServerWorld.class)
@@ -38,5 +39,10 @@ public abstract class MixinServerWorld {
 	@Inject(at = @At("TAIL"), method = "tick")
 	public void endWorldTick(CallbackInfo ci) {
 		ServerTickEvents.END_WORLD_TICK.invoker().onEndTick((ServerWorld) (Object) this);
+	}
+
+	@Inject(at = @At("TAIL"), method = "method_326")
+	public void loadEntity(Entity entity, CallbackInfo ci) {
+		ServerEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ServerWorld) (Object) this);
 	}
 }
