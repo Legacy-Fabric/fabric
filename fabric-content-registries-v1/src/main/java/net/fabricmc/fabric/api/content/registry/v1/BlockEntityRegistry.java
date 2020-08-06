@@ -16,19 +16,17 @@
 
 package net.fabricmc.fabric.api.content.registry.v1;
 
-import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
+import net.java.games.input.Component;
+
+import net.minecraft.block.entity.BlockEntity;
 
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
-public final class ItemRegistry {
-	public static boolean itemIdsSetup = false;
-
-	private ItemRegistry() {
+public final class BlockEntityRegistry {
+	private BlockEntityRegistry() {
 	}
 
-	public static <T extends Item> T register(Identifier id, T item) {
-		return ContentRegistryImpl.registerItem(id, item);
+	public static void registerBlockEntity(Class<? extends BlockEntity> clazz, Component.Identifier name) {
+		ContentRegistryImpl.registerBlockEntity(clazz, name.toString());
 	}
 }
-

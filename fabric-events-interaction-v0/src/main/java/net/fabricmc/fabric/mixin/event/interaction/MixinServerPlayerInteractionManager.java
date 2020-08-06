@@ -35,6 +35,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
+import net.fabricmc.fabric.api.event.player.BreakBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.impl.base.util.ActionResult;
@@ -76,6 +77,15 @@ public class MixinServerPlayerInteractionManager {
 		if (result.getResult() != ActionResult.PASS) {
 			info.setReturnValue(result.getResult());
 			info.cancel();
+		}
+	}
+
+	@Inject(at = @At("HEAD"), method = "method_6096", cancellable = true)
+	public void breakBlock(BlockPos blockPos, CallbackInfoReturnable<Boolean> info) {
+		ActionResult result = BreakBlockCallback.EVENT.invoker().blockBreak(this.player, this.world, blockPos);
+
+		if (result == ActionResult.FAIL) {
+			info.setReturnValue(false);
 		}
 	}
 }
