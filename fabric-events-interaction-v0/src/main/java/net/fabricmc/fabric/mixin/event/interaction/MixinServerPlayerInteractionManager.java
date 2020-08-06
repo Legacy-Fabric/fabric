@@ -81,7 +81,7 @@ public class MixinServerPlayerInteractionManager {
 	}
 
 	@Inject(at = @At("HEAD"), method = "method_6096", cancellable = true)
-	public void breakBlocK(BlockPos blockPos, CallbackInfoReturnable<Boolean> info) {
+	public void breakBlock(BlockPos blockPos, CallbackInfoReturnable<Boolean> info) {
 		ActionResult result = BreakBlockCallback.EVENT.invoker().blockBreak(this.player, this.world, blockPos);
 
 		if (result == ActionResult.FAIL) {
