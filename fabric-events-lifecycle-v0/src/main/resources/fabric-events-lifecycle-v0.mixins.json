@@ -9,10 +9,6 @@
     "MixinThreadedAnvilChunkStorage",
     "MixinWorld"
   ],
-  "client": [
-    "MixinGameOptions",
-    "MixinItem"
-  ],
   "injectors": {
     "defaultRequire": 1
   }

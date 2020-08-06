@@ -19,6 +19,7 @@ package net.fabricmc.fabric.impl.event;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientItemEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.client.*;
@@ -32,5 +33,7 @@ public class LegacyClientEventInvokers implements ClientModInitializer {
 		ClientLifecycleEvents.CLIENT_STOPPING.register(client -> ClientStopCallback.EVENT.invoker().onStopClient(client));
 		ClientLifecycleEvents.OUT_OF_MEMORY.register(client -> OutOfMemoryCallback.EVENT.invoker().onOutOfMemoryError(client));
 		ClientLifecycleEvents.SERVER_PUBLISHED.register((client, gameMode, cheats, levelInfo) -> LanServerPublishedCallback.EVENT.invoker().onServerPublished(client, gameMode, cheats, levelInfo));
+		ClientLifecycleEvents.OPTIONS_SAVED.register(options -> GameOptionsSavedCallback.EVENT.invoker().onGameOptionsSaved(options));
+		ClientItemEvents.TOOLTIP.register((stack, player, lines) -> ItemTooltipCallback.EVENT.invoker().getTooltip(stack, player, lines));
 	}
 }

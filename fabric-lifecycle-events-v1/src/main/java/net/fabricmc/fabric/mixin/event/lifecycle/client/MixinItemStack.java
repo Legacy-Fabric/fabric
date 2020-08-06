@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.event.lifecycle;
+package net.fabricmc.fabric.mixin.event.lifecycle.client;
 
 import java.util.List;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.event.client.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientItemEvents;
 
 @Environment(EnvType.CLIENT)
-@Mixin(Item.class)
-public class MixinItem {
-	@Inject(method = "method_8265", at = @At("RETURN"))
-	private void getTooltip(ItemStack itemStack, PlayerEntity playerEntity, List<String> list, boolean bl, CallbackInfo info) {
-		ItemTooltipCallback.EVENT.invoker().getTooltip(new ItemStack((Item) (Object) this), playerEntity, list);
+@Mixin(ItemStack.class)
+public class MixinItemStack {
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;method_8265(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;Ljava/util/List;Z)V", shift = At.Shift.AFTER), method = "getTooltip", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	public void appendTooltip(PlayerEntity player, boolean advanced, CallbackInfoReturnable<List<String>> cir, List<String> list, String string, int j) {
+		ClientItemEvents.TOOLTIP.invoker().appendTooltip((ItemStack) (Object) this, player, list);
 	}
 }

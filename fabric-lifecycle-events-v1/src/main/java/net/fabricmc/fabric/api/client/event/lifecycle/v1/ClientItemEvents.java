@@ -14,28 +14,33 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.event.client;
+package net.fabricmc.fabric.api.client.event.lifecycle.v1;
 
 import java.util.List;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientItemEvents;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
-@Deprecated
-public interface ItemTooltipCallback {
+public class ClientItemEvents {
 	/**
-	 * @deprecated Please use {@link ClientItemEvents#TOOLTIP}
+	 * Called after the item tooltip is built.
+	 * Usage:-
+	 * <br><code>
+	 *     ClientItemEvents.TOOLTIP.register((stack, player, lines) -> {
+	 *         lines.add(I18n.translate("translation.key"));
+	 *     });
+	 * </code>
 	 */
-	@Deprecated
-	Event<ItemTooltipCallback> EVENT = EventFactory.createArrayBacked(ItemTooltipCallback.class, (listeners) -> (stack, player, lines) -> {
-		for (ItemTooltipCallback callback : listeners) {
-			callback.getTooltip(stack, player, lines);
+	public static final Event<Tooltip> TOOLTIP = EventFactory.createArrayBacked(Tooltip.class, (listeners) -> (stack, player, lines) -> {
+		for (Tooltip callback : listeners) {
+			callback.appendTooltip(stack, player, lines);
 		}
 	});
 
-	void getTooltip(ItemStack stack, PlayerEntity player, List<String> lines);
+	public interface Tooltip {
+		void appendTooltip(ItemStack stack, PlayerEntity player, List<String> lines);
+	}
 }

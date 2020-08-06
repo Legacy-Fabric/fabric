@@ -19,6 +19,7 @@ package net.fabricmc.fabric.api.client.event.lifecycle.v1;
 import com.google.common.annotations.Beta;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.options.GameOptions;
 import net.minecraft.world.level.LevelInfo;
 
 import net.fabricmc.api.EnvType;
@@ -73,6 +74,17 @@ public final class ClientLifecycleEvents {
 			}
 	);
 
+	/**
+	 * Called after the game's options are written and saved.
+	 */
+	public static final Event<OptionsSaved> OPTIONS_SAVED = EventFactory.createArrayBacked(OptionsSaved.class,
+			(listeners) -> (options) -> {
+				for (OptionsSaved event : listeners) {
+					event.onGameOptionsSaved(options);
+				}
+			}
+	);
+
 	@FunctionalInterface
 	public interface ClientStarted {
 		void onClientStarted(MinecraftClient client);
@@ -91,5 +103,10 @@ public final class ClientLifecycleEvents {
 	@FunctionalInterface
 	public interface IntegratedServerPublished {
 		void onServerPublished(MinecraftClient client, LevelInfo.GameMode gameMode, boolean cheats, LevelInfo levelInfo);
+	}
+
+	@FunctionalInterface
+	public interface OptionsSaved {
+		void onGameOptionsSaved(GameOptions options);
 	}
 }
