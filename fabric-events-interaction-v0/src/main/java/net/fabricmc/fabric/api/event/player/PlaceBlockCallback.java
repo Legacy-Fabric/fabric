@@ -48,5 +48,5 @@ public interface PlaceBlockCallback {
 			}
 	);
 
-	ActionResult blockPlaced(PlayerEntity player, World world, BlockPos pos, Direction dir, float hitX, float  hitY, float hitZ);
+	ActionResult blockPlaced(PlayerEntity player, World world, BlockPos pos, Direction dir, float hitX, float hitY, float hitZ);
 }
