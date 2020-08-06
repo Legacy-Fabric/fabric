@@ -14,27 +14,36 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.event.lifecycle;
+package net.fabricmc.fabric.mixin.event.lifecycle.client;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.world.level.LevelInfo;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.event.client.ClientStartCallback;
-import net.fabricmc.fabric.api.event.client.ClientStopCallback;
-import net.fabricmc.fabric.api.event.client.ClientTickCallback;
-import net.fabricmc.fabric.api.event.client.OutOfMemoryCallback;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 
 @Environment(EnvType.CLIENT)
-@Mixin(MinecraftClient.class)
-public class MixinMinecraftClient {
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;cleanHeap()V"), method = "run")
-	public void catchOutOfMemoryError(CallbackInfo info) {
-		OutOfMemoryCallback.EVENT.invoker().onOutOfMemoryError((MinecraftClient) (Object) this);
+@Mixin(IntegratedServer.class)
+public class MixinIntegratedServer {
+	@Shadow
+	@Final
+	private MinecraftClient client;
+
+	@Shadow
+	@Final
+	private LevelInfo levelInfo;
+
+	@Inject(method = "method_6437", at = @At("HEAD"))
+	public void publishToLan(LevelInfo.GameMode gameMode, boolean cheats, CallbackInfoReturnable<String> info) {
+		ClientLifecycleEvents.SERVER_PUBLISHED.invoker().onServerPublished(this.client, gameMode, cheats, this.levelInfo);
 	}
 }

@@ -18,10 +18,16 @@ package net.fabricmc.fabric.api.event.client;
 
 import net.minecraft.client.MinecraftClient;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+@Deprecated
 public interface OutOfMemoryCallback {
+	/**
+	 * @deprecated Please use {@link ClientLifecycleEvents#OUT_OF_MEMORY}.
+	 */
+	@Deprecated
 	Event<OutOfMemoryCallback> EVENT = EventFactory.createArrayBacked(OutOfMemoryCallback.class,
 			(listeners) -> (client) -> {
 				for (OutOfMemoryCallback event : listeners) {

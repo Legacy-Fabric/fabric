@@ -16,7 +16,10 @@
 
 package net.fabricmc.fabric.api.client.event.lifecycle.v1;
 
+import com.google.common.annotations.Beta;
+
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.world.level.LevelInfo;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -47,6 +50,29 @@ public final class ClientLifecycleEvents {
 		}
 	});
 
+	/**
+	 * Called when an {@link OutOfMemoryError} is caught. Only run necessary cleanup actions here!
+	 */
+	@Beta
+	public static final Event<OutOfMemory> OUT_OF_MEMORY = EventFactory.createArrayBacked(OutOfMemory.class,
+			(listeners) -> (client) -> {
+				for (OutOfMemory event : listeners) {
+					event.onOutOfMemoryError(client);
+				}
+			}
+	);
+
+	/**
+	 * Called when the integrated server is published to Lan.
+	 */
+	public static final Event<IntegratedServerPublished> SERVER_PUBLISHED = EventFactory.createArrayBacked(IntegratedServerPublished.class,
+			(listeners) -> (client, gameMode, cheats, levelInfo) -> {
+				for (IntegratedServerPublished event : listeners) {
+					event.onServerPublished(client, gameMode, cheats, levelInfo);
+				}
+			}
+	);
+
 	@FunctionalInterface
 	public interface ClientStarted {
 		void onClientStarted(MinecraftClient client);
@@ -55,5 +81,15 @@ public final class ClientLifecycleEvents {
 	@FunctionalInterface
 	public interface ClientStopping {
 		void onClientStopping(MinecraftClient client);
+	}
+
+	@FunctionalInterface
+	public interface OutOfMemory {
+		void onOutOfMemoryError(MinecraftClient client);
+	}
+
+	@FunctionalInterface
+	public interface IntegratedServerPublished {
+		void onServerPublished(MinecraftClient client, LevelInfo.GameMode gameMode, boolean cheats, LevelInfo levelInfo);
 	}
 }

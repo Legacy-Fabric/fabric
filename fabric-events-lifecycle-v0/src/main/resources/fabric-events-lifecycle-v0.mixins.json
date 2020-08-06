@@ -14,9 +14,7 @@
   ],
   "client": [
     "MixinGameOptions",
-    "MixinIntegratedServer",
-    "MixinItem",
-    "MixinMinecraftClient"
+    "MixinItem"
   ],
   "server": [
     "MixinDedicatedServer"
