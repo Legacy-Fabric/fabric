@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.api.content.registry.v1;
 
+import net.java.games.input.Component;
+
 import net.minecraft.block.entity.BlockEntity;
 
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
@@ -24,7 +26,7 @@ public final class BlockEntityRegistry {
 	private BlockEntityRegistry() {
 	}
 
-	public static void registerBlockEntity(Class<? extends BlockEntity> clazz, String name) {
-		ContentRegistryImpl.registerBlockEntity(clazz, name);
+	public static void registerBlockEntity(Class<? extends BlockEntity> clazz, Component.Identifier name) {
+		ContentRegistryImpl.registerBlockEntity(clazz, name.toString());
 	}
 }

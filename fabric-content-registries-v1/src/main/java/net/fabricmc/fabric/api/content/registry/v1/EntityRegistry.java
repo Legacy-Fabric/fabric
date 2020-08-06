@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.api.content.registry.v1;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
@@ -26,7 +27,7 @@ public final class EntityRegistry {
 	private EntityRegistry() {
 	}
 
-	public void register(Class<? extends Entity> clazz, String name) {
-		ContentRegistryImpl.registerEntity(clazz, name);
+	public void register(Class<? extends Entity> clazz, Identifier name) {
+		ContentRegistryImpl.registerEntity(clazz, name.toString());
 	}
 }
