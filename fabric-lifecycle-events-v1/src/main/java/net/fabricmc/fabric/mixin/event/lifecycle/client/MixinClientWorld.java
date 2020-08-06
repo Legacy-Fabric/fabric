@@ -22,10 +22,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.server.world.ServerWorld;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ClientWorld.class)
@@ -38,5 +42,15 @@ public class MixinClientWorld {
 	@Inject(at = @At("RETURN"), method = "tick")
 	public void endWorldTick(CallbackInfo ci) {
 		ClientTickEvents.END_WORLD_TICK.invoker().onEndTick((ClientWorld) (Object) this);
+	}
+
+	@Inject(at = @At("TAIL"), method = "method_326")
+	public void unloadEntity(Entity entity, CallbackInfo ci) {
+		ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ClientWorld) (Object) this);
+	}
+
+	@Inject(at = @At("TAIL"), method = "method_372")
+	public void loadEntity(Entity entity, CallbackInfo ci) {
+		ClientEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ClientWorld) (Object) this);
 	}
 }

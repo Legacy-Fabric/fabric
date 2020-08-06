@@ -41,7 +41,7 @@ public abstract class MixinServerWorld {
 		ServerTickEvents.END_WORLD_TICK.invoker().onEndTick((ServerWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "method_326")
+	@Inject(at = @At("TAIL"), method = "method_372")
 	public void loadEntity(Entity entity, CallbackInfo ci) {
 		ServerEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ServerWorld) (Object) this);
 	}
