@@ -14,21 +14,29 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.event.lifecycle;
+package net.fabricmc.fabric.mixin.event.lifecycle.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.world.World;
+import net.minecraft.client.world.ClientWorld;
 
-import net.fabricmc.fabric.api.event.world.WorldTickCallback;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
-@Mixin(World.class)
-public class MixinWorld {
-	@Inject(at = @At("HEAD"), method = "tick")
-	public void tickBlockEntitiesAfter(CallbackInfo info) {
-		WorldTickCallback.EVENT.invoker().tick((World) (Object) this);
+@Environment(EnvType.CLIENT)
+@Mixin(ClientWorld.class)
+public class MixinClientWorld {
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;tick()V", shift = At.Shift.AFTER), method = "tick")
+	public void startWorldTick(CallbackInfo ci) {
+		ClientTickEvents.START_WORLD_TICK.invoker().onStartTick((ClientWorld) (Object) this);
+	}
+
+	@Inject(at = @At("RETURN"), method = "tick")
+	public void endWorldTick(CallbackInfo ci) {
+		ClientTickEvents.END_WORLD_TICK.invoker().onEndTick((ClientWorld) (Object) this);
 	}
 }

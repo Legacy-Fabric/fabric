@@ -10,6 +10,7 @@
     "MixinServerWorld"
   ],
   "client": [
+    "client.MixinClientWorld",
     "client.MixinIntegratedServer",
     "client.MixinItemStack",
     "client.MixinMinecraftClient"

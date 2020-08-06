@@ -23,6 +23,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientItemEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.event.client.*;
+import net.fabricmc.fabric.api.event.world.WorldTickCallback;
 
 @Environment(EnvType.CLIENT)
 public class LegacyClientEventInvokers implements ClientModInitializer {
@@ -35,5 +36,6 @@ public class LegacyClientEventInvokers implements ClientModInitializer {
 		ClientLifecycleEvents.SERVER_PUBLISHED.register((client, gameMode, cheats, levelInfo) -> LanServerPublishedCallback.EVENT.invoker().onServerPublished(client, gameMode, cheats, levelInfo));
 		ClientLifecycleEvents.OPTIONS_SAVED.register(options -> GameOptionsSavedCallback.EVENT.invoker().onGameOptionsSaved(options));
 		ClientItemEvents.TOOLTIP.register((stack, player, lines) -> ItemTooltipCallback.EVENT.invoker().getTooltip(stack, player, lines));
+		ClientTickEvents.END_WORLD_TICK.register(world -> WorldTickCallback.EVENT.invoker().tick(world));
 	}
 }

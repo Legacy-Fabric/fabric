@@ -20,8 +20,11 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.server.*;
+import net.fabricmc.fabric.api.event.world.ChunksSavedCallback;
 import net.fabricmc.fabric.api.event.world.ServerPlayerTickCallback;
+import net.fabricmc.fabric.api.event.world.WorldTickCallback;
 
 public class LegacyEventInvokers implements ModInitializer {
 	@Override
@@ -32,5 +35,7 @@ public class LegacyEventInvokers implements ModInitializer {
 		ServerPlayerEvents.END_TICK.register(player -> ServerPlayerTickCallback.EVENT.invoker().tick(player));
 		ServerPlayerEvents.CONNECT.register((connection, player) -> PlayerConnectCallback.EVENT.invoker().playerConnect(connection, player));
 		ServerPlayerEvents.DISCONNECT.register(((connection, player, server) -> PlayerDisconnectCallback.EVENT.invoker().playerDisconnect(connection, player, server)));
+		ServerTickEvents.END_WORLD_TICK.register(world -> WorldTickCallback.EVENT.invoker().tick(world));
+		ServerWorldEvents.UNLOAD.register(((server, world) -> ChunksSavedCallback.EVENT.invoker().chunksSaved()));
 	}
 }

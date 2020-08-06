@@ -18,8 +18,14 @@ package net.fabricmc.fabric.api.event.world;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 
+@Deprecated
 public interface ChunksSavedCallback {
+	/**
+	 * @deprecated Please use {@link ServerWorldEvents#UNLOAD}
+	 */
+	@Deprecated
 	Event<ChunksSavedCallback> EVENT = EventFactory.createArrayBacked(ChunksSavedCallback.class, (listeners) -> () -> {
 		for (ChunksSavedCallback callback : listeners) {
 			callback.chunksSaved();

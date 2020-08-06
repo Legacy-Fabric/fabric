@@ -6,8 +6,7 @@
     "MixinDamageTracker",
     "MixinEntity",
     "MixinLightningBoltEntity",
-    "MixinThreadedAnvilChunkStorage",
-    "MixinWorld"
+    "MixinThreadedAnvilChunkStorage"
   ],
   "injectors": {
     "defaultRequire": 1
