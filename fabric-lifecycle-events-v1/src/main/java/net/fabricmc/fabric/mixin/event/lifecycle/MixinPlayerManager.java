@@ -25,12 +25,12 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 
-import net.fabricmc.fabric.api.event.server.PlayerConnectCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerPlayerEvents;
 
 @Mixin(PlayerManager.class)
 public abstract class MixinPlayerManager {
 	@Inject(at = @At("RETURN"), method = "onPlayerConnect")
 	public void playerConnectCallback(ClientConnection connection, ServerPlayerEntity player, CallbackInfo info) {
-		PlayerConnectCallback.EVENT.invoker().playerConnect(connection, player);
+		ServerPlayerEvents.CONNECT.invoker().playerConnect(connection, player);
 	}
 }

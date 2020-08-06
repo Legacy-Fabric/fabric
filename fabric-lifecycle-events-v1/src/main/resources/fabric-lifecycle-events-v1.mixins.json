@@ -4,6 +4,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinMinecraftServer",
+    "MixinPlayerManager",
+    "MixinServerPlayerEntity",
+    "MixinServerPlayNetworkHandler",
     "MixinServerWorld"
   ],
   "client": [
@@ -12,7 +15,7 @@
   ],
   "server": [
     "server.MixinDedicatedServer"
-  ]
+  ],
   "injectors": {
     "defaultRequire": 1
   }

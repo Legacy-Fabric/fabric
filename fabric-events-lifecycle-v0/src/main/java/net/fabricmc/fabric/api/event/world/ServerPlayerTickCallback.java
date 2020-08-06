@@ -20,8 +20,14 @@ import net.minecraft.entity.player.PlayerEntity;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerPlayerEvents;
 
+@Deprecated
 public interface ServerPlayerTickCallback {
+	/**
+	 * @deprecated Please use {@link ServerPlayerEvents#END_TICK}
+	 */
+	@Deprecated
 	Event<ServerPlayerTickCallback> EVENT = EventFactory.createArrayBacked(ServerPlayerTickCallback.class,
 			(listeners) -> (player) -> {
 				for (ServerPlayerTickCallback event : listeners) {
