@@ -15,12 +15,20 @@
   "authors": [
     "FabricMC"
   ],
+  "entrypoints": {
+    "main": [
+      "net.fabricmc.fabric.impl.event.LegacyEventInvokers"
+    ],
+    "client": [
+      "net.fabricmc.fabric.impl.event.LegacyClientEventInvokers"
+    ],
+    "server": [
+      "net.fabricmc.fabric.impl.event.LegacyServerEventInvokers"
+    ]
+  },
   "depends": {
     "fabricloader": ">=0.4.0",
     "fabric-api-base": "*"
   },
-  "description": "Events for the game's lifecycle.",
-  "mixins": [
-    "fabric-events-lifecycle-v0.mixins.json"
-  ]
+  "description": "Events for the game's lifecycle."
 }

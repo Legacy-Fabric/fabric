@@ -18,10 +18,16 @@ package net.fabricmc.fabric.api.event.client;
 
 import net.minecraft.client.options.GameOptions;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+@Deprecated
 public interface GameOptionsSavedCallback {
+	/**
+	 * @deprecated Please use {@link ClientLifecycleEvents#OPTIONS_SAVED}.
+	 */
+	@Deprecated
 	Event<GameOptionsSavedCallback> EVENT = EventFactory.createArrayBacked(GameOptionsSavedCallback.class,
 			(listeners) -> (options) -> {
 				for (GameOptionsSavedCallback event : listeners) {

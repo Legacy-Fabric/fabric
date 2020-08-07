@@ -20,8 +20,14 @@ import net.minecraft.server.dedicated.DedicatedServer;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.api.server.event.lifecycle.v1.DedicatedServerLifecycleEvents;
 
+@Deprecated
 public interface DedicatedServerSetupCallback {
+	/**
+	 * @deprecated Please use {@link DedicatedServerLifecycleEvents#POST_SETUP}
+	 */
+	@Deprecated
 	Event<DedicatedServerSetupCallback> EVENT = EventFactory.createArrayBacked(DedicatedServerSetupCallback.class,
 			(listeners) -> (server) -> {
 				for (DedicatedServerSetupCallback event : listeners) {

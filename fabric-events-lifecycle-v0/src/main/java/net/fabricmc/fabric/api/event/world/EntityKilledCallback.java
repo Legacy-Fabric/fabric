@@ -20,8 +20,14 @@ import net.minecraft.entity.Entity;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 
+@Deprecated
 public interface EntityKilledCallback {
+	/**
+	 * @deprecated Please use {@link ServerEntityEvents#KILLED}
+	 */
+	@Deprecated
 	Event<EntityKilledCallback> EVENT = EventFactory.createArrayBacked(EntityKilledCallback.class, (listeners) -> (entity) -> {
 		for (EntityKilledCallback callback : listeners) {
 			callback.entityKilled(entity);

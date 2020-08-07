@@ -18,10 +18,16 @@ package net.fabricmc.fabric.api.event.client;
 
 import net.minecraft.client.MinecraftClient;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+@Deprecated
 public interface ClientStopCallback {
+	/**
+	 * @deprecated Please use {@link ClientLifecycleEvents#CLIENT_STOPPING}.
+	 */
+	@Deprecated
 	Event<ClientStopCallback> EVENT = EventFactory.createArrayBacked(ClientStopCallback.class,
 			(listeners) -> (client) -> {
 				for (ClientStopCallback event : listeners) {

@@ -1,0 +1,30 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.mixin.event.lifecycle",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinDamageTracker",
+    "MixinEntity",
+    "MixinLightningBoltEntity",
+    "MixinMinecraftServer",
+    "MixinPlayerManager",
+    "MixinServerChunkCache",
+    "MixinServerPlayerEntity",
+    "MixinServerPlayNetworkHandler",
+    "MixinServerWorld"
+  ],
+  "client": [
+    "client.MixinClientChunkCache",
+    "client.MixinClientWorld",
+    "client.MixinGameOptions",
+    "client.MixinIntegratedServer",
+    "client.MixinItemStack",
+    "client.MixinMinecraftClient"
+  ],
+  "server": [
+    "server.MixinDedicatedServer"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -21,8 +21,14 @@ import net.minecraft.network.ClientConnection;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerPlayerEvents;
 
+@Deprecated
 public interface PlayerConnectCallback {
+	/**
+	 * @deprecated Please use {@link ServerPlayerEvents#CONNECT}
+	 */
+	@Deprecated
 	Event<PlayerConnectCallback> EVENT = EventFactory.createArrayBacked(PlayerConnectCallback.class, (listeners) -> (conn, player) -> {
 		for (PlayerConnectCallback callback : listeners) {
 			callback.playerConnect(conn, player);

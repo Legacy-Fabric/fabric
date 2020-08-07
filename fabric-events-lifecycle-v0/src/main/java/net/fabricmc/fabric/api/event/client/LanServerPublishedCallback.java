@@ -19,10 +19,16 @@ package net.fabricmc.fabric.api.event.client;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.world.level.LevelInfo;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+@Deprecated
 public interface LanServerPublishedCallback {
+	/**
+	 * @deprecated Please use {@link ClientLifecycleEvents#SERVER_PUBLISHED}.
+	 */
+	@Deprecated
 	Event<LanServerPublishedCallback> EVENT = EventFactory.createArrayBacked(LanServerPublishedCallback.class,
 			(listeners) -> (client, gameMode, cheats, levelinfo) -> {
 				for (LanServerPublishedCallback event : listeners) {

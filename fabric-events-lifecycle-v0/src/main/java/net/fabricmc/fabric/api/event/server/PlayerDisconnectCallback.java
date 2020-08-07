@@ -22,8 +22,14 @@ import net.minecraft.server.MinecraftServer;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerPlayerEvents;
 
+@Deprecated
 public interface PlayerDisconnectCallback {
+	/**
+	 * @deprecated Please use {@link ServerPlayerEvents#DISCONNECT}
+	 */
+	@Deprecated
 	Event<PlayerDisconnectCallback> EVENT = EventFactory.createArrayBacked(PlayerDisconnectCallback.class, (listeners) -> (conn, player, server) -> {
 		for (PlayerDisconnectCallback callback : listeners) {
 			callback.playerDisconnect(conn, player, server);

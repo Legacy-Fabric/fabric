@@ -21,8 +21,14 @@ import net.minecraft.entity.damage.DamageSource;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 
+@Deprecated
 public interface EntityHurtCallback {
+	/**
+	 * @deprecated Please use {@link ServerEntityEvents#HURT}
+	 */
+	@Deprecated
 	Event<EntityHurtCallback> EVENT = EventFactory.createArrayBacked(EntityHurtCallback.class, (listeners) -> (entity, source, original, damage) -> {
 		for (EntityHurtCallback callback : listeners) {
 			callback.hurtEntity(entity, source, original, damage);

@@ -21,10 +21,16 @@ import java.util.List;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientItemEvents;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+@Deprecated
 public interface ItemTooltipCallback {
+	/**
+	 * @deprecated Please use {@link ClientItemEvents#TOOLTIP}
+	 */
+	@Deprecated
 	Event<ItemTooltipCallback> EVENT = EventFactory.createArrayBacked(ItemTooltipCallback.class, (listeners) -> (stack, player, lines) -> {
 		for (ItemTooltipCallback callback : listeners) {
 			callback.getTooltip(stack, player, lines);
