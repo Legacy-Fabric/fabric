@@ -19,7 +19,8 @@
     "client.MixinGameOptions",
     "client.MixinIntegratedServer",
     "client.MixinItemStack",
-    "client.MixinMinecraftClient"
+    "client.MixinMinecraftClient",
+    "client.MixinClientPlayNetworkHandler"
   ],
   "server": [
     "server.MixinDedicatedServer"
