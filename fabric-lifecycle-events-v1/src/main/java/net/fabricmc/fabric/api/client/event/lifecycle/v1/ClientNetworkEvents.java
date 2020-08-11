@@ -36,6 +36,7 @@ public class ClientNetworkEvents {
 		}
 	});
 
+	@FunctionalInterface
 	public interface CustomPayload {
 		void onCustomPayload(String channel, PacketByteBuf data);
 	}

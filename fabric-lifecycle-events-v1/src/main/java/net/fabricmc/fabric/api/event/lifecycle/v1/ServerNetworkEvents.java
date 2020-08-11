@@ -33,6 +33,7 @@ public class ServerNetworkEvents {
 		}
 	});
 
+	@FunctionalInterface
 	public interface CustomPayload {
 		void onCustomPayload(String channel, PacketByteBuf data);
 	}
