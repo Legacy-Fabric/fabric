@@ -16,20 +16,25 @@
 
 package net.fabricmc.fabric.test.client.keybinding;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.text.LiteralText;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 
+@Environment(EnvType.CLIENT)
 public class KeyBindingsTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		KeyBinding binding1 = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.fabric-key-binding-api-v1-testmod.test_keybinding_1", /* P */25, "key.category.first.test"));
-		KeyBinding binding2 = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.fabric-key-binding-api-v1-testmod.test_keybinding_2", /* U */22, "key.category.second.test"));
+		KeyBinding binding1 = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.fabric-key-binding-api-v1-testmod.test_keybinding_1", Keyboard.KEY_P, "key.category.first.test"));
+		KeyBinding binding2 = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.fabric-key-binding-api-v1-testmod.test_keybinding_2", Keyboard.KEY_U, "key.category.second.test"));
 
-		ClientTickCallback.EVENT.register(client -> {
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while (binding1.wasPressed()) {
 				client.player.sendMessage(new LiteralText("Key 1 was pressed!"));
 			}
