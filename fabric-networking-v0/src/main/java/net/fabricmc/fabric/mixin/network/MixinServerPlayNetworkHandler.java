@@ -18,6 +18,8 @@ package net.fabricmc.fabric.mixin.network;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,10 +38,9 @@ public class MixinServerPlayNetworkHandler implements PacketContext {
 	@Shadow
 	public ServerPlayerEntity player;
 
+	@Inject(method = "onCustomPayload", at = @At("HEAD"), cancellable = true)
 	public void onCustomPayload(CustomPayloadC2SPacket packet, CallbackInfo info) {
-		String channel = ((CustomPayloadPacketAccessor) packet).getChannel();
-
-		if (((ServerSidePacketRegistryImpl) ServerSidePacketRegistry.INSTANCE).accept(channel, this, ((CustomPayloadPacketAccessor) packet)::getData)) {
+		if (((ServerSidePacketRegistryImpl) ServerSidePacketRegistry.INSTANCE).accept(((CustomPayloadPacketAccessor) packet).getChannel(), this, ((CustomPayloadPacketAccessor) packet)::getData)) {
 			info.cancel();
 		}
 	}

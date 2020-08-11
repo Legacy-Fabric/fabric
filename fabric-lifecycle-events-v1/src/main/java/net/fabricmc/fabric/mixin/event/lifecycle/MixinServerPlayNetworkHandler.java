@@ -25,9 +25,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerNetworkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerPlayerEvents;
 
 @Mixin(ServerPlayNetworkHandler.class)
@@ -43,8 +45,13 @@ public class MixinServerPlayNetworkHandler {
 	@Final
 	private MinecraftServer server;
 
-	@Inject(at = @At("RETURN"), method = "disconnect")
+	@Inject(at = @At("HEAD"), method = "disconnect")
 	public void onPlayerDisconnect(String reason, CallbackInfo info) {
 		ServerPlayerEvents.DISCONNECT.invoker().playerDisconnect(this.connection, this.player, this.server);
+	}
+
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/GameEngine;)V", shift = At.Shift.AFTER), method = "onCustomPayload")
+	public void onCustomPayload(CustomPayloadC2SPacket packet, CallbackInfo ci) {
+		ServerNetworkEvents.CUSTOM_PAYLOAD.invoker().onCustomPayload(packet.method_5761(), packet.method_5763());
 	}
 }
