@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.object.builder.v1;
+package net.fabricmc.fabric.api.object.builder.v1.block;
 
 import com.google.common.annotations.Beta;
 

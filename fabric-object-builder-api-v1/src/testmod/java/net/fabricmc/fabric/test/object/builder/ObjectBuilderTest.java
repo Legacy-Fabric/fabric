@@ -20,7 +20,7 @@ import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.object.builder.v1.FabricBlockMaterial;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockMaterial;
 
 public class ObjectBuilderTest implements ModInitializer {
 	public static final Material TEST_MATERIAL = new FabricBlockMaterial(MaterialColor.WHITE)
