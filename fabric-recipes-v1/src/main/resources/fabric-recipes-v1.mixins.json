@@ -3,6 +3,7 @@
   "package": "net.fabricmc.fabric.mixin.recipes",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MixinCraftingResultSlot"
   ],
   "injectors": {
     "defaultRequire": 1
