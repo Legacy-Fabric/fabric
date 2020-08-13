@@ -19,7 +19,7 @@
     "fabricloader": ">=0.4.0",
     "fabric-api-base": "*"
   },
-  "description": "Hooks for custom recipes",
+  "description": "Hooks for recipe related operations",
   "mixins": [
     "fabric-recipes-v1.mixins.json"
   ]

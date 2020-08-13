@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "net.fabricmc.fabric.mixin.recipes",
+  "package": "net.fabricmc.fabric.mixin.recipe",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinCraftingResultSlot"

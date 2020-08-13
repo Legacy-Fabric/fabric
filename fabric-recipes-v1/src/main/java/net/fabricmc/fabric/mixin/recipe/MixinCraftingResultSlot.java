@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.recipes;
+package net.fabricmc.fabric.mixin.recipe;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,8 +29,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 
-import net.fabricmc.fabric.api.recipes.v1.RecipeEvents;
-import net.fabricmc.fabric.api.recipes.v1.FabricRecipeRemainder;
+import net.fabricmc.fabric.api.recipe.v1.RecipeEvents;
+import net.fabricmc.fabric.api.recipe.v1.FabricRecipeRemainder;
 
 @Mixin(CraftingResultSlot.class)
 public class MixinCraftingResultSlot {
@@ -51,10 +51,12 @@ public class MixinCraftingResultSlot {
 	public ItemStack[] modifyRemainders(ItemStack[] itemStacks) {
 		for (int i = 0; i < craftingInv.getInvSize(); i++) {
 			ItemStack invStack = craftingInv.getInvStack(i);
+
 			if (invStack.getItem() instanceof FabricRecipeRemainder) {
 				itemStacks[i] = ((FabricRecipeRemainder) invStack.getItem()).getRecipeRemainder(invStack.copy(), craftingInv, player);
 			}
 		}
+
 		return itemStacks;
 	}
 }
