@@ -14,34 +14,17 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.impl.biome;
+package net.fabricmc.fabric.mixin.biome;
 
-import java.util.Set;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.OreFeature;
 
-public class OreFeatureEntry extends GenericFeatureEntry<OreFeature> {
-	private final int size;
-	private final int minHeight;
-	private final int maxHeight;
-
-	public OreFeatureEntry(OreFeature feature, int size, int minHeight, int maxHeight, Set<Biome> biomes) {
-		super(feature, biomes);
-		this.size = size;
-		this.minHeight = minHeight;
-		this.maxHeight = maxHeight;
-	}
-
-	public int getSize() {
-		return size;
-	}
-
-	public int getMinHeight() {
-		return minHeight;
-	}
-
-	public int getMaxHeight() {
-		return maxHeight;
+@Mixin(Biome.class)
+public interface BiomeAccessor {
+	@Accessor("BIOMES")
+	static Biome[] getAllBiomes() {
+		throw new AssertionError();
 	}
 }

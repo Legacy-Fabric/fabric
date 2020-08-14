@@ -3,6 +3,8 @@
   "package": "net.fabricmc.fabric.mixin.biome",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BiomeAccessor",
+    "MixinBiomePopulator"
   ],
   "injectors": {
     "defaultRequire": 1

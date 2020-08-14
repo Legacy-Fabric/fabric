@@ -23,18 +23,18 @@ import net.minecraft.world.gen.feature.Feature;
 
 public class GenericFeatureEntry<T extends Feature> {
 	private final T feature;
-	private final Set<Biome> restrictionBiomes;
+	private final Set<Biome> biomes;
 
-	public GenericFeatureEntry(T feature, Set<Biome> restrictionBiomes) {
+	public GenericFeatureEntry(T feature, Set<Biome> biomes) {
 		this.feature = feature;
-		this.restrictionBiomes = restrictionBiomes;
+		this.biomes = biomes;
 	}
 
 	public T getFeature() {
 		return feature;
 	}
 
-	public Set<Biome> getRestrictionBiomes() {
-		return restrictionBiomes;
+	public Set<Biome> getBiomes() {
+		return biomes;
 	}
 }

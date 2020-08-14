@@ -17,7 +17,6 @@
 package net.fabricmc.fabric.api.biome.v1;
 
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeature;
 
 import net.fabricmc.fabric.impl.biome.BiomeFeatureRegistryImpl;
@@ -25,7 +24,5 @@ import net.fabricmc.fabric.impl.biome.BiomeFeatureRegistryImpl;
 public interface BiomeFeatureRegistry {
 	BiomeFeatureRegistry INSTANCE = new BiomeFeatureRegistryImpl();
 
-	OreFeature registerOreFeature(OreFeature ore, int size, int minHeight, int maxHeight, Biome... restrictionBiomes);
-
-	<T extends Feature> T registerFeature(T feature, Biome... restrictionBiomes);
+	OreFeature registerOreFeature(OreFeature ore, int size, int minHeight, int maxHeight, Biome... biomes);
 }
