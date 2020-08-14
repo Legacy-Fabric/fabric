@@ -39,7 +39,7 @@ public abstract class MixinBiomePopulator {
 	public void generateOres(Biome biome, CallbackInfo ci) {
 		((BiomeFeatureRegistryImpl) BiomeFeatureRegistry.INSTANCE).ores.forEach((entry) -> {
 			if(entry.getBiomes().contains(biome)) {
-				this.method_562(entry.getSize(), entry.getFeature(), entry.getMinHeight(), entry.getMaxHeight());
+				this.method_562(entry.getVeinsPerChunk(), entry.getFeature(), entry.getMinHeight(), entry.getMaxHeight());
 			}
 		});
 	}

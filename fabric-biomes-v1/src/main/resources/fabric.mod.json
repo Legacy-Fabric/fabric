@@ -13,12 +13,12 @@
     "sources": "https://github.com/FabricMC/fabric"
   },
   "authors": [
-    "FabricMC"
+    "Legacy-Fabric"
   ],
   "depends": {
     "fabricloader": ">=0.4.0"
   },
-  "description": "Hooks for adding biomes to the default world generator.",
+  "description": "Biome related hooks",
   "mixins": [
     "fabric-biomes-v1.mixins.json"
   ]
