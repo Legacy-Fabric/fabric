@@ -44,9 +44,9 @@ public class RecipeEvents {
 		 * Called when an item is crafted in a crafting table.
 		 *
 		 * <p>Upon return:
-		 * <ul>SUCCESS cancels further processing and executes {@link Item#onCraft}.
+		 * <ul><li>SUCCESS cancels further processing and executes {@link Item#onCraft}.
 		 * <li>PASS falls back to further processing.
-		 * <li>FAIL cancels further processing and does not execute {@link Item#onCraft}.
+		 * <li>FAIL cancels further processing and does not execute {@link Item#onCraft}.</ul>
 		 *
 		 * @param stack the {@link ItemStack} that is the output of the crafting recipe
 		 * @param craftingInventory the {@link CraftingInventory} that will still contain the ingredients for the crafting recipe
