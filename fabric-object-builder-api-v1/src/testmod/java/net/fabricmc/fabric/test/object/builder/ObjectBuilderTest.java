@@ -16,10 +16,13 @@
 
 package net.fabricmc.fabric.test.object.builder;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
+import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.content.registry.v1.BlockRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockMaterial;
 
 public class ObjectBuilderTest implements ModInitializer {
@@ -29,6 +32,7 @@ public class ObjectBuilderTest implements ModInitializer {
 			.doesNotBlockMovement()
 			.noCollision()
 			.setFlammable();
+	public static final Block TEST_BLOCK = BlockRegistry.register(new Identifier("fabric-object-builder-api-v1-testmod", "test_block"), new Block(TEST_MATERIAL, MaterialColor.AIR));
 
 	@Override
 	public void onInitialize() {

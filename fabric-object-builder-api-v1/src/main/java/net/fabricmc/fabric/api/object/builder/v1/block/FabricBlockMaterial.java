@@ -16,8 +16,6 @@
 
 package net.fabricmc.fabric.api.object.builder.v1.block;
 
-import com.google.common.annotations.Beta;
-
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 
@@ -112,10 +110,6 @@ public class FabricBlockMaterial extends Material {
 		return this;
 	}
 
-	/**
-	 * Subject to changes.
-	 */
-	@Beta
 	public FabricBlockMaterial requiresSilkTouch() {
 		return (FabricBlockMaterial) ((MaterialAccessor) this).invokeRequiresSilkTouch();
 	}
