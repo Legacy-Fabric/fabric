@@ -14,18 +14,27 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.biome.v1;
+package net.fabricmc.fabric.impl.biome;
+
+import java.util.Set;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.OreFeature;
 
-import net.fabricmc.fabric.impl.biome.BiomeFeatureRegistryImpl;
+public class GenericFeatureEntry<T extends Feature> {
+	private final T feature;
+	private final Set<Biome> restrictionBiomes;
 
-public interface BiomeFeatureRegistry {
-	BiomeFeatureRegistry INSTANCE = new BiomeFeatureRegistryImpl();
+	public GenericFeatureEntry(T feature, Set<Biome> restrictionBiomes) {
+		this.feature = feature;
+		this.restrictionBiomes = restrictionBiomes;
+	}
 
-	OreFeature registerOreFeature(OreFeature ore, int size, int minHeight, int maxHeight, Biome... restrictionBiomes);
+	public T getFeature() {
+		return feature;
+	}
 
-	<T extends Feature> T registerFeature(T feature, Biome... restrictionBiomes);
+	public Set<Biome> getRestrictionBiomes() {
+		return restrictionBiomes;
+	}
 }

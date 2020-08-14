@@ -16,6 +16,13 @@
 
 package net.fabricmc.fabric.impl.biome;
 
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.google.common.collect.Sets;
+import org.apache.logging.log4j.LogManager;
+
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeature;
@@ -23,13 +30,22 @@ import net.minecraft.world.gen.feature.OreFeature;
 import net.fabricmc.fabric.api.biome.v1.BiomeFeatureRegistry;
 
 public class BiomeFeatureRegistryImpl implements BiomeFeatureRegistry {
-	@Override
-	public void registerOreFeature(OreFeature ore, int count, int minHeight, int maxHeight, Biome... restrictionBiomes) {
+	public final Set<OreFeatureEntry> ores = Sets.newHashSet();
+	public final Set<GenericFeatureEntry<? extends Feature>> features = Sets.newHashSet();
 
+	@Override
+	public OreFeature registerOreFeature(OreFeature ore, int size, int minHeight, int maxHeight, Biome... restrictionBiomes) {
+		ores.add(new OreFeatureEntry(ore, size, minHeight, maxHeight, Arrays.stream(restrictionBiomes).collect(Collectors.toSet())));
+		return ore;
 	}
 
 	@Override
-	public void registerFeature(Feature feature, Biome... restrictionBiomes) {
-
+	public <T extends Feature> T registerFeature(T feature, Biome... restrictionBiomes) {
+		if(feature instanceof OreFeature) {
+			LogManager.getLogger().warn("Skipping registering feature {}. Use BiomeFeatureRegistry#registerOreFeature", feature);
+		} else {
+			features.add(new GenericFeatureEntry<>(feature, Arrays.stream(restrictionBiomes).collect(Collectors.toSet())));
+		}
+		return feature;
 	}
 }
