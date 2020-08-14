@@ -31,14 +31,13 @@ import net.fabricmc.fabric.impl.biome.BiomeFeatureRegistryImpl;
 
 @Mixin(BiomePopulator.class)
 public abstract class MixinBiomePopulator {
-
 	@Shadow
 	protected abstract void method_562(int i, Feature feature, int j, int k);
 
 	@Inject(at = @At("TAIL"), method = "method_564")
 	public void generateOres(Biome biome, CallbackInfo ci) {
 		((BiomeFeatureRegistryImpl) BiomeFeatureRegistry.INSTANCE).ores.forEach((entry) -> {
-			if(entry.getBiomes().contains(biome)) {
+			if (entry.getBiomes().contains(biome)) {
 				this.method_562(entry.getVeinsPerChunk(), entry.getFeature(), entry.getMinHeight(), entry.getMaxHeight());
 			}
 		});
