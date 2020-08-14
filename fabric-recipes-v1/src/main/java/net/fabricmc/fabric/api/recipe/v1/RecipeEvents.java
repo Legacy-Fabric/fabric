@@ -18,16 +18,24 @@ package net.fabricmc.fabric.api.recipe.v1;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.impl.base.util.ActionResult;
 
 public class RecipeEvents {
 	public static final Event<ItemCrafted> ITEM_CRAFTED = EventFactory.createArrayBacked(ItemCrafted.class, (listeners) -> (stack, craftingInventory, playerEntity) -> {
 		for (ItemCrafted callback : listeners) {
-			callback.onCraft(stack, craftingInventory, playerEntity);
+			ActionResult result = callback.onCraft(stack, craftingInventory, playerEntity);
+
+			if (result != ActionResult.PASS) {
+				return result;
+			}
 		}
+
+		return ActionResult.PASS;
 	});
 
 	@FunctionalInterface
@@ -35,10 +43,15 @@ public class RecipeEvents {
 		/**
 		 * Called when an item is crafted in a crafting table.
 		 *
+		 * <p>Upon return:
+		 * <ul>SUCCESS cancels further processing and executes {@link Item#onCraft}.
+		 * <li>PASS falls back to further processing.
+		 * <li>FAIL cancels further processing and does not execute {@link Item#onCraft}.
+		 *
 		 * @param stack the {@link ItemStack} that is the output of the crafting recipe
 		 * @param craftingInventory the {@link CraftingInventory} that will still contain the ingredients for the crafting recipe
 		 * @param playerEntity the {@link PlayerEntity} who is crafting the item
 		 */
-		void onCraft(ItemStack stack, CraftingInventory craftingInventory, PlayerEntity playerEntity);
+		ActionResult onCraft(ItemStack stack, CraftingInventory craftingInventory, PlayerEntity playerEntity);
 	}
 }

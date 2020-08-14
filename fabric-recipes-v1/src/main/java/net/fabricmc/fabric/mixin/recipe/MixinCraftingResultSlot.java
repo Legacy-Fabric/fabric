@@ -29,8 +29,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 
-import net.fabricmc.fabric.api.recipe.v1.RecipeEvents;
 import net.fabricmc.fabric.api.recipe.v1.FabricRecipeRemainder;
+import net.fabricmc.fabric.api.recipe.v1.RecipeEvents;
+import net.fabricmc.fabric.impl.base.util.ActionResult;
 
 @Mixin(CraftingResultSlot.class)
 public class MixinCraftingResultSlot {
@@ -42,9 +43,13 @@ public class MixinCraftingResultSlot {
 	@Final
 	private PlayerEntity player;
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;onCraft(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;I)V"), method = "onCrafted(Lnet/minecraft/item/ItemStack;)V")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;onCraft(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;I)V"), method = "onCrafted(Lnet/minecraft/item/ItemStack;)V", cancellable = true)
 	public void onCrafted(ItemStack stack, CallbackInfo ci) {
-		RecipeEvents.ITEM_CRAFTED.invoker().onCraft(stack, this.craftingInv, this.player);
+		ActionResult result = RecipeEvents.ITEM_CRAFTED.invoker().onCraft(stack, this.craftingInv, this.player);
+
+		if (result == ActionResult.FAIL) {
+			ci.cancel();
+		}
 	}
 
 	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/recipe/Recipes;method_71(Lnet/minecraft/inventory/CraftingInventory;Lnet/minecraft/world/World;)[Lnet/minecraft/item/ItemStack;"), method = "onTakeItem")
