@@ -8,6 +8,7 @@
     "EntityTypeAccessor",
     "ItemAccessor",
     "MixinFurnaceBlockEntity",
+    "MixinLivingEntity",
     "MixinWorld",
     "MutableRegistryAccessor",
     "SimpleRegistryAccessor"
