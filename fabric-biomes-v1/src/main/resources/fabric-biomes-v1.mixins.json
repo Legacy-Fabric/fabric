@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.mixin.armor",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+  ]
+}
