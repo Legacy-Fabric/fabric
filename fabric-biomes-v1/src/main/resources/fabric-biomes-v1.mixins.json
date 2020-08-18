@@ -6,5 +6,7 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "AccessorLakesFeature",
+    "MixinOverworldChunkGenerator"
   ]
 }
