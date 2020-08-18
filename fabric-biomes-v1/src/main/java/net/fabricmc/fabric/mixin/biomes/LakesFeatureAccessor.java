@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.world.gen.feature.LakesFeature;
 
 @Mixin(LakesFeature.class)
-public interface AccessorLakesFeature {
+public interface LakesFeatureAccessor {
 	@Accessor("field_1932")
 	Block getBlock();
 }
