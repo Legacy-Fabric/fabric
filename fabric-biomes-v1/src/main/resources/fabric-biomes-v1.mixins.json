@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "net.fabricmc.fabric.mixin.armor",
+  "package": "net.fabricmc.fabric.mixin.biomes",
   "compatibilityLevel": "JAVA_8",
   "injectors": {
     "defaultRequire": 1
