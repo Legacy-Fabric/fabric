@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.mixin.object.builder",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MaterialAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

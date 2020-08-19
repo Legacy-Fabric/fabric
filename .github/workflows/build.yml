@@ -4,7 +4,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java-version: [1.8, 11, 14]
+        java-version: [1.8, 11]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v1
