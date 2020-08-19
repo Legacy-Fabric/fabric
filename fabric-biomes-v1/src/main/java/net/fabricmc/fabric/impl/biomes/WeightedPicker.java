@@ -29,13 +29,15 @@ import net.fabricmc.fabric.impl.biomes.WeightedPicker.WeightedEntry;
  */
 public final class WeightedPicker<T extends WeightedEntry> {
 	private double currentTotal;
-	private final List<T> entries = new ArrayList<>();;
+	private boolean modded = false;
+	private final List<T> entries = new ArrayList<>();
 
 	public WeightedPicker() {
 		currentTotal = 0;
 	}
 
 	void add(final T entry) {
+		this.modded = true;
 		this.currentTotal += entry.getWeight();
 		entry.updateUpperWeightBound(this.currentTotal);
 		this.entries.add(entry);
@@ -48,6 +50,14 @@ public final class WeightedPicker<T extends WeightedEntry> {
 	public T pickRandom(LayerRandom random) {
 		double target = random.nextInt(Integer.MAX_VALUE) * getCurrentWeightTotal() / Integer.MAX_VALUE;
 		return this.search(target);
+	}
+
+	public boolean isModded() {
+		return this.modded;
+	}
+
+	public void setUnmodded() {
+		this.modded = false;
 	}
 
 	/**
@@ -80,6 +90,6 @@ public final class WeightedPicker<T extends WeightedEntry> {
 	public interface WeightedEntry {
 		double getUpperWeightBound();
 		double getWeight();
-		void updateUpperWeightBound(double currentTotal);
+		void updateUpperWeightBound(double upperWeightBound);
 	}
 }
