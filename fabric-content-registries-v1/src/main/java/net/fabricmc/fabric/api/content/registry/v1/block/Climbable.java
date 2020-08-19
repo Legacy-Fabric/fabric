@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.content.registry.v1;
+package net.fabricmc.fabric.api.content.registry.v1.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
