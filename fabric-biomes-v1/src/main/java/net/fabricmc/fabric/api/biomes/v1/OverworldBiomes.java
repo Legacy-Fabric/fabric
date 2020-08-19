@@ -16,10 +16,34 @@
 
 package net.fabricmc.fabric.api.biomes.v1;
 
+import javax.annotation.Nullable;
+
+import net.fabricmc.fabric.impl.biomes.InternalBiomeUtils;
+import net.minecraft.world.biome.Biome;
+
 /**
  * API that exposes some internals of the default overworld biome source.
  */
 public final class OverworldBiomes {
 	private OverworldBiomes() {
+	}
+
+	/**
+	 * Sets the deep ocean variant of this biome.
+	 * @param original the original ocean biome.
+	 * @param deepOcean the deep ocean variant of this biome.
+	 */
+	public static void setDeepOcean(Biome original, Biome deepOcean) {
+		InternalBiomeUtils.setDeepOcean(original, deepOcean);
+	}
+
+	/**
+	 * Sets the deep ocean variant of this biome.
+	 * @param original the original ocean biome.
+	 * @param deepOcean the deep ocean variant of this biome.
+	 * @param climates the climates for the variant to apply in. If none are given, applies to every climate.
+	 */
+	public static void addVariant(Biome original, Biome variant, double chance, Climate... climates) {
+		InternalBiomeUtils.addVariant(original, variant, chance, climates);
 	}
 }

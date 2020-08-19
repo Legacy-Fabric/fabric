@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import net.fabricmc.fabric.impl.biomes.InternalBiomeUtils;
+import net.fabricmc.fabric.impl.biomes.LayerRandom;
 import net.fabricmc.fabric.impl.biomes.WeightedBiomeEntry;
 import net.fabricmc.fabric.impl.biomes.WeightedPicker;
 import net.minecraft.world.biome.Biome;
@@ -54,6 +55,15 @@ public final class Climate {
 	 */
 	public boolean isModded() {
 		return this.biomePicker.isModded();
+	}
+
+	/**
+	 * Picks a random biome or one of its variants.
+	 */
+	public Biome pickBiome(LayerRandom rand) {
+		Biome result = this.biomePicker.pickRandom(rand).getBiome();
+		result = InternalBiomeUtils.transformVariants(result, rand, this);
+		return result;
 	}
 
 	// Must be the first climates created, in this order!

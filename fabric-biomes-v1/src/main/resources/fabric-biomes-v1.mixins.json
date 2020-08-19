@@ -8,6 +8,7 @@
   "mixins": [
     "LakesFeatureAccessor",
     "MixinLayer",
-    "MixinOverworldChunkGenerator"
+    "MixinOverworldChunkGenerator",
+    "MixinSetBaseBiomesLayer"
   ]
 }
