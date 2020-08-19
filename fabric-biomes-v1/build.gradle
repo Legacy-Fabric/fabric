@@ -2,5 +2,5 @@ archivesBaseName = "fabric-biomes-v1"
 version = getSubprojectVersion(project, "1.0.0")
 
 dependencies {
-	compile project(path: ':fabric-biomes-v1', configuration: 'dev')
+	compile project(path: ':fabric-api-base', configuration: 'dev')
 }
