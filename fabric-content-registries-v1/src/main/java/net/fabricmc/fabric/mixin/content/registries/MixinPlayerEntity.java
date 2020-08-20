@@ -26,7 +26,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 
-import net.fabricmc.fabric.api.content.registry.v1.item.UseTickable;
+import net.fabricmc.fabric.api.content.registry.v1.UseTickable;
 
 @Mixin(PlayerEntity.class)
 public class MixinPlayerEntity {

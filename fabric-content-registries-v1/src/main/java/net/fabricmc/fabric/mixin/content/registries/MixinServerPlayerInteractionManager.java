@@ -26,7 +26,7 @@ import net.minecraft.server.network.ServerPlayerInteractionManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.content.registry.v1.block.PlayerBlockBreakListener;
+import net.fabricmc.fabric.api.content.registry.v1.PlayerBlockHarvestListener;
 
 @Mixin(ServerPlayerInteractionManager.class)
 public class MixinServerPlayerInteractionManager {
@@ -38,8 +38,8 @@ public class MixinServerPlayerInteractionManager {
 
 	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/network/ServerPlayerInteractionManager;method_6096(Lnet/minecraft/util/math/BlockPos;)Z"), method = "method_6094", print = true)
 	public boolean modifyCanBreakBlock(boolean bl, BlockPos pos) {
-		if (this.world.getBlockState(pos).getBlock() instanceof PlayerBlockBreakListener) {
-			return ((PlayerBlockBreakListener) this.world.getBlockState(pos).getBlock()).canHarvest(this.world, pos, this.player);
+		if (this.world.getBlockState(pos).getBlock() instanceof PlayerBlockHarvestListener) {
+			return ((PlayerBlockHarvestListener) this.world.getBlockState(pos).getBlock()).canHarvest(this.world, pos, this.player);
 		}
 
 		return bl;

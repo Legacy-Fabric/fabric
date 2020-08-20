@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.content.registry.v1.block;
+package net.fabricmc.fabric.api.content.registry.v1;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public interface PlayerBlockBreakListener {
+public interface PlayerBlockHarvestListener {
 	/**
 	 * Determines if a player can break this block and collect its drops.
 	 * @param world The world that the block is being broken in

@@ -28,7 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.content.registry.v1.block.Climbable;
+import net.fabricmc.fabric.api.content.registry.v1.Climbable;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity {
