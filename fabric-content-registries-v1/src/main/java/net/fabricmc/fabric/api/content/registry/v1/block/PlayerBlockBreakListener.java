@@ -23,11 +23,10 @@ import net.minecraft.world.World;
 public interface PlayerBlockBreakListener {
 	/**
 	 * Determines if a player can break this block and collect its drops.
-	 *
 	 * @param world The world that the block is being broken in
 	 * @param pos The block's position
 	 * @param player The player breaking the block.
 	 * @return Whether the block should drop anything when broken.
 	 */
-    boolean canHarvest(World world, BlockPos pos, PlayerEntity player);
+	boolean canHarvest(World world, BlockPos pos, PlayerEntity player);
 }

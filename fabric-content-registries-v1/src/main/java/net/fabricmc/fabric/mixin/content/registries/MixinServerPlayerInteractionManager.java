@@ -41,6 +41,7 @@ public class MixinServerPlayerInteractionManager {
 		if (this.world.getBlockState(pos).getBlock() instanceof PlayerBlockBreakListener) {
 			return ((PlayerBlockBreakListener) this.world.getBlockState(pos).getBlock()).canHarvest(this.world, pos, this.player);
 		}
+
 		return bl;
 	}
 }

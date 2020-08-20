@@ -21,7 +21,7 @@ import net.minecraft.item.ItemStack;
 
 public interface UseTickable {
 	/**
-	 * Called each tick when the item is being used
+	 * Called each tick when the item is being used.
 	 * @param stack The {@link ItemStack} being used
 	 * @param player The {@link PlayerEntity} using the item
 	 * @param time The amount of time in ticks that the item is being used
