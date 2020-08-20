@@ -10,6 +10,7 @@
     "MixinFurnaceBlockEntity",
     "MixinLivingEntity",
     "MixinPlayerEntity",
+    "MixinServerPlayerInteractionManager",
     "MixinWorld",
     "MutableRegistryAccessor",
     "SimpleRegistryAccessor"
