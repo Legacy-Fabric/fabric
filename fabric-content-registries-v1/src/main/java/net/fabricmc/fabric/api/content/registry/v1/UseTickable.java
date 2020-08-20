@@ -19,6 +19,7 @@ package net.fabricmc.fabric.api.content.registry.v1;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
+@FunctionalInterface
 public interface UseTickable {
 	/**
 	 * Called each tick when the item is being used.

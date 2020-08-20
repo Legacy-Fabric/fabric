@@ -20,6 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+@FunctionalInterface
 public interface PlayerBlockHarvestListener {
 	/**
 	 * Determines if a player can break this block and collect its drops.
