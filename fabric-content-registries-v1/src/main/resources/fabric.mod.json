@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "icon": "assets/fabric-content-registries-v1/icon.png",
   "contact": {
-    "homepage": "https://fabricmc.net",
+    "homepage": "https://legacy-fabric.github.io/",
     "irc": "irc://irc.esper.net:6667/legacyfabric",
     "issues": "https://github.com/Legacy-Fabric/fabric/issues",
     "sources": "https://github.com/Legacy-Fabric/fabric"
@@ -15,8 +15,6 @@
   "authors": [
     "Legacy-Fabric"
   ],
-  "entrypoints": {
-  },
   "description": "Adds registries to content.",
   "mixins": [
     "fabric-content-registries-v1.mixins.json"
