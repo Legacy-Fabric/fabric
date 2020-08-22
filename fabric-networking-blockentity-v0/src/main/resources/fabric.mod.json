@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "fabric-networking-blockentity-v0",
+  "name": "Fabric Networking Block Entity (v0)",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/fabric-networking-blockentity-v0/icon.png",
+  "contact": {
+    "homepage": "https://legacy-fabric.github.io/",
+    "irc": "irc://irc.esper.net:6667/legacyfabric",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "Legacy-Fabric"
+  ],
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "fabric-api-base": "*"
+  },
+  "description": "Block entity networking hooks. ",
+  "mixins": [
+    "fabric-networking-blockentity-v0.mixins.json"
+  ]
+}
