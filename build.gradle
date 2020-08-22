@@ -81,10 +81,10 @@ allprojects {
 	}
 
 	dependencies {
-		compile "com.google.guava:guava:23.5-jre"
+		implementation "com.google.guava:guava:23.5-jre"
 		minecraft "com.mojang:minecraft:$Globals.mcVersion"
 		mappings "net.fabricmc:yarn:${Globals.mcVersion}${Globals.yarnVersion}:v2"
-		modCompile("net.fabricmc:fabric-loader-1.8.9:0.8.2+build.202004131640") {
+		modImplementation("net.fabricmc:fabric-loader-1.8.9:0.8.2+build.202004131640") {
 			exclude module: "guava"
 		}
 	}
