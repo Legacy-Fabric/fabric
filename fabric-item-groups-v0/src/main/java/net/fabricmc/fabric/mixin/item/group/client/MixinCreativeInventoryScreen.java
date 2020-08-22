@@ -146,7 +146,7 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(51, xPos + 29, yPos, FabricCreativeGuiComponents.Type.PREVIOUS, this));
 	}
 
-	@Inject(method = "buttonPressed", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "buttonClicked", at = @At("HEAD"), cancellable = true)
 	public void creativeButtonClicked(ButtonWidget button, CallbackInfo ci) {
 		if (button.id == 50) {
 			fabric_nextPage();

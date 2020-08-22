@@ -37,6 +37,6 @@ public class MixinClass1183 {
 			return String.format("%s:textures/models/armor/%s_layer_%d.png", Item.REGISTRY.getIdentifier(armorItem).getNamespace(), ((FabricArmorItem) armorItem).getArmorMaterial().getName(), bl ? 2 : 1);
 		}
 
-		return String.format("textures/models/armor/%s_layer_%d%s.png", armorItem.getMaterial().getTranslationKey(), bl ? 2 : 1, string == null ? "" : String.format("_%s", string));
+		return String.format("textures/models/armor/%s_layer_%d%s.png", armorItem.getMaterial().getName(), bl ? 2 : 1, string == null ? "" : String.format("_%s", string));
 	}
 }

@@ -21,6 +21,8 @@ import java.util.Random;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.armor.v1.ArmorMaterial;
 import net.fabricmc.fabric.mixin.armor.MixinArmorItem;
 
@@ -30,7 +32,7 @@ public class FabricArmorItem extends ArmorItem {
 	private final int slotId;
 
 	public FabricArmorItem(ArmorMaterial material, EquipmentSlot slot) {
-		super(/*Can be anything but null*/stack.DIAMOND, new Random().nextInt(16777216), slot.getSlotId());
+		super(Material.DIAMOND, new Random().nextInt(16777216), slot.getSlotId());
 		this.material = material;
 		this.slotId = slot.getSlotId();
 		((MixinArmorItem) this).setProtection(material.getProtectionValue(slot.getSlotId()));
@@ -64,26 +66,27 @@ public class FabricArmorItem extends ArmorItem {
 		return this.material.getRepairIngredient().test(ingredient);
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Deprecated
 	@Override
-	public int method_8257(ItemStack itemStack, int i) {
-		return i;
+	public int getDisplayColor(ItemStack stack, int color) {
+		return super.getDisplayColor(stack, color);
 	}
 
 	@Deprecated
 	@Override
-	public int method_8169(ItemStack itemStack) {
-		return 16777215;
+	public int getColor(ItemStack stack) {
+		return super.getColor(stack);
 	}
 
 	@Deprecated
 	@Override
-	public void method_8171(ItemStack stack) {
+	public void removeColor(ItemStack stack) {
 	}
 
 	@Deprecated
 	@Override
-	public void method_8170(ItemStack itemStack, int i) {
+	public void setColor(ItemStack stack, int color) {
 	}
 
 	@Deprecated
