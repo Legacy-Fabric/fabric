@@ -31,6 +31,6 @@ public enum ActionResult {
 	}
 
 	public static ActionResult success(boolean shouldSwingHand) {
-		return shouldSwingHand?SUCCESS:CONSUME;
+		return shouldSwingHand ? SUCCESS : CONSUME;
 	}
 }
