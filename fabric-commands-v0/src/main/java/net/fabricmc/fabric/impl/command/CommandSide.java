@@ -17,7 +17,7 @@
 package net.fabricmc.fabric.impl.command;
 
 public enum CommandSide {
-	CLIENT,
-	SERVER,
+	INTEGRATED,
+	DEDICATED,
 	COMMON
 }
