@@ -37,7 +37,7 @@ public class MixinCreativeInventoryScreen {
 	@Inject(at = @At(value = "INVOKE", target = "Ljava/util/List;set(ILjava/lang/Object;)Ljava/lang/Object;", shift = At.Shift.AFTER, remap = false), method = "renderTooltip", locals = LocalCapture.CAPTURE_FAILSOFT)
 	public void renderTooltipHook(ItemStack stack, int x, int y, CallbackInfo ci, List<String> list, int i) {
 		if (stack.getItem() instanceof RarityProvider) {
-			list.set(i, ((RarityProvider) stack.getItem()).getFormatting() + list.get(i));
+			list.set(i, ((RarityProvider) stack.getItem()).getFormatting(stack) + list.get(i));
 		}
 	}
 }

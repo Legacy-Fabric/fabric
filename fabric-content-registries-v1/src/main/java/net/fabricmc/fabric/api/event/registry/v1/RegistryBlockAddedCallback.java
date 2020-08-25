@@ -22,11 +22,11 @@ import net.minecraft.util.Identifier;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
-/**
- * Please use {@link FabricRegistryEntryAddedEvents#BLOCK} instead!
- */
-@Deprecated // For removal
+@Deprecated
 public interface RegistryBlockAddedCallback {
+	/**
+	 * Please use {@link FabricRegistryEntryAddedEvents#BLOCK} instead!
+	 */
 	@Deprecated
 	Event<RegistryBlockAddedCallback> EVENT = EventFactory.createArrayBacked(RegistryBlockAddedCallback.class, (listeners) -> (id, block) -> {
 		for (RegistryBlockAddedCallback callback : listeners) {

@@ -21,11 +21,11 @@ import net.minecraft.entity.Entity;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
-/**
- * Please use {@link FabricRegistryEntryAddedEvents#ENTITY} instead!
- */
 @Deprecated
 public interface RegistryEntityAddedCallback {
+	/**
+	 * Please use {@link FabricRegistryEntryAddedEvents#ENTITY} instead!
+	 */
 	@Deprecated
 	Event<RegistryEntityAddedCallback> EVENT = EventFactory.createArrayBacked(RegistryEntityAddedCallback.class, (listeners) -> (name, entityClass) -> {
 		for (RegistryEntityAddedCallback callback : listeners) {

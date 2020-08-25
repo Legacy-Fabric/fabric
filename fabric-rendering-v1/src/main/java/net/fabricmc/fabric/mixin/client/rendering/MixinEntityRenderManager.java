@@ -39,10 +39,10 @@ import net.fabricmc.fabric.impl.client.render.EntityRendererRegistryImpl;
 @Mixin(EntityRenderDispatcher.class)
 public class MixinEntityRenderManager {
 	@Shadow
-	private Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> classMap;
+	private Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> renderers;
 
 	@Inject(method = "<init>", at = @At("RETURN"), require = 0)
 	public void init(TextureManager textureManager, ItemRenderer itemRenderer, CallbackInfo ci) {
-		((EntityRendererRegistryImpl) EntityRendererRegistry.INSTANCE).initialize((EntityRenderDispatcher) (Object) this, textureManager, itemRenderer, classMap);
+		((EntityRendererRegistryImpl) EntityRendererRegistry.INSTANCE).initialize((EntityRenderDispatcher) (Object) this, textureManager, itemRenderer, this.renderers);
 	}
 }

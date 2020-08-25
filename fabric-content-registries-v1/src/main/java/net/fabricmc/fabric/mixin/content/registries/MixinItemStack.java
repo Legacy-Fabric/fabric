@@ -39,7 +39,7 @@ public abstract class MixinItemStack {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/text/Style;setColor(Lnet/minecraft/util/Formatting;)Lnet/minecraft/text/Style;", shift = At.Shift.AFTER), method = "toHoverableText", locals = LocalCapture.CAPTURE_FAILSOFT)
 	public void toHoverableTextHook(CallbackInfoReturnable<Text> cir, LiteralText literalText, Text text, CompoundTag compoundTag) {
 		if (this.getItem() instanceof RarityProvider) {
-			text.getStyle().setColor(((RarityProvider) this.getItem()).getFormatting());
+			text.getStyle().setColor(((RarityProvider) this.getItem()).getFormatting((ItemStack) (Object) this));
 		}
 	}
 }

@@ -26,7 +26,7 @@ import net.minecraft.util.Identifier;
  * This will override the value returned in {@link Item#getRarity(ItemStack)}.
  */
 public interface RarityProvider {
-	Identifier getId();
+	Identifier getId(ItemStack stack);
 
-	Formatting getFormatting();
+	Formatting getFormatting(ItemStack stack);
 }
