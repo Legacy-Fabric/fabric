@@ -22,14 +22,15 @@ public enum ActionResult {
 	PASS,
 	FAIL;
 
-	ActionResult() {
-	}
-
 	public boolean isAccepted() {
 		return this == SUCCESS || this == CONSUME;
 	}
 
 	public boolean shouldSwingHand() {
 		return this == SUCCESS;
+	}
+
+	public static ActionResult success(boolean shouldSwingHand) {
+		return shouldSwingHand?SUCCESS:CONSUME;
 	}
 }

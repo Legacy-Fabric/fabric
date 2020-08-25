@@ -25,6 +25,8 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.impl.item.group.ItemGroupExtensions;
 
 public class FabricItemGroupBuilder {
@@ -62,14 +64,15 @@ public class FabricItemGroupBuilder {
 				return stackSupplier.get().getItem();
 			}
 
+			@Environment(EnvType.CLIENT)
 			@Override
-			public void method_8192(List<ItemStack> list) {
+			public void showItems(List<ItemStack> list) {
 				if (stacksForDisplay != null) {
 					stacksForDisplay.accept(list);
 					return;
 				}
 
-				super.method_8192(list);
+				super.showItems(list);
 			}
 		};
 	}

@@ -82,7 +82,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 		unsortedBlocks.put(id, block);
 		Block.REGISTRY.add(unorderedNextBlockId, id, block);
 
-		for (BlockState state : block.getStateManager().method_1228()) {
+		for (BlockState state : block.getStateManager().getBlockStates()) {
 			Block.BLOCK_STATES.set(state, unorderedNextBlockId << 4 | block.getData(state));
 		}
 
@@ -204,7 +204,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 			Block block = unsortedBlocks.get(entry.getValue());
 			Block.REGISTRY.add(entry.getKey(), entry.getValue(), block);
 
-			for (BlockState state : block.getStateManager().method_1228()) {
+			for (BlockState state : block.getStateManager().getBlockStates()) {
 				states.set(state, unorderedNextBlockId << 4 | block.getData(state));
 			}
 		}

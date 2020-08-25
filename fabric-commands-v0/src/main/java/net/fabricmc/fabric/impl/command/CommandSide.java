@@ -17,7 +17,23 @@
 package net.fabricmc.fabric.impl.command;
 
 public enum CommandSide {
-	INTEGRATED,
-	DEDICATED,
-	COMMON
+	INTEGRATED(false, true),
+	DEDICATED(true, false),
+	COMMON(true, true);
+
+	private final boolean dedicated;
+	private final boolean integrated;
+
+	CommandSide(boolean dedicated, boolean integrated) {
+		this.dedicated = dedicated;
+		this.integrated = integrated;
+	}
+
+	public boolean isDedicated() {
+		return dedicated;
+	}
+
+	public boolean isIntegrated() {
+		return integrated;
+	}
 }

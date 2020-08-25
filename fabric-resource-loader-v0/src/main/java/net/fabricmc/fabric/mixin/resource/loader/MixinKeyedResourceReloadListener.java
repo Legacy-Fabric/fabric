@@ -22,10 +22,8 @@ import java.util.Locale;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.class_1254;
-import net.minecraft.class_1255;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.EntityRenderer;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -33,13 +31,18 @@ import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.texture.TextureManager;
+import net.minecraft.resource.FoliageColorResourceReloadListener;
+import net.minecraft.resource.GrassColorResourceReloadListener;
 import net.minecraft.util.Identifier;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 
+@Environment(EnvType.CLIENT)
 public class MixinKeyedResourceReloadListener {
 	@Mixin({
-			SoundManager.class, EntityRenderer.class, LanguageManager.class, class_1255.class, class_1254.class, TextureManager.class,
+			SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorResourceReloadListener.class, FoliageColorResourceReloadListener.class, TextureManager.class,
 			WorldRenderer.class, BlockRenderManager.class, ItemRenderer.class, BakedModelManager.class, TextRenderer.class
 	})
 	public abstract static class Client implements IdentifiableResourceReloadListener {
