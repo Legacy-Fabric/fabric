@@ -36,7 +36,7 @@ public class MixinServerPlayerInteractionManager {
 	@Shadow
 	public ServerPlayerEntity player;
 
-	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/network/ServerPlayerInteractionManager;method_6096(Lnet/minecraft/util/math/BlockPos;)Z"), method = "method_6094", print = true)
+	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/network/ServerPlayerInteractionManager;method_6096(Lnet/minecraft/util/math/BlockPos;)Z"), method = "method_6094")
 	public boolean modifyCanBreakBlock(boolean bl, BlockPos pos) {
 		if (this.world.getBlockState(pos).getBlock() instanceof PlayerBlockHarvestListener) {
 			return ((PlayerBlockHarvestListener) this.world.getBlockState(pos).getBlock()).canHarvest(this.world, pos, this.player);
