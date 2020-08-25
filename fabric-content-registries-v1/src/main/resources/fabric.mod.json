@@ -15,6 +15,11 @@
   "authors": [
     "Legacy-Fabric"
   ],
+  "entrypoints": {
+    "main": [
+      "net.fabricmc.fabric.impl.content.registries.LegacyEventInvokers"
+    ]
+  },
   "description": "Adds registries to content.",
   "mixins": [
     "fabric-content-registries-v1.mixins.json"
