@@ -34,10 +34,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.registry.v1.RegistryBlockAddedCallback;
-import net.fabricmc.fabric.api.event.registry.v1.RegistryBlockEntityAddedCallback;
-import net.fabricmc.fabric.api.event.registry.v1.RegistryEntityAddedCallback;
-import net.fabricmc.fabric.api.event.registry.v1.RegistryItemAddedCallback;
+import net.fabricmc.fabric.api.event.registry.v1.FabricRegistryEntryAddedEvents;
 import net.fabricmc.fabric.mixin.content.registries.MutableRegistryAccessor;
 import net.fabricmc.fabric.mixin.content.registries.BlockAccessor;
 import net.fabricmc.fabric.mixin.content.registries.BlockEntityAccessor;
@@ -81,7 +78,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 	}
 
 	public static <T extends Block> T registerBlock(Identifier id, T block) {
-		RegistryBlockAddedCallback.EVENT.invoker().blockAdded(id, block);
+		FabricRegistryEntryAddedEvents.BLOCK.invoker().blockAdded(id, block);
 		unsortedBlocks.put(id, block);
 		Block.REGISTRY.add(unorderedNextBlockId, id, block);
 
@@ -94,7 +91,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 	}
 
 	public static <T extends Item> T registerItem(Identifier id, T item) {
-		RegistryItemAddedCallback.EVENT.invoker().itemAdded(id, item);
+		FabricRegistryEntryAddedEvents.ITEM.invoker().itemAdded(id, item);
 		unsortedItems.put(id, item);
 		Item.REGISTRY.add(unorderedNextItemId, id, item);
 		unorderedNextItemId++;
@@ -102,7 +99,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 	}
 
 	public static void registerEntity(Class<? extends Entity> clazz, String name) {
-		RegistryEntityAddedCallback.EVENT.invoker().entityAdded(clazz, name);
+		FabricRegistryEntryAddedEvents.ENTITY.invoker().entityAdded(clazz, name);
 		unsortedEntities.put(name, clazz);
 		EntityTypeAccessor.invokeRegisterEntity(clazz, name, unorderedNextEntityId);
 		moddedEntities.put(name, clazz);
@@ -115,7 +112,7 @@ public final class ContentRegistryImpl implements ModInitializer {
 			return;
 		}
 
-		RegistryBlockEntityAddedCallback.EVENT.invoker().blockEntityAdded(clazz, name);
+		FabricRegistryEntryAddedEvents.BLOCK_ENTITY.invoker().blockEntityAdded(clazz, name);
 		BlockEntityAccessor.invokeRegisterBlockEntity(clazz, name);
 	}
 
