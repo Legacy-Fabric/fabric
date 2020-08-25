@@ -16,22 +16,28 @@
 
 package net.fabricmc.fabric.mixin.content.registries.client;
 
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.content.registry.v1.RarityProvider;
 
 @Environment(EnvType.CLIENT)
-@Mixin(CreativeInventoryScreen.class)
-public class MixinCreativeInventoryScreen {
-	@Inject(at = @At(value = "INVOKE", target = "Ljava/util/List;set(ILjava/lang/Object;)Ljava/lang/Object;", shift = At.Shift.AFTER, remap = false), method = "renderTooltip", locals = LocalCapture.PRINT)
-	public void setList(ItemStack stack, int x, int y, CallbackInfo ci) {
+@Mixin(Screen.class)
+public class MixinScreen {
+	@Inject(at = @At(value = "INVOKE", target = "Ljava/util/List;set(ILjava/lang/Object;)Ljava/lang/Object;", shift = At.Shift.AFTER), method = "renderTooltip(Lnet/minecraft/item/ItemStack;II)V", locals = LocalCapture.CAPTURE_FAILSOFT)
+	public void renderTooltipHook(ItemStack stack, int x, int y, CallbackInfo ci, List<String> list, int i) {
+		if (stack.getItem() instanceof RarityProvider) {
+			list.set(i, ((RarityProvider) stack.getItem()).getFormatting() + list.get(i));
+		}
 	}
 }
