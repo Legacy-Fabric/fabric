@@ -21,6 +21,7 @@ import java.util.function.Predicate;
 import net.minecraft.item.ItemStack;
 
 public interface ArmorMaterial {
+	int[] BASE_DURABILITY = new int[]{11, 16, 15, 13};
 	/**
 	 * The value returned should be the prefix of the armor layer textures.
 	 */
