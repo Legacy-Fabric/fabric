@@ -23,12 +23,12 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EntityDispatcher;
 
 /**
- * Helper class that provides accessors for entity maps in {@link EntityType}.
+ * Helper class that provides accessors for entity maps in {@link EntityDispatcher}.
  */
-@Mixin(EntityType.class)
+@Mixin(EntityDispatcher.class)
 public interface EntityTypeAccessor {
 	@Accessor("NAME_CLASS_MAP")
 	static Map<String, Class<? extends Entity>> getNameClassMap() {

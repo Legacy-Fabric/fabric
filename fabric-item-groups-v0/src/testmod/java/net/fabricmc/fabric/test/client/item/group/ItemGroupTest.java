@@ -28,7 +28,7 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 
 @Environment(EnvType.CLIENT)
 public class ItemGroupTest implements ClientModInitializer {
-	public static final ItemGroup TEST_ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("fabric-item-groups-v0-testmod:test_itemgroup")).icon(() -> new ItemStack(Items.MINECART_WITH_COMMAND_BLOCK)).appendItems((list) -> Items.DYE.registerSubItems(Items.DYE, null, list)).build();
+	public static final ItemGroup TEST_ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("fabric-item-groups-v0-testmod:test_itemgroup")).icon(() -> new ItemStack(Items.MINECART_WITH_COMMAND_BLOCK)).appendItems((list) -> Items.DYE.appendItemStacks(Items.DYE, null, list)).build();
 
 	@Override
 	public void onInitializeClient() {

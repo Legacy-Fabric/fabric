@@ -22,18 +22,18 @@ import java.util.stream.Stream;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.class_1639;
+import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.ServerPlayerEntity;
 
 import net.fabricmc.fabric.api.network.server.EntityTrackerStreamAccessor;
 
-@Mixin(class_1639.class)
-public class MixinClass1639 implements EntityTrackerStreamAccessor {
+@Mixin(EntityTracker.class)
+public class MixinEntityTracker implements EntityTrackerStreamAccessor {
 	@Shadow
-	public Set<ServerPlayerEntity> field_6688;
+	public Set<ServerPlayerEntity> players;
 
 	@Override
 	public Stream<ServerPlayerEntity> fabric_getTrackingPlayers() {
-		return this.field_6688.stream();
+		return this.players.stream();
 	}
 }

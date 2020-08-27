@@ -122,7 +122,6 @@ public class MixinClientPlayerInteractionManager {
 
 			info.setReturnValue(result.isAccepted());
 			info.cancel();
-			return;
 		}
 	}
 }

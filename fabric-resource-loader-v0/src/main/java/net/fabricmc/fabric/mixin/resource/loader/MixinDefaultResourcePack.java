@@ -29,6 +29,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.resource.DefaultResourcePack;
 import net.minecraft.util.Identifier;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+@Environment(EnvType.CLIENT)
 @Mixin(DefaultResourcePack.class)
 public class MixinDefaultResourcePack {
 	@Inject(method = "method_4350", at = @At("HEAD"), cancellable = true)

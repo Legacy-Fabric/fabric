@@ -14,28 +14,30 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.event.lifecycle.client;
+package net.fabricmc.fabric.mixin.content.registries.client;
 
 import java.util.List;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientItemEvents;
+import net.fabricmc.fabric.api.content.registry.v1.RarityProvider;
 
 @Environment(EnvType.CLIENT)
-@Mixin(ItemStack.class)
-public class MixinItemStack {
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;appendTooltip(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;Ljava/util/List;Z)V", shift = At.Shift.AFTER), method = "getTooltip", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	public void appendTooltip(PlayerEntity player, boolean advanced, CallbackInfoReturnable<List<String>> cir, List<String> list, String string, int j) {
-		ClientItemEvents.TOOLTIP.invoker().appendTooltip((ItemStack) (Object) this, player, list);
+@Mixin(Screen.class)
+public class MixinScreen {
+	@Inject(at = @At(value = "INVOKE", target = "Ljava/util/List;set(ILjava/lang/Object;)Ljava/lang/Object;", shift = At.Shift.AFTER), method = "renderTooltip(Lnet/minecraft/item/ItemStack;II)V", locals = LocalCapture.CAPTURE_FAILSOFT)
+	public void renderTooltipHook(ItemStack stack, int x, int y, CallbackInfo ci, List<String> list, int i) {
+		if (stack.getItem() instanceof RarityProvider) {
+			list.set(i, ((RarityProvider) stack.getItem()).getFormatting(stack) + list.get(i));
+		}
 	}
 }

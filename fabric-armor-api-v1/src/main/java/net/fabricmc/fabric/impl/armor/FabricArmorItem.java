@@ -29,7 +29,7 @@ public class FabricArmorItem extends ArmorItem {
 	private final int slotId;
 
 	public FabricArmorItem(ArmorMaterial material, EquipmentSlot slot) {
-		super(/*Can be anything but null*/stack.DIAMOND, new Random().nextInt(16777216), slot.getSlotId());
+		super(/*Can be anything but null*/Material.DIAMOND, new Random().nextInt(16777216), slot.getSlotId());
 		this.material = material;
 		this.slotId = slot.getSlotId();
 		((MixinArmorItem) this).setProtection(material.getProtectionValue(slot.getSlotId()));
@@ -60,24 +60,24 @@ public class FabricArmorItem extends ArmorItem {
 
 	@Deprecated
 	@Override
-	public int method_8257(ItemStack itemStack, int i) {
+	public int getDisplayColor(ItemStack itemStack, int i) {
 		return i;
 	}
 
 	@Deprecated
 	@Override
-	public int method_8169(ItemStack itemStack) {
+	public int getColor(ItemStack itemStack) {
 		return 16777215;
 	}
 
 	@Deprecated
 	@Override
-	public void method_8171(ItemStack stack) {
+	public void removeColor(ItemStack stack) {
 	}
 
 	@Deprecated
 	@Override
-	public void method_8170(ItemStack itemStack, int i) {
+	public void setColor(ItemStack itemStack, int i) {
 	}
 
 	@Deprecated

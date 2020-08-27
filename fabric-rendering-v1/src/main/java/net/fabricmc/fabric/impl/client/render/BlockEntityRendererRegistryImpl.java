@@ -32,7 +32,7 @@ public class BlockEntityRendererRegistryImpl implements BlockEntityRendererRegis
 	public void register(Class<? extends BlockEntity> blockEntityClass, BlockEntityRenderer<? extends BlockEntity> blockEntityRenderer) {
 		if (renderers != null) {
 			renderers.put(blockEntityClass, blockEntityRenderer);
-			blockEntityRenderer.method_3751(BlockEntityRenderDispatcher.INSTANCE);
+			blockEntityRenderer.setDispatcher(BlockEntityRenderDispatcher.INSTANCE);
 		} else {
 			renderersTmp.put(blockEntityClass, blockEntityRenderer);
 		}
@@ -50,7 +50,7 @@ public class BlockEntityRendererRegistryImpl implements BlockEntityRendererRegis
 		renderers = map;
 
 		for (BlockEntityRenderer<? extends BlockEntity> renderer : renderersTmp.values()) {
-			renderer.method_3751(instance);
+			renderer.setDispatcher(instance);
 		}
 
 		renderers.putAll(renderersTmp);

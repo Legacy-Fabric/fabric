@@ -14,28 +14,32 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.event.lifecycle.client;
-
-import java.util.List;
+package net.fabricmc.fabric.mixin.content.registries;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientItemEvents;
+import net.fabricmc.fabric.api.content.registry.v1.RarityProvider;
 
-@Environment(EnvType.CLIENT)
 @Mixin(ItemStack.class)
-public class MixinItemStack {
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;appendTooltip(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;Ljava/util/List;Z)V", shift = At.Shift.AFTER), method = "getTooltip", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	public void appendTooltip(PlayerEntity player, boolean advanced, CallbackInfoReturnable<List<String>> cir, List<String> list, String string, int j) {
-		ClientItemEvents.TOOLTIP.invoker().appendTooltip((ItemStack) (Object) this, player, list);
+public abstract class MixinItemStack {
+	@Shadow
+	public abstract Item getItem();
+
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/text/Style;setColor(Lnet/minecraft/util/Formatting;)Lnet/minecraft/text/Style;", shift = At.Shift.AFTER), method = "toHoverableText", locals = LocalCapture.CAPTURE_FAILSOFT)
+	public void toHoverableTextHook(CallbackInfoReturnable<Text> cir, LiteralText literalText, Text text, CompoundTag compoundTag) {
+		if (this.getItem() instanceof RarityProvider) {
+			text.getStyle().setColor(((RarityProvider) this.getItem()).getFormatting((ItemStack) (Object) this));
+		}
 	}
 }

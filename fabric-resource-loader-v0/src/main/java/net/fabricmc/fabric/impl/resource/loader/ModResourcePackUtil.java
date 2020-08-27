@@ -25,6 +25,8 @@ import org.apache.commons.io.IOUtils;
 
 import net.minecraft.resource.ResourcePack;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -32,6 +34,7 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 /**
  * Internal utilities for managing resource packs.
  */
+@Environment(EnvType.CLIENT)
 public final class ModResourcePackUtil {
 	public static final int PACK_FORMAT_VERSION = 1;
 
@@ -58,8 +61,7 @@ public final class ModResourcePackUtil {
 	}
 
 	public static InputStream openDefault(ModMetadata info, String filename) {
-		switch (filename) {
-		case "pack.mcmeta":
+		if ("pack.mcmeta".equals(filename)) {
 			String description = info.getName();
 
 			if (description == null) {
@@ -70,9 +72,9 @@ public final class ModResourcePackUtil {
 
 			String pack = String.format("{\"pack\":{\"pack_format\":" + PACK_FORMAT_VERSION + ",\"description\":\"%s\"}}", description);
 			return IOUtils.toInputStream(pack, Charsets.UTF_8);
-		default:
-			return null;
 		}
+
+		return null;
 	}
 
 	public static String getName(ModMetadata info) {

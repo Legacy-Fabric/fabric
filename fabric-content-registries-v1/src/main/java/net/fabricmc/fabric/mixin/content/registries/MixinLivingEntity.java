@@ -38,7 +38,7 @@ public abstract class MixinLivingEntity extends Entity {
 
 	@Inject(at = @At("RETURN"), method = "method_7166", cancellable = true)
 	public void climb(CallbackInfoReturnable<Boolean> cir) {
-		BlockPos pos = new BlockPos(MathHelper.floor(this.x), MathHelper.floor(this.getBoundingBox().y1), MathHelper.floor(this.z));
+		BlockPos pos = new BlockPos(MathHelper.floor(this.x), MathHelper.floor(this.getBoundingBox().minY), MathHelper.floor(this.z));
 		BlockState blockState = this.world.getBlockState(pos);
 
 		if (blockState.getBlock() instanceof Climbable) {
