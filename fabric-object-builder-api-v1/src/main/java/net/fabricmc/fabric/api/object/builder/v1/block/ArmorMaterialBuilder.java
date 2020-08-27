@@ -23,7 +23,7 @@ import net.minecraft.item.ItemStack;
 
 import net.fabricmc.fabric.api.armor.v1.ArmorMaterial;
 
-public final class ArmorMaterialBuilder {
+public class ArmorMaterialBuilder {
 	private final String name;
 	private int enchantability = 10;
 	private int durabilityMultiplier = 15;
@@ -55,8 +55,7 @@ public final class ArmorMaterialBuilder {
 	}
 
 	public ArmorMaterialBuilder setRepairIngredient(Item repairIngredient) {
-		this.repairIngredientPredicate = itemStack -> itemStack.getItem() == repairIngredient;
-		return this;
+		return this.setRepairIngredient(itemStack -> itemStack.getItem() == repairIngredient);
 	}
 
 	public ArmorMaterial build() {

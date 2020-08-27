@@ -4,4 +4,5 @@ version = getSubprojectVersion(project, "1.0.2")
 dependencies {
 	implementation project(path: ':fabric-armor-api-v1', configuration: 'dev')
 	testmodImplementation project(path: ':fabric-content-registries-v1', configuration: 'dev')
+	testmodImplementation project(path: ':fabric-resource-loader-v0', configuration: 'dev')
 }
