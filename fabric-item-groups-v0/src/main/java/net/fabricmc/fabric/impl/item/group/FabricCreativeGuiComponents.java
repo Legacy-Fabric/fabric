@@ -54,12 +54,12 @@ public class FabricCreativeGuiComponents {
 
 		@Override
 		public void render(MinecraftClient client, int mouseX, int mouseY) {
-			this.focused = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 			this.visible = extensions.fabric_isButtonVisible(type);
 			this.active = extensions.fabric_isButtonEnabled(type);
 
 			if (this.visible) {
-				int u = active && this.isFocused() ? 22 : 0;
+				int u = active && this.isHovered() ? 22 : 0;
 				int v = active ? 0 : 10;
 
 				MinecraftClient minecraftClient = MinecraftClient.getInstance();
@@ -68,7 +68,7 @@ public class FabricCreativeGuiComponents {
 				GlStateManager.color4f(1F, 1F, 1F, 1F);
 				this.drawTexture(this.x, this.y, u + (type == Type.NEXT ? 11 : 0), v, 11, 10);
 
-				if (this.focused) {
+				if (this.hovered) {
 					((MixinScreen) gui).invokeRenderTooltip(new TranslatableText("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, ((ItemGroup.itemGroups.length - 12) / 9) + 2).asString(), mouseX, mouseY);
 				}
 			}

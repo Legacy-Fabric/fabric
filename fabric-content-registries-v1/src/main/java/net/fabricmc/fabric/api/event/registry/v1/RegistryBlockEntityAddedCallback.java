@@ -21,7 +21,12 @@ import net.minecraft.block.entity.BlockEntity;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
+@Deprecated
 public interface RegistryBlockEntityAddedCallback {
+	/**
+	 * Please use {@link FabricRegistryEntryAddedEvents#BLOCK_ENTITY} instead!
+	 */
+	@Deprecated
 	Event<RegistryBlockEntityAddedCallback> EVENT = EventFactory.createArrayBacked(RegistryBlockEntityAddedCallback.class, (listeners) -> (blockEntityClass, name) -> {
 		for (RegistryBlockEntityAddedCallback callback : listeners) {
 			callback.blockEntityAdded(blockEntityClass, name);

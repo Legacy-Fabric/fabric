@@ -17,12 +17,12 @@
 package net.fabricmc.fabric.api.util;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtTag;
+import net.minecraft.nbt.Tag;
 
 /**
  * NBT type ID constants. Useful for filtering by value type in a few cases.
  *
- * <p>For the current list of types, check with {@link NbtTag#TYPES}.
+ * <p>For the current list of types, check with {@link Tag#TYPES}.
  *
  * @see CompoundTag#contains(String, int)
  */

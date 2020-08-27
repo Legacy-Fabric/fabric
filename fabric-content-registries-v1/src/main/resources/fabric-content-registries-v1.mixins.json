@@ -8,14 +8,19 @@
     "EntityTypeAccessor",
     "ItemAccessor",
     "MixinFurnaceBlockEntity",
+    "MixinItemStack",
     "MixinLivingEntity",
     "MixinPlayerEntity",
     "MixinServerPlayerInteractionManager",
     "MixinWorld",
     "MutableRegistryAccessor",
-    "SimpleRegistryAccessor"
+    "SimpleRegistryAccessor",
+    "client.MixinCreativeInventoryScreen"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "client.MixinScreen"
+  ]
 }

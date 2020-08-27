@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.event.interaction;
+package net.fabricmc.fabric.api.content.registry.v1;
 
-import org.spongepowered.asm.mixin.Mixin;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 
-import net.minecraft.server.network.ServerPlayNetworkHandler;
+/**
+ * Allows giving an Item a custom rarity. This specifies the color of the Item's name when held or when hovered over.
+ * This will override the value returned in {@link Item#getRarity(ItemStack)}.
+ */
+public interface RarityProvider {
+	Identifier getId(ItemStack stack);
 
-@Mixin(ServerPlayNetworkHandler.class)
-public class MixinServerPlayNetworkHandler {
-//	@Shadow
-//	public ServerPlayerEntity player;
+	Formatting getFormatting(ItemStack stack);
 }

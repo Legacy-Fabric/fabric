@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.class_1183;
+import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 
@@ -29,14 +29,14 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.impl.armor.FabricArmorItem;
 
 @Environment(EnvType.CLIENT)
-@Mixin(class_1183.class)
-public class MixinClass1183 {
+@Mixin(ArmorFeatureRenderer.class)
+public class MixinArmorFeatureRenderer {
 	@Redirect(at = @At(value = "INVOKE", target = "Ljava/lang/String;format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;"), method = "method_4092")
 	public String loadArmorTextures(String format, Object[] args, ArmorItem armorItem, boolean bl, String string) {
 		if (armorItem instanceof FabricArmorItem) {
 			return String.format("%s:textures/models/armor/%s_layer_%d.png", Item.REGISTRY.getIdentifier(armorItem).getNamespace(), ((FabricArmorItem) armorItem).getArmorMaterial().getName(), bl ? 2 : 1);
 		}
 
-		return String.format("textures/models/armor/%s_layer_%d%s.png", armorItem.getMaterial().getTranslationKey(), bl ? 2 : 1, string == null ? "" : String.format("_%s", string));
+		return String.format("textures/models/armor/%s_layer_%d%s.png", armorItem.getMaterial().getName(), bl ? 2 : 1, string == null ? "" : String.format("_%s", string));
 	}
 }

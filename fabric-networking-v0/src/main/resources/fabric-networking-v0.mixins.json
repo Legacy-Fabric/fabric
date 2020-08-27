@@ -3,7 +3,7 @@
   "package": "net.fabricmc.fabric.mixin.network",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinClass1639",
+    "MixinEntityTracker",
     "MixinCustomPayloadC2SPacket",
     "MixinCustomPayloadS2CPacket",
     "MixinPlayerManager",

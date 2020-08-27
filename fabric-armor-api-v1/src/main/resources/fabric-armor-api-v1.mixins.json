@@ -3,7 +3,7 @@
   "package": "net.fabricmc.fabric.mixin.armor",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "MixinClass1183"
+    "MixinArmorFeatureRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

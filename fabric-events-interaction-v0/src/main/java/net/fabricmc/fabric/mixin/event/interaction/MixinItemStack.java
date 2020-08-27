@@ -32,7 +32,7 @@ import net.fabricmc.fabric.impl.base.util.ActionResult;
 
 @Mixin(ItemStack.class)
 public class MixinItemStack {
-	@Inject(at = @At("HEAD"), method = "method_8347", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "use", cancellable = true)
 	public void blockPlaced (PlayerEntity playerEntity, World world, BlockPos blockPos, Direction direction, float hitX, float hitY, float hitZ, CallbackInfoReturnable<Boolean> info) {
 		ActionResult result = PlaceBlockCallback.EVENT.invoker().blockPlaced(playerEntity, world, blockPos, direction, hitX, hitY, hitZ);
 

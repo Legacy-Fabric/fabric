@@ -52,13 +52,13 @@ public class MixinCraftingResultSlot {
 		}
 	}
 
-	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/recipe/Recipes;method_71(Lnet/minecraft/inventory/CraftingInventory;Lnet/minecraft/world/World;)[Lnet/minecraft/item/ItemStack;"), method = "onTakeItem")
+	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/recipe/CraftingRecipeRegistry;getRemainders(Lnet/minecraft/inventory/CraftingInventory;Lnet/minecraft/world/World;)[Lnet/minecraft/item/ItemStack;"), method = "onTakeItem")
 	public ItemStack[] modifyRemainders(ItemStack[] itemStacks) {
-		for (int i = 0; i < craftingInv.getInvSize(); i++) {
-			ItemStack invStack = craftingInv.getInvStack(i);
+		for (int i = 0; i < this.craftingInv.getInvSize(); i++) {
+			ItemStack invStack = this.craftingInv.getInvStack(i);
 
 			if (invStack.getItem() instanceof FabricRecipeRemainder) {
-				itemStacks[i] = ((FabricRecipeRemainder) invStack.getItem()).getRecipeRemainder(invStack.copy(), craftingInv, player);
+				itemStacks[i] = ((FabricRecipeRemainder) invStack.getItem()).getRecipeRemainder(invStack.copy(), this.craftingInv, this.player);
 			}
 		}
 

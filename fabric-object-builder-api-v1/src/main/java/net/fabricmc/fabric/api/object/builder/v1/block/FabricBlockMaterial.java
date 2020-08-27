@@ -85,7 +85,7 @@ public class FabricBlockMaterial extends Material {
 	}
 
 	@Override
-	public boolean method_1803() {
+	public boolean isFluid() {
 		return this.fluid;
 	}
 

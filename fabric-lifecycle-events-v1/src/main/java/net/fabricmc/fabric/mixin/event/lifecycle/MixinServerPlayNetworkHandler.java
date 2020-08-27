@@ -50,8 +50,8 @@ public class MixinServerPlayNetworkHandler {
 		ServerPlayerEvents.DISCONNECT.invoker().playerDisconnect(this.connection, this.player, this.server);
 	}
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/GameEngine;)V", shift = At.Shift.AFTER), method = "onCustomPayload")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/ThreadExecutor;)V", shift = At.Shift.AFTER), method = "onCustomPayload")
 	public void onCustomPayload(CustomPayloadC2SPacket packet, CallbackInfo ci) {
-		ServerNetworkEvents.CUSTOM_PAYLOAD.invoker().onCustomPayload(packet.method_5761(), packet.method_5763());
+		ServerNetworkEvents.CUSTOM_PAYLOAD.invoker().onCustomPayload(packet.getChannel(), packet.getPayload());
 	}
 }
