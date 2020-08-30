@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.mixin.network;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +26,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.util.ThreadExecutor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.network.PacketContext;
@@ -37,6 +40,10 @@ import net.fabricmc.fabric.impl.network.ServerSidePacketRegistryImpl;
 public class MixinServerPlayNetworkHandler implements PacketContext {
 	@Shadow
 	public ServerPlayerEntity player;
+
+	@Shadow
+	@Final
+	private MinecraftServer server;
 
 	@Inject(method = "onCustomPayload", at = @At("HEAD"), cancellable = true)
 	public void onCustomPayload(CustomPayloadC2SPacket packet, CallbackInfo info) {
@@ -53,5 +60,10 @@ public class MixinServerPlayNetworkHandler implements PacketContext {
 	@Override
 	public PlayerEntity getPlayer() {
 		return this.player;
+	}
+
+	@Override
+	public ThreadExecutor getTaskQueue() {
+		return this.server;
 	}
 }

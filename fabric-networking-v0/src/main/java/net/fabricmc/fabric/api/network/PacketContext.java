@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.api.network;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ThreadExecutor;
 
 import net.fabricmc.api.EnvType;
 
@@ -24,4 +25,6 @@ public interface PacketContext {
 	EnvType getPacketEnvironment();
 
 	PlayerEntity getPlayer();
+
+	ThreadExecutor getTaskQueue();
 }

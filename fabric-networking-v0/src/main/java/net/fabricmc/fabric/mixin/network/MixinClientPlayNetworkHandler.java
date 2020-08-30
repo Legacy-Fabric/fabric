@@ -32,6 +32,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.network.packet.s2c.play.GameJoinS2CPacket;
 import net.minecraft.util.PacketByteBuf;
+import net.minecraft.util.ThreadExecutor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -84,5 +85,10 @@ public abstract class MixinClientPlayNetworkHandler implements PacketContext {
 	@Override
 	public PlayerEntity getPlayer() {
 		return this.client.player;
+	}
+
+	@Override
+	public ThreadExecutor getTaskQueue() {
+		return this.client;
 	}
 }
