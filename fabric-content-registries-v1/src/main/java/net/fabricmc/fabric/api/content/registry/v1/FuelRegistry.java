@@ -27,6 +27,7 @@ import net.fabricmc.fabric.impl.content.registries.FuelRegistryImpl;
  */
 @Deprecated
 public interface FuelRegistry {
+	@Deprecated
 	FuelRegistry INSTANCE = FuelRegistryImpl.INSTANCE;
 
 	@Deprecated
