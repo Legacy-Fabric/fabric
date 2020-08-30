@@ -14,13 +14,13 @@
     "MixinServerPlayerInteractionManager",
     "MixinWorld",
     "MutableRegistryAccessor",
-    "SimpleRegistryAccessor",
-    "client.MixinCreativeInventoryScreen"
+    "SimpleRegistryAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
-    "client.MixinScreen"
+    "client.MixinScreen",
+    "client.MixinCreativeInventoryScreen"
   ]
 }
