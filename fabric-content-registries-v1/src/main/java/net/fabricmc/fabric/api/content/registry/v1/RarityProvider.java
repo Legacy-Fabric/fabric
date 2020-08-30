@@ -19,7 +19,6 @@ package net.fabricmc.fabric.api.content.registry.v1;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 
 /**
  * Allows giving an Item a custom rarity. This specifies the color of the Item's name when held or when hovered over.
