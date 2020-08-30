@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.api.content.registry.v1;
 
+import java.util.Map;
+
 import net.minecraft.item.Item;
 
 import net.fabricmc.fabric.impl.content.registries.FuelRegistryImpl;
@@ -29,4 +31,7 @@ public interface FuelRegistry {
 
 	@Deprecated
 	void register(Item fuel, int burnTime);
+
+	@Deprecated
+	Map<Item, Integer> getFuelMap();
 }
