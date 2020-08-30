@@ -17,16 +17,13 @@
 package net.fabricmc.fabric.api.content.registry.v1;
 
 import net.minecraft.item.Item;
-
-import net.fabricmc.fabric.impl.content.registries.FuelRegistryImpl;
+import net.minecraft.item.ItemStack;
 
 /**
- * @deprecated Use the ItemStack aware version in {@link FuelAccess} instead!
+ * Implement this interface when you want an ItemStack aware version of {@link Item#getEnchantability()}
  */
-@Deprecated
-public interface FuelRegistry {
-	FuelRegistry INSTANCE = FuelRegistryImpl.INSTANCE;
-
-	@Deprecated
-	void register(Item fuel, int burnTime);
+public interface Enchantable {
+	default int getEnchantability(ItemStack stack) {
+		return ((Item) this).getEnchantability();
+	};
 }

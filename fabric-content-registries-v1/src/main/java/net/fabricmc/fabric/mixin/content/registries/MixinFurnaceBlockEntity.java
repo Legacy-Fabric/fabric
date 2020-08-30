@@ -31,11 +31,12 @@ import net.fabricmc.fabric.impl.content.registries.FuelRegistryImpl;
 public class MixinFurnaceBlockEntity {
 	@Inject(at = @At("HEAD"), method = "method_1144", cancellable = true)
 	private static void registerFuels(ItemStack stack, CallbackInfoReturnable<Integer> info) {
+		if (stack == null) return;
+
 		if (stack.getItem() instanceof FuelAccess) {
 			info.setReturnValue(((FuelAccess) stack.getItem()).getBurnTime(stack));
 		}
 
-		if (stack == null) return;
 		Integer value = FuelRegistryImpl.INSTANCE.getFuelMap().get(stack.getItem());
 
 		if (value != null) {
