@@ -16,24 +16,25 @@
 
 package net.fabricmc.fabric.mixin.command;
 
+import java.util.Collections;
+
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.fabricmc.fabric.api.commands.ServerCommandSource;
-import net.fabricmc.fabric.impl.commands.CommandManagerHolder;
-import net.minecraft.command.CommandSource;
-import net.minecraft.server.command.CommandRegistry;
-import net.minecraft.text.LiteralText;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Collections;
+import net.minecraft.command.CommandSource;
+import net.minecraft.server.command.CommandRegistry;
+import net.minecraft.text.LiteralText;
+
+import net.fabricmc.fabric.api.command.v1.ServerCommandSource;
+import net.fabricmc.fabric.impl.command.CommandManagerHolder;
 
 @Mixin(CommandRegistry.class)
 public class CommandRegistryMixin {
-
 	@Inject(method = "execute", at = @At("HEAD"), cancellable = true)
 	private void execute(CommandSource source, String command, CallbackInfoReturnable<Integer> callbackInfoReturnable) {
 		CommandDispatcher<ServerCommandSource> dispatcher = CommandManagerHolder.COMMAND_DISPATCHER;

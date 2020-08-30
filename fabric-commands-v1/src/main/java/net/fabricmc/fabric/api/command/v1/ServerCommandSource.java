@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.commands;
+package net.fabricmc.fabric.api.command.v1;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
@@ -25,7 +25,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
 public class ServerCommandSource {
-
 	private final CommandSource source;
 	private final Vec3d position;
 	private final ServerWorld world;

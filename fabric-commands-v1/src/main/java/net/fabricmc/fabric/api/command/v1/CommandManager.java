@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.commands;
+package net.fabricmc.fabric.api.command.v1;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 
 public interface CommandManager {
-
 	static LiteralArgumentBuilder<ServerCommandSource> literal(String name) {
 		return LiteralArgumentBuilder.literal(name);
 	}

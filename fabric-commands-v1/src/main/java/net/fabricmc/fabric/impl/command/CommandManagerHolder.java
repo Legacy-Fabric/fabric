@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.event;
+package net.fabricmc.fabric.impl.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.fabricmc.fabric.api.commands.ServerCommandSource;
 
-public interface DispatcherRegistrationCallback {
+import net.fabricmc.fabric.api.command.v1.ServerCommandSource;
 
-	Event<DispatcherRegistrationCallback> EVENT = EventFactory.createArrayBacked(
-			DispatcherRegistrationCallback.class,
-			(dispatcher, isDedicatedServer) -> {},
-			callbacks -> (dispatcher, isDedicatedServer) -> {
-				for (DispatcherRegistrationCallback callback : callbacks) {
-					callback.initialize(dispatcher, isDedicatedServer);
-				}
-			});
-
-	void initialize(CommandDispatcher<ServerCommandSource> dispatcher, boolean isDedicatedServer);
+public class CommandManagerHolder {
+	public static CommandDispatcher<ServerCommandSource> COMMAND_DISPATCHER;
 }
