@@ -22,7 +22,7 @@ import net.minecraft.item.ItemStack;
 /**
  * Implement this interface when you want an ItemStack aware version of {@link Item#getEnchantability()}.
  */
-public interface Enchantable {
+public interface EnchantabilityProvider {
 	default int getEnchantability(ItemStack stack) {
 		return ((Item) this).getEnchantability();
 	};

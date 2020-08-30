@@ -25,14 +25,14 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 
-import net.fabricmc.fabric.api.content.registry.v1.Enchantable;
+import net.fabricmc.fabric.api.content.registry.v1.EnchantabilityProvider;
 
 @Mixin(EnchantmentHelper.class)
 public class MixinEnchantmentHelper {
 	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "calculateEnchantmentPower", name = "k")
 	private static int modifyK(int k, Random random, int i, int j, ItemStack itemStack) {
-		if (itemStack.getItem() instanceof Enchantable) {
-			return ((Enchantable) itemStack.getItem()).getEnchantability(itemStack);
+		if (itemStack.getItem() instanceof EnchantabilityProvider) {
+			return ((EnchantabilityProvider) itemStack.getItem()).getEnchantability(itemStack);
 		}
 
 		return k;
@@ -40,8 +40,8 @@ public class MixinEnchantmentHelper {
 
 	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "method_112", name = "j")
 	private static int modifyJ(int j, Random random, ItemStack itemStack, int i) {
-		if (itemStack.getItem() instanceof Enchantable) {
-			return ((Enchantable) itemStack.getItem()).getEnchantability(itemStack);
+		if (itemStack.getItem() instanceof EnchantabilityProvider) {
+			return ((EnchantabilityProvider) itemStack.getItem()).getEnchantability(itemStack);
 		}
 
 		return j;
