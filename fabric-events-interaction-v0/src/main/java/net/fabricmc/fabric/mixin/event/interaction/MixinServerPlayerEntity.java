@@ -30,7 +30,6 @@ import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.impl.base.util.ActionResult;
 
 @Mixin(ServerPlayerEntity.class)
-@Environment(EnvType.CLIENT)
 public class MixinServerPlayerEntity {
 	@Inject(method = "method_8038", at = @At("HEAD"), cancellable = true)
 	public void onPlayerInteractEntity(Entity target, CallbackInfo info) {
