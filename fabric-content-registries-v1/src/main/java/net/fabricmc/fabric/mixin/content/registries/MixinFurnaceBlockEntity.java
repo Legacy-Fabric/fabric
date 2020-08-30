@@ -35,6 +35,7 @@ public class MixinFurnaceBlockEntity {
 
 		if (stack.getItem() instanceof FuelAccess) {
 			info.setReturnValue(((FuelAccess) stack.getItem()).getBurnTime(stack));
+			return;
 		}
 
 		Integer value = FuelRegistryImpl.INSTANCE.getFuelMap().get(stack.getItem());
