@@ -19,9 +19,11 @@ package net.fabricmc.fabric.api.network;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
+import org.apache.logging.log4j.LogManager;
+
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.Packet;
 import net.minecraft.util.PacketByteBuf;
-import net.minecraft.entity.player.PlayerEntity;
 
 import net.fabricmc.fabric.impl.network.ServerSidePacketRegistryImpl;
 
@@ -47,6 +49,7 @@ public interface ServerSidePacketRegistry extends PacketRegistry {
 	 */
 	@Deprecated
 	default void sendToPlayer(PlayerEntity player, String id, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> completionListener) {
+		LogManager.getLogger().warn("S2C Packet with id {} uses deprecated String ids! Support is not guaranteed", id);
 		sendToPlayer(player, toPacket(id, buf), completionListener);
 	}
 
@@ -63,6 +66,7 @@ public interface ServerSidePacketRegistry extends PacketRegistry {
 	 */
 	@Deprecated
 	default void sendToPlayer(PlayerEntity player, String id, PacketByteBuf buf) {
+		LogManager.getLogger().warn("S2C Packet with id {} uses deprecated String ids! Support is not guaranteed", id);
 		sendToPlayer(player, id, buf, null);
 	}
 }

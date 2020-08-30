@@ -16,18 +16,19 @@
 
 package net.fabricmc.fabric.impl.network;
 
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
+
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
 import com.google.common.collect.Sets;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -38,7 +39,6 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.fabric.api.event.network.C2SPacketTypeCallback;
-import net.fabricmc.fabric.api.network.PacketConsumer;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.network.PacketIdentifier;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
@@ -91,6 +91,7 @@ public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements 
 		} else {
 			if (completionListener != null) {
 				((ServerPlayerEntity) player).networkHandler.connection.send(packet, completionListener);
+				return;
 			}
 
 			((ServerPlayerEntity) player).networkHandler.sendPacket(packet);

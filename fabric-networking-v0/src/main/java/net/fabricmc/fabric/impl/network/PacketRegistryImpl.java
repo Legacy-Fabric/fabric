@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.network;
 
+import io.netty.buffer.Unpooled;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Map;
@@ -24,7 +26,6 @@ import java.util.function.Supplier;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.netty.buffer.Unpooled;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

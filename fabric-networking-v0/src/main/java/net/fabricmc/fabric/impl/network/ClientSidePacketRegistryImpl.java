@@ -16,11 +16,12 @@
 
 package net.fabricmc.fabric.impl.network;
 
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
+
 import java.util.Collection;
 import java.util.Collections;
 
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 import com.google.common.collect.Sets;
 
 import net.minecraft.client.MinecraftClient;

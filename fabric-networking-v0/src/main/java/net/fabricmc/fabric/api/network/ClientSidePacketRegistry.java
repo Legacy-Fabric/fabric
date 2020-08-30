@@ -19,8 +19,10 @@ package net.fabricmc.fabric.api.network;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
-import net.minecraft.util.PacketByteBuf;
+import org.apache.logging.log4j.LogManager;
+
 import net.minecraft.network.Packet;
+import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -49,6 +51,7 @@ public interface ClientSidePacketRegistry extends PacketRegistry {
 	 */
 	@Deprecated
 	default void sendToServer(String id, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> completionListener) {
+		LogManager.getLogger().warn("C2S Packet with id {} uses deprecated String ids! Support is not guaranteed", id);
 		sendToServer(this.toPacket(id, buf), completionListener);
 	}
 
@@ -65,6 +68,7 @@ public interface ClientSidePacketRegistry extends PacketRegistry {
 	 */
 	@Deprecated
 	default void sendToServer(String id, PacketByteBuf buf) {
+		LogManager.getLogger().warn("C2S Packet with id {} uses deprecated String ids! Support is not guaranteed", id);
 		sendToServer(id, buf, null);
 	}
 }
