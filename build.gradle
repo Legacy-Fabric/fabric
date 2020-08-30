@@ -87,6 +87,8 @@ allprojects {
 		modCompile("net.fabricmc:fabric-loader-1.8.9:0.8.2+build.202004131640") {
 			exclude module: "guava"
 		}
+
+		implementation 'com.mojang:brigadier:1.0.17'
 	}
 
 	configurations {
