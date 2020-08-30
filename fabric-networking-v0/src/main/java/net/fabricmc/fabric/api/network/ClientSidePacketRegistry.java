@@ -30,10 +30,24 @@ import net.fabricmc.fabric.impl.network.ClientSidePacketRegistryImpl;
 public interface ClientSidePacketRegistry extends PacketRegistry {
 	ClientSidePacketRegistry INSTANCE = new ClientSidePacketRegistryImpl();
 
+	/**
+	 * @deprecated Use {@link #canServerReceive(PacketIdentifier)} instead!
+	 */
+	@Deprecated
 	boolean canServerReceive(String id);
+
+	boolean canServerReceive(PacketIdentifier id);
 
 	void sendToServer(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> completionListener);
 
+	default void sendToServer(PacketIdentifier id, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> completionListener) {
+		sendToServer(this.toPacket(id, buf), completionListener);
+	}
+
+	/**
+	 * @deprecated Use {@link #sendToServer(PacketIdentifier, PacketByteBuf, GenericFutureListener)} instead!
+	 */
+	@Deprecated
 	default void sendToServer(String id, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> completionListener) {
 		sendToServer(this.toPacket(id, buf), completionListener);
 	}
@@ -42,6 +56,14 @@ public interface ClientSidePacketRegistry extends PacketRegistry {
 		sendToServer(packet, null);
 	}
 
+	default void sendToServer(PacketIdentifier id, PacketByteBuf buf) {
+		sendToServer(id, buf, null);
+	}
+
+	/**
+	 * @deprecated Use {@link #sendToServer(PacketIdentifier, PacketByteBuf)} )} instead!
+	 */
+	@Deprecated
 	default void sendToServer(String id, PacketByteBuf buf) {
 		sendToServer(id, buf, null);
 	}

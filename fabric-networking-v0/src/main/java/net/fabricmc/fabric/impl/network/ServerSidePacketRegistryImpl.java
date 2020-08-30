@@ -38,7 +38,9 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.fabric.api.event.network.C2SPacketTypeCallback;
+import net.fabricmc.fabric.api.network.PacketConsumer;
 import net.fabricmc.fabric.api.network.PacketContext;
+import net.fabricmc.fabric.api.network.PacketIdentifier;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements ServerSidePacketRegistry {
@@ -78,10 +80,19 @@ public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements 
 	}
 
 	@Override
+	public boolean canPlayerReceive(PlayerEntity player, PacketIdentifier id) {
+		return this.canPlayerReceive(player, id.toString());
+	}
+
+	@Override
 	public void sendToPlayer(PlayerEntity player, Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> completionListener) {
 		if (!(player instanceof ServerPlayerEntity)) {
 			throw new RuntimeException("Can only send to ServerPlayerEntities!");
 		} else {
+			if (completionListener != null) {
+				((ServerPlayerEntity) player).networkHandler.connection.send(packet, completionListener);
+			}
+
 			((ServerPlayerEntity) player).networkHandler.sendPacket(packet);
 		}
 	}
@@ -114,5 +125,10 @@ public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements 
 	@Override
 	public Packet<?> toPacket(String id, PacketByteBuf buf) {
 		return new CustomPayloadS2CPacket(id, buf);
+	}
+
+	@Override
+	public Packet<?> toPacket(PacketIdentifier id, PacketByteBuf buf) {
+		return this.toPacket(id.toString(), buf);
 	}
 }

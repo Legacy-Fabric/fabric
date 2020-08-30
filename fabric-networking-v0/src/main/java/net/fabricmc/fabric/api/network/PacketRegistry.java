@@ -20,9 +20,27 @@ import net.minecraft.network.Packet;
 import net.minecraft.util.PacketByteBuf;
 
 public interface PacketRegistry {
+	Packet<?> toPacket(PacketIdentifier id, PacketByteBuf buf);
+
+	void register(PacketIdentifier id, PacketConsumer consumer);
+
+	void unregister(PacketIdentifier id);
+
+	/**
+	 * @deprecated Use {@link #toPacket(PacketIdentifier, PacketByteBuf)} instead!
+	 */
+	@Deprecated
 	Packet<?> toPacket(String id, PacketByteBuf buf);
 
+	/**
+	 * @deprecated Use {@link #register(PacketIdentifier, PacketConsumer)} instead!
+	 */
+	@Deprecated
 	void register(String id, PacketConsumer consumer);
 
+	/**
+	 * @deprecated Use {@link #unregister(PacketIdentifier)} instead!
+	 */
+	@Deprecated
 	void unregister(String id);
 }

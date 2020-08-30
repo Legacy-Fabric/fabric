@@ -28,10 +28,24 @@ import net.fabricmc.fabric.impl.network.ServerSidePacketRegistryImpl;
 public interface ServerSidePacketRegistry extends PacketRegistry {
 	ServerSidePacketRegistry INSTANCE = new ServerSidePacketRegistryImpl();
 
+	/**
+	 * @deprecated Use {@link #canPlayerReceive(PlayerEntity, PacketIdentifier)} (PacketIdentifier)} instead!
+	 */
+	@Deprecated
 	boolean canPlayerReceive(PlayerEntity player, String id);
+
+	boolean canPlayerReceive(PlayerEntity player, PacketIdentifier id);
 
 	void sendToPlayer(PlayerEntity player, Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> completionListener);
 
+	default void sendToPlayer(PlayerEntity player, PacketIdentifier id, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> completionListener) {
+		sendToPlayer(player, toPacket(id, buf), completionListener);
+	}
+
+	/**
+	 * @deprecated Use {@link #sendToPlayer(PlayerEntity, Packet, GenericFutureListener)}  instead!
+	 */
+	@Deprecated
 	default void sendToPlayer(PlayerEntity player, String id, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> completionListener) {
 		sendToPlayer(player, toPacket(id, buf), completionListener);
 	}
@@ -40,6 +54,14 @@ public interface ServerSidePacketRegistry extends PacketRegistry {
 		sendToPlayer(player, packet, null);
 	}
 
+	default void sendToPlayer(PlayerEntity player, PacketIdentifier id, PacketByteBuf buf) {
+		sendToPlayer(player, toPacket(id, buf), null);
+	}
+
+	/**
+	 * @deprecated Use {@link #sendToPlayer(PlayerEntity, PacketIdentifier, PacketByteBuf)} instead!
+	 */
+	@Deprecated
 	default void sendToPlayer(PlayerEntity player, String id, PacketByteBuf buf) {
 		sendToPlayer(player, id, buf, null);
 	}
