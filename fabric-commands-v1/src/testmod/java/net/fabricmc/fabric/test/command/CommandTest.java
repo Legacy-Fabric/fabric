@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.test;
+package net.fabricmc.fabric.test.command;
 
 import static net.fabricmc.fabric.api.command.v1.CommandManager.literal;
 
@@ -23,7 +23,6 @@ import net.minecraft.text.LiteralText;
 import net.fabricmc.fabric.api.command.v1.DispatcherRegistrationCallback;
 
 public interface CommandTest {
-
 	static void initialize() {
 		DispatcherRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
 			dispatcher.register(literal("crab")

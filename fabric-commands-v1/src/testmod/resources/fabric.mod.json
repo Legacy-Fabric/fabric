@@ -17,6 +17,6 @@
   ],
   "description": "Use Brigadier for commands",
   "entrypoints": {
-    "main": ["net.fabricmc.fabric.test.CommandTest::initialize"]
+    "main": ["net.fabricmc.fabric.test.command.CommandTest::initialize"]
   }
 }
