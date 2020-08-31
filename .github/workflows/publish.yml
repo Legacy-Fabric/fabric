@@ -22,3 +22,7 @@
           env:
             BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
             BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+        - name: Upload With GitHub Packages
+          run: ./gradlew publish
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
