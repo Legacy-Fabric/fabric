@@ -300,6 +300,8 @@ dependencies {
 			testmodCompile project("${it.name}:").sourceSets.testmod.output
 		}
 	}
+
+	include 'com.mojang:brigadier:1.0.17'
 }
 
 curseforge {
