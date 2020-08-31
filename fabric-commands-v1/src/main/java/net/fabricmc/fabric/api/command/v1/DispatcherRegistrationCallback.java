@@ -24,13 +24,13 @@ import net.fabricmc.fabric.api.event.EventFactory;
 public interface DispatcherRegistrationCallback {
 	Event<DispatcherRegistrationCallback> EVENT = EventFactory.createArrayBacked(
 			DispatcherRegistrationCallback.class,
-			(dispatcher, isDedicatedServer) -> {
+			(dispatcher, dedicated) -> {
 			},
-			callbacks -> (dispatcher, isDedicatedServer) -> {
+			callbacks -> (dispatcher, dedicated) -> {
 				for (DispatcherRegistrationCallback callback : callbacks) {
-					callback.initialize(dispatcher, isDedicatedServer);
+					callback.initialize(dispatcher, dedicated);
 				}
 			});
 
-	void initialize(CommandDispatcher<ServerCommandSource> dispatcher, boolean isDedicatedServer);
+	void initialize(CommandDispatcher<ServerCommandSource> dispatcher, boolean dedicated);
 }

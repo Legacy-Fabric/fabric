@@ -16,11 +16,18 @@
 
 package net.fabricmc.fabric.mixin.command;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.Suggestion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,14 +36,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.CommandRegistry;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.math.BlockPos;
 
 import net.fabricmc.fabric.api.command.v1.ServerCommandSource;
 import net.fabricmc.fabric.impl.command.CommandManagerHolder;
 
 @Mixin(CommandRegistry.class)
-public class CommandRegistryMixin {
+public class MixinCommandRegistry {
 	@Inject(method = "execute", at = @At("HEAD"), cancellable = true)
-	private void execute(CommandSource source, String command, CallbackInfoReturnable<Integer> callbackInfoReturnable) {
+	private void execute(CommandSource source, String command, CallbackInfoReturnable<Integer> info) {
 		CommandDispatcher<ServerCommandSource> dispatcher = CommandManagerHolder.COMMAND_DISPATCHER;
 		boolean removeSlash = command.startsWith("/");
 
@@ -55,10 +63,38 @@ public class CommandRegistryMixin {
 				reader.skip();
 			}
 
-			callbackInfoReturnable.setReturnValue(dispatcher.execute(reader, ServerCommandSource.from(source)));
+			info.setReturnValue(dispatcher.execute(reader, ServerCommandSource.from(source)));
 		} catch (CommandSyntaxException exception) {
 			source.sendMessage(new LiteralText(exception.getMessage()));
-			callbackInfoReturnable.setReturnValue(-1);
+			info.setReturnValue(-1);
+		}
+	}
+
+	@Inject(method = "method_5985", at = @At("RETURN"), cancellable = true)
+	private void getCommandCompletions(CommandSource source, String name, BlockPos pos, CallbackInfoReturnable<List<String>> info) {
+		CommandDispatcher<ServerCommandSource> dispatcher = CommandManagerHolder.COMMAND_DISPATCHER;
+		List<String> list = info.getReturnValue();
+
+		if (list == null) {
+			list = new ArrayList<>();
+		}
+
+		StringReader stringReader = new StringReader(name);
+
+		if (stringReader.canRead() && stringReader.peek() == '/') {
+			stringReader.skip();
+		}
+
+		ParseResults<ServerCommandSource> parseResults = dispatcher.parse(stringReader, ServerCommandSource.from(source));
+
+		try {
+			for (Suggestion suggestion : dispatcher.getCompletionSuggestions(parseResults).get(10, TimeUnit.MILLISECONDS).getList()) {
+				list.add(suggestion.getText());
+			}
+
+			info.setReturnValue(list);
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			// Ignore
 		}
 	}
 }

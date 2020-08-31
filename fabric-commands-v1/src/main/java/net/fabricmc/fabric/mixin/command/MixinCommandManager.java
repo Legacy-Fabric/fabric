@@ -29,9 +29,9 @@ import net.fabricmc.fabric.api.command.v1.DispatcherRegistrationCallback;
 import net.fabricmc.fabric.impl.command.CommandManagerHolder;
 
 @Mixin(CommandManager.class)
-public class CommandManagerMixin {
+public class MixinCommandManager {
 	@Inject(method = "<init>", at = @At("RETURN"))
-	private void postInitialize(CallbackInfo callbackInfo) {
+	private void postInitialize(CallbackInfo info) {
 		DispatcherRegistrationCallback.EVENT.invoker().initialize(
 				CommandManagerHolder.COMMAND_DISPATCHER = new CommandDispatcher<>(),
 				MinecraftServer.getServer().isDedicated());
