@@ -281,6 +281,15 @@ publishing {
 			}
 		}
 	}
+	repositories {
+		maven {
+			url = "https://maven.pkg.github.com/Legacy-Fabric/fabric"
+			credentials {
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
+	}
 }
 
 task licenseFormatAll
