@@ -87,6 +87,8 @@ allprojects {
 		modCompile("net.fabricmc:fabric-loader-1.8.9:0.8.7+build.202008300717") {
 			exclude module: "guava"
 		}
+
+		implementation 'com.mojang:brigadier:1.0.17'
 	}
 
 	configurations {
@@ -298,6 +300,8 @@ dependencies {
 			testmodCompile project("${it.name}:").sourceSets.testmod.output
 		}
 	}
+
+	include 'com.mojang:brigadier:1.0.17'
 }
 
 curseforge {
