@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.mixin.command",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinCommandManager",
+    "MixinCommandRegistry"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
