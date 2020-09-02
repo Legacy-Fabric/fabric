@@ -41,11 +41,15 @@ import net.fabricmc.fabric.impl.base.util.ActionResult;
 @FunctionalInterface
 public interface ScreenOpenedCallback {
 	Event<ScreenOpenedCallback> EVENT = EventFactory.createArrayBacked(ScreenOpenedCallback.class, listeners -> screen -> {
+		Screen original = screen.get();
 		for (ScreenOpenedCallback callback : listeners) {
 			ActionResult result = callback.onScreenOpened(screen);
 
 			if (result != ActionResult.PASS) {
 				return result;
+			} else {
+				// cheeky people might set the screen and return PASS
+				screen.set(original);
 			}
 		}
 
