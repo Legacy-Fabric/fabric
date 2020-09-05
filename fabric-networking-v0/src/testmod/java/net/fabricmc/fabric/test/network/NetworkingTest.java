@@ -16,11 +16,10 @@
 
 package net.fabricmc.fabric.test.network;
 
-import io.netty.buffer.Unpooled;
-
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
+import io.netty.buffer.Unpooled;
 import org.apache.logging.log4j.LogManager;
 
 import net.minecraft.block.Blocks;
