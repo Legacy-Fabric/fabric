@@ -18,7 +18,6 @@ package net.fabricmc.fabric.api.network;
 
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-
 import org.apache.logging.log4j.LogManager;
 
 import net.minecraft.network.Packet;

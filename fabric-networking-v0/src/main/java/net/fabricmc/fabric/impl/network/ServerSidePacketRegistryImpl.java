@@ -16,9 +16,6 @@
 
 package net.fabricmc.fabric.impl.network;
 
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
-
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +25,8 @@ import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import com.google.common.collect.Sets;
 
 import net.minecraft.entity.player.PlayerEntity;
