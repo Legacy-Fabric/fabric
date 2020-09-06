@@ -34,6 +34,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.event.network.S2CPacketTypeCallback;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.network.PacketContext;
+import net.fabricmc.fabric.api.network.PacketIdentifier;
 
 @Environment(EnvType.CLIENT)
 public class ClientSidePacketRegistryImpl extends PacketRegistryImpl implements ClientSidePacketRegistry {
@@ -46,6 +47,11 @@ public class ClientSidePacketRegistryImpl extends PacketRegistryImpl implements 
 	@Override
 	public boolean canServerReceive(String id) {
 		return serverPayloadIds.contains(id);
+	}
+
+	@Override
+	public boolean canServerReceive(PacketIdentifier id) {
+		return this.canServerReceive(id.toString());
 	}
 
 	@Override
@@ -99,5 +105,10 @@ public class ClientSidePacketRegistryImpl extends PacketRegistryImpl implements 
 	@Override
 	public Packet<?> toPacket(String id, PacketByteBuf buf) {
 		return new CustomPayloadC2SPacket(id, buf);
+	}
+
+	@Override
+	public Packet<?> toPacket(PacketIdentifier id, PacketByteBuf buf) {
+		return this.toPacket(id.toString(), buf);
 	}
 }

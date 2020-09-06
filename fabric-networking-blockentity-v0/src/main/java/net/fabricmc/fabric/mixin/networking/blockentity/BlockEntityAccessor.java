@@ -14,28 +14,19 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.impl.content.registries;
+package net.fabricmc.fabric.mixin.networking.blockentity;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.item.Item;
+import net.minecraft.block.entity.BlockEntity;
 
-import net.fabricmc.fabric.api.content.registry.v1.FuelRegistry;
-
-@Deprecated
-public class FuelRegistryImpl implements FuelRegistry {
-	public static final FuelRegistryImpl INSTANCE = new FuelRegistryImpl();
-
-	private final Map<Item, Integer> fuels = Maps.newHashMap();
-
-	@Override
-	public void register(Item fuel, int burnTime) {
-		fuels.putIfAbsent(fuel, burnTime);
-	}
-
-	public Map<Item, Integer> getFuelMap() {
-		return this.fuels;
+@Mixin(BlockEntity.class)
+public interface BlockEntityAccessor {
+	@Accessor
+	static Map<Class<?>, String> getClassStringMap() {
+		throw new AssertionError();
 	}
 }

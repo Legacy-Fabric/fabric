@@ -14,28 +14,13 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.impl.content.registries;
+package net.fabricmc.fabric.api.content.registry.v1;
 
-import java.util.Map;
+import net.minecraft.item.ItemStack;
 
-import com.google.common.collect.Maps;
-
-import net.minecraft.item.Item;
-
-import net.fabricmc.fabric.api.content.registry.v1.FuelRegistry;
-
-@Deprecated
-public class FuelRegistryImpl implements FuelRegistry {
-	public static final FuelRegistryImpl INSTANCE = new FuelRegistryImpl();
-
-	private final Map<Item, Integer> fuels = Maps.newHashMap();
-
-	@Override
-	public void register(Item fuel, int burnTime) {
-		fuels.putIfAbsent(fuel, burnTime);
-	}
-
-	public Map<Item, Integer> getFuelMap() {
-		return this.fuels;
-	}
+/**
+ * Implement this interface when you want your item to act as a fuel.
+ */
+public interface FuelAccess {
+	int getBurnTime(ItemStack stack);
 }

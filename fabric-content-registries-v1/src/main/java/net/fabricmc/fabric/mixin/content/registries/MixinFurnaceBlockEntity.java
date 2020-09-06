@@ -24,14 +24,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.item.ItemStack;
 
-import net.fabricmc.fabric.api.content.registry.v1.FuelRegistry;
+import net.fabricmc.fabric.api.content.registry.v1.FuelAccess;
+import net.fabricmc.fabric.impl.content.registries.FuelRegistryImpl;
 
 @Mixin(FurnaceBlockEntity.class)
 public class MixinFurnaceBlockEntity {
 	@Inject(at = @At("HEAD"), method = "method_1144", cancellable = true)
 	private static void registerFuels(ItemStack stack, CallbackInfoReturnable<Integer> info) {
 		if (stack == null) return;
-		Integer value = FuelRegistry.INSTANCE.getFuelMap().get(stack.getItem());
+
+		if (stack.getItem() instanceof FuelAccess) {
+			info.setReturnValue(((FuelAccess) stack.getItem()).getBurnTime(stack));
+			return;
+		}
+
+		Integer value = FuelRegistryImpl.INSTANCE.getFuelMap().get(stack.getItem());
 
 		if (value != null) {
 			info.setReturnValue(value);

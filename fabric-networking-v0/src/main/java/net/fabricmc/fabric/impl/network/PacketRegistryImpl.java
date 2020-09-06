@@ -22,9 +22,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import io.netty.buffer.Unpooled;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import io.netty.buffer.Unpooled;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,6 +33,7 @@ import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.fabric.api.network.PacketConsumer;
 import net.fabricmc.fabric.api.network.PacketContext;
+import net.fabricmc.fabric.api.network.PacketIdentifier;
 import net.fabricmc.fabric.api.network.PacketRegistry;
 
 public abstract class PacketRegistryImpl implements PacketRegistry {
@@ -129,6 +130,16 @@ public abstract class PacketRegistryImpl implements PacketRegistry {
 	protected abstract void onReceivedRegisterPacket(PacketContext context, Collection<String> ids);
 
 	protected abstract void onReceivedUnregisterPacket(PacketContext context, Collection<String> ids);
+
+	@Override
+	public void register(PacketIdentifier id, PacketConsumer consumer) {
+		this.register(id.toString(), consumer);
+	}
+
+	@Override
+	public void unregister(PacketIdentifier id) {
+		this.unregister(id.toString());
+	}
 
 	@Override
 	public void unregister(String id) {

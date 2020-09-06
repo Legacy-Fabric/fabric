@@ -22,10 +22,17 @@ import net.minecraft.item.Item;
 
 import net.fabricmc.fabric.impl.content.registries.FuelRegistryImpl;
 
+/**
+ * @deprecated Use the ItemStack aware version in {@link FuelAccess} instead!
+ */
+@Deprecated
 public interface FuelRegistry {
-	FuelRegistry INSTANCE = new FuelRegistryImpl();
+	@Deprecated
+	FuelRegistry INSTANCE = FuelRegistryImpl.INSTANCE;
 
+	@Deprecated
 	void register(Item fuel, int burnTime);
 
+	@Deprecated
 	Map<Item, Integer> getFuelMap();
 }
