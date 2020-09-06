@@ -18,9 +18,10 @@ package net.fabricmc.fabric.api.network;
 
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.apache.logging.log4j.LogManager;
 
-import net.minecraft.util.PacketByteBuf;
 import net.minecraft.network.Packet;
+import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -30,11 +31,26 @@ import net.fabricmc.fabric.impl.network.ClientSidePacketRegistryImpl;
 public interface ClientSidePacketRegistry extends PacketRegistry {
 	ClientSidePacketRegistry INSTANCE = new ClientSidePacketRegistryImpl();
 
+	/**
+	 * @deprecated Use {@link #canServerReceive(PacketIdentifier)} instead!
+	 */
+	@Deprecated
 	boolean canServerReceive(String id);
+
+	boolean canServerReceive(PacketIdentifier id);
 
 	void sendToServer(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> completionListener);
 
+	default void sendToServer(PacketIdentifier id, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> completionListener) {
+		sendToServer(this.toPacket(id, buf), completionListener);
+	}
+
+	/**
+	 * @deprecated Use {@link #sendToServer(PacketIdentifier, PacketByteBuf, GenericFutureListener)} instead!
+	 */
+	@Deprecated
 	default void sendToServer(String id, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> completionListener) {
+		LogManager.getLogger().warn("C2S Packet with id {} uses deprecated String ids! Support is not guaranteed", id);
 		sendToServer(this.toPacket(id, buf), completionListener);
 	}
 
@@ -42,7 +58,16 @@ public interface ClientSidePacketRegistry extends PacketRegistry {
 		sendToServer(packet, null);
 	}
 
+	default void sendToServer(PacketIdentifier id, PacketByteBuf buf) {
+		sendToServer(id, buf, null);
+	}
+
+	/**
+	 * @deprecated Use {@link #sendToServer(PacketIdentifier, PacketByteBuf)} )} instead!
+	 */
+	@Deprecated
 	default void sendToServer(String id, PacketByteBuf buf) {
+		LogManager.getLogger().warn("C2S Packet with id {} uses deprecated String ids! Support is not guaranteed", id);
 		sendToServer(id, buf, null);
 	}
 }

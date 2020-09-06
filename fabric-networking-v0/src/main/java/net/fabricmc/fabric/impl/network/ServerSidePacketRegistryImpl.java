@@ -19,15 +19,15 @@ package net.fabricmc.fabric.impl.network;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
-import com.google.common.collect.Sets;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import com.google.common.collect.Sets;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -39,6 +39,7 @@ import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.fabric.api.event.network.C2SPacketTypeCallback;
 import net.fabricmc.fabric.api.network.PacketContext;
+import net.fabricmc.fabric.api.network.PacketIdentifier;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 
 public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements ServerSidePacketRegistry {
@@ -78,10 +79,20 @@ public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements 
 	}
 
 	@Override
+	public boolean canPlayerReceive(PlayerEntity player, PacketIdentifier id) {
+		return this.canPlayerReceive(player, id.toString());
+	}
+
+	@Override
 	public void sendToPlayer(PlayerEntity player, Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> completionListener) {
 		if (!(player instanceof ServerPlayerEntity)) {
 			throw new RuntimeException("Can only send to ServerPlayerEntities!");
 		} else {
+			if (completionListener != null) {
+				((ServerPlayerEntity) player).networkHandler.connection.send(packet, completionListener);
+				return;
+			}
+
 			((ServerPlayerEntity) player).networkHandler.sendPacket(packet);
 		}
 	}
@@ -114,5 +125,10 @@ public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements 
 	@Override
 	public Packet<?> toPacket(String id, PacketByteBuf buf) {
 		return new CustomPayloadS2CPacket(id, buf);
+	}
+
+	@Override
+	public Packet<?> toPacket(PacketIdentifier id, PacketByteBuf buf) {
+		return this.toPacket(id.toString(), buf);
 	}
 }
