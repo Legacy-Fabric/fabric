@@ -25,7 +25,6 @@ import net.fabricmc.fabric.api.armor.v1.ArmorMaterial;
 import net.fabricmc.fabric.mixin.armor.MixinArmorItem;
 
 public class FabricArmorItem extends ArmorItem {
-	private static final int[] BASE_DURABILITY = new int[]{11, 16, 15, 13};
 	private final ArmorMaterial material;
 	private final int slotId;
 
@@ -34,7 +33,7 @@ public class FabricArmorItem extends ArmorItem {
 		this.material = material;
 		this.slotId = slot.getSlotId();
 		((MixinArmorItem) this).setProtection(material.getProtectionValue(slot.getSlotId()));
-		this.setMaxDamage(BASE_DURABILITY[this.slotId] * material.getDurabilityMultiplier());
+		this.setMaxDamage(ArmorMaterial.BASE_DURABILITY[this.slotId] * material.getDurabilityMultiplier());
 	}
 
 	public ArmorMaterial getArmorMaterial() {
@@ -48,11 +47,6 @@ public class FabricArmorItem extends ArmorItem {
 	@Override
 	public int getEnchantability() {
 		return this.material.getEnchantability();
-	}
-
-	@Override
-	public int getMaxDamage() {
-		return this.material.getDurabilityMultiplier();
 	}
 
 	@Override

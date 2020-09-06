@@ -28,6 +28,7 @@ public final class BlockRegistry {
 	}
 
 	public static <T extends Block> T register(Identifier id, T block) {
+		block.setTranslationKey(id.toString());
 		return ContentRegistryImpl.registerBlock(id, block);
 	}
 }

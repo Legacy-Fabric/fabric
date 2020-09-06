@@ -28,6 +28,7 @@ public final class ItemRegistry {
 	}
 
 	public static <T extends Item> T register(Identifier id, T item) {
+		item.setTranslationKey(id.toString());
 		return ContentRegistryImpl.registerItem(id, item);
 	}
 }
