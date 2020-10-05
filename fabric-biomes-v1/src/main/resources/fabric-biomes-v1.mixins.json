@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.mixin.biomes",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "LakesFeatureAccessor",
+    "MixinLayer",
+    "MixinOverworldChunkGenerator",
+    "MixinSetBaseBiomesLayer"
+  ]
+}
