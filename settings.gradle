@@ -25,10 +25,7 @@ include 'fabric-gamerule-api-v1'
 include 'fabric-item-groups-v0'
 include 'fabric-key-binding-api-v1'
 include 'fabric-lifecycle-events-v1'
-<<<<<<< HEAD
 include 'fabric-networking-blockentity-v0'
-=======
->>>>>>> fulira/nao_tomori
 include 'fabric-networking-v0'
 include 'fabric-object-builder-api-v1'
 include 'fabric-recipes-v1'

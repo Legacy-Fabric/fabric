@@ -21,8 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.fabricmc.fabric.api.biomes.v1.Climate;
 import net.minecraft.world.biome.Biome;
+
+import net.fabricmc.fabric.api.biomes.v1.Climate;
 
 /**
  * Deals with picking variants for you.
@@ -32,8 +33,8 @@ final class VariantTransformer {
 	private final Map<Climate, SubTransformer> transformers = new HashMap<>();
 
 	/**
-	 * @param variant the variant that the replaced biome is replaced with
-	 * @param chance the chance of replacement of the biome into the variant
+	 * @param variant  the variant that the replaced biome is replaced with
+	 * @param chance   the chance of replacement of the biome into the variant
 	 * @param climates the climates that the variant can replace the base biome in, empty/null indicates all climates
 	 */
 	void addBiome(Biome variant, double chance, Climate[] climates) {
@@ -61,16 +62,16 @@ final class VariantTransformer {
 	 * Transforms a biome into a variant randomly depending on its chance.
 	 *
 	 * @param replaced biome to transform
-	 * @param random the {@link LayerRandomnessSource} from the layer
+	 * @param random   the {@link LayerRandomnessSource} from the layer
 	 * @return the transformed biome
 	 */
 	Biome transformBiome(Biome replaced, LayerRandom random, Climate climate) {
-		SubTransformer transformer = transformers.get(climate);
+		SubTransformer transformer = this.transformers.get(climate);
 
 		if (transformer != null) {
 			return transformer.transformBiome(replaced, random);
 		} else {
-			return defaultTransformer.transformBiome(replaced, random);
+			return this.defaultTransformer.transformBiome(replaced, random);
 		}
 	}
 
@@ -79,22 +80,22 @@ final class VariantTransformer {
 
 		/**
 		 * @param variant the variant that the replaced biome is replaced with
-		 * @param chance the chance of replacement of the biome into the variant
+		 * @param chance  the chance of replacement of the biome into the variant
 		 */
 		private void addBiome(Biome variant, double chance) {
-			variants.add(new BiomeVariant(variant, chance));
+			this.variants.add(new BiomeVariant(variant, chance));
 		}
 
 		/**
 		 * Transforms a biome into a variant randomly depending on its chance.
 		 *
 		 * @param replaced biome to transform
-		 * @param random the {@link LayerRandomnessSource} from the layer
+		 * @param random   the {@link LayerRandomnessSource} from the layer
 		 * @return the transformed biome
 		 */
 		private Biome transformBiome(Biome replaced, LayerRandom random) {
-			for (BiomeVariant variant : variants) {
-				if (random.nextInt(Integer.MAX_VALUE) < variant.chance * Integer.MAX_VALUE) {
+			for (BiomeVariant variant : this.variants) {
+				if (random.nextIntAccess(Integer.MAX_VALUE) < variant.chance * Integer.MAX_VALUE) {
 					return variant.biome;
 				}
 			}

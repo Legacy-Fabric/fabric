@@ -1,7 +1,8 @@
 package net.fabricmc.fabric.impl.biomes;
 
-import net.fabricmc.fabric.impl.biomes.WeightedPicker.WeightedEntry;
 import net.minecraft.world.biome.Biome;
+
+import net.fabricmc.fabric.impl.biomes.WeightedPicker.WeightedEntry;
 
 /**
  * Entry of a biome and its weight.
@@ -12,7 +13,7 @@ public final class WeightedBiomeEntry implements WeightedEntry {
 	private double upperWeightBound;
 
 	/**
-	 * @param biome the biome
+	 * @param biome  the biome
 	 * @param weight how often a biome will be chosen
 	 */
 	WeightedBiomeEntry(final Biome biome, final double weight) {
@@ -21,12 +22,12 @@ public final class WeightedBiomeEntry implements WeightedEntry {
 	}
 
 	public Biome getBiome() {
-		return biome;
+		return this.biome;
 	}
 
 	@Override
 	public double getWeight() {
-		return weight;
+		return this.weight;
 	}
 
 	/**
@@ -42,6 +43,6 @@ public final class WeightedBiomeEntry implements WeightedEntry {
 	 */
 	@Override
 	public double getUpperWeightBound() {
-		return upperWeightBound;
+		return this.upperWeightBound;
 	}
 }

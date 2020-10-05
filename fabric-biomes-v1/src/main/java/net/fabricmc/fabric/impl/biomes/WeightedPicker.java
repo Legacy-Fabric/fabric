@@ -33,7 +33,7 @@ public final class WeightedPicker<T extends WeightedEntry> {
 	private final List<T> entries = new ArrayList<>();
 
 	public WeightedPicker() {
-		currentTotal = 0;
+		this.currentTotal = 0;
 	}
 
 	void add(final T entry) {
@@ -48,7 +48,7 @@ public final class WeightedPicker<T extends WeightedEntry> {
 	}
 
 	public T pickRandom(LayerRandom random) {
-		double target = random.nextInt(Integer.MAX_VALUE) * getCurrentWeightTotal() / Integer.MAX_VALUE;
+		double target = random.nextIntAccess(Integer.MAX_VALUE) * this.getCurrentWeightTotal() / Integer.MAX_VALUE;
 		return this.search(target);
 	}
 
@@ -89,7 +89,9 @@ public final class WeightedPicker<T extends WeightedEntry> {
 
 	public interface WeightedEntry {
 		double getUpperWeightBound();
+
 		double getWeight();
+
 		void updateUpperWeightBound(double upperWeightBound);
 	}
 }

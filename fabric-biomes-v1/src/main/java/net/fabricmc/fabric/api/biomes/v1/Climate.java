@@ -1,14 +1,14 @@
 package net.fabricmc.fabric.api.biomes.v1;
 
 import java.util.function.Consumer;
-
 import javax.annotation.Nullable;
+
+import net.minecraft.world.biome.Biome;
 
 import net.fabricmc.fabric.impl.biomes.InternalBiomeUtils;
 import net.fabricmc.fabric.impl.biomes.LayerRandom;
 import net.fabricmc.fabric.impl.biomes.WeightedBiomeEntry;
 import net.fabricmc.fabric.impl.biomes.WeightedPicker;
-import net.minecraft.world.biome.Biome;
 
 /**
  * A climate in the biome generator. For the vanilla overworld, but can be utilised by modded generators as well.
@@ -43,7 +43,8 @@ public final class Climate {
 
 	/**
 	 * Adds the biome to this climate.
-	 * @param biome the biome to add.
+	 *
+	 * @param biome  the biome to add.
 	 * @param weight the weight of the biome.
 	 */
 	public void addBiome(Biome biome, double weight) {

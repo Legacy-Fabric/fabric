@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 
-import net.fabricmc.fabric.api.biomes.v1.Climate;
 import net.minecraft.world.biome.Biome;
+
+import net.fabricmc.fabric.api.biomes.v1.Climate;
 
 /**
  * Biome and climate related utility methods and fields for internal use only!

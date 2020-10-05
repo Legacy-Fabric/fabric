@@ -28,7 +28,7 @@ import net.minecraft.world.biome.Biome;
 public interface FabricBiome {
 	/**
 	 * @param lakeBlock the fluid block the lake is made out of.
-	 * @param rand the world gen random. Useful if you want to decrease the chance of a lake, but not eliminate it completely.
+	 * @param rand      the world gen random. Useful if you want to decrease the chance of a lake, but not eliminate it completely.
 	 * @return whether the lake is allowed to generate, for this biome.
 	 */
 	default boolean isLakeAllowed(Block lakeBlock, Random rand) {
