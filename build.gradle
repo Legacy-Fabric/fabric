@@ -317,9 +317,8 @@ shadowJar {
 		exclude(dependency('com.mojang:minecraft:.*'))
 	}
 	configurations = [project.configurations.shade]
-	relocate 'com.mojang.brigadier', 'io.github.hydos.holotext.shadowed.com.mojang.brigadier'
+	relocate 'com.mojang.brigadier', 'net.fabricmc.fabric.shadowed.com.mojang.brigadier'
 }
-
 
 curseforge {
     if (project.hasProperty('curse_api_key')) {
