@@ -27,18 +27,18 @@ import net.fabricmc.fabric.impl.network.CustomPayloadPacketAccessor;
 @Mixin(value = CustomPayloadS2CPacket.class, priority = 500)
 public class MixinCustomPayloadS2CPacket implements CustomPayloadPacketAccessor {
 	@Shadow
-	private String identifier;
+	private String channel;
 
 	@Shadow
-	private PacketByteBuf buf;
+	private PacketByteBuf payload;
 
 	@Override
 	public String getChannel() {
-		return this.identifier;
+		return this.channel;
 	}
 
 	@Override
 	public PacketByteBuf getData() {
-		return this.buf;
+		return this.payload;
 	}
 }

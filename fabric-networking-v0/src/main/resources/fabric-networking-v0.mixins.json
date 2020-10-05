@@ -5,7 +5,6 @@
   "mixins": [
     "MixinCustomPayloadC2SPacket",
     "MixinCustomPayloadS2CPacket",
-    "MixinEntityTracker",
     "MixinPlayerManager",
     "MixinServerPlayNetworkHandler"
   ],

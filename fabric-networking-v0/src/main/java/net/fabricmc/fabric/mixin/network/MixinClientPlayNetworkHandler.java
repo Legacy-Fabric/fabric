@@ -54,7 +54,7 @@ public abstract class MixinClientPlayNetworkHandler implements PacketContext {
 
 	@Inject(method = "onCustomPayload", at = @At("HEAD"), cancellable = true)
 	public void onCustomPayload(CustomPayloadS2CPacket packet, CallbackInfo info) {
-		if (((ClientSidePacketRegistryImpl) ClientSidePacketRegistry.INSTANCE).accept(((CustomPayloadPacketAccessor) packet).getChannel(), this, packet::getData)) {
+		if (((ClientSidePacketRegistryImpl) ClientSidePacketRegistry.INSTANCE).accept(((CustomPayloadPacketAccessor) packet).getChannel(), this, packet::getPayload)) {
 			info.cancel();
 		}
 	}

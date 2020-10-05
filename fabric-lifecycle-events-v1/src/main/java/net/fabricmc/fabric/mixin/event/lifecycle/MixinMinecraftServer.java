@@ -55,7 +55,7 @@ public abstract class MixinMinecraftServer {
 		ServerLifecycleEvents.SERVER_STOPPING.invoker().onServerStopping((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At(value = "TAIL"), method = "stopWorlds")
+	@Inject(at = @At(value = "TAIL"), method = "stopServer")
 	public void afterServerShutDown(CallbackInfo ci) {
 		ServerLifecycleEvents.SERVER_STOPPED.invoker().onServerStopped((MinecraftServer) (Object) this);
 	}
@@ -70,8 +70,8 @@ public abstract class MixinMinecraftServer {
 		ServerLifecycleEvents.SERVER_STARTED.invoker().onServerStarted((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V", remap = false), method = "stopWorlds")
-	public void serverWorldUnload(CallbackInfo ci) {
+	@Inject(at = @At("HEAD"), method = "saveWorlds")
+	public void serverWorldUnload(boolean silent, CallbackInfo ci) {
 		for (ServerWorld world : this.worlds) {
 			ServerWorldEvents.UNLOAD.invoker().onWorldUnload((MinecraftServer) (Object) this, world);
 		}

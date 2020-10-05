@@ -29,7 +29,7 @@ import net.fabricmc.fabric.impl.content.registries.FuelRegistryImpl;
 
 @Mixin(FurnaceBlockEntity.class)
 public class MixinFurnaceBlockEntity {
-	@Inject(at = @At("HEAD"), method = "method_1144", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "getBurnTime", cancellable = true)
 	private static void registerFuels(ItemStack stack, CallbackInfoReturnable<Integer> info) {
 		if (stack == null) return;
 

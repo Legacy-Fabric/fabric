@@ -10,6 +10,7 @@ plugins {
 	id 'maven'
 	id 'signing'
 	id 'com.jfrog.bintray' version '1.8.4'
+	id 'com.github.johnrengelman.shadow' version '6.0.0'
 }
 
 def ENV = System.getenv()
@@ -17,7 +18,7 @@ def ENV = System.getenv()
 class Globals {
 	static def baseVersion = "0.8.2"
 	static def mcVersion = "1.8.9"
-	static def yarnVersion = "+build.202008241659"
+	static def yarnVersion = "+build.202009230433"
 }
 
 version = Globals.baseVersion
@@ -291,6 +292,13 @@ sourceSets {
 	testmod
 }
 
+configurations {
+	shade
+}
+
+tasks.remapJar.dependsOn(shadowJar)
+(tasks.remapJar.input as FileSystemLocationProperty<? extends FileSystemLocation>).set(shadowJar.archivePath)
+
 dependencies {
 	afterEvaluate {
 		subprojects.each {
@@ -301,8 +309,17 @@ dependencies {
 		}
 	}
 
-	include 'com.mojang:brigadier:1.0.17'
+	shade 'com.mojang:brigadier:1.0.17'
 }
+
+shadowJar {
+	dependencies {
+		exclude(dependency('com.mojang:minecraft:.*'))
+	}
+	configurations = [project.configurations.shade]
+	relocate 'com.mojang.brigadier', 'io.github.hydos.holotext.shadowed.com.mojang.brigadier'
+}
+
 
 curseforge {
     if (project.hasProperty('curse_api_key')) {

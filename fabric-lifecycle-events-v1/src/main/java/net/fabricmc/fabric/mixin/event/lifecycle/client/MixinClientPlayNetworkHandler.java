@@ -33,6 +33,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientNetworkEvents;
 public class MixinClientPlayNetworkHandler {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/util/ThreadExecutor;)V", shift = At.Shift.AFTER), method = "onCustomPayload")
 	public void handleCustomPayload(CustomPayloadS2CPacket packet, CallbackInfo ci) {
-		ClientNetworkEvents.CUSTOM_PAYLOAD.invoker().onCustomPayload(packet.getIdentifier(), packet.getData());
+		ClientNetworkEvents.CUSTOM_PAYLOAD.invoker().onCustomPayload(packet.getChannel(), packet.getPayload());
 	}
 }
