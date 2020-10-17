@@ -4,12 +4,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinDamageTracker",
-    "MixinEndChunkGenerator",
     "MixinEntity",
-    "MixinHellChunkGenerator",
     "MixinLightningBoltEntity",
     "MixinMinecraftServer",
-    "MixinOverworldChunkGenerator",
     "MixinPlayerManager",
     "MixinServerChunkCache",
     "MixinServerPlayerEntity",
