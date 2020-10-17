@@ -1,6 +1,19 @@
 archivesBaseName = "fabric-commands-v1"
 version = getSubprojectVersion(project, "0.1.0")
 
+configurations {
+	shade
+}
+
 dependencies {
-	compile project(path: ':fabric-api-base', configuration: 'dev')
+	implementation project(path: ':fabric-api-base', configuration: 'dev')
+	shade 'com.mojang:brigadier:1.0.17'
+}
+
+jar {
+	configurations.shade.each {
+		from(project.zipTree(it)){
+			exclude 'META-INF', 'META-INF/**'
+		}
+	}
 }
