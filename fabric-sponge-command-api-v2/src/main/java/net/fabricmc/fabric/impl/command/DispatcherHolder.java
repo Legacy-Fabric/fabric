@@ -5,4 +5,8 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher
 
 public class DispatcherHolder {
 	private static final Dispatcher DISPATCHER = new SimpleDispatcher();
+
+	public static Dispatcher getDispatcher() {
+		return DISPATCHER;
+	}
 }
