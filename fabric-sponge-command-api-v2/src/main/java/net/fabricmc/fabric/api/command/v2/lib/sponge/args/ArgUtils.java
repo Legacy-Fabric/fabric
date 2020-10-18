@@ -33,20 +33,20 @@ import net.minecraft.text.TranslatableText;
  * Internal utility methods.
  */
 class ArgUtils {
-    private ArgUtils() {
-    }
+	private ArgUtils() {
+	}
 
-    @Nullable
-    public static String textToArgKey(@Nullable Text key) {
-        if (key == null) {
-            return null;
-        }
+	@Nullable
+	public static String textToArgKey(@Nullable Text key) {
+		if (key == null) {
+			return null;
+		}
 
-        if (key instanceof TranslatableText) { // Use translation key
-            return ((TranslatableText) key).getKey();
-        }
+		if (key instanceof TranslatableText) { // Use translation key
+			return ((TranslatableText) key).getKey();
+		}
 
-        return key.asString();
-    }
+		return key.asString();
+	}
 
 }

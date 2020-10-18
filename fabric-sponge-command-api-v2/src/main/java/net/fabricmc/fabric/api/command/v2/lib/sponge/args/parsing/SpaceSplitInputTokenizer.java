@@ -33,31 +33,32 @@ import com.google.common.collect.ImmutableList;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 
 class SpaceSplitInputTokenizer implements InputTokenizer {
-    public static final SpaceSplitInputTokenizer INSTANCE = new SpaceSplitInputTokenizer();
-    private static final Pattern SPACE_REGEX = Pattern.compile("^[ ]*$");
+	public static final SpaceSplitInputTokenizer INSTANCE = new SpaceSplitInputTokenizer();
+	private static final Pattern SPACE_REGEX = Pattern.compile("^[ ]*$");
 
-    private SpaceSplitInputTokenizer() {}
+	private SpaceSplitInputTokenizer() {
+	}
 
-    @Override
-    public List<SingleArg> tokenize(String arguments, boolean lenient) throws ArgumentParseException {
-        if (SPACE_REGEX.matcher(arguments).matches()) {
-            return ImmutableList.of();
-        }
+	@Override
+	public List<SingleArg> tokenize(String arguments, boolean lenient) throws ArgumentParseException {
+		if (SPACE_REGEX.matcher(arguments).matches()) {
+			return ImmutableList.of();
+		}
 
-        List<SingleArg> ret = new ArrayList<>();
-        int lastIndex = 0;
-        int spaceIndex;
-        while ((spaceIndex = arguments.indexOf(" ")) != -1) {
-            if (spaceIndex != 0) {
-                ret.add(new SingleArg(arguments.substring(0, spaceIndex), lastIndex, lastIndex + spaceIndex));
-                arguments = arguments.substring(spaceIndex);
-            } else {
-                arguments = arguments.substring(1);
-            }
-            lastIndex += spaceIndex + 1;
-        }
+		List<SingleArg> ret = new ArrayList<>();
+		int lastIndex = 0;
+		int spaceIndex;
+		while ((spaceIndex = arguments.indexOf(" ")) != -1) {
+			if (spaceIndex != 0) {
+				ret.add(new SingleArg(arguments.substring(0, spaceIndex), lastIndex, lastIndex + spaceIndex));
+				arguments = arguments.substring(spaceIndex);
+			} else {
+				arguments = arguments.substring(1);
+			}
+			lastIndex += spaceIndex + 1;
+		}
 
-        ret.add(new SingleArg(arguments, lastIndex, lastIndex + arguments.length()));
-        return ret;
-    }
+		ret.add(new SingleArg(arguments, lastIndex, lastIndex + arguments.length()));
+		return ret;
+	}
 }

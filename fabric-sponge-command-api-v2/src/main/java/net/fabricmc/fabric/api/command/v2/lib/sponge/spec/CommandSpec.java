@@ -90,7 +90,6 @@ public final class CommandSpec implements CommandCallable {
      * Builder for command specs.
      */
     public static final class Builder {
-
         private static final CommandElement DEFAULT_ARG = GenericArguments.none();
         private CommandElement args = DEFAULT_ARG;
         @Nullable

@@ -32,75 +32,75 @@ import com.google.common.base.Objects;
  * in the associated raw input string.
  */
 public class SingleArg {
-    private final String value;
-    private final int startIdx;
-    private final int endIdx;
+	private final String value;
+	private final int startIdx;
+	private final int endIdx;
 
-    /**
-     * Create a new argument.
-     *
-     * @param value The argument string
-     * @param startIdx The starting index of {@code value} in an input string
-     * @param endIdx The ending index of {@code value} in an input string
-     */
-    public SingleArg(String value, int startIdx, int endIdx) {
-        this.value = value;
-        this.startIdx = startIdx;
-        this.endIdx = endIdx;
-    }
+	/**
+	 * Create a new argument.
+	 *
+	 * @param value    The argument string
+	 * @param startIdx The starting index of {@code value} in an input string
+	 * @param endIdx   The ending index of {@code value} in an input string
+	 */
+	public SingleArg(String value, int startIdx, int endIdx) {
+		this.value = value;
+		this.startIdx = startIdx;
+		this.endIdx = endIdx;
+	}
 
-    /**
-     * Gets the string used.
-     *
-     * @return The string used
-     */
-    public String getValue() {
-        return this.value;
-    }
+	/**
+	 * Gets the string used.
+	 *
+	 * @return The string used
+	 */
+	public String getValue() {
+		return this.value;
+	}
 
-    /**
-     * Gets the starting index.
-     *
-     * @return The starting index
-     */
-    public int getStartIdx() {
-        return this.startIdx;
-    }
+	/**
+	 * Gets the starting index.
+	 *
+	 * @return The starting index
+	 */
+	public int getStartIdx() {
+		return this.startIdx;
+	}
 
-    /**
-     * Gets the ending index.
-     *
-     * @return The ending index
-     */
-    public int getEndIdx() {
-        return this.endIdx;
-    }
+	/**
+	 * Gets the ending index.
+	 *
+	 * @return The ending index
+	 */
+	public int getEndIdx() {
+		return this.endIdx;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof SingleArg)) {
-            return false;
-        }
-        SingleArg singleArg = (SingleArg) o;
-        return this.startIdx == singleArg.startIdx
-               && this.endIdx == singleArg.endIdx
-               && Objects.equal(this.value, singleArg.value);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof SingleArg)) {
+			return false;
+		}
+		SingleArg singleArg = (SingleArg) o;
+		return this.startIdx == singleArg.startIdx
+				&& this.endIdx == singleArg.endIdx
+				&& Objects.equal(this.value, singleArg.value);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(this.value, this.startIdx, this.endIdx);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(this.value, this.startIdx, this.endIdx);
+	}
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("value", this.value)
-                .add("startIdx", this.startIdx)
-                .add("endIdx", this.endIdx)
-                .toString();
-    }
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("value", this.value)
+				.add("startIdx", this.startIdx)
+				.add("endIdx", this.endIdx)
+				.toString();
+	}
 }

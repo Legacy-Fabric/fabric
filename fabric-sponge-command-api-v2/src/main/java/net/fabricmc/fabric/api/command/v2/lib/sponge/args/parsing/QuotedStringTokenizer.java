@@ -47,111 +47,111 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException
  * ARGS := ((UNQUOTED_ARG | QUOTED_ARG) WHITESPACE+)+</pre></blockquote>
  */
 class QuotedStringTokenizer implements InputTokenizer {
-    private static final int CHAR_BACKSLASH = '\\';
-    private static final int CHAR_SINGLE_QUOTE = '\'';
-    private static final int CHAR_DOUBLE_QUOTE = '"';
-    private final boolean handleQuotedStrings;
-    private final boolean forceLenient;
-    private final boolean trimTrailingSpace;
+	private static final int CHAR_BACKSLASH = '\\';
+	private static final int CHAR_SINGLE_QUOTE = '\'';
+	private static final int CHAR_DOUBLE_QUOTE = '"';
+	private final boolean handleQuotedStrings;
+	private final boolean forceLenient;
+	private final boolean trimTrailingSpace;
 
-    QuotedStringTokenizer(boolean handleQuotedStrings, boolean forceLenient, boolean trimTrailingSpace) {
-        this.handleQuotedStrings = handleQuotedStrings;
-        this.forceLenient = forceLenient;
-        this.trimTrailingSpace = trimTrailingSpace;
-    }
+	QuotedStringTokenizer(boolean handleQuotedStrings, boolean forceLenient, boolean trimTrailingSpace) {
+		this.handleQuotedStrings = handleQuotedStrings;
+		this.forceLenient = forceLenient;
+		this.trimTrailingSpace = trimTrailingSpace;
+	}
 
-    @Override
-    public List<SingleArg> tokenize(String arguments, boolean lenient) throws ArgumentParseException {
-        if (arguments.length() == 0) {
-            return Collections.emptyList();
-        }
+	@Override
+	public List<SingleArg> tokenize(String arguments, boolean lenient) throws ArgumentParseException {
+		if (arguments.length() == 0) {
+			return Collections.emptyList();
+		}
 
-        final TokenizerState state = new TokenizerState(arguments, lenient);
-        List<SingleArg> returnedArgs = new ArrayList<>(arguments.length() / 4);
-        if (this.trimTrailingSpace) {
+		final TokenizerState state = new TokenizerState(arguments, lenient);
+		List<SingleArg> returnedArgs = new ArrayList<>(arguments.length() / 4);
+		if (this.trimTrailingSpace) {
 			this.skipWhiteSpace(state);
-        }
-        while (state.hasMore()) {
-            if (!this.trimTrailingSpace) {
+		}
+		while (state.hasMore()) {
+			if (!this.trimTrailingSpace) {
 				this.skipWhiteSpace(state);
-            }
-            int startIdx = state.getIndex() + 1;
-            String arg = this.nextArg(state);
-            returnedArgs.add(new SingleArg(arg, startIdx, state.getIndex()));
-            if (this.trimTrailingSpace) {
+			}
+			int startIdx = state.getIndex() + 1;
+			String arg = this.nextArg(state);
+			returnedArgs.add(new SingleArg(arg, startIdx, state.getIndex()));
+			if (this.trimTrailingSpace) {
 				this.skipWhiteSpace(state);
-            }
-        }
-        return returnedArgs;
-    }
+			}
+		}
+		return returnedArgs;
+	}
 
-    // Parsing methods
+	// Parsing methods
 
-    private void skipWhiteSpace(TokenizerState state) throws ArgumentParseException {
-        if (!state.hasMore()) {
-            return;
-        }
-        while (state.hasMore() && Character.isWhitespace(state.peek())) {
-            state.next();
-        }
-    }
+	private void skipWhiteSpace(TokenizerState state) throws ArgumentParseException {
+		if (!state.hasMore()) {
+			return;
+		}
+		while (state.hasMore() && Character.isWhitespace(state.peek())) {
+			state.next();
+		}
+	}
 
-    private String nextArg(TokenizerState state) throws ArgumentParseException {
-        StringBuilder argBuilder = new StringBuilder();
-        if (state.hasMore()) {
-            int codePoint = state.peek();
-            if (this.handleQuotedStrings && (codePoint == CHAR_DOUBLE_QUOTE || codePoint == CHAR_SINGLE_QUOTE)) {
-                // quoted string
+	private String nextArg(TokenizerState state) throws ArgumentParseException {
+		StringBuilder argBuilder = new StringBuilder();
+		if (state.hasMore()) {
+			int codePoint = state.peek();
+			if (this.handleQuotedStrings && (codePoint == CHAR_DOUBLE_QUOTE || codePoint == CHAR_SINGLE_QUOTE)) {
+				// quoted string
 				this.parseQuotedString(state, codePoint, argBuilder);
-            } else {
+			} else {
 				this.parseUnquotedString(state, argBuilder);
-            }
-        }
-        return argBuilder.toString();
-    }
+			}
+		}
+		return argBuilder.toString();
+	}
 
-    private void parseQuotedString(TokenizerState state, int startQuotation, StringBuilder builder) throws ArgumentParseException {
-        // Consume the start quotation character
-        int nextCodePoint = state.next();
-        if (nextCodePoint != startQuotation) {
-            throw state.createException(new LiteralText(String.format("Actual next character '%c' did not match expected quotation character '%c'",
-                    nextCodePoint, startQuotation)));
-        }
+	private void parseQuotedString(TokenizerState state, int startQuotation, StringBuilder builder) throws ArgumentParseException {
+		// Consume the start quotation character
+		int nextCodePoint = state.next();
+		if (nextCodePoint != startQuotation) {
+			throw state.createException(new LiteralText(String.format("Actual next character '%c' did not match expected quotation character '%c'",
+					nextCodePoint, startQuotation)));
+		}
 
-        while (true) {
-            if (!state.hasMore()) {
-                if (state.isLenient() || this.forceLenient) {
-                    return;
-                }
-                throw state.createException(new LiteralText("Unterminated quoted string found"));
-            }
-            nextCodePoint = state.peek();
-            if (nextCodePoint == startQuotation) {
-                state.next();
-                return;
-            } else if (nextCodePoint == CHAR_BACKSLASH) {
+		while (true) {
+			if (!state.hasMore()) {
+				if (state.isLenient() || this.forceLenient) {
+					return;
+				}
+				throw state.createException(new LiteralText("Unterminated quoted string found"));
+			}
+			nextCodePoint = state.peek();
+			if (nextCodePoint == startQuotation) {
+				state.next();
+				return;
+			} else if (nextCodePoint == CHAR_BACKSLASH) {
 				this.parseEscape(state, builder);
-            } else {
-                builder.appendCodePoint(state.next());
-            }
-        }
-    }
+			} else {
+				builder.appendCodePoint(state.next());
+			}
+		}
+	}
 
-    private void parseUnquotedString(TokenizerState state, StringBuilder builder) throws ArgumentParseException {
-        while (state.hasMore()) {
-            int nextCodePoint = state.peek();
-            if (Character.isWhitespace(nextCodePoint)) {
-                return;
-            } else if (nextCodePoint == CHAR_BACKSLASH) {
+	private void parseUnquotedString(TokenizerState state, StringBuilder builder) throws ArgumentParseException {
+		while (state.hasMore()) {
+			int nextCodePoint = state.peek();
+			if (Character.isWhitespace(nextCodePoint)) {
+				return;
+			} else if (nextCodePoint == CHAR_BACKSLASH) {
 				this.parseEscape(state, builder);
-            } else {
-                builder.appendCodePoint(state.next());
-            }
-        }
-    }
+			} else {
+				builder.appendCodePoint(state.next());
+			}
+		}
+	}
 
-    private void parseEscape(TokenizerState state, StringBuilder builder) throws ArgumentParseException {
-        state.next(); // Consume \
-        builder.appendCodePoint(state.next()); // TODO: Unicode character escapes (\u00A7 type thing)?
-    }
+	private void parseEscape(TokenizerState state, StringBuilder builder) throws ArgumentParseException {
+		state.next(); // Consume \
+		builder.appendCodePoint(state.next()); // TODO: Unicode character escapes (\u00A7 type thing)?
+	}
 }

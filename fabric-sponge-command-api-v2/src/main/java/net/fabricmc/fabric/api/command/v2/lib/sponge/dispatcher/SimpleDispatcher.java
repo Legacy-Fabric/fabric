@@ -166,7 +166,6 @@ public final class SimpleDispatcher implements Dispatcher {
         checkNotNull(callback, "callback");
 
         // Invoke the callback with the commands that /can/ be registered
-        // noinspection ConstantConditions
         aliases = ImmutableList.copyOf(callback.apply(aliases));
         if (aliases.isEmpty()) {
             return Optional.empty();
