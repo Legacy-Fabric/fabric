@@ -24,8 +24,11 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static org.spongepowered.api.util.SpongeApiTranslationHelper.t;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -35,11 +38,8 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Location;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.spongepowered.api.util.SpongeApiTranslationHelper.t;
 
 /**
  * Context that a command is executed in.

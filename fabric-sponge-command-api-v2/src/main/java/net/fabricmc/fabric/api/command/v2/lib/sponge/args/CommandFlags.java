@@ -24,15 +24,8 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
-import static org.spongepowered.api.command.args.GenericArguments.requiringPermission;
-import static org.spongepowered.api.util.SpongeApiTranslationHelper.t;
-
-import com.google.common.collect.ImmutableList;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.util.StartsWithPredicate;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,8 +33,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
+
+import net.minecraft.command.CommandSource;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public final class CommandFlags extends CommandElement {
     @Nullable
@@ -75,9 +73,9 @@ public final class CommandFlags extends CommandElement {
                 CommandArgs.Snapshot start = args.getSnapshot();
                 boolean remove;
                 if (arg.startsWith("--")) { // Long flag
-                    remove = parseLongFlag(source, arg.substring(2), args, context);
+                    remove = this.parseLongFlag(source, arg.substring(2), args, context);
                 } else {
-                    remove = parseShortFlags(source, arg.substring(1), args, context);
+                    remove = this.parseShortFlags(source, arg.substring(1), args, context);
                 }
                 if (remove) {
                     args.removeArgs(start, args.getSnapshot());
@@ -101,7 +99,7 @@ public final class CommandFlags extends CommandElement {
         if (element == null) {
             switch (this.unknownLongFlagBehavior) {
                 case ERROR:
-                    throw args.createError(t("Unknown long flag %s specified", flagSplit[0]));
+                    throw args.createError(new LiteralText(String.format("Unknown long flag %s specified", flagSplit[0])));
                 case ACCEPT_NONVALUE:
                     context.addFlag(flag);
                     context.putArg(flag, flagSplit.length == 2 ? flagSplit[1] : true);
@@ -132,9 +130,9 @@ public final class CommandFlags extends CommandElement {
                         if (i == 0) {
                             return false;
                         }
-                        throw args.createError(t("Unknown short flag %s specified", shortFlag));
+                        throw args.createError(new LiteralText(String.format("Unknown short flag %s specified", shortFlag)));
                     case ERROR:
-                        throw args.createError(t("Unknown short flag %s specified", shortFlag));
+                        throw args.createError(new LiteralText(String.format("Unknown short flag %s specified", shortFlag)));
                     case ACCEPT_NONVALUE:
                         context.addFlag(shortFlag);
                         context.putArg(shortFlag, true);
@@ -167,7 +165,7 @@ public final class CommandFlags extends CommandElement {
                 }
             }
             Text usage = arg.getValue().getUsage(src);
-            if (usage.toPlain().trim().length() > 0) {
+            if (usage.getString().trim().length() > 0) {
                 builder.add(" ");
                 builder.add(usage);
             }
@@ -178,7 +176,7 @@ public final class CommandFlags extends CommandElement {
         if (this.childElement != null) {
             builder.add(this.childElement.getUsage(src));
         }
-        return Text.of(builder.toArray());
+        return new LiteralText(Arrays.stream(builder.toArray()).map(Object::toString).collect(Collectors.joining()));
     }
 
     @Override
@@ -195,9 +193,9 @@ public final class CommandFlags extends CommandElement {
                 CommandArgs.Snapshot start = args.getSnapshot();
                 List<String> ret;
                 if (next.startsWith("--")) {
-                    ret = tabCompleteLongFlag(next.substring(2), src, args, context);
+                    ret = this.tabCompleteLongFlag(next.substring(2), src, args, context);
                 } else {
-                    ret = tabCompleteShortFlags(next.substring(1), src, args, context);
+                    ret = this.tabCompleteShortFlags(next.substring(1), src, args, context);
                 }
                 if (ret != null) {
                     return ret;
@@ -214,7 +212,7 @@ public final class CommandFlags extends CommandElement {
         if (!args.hasNext() && !args.getRaw().matches("\\s+$")) {
             return ImmutableList.of();
         }
-        return this.childElement != null ? childElement.complete(src, args, context) : ImmutableList.of();
+        return this.childElement != null ? this.childElement.complete(src, args, context) : ImmutableList.of();
     }
 
     @Nullable
@@ -224,7 +222,7 @@ public final class CommandFlags extends CommandElement {
         CommandElement element = this.longFlags.get(flagSplit[0].toLowerCase());
         if (element == null || !isSplitFlag && !args.hasNext()) {
             return this.longFlags.keySet().stream()
-                    .filter(new StartsWithPredicate(flagSplit[0]))
+                    .filter((input) -> input.startsWith(flagSplit[0]))
                     .map(f -> "--" + f)
                     .collect(Collectors.toList());
         } else if (isSplitFlag) {
@@ -386,7 +384,7 @@ public final class CommandFlags extends CommandElement {
          * @return this
          */
         public Builder flag(String... specs) {
-            return flag(input -> new FlagElement(Text.of(input), null), specs);
+            return this.flag(input -> new FlagElement(new LiteralText(input), null), specs);
         }
 
         /**
@@ -400,7 +398,7 @@ public final class CommandFlags extends CommandElement {
          * @return this
          */
         public Builder permissionFlag(final String flagPermission, String... specs) {
-            return flag(input -> requiringPermission(new FlagElement(Text.of(input), null), flagPermission), specs);
+            return this.flag(input -> GenericArguments.requiringPermission(new FlagElement(new LiteralText(input), null), flagPermission), specs);
         }
 
         /**
@@ -415,7 +413,7 @@ public final class CommandFlags extends CommandElement {
          * @return this
          */
         public Builder valueFlag(CommandElement value, String... specs) {
-            return flag(input -> new FlagElement(Text.of(input), value), specs);
+            return this.flag(input -> new FlagElement(new LiteralText(input), value), specs);
         }
 
         /**
@@ -430,7 +428,7 @@ public final class CommandFlags extends CommandElement {
          */
         @Deprecated
         public Builder setAcceptsArbitraryLongFlags(boolean acceptsArbitraryLongFlags) {
-            setUnknownLongFlagBehavior(acceptsArbitraryLongFlags ? UnknownFlagBehavior.ACCEPT_NONVALUE : UnknownFlagBehavior.ERROR);
+			this.setUnknownLongFlagBehavior(acceptsArbitraryLongFlags ? UnknownFlagBehavior.ACCEPT_NONVALUE : UnknownFlagBehavior.ERROR);
             return this;
         }
 
@@ -505,9 +503,9 @@ public final class CommandFlags extends CommandElement {
 
         @Override
         public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
-            String key = getUntranslatedKey();
-            if (valueElement != null) {
-                valueElement.parse(source, args, context);
+            String key = this.getUntranslatedKey();
+            if (this.valueElement != null) {
+				this.valueElement.parse(source, args, context);
             } else {
                 context.putArg(key, true);
             }
@@ -522,9 +520,7 @@ public final class CommandFlags extends CommandElement {
 
         @Override
         public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
-            return valueElement != null ? valueElement.complete(src, args, context) : Collections.emptyList();
+            return this.valueElement != null ? this.valueElement.complete(src, args, context) : Collections.emptyList();
         }
-
     }
-
 }

@@ -24,14 +24,14 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
-import com.google.common.collect.ImmutableList;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import com.google.common.collect.ImmutableList;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;

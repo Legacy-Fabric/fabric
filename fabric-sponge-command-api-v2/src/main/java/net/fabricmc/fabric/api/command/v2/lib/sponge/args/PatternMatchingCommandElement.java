@@ -24,17 +24,16 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
 import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;

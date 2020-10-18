@@ -24,12 +24,11 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher;
 
-import com.google.common.collect.Multimap;
-
 import java.util.Optional;
 import java.util.Set;
-
 import javax.annotation.Nullable;
+
+import com.google.common.collect.Multimap;
 
 import net.minecraft.command.CommandSource;
 

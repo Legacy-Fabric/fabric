@@ -24,34 +24,6 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import org.spongepowered.api.CatalogType;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.DataContainer;
-import org.spongepowered.api.data.persistence.DataTranslators;
-import org.spongepowered.api.service.user.UserStorageService;
-import org.spongepowered.api.text.selector.Selector;
-import org.spongepowered.api.text.serializer.TextParseException;
-import org.spongepowered.api.text.serializer.TextSerializer;
-import org.spongepowered.api.text.serializer.TextSerializers;
-import org.spongepowered.api.util.StartsWithPredicate;
-import org.spongepowered.api.util.TriState;
-import org.spongepowered.api.util.blockray.BlockRay;
-import org.spongepowered.api.util.blockray.BlockRayHit;
-import org.spongepowered.api.world.Locatable;
-import org.spongepowered.api.world.extent.EntityUniverse;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.InetAddress;
@@ -67,31 +39,36 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
 import javax.annotation.Nullable;
+
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.command.v2.StringType;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
@@ -103,8 +80,8 @@ import net.fabricmc.loader.api.ModContainer;
 /**
  * Class containing factory methods for common command elements.
  */
+@SuppressWarnings({"UnstableApiUsage", "ConstantConditions"})
 public final class GenericArguments {
-
     private static final CommandElement NONE = new SequenceCommandElement(ImmutableList.of());
 
     private GenericArguments() {}
@@ -192,29 +169,6 @@ public final class GenericArguments {
     }
 
     /**
-     * Expect an argument that is a member of the specified {@link Enum}
-     * T.
-     *
-     * <p>This argument accepts the following inputs:</p>
-     *
-     * <ul>
-     *     <li>The value's {@link Enum#ordinal()} ()}</li>
-     *     <li>A regex that matches the beginning of one or more ids</li>
-     * </ul>
-     *
-     * <p>This may return multiple instances of T. If you must only return one,
-     * wrap this element in an {@link #onlyOne(CommandElement)} call.</p>
-     *
-     * @param key The key to store the resolved value under
-     * @param clazz The expected {@link Enum}
-     * @param <T> The type to return
-     * @return the argument
-     */
-    public static <T extends Enum<T>> CommandElement enumElement(Text key, Class<T> clazz) {
-        return new EnumTypeCommandElement<>(key, clazz);
-    }
-
-    /**
      * Expect an argument to represent a {@link ModContainer}'s id.
      *
      * <p>This argument accepts the following inputs:</p>
@@ -254,7 +208,6 @@ public final class GenericArguments {
     }
 
     static class MarkTrueCommandElement extends CommandElement {
-
         MarkTrueCommandElement(Text key) {
             super(key);
         }
@@ -271,7 +224,7 @@ public final class GenericArguments {
 
         @Override
         public Text getUsage(CommandSource src) {
-            return Text.EMPTY;
+            return new LiteralText("");
         }
     }
 
@@ -372,17 +325,17 @@ public final class GenericArguments {
 
         @Override
         public Text getUsage(CommandSource commander) {
-            final Text.Builder build = Text.builder();
+            final Text build = new LiteralText("");
             for (Iterator<CommandElement> it = this.elements.iterator(); it.hasNext();) {
                 Text usage = it.next().getUsage(commander);
-                if (!usage.isEmpty()) {
+                if (!usage.getString().isEmpty()) {
                     build.append(usage);
                     if (it.hasNext()) {
                         build.append(CommandMessageFormatting.SPACE_TEXT);
                     }
                 }
             }
-            return build.build();
+            return new LiteralText(build.getString());
         }
     }
 
@@ -555,7 +508,7 @@ public final class GenericArguments {
         public Text getUsage(CommandSource commander) {
             Collection<String> keys = this.keySupplier.get();
             if (this.choicesInUsage == TriState.TRUE || (this.choicesInUsage == TriState.DEFAULT && keys.size() <= CUTOFF)) {
-                final Text.Builder build = Text.builder();
+                final Text build = new LiteralText();
                 build.append(CommandMessageFormatting.LT_TEXT);
                 for (Iterator<String> it = keys.iterator(); it.hasNext();) {
                     build.append(new LiteralText(it.next()));
@@ -564,7 +517,7 @@ public final class GenericArguments {
                     }
                 }
                 build.append(CommandMessageFormatting.GT_TEXT);
-                return build.build();
+                return new LiteralText(build.getString());
             }
             return super.getUsage(commander);
         }
@@ -618,29 +571,28 @@ public final class GenericArguments {
 
         @Override
         public List<String> complete(final CommandSource src, final CommandArgs args, final CommandContext context) {
-            return ImmutableList.copyOf(Iterables.concat(Iterables.transform(this.elements,
-                input -> {
-                    if (input == null) {
-                        return ImmutableList.of();
-                    }
-
-                    CommandArgs.Snapshot snapshot = args.getSnapshot();
-                    List<String> ret = input.complete(src, args, context);
-                    args.applySnapshot(snapshot);
-                    return ret;
-                })));
+        	return Lists.newLinkedList(Iterables.concat(this.elements.stream().map(element -> {
+        		if (element == null) {
+        			return ImmutableList.<String>of();
+				} else {
+					CommandArgs.Snapshot snapshot = args.getSnapshot();
+					List<String> ret = element.complete(src, args, context);
+					args.applySnapshot(snapshot);
+					return ret;
+				}
+			}).collect(Collectors.toSet())));
         }
 
         @Override
         public Text getUsage(CommandSource commander) {
-            final Text.Builder ret = Text.builder();
+            final Text ret = new LiteralText("");
             for (Iterator<CommandElement> it = this.elements.iterator(); it.hasNext();) {
                 ret.append(it.next().getUsage(commander));
                 if (it.hasNext()) {
                     ret.append(CommandMessageFormatting.PIPE_TEXT);
                 }
             }
-            return ret.build();
+            return new LiteralText(ret.getString());
         }
     }
 
@@ -726,7 +678,7 @@ public final class GenericArguments {
             if (!args.hasNext()) {
                 Text key = this.element.getKey();
                 if (key != null && this.value != null) {
-                    context.putArg(key.toPlain(), this.value);
+                    context.putArg(key.asString(), this.value);
                 }
                 return;
             }
@@ -758,10 +710,10 @@ public final class GenericArguments {
         @Override
         public Text getUsage(CommandSource src) {
             final Text containingUsage = this.element.getUsage(src);
-            if (containingUsage.isEmpty()) {
-                return Text.EMPTY;
+            if (containingUsage.getString().isEmpty()) {
+                return new LiteralText("");
             }
-            return new LiteralText("[", this.element.getUsage(src), "]");
+            return new LiteralText("[" + this.element.getUsage(src) + "]");
         }
     }
 
@@ -818,7 +770,7 @@ public final class GenericArguments {
 
         @Override
         public Text getUsage(CommandSource src) {
-            return new LiteralText(this.times, '*', this.element.getUsage(src));
+            return new LiteralText(this.times + '*' + this.element.getUsage(src).getString());
         }
     }
 
@@ -883,7 +835,7 @@ public final class GenericArguments {
 
         @Override
         public Text getUsage(CommandSource context) {
-            return new LiteralText(this.element.getUsage(context), CommandMessageFormatting.STAR_TEXT);
+            return new LiteralText(this.element.getUsage(context).getString() + CommandMessageFormatting.STAR_TEXT.asString());
         }
     }
 
@@ -941,7 +893,7 @@ public final class GenericArguments {
      * @return the element to match the input
      */
     public static CommandElement integer(Text key) {
-        return new NumericElement<>(key, Integer::parseInt, Integer::parseInt, input -> t("Expected an integer, but input '%s' was not", input));
+        return new NumericElement<>(key, Integer::parseInt, Integer::parseInt, input -> new LiteralText(String.format("Expected an integer, but input '%s' was not", input)));
     }
 
     private static class NumericElement<T extends Number> extends KeyElement {
@@ -986,7 +938,7 @@ public final class GenericArguments {
      * @return the element to match the input
      */
     public static CommandElement longNum(Text key) {
-        return new NumericElement<>(key, Long::parseLong, Long::parseLong, input -> t("Expected a long, but input '%s' was not", input));
+        return new NumericElement<>(key, Long::parseLong, Long::parseLong, input -> new LiteralText(String.format("Expected a long, but input '%s' was not", input)));
     }
 
     /**
@@ -999,7 +951,7 @@ public final class GenericArguments {
      * @return the element to match the input
      */
     public static CommandElement doubleNum(Text key) {
-        return new NumericElement<>(key, Double::parseDouble, null, input -> t("Expected a number, but input '%s' was not", input));
+        return new NumericElement<>(key, Double::parseDouble, null, input -> new LiteralText(String.format("Expected a number, but input '%s' was not", input)));
     }
 
     private static final Map<String, Boolean> BOOLEAN_CHOICES = ImmutableMap.<String, Boolean>builder()
@@ -1152,7 +1104,7 @@ public final class GenericArguments {
 
         @Override
         public Text getUsage(CommandSource src) {
-            return new LiteralText(CommandMessageFormatting.LT_TEXT, this.getKey(), CommandMessageFormatting.ELLIPSIS_TEXT, CommandMessageFormatting.GT_TEXT);
+            return new LiteralText("").append(CommandMessageFormatting.LT_TEXT.getString()).append(this.getKey()).append(CommandMessageFormatting.ELLIPSIS_TEXT).append(CommandMessageFormatting.GT_TEXT);
         }
     }
 
@@ -1206,7 +1158,7 @@ public final class GenericArguments {
             for (String arg : this.expectedArgs) {
                 String current;
                 if (!(current = args.next()).equalsIgnoreCase(arg)) {
-                    throw args.createError(t("Argument %s did not match expected next argument %s", current, arg));
+                    throw args.createError(("Argument %s did not match expected next argument %s", current, arg));
                 }
             }
             return this.putValue;
@@ -1234,87 +1186,6 @@ public final class GenericArguments {
         @Override
         public Text getUsage(CommandSource src) {
             return new LiteralText(Joiner.on(' ').join(this.expectedArgs));
-        }
-    }
-
-    private static class UserCommandElement extends SelectorCommandElement {
-
-        private final boolean returnSource;
-
-        protected UserCommandElement(@Nullable Text key, boolean returnSource) {
-            super(key);
-            this.returnSource = returnSource;
-        }
-
-        @SuppressWarnings({"unchecked", "ConstantConditions"})
-        @Nullable
-        @Override
-        protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
-            CommandArgs.Snapshot state = args.getSnapshot();
-            try {
-                return Iterables.filter((Iterable<User>) super.parseValue(source, args), e -> e instanceof User);
-            } catch (ArgumentParseException ex2) {
-                if (this.returnSource) {
-                    args.applySnapshot(state);
-                    return this.tryReturnSource(source, args);
-                }
-                throw ex2;
-            }
-        }
-
-        @Override
-        protected Iterable<String> getChoices(CommandSource source) {
-            return Sponge.getGame().getServiceManager().provideUnchecked(UserStorageService.class).getAll().stream()
-                    .map(GameProfile::getName)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(ImmutableList.toImmutableList());
-        }
-
-        @Override
-        protected Object getValue(String choice) throws IllegalArgumentException {
-            return Sponge.getGame().getServiceManager().provideUnchecked(UserStorageService.class).get(choice)
-                    .orElseThrow(() -> new IllegalArgumentException("Input value '" + choice + "' was not a user!"));
-        }
-
-        @Override
-        public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
-            // If we're not completing, then we want to use the UserStorageService directly
-            // to get any direct match.
-            @Nullable Text key = this.getKey();
-            if (key != null && !context.hasAny(CommandContext.TAB_COMPLETION)) {
-                if (this.returnSource && !args.hasNext()) {
-                    context.putArg(key, this.tryReturnSource(source, args));
-                    return;
-                }
-
-                CommandArgs.Snapshot state = args.getSnapshot();
-                String element = args.next();
-                try {
-                    Optional<User> match = Sponge.getServiceManager().provideUnchecked(UserStorageService.class).get(element);
-                    if (match.isPresent()) {
-                        context.putArg(key, match.get());
-                        return;
-                    }
-                } catch (IllegalArgumentException ignored) {
-                    // Intentionally ignored
-                    // If it's not an exact match, we just let this carry on to parse using the pattern element
-                }
-
-                args.applySnapshot(state);
-            }
-
-            super.parse(source, args, context);
-        }
-
-        private User tryReturnSource(CommandSource source, CommandArgs args) throws ArgumentParseException {
-            if (source instanceof User) {
-                return ((User) source);
-            } else if (source instanceof ProxySource && ((ProxySource) source).getOriginalSource() instanceof User) {
-                return (User) ((ProxySource) source).getOriginalSource();
-            } else {
-                throw args.createError(t("No users matched and source was not a user!"));
-            }
         }
     }
 
@@ -1407,28 +1278,17 @@ public final class GenericArguments {
                 xStr = split[0];
                 yStr = split[1];
                 zStr = split[2];
-            } else if (xStr.equals("#target") && source instanceof Entity) {
-                Optional<BlockRayHit<World>> hit = BlockRay
-                        .from(((Entity) source))
-                        .select(BlockRay.notAirFilter())
-                        .whilst(BlockRay.continueAfterFilter(BlockRay.onlyAirFilter(), 1))
-                        .build()
-                        .end();
-                if (!hit.isPresent()) {
-                    throw args.createError(t("No target block is available! Stop stargazing!"));
-                }
-                return hit.get().getPosition();
-            } else if (xStr.equalsIgnoreCase("#me") && source instanceof Locatable) {
-                return ((Locatable) source).getLocation().getPosition();
+            } else if (xStr.equalsIgnoreCase("#me")) {
+                return source.getPos();
             } else {
                 yStr = args.next();
                 zStr = args.next();
             }
-            final double x = this.parseRelativeDouble(args, xStr, source instanceof Locatable ? ((Locatable) source).getLocation().getX() : null);
-            final double y = this.parseRelativeDouble(args, yStr, source instanceof Locatable ? ((Locatable) source).getLocation().getY() : null);
-            final double z = this.parseRelativeDouble(args, zStr, source instanceof Locatable ? ((Locatable) source).getLocation().getZ() : null);
+            double x = this.parseRelativeDouble(args, xStr, source.getPos().x);
+            double y = this.parseRelativeDouble(args, yStr, source.getPos().y);
+            double z = this.parseRelativeDouble(args, zStr, source.getPos().z);
 
-            return new Vector3d(x, y, z);
+            return new Vec3d(x, y, z);
         }
 
         @Override
@@ -1437,7 +1297,7 @@ public final class GenericArguments {
             // Traverse through the possible arguments. We can't really complete arbitrary integers
             if (arg.isPresent()) {
                 if (arg.get().startsWith("#")) {
-                    return SPECIAL_TOKENS.stream().filter(new StartsWithPredicate(arg.get())).collect(ImmutableList.toImmutableList());
+                    return SPECIAL_TOKENS.stream().filter((input) -> input.startsWith(arg.get())).collect(ImmutableList.toImmutableList());
                 } else if (arg.get().contains(",") || !args.hasNext()) {
                     return ImmutableList.of(arg.get());
                 } else {
@@ -1455,7 +1315,7 @@ public final class GenericArguments {
             boolean relative = arg.startsWith("~");
             if (relative) {
                 if (relativeTo == null) {
-                    throw args.createError(t("Relative position specified but source does not have a position"));
+                    throw args.createError(new LiteralText("Relative position specified but source does not have a position"));
                 }
                 arg = arg.substring(1);
                 if (arg.isEmpty()) {
@@ -1466,111 +1326,8 @@ public final class GenericArguments {
                 double ret = Double.parseDouble(arg);
                 return relative ? ret + relativeTo : ret;
             } catch (NumberFormatException e) {
-                throw args.createError(t("Expected input %s to be a double, but was not", arg));
+                throw args.createError(new LiteralText(String.format("Expected input %s to be a double, but was not", arg)));
             }
-        }
-    }
-
-    /**
-     * An element representing a location.
-     *
-     * <p>Listens to:</p>
-     *
-     * <ul>
-     *     <li>#spawn:&lt;world></li>
-     *     <li>#me: Location of the current source</li>
-     * </ul>
-     */
-    private static class LocationCommandElement extends CommandElement {
-        private final WorldPropertiesCommandElement worldParser;
-        private final Vec3dCommandElement vectorParser;
-
-        protected LocationCommandElement(Text key) {
-            super(key);
-            this.worldParser = new WorldPropertiesCommandElement(null);
-            this.vectorParser = new Vec3dCommandElement(null);
-        }
-
-        @Override
-        protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
-            CommandArgs.Snapshot state = args.getSnapshot();
-            if (args.peek().startsWith("@")) { // We are a selector
-                return Selector.parse(args.next()).resolve(source).stream()
-                        .map(Entity::getLocation)
-                        .collect(ImmutableSet.toImmutableSet());
-            }
-
-            Object world;
-            Object vec = null;
-            try {
-                world = checkNotNull(this.worldParser.parseValue(source, args), "worldVal");
-            } catch (ArgumentParseException ex) {
-                args.applySnapshot(state);
-                if (!(source instanceof Locatable)) {
-                    throw args.createError(t("Source must have a location in order to have a fallback world"));
-                }
-                world = ((Locatable) source).getWorld().getProperties();
-                try {
-                    vec = checkNotNull(this.vectorParser.parseValue(source, args), "vectorVal");
-                } catch (ArgumentParseException ex2) {
-                    args.applySnapshot(state);
-                    throw ex;
-                }
-            }
-            if (vec == null) {
-                vec = checkNotNull(this.vectorParser.parseValue(source, args), "vectorVal");
-            }
-
-            if (world instanceof Collection<?>) {
-                // multiple values
-                if (((Collection<?>) world).size() != 1) {
-                    throw args.createError(t("A location must be specified in only one world!"));
-                }
-                world = ((Collection<?>) world).iterator().next();
-            }
-            WorldProperties targetWorldProps = ((WorldProperties) world);
-            Optional<World> targetWorld = Sponge.getGame().getServer().getWorld(targetWorldProps.getUniqueId());
-            Vector3d vector = (Vector3d) vec;
-            return new Location<>(targetWorld.get(), vector);
-        }
-
-        @Override
-        public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
-            CommandArgs.Snapshot state = args.getSnapshot();
-            Optional<String> nextPossibility = args.nextIfPresent();
-            if (nextPossibility.isPresent() && nextPossibility.get().startsWith("@")) {
-                return Selector.complete(nextPossibility.get());
-            }
-            args.applySnapshot(state);
-            List<String> ret;
-            if ((ret = this.worldParser.complete(src, args, context)).isEmpty()) {
-                args.applySnapshot(state);
-                ret = this.vectorParser.complete(src, args, context);
-            }
-            return ret;
-        }
-    }
-
-    private static class EnumTypeCommandElement<T extends Enum<T>> extends PatternMatchingCommandElement {
-        private final Class<T> catalogType;
-
-        protected EnumTypeCommandElement(Text key, Class<T> catalogType) {
-            super(key);
-            this.catalogType = catalogType;
-        }
-
-        @Override
-        protected Iterable<String> getChoices(CommandSource source) {
-        	return Arrays.stream(this.catalogType.getEnumConstants()).map(Enum::name).collect(Collectors.toSet());
-        }
-
-        @Override
-        protected Object getValue(String choice) throws IllegalArgumentException {
-            final Optional<T> ret = Arrays.stream(this.catalogType.getEnumConstants()).filter(n -> n.name().equals(choice)).findFirst();
-            if (!ret.isPresent()) {
-                throw new IllegalArgumentException("Invalid input " + choice + " was found");
-            }
-            return ret.get();
         }
     }
 
@@ -1658,7 +1415,7 @@ public final class GenericArguments {
         return new PermissionCommandElement(element, permission, true);
     }
 
-    private static class PermissionCommandElement extends CommandElement {
+	private static class PermissionCommandElement extends CommandElement {
         private final CommandElement element;
         private final String permission;
         private final boolean isOptional;
@@ -1681,18 +1438,19 @@ public final class GenericArguments {
         }
 
         private boolean checkPermission(CommandSource source, CommandArgs args) throws ArgumentParseException {
-            boolean hasPermission = source.hasPermission(this.permission);
+        	// TODO
+            boolean hasPermission = /*source.hasPermission(this.permission)*/ true;
             if (!hasPermission && !this.isOptional) {
                 Text key = this.getKey();
-                throw args.createError(t("You do not have permission to use the %s argument", key != null ? key : t("unknown")));
+                throw args.createError(new LiteralText(String.format("You do not have permission to use the %s argument", key != null ? key : "unknown")));
             }
-
             return hasPermission;
         }
 
         @Override
         public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
-            if (!src.hasPermission(this.permission)) {
+        	boolean flag = /*src.hasPermission(this.permission)*/ true;
+            if (!flag) {
                 return ImmutableList.of();
             }
             return this.element.complete(src, args, context);
@@ -1758,75 +1516,6 @@ public final class GenericArguments {
     }
 
     /**
-     * Expect an argument to represent an {@link Entity} of the specified
-     * {@link EntityType}.
-     *
-     * <p>This argument accepts the following inputs:</p>
-     *
-     * <ul>
-     *     <li>A player's name (if appropriate)</li>
-     *     <li>An entity's {@link UUID}</li>
-     *     <li>A regex that matches the beginning of one or more player's names
-     *     or entities UUIDs.
-     *     </li>
-     *     <li>A selector</li>
-     * </ul>
-     *
-     * @param key The key to store under
-     * @param type The type which the entity must be
-     * @return the argument
-     */
-    public static CommandElement entity(Text key, EntityType type) {
-        return new EntityCommandElement(key, false, false, type);
-    }
-
-    /**
-     * Expect an argument to represent an {@link Entity}, or if the argument is
-     * not present and the {@link CommandSource} is an entity, return the
-     * source.
-     *
-     * <p>This argument accepts the following inputs:</p>
-     *
-     * <ul>
-     *     <li>A player's name</li>
-     *     <li>An entity's {@link UUID}</li>
-     *     <li>A regex that matches the beginning of one or more player's names
-     *     or entities UUIDs.
-     *     </li>
-     *     <li>A selector</li>
-     * </ul>
-     *
-     * @param key The key to store under
-     * @return the argument
-     */
-    public static CommandElement entityOrSource(Text key) {
-        return new EntityCommandElement(key, true, false, null);
-    }
-
-    /**
-     * Expect an argument to represent an {@link Entity}, or if the argument is
-     * not present and the {@link CommandSource} is looking at an entity,
-     * return that entity.
-     *
-     * <p>This argument accepts the following inputs:</p>
-     *
-     * <ul>
-     *     <li>A player's name</li>
-     *     <li>An entity's {@link UUID}</li>
-     *     <li>A regex that matches the beginning of one or more player's names
-     *     or entities UUIDs.
-     *     </li>
-     *     <li>A selector</li>
-     * </ul>
-     *
-     * @param key The key to store under
-     * @return the argument
-     */
-    public static CommandElement entityOrTarget(Text key) {
-        return new EntityCommandElement(key, false, true, null);
-    }
-
-    /**
      * Expect an argument to represent an {@link Entity} of the specified type,
      * or if the argument is not present and the {@link CommandSource} is
      * looking at an applicable entity, return that entity.
@@ -1850,31 +1539,6 @@ public final class GenericArguments {
         return new EntityCommandElement(key, false, true, clazz);
     }
 
-    /**
-     * Expect an argument to represent an {@link Entity} of the specified
-     * {@link EntityType}, or if the argument is not present and the
-     * {@link CommandSource} is looking at an applicable entity, return that
-     * entity.
-     *
-     * <p>This argument accepts the following inputs:</p>
-     *
-     * <ul>
-     *     <li>A player's name (if appropriate)</li>
-     *     <li>An entity's {@link UUID}</li>
-     *     <li>A regex that matches the beginning of one or more player's names
-     *     or entities UUIDs.
-     *     </li>
-     *     <li>A selector</li>
-     * </ul>
-     *
-     * @param key The key to store under
-     * @param type The type which the entity must be
-     * @return the argument
-     */
-    public static CommandElement entityOrTarget(Text key, EntityType type) {
-        return new EntityCommandElement(key, false, true, type);
-    }
-
     private static class EntityCommandElement extends SelectorCommandElement {
         private final boolean returnTarget;
         private final boolean returnSource;
@@ -1886,13 +1550,6 @@ public final class GenericArguments {
             this.returnSource = returnSource;
             this.returnTarget = returnTarget;
             this.clazz = clazz;
-        }
-
-        protected EntityCommandElement(Text key, boolean returnSource, boolean returnTarget) {
-            super(key);
-            this.returnSource = returnSource;
-            this.returnTarget = returnTarget;
-            this.clazz = null;
         }
 
         @SuppressWarnings("unchecked")
@@ -1912,16 +1569,8 @@ public final class GenericArguments {
                 Iterable<Entity> entities = (Iterable<Entity>) super.parseValue(source, args);
                 for (Entity entity : entities) {
                     if (!this.checkEntity(entity)) {
-                        Text name;
-                        if (this.type == null) {
-                            name = Sponge.getRegistry().getAllOf(EntityType.class).stream()
-                                    .filter(t -> t.getEntityClass().equals(this.clazz)).findFirst()
-                                    .map(EntityType::getTranslation).<Text>map(Text::of)
-                                    .orElse(new LiteralText(this.clazz.getSimpleName()));
-                        } else {
-                            name = new LiteralText(this.type);
-                        }
-                        throw args.createError(new LiteralText("The entity is not of the required type! (", name, ")"));
+                        Text name = new LiteralText(this.clazz == null ? "null" : this.clazz.getSimpleName());
+                        throw args.createError(new LiteralText("The entity is not of the required type! (").append(name).append(")"));
                     }
                 }
                 return entities;
@@ -1936,14 +1585,13 @@ public final class GenericArguments {
 
         @Override
         protected Iterable<String> getChoices(CommandSource source) {
-            Set<String> worldEntities = Sponge.getServer().getWorlds().stream().flatMap(x -> x.getEntities().stream())
-                    .filter(this::checkEntity)
-                    .map(x -> x.getUniqueId().toString())
-                    .collect(Collectors.toSet());
-            Collection<Player> players = Sponge.getServer().getOnlinePlayers();
+			Set<String> worldEntities = Arrays.stream(MinecraftServer.getServer().worlds).flatMap(world -> world.entities.stream())
+					.filter(this::checkEntity)
+					.map(entity -> entity.getUuid().toString()).collect(Collectors.toSet());
+            Collection<PlayerEntity> players = Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers());
             if (!players.isEmpty() && this.checkEntity(players.iterator().next())) {
-                final Set<String> setToReturn = new HashSet<>(worldEntities); // to ensure mutability
-                players.forEach(x -> setToReturn.add(x.getName()));
+                final Set<String> setToReturn = Sets.newHashSet(worldEntities); // to ensure mutability
+                players.forEach(x -> setToReturn.add(x.getTranslationKey()));
                 return setToReturn;
             }
 
@@ -1957,20 +1605,17 @@ public final class GenericArguments {
                 uuid = UUID.fromString(choice);
             } catch (IllegalArgumentException ignored) {
                 // Player could be a name
-                return Sponge.getServer().getPlayer(choice)
-                        .orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
+				return Optional.ofNullable(MinecraftServer.getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
             }
             boolean found = false;
-            for (World world : Sponge.getServer().getWorlds()) {
-                Optional<Entity> ret = world.getEntity(uuid);
-                if (ret.isPresent()) {
-                    Entity entity = ret.get();
-                    if (this.checkEntity(entity)) {
-                        return entity;
-                    }
-                    found = true;
-                }
-            }
+			Optional<Entity> ret = Optional.ofNullable(MinecraftServer.getServer().getEntity(uuid));
+			if (ret.isPresent()) {
+				Entity entity = ret.get();
+				if (this.checkEntity(entity)) {
+					return entity;
+				}
+				found = true;
+			}
             if (found) {
                 throw new IllegalArgumentException("Input value " + choice + " was not an entity of the required type!");
             }
@@ -1981,28 +1626,22 @@ public final class GenericArguments {
             if (source instanceof Entity && (!check || this.checkEntity((Entity) source))) {
                 return (Entity) source;
             }
-            if (source instanceof ProxySource) {
-                CommandSource proxy = ((ProxySource) source).getOriginalSource();
-                if (proxy instanceof Entity && (!check || this.checkEntity((Entity) proxy))) {
-                    return (Entity) proxy;
-                }
-            }
-            throw args.createError(t("No entities matched and source was not an entity!"));
+            throw args.createError(new LiteralText("No entities matched and source was not an entity!"));
         }
 
+        // TODO
         private Entity tryReturnTarget(CommandSource source, CommandArgs args) throws ArgumentParseException {
             Entity entity = this.tryReturnSource(source, args, false);
-            return entity.getWorld().getIntersectingEntities(entity, 10).stream()
-                    .filter(e -> !e.getEntity().equals(entity)).map(EntityUniverse.EntityHit::getEntity)
-                    .filter(this::checkEntity).findFirst()
-                    .orElseThrow(() -> args.createError(t("No entities matched and source was not looking at a valid entity!")));
+            throw args.createError(new LiteralText("No entities matched and source was not looking at a valid entity!"));
+//            return entity.getWorld().getIntersectingEntities(entity, 10).stream()
+//                    .filter(e -> !e.getEntity().equals(entity)).map(EntityUniverse.EntityHit::getEntity)
+//                    .filter(this::checkEntity).findFirst()
+//                    .orElseThrow(() -> args.createError(new LiteralText("No entities matched and source was not looking at a valid entity!")));
         }
 
         private boolean checkEntity(Entity entity) {
-            if (this.clazz == null && this.type == null) {
+            if (this.clazz == null) {
                 return true;
-            } else if (this.clazz == null) {
-                return entity.getType().equals(this.type);
             } else {
                 return this.clazz.isAssignableFrom(entity.getClass());
             }
@@ -2061,66 +1700,31 @@ public final class GenericArguments {
      * @return the argument
      */
     public static CommandElement ip(Text key) {
-        return new IpElement(key, false);
-    }
-
-    /**
-     * Expect an argument to return an IP address, in the form of an
-     * {@link InetAddress}, or if nothing matches and the source is a
-     * {@link RemoteSource}, return the source's address.
-     *
-     * <p>This will return only one value.</p>
-     *
-     * @param key The key to store under
-     * @return the argument
-     */
-    public static CommandElement ipOrSource(Text key) {
-        return new IpElement(key, true);
+        return new IpElement(key);
     }
 
     private static class IpElement extends KeyElement {
-
-        private final boolean self;
         private final PlayerCommandElement possiblePlayer;
 
-        protected IpElement(Text key, boolean self) {
+        protected IpElement(Text key) {
             super(key);
-            this.self = self;
             this.possiblePlayer = new PlayerCommandElement(key, false);
         }
 
         @Nullable
         @Override
         protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
-            if (!args.hasNext() && this.self) {
-                if (source instanceof RemoteSource) {
-                    return ((RemoteSource) source).getConnection().getAddress().getAddress();
-                } else {
-                    throw args.createError(new LiteralText("No IP address was specified!"));
-                }
-            }
-            CommandArgs.Snapshot state = args.getSnapshot();
             String s = args.next();
             try {
                 return InetAddress.getByName(s);
             } catch (UnknownHostException e) {
                 try {
-                    return ((Player) this.possiblePlayer.parseValue(source, args)).getConnection().getAddress().getAddress();
+                    return ((ServerPlayerEntity) this.possiblePlayer.parseValue(source, args)).networkHandler.getConnection().getAddress();
                 } catch (ArgumentParseException ex) {
-                    if (this.self && source instanceof RemoteSource) {
-                        args.applySnapshot(state);
-                        return ((RemoteSource) source).getConnection().getAddress().getAddress();
-                    }
                     throw args.createError(new LiteralText("Invalid IP address!"));
                 }
             }
         }
-
-        @Override
-        public Text getUsage(CommandSource src) {
-            return src instanceof RemoteSource && this.self ? new LiteralText("[", super.getUsage(src), "]") : super.getUsage(src);
-        }
-
     }
 
     /**
@@ -2182,42 +1786,6 @@ public final class GenericArguments {
     }
 
     /**
-     * Expect an argument to be a valid {@link DataContainer}.
-     *
-     * <p>This will return only one value.</p>
-     *
-     * @param key The key to store under
-     * @return the argument
-     */
-    public static CommandElement dataContainer(Text key) {
-        return new DataElement(key);
-    }
-
-    private static class DataElement extends RemainingJoinedStringsCommandElement {
-
-        protected DataElement(Text key) {
-            super(key, true);
-        }
-
-        @Nullable
-        @Override
-        protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
-            String argument = (String) super.parseValue(source, args);
-            Callable<BufferedReader> reader = () -> new BufferedReader(new StringReader(argument));
-            ConfigurationLoader<? extends ConfigurationNode> loader = HoconConfigurationLoader.builder()
-                    .setSource(reader).build();
-            ConfigurationNode node;
-            try {
-                node = loader.load();
-            } catch (IOException ex) {
-                throw args.createError(new LiteralText("Node parsing failed: ", ex.getMessage()));
-            }
-            return DataTranslators.CONFIGURATION_NODE.translate(node);
-        }
-
-    }
-
-    /**
      * Expect an argument to be a {@link UUID}.
      *
      * <p>This will return only one value.</p>
@@ -2245,21 +1813,6 @@ public final class GenericArguments {
             }
         }
 
-    }
-
-    /**
-     * Expect an argument to be valid {@link Text}.
-     *
-     * <p>This will return only one value.</p>
-     *
-     * @param key The key to store under
-     * @param serializer The serializer to parse the text with
-     * @param allRemaining If true, consumes all remaining arguments; if false,
-     *                     uses a single argument
-     * @return the argument
-     */
-    public static CommandElement text(Text key, TextSerializer serializer, boolean allRemaining) {
-        return new TextCommandElement(key, serializer, allRemaining);
     }
 
 	/**
@@ -2290,42 +1843,6 @@ public final class GenericArguments {
 			return this.stringType.isAll() ? (String) this.joinedElement.parseValue(source, args) : args.next();
 		}
 	}
-
-    private static class TextCommandElement extends KeyElement {
-        private final TextSerializer serializer;
-        private final boolean allRemaining;
-        private final RemainingJoinedStringsCommandElement joinedElement;
-
-        protected TextCommandElement(Text key, TextSerializer serializer, boolean allRemaining) {
-            super(key);
-            this.serializer = serializer;
-            this.allRemaining = allRemaining;
-            this.joinedElement = allRemaining ? new RemainingJoinedStringsCommandElement(key, false) : null;
-        }
-
-        @Nullable
-        @Override
-        protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
-            String arg = this.allRemaining ? (String) this.joinedElement.parseValue(source, args) : args.next();
-            try {
-                return this.serializer.deserialize(arg);
-            } catch (TextParseException ex) {
-                if (this.serializer == TextSerializers.JSON) {
-                    if (ex.getMessage() == null) {
-                        throw args.createError(new LiteralText("Invalid JSON text!"));
-                    } else {
-                        throw args.createError(new LiteralText("Invalid JSON text: ", ex.getMessage()));
-                    }
-                } else {
-                    if (ex.getMessage() == null) {
-                        throw args.createError(new LiteralText("Invalid text!"));
-                    } else {
-                        throw args.createError(new LiteralText("Invalid text: ", ex.getMessage()));
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * Expect an argument to be a date-time, in the form of a
@@ -2414,7 +1931,7 @@ public final class GenericArguments {
             if (!this.returnNow) {
                 return super.getUsage(src);
             } else {
-                return new LiteralText("[", this.getKey(), "]");
+                return new LiteralText("[" + this.getKey().getString() + "]");
             }
         }
     }
@@ -2570,7 +2087,7 @@ public final class GenericArguments {
 
     }
 
-    private static class FilteredSuggestionsElement extends CommandElement {
+	private static class FilteredSuggestionsElement extends CommandElement {
         private final CommandElement wrapped;
         private final Predicate<String> predicate;
 
@@ -2590,7 +2107,5 @@ public final class GenericArguments {
         public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
             return this.wrapped.complete(src, args, context).stream().filter(this.predicate).collect(ImmutableList.toImmutableList());
         }
-
     }
-
 }

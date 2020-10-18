@@ -24,11 +24,11 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args.parsing;
 
-import com.google.common.collect.ImmutableList;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import com.google.common.collect.ImmutableList;
 
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 

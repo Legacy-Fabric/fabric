@@ -24,17 +24,16 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimaps;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-
 import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimaps;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;

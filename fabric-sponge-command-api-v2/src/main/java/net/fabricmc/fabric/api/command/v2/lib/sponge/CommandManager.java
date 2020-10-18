@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.command.CommandSource;

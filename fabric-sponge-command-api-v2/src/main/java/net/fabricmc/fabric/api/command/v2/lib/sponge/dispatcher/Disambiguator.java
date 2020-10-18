@@ -26,7 +26,6 @@ package net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher;
 
 import java.util.List;
 import java.util.Optional;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.command.CommandSource;

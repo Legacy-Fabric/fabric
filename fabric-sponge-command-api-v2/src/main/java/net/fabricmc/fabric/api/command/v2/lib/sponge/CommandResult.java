@@ -25,7 +25,6 @@
 package net.fabricmc.fabric.api.command.v2.lib.sponge;
 
 import java.util.Optional;
-
 import javax.annotation.Nullable;
 
 /**

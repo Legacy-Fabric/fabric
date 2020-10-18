@@ -24,19 +24,16 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.spec;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import javax.annotation.Nullable;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;
@@ -55,6 +52,7 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.args.CommandContext;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.CommandElement;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.GenericArguments;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.parsing.InputTokenizer;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Specification for how command arguments should be parsed.

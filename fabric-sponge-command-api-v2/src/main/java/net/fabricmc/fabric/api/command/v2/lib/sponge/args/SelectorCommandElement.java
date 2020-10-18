@@ -24,16 +24,17 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
-import com.google.common.collect.ImmutableList;
-
 import java.util.List;
 import java.util.Optional;
-
 import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+
+import net.fabricmc.fabric.api.command.v2.Selector;
 
 public abstract class SelectorCommandElement extends PatternMatchingCommandElement {
     protected SelectorCommandElement(@Nullable Text key) {
