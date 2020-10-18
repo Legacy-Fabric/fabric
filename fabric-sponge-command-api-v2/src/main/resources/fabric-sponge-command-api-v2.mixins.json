@@ -10,6 +10,7 @@
     "ExecuteCommand_1Mixin",
     "MinecraftServerMixin",
     "PlayerEntityMixin",
+    "ServerPlayerEntityMixin",
     "SignBlockEntity_1Mixin",
     "SignBlockEntity_2Mixin"
   ],
