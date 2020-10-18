@@ -28,8 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
-import net.minecraft.command.CommandSource;
-
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
 
 @FunctionalInterface
@@ -39,10 +38,10 @@ public interface Disambiguator {
      * Disambiguate an alias in cases where there are multiple command mappings
      * registered for a given alias.
      *
-     * @param source The CommandSource executing the command, if any
+     * @param source The PermissibleCommandSource executing the command, if any
      * @param aliasUsed The alias input by the user
      * @param availableOptions The commands registered to this alias
      * @return The specific command to use
      */
-    Optional<CommandMapping> disambiguate(@Nullable CommandSource source, String aliasUsed, List<CommandMapping> availableOptions);
+    Optional<CommandMapping> disambiguate(@Nullable PermissibleCommandSource source, String aliasUsed, List<CommandMapping> availableOptions);
 }

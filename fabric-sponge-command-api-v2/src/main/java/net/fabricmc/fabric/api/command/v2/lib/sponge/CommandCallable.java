@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.command.v2.Location;
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
 
 /**
@@ -55,7 +55,7 @@ public interface CommandCallable {
      * @return The result of a command being processed
      * @throws CommandException Thrown on a command error
      */
-    CommandResult process(CommandSource source, String arguments) throws CommandException;
+    CommandResult process(PermissibleCommandSource source, String arguments) throws CommandException;
 
     /**
      * Gets a list of suggestions based on input.
@@ -70,7 +70,7 @@ public interface CommandCallable {
      * @return A list of suggestions
      * @throws CommandException Thrown if there was a parsing error
      */
-    List<String> getSuggestions(CommandSource source, String arguments, @Nullable Location<World> targetPosition) throws CommandException;
+    List<String> getSuggestions(PermissibleCommandSource source, String arguments, @Nullable Location<World> targetPosition) throws CommandException;
 
     /**
      * Test whether this command can probably be executed by the given source.
@@ -83,7 +83,7 @@ public interface CommandCallable {
      * @param source The caller of the command
      * @return Whether permission is (probably) granted
      */
-    boolean testPermission(CommandSource source);
+    boolean testPermission(PermissibleCommandSource source);
 
     /**
      * Gets a short one-line description of this command.
@@ -93,7 +93,7 @@ public interface CommandCallable {
      * @param source The source of the help request
      * @return A description
      */
-    Optional<Text> getShortDescription(CommandSource source);
+    Optional<Text> getShortDescription(PermissibleCommandSource source);
 
     /**
      * Gets a longer formatted help message about this command.
@@ -110,7 +110,7 @@ public interface CommandCallable {
      * @param source The source of the help request
      * @return A help text
      */
-    Optional<Text> getHelp(CommandSource source);
+    Optional<Text> getHelp(PermissibleCommandSource source);
 
     /**
      * Gets the usage string of this command.
@@ -123,5 +123,5 @@ public interface CommandCallable {
      * @param source The source of the help request
      * @return A usage string
      */
-    Text getUsage(CommandSource source);
+    Text getUsage(PermissibleCommandSource source);
 }

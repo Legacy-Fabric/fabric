@@ -35,12 +35,12 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.command.v2.Location;
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandPermissionException;
@@ -320,7 +320,7 @@ public final class CommandSpec implements CommandCallable {
      * @param source The source to check
      * @throws CommandException if the source does not have permission
      */
-    public void checkPermission(CommandSource source) throws CommandException {
+    public void checkPermission(PermissibleCommandSource source) throws CommandException {
         checkNotNull(source, "source");
         if (!this.testPermission(source)) {
             throw new CommandPermissionException();
@@ -336,7 +336,7 @@ public final class CommandSpec implements CommandCallable {
      * @param context The context to put data in
      * @throws ArgumentParseException if an invalid argument is provided
      */
-    public void populateContext(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+    public void populateContext(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
         this.args.parse(source, args, context);
         if (args.hasNext()) {
             args.next();
@@ -354,7 +354,7 @@ public final class CommandSpec implements CommandCallable {
      * @param context The context object
      * @return possible completions, or an empty list if none
      */
-    public List<String> complete(CommandSource source, CommandArgs args, CommandContext context) {
+    public List<String> complete(PermissibleCommandSource source, CommandArgs args, CommandContext context) {
         checkNotNull(source, "source");
         List<String> ret = this.args.complete(source, args, context);
         return ret == null ? ImmutableList.of() : ImmutableList.copyOf(ret);
@@ -380,7 +380,7 @@ public final class CommandSpec implements CommandCallable {
     }
 
     @Override
-    public CommandResult process(CommandSource source, String arguments) throws CommandException {
+    public CommandResult process(PermissibleCommandSource source, String arguments) throws CommandException {
 		this.checkPermission(source);
         final CommandArgs args = new CommandArgs(arguments, this.getInputTokenizer().tokenize(arguments, false));
         final CommandContext context = new CommandContext();
@@ -389,7 +389,7 @@ public final class CommandSpec implements CommandCallable {
     }
 
     @Override
-    public List<String> getSuggestions(CommandSource source, String arguments, @Nullable Location<World> targetPos) throws CommandException {
+    public List<String> getSuggestions(PermissibleCommandSource source, String arguments, @Nullable Location<World> targetPos) throws CommandException {
         CommandArgs args = new CommandArgs(arguments, this.getInputTokenizer().tokenize(arguments, true));
         CommandContext ctx = new CommandContext();
         if (targetPos != null) {
@@ -400,7 +400,7 @@ public final class CommandSpec implements CommandCallable {
     }
 
     @Override
-    public boolean testPermission(CommandSource source) {
+    public boolean testPermission(PermissibleCommandSource source) {
     	// TODO: implement a permissions api
         return this.permission == null /*|| source.hasPermission(this.permission)*/;
     }
@@ -412,7 +412,7 @@ public final class CommandSpec implements CommandCallable {
      * @return the short description.
      */
     @Override
-    public Optional<Text> getShortDescription(CommandSource source) {
+    public Optional<Text> getShortDescription(PermissibleCommandSource source) {
         return this.description;
     }
 
@@ -422,7 +422,7 @@ public final class CommandSpec implements CommandCallable {
      * @param source The source to get the description for
      * @return the extended description.
      */
-    public Optional<Text> getExtendedDescription(CommandSource source) {
+    public Optional<Text> getExtendedDescription(PermissibleCommandSource source) {
         return this.extendedDescription;
     }
 
@@ -434,7 +434,7 @@ public final class CommandSpec implements CommandCallable {
      * @return the usage for the source
      */
     @Override
-    public Text getUsage(CommandSource source) {
+    public Text getUsage(PermissibleCommandSource source) {
         checkNotNull(source, "source");
         return this.args.getUsage(source);
     }
@@ -448,7 +448,7 @@ public final class CommandSpec implements CommandCallable {
      * @return the extended description
      */
     @Override
-    public Optional<Text> getHelp(CommandSource source) {
+    public Optional<Text> getHelp(PermissibleCommandSource source) {
         checkNotNull(source, "source");
         StringBuilder builder = new StringBuilder();
         this.getShortDescription(source).ifPresent((a) -> builder.append(a.getString()).append("\n"));

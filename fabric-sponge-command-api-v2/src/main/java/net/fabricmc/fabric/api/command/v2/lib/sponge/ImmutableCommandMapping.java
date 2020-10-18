@@ -37,7 +37,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * this instance is constructed with.
  */
 public final class ImmutableCommandMapping implements CommandMapping {
-
     private final String primary;
     private final Set<String> aliases;
     private final CommandCallable callable;

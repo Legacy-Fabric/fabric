@@ -27,10 +27,11 @@ package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 import java.util.List;
 import javax.annotation.Nullable;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 
 /**
  * Represents a command argument element.
@@ -69,9 +70,9 @@ public abstract class CommandElement {
 	/**
 	 * Attempt to extract a value for this element from the given arguments and
 	 * put it in the given context. This method normally delegates to
-	 * {@link #parseValue(CommandSource, CommandArgs)} for getting the values.
+	 * {@link #parseValue(PermissibleCommandSource, CommandArgs)} for getting the values.
 	 * This method is expected to have no side-effects for the source, meaning
-	 * that executing it will not change the state of the {@link CommandSource}
+	 * that executing it will not change the state of the {@link PermissibleCommandSource}
 	 * in any way.
 	 *
 	 * @param source  The source to parse for
@@ -79,7 +80,7 @@ public abstract class CommandElement {
 	 * @param context The context to supply to
 	 * @throws ArgumentParseException if unable to extract a value
 	 */
-	public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+	public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 		Object val = this.parseValue(source, args);
 		String key = this.getUntranslatedKey();
 		if (key != null && val != null) {
@@ -96,7 +97,7 @@ public abstract class CommandElement {
 	/**
 	 * Attempt to extract a value for this element from the given arguments.
 	 * This method is expected to have no side-effects for the source, meaning
-	 * that executing it will not change the state of the {@link CommandSource}
+	 * that executing it will not change the state of the {@link PermissibleCommandSource}
 	 * in any way.
 	 *
 	 * @param source The source to parse for
@@ -105,7 +106,7 @@ public abstract class CommandElement {
 	 * @throws ArgumentParseException if unable to extract a value
 	 */
 	@Nullable
-	protected abstract Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException;
+	protected abstract Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException;
 
 	/**
 	 * Fetch completions for command arguments.
@@ -115,7 +116,7 @@ public abstract class CommandElement {
 	 * @param context The context to store state in
 	 * @return Any relevant completions
 	 */
-	public abstract List<String> complete(CommandSource src, CommandArgs args, CommandContext context);
+	public abstract List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context);
 
 	/**
 	 * Return a usage message for this specific argument.
@@ -123,7 +124,7 @@ public abstract class CommandElement {
 	 * @param src The source requesting usage
 	 * @return The formatted usage
 	 */
-	public Text getUsage(CommandSource src) {
+	public Text getUsage(PermissibleCommandSource src) {
 		return this.getKey() == null ? new LiteralText("") : new LiteralText("<" + this.getKey() + ">");
 	}
 }

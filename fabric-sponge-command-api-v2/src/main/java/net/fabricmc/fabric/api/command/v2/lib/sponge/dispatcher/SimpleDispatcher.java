@@ -44,7 +44,6 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -52,6 +51,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.command.v2.Location;
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
@@ -289,7 +289,7 @@ public final class SimpleDispatcher implements Dispatcher {
     }
 
     @Override
-    public synchronized Optional<CommandMapping> get(String alias, @Nullable CommandSource source) {
+    public synchronized Optional<CommandMapping> get(String alias, @Nullable PermissibleCommandSource source) {
         List<CommandMapping> results = this.commands.get(alias.toLowerCase());
         Optional<CommandMapping> result = Optional.empty();
         if (results.size() == 1) {
@@ -322,7 +322,7 @@ public final class SimpleDispatcher implements Dispatcher {
     }
 
     @Override
-    public CommandResult process(CommandSource source, String commandLine) throws CommandException {
+    public CommandResult process(PermissibleCommandSource source, String commandLine) throws CommandException {
         final String[] argSplit = commandLine.split(" ", 2);
         Optional<CommandMapping> cmdOptional = this.get(argSplit[0], source);
         if (!cmdOptional.isPresent()) {
@@ -339,7 +339,7 @@ public final class SimpleDispatcher implements Dispatcher {
     }
 
     @Override
-    public List<String> getSuggestions(CommandSource src, final String arguments, @Nullable Location<World> targetPosition) throws CommandException {
+    public List<String> getSuggestions(PermissibleCommandSource src, final String arguments, @Nullable Location<World> targetPosition) throws CommandException {
         final String[] argSplit = arguments.split(" ", 2);
         Optional<CommandMapping> cmdOptional = this.get(argSplit[0], src);
         if (argSplit.length == 1) {
@@ -351,7 +351,7 @@ public final class SimpleDispatcher implements Dispatcher {
     }
 
     @Override
-    public boolean testPermission(CommandSource source) {
+    public boolean testPermission(PermissibleCommandSource source) {
         for (CommandMapping mapping : this.commands.values()) {
             if (mapping.getCallable().testPermission(source)) {
                 return true;
@@ -361,12 +361,12 @@ public final class SimpleDispatcher implements Dispatcher {
     }
 
     @Override
-    public Optional<Text> getShortDescription(CommandSource source) {
+    public Optional<Text> getShortDescription(PermissibleCommandSource source) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<Text> getHelp(CommandSource source) {
+    public Optional<Text> getHelp(PermissibleCommandSource source) {
         if (this.commands.isEmpty()) {
             return Optional.empty();
         }
@@ -387,12 +387,12 @@ public final class SimpleDispatcher implements Dispatcher {
         return Optional.of(new LiteralText(build.getString()));
     }
 
-    private Set<String> filterCommands(final CommandSource src) {
+    private Set<String> filterCommands(final PermissibleCommandSource src) {
         return Multimaps.filterValues(this.commands, input -> input.getCallable().testPermission(src)).keys().elementSet();
     }
 
     // Filter out commands by String first
-    private Set<String> filterCommands(final CommandSource src, String start) {
+    private Set<String> filterCommands(final PermissibleCommandSource src, String start) {
         ListMultimap<String, CommandMapping> map = Multimaps.filterKeys(this.commands,
             input -> input != null && input.toLowerCase().startsWith(start.toLowerCase()));
         return Multimaps.filterValues(map, input -> input.getCallable().testPermission(src)).keys().elementSet();
@@ -408,7 +408,7 @@ public final class SimpleDispatcher implements Dispatcher {
     }
 
     @Override
-    public Text getUsage(final CommandSource source) {
+    public Text getUsage(final PermissibleCommandSource source) {
         final StringBuilder build = new StringBuilder();
         Iterable<String> filteredCommands = this.filterCommands(source).stream()
             .filter(input -> {

@@ -30,8 +30,6 @@ import java.util.regex.Pattern;
 
 import com.google.common.collect.ImmutableList;
 
-import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
-
 class SpaceSplitInputTokenizer implements InputTokenizer {
 	public static final SpaceSplitInputTokenizer INSTANCE = new SpaceSplitInputTokenizer();
 	private static final Pattern SPACE_REGEX = Pattern.compile("^[ ]*$");
@@ -40,7 +38,7 @@ class SpaceSplitInputTokenizer implements InputTokenizer {
 	}
 
 	@Override
-	public List<SingleArg> tokenize(String arguments, boolean lenient) throws ArgumentParseException {
+	public List<SingleArg> tokenize(String arguments, boolean lenient) {
 		if (SPACE_REGEX.matcher(arguments).matches()) {
 			return ImmutableList.of();
 		}

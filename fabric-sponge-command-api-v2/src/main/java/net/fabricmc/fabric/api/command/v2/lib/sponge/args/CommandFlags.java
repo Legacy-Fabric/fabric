@@ -37,9 +37,10 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 
 public final class CommandFlags extends CommandElement {
 	@Nullable
@@ -65,7 +66,7 @@ public final class CommandFlags extends CommandElement {
 	}
 
 	@Override
-	public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+	public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 		CommandArgs.Snapshot state = args.getSnapshot();
 		while (args.hasNext()) {
 			String arg = args.next();
@@ -92,7 +93,7 @@ public final class CommandFlags extends CommandElement {
 		}
 	}
 
-	private boolean parseLongFlag(CommandSource source, String longFlag, CommandArgs args, CommandContext context) throws ArgumentParseException {
+	private boolean parseLongFlag(PermissibleCommandSource source, String longFlag, CommandArgs args, CommandContext context) throws ArgumentParseException {
 		String[] flagSplit = longFlag.split("=", 2);
 		String flag = flagSplit[0].toLowerCase();
 		CommandElement element = this.longFlags.get(flag);
@@ -120,7 +121,7 @@ public final class CommandFlags extends CommandElement {
 		return true;
 	}
 
-	private boolean parseShortFlags(CommandSource source, String shortFlags, CommandArgs args, CommandContext context) throws ArgumentParseException {
+	private boolean parseShortFlags(PermissibleCommandSource source, String shortFlags, CommandArgs args, CommandContext context) throws ArgumentParseException {
 		for (int i = 0; i < shortFlags.length(); i++) {
 			String shortFlag = shortFlags.substring(i, i + 1);
 			CommandElement element = this.shortFlags.get(shortFlag);
@@ -152,7 +153,7 @@ public final class CommandFlags extends CommandElement {
 	}
 
 	@Override
-	public Text getUsage(CommandSource src) {
+	public Text getUsage(PermissibleCommandSource src) {
 		final List<Object> builder = new ArrayList<>();
 		for (Map.Entry<List<String>, CommandElement> arg : this.usageFlags.entrySet()) {
 			builder.add("[");
@@ -180,12 +181,12 @@ public final class CommandFlags extends CommandElement {
 	}
 
 	@Override
-	protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+	protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 		return null;
 	}
 
 	@Override
-	public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+	public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 		CommandArgs.Snapshot state = args.getSnapshot();
 		while (args.hasNext()) {
 			String next = args.nextIfPresent().get();
@@ -216,7 +217,7 @@ public final class CommandFlags extends CommandElement {
 	}
 
 	@Nullable
-	private List<String> tabCompleteLongFlag(String longFlag, CommandSource src, CommandArgs args, CommandContext context) {
+	private List<String> tabCompleteLongFlag(String longFlag, PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 		String[] flagSplit = longFlag.split("=", 2);
 		boolean isSplitFlag = flagSplit.length == 2;
 		CommandElement element = this.longFlags.get(flagSplit[0].toLowerCase());
@@ -262,7 +263,7 @@ public final class CommandFlags extends CommandElement {
 	}
 
 	@Nullable
-	private List<String> tabCompleteShortFlags(String shortFlags, CommandSource src, CommandArgs args, CommandContext context) {
+	private List<String> tabCompleteShortFlags(String shortFlags, PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 		for (int i = 0; i < shortFlags.length(); i++) {
 			CommandElement element = this.shortFlags.get(shortFlags.substring(i, i + 1));
 			if (element == null) {
@@ -502,7 +503,7 @@ public final class CommandFlags extends CommandElement {
 		}
 
 		@Override
-		public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			String key = this.getUntranslatedKey();
 			if (this.valueElement != null) {
 				this.valueElement.parse(source, args, context);
@@ -514,12 +515,12 @@ public final class CommandFlags extends CommandElement {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return null; //unused
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			return this.valueElement != null ? this.valueElement.complete(src, args, context) : Collections.emptyList();
 		}
 	}

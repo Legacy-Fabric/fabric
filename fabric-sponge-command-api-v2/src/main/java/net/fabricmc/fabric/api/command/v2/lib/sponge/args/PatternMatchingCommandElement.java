@@ -35,9 +35,10 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 
 /**
  * Abstract command element that matches values based on pattern.
@@ -61,7 +62,7 @@ public abstract class PatternMatchingCommandElement extends CommandElement {
 
     @Nullable
     @Override
-    protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+    protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
         Iterable<String> choices = this.getChoices(source);
         Iterable<Object> ret;
         String arg = args.next();
@@ -89,7 +90,7 @@ public abstract class PatternMatchingCommandElement extends CommandElement {
     }
 
     @Override
-    public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+    public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
         Iterable<String> choices = this.getChoices(src);
         final Optional<String> nextArg = args.nextIfPresent();
         if (nextArg.isPresent()) {
@@ -129,17 +130,17 @@ public abstract class PatternMatchingCommandElement extends CommandElement {
      * @param source The source requesting choices
      * @return the possible choices
      */
-    protected abstract Iterable<String> getChoices(CommandSource source);
+    protected abstract Iterable<String> getChoices(PermissibleCommandSource source);
 
     /**
      * Gets the value for a given choice. For any result in
-     * {@link #getChoices(CommandSource)}, this must return a non-null value.
+     * {@link #getChoices(PermissibleCommandSource)}, this must return a non-null value.
      * Otherwise, an {@link IllegalArgumentException} may be throw.
      *
      * @param choice The specified choice
      * @return the choice's value
      * @throws IllegalArgumentException if the input string is not any return
-     *         value of {@link #getChoices(CommandSource)}
+     *         value of {@link #getChoices(PermissibleCommandSource)}
      */
     protected abstract Object getValue(String choice) throws IllegalArgumentException;
 }

@@ -26,14 +26,13 @@ package net.fabricmc.fabric.api.command.v2.lib.sponge;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.command.v2.Location;
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.Dispatcher;
 
 /**
@@ -53,7 +52,6 @@ public interface CommandManager extends Dispatcher {
      *
      * <p>The first non-conflicted alias becomes the "primary alias."</p>
      *
-     * @param plugin A plugin instance
      * @param callable The command
      * @param alias An array of aliases
      * @return The registered command mapping, unless no aliases could be
@@ -61,7 +59,7 @@ public interface CommandManager extends Dispatcher {
      * @throws IllegalArgumentException Thrown if {@code plugin} is not a
      *     plugin instance
      */
-    Optional<CommandMapping> register(Object plugin, CommandCallable callable, String... alias);
+    Optional<CommandMapping> register(CommandCallable callable, String... alias);
 
     /**
      * Register a given command using the given list of aliases.
@@ -74,7 +72,6 @@ public interface CommandManager extends Dispatcher {
      *
      * <p>The first non-conflicted alias becomes the "primary alias."</p>
      *
-     * @param plugin A plugin instance
      * @param callable The command
      * @param aliases A list of aliases
      * @return The registered command mapping, unless no aliases could be
@@ -82,7 +79,7 @@ public interface CommandManager extends Dispatcher {
      * @throws IllegalArgumentException Thrown if {@code plugin} is not a
      *     plugin instance
      */
-    Optional<CommandMapping> register(Object plugin, CommandCallable callable, List<String> aliases);
+    Optional<CommandMapping> register(CommandCallable callable, List<String> aliases);
 
     /**
      * Register a given command using a given list of aliases.
@@ -98,7 +95,6 @@ public interface CommandManager extends Dispatcher {
      *
      * <p>The first non-conflicted alias becomes the "primary alias."</p>
      *
-     * @param plugin A plugin instance
      * @param callable The command
      * @param aliases A list of aliases
      * @param callback The callback
@@ -109,7 +105,7 @@ public interface CommandManager extends Dispatcher {
      * @throws IllegalArgumentException Thrown if {@code plugin} is not a
      *     plugin instance
      */
-    Optional<CommandMapping> register(Object plugin, CommandCallable callable, List<String> aliases, Function<List<String>, List<String>> callback);
+    Optional<CommandMapping> register(CommandCallable callable, List<String> aliases, Function<List<String>, List<String>> callback);
 
     /**
      * Remove a command identified by the given mapping.
@@ -118,14 +114,6 @@ public interface CommandManager extends Dispatcher {
      * @return The previous mapping associated with the alias, if one was found
      */
     Optional<CommandMapping> removeMapping(CommandMapping mapping);
-
-    /**
-     * Gets a set of commands owned by the given plugin instance.
-     *
-     * @param instance The plugin instance
-     * @return A set of mappings
-     */
-    Set<CommandMapping> getOwnedBy(Object instance);
 
     /**
      * Gets the number of registered aliases.
@@ -145,7 +133,7 @@ public interface CommandManager extends Dispatcher {
      * @return The result of a command being processed
      */
     @Override
-    CommandResult process(CommandSource source, String arguments);
+    CommandResult process(PermissibleCommandSource source, String arguments);
 
     /**
      * Gets a list of suggestions based on input.
@@ -158,5 +146,5 @@ public interface CommandManager extends Dispatcher {
      * @return A list of suggestions
      */
     @Override
-    List<String> getSuggestions(CommandSource source, String arguments, @Nullable Location<World> targetPosition);
+    List<String> getSuggestions(PermissibleCommandSource source, String arguments, @Nullable Location<World> targetPosition);
 }

@@ -33,13 +33,14 @@ import java.util.Set;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import org.spongepowered.api.command.CommandException;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.world.Location;
 
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+
+import net.fabricmc.fabric.api.command.v2.Location;
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.spongepowered.api.util.SpongeApiTranslationHelper.t;
 
 /**
  * Context that a command is executed in.
@@ -223,9 +224,10 @@ public final class CommandContext {
 	 * @param permission The permission to check
 	 * @throws CommandException if the source does not have permission
 	 */
-	public void checkPermission(CommandSource commander, String permission) throws CommandException {
+	public void checkPermission(PermissibleCommandSource commander, String permission) throws CommandException {
+		// TODO
 		if (!commander.hasPermission(permission)) {
-			throw new CommandException(t("You do not have permission to use this command!"));
+			throw new CommandException(new LiteralText("You do not have permission to use this command!"));
 		}
 	}
 
@@ -302,8 +304,7 @@ public final class CommandContext {
 	 * A snapshot of a {@link CommandContext}. This object does not contain any
 	 * public API methods, a snapshot should be considered a black box.
 	 */
-	public final class Snapshot {
-
+	public static final class Snapshot {
 		final Multimap<String, Object> args;
 		final Set<String> flags;
 
@@ -311,6 +312,5 @@ public final class CommandContext {
 			this.args = ArrayListMultimap.create(args);
 			this.flags = Sets.newHashSet(flags);
 		}
-
 	}
 }

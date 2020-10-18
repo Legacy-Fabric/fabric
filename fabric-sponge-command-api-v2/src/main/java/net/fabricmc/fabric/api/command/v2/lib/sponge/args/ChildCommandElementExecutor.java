@@ -35,12 +35,12 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.command.v2.Location;
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
@@ -119,7 +119,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
     }
 
     @Override
-    public List<String> complete(final CommandSource src, CommandArgs args, CommandContext context) {
+    public List<String> complete(final PermissibleCommandSource src, CommandArgs args, CommandContext context) {
         List<String> completions = Lists.newArrayList();
         if (this.fallbackElements != null) {
             CommandArgs.Snapshot state = args.getSnapshot();
@@ -165,7 +165,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
         return completions;
     }
 
-    private Set<String> filterCommands(final CommandSource src) {
+    private Set<String> filterCommands(final PermissibleCommandSource src) {
     	Multimaps.filterValues(this.dispatcher.getAll(), (input) -> {
     		return true;
 		});
@@ -178,7 +178,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
     }
 
     @Override
-    public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+    public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
         if (this.fallbackExecutor != null && !args.hasNext()) {
             if (this.fallbackElements != null) {
                 // there might be optionals to take account of that would parse this successfully.
@@ -241,12 +241,12 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
     }
 
     @Override
-    protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+    protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
         return null;
     }
 
     @Override
-    public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+    public CommandResult execute(PermissibleCommandSource src, CommandContext args) throws CommandException {
         CommandMapping mapping = args.<CommandMapping>getOne(this.getUntranslatedKey()).orElse(null);
         if (mapping == null) {
             if (this.fallbackExecutor == null) {
@@ -264,7 +264,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
     }
 
     @Override
-    public Text getUsage(CommandSource src) {
+    public Text getUsage(PermissibleCommandSource src) {
         Text usage = this.dispatcher.getUsage(src);
         if (this.fallbackElements == null) {
             return usage;
@@ -275,6 +275,6 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
             return usage;
         }
 
-        return usage.append(CommandMessageFormatting.PIPE_TEXT).append(elementUsage);
+        return new LiteralText("").append(usage).append(CommandMessageFormatting.PIPE_TEXT).append(elementUsage);
     }
 }

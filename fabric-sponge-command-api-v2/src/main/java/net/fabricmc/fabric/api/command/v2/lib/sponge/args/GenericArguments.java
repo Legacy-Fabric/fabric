@@ -61,7 +61,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -70,6 +69,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.StringType;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.fabricmc.fabric.api.util.TriState;
@@ -197,7 +197,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		protected Iterable<String> getChoices(CommandSource source) {
+		protected Iterable<String> getChoices(PermissibleCommandSource source) {
 			return FabricLoader.getInstance().getAllMods().stream().map(container -> container.getMetadata().getId()).collect(Collectors.toSet());
 		}
 
@@ -214,17 +214,17 @@ public final class GenericArguments {
 		}
 
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return true;
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			return Collections.emptyList();
 		}
 
 		@Override
-		public Text getUsage(CommandSource src) {
+		public Text getUsage(PermissibleCommandSource src) {
 			return new LiteralText("");
 		}
 	}
@@ -267,19 +267,19 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			for (CommandElement element : this.elements) {
 				element.parse(source, args, context);
 			}
 		}
 
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return null;
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			Set<String> completions = Sets.newHashSet();
 			for (CommandElement element : this.elements) {
 				CommandArgs.Snapshot state = args.getSnapshot();
@@ -325,7 +325,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Text getUsage(CommandSource commander) {
+		public Text getUsage(PermissibleCommandSource commander) {
 			final Text build = new LiteralText("");
 			for (Iterator<CommandElement> it = this.elements.iterator(); it.hasNext(); ) {
 				Text usage = it.next().getUsage(commander);
@@ -491,7 +491,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			Object value = this.valueSupplier.apply(args.next());
 			if (value == null) {
 				throw args.createError(new LiteralText(String.format("Argument was not a valid choice. Valid choices: %s", this.keySupplier.get().toString())));
@@ -500,16 +500,16 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			final String prefix = args.nextIfPresent().orElse("");
 			return this.keySupplier.get().stream().filter((input) -> input.startsWith(prefix)).collect(ImmutableList.toImmutableList());
 		}
 
 		@Override
-		public Text getUsage(CommandSource commander) {
+		public Text getUsage(PermissibleCommandSource commander) {
 			Collection<String> keys = this.keySupplier.get();
 			if (this.choicesInUsage == TriState.TRUE || (this.choicesInUsage == TriState.DEFAULT && keys.size() <= CUTOFF)) {
-				final Text build = new LiteralText();
+				final Text build = new LiteralText("");
 				build.append(CommandMessageFormatting.LT_TEXT);
 				for (Iterator<String> it = keys.iterator(); it.hasNext(); ) {
 					build.append(new LiteralText(it.next()));
@@ -546,7 +546,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			ArgumentParseException lastException = null;
 			for (CommandElement element : this.elements) {
 				CommandArgs.Snapshot startState = args.getSnapshot();
@@ -566,12 +566,12 @@ public final class GenericArguments {
 		}
 
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return null;
 		}
 
 		@Override
-		public List<String> complete(final CommandSource src, final CommandArgs args, final CommandContext context) {
+		public List<String> complete(final PermissibleCommandSource src, final CommandArgs args, final CommandContext context) {
 			return Lists.newLinkedList(Iterables.concat(this.elements.stream().map(element -> {
 				if (element == null) {
 					return ImmutableList.<String>of();
@@ -585,7 +585,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Text getUsage(CommandSource commander) {
+		public Text getUsage(PermissibleCommandSource commander) {
 			final Text ret = new LiteralText("");
 			for (Iterator<CommandElement> it = this.elements.iterator(); it.hasNext(); ) {
 				ret.append(it.next().getUsage(commander));
@@ -675,7 +675,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			if (!args.hasNext()) {
 				Text key = this.element.getKey();
 				if (key != null && this.value != null) {
@@ -699,17 +699,17 @@ public final class GenericArguments {
 		}
 
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return args.hasNext() ? null : this.element.parseValue(source, args);
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			return this.element.complete(src, args, context);
 		}
 
 		@Override
-		public Text getUsage(CommandSource src) {
+		public Text getUsage(PermissibleCommandSource src) {
 			final Text containingUsage = this.element.getUsage(src);
 			if (containingUsage.getString().isEmpty()) {
 				return new LiteralText("");
@@ -744,19 +744,19 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			for (int i = 0; i < this.times; ++i) {
 				this.element.parse(source, args, context);
 			}
 		}
 
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return null;
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			for (int i = 0; i < this.times; ++i) {
 				CommandArgs.Snapshot startState = args.getSnapshot();
 				try {
@@ -770,7 +770,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Text getUsage(CommandSource src) {
+		public Text getUsage(PermissibleCommandSource src) {
 			return new LiteralText(this.times + '*' + this.element.getUsage(src).getString());
 		}
 	}
@@ -797,19 +797,19 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			while (args.hasNext()) {
 				this.element.parse(source, args, context);
 			}
 		}
 
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return null;
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			CommandArgs.Snapshot startState = null;
 			try {
 				while (args.hasNext()) {
@@ -835,7 +835,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Text getUsage(CommandSource context) {
+		public Text getUsage(PermissibleCommandSource context) {
 			return new LiteralText(this.element.getUsage(context).getString() + CommandMessageFormatting.STAR_TEXT.asString());
 		}
 	}
@@ -852,7 +852,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			return Collections.emptyList();
 		}
 	}
@@ -878,7 +878,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return args.next();
 		}
 	}
@@ -912,7 +912,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			final String input = args.next();
 			try {
 				if (this.parseRadixFunction != null) {
@@ -1035,7 +1035,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		protected Iterable<String> getChoices(CommandSource source) {
+		protected Iterable<String> getChoices(PermissibleCommandSource source) {
 			return this.values.keySet();
 		}
 
@@ -1087,7 +1087,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			if (this.raw) {
 				args.next();
 				String ret = args.getRaw().substring(args.getRawPosition());
@@ -1104,7 +1104,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Text getUsage(CommandSource src) {
+		public Text getUsage(PermissibleCommandSource src) {
 			return new LiteralText("").append(CommandMessageFormatting.LT_TEXT.getString()).append(this.getKey()).append(CommandMessageFormatting.ELLIPSIS_TEXT).append(CommandMessageFormatting.GT_TEXT);
 		}
 	}
@@ -1155,18 +1155,18 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			for (String arg : this.expectedArgs) {
 				String current;
 				if (!(current = args.next()).equalsIgnoreCase(arg)) {
-					throw args.createError(("Argument %s did not match expected next argument %s", current, arg))
+					throw args.createError(new LiteralText(String.format("Argument %s did not match expected next argument %s", current, arg)));
 				}
 			}
 			return this.putValue;
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			for (String arg : this.expectedArgs) {
 				final Optional<String> next = args.nextIfPresent();
 				if (!next.isPresent()) {
@@ -1185,7 +1185,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Text getUsage(CommandSource src) {
+		public Text getUsage(PermissibleCommandSource src) {
 			return new LiteralText(Joiner.on(' ').join(this.expectedArgs));
 		}
 	}
@@ -1201,7 +1201,7 @@ public final class GenericArguments {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			if (!args.hasNext() && this.returnSource) {
 				return this.tryReturnSource(source, args);
 			}
@@ -1219,7 +1219,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		protected Iterable<String> getChoices(CommandSource source) {
+		protected Iterable<String> getChoices(PermissibleCommandSource source) {
 			return MinecraftServer.getServer().getPlayerManager().getPlayers().stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
 		}
 
@@ -1232,7 +1232,7 @@ public final class GenericArguments {
 			return ret.get();
 		}
 
-		private PlayerEntity tryReturnSource(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		private PlayerEntity tryReturnSource(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			if (source instanceof PlayerEntity) {
 				return ((PlayerEntity) source);
 			} else {
@@ -1241,7 +1241,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Text getUsage(CommandSource src) {
+		public Text getUsage(PermissibleCommandSource src) {
 			return src != null && this.returnSource ? new LiteralText("[" + super.getUsage(src) + "]") : super.getUsage(src);
 		}
 	}
@@ -1265,7 +1265,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String xStr;
 			String yStr;
 			String zStr;
@@ -1292,12 +1292,13 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			Optional<String> arg = args.nextIfPresent();
 			// Traverse through the possible arguments. We can't really complete arbitrary integers
 			if (arg.isPresent()) {
 				if (arg.get().startsWith("#")) {
-					return SPECIAL_TOKENS.stream().filter((input) -> input.startsWith(arg.get())).collect(ImmutableList.toImmutableList());
+					Optional<String> finalArg = arg;
+					return SPECIAL_TOKENS.stream().filter((input) -> input.startsWith(finalArg.get())).collect(ImmutableList.toImmutableList());
 				} else if (arg.get().contains(",") || !args.hasNext()) {
 					return ImmutableList.of(arg.get());
 				} else {
@@ -1355,27 +1356,27 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			this.element.parse(source, args, context);
 			if (context.getAll(this.element.getUntranslatedKey()).size() > 1) {
 				Text key = this.element.getKey();
-				throw args.createError(t("Argument %s may have only one value!", key != null ? key : t("unknown")));
+				throw args.createError(new LiteralText(String.format("Argument %s may have only one value!", key != null ? key : "unknown")));
 			}
 		}
 
 		@Override
-		public Text getUsage(CommandSource src) {
+		public Text getUsage(PermissibleCommandSource src) {
 			return this.element.getUsage(src);
 		}
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return this.element.parseValue(source, args);
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			return this.element.complete(src, args, context);
 		}
 	}
@@ -1400,7 +1401,7 @@ public final class GenericArguments {
 	 * <p>If the element attempts to parse an argument and the user does not
 	 * have the permission, the element will be skipped over.</p>
 	 *
-	 * <p>If the invoking {@link CommandSource} has permission to use the
+	 * <p>If the invoking {@link PermissibleCommandSource} has permission to use the
 	 * element, but the wrapped element fails to parse, an exception will
 	 * be reported in the normal way. If you require this element to be
 	 * truly optional, wrap this element in either
@@ -1429,7 +1430,7 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			if (this.checkPermission(source, args)) {
 				return this.element.parseValue(source, args);
 			}
@@ -1437,7 +1438,7 @@ public final class GenericArguments {
 			return null;
 		}
 
-		private boolean checkPermission(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		private boolean checkPermission(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			// TODO
 			boolean hasPermission = /*source.hasPermission(this.permission)*/ true;
 			if (!hasPermission && !this.isOptional) {
@@ -1448,7 +1449,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			boolean flag = /*src.hasPermission(this.permission)*/ true;
 			if (!flag) {
 				return ImmutableList.of();
@@ -1457,16 +1458,16 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public void parse(CommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			if (this.checkPermission(source, args)) {
 				this.element.parse(source, args, context);
 			}
 		}
 
 		@Override
-		public Text getUsage(CommandSource src) {
+		public Text getUsage(PermissibleCommandSource src) {
 			if (this.isOptional && !src.hasPermission(this.permission)) {
-				return Text.EMPTY;
+				return new LiteralText("");
 			}
 			return this.element.getUsage(src);
 		}
@@ -1517,7 +1518,7 @@ public final class GenericArguments {
 
 	/**
 	 * Expect an argument to represent an {@link Entity} of the specified type,
-	 * or if the argument is not present and the {@link CommandSource} is
+	 * or if the argument is not present and the {@link PermissibleCommandSource} is
 	 * looking at an applicable entity, return that entity.
 	 *
 	 * <p>This argument accepts the following inputs:</p>
@@ -1554,7 +1555,7 @@ public final class GenericArguments {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			if (!args.hasNext()) {
 				if (this.returnSource) {
 					return this.tryReturnSource(source, args, true);
@@ -1584,7 +1585,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		protected Iterable<String> getChoices(CommandSource source) {
+		protected Iterable<String> getChoices(PermissibleCommandSource source) {
 			Set<String> worldEntities = Arrays.stream(MinecraftServer.getServer().worlds).flatMap(world -> world.entities.stream())
 					.filter(this::checkEntity)
 					.map(entity -> entity.getUuid().toString()).collect(Collectors.toSet());
@@ -1622,7 +1623,7 @@ public final class GenericArguments {
 			throw new IllegalArgumentException("Input value " + choice + " was not an entity");
 		}
 
-		private Entity tryReturnSource(CommandSource source, CommandArgs args, boolean check) throws ArgumentParseException {
+		private Entity tryReturnSource(PermissibleCommandSource source, CommandArgs args, boolean check) throws ArgumentParseException {
 			if (source instanceof Entity && (!check || this.checkEntity((Entity) source))) {
 				return (Entity) source;
 			}
@@ -1630,7 +1631,7 @@ public final class GenericArguments {
 		}
 
 		// TODO
-		private Entity tryReturnTarget(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		private Entity tryReturnTarget(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			Entity entity = this.tryReturnSource(source, args, false);
 			throw args.createError(new LiteralText("No entities matched and source was not looking at a valid entity!"));
 //            return entity.getWorld().getIntersectingEntities(entity, 10).stream()
@@ -1648,8 +1649,8 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Text getUsage(CommandSource src) {
-			return src instanceof Entity && (this.returnSource || this.returnTarget) ? new LiteralText("[", this.getKey(), "]") : super.getUsage(src);
+		public Text getUsage(PermissibleCommandSource src) {
+			return src instanceof Entity && (this.returnSource || this.returnTarget) ? new LiteralText("[" + this.getKey().getString() + "]") : super.getUsage(src);
 		}
 	}
 
@@ -1673,7 +1674,7 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String str = args.next();
 			URL url;
 			try {
@@ -1713,7 +1714,7 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String s = args.next();
 			try {
 				return InetAddress.getByName(s);
@@ -1745,7 +1746,7 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String next = args.next();
 			try {
 				return new BigDecimal(next);
@@ -1775,7 +1776,7 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String integerString = args.next();
 			try {
 				return new BigInteger(integerString);
@@ -1805,7 +1806,7 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			try {
 				return UUID.fromString(args.next());
 			} catch (IllegalArgumentException ex) {
@@ -1840,7 +1841,7 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return this.stringType.isAll() ? (String) this.joinedElement.parseValue(source, args) : args.next();
 		}
 	}
@@ -1892,7 +1893,7 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			if (!args.hasNext() && this.returnNow) {
 				return LocalDateTime.now();
 			}
@@ -1918,7 +1919,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			String date = LocalDateTime.now().withNano(0).toString();
 			if (date.startsWith(args.nextIfPresent().orElse(""))) {
 				return ImmutableList.of(date);
@@ -1928,7 +1929,7 @@ public final class GenericArguments {
 		}
 
 		@Override
-		public Text getUsage(CommandSource src) {
+		public Text getUsage(PermissibleCommandSource src) {
 			if (!this.returnNow) {
 				return super.getUsage(src);
 			} else {
@@ -1960,7 +1961,7 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String s = args.next().toUpperCase();
 			if (!s.contains("T")) {
 				if (s.contains("D")) {
@@ -2023,7 +2024,7 @@ public final class GenericArguments {
 	 * @param suggestions A function to return the suggestions to use
 	 * @return the argument
 	 */
-	public static CommandElement withSuggestions(CommandElement argument, Function<CommandSource, Iterable<String>> suggestions) {
+	public static CommandElement withSuggestions(CommandElement argument, Function<PermissibleCommandSource, Iterable<String>> suggestions) {
 		return withSuggestions(argument, suggestions, true);
 	}
 
@@ -2040,7 +2041,7 @@ public final class GenericArguments {
 	 *                     begin provided arguments
 	 * @return the argument
 	 */
-	public static CommandElement withSuggestions(CommandElement argument, Function<CommandSource,
+	public static CommandElement withSuggestions(CommandElement argument, Function<PermissibleCommandSource,
 			Iterable<String>> suggestions, boolean requireBegin) {
 		return new WithSuggestionsElement(argument, suggestions, requireBegin);
 	}
@@ -2060,10 +2061,10 @@ public final class GenericArguments {
 	private static class WithSuggestionsElement extends CommandElement {
 
 		private final CommandElement wrapped;
-		private final Function<CommandSource, Iterable<String>> suggestions;
+		private final Function<PermissibleCommandSource, Iterable<String>> suggestions;
 		private final boolean requireBegin;
 
-		protected WithSuggestionsElement(CommandElement wrapped, Function<CommandSource, Iterable<String>> suggestions, boolean requireBegin) {
+		protected WithSuggestionsElement(CommandElement wrapped, Function<PermissibleCommandSource, Iterable<String>> suggestions, boolean requireBegin) {
 			super(wrapped.getKey());
 			this.wrapped = wrapped;
 			this.suggestions = suggestions;
@@ -2072,12 +2073,12 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return this.wrapped.parseValue(source, args);
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			if (this.requireBegin) {
 				String arg = args.nextIfPresent().orElse("");
 				return ImmutableList.copyOf(StreamSupport.stream(this.suggestions.apply(src).spliterator(), false).filter(f -> f.startsWith(arg)).collect(Collectors.toList()));
@@ -2100,12 +2101,12 @@ public final class GenericArguments {
 
 		@Nullable
 		@Override
-		protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return this.wrapped.parseValue(source, args);
 		}
 
 		@Override
-		public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			return this.wrapped.complete(src, args, context).stream().filter(this.predicate).collect(ImmutableList.toImmutableList());
 		}
 	}

@@ -30,10 +30,10 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.Selector;
 
 public abstract class SelectorCommandElement extends PatternMatchingCommandElement {
@@ -43,7 +43,7 @@ public abstract class SelectorCommandElement extends PatternMatchingCommandEleme
 
     @Nullable
     @Override
-    protected Object parseValue(CommandSource source, CommandArgs args) throws ArgumentParseException {
+    protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
         String arg = args.peek();
         if (arg.startsWith("@")) { // Possibly a selector
             try {
@@ -56,7 +56,7 @@ public abstract class SelectorCommandElement extends PatternMatchingCommandEleme
     }
 
     @Override
-    public List<String> complete(CommandSource src, CommandArgs args, CommandContext context) {
+    public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
         CommandArgs.Snapshot state = args.getSnapshot();
         final Optional<String> nextArg = args.nextIfPresent();
         args.applySnapshot(state);

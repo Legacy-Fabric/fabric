@@ -24,8 +24,7 @@
  */
 package net.fabricmc.fabric.api.command.v2.lib.sponge.spec;
 
-import net.minecraft.command.CommandSource;
-
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandResult;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.CommandContext;
@@ -45,5 +44,5 @@ public interface CommandExecutor {
      * @throws CommandException If a user-facing error occurs while
      *     executing this command
      */
-    CommandResult execute(CommandSource src, CommandContext args) throws CommandException;
+    CommandResult execute(PermissibleCommandSource src, CommandContext args) throws CommandException;
 }

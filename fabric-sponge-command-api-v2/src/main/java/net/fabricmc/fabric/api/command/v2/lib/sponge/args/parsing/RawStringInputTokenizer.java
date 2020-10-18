@@ -27,8 +27,6 @@ package net.fabricmc.fabric.api.command.v2.lib.sponge.args.parsing;
 import java.util.Collections;
 import java.util.List;
 
-import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
-
 class RawStringInputTokenizer implements InputTokenizer {
 	static final RawStringInputTokenizer INSTANCE = new RawStringInputTokenizer();
 
@@ -36,7 +34,7 @@ class RawStringInputTokenizer implements InputTokenizer {
 	}
 
 	@Override
-	public List<SingleArg> tokenize(String arguments, boolean lenient) throws ArgumentParseException {
+	public List<SingleArg> tokenize(String arguments, boolean lenient) {
 		return Collections.singletonList(new SingleArg(arguments, 0, arguments.length()));
 	}
 }

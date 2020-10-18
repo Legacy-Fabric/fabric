@@ -30,8 +30,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Multimap;
 
-import net.minecraft.command.CommandSource;
-
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
 
@@ -80,14 +79,14 @@ public interface Dispatcher extends CommandCallable {
 
     /**
      * Gets the {@link CommandMapping} associated with an alias in the context
-     * of a given {@link CommandSource}. Returns null if no command is named by
+     * of a given {@link PermissibleCommandSource}. Returns null if no command is named by
      * the given alias.
      *
      * @param alias The alias to look up
      * @param source The source this alias is being looked up for
      * @return The command mapping, if available
      */
-    Optional<? extends CommandMapping> get(String alias, @Nullable CommandSource source);
+    Optional<? extends CommandMapping> get(String alias, @Nullable PermissibleCommandSource source);
 
     /**
      * Gets all the {@link CommandMapping}s associated with an alias.
