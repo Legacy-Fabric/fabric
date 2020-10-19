@@ -47,6 +47,7 @@ import com.google.common.collect.Multimaps;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
@@ -59,6 +60,7 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandNotFoundException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandResult;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.ImmutableCommandMapping;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.InvocationCommandException;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -326,7 +328,7 @@ public final class SimpleDispatcher implements Dispatcher {
         final String[] argSplit = commandLine.split(" ", 2);
         Optional<CommandMapping> cmdOptional = this.get(argSplit[0], source);
         if (!cmdOptional.isPresent()) {
-            throw new CommandNotFoundException(new LiteralText("commands.generic.notFound"), argSplit[0]); // TODO: Fix properly to use a SpongeTranslation??
+            throw new CommandNotFoundException(new TranslatableText("commands.generic.notFound"), argSplit[0]);
         }
         final String arguments = argSplit.length > 1 ? argSplit[1] : "";
         CommandMapping mapping = cmdOptional.get();
@@ -335,7 +337,9 @@ public final class SimpleDispatcher implements Dispatcher {
             return spec.process(source, arguments);
         } catch (CommandNotFoundException e) {
             throw new CommandException(new LiteralText("No such child command: " + e.getCommand()));
-        }
+        } catch (RuntimeException e) {
+        	throw new InvocationCommandException(new LiteralText("An unexpected error happened executing the command"), e);
+		}
     }
 
     @Override

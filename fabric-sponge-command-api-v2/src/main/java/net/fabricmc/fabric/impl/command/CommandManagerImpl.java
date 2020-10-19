@@ -1,0 +1,211 @@
+package net.fabricmc.fabric.impl.command;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.world.World;
+
+import net.fabricmc.fabric.api.command.v2.Location;
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandCallable;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandManager;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandPermissionException;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandResult;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.InvocationCommandException;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.Disambiguator;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
+
+public class CommandManagerImpl implements CommandManager {
+	private static final Logger LOGGER = LogManager.getLogger("Fabric Command Manager");
+	private static final Pattern SPACE_PATTERN = Pattern.compile(" ", Pattern.LITERAL);
+	private final Object lock = new Object();
+	private final SimpleDispatcher dispatcher;
+	private final List<CommandMapping> mappings = Lists.newArrayList();
+
+	public CommandManagerImpl(Disambiguator disambiguator) {
+		this.dispatcher = new SimpleDispatcher(disambiguator);
+	}
+
+	@Override
+	public Optional<CommandMapping> register(CommandCallable callable, String... alias) {
+		return this.register(callable, Arrays.asList(alias));
+	}
+
+	@Override
+	public Optional<CommandMapping> register(CommandCallable callable, List<String> aliases) {
+		return this.register(callable, aliases, Function.identity());
+	}
+
+	@Override
+	public Optional<CommandMapping> register(CommandCallable callable, List<String> aliases, Function<List<String>, List<String>> callback) {
+		synchronized (this.lock) {
+			return this.dispatcher.register(callable, aliases, callback).map(mapping -> {
+				this.mappings.add(mapping);
+				return mapping;
+			});
+		}
+	}
+
+	@Override
+	public Optional<CommandMapping> removeMapping(CommandMapping mapping) {
+		synchronized (this.lock) {
+			this.mappings.remove(mapping);
+			return this.dispatcher.removeMapping(mapping);
+		}
+	}
+
+	@Override
+	public int size() {
+		synchronized (this.lock) {
+			return this.dispatcher.size();
+		}
+	}
+
+	@Override
+	public CommandResult process(PermissibleCommandSource source, String command) {
+		final String[] argSplit = command.split(" ", 2);
+		try {
+			try {
+				this.dispatcher.process(source, command);
+			} catch (InvocationCommandException e) {
+				if (e.getCause() != null) {
+					throw e.getCause();
+				}
+			} catch (CommandPermissionException e) {
+				if (e.getText() != null) {
+					source.sendMessage(CommandMessageFormatting.error(e.getText()));
+				}
+			} catch (CommandException e) {
+				Text text = e.getText();
+
+				if (text != null) {
+					source.sendMessage(CommandMessageFormatting.error(text));
+				}
+
+				if (e.shouldIncludeUsage()) {
+					Optional<CommandMapping> mapping = this.dispatcher.get(argSplit[0], source);
+					if (mapping.isPresent()) {
+						Text usage;
+
+						if (e instanceof ArgumentParseException.WithUsage) {
+							usage = ((ArgumentParseException.WithUsage) e).getUsage();
+						} else {
+							usage = mapping.get().getCallable().getUsage(source);
+						}
+
+						source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", argSplit[0], usage))));
+					}
+				}
+			}
+		} catch (Throwable t) {
+			LOGGER.error("An unexpected error happened executing a command");
+			t.printStackTrace();
+			if (t instanceof Error) {
+				throw (Error) t;
+			}
+
+			Text message = CommandMessageFormatting.error(new LiteralText("An unexpected error happened executing the command"));
+			message.setStyle(message.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Stacktrace: \n" + Arrays.stream(t.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("\n"))))));
+			source.sendMessage(message);
+		}
+		return CommandResult.empty();
+	}
+
+	@Override
+	public List<String> getSuggestions(PermissibleCommandSource source, String arguments, @Nullable Location<World> targetPosition) {
+		try {
+			final String[] argSplit = arguments.split(" ", 2);
+			return Lists.newArrayList(this.dispatcher.getSuggestions(source, arguments, targetPosition));
+		} catch (CommandException e) {
+			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
+			return Collections.emptyList();
+		} catch (Exception e) {
+			throw new RuntimeException(String.format("Error occured while tab completing '%s'", arguments), e);
+		}
+	}
+
+	@Override
+	public boolean testPermission(PermissibleCommandSource source) {
+		return this.dispatcher.testPermission(source);
+	}
+
+	@Override
+	public Optional<Text> getShortDescription(PermissibleCommandSource source) {
+		return this.dispatcher.getShortDescription(source);
+	}
+
+	@Override
+	public Optional<Text> getHelp(PermissibleCommandSource source) {
+		return this.dispatcher.getHelp(source);
+	}
+
+	@Override
+	public Text getUsage(PermissibleCommandSource source) {
+		return this.dispatcher.getUsage(source);
+	}
+
+	@Override
+	public Set<? extends CommandMapping> getCommands() {
+		return this.dispatcher.getCommands();
+	}
+
+	@Override
+	public Set<String> getPrimaryAliases() {
+		return this.dispatcher.getPrimaryAliases();
+	}
+
+	@Override
+	public Set<String> getAliases() {
+		return this.dispatcher.getAliases();
+	}
+
+	@Override
+	public Optional<? extends CommandMapping> get(String alias) {
+		return this.dispatcher.get(alias);
+	}
+
+	@Override
+	public Optional<? extends CommandMapping> get(String alias, @Nullable PermissibleCommandSource source) {
+		return this.dispatcher.get(alias, source);
+	}
+
+	@Override
+	public Set<? extends CommandMapping> getAll(String alias) {
+		return this.dispatcher.getAll(alias);
+	}
+
+	@Override
+	public Multimap<String, CommandMapping> getAll() {
+		return this.dispatcher.getAll();
+	}
+
+	@Override
+	public boolean containsAlias(String alias) {
+		return this.dispatcher.containsAlias(alias);
+	}
+
+	@Override
+	public boolean containsMapping(CommandMapping mapping) {
+		return this.dispatcher.containsMapping(mapping);
+	}
+}

@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -77,7 +79,7 @@ public final class ImmutableCommandMapping implements CommandMapping {
 
     @Override
     public Set<String> getAllAliases() {
-        return Collections.unmodifiableSet(this.aliases);
+        return ImmutableSet.copyOf(this.aliases);
     }
 
     @Override

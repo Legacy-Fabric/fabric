@@ -10,7 +10,7 @@ import net.minecraft.server.command.CommandManager;
 
 import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.event.CommandRegistrationCallback;
-import net.fabricmc.fabric.impl.command.DispatcherHolder;
+import net.fabricmc.fabric.impl.command.InternalObjects;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin implements PermissibleCommandSource {
@@ -21,6 +21,6 @@ public abstract class MinecraftServerMixin implements PermissibleCommandSource {
 
 	@Inject(at = @At("HEAD"), method = "createCommandManager")
 	public void initCommands(CallbackInfoReturnable<CommandManager> cir) {
-		CommandRegistrationCallback.EVENT.invoker().accept(DispatcherHolder.getDispatcher(), (MinecraftServer) (Object) this);
+		CommandRegistrationCallback.EVENT.invoker().accept(InternalObjects.getCommandManager(), (MinecraftServer) (Object) this);
 	}
 }
