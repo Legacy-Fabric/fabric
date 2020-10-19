@@ -20,8 +20,8 @@ import java.util.stream.Stream;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -56,7 +56,7 @@ public final class PlayerStream {
 			throw new RuntimeException("Only supported on ServerWorld!");
 		}
 
-		return world(world).filter((player -> ((ServerWorld) world).getChunkManager().method_6005((ServerPlayerEntity) player, pos.getX(), pos.getZ())));
+		return world(world).filter((player -> ((ServerWorld) world).getPlayerWorldManager().method_6005((ServerPlayerEntity) player, pos.getX(), pos.getZ())));
 	}
 
 	public static Stream<PlayerEntity> around(World world, Vec3d vector, double radius) {

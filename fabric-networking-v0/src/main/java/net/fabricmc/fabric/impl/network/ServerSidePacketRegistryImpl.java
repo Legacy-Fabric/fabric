@@ -30,11 +30,11 @@ import io.netty.util.concurrent.GenericFutureListener;
 import com.google.common.collect.Sets;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.fabric.api.event.network.C2SPacketTypeCallback;
@@ -50,11 +50,11 @@ public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements 
 	}
 
 	public void addNetworkHandler(ServerPlayNetworkHandler handler) {
-		handlers.add(new WeakReference<>(handler));
+		this.handlers.add(new WeakReference<>(handler));
 	}
 
 	protected void forEachHandler(Consumer<ServerPlayNetworkHandler> consumer) {
-		Iterator<WeakReference<ServerPlayNetworkHandler>> it = handlers.iterator();
+		Iterator<WeakReference<ServerPlayNetworkHandler>> it = this.handlers.iterator();
 
 		while (it.hasNext()) {
 			ServerPlayNetworkHandler server = it.next().get();
@@ -69,7 +69,7 @@ public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements 
 
 	@Override
 	public boolean canPlayerReceive(PlayerEntity player, String id) {
-		Collection<String> ids = playerPayloadIds.get(player);
+		Collection<String> ids = this.playerPayloadIds.get(player);
 
 		if (ids != null) {
 			return ids.contains(id);
@@ -99,17 +99,17 @@ public class ServerSidePacketRegistryImpl extends PacketRegistryImpl implements 
 
 	@Override
 	protected void onRegister(String id) {
-		createRegisterTypePacket(PacketTypes.REGISTER, Collections.singleton(id)).ifPresent((packet) -> forEachHandler((n) -> n.sendPacket(packet)));
+		this.createRegisterTypePacket(PacketTypes.REGISTER, Collections.singleton(id)).ifPresent((packet) -> this.forEachHandler((n) -> n.sendPacket(packet)));
 	}
 
 	@Override
 	protected void onUnregister(String id) {
-		createRegisterTypePacket(PacketTypes.UNREGISTER, Collections.singleton(id)).ifPresent((packet) -> forEachHandler((n) -> n.sendPacket(packet)));
+		this.createRegisterTypePacket(PacketTypes.UNREGISTER, Collections.singleton(id)).ifPresent((packet) -> this.forEachHandler((n) -> n.sendPacket(packet)));
 	}
 
 	@Override
 	protected Collection<String> getIdCollectionFor(PacketContext context) {
-		return playerPayloadIds.computeIfAbsent(context.getPlayer(), (p) -> new HashSet<>());
+		return this.playerPayloadIds.computeIfAbsent(context.getPlayer(), (p) -> new HashSet<>());
 	}
 
 	@Override

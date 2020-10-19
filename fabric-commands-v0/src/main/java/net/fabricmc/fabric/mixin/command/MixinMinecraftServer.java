@@ -17,37 +17,36 @@
 package net.fabricmc.fabric.mixin.command;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.command.AbstractCommand;
-import net.minecraft.command.CommandProvider;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.CommandRegistry;
 
 import net.fabricmc.fabric.api.event.server.FabricCommandRegisteredCallback;
 import net.fabricmc.fabric.impl.command.FabricCommandRegistryImpl;
 
-@Mixin(CommandManager.class)
-public abstract class MixinCommandManager extends CommandRegistry implements CommandProvider {
-	@Inject(method = "<init>", at = @At("TAIL"))
-	public void registerCommands(CallbackInfo info) {
+@Mixin(MinecraftServer.class)
+public abstract class MixinMinecraftServer {
+	@Shadow
+	public abstract boolean isDedicated();
+
+	@Inject(at = @At("TAIL"), method = "createCommandManager")
+	public void interceptCommands(CallbackInfoReturnable<CommandManager> cir) {
 		FabricCommandRegistryImpl.getCommandMap().forEach((command, side) -> {
-			boolean dedicated = MinecraftServer.getServer().isDedicated();
+			boolean dedicated = this.isDedicated();
 
 			if (!(dedicated) && side.isIntegrated()) {
-				this.registerCommand(command);
+				cir.getReturnValue().registerCommand(command);
 			}
 
 			if (dedicated && side.isDedicated()) {
-				this.registerCommand(command);
+				cir.getReturnValue().registerCommand(command);
 			}
 
 			FabricCommandRegisteredCallback.EVENT.invoker().onCommandRegistered(MinecraftServer.getServer(), command, side);
 		});
-
-		AbstractCommand.setCommandProvider(this);
 	}
 }

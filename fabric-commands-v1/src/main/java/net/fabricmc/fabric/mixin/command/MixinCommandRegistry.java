@@ -70,7 +70,7 @@ public class MixinCommandRegistry {
 		}
 	}
 
-	@Inject(method = "method_5985", at = @At("RETURN"), cancellable = true)
+	@Inject(method = "getCompletions", at = @At("RETURN"), cancellable = true)
 	private void getCommandCompletions(CommandSource source, String name, BlockPos pos, CallbackInfoReturnable<List<String>> info) {
 		CommandDispatcher<ServerCommandSource> dispatcher = CommandManagerHolder.COMMAND_DISPATCHER;
 		List<String> list = info.getReturnValue();

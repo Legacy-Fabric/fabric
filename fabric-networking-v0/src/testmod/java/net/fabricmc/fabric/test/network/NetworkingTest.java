@@ -59,7 +59,7 @@ public class NetworkingTest {
 	public static void clientInitialize() {
 		ClientSidePacketRegistry.INSTANCE.register(new PacketIdentifier("fabric-networking-v0-testmod", "s2c_test_packet"), ((context, byteBuf) -> {
 			BlockPos pos = byteBuf.readBlockPos();
-			context.getTaskQueue().submit(() -> {
+			context.getTaskQueue().execute(() -> {
 				MinecraftClient.getInstance().particleManager.addBlockBreakParticles(pos, Blocks.STONE.getDefaultState());
 				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 				buf.writeBytes("Hello from the Netty I/O Thread!".getBytes(StandardCharsets.UTF_8));

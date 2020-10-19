@@ -18,8 +18,8 @@ package net.fabricmc.fabric.api.command.v1;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.OperatorEntry;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
@@ -40,52 +40,52 @@ public class ServerCommandSource {
 	}
 
 	public CommandSource getSource() {
-		return source;
+		return this.source;
 	}
 
 	public Vec3d getPosition() {
-		return position;
+		return this.position;
 	}
 
 	public ServerWorld getWorld() {
-		return world;
+		return this.world;
 	}
 
 	public Entity getEntity() {
-		return entity;
+		return this.entity;
 	}
 
 	public int getPermissionLevel() {
-		return permissionLevel;
+		return this.permissionLevel;
 	}
 
 	public boolean isPlayer() {
-		return entity instanceof ServerPlayerEntity;
+		return this.entity instanceof ServerPlayerEntity;
 	}
 
 	public boolean hasPermissionLevel(int level) {
-		return permissionLevel <= level;
+		return this.permissionLevel <= level;
 	}
 
 	public ServerCommandSource withPosition(Vec3d position) {
-		return new ServerCommandSource(source, position, world, entity, permissionLevel);
+		return new ServerCommandSource(this.source, position, this.world, this.entity, this.permissionLevel);
 	}
 
 	public ServerCommandSource withWorld(ServerWorld world) {
-		return new ServerCommandSource(source, position, world, entity, permissionLevel);
+		return new ServerCommandSource(this.source, this.position, world, this.entity, this.permissionLevel);
 	}
 
 	public ServerCommandSource withEntity(Entity entity) {
-		return new ServerCommandSource(source, position, world, entity, permissionLevel);
+		return new ServerCommandSource(this.source, this.position, this.world, entity, this.permissionLevel);
 	}
 
 	public ServerCommandSource withPermission(int permissionLevel) {
-		return new ServerCommandSource(source, position, world, entity, permissionLevel);
+		return new ServerCommandSource(this.source, this.position, this.world, this.entity, permissionLevel);
 	}
 
 	public void sendFeedback(Text text) {
-		if (source.sendCommandFeedback()) {
-			source.sendMessage(text);
+		if (this.source.sendCommandFeedback()) {
+			this.source.sendMessage(text);
 		}
 	}
 

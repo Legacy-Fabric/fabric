@@ -22,6 +22,7 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.command.AbstractCommand;
 
+import net.fabricmc.fabric.api.command.CommandSide;
 import net.fabricmc.fabric.api.registry.FabricCommandRegistry;
 
 public class FabricCommandRegistryImpl implements FabricCommandRegistry {
