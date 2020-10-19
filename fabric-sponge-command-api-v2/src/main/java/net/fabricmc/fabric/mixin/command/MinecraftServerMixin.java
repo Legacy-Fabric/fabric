@@ -21,6 +21,6 @@ public abstract class MinecraftServerMixin implements PermissibleCommandSource {
 
 	@Inject(at = @At("HEAD"), method = "createCommandManager")
 	public void initCommands(CallbackInfoReturnable<CommandManager> cir) {
-		CommandRegistrationCallback.EVENT.invoker().accept(InternalObjects.getCommandManager(), (MinecraftServer) (Object) this);
+		CommandRegistrationCallback.EVENT.invoker().register(InternalObjects.getCommandManager(), (MinecraftServer) (Object) this);
 	}
 }

@@ -9,9 +9,9 @@ import net.fabricmc.fabric.api.event.EventFactory;
 public interface CommandRegistrationCallback {
 	Event<CommandRegistrationCallback> EVENT = EventFactory.createArrayBacked(CommandRegistrationCallback.class, listeners -> (dispatcher, server) -> {
 		for (CommandRegistrationCallback callback : listeners) {
-			callback.accept(dispatcher, server);
+			callback.register(dispatcher, server);
 		}
 	});
 
-	void accept(Dispatcher dispatcher, MinecraftServer server);
+	void register(Dispatcher dispatcher, MinecraftServer server);
 }
