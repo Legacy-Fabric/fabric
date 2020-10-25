@@ -17,10 +17,8 @@
 package net.fabricmc.fabric.mixin.resource.loader;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -60,11 +58,14 @@ public class MixinLanguage {
 		// because this runs on both sides
 		try {
 			Enumeration<URL> urls = Knot.getLauncher().getTargetClassLoader().getResources("/assets/minecraft/lang/en_US.lang");
+
 			while (urls.hasMoreElements()) {
 				URL url = urls.nextElement();
+
 				for (String string : IOUtils.readLines(url.openStream(), Charsets.UTF_8)) {
 					if (!string.isEmpty() && string.charAt(0) != '#') {
 						String[] strings = Iterables.toArray(SPLITTER.split(string), String.class);
+
 						if (strings != null && strings.length == 2) {
 							String string2 = strings[0];
 							String string3 = field_5901.matcher(strings[1]).replaceAll("%$1s");
