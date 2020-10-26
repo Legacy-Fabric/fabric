@@ -1,6 +1,5 @@
 package net.fabricmc.fabric.impl.command;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
@@ -34,6 +34,7 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.InvocationCommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.Disambiguator;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
 
 public class CommandManagerImpl implements CommandManager {
 	private static final Logger LOGGER = LogManager.getLogger("Fabric Command Manager");
@@ -47,19 +48,19 @@ public class CommandManagerImpl implements CommandManager {
 	}
 
 	@Override
-	public Optional<CommandMapping> register(CommandCallable callable, String... alias) {
-		return this.register(callable, Arrays.asList(alias));
+	public Optional<CommandMapping> register(CommandSpec spec, String... alias) {
+		return this.register(spec, Arrays.asList(alias));
 	}
 
 	@Override
-	public Optional<CommandMapping> register(CommandCallable callable, List<String> aliases) {
-		return this.register(callable, aliases, Function.identity());
+	public Optional<CommandMapping> register(CommandSpec spec, List<String> aliases) {
+		return this.register(spec, aliases, Function.identity());
 	}
 
 	@Override
-	public Optional<CommandMapping> register(CommandCallable callable, List<String> aliases, Function<List<String>, List<String>> callback) {
+	public Optional<CommandMapping> register(CommandSpec spec, List<String> aliases, Function<List<String>, List<String>> callback) {
 		synchronized (this.lock) {
-			return this.dispatcher.register(callable, aliases, callback).map(mapping -> {
+			return this.dispatcher.register(spec, aliases, callback).map(mapping -> {
 				this.mappings.add(mapping);
 				return mapping;
 			});
@@ -69,7 +70,6 @@ public class CommandManagerImpl implements CommandManager {
 	@Override
 	public Optional<CommandMapping> removeMapping(CommandMapping mapping) {
 		synchronized (this.lock) {
-			this.mappings.remove(mapping);
 			return this.dispatcher.removeMapping(mapping);
 		}
 	}
@@ -146,66 +146,92 @@ public class CommandManagerImpl implements CommandManager {
 
 	@Override
 	public boolean testPermission(PermissibleCommandSource source) {
-		return this.dispatcher.testPermission(source);
+		synchronized (this.lock) {
+			return this.dispatcher.testPermission(source);
+		}
 	}
 
 	@Override
 	public Optional<Text> getShortDescription(PermissibleCommandSource source) {
-		return this.dispatcher.getShortDescription(source);
+		synchronized (this.lock) {
+			return this.dispatcher.getShortDescription(source);
+		}
 	}
 
 	@Override
 	public Optional<Text> getHelp(PermissibleCommandSource source) {
-		return this.dispatcher.getHelp(source);
+		synchronized (this.lock) {
+			return this.dispatcher.getHelp(source);
+		}
 	}
 
 	@Override
 	public Text getUsage(PermissibleCommandSource source) {
-		return this.dispatcher.getUsage(source);
+		synchronized (this.lock) {
+			return this.dispatcher.getUsage(source);
+		}
 	}
 
 	@Override
 	public Set<? extends CommandMapping> getCommands() {
-		return this.dispatcher.getCommands();
+		synchronized (this.lock) {
+			return this.dispatcher.getCommands();
+		}
 	}
 
 	@Override
 	public Set<String> getPrimaryAliases() {
-		return this.dispatcher.getPrimaryAliases();
+		synchronized (this.lock) {
+			return this.dispatcher.getPrimaryAliases();
+		}
 	}
 
 	@Override
 	public Set<String> getAliases() {
-		return this.dispatcher.getAliases();
+		synchronized (this.lock) {
+			return this.dispatcher.getAliases();
+		}
 	}
 
 	@Override
 	public Optional<? extends CommandMapping> get(String alias) {
-		return this.dispatcher.get(alias);
+		synchronized (this.lock) {
+			return this.dispatcher.get(alias);
+		}
 	}
 
 	@Override
 	public Optional<? extends CommandMapping> get(String alias, @Nullable PermissibleCommandSource source) {
-		return this.dispatcher.get(alias, source);
+		synchronized (this.lock) {
+			return this.dispatcher.get(alias, source);
+		}
 	}
 
 	@Override
 	public Set<? extends CommandMapping> getAll(String alias) {
-		return this.dispatcher.getAll(alias);
+		synchronized (this.lock) {
+			return this.dispatcher.getAll(alias);
+		}
 	}
 
 	@Override
 	public Multimap<String, CommandMapping> getAll() {
-		return this.dispatcher.getAll();
+		synchronized (this.lock) {
+			return this.dispatcher.getAll();
+		}
 	}
 
 	@Override
 	public boolean containsAlias(String alias) {
-		return this.dispatcher.containsAlias(alias);
+		synchronized (this.lock) {
+			return this.dispatcher.containsAlias(alias);
+		}
 	}
 
 	@Override
 	public boolean containsMapping(CommandMapping mapping) {
-		return this.dispatcher.containsMapping(mapping);
+		synchronized (this.lock) {
+			return this.dispatcher.containsMapping(mapping);
+		}
 	}
 }
