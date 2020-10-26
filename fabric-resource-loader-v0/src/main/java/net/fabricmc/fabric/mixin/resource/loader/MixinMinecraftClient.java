@@ -74,7 +74,7 @@ public class MixinMinecraftClient {
 	//		return fabricResourcePacks.stream().collect(collector);
 	//	}
 
-	@Inject(method = "method_2300",
+	@Inject(method = "stitchTextures",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;method_4357(Ljava/util/List;)V", ordinal = 0),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	public void reloadResources(CallbackInfo ci, List<ResourcePack> list) {

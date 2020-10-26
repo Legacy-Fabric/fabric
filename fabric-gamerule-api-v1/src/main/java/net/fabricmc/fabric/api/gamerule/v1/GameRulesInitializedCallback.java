@@ -16,7 +16,7 @@
 
 package net.fabricmc.fabric.api.gamerule.v1;
 
-import net.minecraft.world.GameRules;
+import net.minecraft.world.GameRuleDispatcher;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
@@ -30,5 +30,5 @@ public interface GameRulesInitializedCallback {
 			}
 	);
 
-	void onGamerulesRegistered(GameRules dispatcher);
+	void onGamerulesRegistered(GameRuleDispatcher dispatcher);
 }

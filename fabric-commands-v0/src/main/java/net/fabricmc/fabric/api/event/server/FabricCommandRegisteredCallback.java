@@ -21,7 +21,7 @@ import net.minecraft.server.MinecraftServer;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.fabricmc.fabric.impl.command.CommandSide;
+import net.fabricmc.fabric.api.command.CommandSide;
 
 public interface FabricCommandRegisteredCallback {
 	Event<FabricCommandRegisteredCallback> EVENT = EventFactory.createArrayBacked(FabricCommandRegisteredCallback.class,

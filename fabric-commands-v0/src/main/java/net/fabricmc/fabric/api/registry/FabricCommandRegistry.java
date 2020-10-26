@@ -19,7 +19,7 @@ package net.fabricmc.fabric.api.registry;
 import net.minecraft.command.AbstractCommand;
 
 import net.fabricmc.fabric.impl.command.FabricCommandRegistryImpl;
-import net.fabricmc.fabric.impl.command.CommandSide;
+import net.fabricmc.fabric.api.command.CommandSide;
 
 public interface FabricCommandRegistry {
 	FabricCommandRegistry INSTANCE = new FabricCommandRegistryImpl();

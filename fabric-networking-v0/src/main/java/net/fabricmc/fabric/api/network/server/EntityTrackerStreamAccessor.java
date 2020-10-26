@@ -18,8 +18,14 @@ package net.fabricmc.fabric.api.network.server;
 
 import java.util.stream.Stream;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
+import com.google.common.annotations.Beta;
 
+import net.minecraft.server.network.ServerPlayerEntity;
+
+/**
+ * Not implemented yet!
+ */
+@Beta
 public interface EntityTrackerStreamAccessor {
 	Stream<ServerPlayerEntity> fabric_getTrackingPlayers();
 }

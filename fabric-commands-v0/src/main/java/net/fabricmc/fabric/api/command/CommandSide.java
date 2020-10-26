@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.impl.command;
+package net.fabricmc.fabric.api.command;
+
+import com.google.common.annotations.Beta;
 
 public enum CommandSide {
+	/**
+	 * Not Implemented Yet!
+	 */
+	@Beta
+	CLIENT(false, false),
 	INTEGRATED(false, true),
 	DEDICATED(true, false),
 	COMMON(true, true);
@@ -30,10 +37,10 @@ public enum CommandSide {
 	}
 
 	public boolean isDedicated() {
-		return dedicated;
+		return this.dedicated;
 	}
 
 	public boolean isIntegrated() {
-		return integrated;
+		return this.integrated;
 	}
 }

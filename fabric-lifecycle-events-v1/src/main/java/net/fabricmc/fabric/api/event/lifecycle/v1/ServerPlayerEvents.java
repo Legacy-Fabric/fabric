@@ -16,9 +16,9 @@
 
 package net.fabricmc.fabric.api.event.lifecycle.v1;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
@@ -46,7 +46,7 @@ public class ServerPlayerEvents {
 	});
 
 	/**
-	 * Called when at the start of {@link ServerPlayerEntity#tick()}.
+	 * Called at the start of {@link ServerPlayerEntity#tick()}.
 	 */
 	public static final Event<StartTick> START_TICK = EventFactory.createArrayBacked(StartTick.class,
 			(listeners) -> (player) -> {
@@ -57,7 +57,7 @@ public class ServerPlayerEvents {
 	);
 
 	/**
-	 * Called when at the end of {@link ServerPlayerEntity#tick()}.
+	 * Called at the end of {@link ServerPlayerEntity#tick()}.
 	 */
 	public static final Event<EndTick> END_TICK = EventFactory.createArrayBacked(EndTick.class,
 			(listeners) -> (player) -> {

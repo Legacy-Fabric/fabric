@@ -16,8 +16,8 @@
 
 package net.fabricmc.fabric.api.event.server;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;

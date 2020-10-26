@@ -46,6 +46,6 @@ public interface BlockEntityClientSerializable {
 			throw new IllegalStateException("Cannot call sync() on the client! Did you check world.isClient() first?");
 		}
 
-		((ServerWorld) world).getChunkManager().method_6002(((BlockEntity) this).getPos());
+		((ServerWorld) world).getPlayerWorldManager().method_6002(((BlockEntity) this).getPos());
 	}
 }
