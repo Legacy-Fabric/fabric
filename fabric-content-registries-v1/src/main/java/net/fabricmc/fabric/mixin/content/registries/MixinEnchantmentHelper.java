@@ -29,12 +29,12 @@ import net.fabricmc.fabric.api.content.registry.v1.ItemStackHelper;
 
 @Mixin(EnchantmentHelper.class)
 public class MixinEnchantmentHelper {
-	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "calculateEnchantmentPower", name = "k", index = 1)
+	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "calculateEnchantmentPower", name = "k", ordinal = 2)
 	private static int modifyK(int k, Random random, int i, int j, ItemStack itemStack) {
 		return ItemStackHelper.getEnchantability(itemStack);
 	}
 
-	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "getEnchantmentInfoEntries", name = "j", index = 1)
+	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "getEnchantmentInfoEntries", name = "j", ordinal = 1)
 	private static int modifyJ(int j, Random random, ItemStack itemStack, int i) {
 		return ItemStackHelper.getEnchantability(itemStack);
 	}

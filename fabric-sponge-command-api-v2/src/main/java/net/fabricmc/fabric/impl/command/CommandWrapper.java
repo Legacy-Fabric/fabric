@@ -37,10 +37,10 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandPermissionException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.InvocationCommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 
-class CommandWrapper extends AbstractCommand {
+public class CommandWrapper extends AbstractCommand {
 	private final CommandMapping mapping;
 
-	CommandWrapper(CommandMapping mapping) {
+	public CommandWrapper(CommandMapping mapping) {
 		this.mapping = mapping;
 	}
 

@@ -19,9 +19,6 @@
     "fabricloader": ">=0.4.0"
   },
   "entrypoints": {
-    "main": [
-      "net.fabricmc.fabric.impl.command.ImplInit"
-    ],
     "fabric-sponge-command-api-v2:registrar": [
       "net.fabricmc.fabric.impl.command.ImplInit"
     ]
