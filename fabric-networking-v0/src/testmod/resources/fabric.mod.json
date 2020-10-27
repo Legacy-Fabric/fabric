@@ -11,11 +11,5 @@
     "fabric-key-binding-api-v1": "*"
   },
   "entrypoints": {
-    "main": [
-      "net.fabricmc.fabric.test.network.NetworkingTest::initialize"
-    ],
-    "client": [
-      "net.fabricmc.fabric.test.network.NetworkingTest::clientInitialize"
-    ]
   }
 }
