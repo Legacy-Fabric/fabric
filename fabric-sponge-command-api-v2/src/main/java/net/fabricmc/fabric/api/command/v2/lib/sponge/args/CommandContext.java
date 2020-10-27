@@ -228,7 +228,6 @@ public final class CommandContext {
 	 * @throws CommandException if the source does not have permission
 	 */
 	public void checkPermission(PermissibleCommandSource commander, String permission) throws CommandException {
-		// TODO
 		if (!commander.hasPermission(permission)) {
 			throw new CommandException(new LiteralText("You do not have permission to use this command!"));
 		}

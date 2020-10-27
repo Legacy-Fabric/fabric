@@ -410,8 +410,7 @@ public final class CommandSpec implements CommandCallable {
 
 	@Override
 	public boolean testPermission(PermissibleCommandSource source) {
-		// TODO: implement a permissions api
-		return this.permission == null /*|| source.hasPermission(this.permission)*/;
+		return source.hasPermission(this.permission);
 	}
 
 	/**
