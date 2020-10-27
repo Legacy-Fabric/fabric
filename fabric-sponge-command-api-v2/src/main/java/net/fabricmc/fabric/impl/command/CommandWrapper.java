@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.command.AbstractCommand;
 import net.minecraft.command.CommandSource;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
@@ -31,6 +32,10 @@ import net.fabricmc.fabric.api.command.v2.Location;
 import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandPermissionException;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.InvocationCommandException;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 
 class CommandWrapper extends AbstractCommand {
 	private final CommandMapping mapping;
@@ -57,9 +62,38 @@ class CommandWrapper extends AbstractCommand {
 	@Override
 	public void execute(CommandSource source, String[] args) {
 		try {
-			this.mapping.getCallable().process((PermissibleCommandSource) source, String.join(" ", args));
-		} catch (CommandException e) {
-			e.printStackTrace();
+			try {
+				this.mapping.getCallable().process((PermissibleCommandSource) source, String.join(" ", args));
+			} catch (InvocationCommandException e) {
+				if (e.getCause() != null) {
+					throw e.getCause();
+				}
+			} catch (CommandPermissionException e) {
+				if (e.getText() != null) {
+					source.sendMessage(CommandMessageFormatting.error(e.getText()));
+				}
+			} catch (CommandException e) {
+				Text text = e.getText();
+
+				if (text != null) {
+					source.sendMessage(CommandMessageFormatting.error(text));
+				}
+
+				if (e.shouldIncludeUsage()) {
+					Text usage;
+
+					if (e instanceof ArgumentParseException.WithUsage) {
+						usage = ((ArgumentParseException.WithUsage) e).getUsage();
+					} else {
+						usage = this.mapping.getCallable().getUsage((PermissibleCommandSource) source);
+					}
+
+					source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", this.getCommandName(), usage))));
+				}
+			}
+		} catch (Throwable t) {
+			// Minecraft handles these exceptions for us
+			throw new RuntimeException(t);
 		}
 	}
 
@@ -73,9 +107,10 @@ class CommandWrapper extends AbstractCommand {
 		try {
 			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getWorld(), pos));
 		} catch (CommandException e) {
-			e.printStackTrace();
+			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
+			return Collections.emptyList();
+		} catch (Exception e) {
+			throw new RuntimeException(String.format("Error occurred while providing auto complete hints for '%s'", String.join(" ", args)), e);
 		}
-
-		return Collections.emptyList();
 	}
 }
