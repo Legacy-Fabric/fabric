@@ -126,7 +126,6 @@ allprojects {
 			}
 			matching(includes: ['**/lib/sponge/**']) {
 				header = rootProject.file('HEADER_SPONGE')
-				newLine = false
 			}
 		}
 	}
