@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
@@ -87,7 +88,26 @@ public final class ImmutableCommandMapping implements CommandMapping {
         return this.callable;
     }
 
-    @Override
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || this.getClass() != o.getClass()) {
+			return false;
+		}
+		ImmutableCommandMapping that = (ImmutableCommandMapping) o;
+		return this.primary.equals(that.primary) &&
+				this.aliases.equals(that.aliases) &&
+				this.callable.equals(that.callable);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.primary, this.aliases, this.callable);
+	}
+
+	@Override
     public String toString() {
         return "ImmutableCommandMapping{"
                 + "primary='" + this.primary + '\''
