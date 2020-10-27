@@ -39,6 +39,7 @@ import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.command.v2.Location;
 import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandManager;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
@@ -49,7 +50,6 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.InvocationCommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.Disambiguator;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
-import net.fabricmc.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
 
 public class CommandManagerImpl implements CommandManager {
 	private static final Logger LOGGER = LogManager.getLogger("Fabric Command Manager");
@@ -63,19 +63,19 @@ public class CommandManagerImpl implements CommandManager {
 	}
 
 	@Override
-	public Optional<CommandMapping> register(CommandSpec spec, String... alias) {
-		return this.register(spec, Arrays.asList(alias));
+	public Optional<CommandMapping> register(CommandCallable callable, String... alias) {
+		return this.register(callable, Arrays.asList(alias));
 	}
 
 	@Override
-	public Optional<CommandMapping> register(CommandSpec spec, List<String> aliases) {
-		return this.register(spec, aliases, Function.identity());
+	public Optional<CommandMapping> register(CommandCallable callable, List<String> aliases) {
+		return this.register(callable, aliases, Function.identity());
 	}
 
 	@Override
-	public Optional<CommandMapping> register(CommandSpec spec, List<String> aliases, Function<List<String>, List<String>> callback) {
+	public Optional<CommandMapping> register(CommandCallable callable, List<String> aliases, Function<List<String>, List<String>> callback) {
 		synchronized (this.lock) {
-			return this.dispatcher.register(spec, aliases, callback).map(mapping -> {
+			return this.dispatcher.register(callable, aliases, callback).map(mapping -> {
 				this.mappings.add(mapping);
 				return mapping;
 			});

@@ -36,7 +36,6 @@ import net.minecraft.world.World;
 import net.fabricmc.fabric.api.command.v2.Location;
 import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.Dispatcher;
-import net.fabricmc.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
 
 /**
  * A command dispatcher watches for commands (such as those said in chat)
@@ -54,12 +53,12 @@ public interface CommandManager extends Dispatcher {
 	 *
 	 * <p>The first non-conflicted alias becomes the "primary alias."</p>
 	 *
-	 * @param spec  The command
+	 * @param callable  The command
 	 * @param alias An array of aliases
 	 * @return The registered command mapping, unless no aliases could be
 	 * registered
 	 */
-	Optional<CommandMapping> register(CommandSpec spec, String... alias);
+	Optional<CommandMapping> register(CommandCallable callable, String... alias);
 
 	/**
 	 * Register a given command using the given list of aliases.
@@ -72,14 +71,14 @@ public interface CommandManager extends Dispatcher {
 	 *
 	 * <p>The first non-conflicted alias becomes the "primary alias."</p>
 	 *
-	 * @param spec    The command
+	 * @param callable    The command
 	 * @param aliases A list of aliases
 	 * @return The registered command mapping, unless no aliases could be
 	 * registered
 	 * @throws IllegalArgumentException Thrown if {@code plugin} is not a
 	 *                                  plugin instance
 	 */
-	Optional<CommandMapping> register(CommandSpec spec, List<String> aliases);
+	Optional<CommandMapping> register(CommandCallable callable, List<String> aliases);
 
 	/**
 	 * Register a given command using a given list of aliases.
@@ -95,7 +94,7 @@ public interface CommandManager extends Dispatcher {
 	 *
 	 * <p>The first non-conflicted alias becomes the "primary alias."</p>
 	 *
-	 * @param spec     The command
+	 * @param callable     The command
 	 * @param aliases  A list of aliases
 	 * @param callback The callback
 	 * @return The registered command mapping, unless no aliases could be
@@ -103,7 +102,7 @@ public interface CommandManager extends Dispatcher {
 	 * @throws IllegalArgumentException Thrown if new conflicting aliases are
 	 *                                  added in the callback
 	 */
-	Optional<CommandMapping> register(CommandSpec spec, List<String> aliases, Function<List<String>, List<String>> callback);
+	Optional<CommandMapping> register(CommandCallable callable, List<String> aliases, Function<List<String>, List<String>> callback);
 
 	/**
 	 * Remove a command identified by the given mapping.
