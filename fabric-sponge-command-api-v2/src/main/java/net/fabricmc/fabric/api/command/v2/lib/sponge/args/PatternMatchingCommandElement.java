@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
 import java.util.Collections;
@@ -30,6 +31,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
@@ -44,103 +46,107 @@ import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
  * Abstract command element that matches values based on pattern.
  */
 public abstract class PatternMatchingCommandElement extends CommandElement {
-    private static final Text nullKeyArg = new LiteralText("argument");
-    final boolean useRegex;
+	private static final Text nullKeyArg = new LiteralText("argument");
+	final boolean useRegex;
 
-    /**
-     * @param yesIWantRegex Specify if you want to allow regex for users of
-     * the command element. Note that this will open up for DoS attacks.
-     */
-    protected PatternMatchingCommandElement(@Nullable Text key, boolean yesIWantRegex) {
-        super(key);
-        this.useRegex = yesIWantRegex;
-    }
+	/**
+	 * @param yesIWantRegex Specify if you want to allow regex for users of
+	 *                      the command element. Note that this will open up for DoS attacks.
+	 */
+	protected PatternMatchingCommandElement(@Nullable Text key, boolean yesIWantRegex) {
+		super(key);
+		this.useRegex = yesIWantRegex;
+	}
 
-    protected PatternMatchingCommandElement(@Nullable Text key) {
-        this(key, false);
-    }
+	protected PatternMatchingCommandElement(@Nullable Text key) {
+		this(key, false);
+	}
 
-    @Nullable
-    @Override
-    protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
-        Iterable<String> choices = this.getChoices(source);
-        Iterable<Object> ret;
-        String arg = args.next();
+	@Nullable
+	@Override
+	protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
+		Iterable<String> choices = this.getChoices(source);
+		Iterable<Object> ret;
+		String arg = args.next();
 
-        // Check to see if we have an exact match first
-        Optional<Object> exactMatch = this.getExactMatch(choices, arg);
-        if (exactMatch.isPresent()) {
-            // Return this as a collection as this can get transformed by the subclass.
-            return Collections.singleton(exactMatch.get());
-        }
+		// Check to see if we have an exact match first
+		Optional<Object> exactMatch = this.getExactMatch(choices, arg);
 
-        if (this.useRegex) {
-            Pattern pattern = this.getFormattedPattern(arg);
-            ret = StreamSupport.stream(choices.spliterator(), false).filter(element -> pattern.matcher(element).find()).collect(Collectors.toList()).stream().map(this::getValue).collect(Collectors.toList());
-        } else {
-            Iterable<String> startsWith = StreamSupport.stream(choices.spliterator(), false).filter(element -> element.regionMatches(true, 0, arg, 0, arg.length())).collect(Collectors.toList());
-            ret = StreamSupport.stream(startsWith.spliterator(), false).map(this::getValue).collect(Collectors.toList());
-        }
+		if (exactMatch.isPresent()) {
+			// Return this as a collection as this can get transformed by the subclass.
+			return Collections.singleton(exactMatch.get());
+		}
 
-        if (!ret.iterator().hasNext()) {
-            throw args.createError(new LiteralText(String.format("No values matching pattern '%s' present for %s!", arg, this.getKey() == null
-                    ? nullKeyArg : this.getKey())));
-        }
-        return ret;
-    }
+		if (this.useRegex) {
+			Pattern pattern = this.getFormattedPattern(arg);
+			ret = StreamSupport.stream(choices.spliterator(), false).filter(element -> pattern.matcher(element).find()).collect(Collectors.toList()).stream().map(this::getValue).collect(Collectors.toList());
+		} else {
+			Iterable<String> startsWith = StreamSupport.stream(choices.spliterator(), false).filter(element -> element.regionMatches(true, 0, arg, 0, arg.length())).collect(Collectors.toList());
+			ret = StreamSupport.stream(startsWith.spliterator(), false).map(this::getValue).collect(Collectors.toList());
+		}
 
-    @Override
-    public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
-        Iterable<String> choices = this.getChoices(src);
-        final Optional<String> nextArg = args.nextIfPresent();
-        if (nextArg.isPresent()) {
-            if (this.useRegex) {
-                choices = StreamSupport.stream(choices.spliterator(), false).filter(input -> this.getFormattedPattern(nextArg.get()).matcher(input).find()).collect(Collectors.toList());
-            } else {
-                String arg = nextArg.get();
-                choices = StreamSupport.stream(choices.spliterator(), false).filter(input -> input.regionMatches(true, 0, arg, 0, arg.length())).collect(Collectors.toList());
-            }
-        }
-        return ImmutableList.copyOf(choices);
-    }
+		if (!ret.iterator().hasNext()) {
+			throw args.createError(new LiteralText(String.format("No values matching pattern '%s' present for %s!", arg, this.getKey() == null
+					? nullKeyArg : this.getKey())));
+		}
 
-    Pattern getFormattedPattern(String input) {
-        if (!input.startsWith("^")) { // Anchor matches to the beginning -- this lets us use find()
-            input = "^" + input;
-        }
-        return Pattern.compile(input, Pattern.CASE_INSENSITIVE);
+		return ret;
+	}
 
-    }
+	@Override
+	public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
+		Iterable<String> choices = this.getChoices(src);
+		final Optional<String> nextArg = args.nextIfPresent();
 
-    /**
-     * Tests a string against a set of valid choices to see if it is a
-     * case-insensitive match.
-     *
-     * @param choices The choices available to match against
-     * @param potentialChoice The potential choice
-     * @return If matched, an {@link Optional} containing the matched value
-     */
-    protected Optional<Object> getExactMatch(final Iterable<String> choices, final String potentialChoice) {
-        return Iterables.tryFind(choices, potentialChoice::equalsIgnoreCase).toJavaUtil().map(this::getValue);
-    }
+		if (nextArg.isPresent()) {
+			if (this.useRegex) {
+				choices = StreamSupport.stream(choices.spliterator(), false).filter(input -> this.getFormattedPattern(nextArg.get()).matcher(input).find()).collect(Collectors.toList());
+			} else {
+				String arg = nextArg.get();
+				choices = StreamSupport.stream(choices.spliterator(), false).filter(input -> input.regionMatches(true, 0, arg, 0, arg.length())).collect(Collectors.toList());
+			}
+		}
 
-    /**
-     * Gets the available choices for this command source.
-     *
-     * @param source The source requesting choices
-     * @return the possible choices
-     */
-    protected abstract Iterable<String> getChoices(PermissibleCommandSource source);
+		return ImmutableList.copyOf(choices);
+	}
 
-    /**
-     * Gets the value for a given choice. For any result in
-     * {@link #getChoices(PermissibleCommandSource)}, this must return a non-null value.
-     * Otherwise, an {@link IllegalArgumentException} may be throw.
-     *
-     * @param choice The specified choice
-     * @return the choice's value
-     * @throws IllegalArgumentException if the input string is not any return
-     *         value of {@link #getChoices(PermissibleCommandSource)}
-     */
-    protected abstract Object getValue(String choice) throws IllegalArgumentException;
+	Pattern getFormattedPattern(String input) {
+		if (!input.startsWith("^")) { // Anchor matches to the beginning -- this lets us use find()
+			input = "^" + input;
+		}
+
+		return Pattern.compile(input, Pattern.CASE_INSENSITIVE);
+	}
+
+	/**
+	 * Tests a string against a set of valid choices to see if it is a
+	 * case-insensitive match.
+	 *
+	 * @param choices         The choices available to match against
+	 * @param potentialChoice The potential choice
+	 * @return If matched, an {@link Optional} containing the matched value
+	 */
+	protected Optional<Object> getExactMatch(final Iterable<String> choices, final String potentialChoice) {
+		return Iterables.tryFind(choices, potentialChoice::equalsIgnoreCase).toJavaUtil().map(this::getValue);
+	}
+
+	/**
+	 * Gets the available choices for this command source.
+	 *
+	 * @param source The source requesting choices
+	 * @return the possible choices
+	 */
+	protected abstract Iterable<String> getChoices(PermissibleCommandSource source);
+
+	/**
+	 * Gets the value for a given choice. For any result in
+	 * {@link #getChoices(PermissibleCommandSource)}, this must return a non-null value.
+	 * Otherwise, an {@link IllegalArgumentException} may be throw.
+	 *
+	 * @param choice The specified choice
+	 * @return the choice's value
+	 * @throws IllegalArgumentException if the input string is not any return
+	 *                                  value of {@link #getChoices(PermissibleCommandSource)}
+	 */
+	protected abstract Object getValue(String choice) throws IllegalArgumentException;
 }

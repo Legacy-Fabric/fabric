@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge;
 
 import net.minecraft.text.Text;
@@ -31,15 +32,15 @@ import net.minecraft.text.Text;
  * is thrown.
  */
 public class InvocationCommandException extends CommandException {
-    private static final long serialVersionUID = 2123904283741023948L;
+	private static final long serialVersionUID = 2123904283741023948L;
 
-    /**
-     * Constructs a new exception with the given message and the given cause.
-     *
-     * @param message The detail message
-     * @param cause The cause
-     */
-    public InvocationCommandException(Text message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Constructs a new exception with the given message and the given cause.
+	 *
+	 * @param message The detail message
+	 * @param cause   The cause
+	 */
+	public InvocationCommandException(Text message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
 import com.google.common.base.Strings;
@@ -70,12 +71,13 @@ public class ArgumentParseException extends CommandException {
 	@Override
 	public Text getText() {
 		Text superText = super.getText();
+
 		if (this.source == null || this.source.isEmpty()) {
 			return super.getText();
 		} else if (superText == null) {
 			return new LiteralText(this.getAnnotatedPosition());
 		} else {
-			return new LiteralText(superText + "\n" + this.getAnnotatedPosition());
+			return new LiteralText(superText.getString() + "\n" + this.getAnnotatedPosition());
 		}
 	}
 
@@ -92,20 +94,24 @@ public class ArgumentParseException extends CommandException {
 	public String getAnnotatedPosition() {
 		String source = this.source;
 		int position = this.position;
+
 		if (source.length() > 80) {
 			if (position >= 37) {
 				int startPos = position - 37;
 				int endPos = Math.min(source.length(), position + 37);
+
 				if (endPos < source.length()) {
 					source = "..." + source.substring(startPos, endPos) + "...";
 				} else {
 					source = "..." + source.substring(startPos, endPos);
 				}
+
 				position -= 40;
 			} else {
 				source = source.substring(0, 77) + "...";
 			}
 		}
+
 		return source + "\n" + Strings.repeat(" ", position) + "^";
 	}
 
@@ -149,6 +155,5 @@ public class ArgumentParseException extends CommandException {
 		public Text getUsage() {
 			return this.usage;
 		}
-
 	}
 }

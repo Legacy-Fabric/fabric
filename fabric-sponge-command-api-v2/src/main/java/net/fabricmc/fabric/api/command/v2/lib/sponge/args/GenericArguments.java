@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
 import java.math.BigDecimal;
@@ -51,6 +52,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
 import javax.annotation.Nullable;
 
 import com.google.common.base.Joiner;
@@ -75,7 +77,6 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.fabricmc.fabric.api.util.TriState;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-
 
 /**
  * Class containing factory methods for common command elements.
@@ -191,7 +192,6 @@ public final class GenericArguments {
 	}
 
 	private static class ModCommandElement extends PatternMatchingCommandElement {
-
 		protected ModCommandElement(@Nullable Text key) {
 			super(key);
 		}
@@ -281,9 +281,11 @@ public final class GenericArguments {
 		@Override
 		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			Set<String> completions = Sets.newHashSet();
+
 			for (CommandElement element : this.elements) {
 				CommandArgs.Snapshot state = args.getSnapshot();
 				CommandContext.Snapshot contextSnapshot = context.createSnapshot();
+
 				try {
 					element.parse(src, args, context);
 
@@ -291,6 +293,7 @@ public final class GenericArguments {
 					// However, if nothing was consumed, then we should consider
 					// what could have been.
 					CommandContext.Snapshot afterSnapshot = context.createSnapshot();
+
 					if (state.equals(args.getSnapshot())) {
 						context.applySnapshot(contextSnapshot);
 						completions.addAll(element.complete(src, args, context));
@@ -305,6 +308,7 @@ public final class GenericArguments {
 						context.applySnapshot(contextSnapshot);
 						args.applySnapshot(state);
 						completions.addAll(element.complete(src, args, context));
+
 						if (!(element instanceof OptionalCommandElement)) {
 							break;
 						}
@@ -321,21 +325,26 @@ public final class GenericArguments {
 					break;
 				}
 			}
+
 			return Lists.newArrayList(completions);
 		}
 
 		@Override
 		public Text getUsage(PermissibleCommandSource commander) {
 			final Text build = new LiteralText("");
+
 			for (Iterator<CommandElement> it = this.elements.iterator(); it.hasNext(); ) {
 				Text usage = it.next().getUsage(commander);
+
 				if (!usage.getString().isEmpty()) {
 					build.append(usage);
+
 					if (it.hasNext()) {
 						build.append(CommandMessageFormatting.SPACE_TEXT);
 					}
 				}
 			}
+
 			return new LiteralText(build.getString());
 		}
 	}
@@ -428,10 +437,10 @@ public final class GenericArguments {
 	 */
 	public static CommandElement choices(Text key, Map<String, ?> choices, boolean choicesInUsage, boolean caseSensitive) {
 		if (!caseSensitive) {
-			Map<String, Object> immChoices = choices.entrySet().stream()
-					.collect(ImmutableMap.toImmutableMap(x -> x.getKey().toLowerCase(), Map.Entry::getValue));
+			Map<String, Object> immChoices = choices.entrySet().stream().collect(ImmutableMap.toImmutableMap(x -> x.getKey().toLowerCase(), Map.Entry::getValue));
 			return choices(key, immChoices::keySet, selection -> immChoices.get(selection.toLowerCase()), choicesInUsage);
 		}
+
 		Map<String, Object> immChoices = ImmutableMap.copyOf(choices);
 		return choices(key, immChoices::keySet, immChoices::get, choicesInUsage);
 	}
@@ -493,9 +502,11 @@ public final class GenericArguments {
 		@Override
 		public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			Object value = this.valueSupplier.apply(args.next());
+
 			if (value == null) {
 				throw args.createError(new LiteralText(String.format("Argument was not a valid choice. Valid choices: %s", this.keySupplier.get().toString())));
 			}
+
 			return value;
 		}
 
@@ -508,22 +519,26 @@ public final class GenericArguments {
 		@Override
 		public Text getUsage(PermissibleCommandSource commander) {
 			Collection<String> keys = this.keySupplier.get();
+
 			if (this.choicesInUsage == TriState.TRUE || (this.choicesInUsage == TriState.DEFAULT && keys.size() <= CUTOFF)) {
 				final Text build = new LiteralText("");
 				build.append(CommandMessageFormatting.LT_TEXT);
+
 				for (Iterator<String> it = keys.iterator(); it.hasNext(); ) {
 					build.append(new LiteralText(it.next()));
+
 					if (it.hasNext()) {
 						build.append(CommandMessageFormatting.PIPE_TEXT);
 					}
 				}
+
 				build.append(CommandMessageFormatting.GT_TEXT);
 				return new LiteralText(build.getString());
 			}
+
 			return super.getUsage(commander);
 		}
 	}
-
 
 	/**
 	 * Returns a command element that matches the first of the provided elements
@@ -548,9 +563,11 @@ public final class GenericArguments {
 		@Override
 		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			ArgumentParseException lastException = null;
+
 			for (CommandElement element : this.elements) {
 				CommandArgs.Snapshot startState = args.getSnapshot();
 				CommandContext.Snapshot contextSnapshot = context.createSnapshot();
+
 				try {
 					element.parse(source, args, context);
 					return;
@@ -560,6 +577,7 @@ public final class GenericArguments {
 					context.applySnapshot(contextSnapshot);
 				}
 			}
+
 			if (lastException != null) {
 				throw lastException;
 			}
@@ -587,12 +605,15 @@ public final class GenericArguments {
 		@Override
 		public Text getUsage(PermissibleCommandSource commander) {
 			final Text ret = new LiteralText("");
+
 			for (Iterator<CommandElement> it = this.elements.iterator(); it.hasNext(); ) {
 				ret.append(it.next().getUsage(commander));
+
 				if (it.hasNext()) {
 					ret.append(CommandMessageFormatting.PIPE_TEXT);
 				}
 			}
+
 			return new LiteralText(ret.getString());
 		}
 	}
@@ -678,17 +699,22 @@ public final class GenericArguments {
 		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			if (!args.hasNext()) {
 				Text key = this.element.getKey();
+
 				if (key != null && this.value != null) {
 					context.putArg(key.asString(), this.value);
 				}
+
 				return;
 			}
+
 			CommandArgs.Snapshot startState = args.getSnapshot();
+
 			try {
 				this.element.parse(source, args, context);
 			} catch (ArgumentParseException ex) {
 				if (this.considerInvalidFormatEmpty || args.hasNext()) { // If there are more args, suppress. Otherwise, throw the error
 					args.applySnapshot(startState);
+
 					if (this.element.getKey() != null && this.value != null) {
 						context.putArg(this.element.getUntranslatedKey(), this.value);
 					}
@@ -711,9 +737,11 @@ public final class GenericArguments {
 		@Override
 		public Text getUsage(PermissibleCommandSource src) {
 			final Text containingUsage = this.element.getUsage(src);
+
 			if (containingUsage.getString().isEmpty()) {
 				return new LiteralText("");
 			}
+
 			return new LiteralText("[" + this.element.getUsage(src) + "]");
 		}
 	}
@@ -735,7 +763,6 @@ public final class GenericArguments {
 	private static class RepeatedCommandElement extends CommandElement {
 		private final CommandElement element;
 		private final int times;
-
 
 		protected RepeatedCommandElement(CommandElement element, int times) {
 			super(null);
@@ -759,6 +786,7 @@ public final class GenericArguments {
 		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			for (int i = 0; i < this.times; ++i) {
 				CommandArgs.Snapshot startState = args.getSnapshot();
+
 				try {
 					this.element.parse(src, args, context);
 				} catch (ArgumentParseException e) {
@@ -766,6 +794,7 @@ public final class GenericArguments {
 					return this.element.complete(src, args, context);
 				}
 			}
+
 			return Collections.emptyList();
 		}
 
@@ -790,7 +819,6 @@ public final class GenericArguments {
 	private static class AllOfCommandElement extends CommandElement {
 		private final CommandElement element;
 
-
 		protected AllOfCommandElement(CommandElement element) {
 			super(null);
 			this.element = element;
@@ -811,6 +839,7 @@ public final class GenericArguments {
 		@Override
 		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			CommandArgs.Snapshot startState = null;
+
 			try {
 				while (args.hasNext()) {
 					startState = args.getSnapshot();
@@ -872,7 +901,6 @@ public final class GenericArguments {
 	}
 
 	private static class StringElement extends KeyElement {
-
 		StringElement(Text key) {
 			super(key);
 		}
@@ -882,7 +910,6 @@ public final class GenericArguments {
 			return args.next();
 		}
 	}
-
 
 	/**
 	 * Require an argument to be an integer (base 10).
@@ -903,8 +930,7 @@ public final class GenericArguments {
 		private final BiFunction<String, Integer, T> parseRadixFunction;
 		private final Function<String, Text> errorSupplier;
 
-		protected NumericElement(Text key, Function<String, T> parseFunc, @Nullable BiFunction<String, Integer, T> parseRadixFunction,
-								 Function<String, Text> errorSupplier) {
+		protected NumericElement(Text key, Function<String, T> parseFunc, @Nullable BiFunction<String, Integer, T> parseRadixFunction, Function<String, Text> errorSupplier) {
 			super(key);
 			this.parseFunc = parseFunc;
 			this.parseRadixFunction = parseRadixFunction;
@@ -914,6 +940,7 @@ public final class GenericArguments {
 		@Override
 		public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			final String input = args.next();
+
 			try {
 				if (this.parseRadixFunction != null) {
 					if (input.startsWith("0x")) {
@@ -922,6 +949,7 @@ public final class GenericArguments {
 						return this.parseRadixFunction.apply(input.substring(2), 2);
 					}
 				}
+
 				return this.parseFunc.apply(input);
 			} catch (NumberFormatException ex) {
 				throw args.createError(this.errorSupplier.apply(input));
@@ -1028,8 +1056,7 @@ public final class GenericArguments {
 			this.values = Arrays.stream(type.getEnumConstants())
 					.collect(Collectors.toMap(value -> value.name().toLowerCase(),
 							Function.identity(), (value, value2) -> {
-								throw new UnsupportedOperationException(type.getCanonicalName() + " contains more than one enum constant "
-										+ "with the same name, only differing by capitalization, which is unsupported.");
+								throw new UnsupportedOperationException(type.getCanonicalName() + " contains more than one enum constant " + "with the same name, only differing by capitalization, which is unsupported.");
 							}
 					));
 		}
@@ -1042,6 +1069,7 @@ public final class GenericArguments {
 		@Override
 		protected Object getValue(String choice) throws IllegalArgumentException {
 			T value = this.values.get(choice.toLowerCase());
+
 			if (value == null) {
 				throw new IllegalArgumentException("No enum constant " + this.type.getCanonicalName() + "." + choice);
 			}
@@ -1091,15 +1119,20 @@ public final class GenericArguments {
 			if (this.raw) {
 				args.next();
 				String ret = args.getRaw().substring(args.getRawPosition());
+
 				while (args.hasNext()) { // Consume remaining args
 					args.next();
 				}
+
 				return ret;
 			}
+
 			final StringBuilder ret = new StringBuilder(args.next());
+
 			while (args.hasNext()) {
 				ret.append(' ').append(args.next());
 			}
+
 			return ret.toString();
 		}
 
@@ -1158,10 +1191,12 @@ public final class GenericArguments {
 		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			for (String arg : this.expectedArgs) {
 				String current;
+
 				if (!(current = args.next()).equalsIgnoreCase(arg)) {
 					throw args.createError(new LiteralText(String.format("Argument %s did not match expected next argument %s", current, arg)));
 				}
 			}
+
 			return this.putValue;
 		}
 
@@ -1169,6 +1204,7 @@ public final class GenericArguments {
 		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			for (String arg : this.expectedArgs) {
 				final Optional<String> next = args.nextIfPresent();
+
 				if (!next.isPresent()) {
 					break;
 				} else if (args.hasNext()) {
@@ -1181,6 +1217,7 @@ public final class GenericArguments {
 					}
 				}
 			}
+
 			return ImmutableList.of();
 		}
 
@@ -1191,7 +1228,6 @@ public final class GenericArguments {
 	}
 
 	private static class PlayerCommandElement extends SelectorCommandElement {
-
 		private final boolean returnSource;
 
 		protected PlayerCommandElement(Text key, boolean returnSource) {
@@ -1207,6 +1243,7 @@ public final class GenericArguments {
 			}
 
 			CommandArgs.Snapshot state = args.getSnapshot();
+
 			try {
 				return StreamSupport.stream(((Iterable<Entity>) super.parseValue(source, args)).spliterator(), false).filter(e -> e instanceof PlayerEntity).collect(Collectors.toList());
 			} catch (ArgumentParseException ex) {
@@ -1214,6 +1251,7 @@ public final class GenericArguments {
 					args.applySnapshot(state);
 					return this.tryReturnSource(source, args);
 				}
+
 				throw ex;
 			}
 		}
@@ -1226,9 +1264,11 @@ public final class GenericArguments {
 		@Override
 		protected Object getValue(String choice) throws IllegalArgumentException {
 			Optional<PlayerEntity> ret = MinecraftServer.getServer().getPlayerManager().getPlayers().stream().findFirst().map(Function.identity());
+
 			if (!ret.isPresent()) {
 				throw new IllegalArgumentException("Input value " + choice + " was not a player");
 			}
+
 			return ret.get();
 		}
 
@@ -1270,11 +1310,14 @@ public final class GenericArguments {
 			String yStr;
 			String zStr;
 			xStr = args.next();
+
 			if (xStr.contains(",")) {
 				String[] split = xStr.split(",");
+
 				if (split.length != 3) {
 					throw args.createError(new LiteralText(String.format("Comma-separated location must have 3 elements, not %s", split.length)));
 				}
+
 				xStr = split[0];
 				yStr = split[1];
 				zStr = split[2];
@@ -1284,16 +1327,17 @@ public final class GenericArguments {
 				yStr = args.next();
 				zStr = args.next();
 			}
+
 			double x = this.parseRelativeDouble(args, xStr, source.getPos().x);
 			double y = this.parseRelativeDouble(args, yStr, source.getPos().y);
 			double z = this.parseRelativeDouble(args, zStr, source.getPos().z);
-
 			return new Vec3d(x, y, z);
 		}
 
 		@Override
 		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			Optional<String> arg = args.nextIfPresent();
+
 			// Traverse through the possible arguments. We can't really complete arbitrary integers
 			if (arg.isPresent()) {
 				if (arg.get().startsWith("#")) {
@@ -1303,26 +1347,33 @@ public final class GenericArguments {
 					return ImmutableList.of(arg.get());
 				} else {
 					arg = args.nextIfPresent();
+
 					if (args.hasNext()) {
 						return ImmutableList.of(args.nextIfPresent().get());
 					}
+
 					return ImmutableList.of(arg.get());
 				}
 			}
+
 			return ImmutableList.of();
 		}
 
 		private double parseRelativeDouble(CommandArgs args, String arg, @Nullable Double relativeTo) throws ArgumentParseException {
 			boolean relative = arg.startsWith("~");
+
 			if (relative) {
 				if (relativeTo == null) {
 					throw args.createError(new LiteralText("Relative position specified but source does not have a position"));
 				}
+
 				arg = arg.substring(1);
+
 				if (arg.isEmpty()) {
 					return relativeTo;
 				}
 			}
+
 			try {
 				double ret = Double.parseDouble(arg);
 				return relative ? ret + relativeTo : ret;
@@ -1358,6 +1409,7 @@ public final class GenericArguments {
 		@Override
 		public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 			this.element.parse(source, args, context);
+
 			if (context.getAll(this.element.getUntranslatedKey()).size() > 1) {
 				Text key = this.element.getKey();
 				throw args.createError(new LiteralText(String.format("Argument %s may have only one value!", key != null ? key : "unknown")));
@@ -1439,21 +1491,24 @@ public final class GenericArguments {
 		}
 
 		private boolean checkPermission(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
-			// TODO
-			boolean hasPermission = /*source.hasPermission(this.permission)*/ true;
+			boolean hasPermission = source.hasPermission(this.permission);
+
 			if (!hasPermission && !this.isOptional) {
 				Text key = this.getKey();
 				throw args.createError(new LiteralText(String.format("You do not have permission to use the %s argument", key != null ? key : "unknown")));
 			}
+
 			return hasPermission;
 		}
 
 		@Override
 		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			boolean flag = /*src.hasPermission(this.permission)*/ true;
+
 			if (!flag) {
 				return ImmutableList.of();
 			}
+
 			return this.element.complete(src, args, context);
 		}
 
@@ -1469,6 +1524,7 @@ public final class GenericArguments {
 			if (this.isOptional && !src.hasPermission(this.permission)) {
 				return new LiteralText("");
 			}
+
 			return this.element.getUsage(src);
 		}
 	}
@@ -1560,26 +1616,31 @@ public final class GenericArguments {
 				if (this.returnSource) {
 					return this.tryReturnSource(source, args, true);
 				}
+
 				if (this.returnTarget) {
 					return this.tryReturnTarget(source, args);
 				}
 			}
 
 			CommandArgs.Snapshot state = args.getSnapshot();
+
 			try {
 				Iterable<Entity> entities = (Iterable<Entity>) super.parseValue(source, args);
+
 				for (Entity entity : entities) {
 					if (!this.checkEntity(entity)) {
 						Text name = new LiteralText(this.clazz == null ? "null" : this.clazz.getSimpleName());
 						throw args.createError(new LiteralText("The entity is not of the required type! (").append(name).append(")"));
 					}
 				}
+
 				return entities;
 			} catch (ArgumentParseException ex) {
 				if (this.returnSource) {
 					args.applySnapshot(state);
 					return this.tryReturnSource(source, args, true);
 				}
+
 				throw ex;
 			}
 		}
@@ -1590,6 +1651,7 @@ public final class GenericArguments {
 					.filter(this::checkEntity)
 					.map(entity -> entity.getUuid().toString()).collect(Collectors.toSet());
 			Collection<PlayerEntity> players = Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers());
+
 			if (!players.isEmpty() && this.checkEntity(players.iterator().next())) {
 				final Set<String> setToReturn = Sets.newHashSet(worldEntities); // to ensure mutability
 				players.forEach(x -> setToReturn.add(x.getTranslationKey()));
@@ -1602,24 +1664,31 @@ public final class GenericArguments {
 		@Override
 		protected Object getValue(String choice) throws IllegalArgumentException {
 			UUID uuid;
+
 			try {
 				uuid = UUID.fromString(choice);
 			} catch (IllegalArgumentException ignored) {
 				// Player could be a name
 				return Optional.ofNullable(MinecraftServer.getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
 			}
+
 			boolean found = false;
 			Optional<Entity> ret = Optional.ofNullable(MinecraftServer.getServer().getEntity(uuid));
+
 			if (ret.isPresent()) {
 				Entity entity = ret.get();
+
 				if (this.checkEntity(entity)) {
 					return entity;
 				}
+
 				found = true;
 			}
+
 			if (found) {
 				throw new IllegalArgumentException("Input value " + choice + " was not an entity of the required type!");
 			}
+
 			throw new IllegalArgumentException("Input value " + choice + " was not an entity");
 		}
 
@@ -1627,6 +1696,7 @@ public final class GenericArguments {
 			if (source instanceof Entity && (!check || this.checkEntity((Entity) source))) {
 				return (Entity) source;
 			}
+
 			throw args.createError(new LiteralText("No entities matched and source was not an entity!"));
 		}
 
@@ -1634,10 +1704,7 @@ public final class GenericArguments {
 		private Entity tryReturnTarget(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			Entity entity = this.tryReturnSource(source, args, false);
 			throw args.createError(new LiteralText("No entities matched and source was not looking at a valid entity!"));
-//            return entity.getWorld().getIntersectingEntities(entity, 10).stream()
-//                    .filter(e -> !e.getEntity().equals(entity)).map(EntityUniverse.EntityHit::getEntity)
-//                    .filter(this::checkEntity).findFirst()
-//                    .orElseThrow(() -> args.createError(new LiteralText("No entities matched and source was not looking at a valid entity!")));
+			// return entity.getWorld().getIntersectingEntities(entity, 10).stream().filter(e -> !e.getEntity().equals(entity)).map(EntityUniverse.EntityHit::getEntity).filter(this::checkEntity).findFirst().orElseThrow(() -> args.createError(new LiteralText("No entities matched and source was not looking at a valid entity!")));
 		}
 
 		private boolean checkEntity(Entity entity) {
@@ -1667,7 +1734,6 @@ public final class GenericArguments {
 	}
 
 	private static class UrlElement extends KeyElement {
-
 		protected UrlElement(Text key) {
 			super(key);
 		}
@@ -1677,16 +1743,19 @@ public final class GenericArguments {
 		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String str = args.next();
 			URL url;
+
 			try {
 				url = new URL(str);
 			} catch (MalformedURLException ex) {
 				throw new ArgumentParseException(new LiteralText("Invalid URL!"), ex, str, 0);
 			}
+
 			try {
 				url.toURI();
 			} catch (URISyntaxException ex) {
 				throw new ArgumentParseException(new LiteralText("Invalid URL!"), ex, str, 0);
 			}
+
 			return url;
 		}
 	}
@@ -1716,6 +1785,7 @@ public final class GenericArguments {
 		@Override
 		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String s = args.next();
+
 			try {
 				return InetAddress.getByName(s);
 			} catch (UnknownHostException e) {
@@ -1739,7 +1809,6 @@ public final class GenericArguments {
 	}
 
 	private static class BigDecimalElement extends KeyElement {
-
 		protected BigDecimalElement(Text key) {
 			super(key);
 		}
@@ -1748,6 +1817,7 @@ public final class GenericArguments {
 		@Override
 		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String next = args.next();
+
 			try {
 				return new BigDecimal(next);
 			} catch (NumberFormatException ex) {
@@ -1769,7 +1839,6 @@ public final class GenericArguments {
 	}
 
 	private static class BigIntegerElement extends KeyElement {
-
 		protected BigIntegerElement(Text key) {
 			super(key);
 		}
@@ -1778,6 +1847,7 @@ public final class GenericArguments {
 		@Override
 		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String integerString = args.next();
+
 			try {
 				return new BigInteger(integerString);
 			} catch (NumberFormatException ex) {
@@ -1799,7 +1869,6 @@ public final class GenericArguments {
 	}
 
 	private static class UuidElement extends KeyElement {
-
 		protected UuidElement(Text key) {
 			super(key);
 		}
@@ -1813,7 +1882,6 @@ public final class GenericArguments {
 				throw args.createError(new LiteralText("Invalid UUID!"));
 			}
 		}
-
 	}
 
 	/**
@@ -1883,7 +1951,6 @@ public final class GenericArguments {
 	}
 
 	private static class DateTimeElement extends CommandElement {
-
 		private final boolean returnNow;
 
 		protected DateTimeElement(Text key, boolean returnNow) {
@@ -1897,8 +1964,10 @@ public final class GenericArguments {
 			if (!args.hasNext() && this.returnNow) {
 				return LocalDateTime.now();
 			}
+
 			CommandArgs.Snapshot state = args.getSnapshot();
 			String date = args.next();
+
 			try {
 				return LocalDateTime.parse(date);
 			} catch (DateTimeParseException ex) {
@@ -1912,6 +1981,7 @@ public final class GenericArguments {
 							args.applySnapshot(state);
 							return LocalDateTime.now();
 						}
+
 						throw args.createError(new LiteralText("Invalid date-time!"));
 					}
 				}
@@ -1921,6 +1991,7 @@ public final class GenericArguments {
 		@Override
 		public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 			String date = LocalDateTime.now().withNano(0).toString();
+
 			if (date.startsWith(args.nextIfPresent().orElse(""))) {
 				return ImmutableList.of(date);
 			} else {
@@ -1954,7 +2025,6 @@ public final class GenericArguments {
 	}
 
 	private static class DurationElement extends KeyElement {
-
 		protected DurationElement(Text key) {
 			super(key);
 		}
@@ -1963,6 +2033,7 @@ public final class GenericArguments {
 		@Override
 		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			String s = args.next().toUpperCase();
+
 			if (!s.contains("T")) {
 				if (s.contains("D")) {
 					if (s.contains("H") || s.contains("M") || s.contains("S")) {
@@ -1976,9 +2047,11 @@ public final class GenericArguments {
 					}
 				}
 			}
+
 			if (!s.startsWith("P")) {
 				s = "P" + s;
 			}
+
 			try {
 				return Duration.parse(s);
 			} catch (DateTimeParseException ex) {
@@ -2059,7 +2132,6 @@ public final class GenericArguments {
 	}
 
 	private static class WithSuggestionsElement extends CommandElement {
-
 		private final CommandElement wrapped;
 		private final Function<PermissibleCommandSource, Iterable<String>> suggestions;
 		private final boolean requireBegin;
@@ -2086,7 +2158,6 @@ public final class GenericArguments {
 				return ImmutableList.copyOf(this.suggestions.apply(src));
 			}
 		}
-
 	}
 
 	private static class FilteredSuggestionsElement extends CommandElement {

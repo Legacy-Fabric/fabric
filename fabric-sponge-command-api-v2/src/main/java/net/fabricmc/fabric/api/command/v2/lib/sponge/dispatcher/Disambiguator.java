@@ -22,10 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher;
 
 import java.util.List;
 import java.util.Optional;
+
 import javax.annotation.Nullable;
 
 import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
@@ -33,15 +35,14 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
 
 @FunctionalInterface
 public interface Disambiguator {
-
-    /**
-     * Disambiguate an alias in cases where there are multiple command mappings
-     * registered for a given alias.
-     *
-     * @param source The PermissibleCommandSource executing the command, if any
-     * @param aliasUsed The alias input by the user
-     * @param availableOptions The commands registered to this alias
-     * @return The specific command to use
-     */
-    Optional<CommandMapping> disambiguate(@Nullable PermissibleCommandSource source, String aliasUsed, List<CommandMapping> availableOptions);
+	/**
+	 * Disambiguate an alias in cases where there are multiple command mappings
+	 * registered for a given alias.
+	 *
+	 * @param source           The PermissibleCommandSource executing the command, if any
+	 * @param aliasUsed        The alias input by the user
+	 * @param availableOptions The commands registered to this alias
+	 * @return The specific command to use
+	 */
+	Optional<CommandMapping> disambiguate(@Nullable PermissibleCommandSource source, String aliasUsed, List<CommandMapping> availableOptions);
 }

@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
 import java.util.ArrayList;
@@ -73,7 +74,6 @@ public final class CommandArgs {
 	 *     <li>The next element returned by {@link #next()} is the last</li>
 	 *     <li>{@link #hasNext()} is false</li>
 	 * </ul>
-	 * <p>
 	 * Else returns false.
 	 *
 	 * @return True if a completion can occur
@@ -92,6 +92,7 @@ public final class CommandArgs {
 		if (!this.hasNext()) {
 			throw this.createError(new LiteralText("Not enough arguments"));
 		}
+
 		return this.args.get(this.index + 1).getValue();
 	}
 
@@ -105,6 +106,7 @@ public final class CommandArgs {
 		if (!this.hasNext()) {
 			throw this.createError(new LiteralText("Not enough arguments!"));
 		}
+
 		return this.args.get(++this.index).getValue();
 	}
 
@@ -235,13 +237,14 @@ public final class CommandArgs {
 				this.index -= (endIdx - startIdx) + 1;
 			}
 		}
+
 		for (int i = startIdx; i <= endIdx; ++i) {
 			this.args.remove(startIdx);
 		}
 	}
 
 	/**
-	 * Returns the number of arguments
+	 * Returns the number of arguments.
 	 *
 	 * @return the number of arguments
 	 */
@@ -302,6 +305,7 @@ public final class CommandArgs {
 	 */
 	public void applySnapshot(Snapshot snapshot, boolean resetArgs) {
 		this.index = snapshot.index;
+
 		if (resetArgs) {
 			this.args.clear();
 			this.args.addAll(snapshot.args);
@@ -326,12 +330,14 @@ public final class CommandArgs {
 			if (this == o) {
 				return true;
 			}
+
 			if (o == null || this.getClass() != o.getClass()) {
 				return false;
 			}
+
 			Snapshot snapshot = (Snapshot) o;
-			return this.index == snapshot.index &&
-					Objects.equals(this.args, snapshot.args);
+			return this.index == snapshot.index
+					&& Objects.equals(this.args, snapshot.args);
 		}
 
 		@Override

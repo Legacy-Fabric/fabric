@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args.parsing;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ class SpaceSplitInputTokenizer implements InputTokenizer {
 		List<SingleArg> ret = new ArrayList<>();
 		int lastIndex = 0;
 		int spaceIndex;
+
 		while ((spaceIndex = arguments.indexOf(" ")) != -1) {
 			if (spaceIndex != 0) {
 				ret.add(new SingleArg(arguments.substring(0, spaceIndex), lastIndex, lastIndex + spaceIndex));
@@ -53,6 +55,7 @@ class SpaceSplitInputTokenizer implements InputTokenizer {
 			} else {
 				arguments = arguments.substring(1);
 			}
+
 			lastIndex += spaceIndex + 1;
 		}
 

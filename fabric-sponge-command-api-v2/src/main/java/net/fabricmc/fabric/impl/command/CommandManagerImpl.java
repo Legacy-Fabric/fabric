@@ -39,7 +39,6 @@ import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.command.v2.Location;
 import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
-import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandManager;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
@@ -100,6 +99,7 @@ public class CommandManagerImpl implements CommandManager {
 	@Override
 	public CommandResult process(PermissibleCommandSource source, String command) {
 		final String[] argSplit = command.split(" ", 2);
+
 		try {
 			try {
 				this.dispatcher.process(source, command);
@@ -120,6 +120,7 @@ public class CommandManagerImpl implements CommandManager {
 
 				if (e.shouldIncludeUsage()) {
 					Optional<CommandMapping> mapping = this.dispatcher.get(argSplit[0], source);
+
 					if (mapping.isPresent()) {
 						Text usage;
 
@@ -136,6 +137,7 @@ public class CommandManagerImpl implements CommandManager {
 		} catch (Throwable t) {
 			LOGGER.error("An unexpected error happened executing a command");
 			t.printStackTrace();
+
 			if (t instanceof Error) {
 				throw (Error) t;
 			}
@@ -144,6 +146,7 @@ public class CommandManagerImpl implements CommandManager {
 			message.setStyle(message.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Stacktrace: \n" + Arrays.stream(t.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("\n"))))));
 			source.sendMessage(message);
 		}
+
 		return CommandResult.empty();
 	}
 

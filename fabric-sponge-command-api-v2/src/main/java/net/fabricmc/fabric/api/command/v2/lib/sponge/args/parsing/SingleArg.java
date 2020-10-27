@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args.parsing;
 
 import com.google.common.base.MoreObjects;
@@ -81,9 +82,11 @@ public class SingleArg {
 		if (this == o) {
 			return true;
 		}
+
 		if (!(o instanceof SingleArg)) {
 			return false;
 		}
+
 		SingleArg singleArg = (SingleArg) o;
 		return this.startIdx == singleArg.startIdx
 				&& this.endIdx == singleArg.endIdx

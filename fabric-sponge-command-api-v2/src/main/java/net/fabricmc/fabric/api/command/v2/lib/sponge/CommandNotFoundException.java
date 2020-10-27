@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge;
 
 import com.google.common.base.Preconditions;
@@ -34,37 +35,36 @@ import net.minecraft.text.Text;
  * not exist.
  */
 public class CommandNotFoundException extends CommandException {
+	private static final long serialVersionUID = -7714518367616848051L;
 
-    private static final long serialVersionUID = -7714518367616848051L;
+	private final String command;
 
-    private final String command;
+	/**
+	 * Create an exception with the default message.
+	 *
+	 * @param command The command that was queried for
+	 */
+	public CommandNotFoundException(String command) {
+		this(new LiteralText("No such command"), command);
+	}
 
-    /**
-     * Create an exception with the default message.
-     *
-     * @param command The command that was queried for
-     */
-    public CommandNotFoundException(String command) {
-        this(new LiteralText("No such command"), command);
-    }
+	/**
+	 * Create an exception with a custom message.
+	 *
+	 * @param message The message
+	 * @param command The command that was queried for
+	 */
+	public CommandNotFoundException(Text message, String command) {
+		super(message);
+		this.command = Preconditions.checkNotNull(command, "command");
+	}
 
-    /**
-     * Create an exception with a custom message.
-     *
-     * @param message The message
-     * @param command The command that was queried for
-     */
-    public CommandNotFoundException(Text message, String command) {
-        super(message);
-        this.command = Preconditions.checkNotNull(command, "command");
-    }
-
-    /**
-     * Returns the command that was queried for.
-     *
-     * @return The command
-     */
-    public String getCommand() {
-        return this.command;
-    }
+	/**
+	 * Returns the command that was queried for.
+	 *
+	 * @return The command
+	 */
+	public String getCommand() {
+		return this.command;
+	}
 }

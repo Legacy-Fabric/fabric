@@ -22,84 +22,84 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * An immutable command mapping instance that returns the same objects that
  * this instance is constructed with.
  */
 public final class ImmutableCommandMapping implements CommandMapping {
-    private final String primary;
-    private final Set<String> aliases;
-    private final CommandCallable callable;
+	private final String primary;
+	private final Set<String> aliases;
+	private final CommandCallable callable;
 
-    /**
-     * Create a new instance.
-     *
-     * @param callable The command callable
-     * @param primary The primary alias
-     * @param alias A list of all aliases
-     * @throws IllegalArgumentException Thrown if aliases are duplicated
-     */
-    public ImmutableCommandMapping(CommandCallable callable, String primary, String... alias) {
-        this(callable, primary, Arrays.asList(checkNotNull(alias, "alias")));
-    }
+	/**
+	 * Create a new instance.
+	 *
+	 * @param callable The command callable
+	 * @param primary  The primary alias
+	 * @param alias    A list of all aliases
+	 * @throws IllegalArgumentException Thrown if aliases are duplicated
+	 */
+	public ImmutableCommandMapping(CommandCallable callable, String primary, String... alias) {
+		this(callable, primary, Arrays.asList(checkNotNull(alias, "alias")));
+	}
 
-    /**
-     * Create a new instance.
-     *
-     * @param callable The command callable
-     * @param primary The primary alias
-     * @param aliases A collection of all aliases
-     * @throws IllegalArgumentException Thrown if aliases are duplicated
-     */
-    public ImmutableCommandMapping(CommandCallable callable, String primary, Collection<String> aliases) {
-        checkNotNull(primary, "primary");
-        checkNotNull(aliases, "aliases");
-        this.primary = primary;
-        this.aliases = new HashSet<>(aliases);
-        this.aliases.add(primary);
-        this.callable = checkNotNull(callable, "callable");
-    }
+	/**
+	 * Create a new instance.
+	 *
+	 * @param callable The command callable
+	 * @param primary  The primary alias
+	 * @param aliases  A collection of all aliases
+	 * @throws IllegalArgumentException Thrown if aliases are duplicated
+	 */
+	public ImmutableCommandMapping(CommandCallable callable, String primary, Collection<String> aliases) {
+		checkNotNull(primary, "primary");
+		checkNotNull(aliases, "aliases");
+		this.primary = primary;
+		this.aliases = new HashSet<>(aliases);
+		this.aliases.add(primary);
+		this.callable = checkNotNull(callable, "callable");
+	}
 
-    @Override
-    public String getPrimaryAlias() {
-        return this.primary;
-    }
+	@Override
+	public String getPrimaryAlias() {
+		return this.primary;
+	}
 
-    @Override
-    public Set<String> getAllAliases() {
-        return ImmutableSet.copyOf(this.aliases);
-    }
+	@Override
+	public Set<String> getAllAliases() {
+		return ImmutableSet.copyOf(this.aliases);
+	}
 
-    @Override
-    public CommandCallable getCallable() {
-        return this.callable;
-    }
+	@Override
+	public CommandCallable getCallable() {
+		return this.callable;
+	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
+
 		if (o == null || this.getClass() != o.getClass()) {
 			return false;
 		}
+
 		ImmutableCommandMapping that = (ImmutableCommandMapping) o;
-		return this.primary.equals(that.primary) &&
-				this.aliases.equals(that.aliases) &&
-				this.callable.equals(that.callable);
+		return this.primary.equals(that.primary) && this.aliases.equals(that.aliases) && this.callable.equals(that.callable);
 	}
 
 	@Override
@@ -108,11 +108,11 @@ public final class ImmutableCommandMapping implements CommandMapping {
 	}
 
 	@Override
-    public String toString() {
-        return "ImmutableCommandMapping{"
-                + "primary='" + this.primary + '\''
-                + ", aliases=" + this.aliases
-                + ", spec=" + this.callable
-                + '}';
-    }
+	public String toString() {
+		return "ImmutableCommandMapping{"
+				+ "primary='" + this.primary + '\''
+				+ ", aliases=" + this.aliases
+				+ ", spec=" + this.callable
+				+ '}';
+	}
 }

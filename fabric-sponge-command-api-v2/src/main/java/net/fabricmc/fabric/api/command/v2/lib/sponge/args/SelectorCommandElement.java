@@ -22,10 +22,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
 import java.util.List;
 import java.util.Optional;
+
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
@@ -37,34 +39,37 @@ import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.Selector;
 
 public abstract class SelectorCommandElement extends PatternMatchingCommandElement {
-    protected SelectorCommandElement(@Nullable Text key) {
-        super(key);
-    }
+	protected SelectorCommandElement(@Nullable Text key) {
+		super(key);
+	}
 
-    @Nullable
-    @Override
-    protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
-        String arg = args.peek();
-        if (arg.startsWith("@")) { // Possibly a selector
-            try {
-                return Selector.parse(args.next()).resolve(source);
-            } catch (IllegalArgumentException ex) {
-                throw args.createError(new LiteralText(ex.getMessage()));
-            }
-        }
-        return super.parseValue(source, args);
-    }
+	@Nullable
+	@Override
+	protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
+		String arg = args.peek();
 
-    @Override
-    public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
-        CommandArgs.Snapshot state = args.getSnapshot();
-        final Optional<String> nextArg = args.nextIfPresent();
-        args.applySnapshot(state);
-        List<String> choices = nextArg.isPresent() ? Selector.complete(nextArg.get()) : ImmutableList.of();
+		if (arg.startsWith("@")) { // Possibly a selector
+			try {
+				return Selector.parse(args.next()).resolve(source);
+			} catch (IllegalArgumentException ex) {
+				throw args.createError(new LiteralText(ex.getMessage()));
+			}
+		}
 
-        if (choices.isEmpty()) {
-            choices = super.complete(src, args, context);
-        }
-        return choices;
-    }
+		return super.parseValue(source, args);
+	}
+
+	@Override
+	public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
+		CommandArgs.Snapshot state = args.getSnapshot();
+		final Optional<String> nextArg = args.nextIfPresent();
+		args.applySnapshot(state);
+		List<String> choices = nextArg.isPresent() ? Selector.complete(nextArg.get()) : ImmutableList.of();
+
+		if (choices.isEmpty()) {
+			choices = super.complete(src, args, context);
+		}
+
+		return choices;
+	}
 }

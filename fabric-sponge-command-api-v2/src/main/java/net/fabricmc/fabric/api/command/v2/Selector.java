@@ -35,8 +35,7 @@ public enum Selector {
 	ALL_PLAYERS('a'),
 	NEAREST_PLAYER('p'),
 	RANDOM_PLAYER('r'),
-	EXECUTING_ENTITY('e'),
-	;
+	EXECUTING_ENTITY('s');
 
 	private final char key;
 	private static final Map<String, Selector> MAP;
@@ -60,6 +59,7 @@ public enum Selector {
 		} else if (this == RANDOM_PLAYER) {
 			return Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers().stream().findAny().orElseThrow(NullPointerException::new));
 		}
+
 		return Sets.newHashSet(sender.getEntity());
 	}
 
@@ -67,6 +67,7 @@ public enum Selector {
 		if (s.startsWith("@") && s.length() == 2) {
 			return Arrays.stream(values()).map(Selector::getKey).map(String::valueOf).distinct().collect(Collectors.toList());
 		}
+
 		return ImmutableList.of();
 	}
 
@@ -76,9 +77,11 @@ public enum Selector {
 
 	static {
 		ImmutableMap.Builder<String, Selector> builder = ImmutableMap.builder();
+
 		for (Selector s : values()) {
 			builder.put("@" + s.getKey(), s);
 		}
+
 		MAP = builder.build();
 	}
 }

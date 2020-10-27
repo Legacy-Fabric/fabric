@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge;
 
 import net.minecraft.text.Text;
@@ -31,62 +32,61 @@ import net.minecraft.text.Text;
  * the command failed.
  */
 public class CommandException extends TextMessageException {
+	private static final long serialVersionUID = 4626722485860074825L;
 
-    private static final long serialVersionUID = 4626722485860074825L;
+	private final boolean includeUsage;
 
-    private final boolean includeUsage;
+	/**
+	 * Constructs a new {@link CommandException} with the given message.
+	 *
+	 * @param message The detail message
+	 */
+	public CommandException(Text message) {
+		this(message, false);
+	}
 
-    /**
-     * Constructs a new {@link CommandException} with the given message.
-     *
-     * @param message The detail message
-     */
-    public CommandException(Text message) {
-        this(message, false);
-    }
+	/**
+	 * Constructs a new {@link CommandException} with the given message and
+	 * the given cause.
+	 *
+	 * @param message The detail message
+	 * @param cause   The cause
+	 */
+	public CommandException(Text message, Throwable cause) {
+		this(message, cause, false);
+	}
 
-    /**
-     * Constructs a new {@link CommandException} with the given message and
-     * the given cause.
-     *
-     * @param message The detail message
-     * @param cause The cause
-     */
-    public CommandException(Text message, Throwable cause) {
-        this(message, cause, false);
-    }
+	/**
+	 * Constructs a new {@link CommandException} with the given message.
+	 *
+	 * @param message      The detail message
+	 * @param includeUsage Whether to include usage in the exception
+	 */
+	public CommandException(Text message, boolean includeUsage) {
+		super(message);
+		this.includeUsage = includeUsage;
+	}
 
-    /**
-     * Constructs a new {@link CommandException} with the given message.
-     *
-     * @param message The detail message
-     * @param includeUsage Whether to include usage in the exception
-     */
-    public CommandException(Text message, boolean includeUsage) {
-        super(message);
-        this.includeUsage = includeUsage;
-    }
+	/**
+	 * Constructs a new {@link CommandException} with the given message and
+	 * the given cause.
+	 *
+	 * @param message      The detail message
+	 * @param cause        The cause
+	 * @param includeUsage Whether to include the usage in the exception
+	 */
+	public CommandException(Text message, Throwable cause, boolean includeUsage) {
+		super(message, cause);
+		this.includeUsage = includeUsage;
+	}
 
-    /**
-     * Constructs a new {@link CommandException} with the given message and
-     * the given cause.
-     *
-     * @param message The detail message
-     * @param cause The cause
-     * @param includeUsage Whether to include the usage in the exception
-     */
-    public CommandException(Text message, Throwable cause, boolean includeUsage) {
-        super(message, cause);
-        this.includeUsage = includeUsage;
-    }
-
-    /**
-     * Gets whether the exception should include usage in
-     * the presentation of the exception/stack-trace.
-     *
-     * @return Whether to include usage in the exception
-     */
-    public boolean shouldIncludeUsage() {
-        return this.includeUsage;
-    }
+	/**
+	 * Gets whether the exception should include usage in
+	 * the presentation of the exception/stack-trace.
+	 *
+	 * @return Whether to include usage in the exception
+	 */
+	public boolean shouldIncludeUsage() {
+		return this.includeUsage;
+	}
 }

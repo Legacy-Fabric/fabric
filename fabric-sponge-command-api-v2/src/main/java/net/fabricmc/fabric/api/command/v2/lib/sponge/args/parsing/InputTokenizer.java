@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args.parsing;
 
 import java.util.List;
@@ -29,7 +30,6 @@ import java.util.List;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 
 public interface InputTokenizer {
-
 	/**
 	 * Use an input string tokenizer that supports quoted arguments and
 	 * character escapes.
@@ -78,5 +78,4 @@ public interface InputTokenizer {
 	 * @throws ArgumentParseException if an invalid input is provided
 	 */
 	List<SingleArg> tokenize(String arguments, boolean lenient) throws ArgumentParseException;
-
 }

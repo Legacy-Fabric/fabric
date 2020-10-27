@@ -22,9 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
 import java.util.List;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.text.LiteralText;
@@ -83,6 +85,7 @@ public abstract class CommandElement {
 	public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 		Object val = this.parseValue(source, args);
 		String key = this.getUntranslatedKey();
+
 		if (key != null && val != null) {
 			if (val instanceof Iterable<?>) {
 				for (Object ent : ((Iterable<?>) val)) {

@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
 
 import javax.annotation.Nullable;
@@ -48,5 +49,4 @@ class ArgUtils {
 
 		return key.asString();
 	}
-
 }

@@ -21,8 +21,7 @@ package net.fabricmc.fabric.api.command.v2;
  */
 public enum StringType {
 	SINGLE_WORD(false),
-	GREEDY_PHRASE(true),
-	;
+	GREEDY_PHRASE(true);
 
 	private final boolean all;
 

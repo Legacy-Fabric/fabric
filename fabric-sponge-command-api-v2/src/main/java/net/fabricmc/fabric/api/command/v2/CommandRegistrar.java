@@ -21,7 +21,7 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
 /**
- * An entrypoint and event for registering commands to the {@link CommandManager}
+ * An entrypoint and event for registering commands to the {@link CommandManager}.
  */
 @FunctionalInterface
 public interface CommandRegistrar {
@@ -32,8 +32,9 @@ public interface CommandRegistrar {
 	});
 
 	/**
-	 * Register your commands here
-	 * @param manager The command manager
+	 * Register your commands here.
+	 *
+	 * @param manager   The command manager
 	 * @param dedicated Whether the mod is running on a dedicated server
 	 */
 	void register(CommandManager manager, boolean dedicated);

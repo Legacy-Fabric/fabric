@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge;
 
 import net.minecraft.text.LiteralText;
@@ -29,35 +30,34 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class CommandMessageFormatting {
+	private CommandMessageFormatting() {
+	}
 
-    private CommandMessageFormatting() {
-    }
+	public static final Text PIPE_TEXT = new LiteralText("|");
+	public static final Text SPACE_TEXT = new LiteralText(" ");
+	public static final Text STAR_TEXT = new LiteralText("*");
+	public static final Text LT_TEXT = new LiteralText("<");
+	public static final Text GT_TEXT = new LiteralText(">");
+	public static final Text ELLIPSIS_TEXT = new LiteralText("…");
 
-    public static final Text PIPE_TEXT = new LiteralText("|");
-    public static final Text SPACE_TEXT = new LiteralText(" ");
-    public static final Text STAR_TEXT = new LiteralText("*");
-    public static final Text LT_TEXT = new LiteralText("<");
-    public static final Text GT_TEXT = new LiteralText(">");
-    public static final Text ELLIPSIS_TEXT = new LiteralText("…");
+	/**
+	 * Format text to be output as an error directly to a sender. Not necessary
+	 * when creating an exception to be thrown
+	 *
+	 * @param error The error message
+	 * @return The formatted error message.
+	 */
+	public static Text error(Text error) {
+		return error.setStyle(error.getStyle().setColor(Formatting.RED));
+	}
 
-    /**
-     * Format text to be output as an error directly to a sender. Not necessary
-     * when creating an exception to be thrown
-     *
-     * @param error The error message
-     * @return The formatted error message.
-     */
-    public static Text error(Text error) {
-        return error.setStyle(error.getStyle().setColor(Formatting.RED));
-    }
-
-    /**
-     * Format text to be output as a debug message directly to a sender.
-     *
-     * @param debug The debug message
-     * @return The formatted debug message.
-     */
-    public static Text debug(Text debug) {
+	/**
+	 * Format text to be output as a debug message directly to a sender.
+	 *
+	 * @param debug The debug message
+	 * @return The formatted debug message.
+	 */
+	public static Text debug(Text debug) {
 		return debug.setStyle(debug.getStyle().setColor(Formatting.GRAY));
-    }
+	}
 }

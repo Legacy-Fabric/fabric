@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.spec;
 
 import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
@@ -35,14 +36,14 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.args.CommandContext;
  */
 @FunctionalInterface
 public interface CommandExecutor {
-    /**
-     * Callback for the execution of a command.
-     *
-     * @param src The commander who is executing this command
-     * @param args The parsed command arguments for this command
-     * @return the result of executing this command
-     * @throws CommandException If a user-facing error occurs while
-     *     executing this command
-     */
-    CommandResult execute(PermissibleCommandSource src, CommandContext args) throws CommandException;
+	/**
+	 * Callback for the execution of a command.
+	 *
+	 * @param src  The commander who is executing this command
+	 * @param args The parsed command arguments for this command
+	 * @return the result of executing this command
+	 * @throws CommandException If a user-facing error occurs while
+	 *                          executing this command
+	 */
+	CommandResult execute(PermissibleCommandSource src, CommandContext args) throws CommandException;
 }

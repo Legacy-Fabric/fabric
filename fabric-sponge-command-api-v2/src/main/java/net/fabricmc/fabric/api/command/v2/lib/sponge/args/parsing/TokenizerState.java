@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args.parsing;
 
 import net.minecraft.text.LiteralText;
@@ -48,6 +49,7 @@ class TokenizerState {
 		if (!this.hasMore()) {
 			throw this.createException(new LiteralText("Buffer overrun while parsing args"));
 		}
+
 		return this.buffer.codePointAt(this.index + 1);
 	}
 
@@ -55,6 +57,7 @@ class TokenizerState {
 		if (!this.hasMore()) {
 			throw this.createException(new LiteralText("Buffer overrun while parsing args"));
 		}
+
 		return this.buffer.codePointAt(++this.index);
 	}
 

@@ -35,7 +35,7 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
 class CommandWrapper extends AbstractCommand {
 	private final CommandMapping mapping;
 
-	public CommandWrapper(CommandMapping mapping) {
+	CommandWrapper(CommandMapping mapping) {
 		this.mapping = mapping;
 	}
 
@@ -75,6 +75,7 @@ class CommandWrapper extends AbstractCommand {
 		} catch (CommandException e) {
 			e.printStackTrace();
 		}
+
 		return Collections.emptyList();
 	}
 }

@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge;
 
 import java.util.Set;
@@ -33,32 +34,31 @@ import java.util.Set;
  * {@link Object#equals(Object)} but may choose to do so.</p>
  */
 public interface CommandMapping {
+	/**
+	 * Gets the primary alias.
+	 *
+	 * @return The primary alias
+	 */
+	String getPrimaryAlias();
 
-    /**
-     * Gets the primary alias.
-     *
-     * @return The primary alias
-     */
-    String getPrimaryAlias();
+	/**
+	 * Gets an immutable list of all aliases.
+	 *
+	 * <p>The returned list must contain at least one entry, of which one must
+	 * be the one returned by {@link #getPrimaryAlias()}.</p>
+	 *
+	 * <p>There may be several versions of the same alias with different
+	 * casing, although generally implementations should ignore the casing
+	 * of aliases.</p>
+	 *
+	 * @return A set of aliases
+	 */
+	Set<String> getAllAliases();
 
-    /**
-     * Gets an immutable list of all aliases.
-     *
-     * <p>The returned list must contain at least one entry, of which one must
-     * be the one returned by {@link #getPrimaryAlias()}.</p>
-     *
-     * <p>There may be several versions of the same alias with different
-     * casing, although generally implementations should ignore the casing
-     * of aliases.</p>
-     *
-     * @return A set of aliases
-     */
-    Set<String> getAllAliases();
-
-    /**
-     * Gets the callable.
-     *
-     * @return The callable
-     */
-    CommandCallable getCallable();
+	/**
+	 * Gets the callable.
+	 *
+	 * @return The callable
+	 */
+	CommandCallable getCallable();
 }

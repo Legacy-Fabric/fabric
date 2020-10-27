@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge;
 
 import net.minecraft.text.Text;
@@ -32,67 +33,66 @@ import net.minecraft.text.Text;
  * exception messages.
  */
 public class TextMessageException extends Exception {
+	private static final long serialVersionUID = -5281221645176698853L;
 
-    private static final long serialVersionUID = -5281221645176698853L;
+	private final Text message;
 
-    private final Text message;
+	/**
+	 * Constructs a new {@link TextMessageException}.
+	 */
+	public TextMessageException() {
+		this.message = null;
+	}
 
-    /**
-     * Constructs a new {@link TextMessageException}.
-     */
-    public TextMessageException() {
-        this.message = null;
-    }
+	/**
+	 * Constructs a new {@link TextMessageException} with the given message.
+	 *
+	 * @param message The detail message
+	 */
+	public TextMessageException(Text message) {
+		this.message = message;
+	}
 
-    /**
-     * Constructs a new {@link TextMessageException} with the given message.
-     *
-     * @param message The detail message
-     */
-    public TextMessageException(Text message) {
-        this.message = message;
-    }
+	/**
+	 * Constructs a new {@link TextMessageException} with the given message and
+	 * cause.
+	 *
+	 * @param message   The detail message
+	 * @param throwable The cause
+	 */
+	public TextMessageException(Text message, Throwable throwable) {
+		super(throwable);
+		this.message = message;
+	}
 
-    /**
-     * Constructs a new {@link TextMessageException} with the given message and
-     * cause.
-     *
-     * @param message The detail message
-     * @param throwable The cause
-     */
-    public TextMessageException(Text message, Throwable throwable) {
-        super(throwable);
-        this.message = message;
-    }
+	/**
+	 * Constructs a new {@link TextMessageException} with the given cause.
+	 *
+	 * @param throwable The cause
+	 */
+	public TextMessageException(Throwable throwable) {
+		super(throwable);
+		this.message = null;
+	}
 
-    /**
-     * Constructs a new {@link TextMessageException} with the given cause.
-     *
-     * @param throwable The cause
-     */
-    public TextMessageException(Throwable throwable) {
-        super(throwable);
-        this.message = null;
-    }
+	@Override
+	public String getMessage() {
+		Text message = this.getText();
+		return message == null ? null : message.asString();
+	}
 
-    @Override
-    public String getMessage() {
-        Text message = this.getText();
-        return message == null ? null : message.asString();
-    }
+	/**
+	 * Returns the text message for this exception, or null if nothing is
+	 * present.
+	 *
+	 * @return The text for this message
+	 */
+	public Text getText() {
+		return this.message;
+	}
 
-    /**
-     * Returns the text message for this exception, or null if nothing is
-     * present.
-     * 
-     * @return The text for this message
-     */
-    public Text getText() {
-        return this.message;
-    }
-
-    @Override
-    public String getLocalizedMessage() {
-        return this.getMessage();
-    }
+	@Override
+	public String getLocalizedMessage() {
+		return this.getMessage();
+	}
 }

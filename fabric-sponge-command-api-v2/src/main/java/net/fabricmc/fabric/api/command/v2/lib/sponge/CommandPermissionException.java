@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge;
 
 import net.minecraft.text.LiteralText;
@@ -32,31 +33,31 @@ import net.minecraft.text.Text;
  * a command.
  */
 public class CommandPermissionException extends CommandException {
-    private static final long serialVersionUID = -6057386975881181213L;
+	private static final long serialVersionUID = -6057386975881181213L;
 
-    /**
-     * Create an exception with the default message.
-     */
-    public CommandPermissionException() {
-        this(new LiteralText("You do not have permission to use this command!"));
-    }
+	/**
+	 * Create an exception with the default message.
+	 */
+	public CommandPermissionException() {
+		this(new LiteralText("You do not have permission to use this command!"));
+	}
 
-    /**
-     * Create a permissions exception with a custom message.
-     *
-     * @param message The message
-     */
-    public CommandPermissionException(Text message) {
-        super(message);
-    }
+	/**
+	 * Create a permissions exception with a custom message.
+	 *
+	 * @param message The message
+	 */
+	public CommandPermissionException(Text message) {
+		super(message);
+	}
 
-    /**
-     * Create a permissions exception with a custom message and cause.
-     *
-     * @param message the message
-     * @param cause the cause
-     */
-    public CommandPermissionException(Text message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Create a permissions exception with a custom message and cause.
+	 *
+	 * @param message the message
+	 * @param cause   the cause
+	 */
+	public CommandPermissionException(Text message, Throwable cause) {
+		super(message, cause);
+	}
 }

@@ -22,7 +22,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -40,14 +43,12 @@ import net.minecraft.text.Text;
 import net.fabricmc.fabric.api.command.v2.Location;
 import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Context that a command is executed in.
  * This object stores parsed arguments from other commands
  */
 public final class CommandContext {
-
 	/**
 	 * The argument key for a target block position that may be present
 	 * during tab completion, of type {@link Location Location&lt;World&gt;}.
@@ -109,9 +110,11 @@ public final class CommandContext {
 	@SuppressWarnings("unchecked")
 	public <T> Optional<T> getOne(String key) {
 		Collection<Object> values = this.parsedArgs.get(key);
+
 		if (values.size() != 1) {
 			return Optional.empty();
 		}
+
 		return Optional.ofNullable((T) values.iterator().next());
 	}
 
@@ -146,9 +149,9 @@ public final class CommandContext {
 	 *                                  by the caller
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T requireOne(String key)
-			throws NoSuchElementException, IllegalArgumentException, ClassCastException {
+	public <T> T requireOne(String key) throws NoSuchElementException, IllegalArgumentException, ClassCastException {
 		Collection<Object> values = this.parsedArgs.get(key);
+
 		if (values.size() == 1) {
 			return (T) values.iterator().next();
 		} else if (values.isEmpty()) {
