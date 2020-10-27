@@ -2,8 +2,8 @@ package net.fabricmc.fabric.mixin.command;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntityMixin {

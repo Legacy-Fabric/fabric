@@ -71,7 +71,7 @@ public enum TriState {
 	TriState(boolean val) {
 		this.val = val;
 	}
-	
+
 	public static TriState of(boolean b) {
 		return b ? TRUE : FALSE;
 	}

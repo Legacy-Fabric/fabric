@@ -121,7 +121,11 @@ allprojects {
 		}
 
 		license {
-			header rootProject.file('HEADER')
+			header = file('HEADER')
+			matching(includes: ['**/lib/sponge/**']) {
+				header = file('HEADER_SPONGE')
+				newLine = false
+			}
 			include '**/*.java'
 		}
 	}
