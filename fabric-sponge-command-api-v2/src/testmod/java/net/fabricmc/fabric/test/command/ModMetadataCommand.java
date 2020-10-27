@@ -44,7 +44,6 @@ public class ModMetadataCommand {
 		ModContainer container = ctx.<ModContainer>getOne("modid").orElseThrow(() -> new CommandException(new LiteralText("mod not found")));
 		LiteralText builder = new LiteralText("");
 		builder.append("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
-		builder.append("Type: ".concat(container.getMetadata().getType()).concat("\n"));
 		builder.append("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));
 		ContactInformation contact = container.getMetadata().getContact();
 
