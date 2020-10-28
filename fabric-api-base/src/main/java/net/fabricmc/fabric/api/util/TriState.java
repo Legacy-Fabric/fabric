@@ -16,6 +16,10 @@
 
 package net.fabricmc.fabric.api.util;
 
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 public enum TriState {
 	TRUE(true) {
 		@Override
@@ -49,7 +53,7 @@ public enum TriState {
 			return TRUE;
 		}
 	},
-	DEFAULT(false) {
+	DEFAULT(null) {
 		@Override
 		public TriState and(TriState other) {
 			return other;
@@ -60,16 +64,19 @@ public enum TriState {
 			return other;
 		}
 
+		/**
+		 * @return itself, as it can not be negated
+		 */
 		@Override
 		public TriState negate() {
 			return this;
 		}
 	};
 
-	private final boolean val;
+	private final Boolean value;
 
-	TriState(boolean val) {
-		this.val = val;
+	TriState(Boolean value) {
+		this.value = value;
 	}
 
 	public static TriState of(boolean b) {
@@ -82,11 +89,11 @@ public enum TriState {
 
 	public abstract TriState negate();
 
-	public boolean getVal() {
-		return this.val;
+	@Nullable
+	public Optional<Boolean> getValue() {
+		return this.value == null ? Optional.empty() : Optional.of(this.value);
 	}
 
-	@Deprecated
 	public boolean get() {
 		return this == TRUE;
 	}
