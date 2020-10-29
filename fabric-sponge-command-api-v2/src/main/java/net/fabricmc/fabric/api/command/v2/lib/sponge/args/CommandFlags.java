@@ -199,7 +199,7 @@ public final class CommandFlags extends CommandElement {
 	}
 
 	@Override
-	protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
+	public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 		return null;
 	}
 
@@ -541,7 +541,7 @@ public final class CommandFlags extends CommandElement {
 
 		@Nullable
 		@Override
-		protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
+		public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 			return null; //unused
 		}
 

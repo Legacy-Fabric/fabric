@@ -51,7 +51,7 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
+	public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 		if (!args.hasNext() && this.returnSource) {
 			return this.tryReturnSource(source, args);
 		}

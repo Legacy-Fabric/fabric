@@ -45,7 +45,7 @@ public abstract class SelectorCommandElement extends PatternMatchingCommandEleme
 
 	@Nullable
 	@Override
-	protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
+	public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 		String arg = args.peek();
 
 		if (arg.startsWith("@")) { // Possibly a selector

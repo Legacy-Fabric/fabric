@@ -64,7 +64,7 @@ public abstract class PatternMatchingCommandElement extends CommandElement {
 
 	@Nullable
 	@Override
-	protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
+	public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 		Iterable<String> choices = this.getChoices(source);
 		Iterable<Object> ret;
 		String arg = args.next();
