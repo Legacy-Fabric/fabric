@@ -66,7 +66,7 @@ public abstract class CommandElement {
 	 */
 	@Nullable
 	public String getUntranslatedKey() {
-		return ArgUtils.textToArgKey(this.key);
+		return CommandContext.textToArgKey(this.key);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public abstract class CommandElement {
 	 * @throws ArgumentParseException if unable to extract a value
 	 */
 	@Nullable
-	protected abstract Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException;
+	public abstract Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException;
 
 	/**
 	 * Fetch completions for command arguments.

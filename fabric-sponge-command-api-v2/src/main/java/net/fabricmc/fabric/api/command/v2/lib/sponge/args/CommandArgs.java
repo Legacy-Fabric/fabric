@@ -78,7 +78,7 @@ public final class CommandArgs {
 	 *
 	 * @return True if a completion can occur
 	 */
-	boolean canComplete() {
+	public boolean canComplete() {
 		return this.index + 2 >= this.args.size();
 	}
 

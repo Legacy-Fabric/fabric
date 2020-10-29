@@ -33,12 +33,15 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 import net.fabricmc.fabric.api.command.v2.Location;
 import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
@@ -93,7 +96,7 @@ public final class CommandContext {
 	 * @return the collection of all values
 	 */
 	public <T> Collection<T> getAll(Text key) {
-		return this.getAll(ArgUtils.textToArgKey(key));
+		return this.getAll(CommandContext.textToArgKey(key));
 	}
 
 	/**
@@ -130,7 +133,7 @@ public final class CommandContext {
 	 * @return the argument
 	 */
 	public <T> Optional<T> getOne(Text key) {
-		return this.getOne(ArgUtils.textToArgKey(key));
+		return this.getOne(CommandContext.textToArgKey(key));
 	}
 
 	/**
@@ -177,7 +180,7 @@ public final class CommandContext {
 	 */
 	public <T> T requireOne(Text key)
 			throws NoSuchElementException, IllegalArgumentException, ClassCastException {
-		return this.requireOne(ArgUtils.textToArgKey(key));
+		return this.requireOne(CommandContext.textToArgKey(key));
 	}
 
 	/**
@@ -198,7 +201,7 @@ public final class CommandContext {
 	 * @param value the value for this argument
 	 */
 	public void putArg(Text key, Object value) {
-		this.putArg(ArgUtils.textToArgKey(key), value);
+		this.putArg(CommandContext.textToArgKey(key), value);
 	}
 
 	/**
@@ -216,7 +219,7 @@ public final class CommandContext {
 	 * @param key the key for the flag defined
 	 */
 	public void addFlag(Text key) {
-		this.addFlag(ArgUtils.textToArgKey(key));
+		this.addFlag(CommandContext.textToArgKey(key));
 	}
 
 	/**
@@ -250,7 +253,7 @@ public final class CommandContext {
 	 * @return whether there are any values present
 	 */
 	public boolean hasAny(Text key) {
-		return this.hasAny(ArgUtils.textToArgKey(key));
+		return this.hasAny(CommandContext.textToArgKey(key));
 	}
 
 	/**
@@ -270,7 +273,7 @@ public final class CommandContext {
 	 * @return whether the flag is defined
 	 */
 	public boolean hasFlag(Text key) {
-		return this.hasFlag(ArgUtils.textToArgKey(key));
+		return this.hasFlag(CommandContext.textToArgKey(key));
 	}
 
 	/**
@@ -314,5 +317,22 @@ public final class CommandContext {
 			this.args = ArrayListMultimap.create(args);
 			this.flags = Sets.newHashSet(flags);
 		}
+	}
+
+	/**
+	 * Converts a {@link Text} into a String key.
+	 * @param key the text to be converted into a string key
+	 * @return the string key. if {@code key} is a {@link TranslatableText}, the translation key.
+	 */
+	public static String textToArgKey(@Nullable Text key) {
+		if (key == null) {
+			return null;
+		}
+
+		if (key instanceof TranslatableText) { // Use translation key
+			return ((TranslatableText) key).getKey();
+		}
+
+		return key.asString();
 	}
 }

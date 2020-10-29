@@ -23,30 +23,53 @@
  * THE SOFTWARE.
  */
 
-package net.fabricmc.fabric.api.command.v2.lib.sponge.args;
+package net.fabricmc.fabric.impl.command.lib.sponge.args;
+
+import java.time.Duration;
+import java.time.format.DateTimeParseException;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 
-/**
- * Internal utility methods.
- */
-class ArgUtils {
-	private ArgUtils() {
+import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.args.CommandArgs;
+import net.fabricmc.fabric.api.command.v2.lib.sponge.args.KeyElement;
+
+public class DurationElement extends KeyElement {
+	public DurationElement(Text key) {
+		super(key);
 	}
 
 	@Nullable
-	public static String textToArgKey(@Nullable Text key) {
-		if (key == null) {
-			return null;
+	@Override
+	public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
+		String s = args.next().toUpperCase();
+
+		if (!s.contains("T")) {
+			if (s.contains("D")) {
+				if (s.contains("H") || s.contains("M") || s.contains("S")) {
+					s = s.replace("D", "DT");
+				}
+			} else {
+				if (s.startsWith("P")) {
+					s = "PT" + s.substring(1);
+				} else {
+					s = "T" + s;
+				}
+			}
 		}
 
-		if (key instanceof TranslatableText) { // Use translation key
-			return ((TranslatableText) key).getKey();
+		if (!s.startsWith("P")) {
+			s = "P" + s;
 		}
 
-		return key.asString();
+		try {
+			return Duration.parse(s);
+		} catch (DateTimeParseException ex) {
+			throw args.createError(new LiteralText("Invalid duration!"));
+		}
 	}
 }

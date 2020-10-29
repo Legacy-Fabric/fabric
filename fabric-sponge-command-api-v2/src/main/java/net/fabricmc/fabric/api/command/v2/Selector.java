@@ -72,7 +72,11 @@ public enum Selector {
 	}
 
 	public static Selector parse(String value) {
-		return MAP.get(value);
+		if (MAP.containsKey(value)) {
+			return MAP.get(value);
+		}
+
+		throw new IllegalArgumentException("Unknown selector");
 	}
 
 	static {
