@@ -51,7 +51,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.StringType;
 import net.fabricmc.fabric.api.util.TriState;
 import net.fabricmc.fabric.impl.command.lib.sponge.args.AllOfCommandElement;

@@ -42,7 +42,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 
 public final class CommandFlags extends CommandElement {
 	@Nullable

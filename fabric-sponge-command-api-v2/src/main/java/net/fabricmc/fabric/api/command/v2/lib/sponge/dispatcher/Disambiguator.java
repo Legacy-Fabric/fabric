@@ -30,7 +30,7 @@ import java.util.Optional;
 
 import javax.annotation.Nullable;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandMapping;
 
 @FunctionalInterface

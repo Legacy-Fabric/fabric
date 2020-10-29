@@ -26,7 +26,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrar;
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 import net.fabricmc.fabric.impl.command.CommandWrapper;
 import net.fabricmc.fabric.impl.command.InternalObjects;
 import net.fabricmc.loader.api.FabricLoader;

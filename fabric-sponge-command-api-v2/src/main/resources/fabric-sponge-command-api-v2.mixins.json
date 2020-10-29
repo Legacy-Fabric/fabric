@@ -3,16 +3,7 @@
   "package": "net.fabricmc.fabric.mixin.command",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "CommandBlockExecutorMixin",
-    "CommandStats_1Mixin",
-    "ConsoleMixin",
-    "EntityMixin",
-    "ExecuteCommand_1Mixin",
-    "MinecraftServerMixin",
-    "PlayerEntityMixin",
-    "ServerPlayerEntityMixin",
-    "SignBlockEntity_1Mixin",
-    "SignBlockEntity_2Mixin"
+    "MinecraftServerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

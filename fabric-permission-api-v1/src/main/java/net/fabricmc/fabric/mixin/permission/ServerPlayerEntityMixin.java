@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.command;
+package net.fabricmc.fabric.mixin.permission;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.server.command.Console;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
-
-@Mixin(Console.class)
-public abstract class ConsoleMixin implements PermissibleCommandSource {
+@Mixin(ServerPlayerEntity.class)
+public abstract class ServerPlayerEntityMixin extends PlayerEntityMixin {
 	@Override
 	public boolean hasPermission(String perm) {
-		return true;
+		return MinecraftServer.getServer().getPlayerManager().isOperator(this.getGameProfile()) || super.hasPermission(perm);
 	}
 }

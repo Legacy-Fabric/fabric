@@ -40,7 +40,7 @@ import com.google.common.collect.Iterables;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 
 /**
  * Abstract command element that matches values based on pattern.

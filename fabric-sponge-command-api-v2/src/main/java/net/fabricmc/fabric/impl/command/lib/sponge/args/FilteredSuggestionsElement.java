@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.CommandArgs;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.CommandContext;

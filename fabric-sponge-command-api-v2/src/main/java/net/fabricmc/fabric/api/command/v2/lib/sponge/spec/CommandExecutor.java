@@ -25,7 +25,7 @@
 
 package net.fabricmc.fabric.api.command.v2.lib.sponge.spec;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandResult;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.CommandContext;

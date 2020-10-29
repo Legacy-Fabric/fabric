@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.minecraft.text.Text;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 
 /**
  * Parent class that specifies elements as having no tab completions.

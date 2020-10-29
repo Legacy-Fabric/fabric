@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.command;
+package net.fabricmc.fabric.mixin.permission;
 
-import com.mojang.authlib.GameProfile;
+import org.spongepowered.asm.mixin.Dynamic;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.entity.player.PlayerEntity;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 
-@Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin implements PermissibleCommandSource {
+@Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$2")
+public abstract class SignBlockEntity_2Mixin implements PermissibleCommandSource {
+	@SuppressWarnings("ShadowTarget")
+	@Final
+	@Dynamic
 	@Shadow
-	public abstract GameProfile getGameProfile();
+	PlayerEntity field_1466;
 
-	// TODO
 	@Override
 	public boolean hasPermission(String perm) {
-		return false;
+		return ((PermissibleCommandSource) this.field_1466).hasPermission(perm);
 	}
 }

@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.text.Text;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.PatternMatchingCommandElement;
 
 public class EnumValueElement<T extends Enum<T>> extends PatternMatchingCommandElement {

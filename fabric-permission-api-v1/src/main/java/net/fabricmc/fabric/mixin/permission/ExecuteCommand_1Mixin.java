@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.command.v2;
+package net.fabricmc.fabric.mixin.permission;
 
-import net.minecraft.command.CommandSource;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
-/**
- * Represents a {@link CommandSource} that can not be able to run
- * a command if they do not have the permission to do so.
- */
-public interface PermissibleCommandSource extends CommandSource {
-	boolean hasPermission(String perm);
+import net.minecraft.entity.Entity;
+
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
+
+@Mixin(targets = "net/minecraft/server/command/ExecuteCommand$1")
+public abstract class ExecuteCommand_1Mixin implements PermissibleCommandSource {
+	@Shadow
+	public abstract Entity getEntity();
+
+	@Override
+	public boolean hasPermission(String perm) {
+		return ((PermissibleCommandSource) this.getEntity()).hasPermission(perm);
+	}
 }

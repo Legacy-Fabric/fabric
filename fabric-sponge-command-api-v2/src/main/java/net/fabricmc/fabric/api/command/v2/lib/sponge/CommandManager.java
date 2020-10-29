@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 import net.minecraft.world.World;
 
 import net.fabricmc.fabric.api.util.Location;
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.Dispatcher;
 
 /**

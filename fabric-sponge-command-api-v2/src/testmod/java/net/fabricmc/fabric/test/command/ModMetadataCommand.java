@@ -19,7 +19,7 @@ package net.fabricmc.fabric.test.command;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandManager;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandResult;

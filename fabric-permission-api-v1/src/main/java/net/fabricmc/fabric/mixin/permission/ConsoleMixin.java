@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.command;
+package net.fabricmc.fabric.mixin.permission;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.server.command.Console;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 
-@Mixin(targets = "net/minecraft/server/command/ExecuteCommand$1")
-public abstract class ExecuteCommand_1Mixin implements PermissibleCommandSource {
-	@Shadow
-	public abstract Entity getEntity();
-
+@Mixin(Console.class)
+public abstract class ConsoleMixin implements PermissibleCommandSource {
 	@Override
 	public boolean hasPermission(String perm) {
-		return ((PermissibleCommandSource) this.getEntity()).hasPermission(perm);
+		return true;
 	}
 }

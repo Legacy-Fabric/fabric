@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.command;
+package net.fabricmc.fabric.mixin.permission;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
+import net.minecraft.world.CommandBlockExecutor;
 
-@Mixin(targets = "net/minecraft/command/CommandStats$1")
-public abstract class CommandStats_1Mixin implements PermissibleCommandSource {
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
+
+@Mixin(CommandBlockExecutor.class)
+public abstract class CommandBlockExecutorMixin implements PermissibleCommandSource {
 	@Override
 	public boolean hasPermission(String perm) {
 		return true;
