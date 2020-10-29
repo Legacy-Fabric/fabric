@@ -31,11 +31,36 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 
 public enum Selector {
-	ALL_ENTITIES('e'),
-	ALL_PLAYERS('a'),
-	NEAREST_PLAYER('p'),
-	RANDOM_PLAYER('r'),
-	EXECUTING_ENTITY('s');
+	ALL_ENTITIES('e') {
+		@Override
+		public Set<Entity> resolve(CommandSource sender) {
+			return Sets.newHashSet(sender.getWorld().entities);
+		}
+	},
+	ALL_PLAYERS('a') {
+		@Override
+		public Set<Entity> resolve(CommandSource sender) {
+			return sender.getWorld().playerEntities.stream().map(e -> (Entity) e).collect(Collectors.toSet());
+		}
+	},
+	NEAREST_PLAYER('p') {
+		@Override
+		public Set<Entity> resolve(CommandSource sender) {
+			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.getPos().x, sender.getPos().y, sender.getPos().z, 50.0D));
+		}
+	},
+	RANDOM_PLAYER('r') {
+		@Override
+		public Set<Entity> resolve(CommandSource sender) {
+			return Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers().stream().findAny().orElseThrow(NullPointerException::new));
+		}
+	},
+	EXECUTING_ENTITY('s') {
+		@Override
+		public Set<Entity> resolve(CommandSource sender) {
+			return Sets.newHashSet(sender.getEntity());
+		}
+	};
 
 	private final char key;
 	private static final Map<String, Selector> MAP;
@@ -48,20 +73,7 @@ public enum Selector {
 		return this.key;
 	}
 
-	// TODO: don't hardcode this
-	public Set<Entity> resolve(CommandSource sender) {
-		if (this == ALL_ENTITIES) {
-			return Sets.newHashSet(sender.getWorld().entities);
-		} else if (this == ALL_PLAYERS) {
-			return sender.getWorld().playerEntities.stream().map(e -> (Entity) e).collect(Collectors.toSet());
-		} else if (this == NEAREST_PLAYER) {
-			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.getPos().x, sender.getPos().y, sender.getPos().z, 50.0D));
-		} else if (this == RANDOM_PLAYER) {
-			return Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers().stream().findAny().orElseThrow(NullPointerException::new));
-		}
-
-		return Sets.newHashSet(sender.getEntity());
-	}
+	public abstract Set<Entity> resolve(CommandSource sender);
 
 	public static List<String> complete(String s) {
 		if (s.startsWith("@") && s.length() == 2) {
