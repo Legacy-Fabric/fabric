@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.command.v2;
+package net.fabricmc.fabric.api.util;
 
 import net.minecraft.util.math.BlockPos;
 

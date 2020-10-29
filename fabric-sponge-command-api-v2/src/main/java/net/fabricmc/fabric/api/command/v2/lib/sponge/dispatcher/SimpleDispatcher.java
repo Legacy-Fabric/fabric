@@ -55,7 +55,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.command.v2.Location;
+import net.fabricmc.fabric.api.util.Location;
 import net.fabricmc.fabric.api.command.v2.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
