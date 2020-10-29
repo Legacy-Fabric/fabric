@@ -954,5 +954,4 @@ public final class GenericArguments {
 	public static CommandElement withConstrainedSuggestions(CommandElement argument, Predicate<String> predicate) {
 		return new FilteredSuggestionsElement(argument, predicate);
 	}
-
 }
