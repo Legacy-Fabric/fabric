@@ -62,7 +62,7 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
+	public Object parseValue(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 		if (!args.hasNext()) {
 			if (this.returnSource) {
 				return this.tryReturnSource(source, args, true);
