@@ -27,7 +27,7 @@ import net.fabricmc.fabric.api.movingstuff.v1.Insertable;
 /**
  * An implementation of {@link Insertable} for fluids
  *
- * @see net.fabricmc.fabric.api.movingstuff.v1.Aware
+ * @see net.fabricmc.fabric.api.fluid.logistics.v1.FluidDrainable
  */
 public interface FluidInsertable extends Insertable<FluidBlock, FluidUnit>, DropletAware {
 	/**
@@ -119,6 +119,21 @@ public interface FluidInsertable extends Insertable<FluidBlock, FluidUnit>, Drop
 	@Override
 	default int tryPartialInsert(Direction fromSide, FluidBlock fluid, int maxAmount, boolean simulate) {
 		return Insertable.super.tryPartialInsert(fromSide, fluid, maxAmount, simulate);
+	}
+
+	/**
+	 * Attempt to insert fluid, only filling partially if the container can't hold all the fluid.
+	 *
+	 * @param fromSide the side from which to insert.
+	 * @param fluid the type of fluid to insert.
+	 * @param maxAmount how much fluid to insert at maximum.
+	 * @param simulate whether the action should be simulated and not actually performed.
+	 * @param unit the unit
+	 * @return an integer amount of how much fluid was/would be moved.
+	 */
+	@Override
+	default int tryPartialInsert(Direction fromSide, FluidBlock fluid, int maxAmount, boolean simulate, FluidUnit unit) {
+		return Insertable.super.tryPartialInsert(fromSide, fluid, maxAmount, simulate, unit);
 	}
 
 	/**

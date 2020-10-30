@@ -95,6 +95,7 @@ public interface Extractable<T, U extends Unit<? extends Enum<?>>> extends Aware
 	 * @param thing the type of thing to extract.
 	 * @param amount how much thing to extract.
 	 * @param simulate whether the action should be simulated and not actually performed.
+	 * @param unit the unit
 	 * @return whether the extraction was/would be successful.
 	 */
 	default boolean tryExtract(Direction fromSide, T thing, int amount, boolean simulate, U unit) {
