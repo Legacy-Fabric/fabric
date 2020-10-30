@@ -19,5 +19,8 @@
     "fabricloader": ">=0.4.0",
     "fabric-api-base": "*"
   },
-  "description": "General API for moving fluids around."
+  "description": "General API for moving fluids around.",
+  "mixins": [
+    "fabric-fluid-logistics-api-v1.mixins.json"
+  ]
 }

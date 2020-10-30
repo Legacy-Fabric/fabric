@@ -26,6 +26,7 @@ import net.minecraft.block.FluidBlock;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 
+import net.fabricmc.fabric.api.fluid.logistics.v1.unit.FluidUnit;
 import net.fabricmc.fabric.api.movingstuff.v1.Instance;
 
 /**
@@ -34,6 +35,7 @@ import net.fabricmc.fabric.api.movingstuff.v1.Instance;
  * @see net.minecraft.block.FluidBlock
  */
 public class FluidStack implements Instance<FluidBlock> {
+	public static final FluidStack EMPTY = new FluidStack();
 	/**
 	 * Since 1.8.9 has no concept of fluids, this value may be nullable.
 	 */
@@ -53,8 +55,20 @@ public class FluidStack implements Instance<FluidBlock> {
 		this(fluidBlock, amount, new CompoundTag());
 	}
 
+	public FluidStack(FluidBlock fluidBlock, int amount, FluidUnit unit) {
+		this(fluidBlock, amount * unit.getAsLowest());
+	}
+
+	public FluidStack(FluidBlock fluidBlock, int amount, CompoundTag tag, FluidUnit unit) {
+		this(fluidBlock, amount * unit.getAsLowest(), tag);
+	}
+
 	public FluidStack(FluidBlock fluidBlock) {
-		this(fluidBlock, 1, new CompoundTag());
+		this(fluidBlock, 1);
+	}
+
+	private FluidStack() {
+		this(null);
 	}
 
 	@Nonnull
