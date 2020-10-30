@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "fabric-fluid-logistics-api-v1",
+  "name": "Fabric Fluid Logistics API (v1)",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/fabric-fluid-logistics-api-v1/icon.png",
+  "contact": {
+    "homepage": "https://legacy-fabric.github.io/",
+    "irc": "irc://irc.esper.net:6667/legacyfabric",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "Legacy-Fabric"
+  ],
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "fabric-api-base": "*"
+  },
+  "description": "General API for moving fluids around."
+}

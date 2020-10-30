@@ -76,12 +76,15 @@ public interface Insertable<T> extends Aware<T> {
 	default int tryPartialInsert(Direction fromSide, T thing, int maxAmount, boolean simulate) {
 		int remainingCapacity = this.getMaxCapacity() - this.getCurrentFill(fromSide);
 		int amount = Math.min(maxAmount, remainingCapacity);
+
 		if (this.canInsert(fromSide, thing, amount)) {
 			if (!simulate) {
 				this.insert(fromSide, thing, amount);
 			}
+
 			return amount;
 		}
+
 		return 0;
 	}
 }

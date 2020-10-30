@@ -1,6 +1,7 @@
-archivesBaseName = "fabric-moving-stuff-api-v1"
+archivesBaseName = "fabric-fluid-logistics-api-v1"
 version = getSubprojectVersion(project, "1.0.0")
 
 dependencies {
 	implementation project(path: ':fabric-api-base', configuration: 'dev')
+	implementation project(path: ':fabric-moving-stuff-api-v1', configuration: 'dev')
 }

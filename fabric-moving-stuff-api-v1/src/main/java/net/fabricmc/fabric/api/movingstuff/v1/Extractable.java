@@ -25,13 +25,23 @@ import net.minecraft.util.math.Direction;
  */
 public interface Extractable<T> extends Aware<T> {
 	/**
-	 * Extracts a certain amount of thing into from insertable.
+	 * Extracts a certain amount of thing into from extractable.
 	 *
 	 * @param fromSide the side from which to extract.
 	 * @param thing the type of thing to extract.
 	 * @param amount how much thing to extract.
 	 */
 	void extract(Direction fromSide, T thing, int amount);
+
+	/**
+	 * Checks whether a certain amount of thing can be extracted from this extractable
+	 *
+	 * @param fromSide the side from which to extract.
+	 * @param thing the type of thing to extract.
+	 * @param amount how much thing to extract.
+	 * @return whether the extraction is possible
+	 */
+	boolean canExtract(Direction fromSide, T thing, int amount);
 
 	/**
 	 * Attempt to extract thing, only draining partially if the container can't hold all the thing.
@@ -43,14 +53,17 @@ public interface Extractable<T> extends Aware<T> {
 	 * @return an integer amount of how much thing was/would be moved.
 	 */
 	default int tryPartialExtract(Direction fromSide, T thing, int maxAmount, boolean simulate) {
-		int remainingFluid = getCurrentSingleFill(fromSide, thing);
+		int remainingFluid = this.getCurrentSingleFill(fromSide, thing);
 		int amount = Math.min(maxAmount, remainingFluid);
-		if (canExtract(fromSide, thing, amount)) {
+
+		if (this.canExtract(fromSide, thing, amount)) {
 			if (!simulate) {
 				this.extract(fromSide, thing, amount);
 			}
+
 			return amount;
 		}
+
 		return 0;
 	}
 }

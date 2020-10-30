@@ -26,8 +26,17 @@ import net.minecraft.util.math.Direction;
  * @param <T> thing
  */
 public interface Aware<T> {
+	/**
+	 * Gets the maximum number of instances of {@link T} that can be stored.
+	 */
 	int getMaxCapacity();
 
+	/**
+	 * Gets the total number of instances stored from a certain direction.
+	 *
+	 * @param fromSide the direction
+	 * @return the total amount of instances stored from a certain direction
+	 */
 	default int getCurrentFill(Direction fromSide) {
 		int amount = 0;
 
@@ -38,8 +47,21 @@ public interface Aware<T> {
 		return amount;
 	}
 
+	/**
+	 * Gets the instances from a certain direction
+	 *
+	 * @param fromSide the direction
+	 * @return the total amount of instances stored from a certain direction
+	 */
 	List<Instance<T>> getInstances(Direction fromSide);
 
+	/**
+	 * Gets the total number of instances of a certain thing
+	 *
+	 * @param fromSide the direction
+	 * @param thing the thing
+	 * @return the total number of instances of a certain thing
+	 */
 	default int getCurrentSingleFill(Direction fromSide, T thing) {
 		int amount = 0;
 
