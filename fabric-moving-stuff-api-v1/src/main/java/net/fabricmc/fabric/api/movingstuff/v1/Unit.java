@@ -16,11 +16,53 @@
 
 package net.fabricmc.fabric.api.movingstuff.v1;
 
+import com.google.common.base.Preconditions;
+
 /**
- * Specifies a unit
+ * Specifies a unit. All values must be in an enum.
+ * Enum constants are very important
  */
-public interface Unit {
+public interface Unit<E extends Enum<E> & Unit<E>> {
+	/**
+	 * @return the value of this unit as the lowest unit.
+	 */
 	int getAsLowest();
 
+	/**
+	 * @return the number of values required to get the highest value.
+	 */
 	int getAsHighest();
+
+	/**
+	 * Converts this unit to a value in another unit.
+	 */
+	default int to(int value, E to) {
+		//noinspection unchecked
+		Enum<E> thisEnum = (Enum<E>) this;
+
+		if (this == to) {
+			return value;
+		} else if (thisEnum.ordinal() < to.ordinal()) {
+			return value * (to.getAsHighest() / this.getAsHighest());
+		} else {
+			int newValue = value * (this.getAsHighest() / to.getAsHighest());
+			Preconditions.checkArgument(newValue * this.getAsLowest() == value * to.getAsLowest(), "Can't convert " + value + " to " + to);
+			return newValue;
+		}
+	}
+
+	/**
+	 * Checks if this unit can be converted to a value in another unit.
+	 */
+	default boolean canConvertTo(int value, E to) {
+		//noinspection unchecked
+		Enum<E> thisEnum = (Enum<E>) this;
+
+		if (thisEnum.ordinal() <= to.ordinal()) {
+			return true;
+		} else {
+			int newValue = value * (this.getAsHighest() / to.getAsHighest());
+			return newValue * this.getAsLowest() == value * to.getAsLowest();
+		}
+	}
 }

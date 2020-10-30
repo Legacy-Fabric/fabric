@@ -17,6 +17,7 @@
 package net.fabricmc.fabric.api.movingstuff.v1;
 
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.util.math.Direction;
 
@@ -24,8 +25,9 @@ import net.minecraft.util.math.Direction;
  * Specifies an object that knows something about thing
  *
  * @param <T> thing
+ * @param <U> unit
  */
-public interface Aware<T> {
+public interface Aware<T, U extends Unit<? extends Enum<?>>> {
 	/**
 	 * Gets the maximum number of instances of {@link T} that can be stored.
 	 */
@@ -46,6 +48,11 @@ public interface Aware<T> {
 
 		return amount;
 	}
+
+	/**
+	 * Returns a map of units.
+	 */
+	Map<U, Integer> getCurrentFillMap(Direction fromSide);
 
 	/**
 	 * Gets the instances from a certain direction
@@ -73,4 +80,9 @@ public interface Aware<T> {
 
 		return amount;
 	}
+
+	/**
+	 * Returns a map of units.
+	 */
+	Map<U, Integer> getCurrentSingleFillMap(Direction fromSide, T thing);
 }
