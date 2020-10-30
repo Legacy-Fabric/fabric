@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -37,8 +36,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.util.Location;
-import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandManager;
@@ -50,10 +47,11 @@ import net.fabricmc.fabric.api.command.v2.lib.sponge.InvocationCommandException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.Disambiguator;
 import net.fabricmc.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
+import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
+import net.fabricmc.fabric.api.util.Location;
 
 public class CommandManagerImpl implements CommandManager {
 	private static final Logger LOGGER = LogManager.getLogger("Fabric Command Manager");
-	private static final Pattern SPACE_PATTERN = Pattern.compile(" ", Pattern.LITERAL);
 	private final Object lock = new Object();
 	private final SimpleDispatcher dispatcher;
 	private final List<CommandMapping> mappings = Lists.newArrayList();
@@ -85,7 +83,10 @@ public class CommandManagerImpl implements CommandManager {
 	@Override
 	public Optional<CommandMapping> removeMapping(CommandMapping mapping) {
 		synchronized (this.lock) {
-			return this.dispatcher.removeMapping(mapping);
+			return this.dispatcher.removeMapping(mapping).map(commandMapping -> {
+				this.mappings.remove(commandMapping);
+				return commandMapping;
+			});
 		}
 	}
 
@@ -231,6 +232,10 @@ public class CommandManagerImpl implements CommandManager {
 		synchronized (this.lock) {
 			return this.dispatcher.getAll(alias);
 		}
+	}
+
+	protected List<CommandMapping> getMappings() {
+		return this.mappings;
 	}
 
 	@Override

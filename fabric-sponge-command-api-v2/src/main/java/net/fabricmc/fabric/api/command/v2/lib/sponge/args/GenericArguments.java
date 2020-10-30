@@ -88,7 +88,7 @@ import net.fabricmc.loader.api.ModContainer;
  * Class containing factory methods for common command elements.
  */
 @SuppressWarnings({"UnstableApiUsage"})
-public final class GenericArguments {
+public class GenericArguments {
 	private static final CommandElement NONE = new SequenceCommandElement(ImmutableList.of());
 
 	private GenericArguments() {

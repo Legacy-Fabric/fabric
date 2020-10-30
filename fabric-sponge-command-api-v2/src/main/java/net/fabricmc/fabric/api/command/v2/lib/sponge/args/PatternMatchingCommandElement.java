@@ -43,7 +43,7 @@ import net.minecraft.text.Text;
 import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
 
 /**
- * Abstract command element that matches values based on pattern.
+ * Abstract command element that matches values based on a regex pattern.
  */
 public abstract class PatternMatchingCommandElement extends CommandElement {
 	private static final Text nullKeyArg = new LiteralText("argument");
