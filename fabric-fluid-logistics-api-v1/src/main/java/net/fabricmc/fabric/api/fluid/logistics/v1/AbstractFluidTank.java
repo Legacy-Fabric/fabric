@@ -135,6 +135,16 @@ public abstract class AbstractFluidTank implements FluidTank {
 		}
 	}
 
+	public void transferTo(Direction fromSide, FluidBlock fluid, int amount) {
+		this.extract(fromSide, fluid, amount);
+		((FluidContainerFactory) this.toBlockEntity().getWorld().getBlockEntity(this.getPos().offset(fromSide.getOpposite()))).getContainer().insert(fromSide.getOpposite(), fluid, amount);
+	}
+
+	public void transferFrom(Direction fromSide, FluidBlock fluid, int amount) {
+		((FluidContainerFactory) this.toBlockEntity().getWorld().getBlockEntity(this.getPos().offset(fromSide.getOpposite()))).getContainer().extract(fromSide.getOpposite(), fluid, amount);
+		this.insert(fromSide, fluid, amount);
+	}
+
 	@Override
 	public Map<FluidUnit, Integer> getCurrentSingleFillMap(Direction fromSide, FluidBlock fluid) {
 		Map<FluidUnit, Integer> map = new HashMap<>();
