@@ -67,7 +67,7 @@ public class FluidStack implements Instance<FluidBlock> {
 		this(fluidBlock, 1);
 	}
 
-	private FluidStack() {
+	FluidStack() {
 		this(null);
 	}
 

@@ -60,7 +60,7 @@ public interface Aware<T, U extends Unit<? extends Enum<?>>> {
 	 * @param fromSide the direction
 	 * @return the total amount of instances stored from a certain direction
 	 */
-	List<Instance<T>> getInstances(Direction fromSide);
+	List<? extends Instance<T>> getInstances(Direction fromSide);
 
 	/**
 	 * Gets the total number of instances of a certain thing
