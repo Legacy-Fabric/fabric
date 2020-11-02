@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.resource.loader;
+package net.fabricmc.fabric.mixin.resource.loader.client;
 
 import java.io.IOException;
 import java.io.InputStream;
