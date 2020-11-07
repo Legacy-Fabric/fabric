@@ -3,7 +3,10 @@
   "package": "net.fabricmc.fabric.mixin.worldgen.event",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BiomeDecoratorMixin"
+    "BiomeDecoratorMixin",
+    "EndChunkGeneratorMixin",
+    "NetherChunkGeneratorMixin",
+    "SurfaceChunkGeneratorMixin"
   ],
   "client": [
     "client.BiomeColorsMixin"

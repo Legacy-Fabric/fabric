@@ -1,9 +1,13 @@
 package net.fabricmc.fabric.api.worldgen.event.v1;
 
+import java.util.Random;
+
 import org.spongepowered.asm.mixin.injection.callback.Cancellable;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.ChunkProvider;
 import net.minecraft.world.gen.CustomizedWorldProperties;
 import net.minecraft.world.gen.feature.OreFeature;
 
@@ -16,6 +20,16 @@ import net.fabricmc.fabric.api.event.EventFactory;
 public class BiomeDecorationEvents {
 	private BiomeDecorationEvents() {
 	}
+
+	/**
+	 * The event for the world decoration generation stage, where features such as trees, ores and lakes are introduced.
+	 */
+	public static final Event<WorldDecorate> WORLD_DECORATION = EventFactory.createArrayBacked(WorldDecorate.class, listeners -> (world, chunkProvider, rand, pos) -> {
+		for (WorldDecorate listener : listeners) {
+			listener.onWorldDecorate(world, chunkProvider, rand, pos);
+		}
+	});
+
 
 	/**
 	 * Fired after all vanilla ores have finished generating.
@@ -32,6 +46,7 @@ public class BiomeDecorationEvents {
 	public static final Event<OreCancellationConsumer> ORE_CANCELLATION = EventFactory.createArrayBacked(OreCancellationConsumer.class, listeners -> (cancellable, count, feature, minHeight, maxHeight, biome, world, properties) -> {
 		for (OreCancellationConsumer c : listeners) {
 			c.accept(cancellable, count, feature, minHeight, maxHeight, biome, world, properties);
+
 			if (cancellable.isCancelled()) {
 				break;
 			}
@@ -46,5 +61,21 @@ public class BiomeDecorationEvents {
 	@FunctionalInterface
 	public interface OreCancellationConsumer {
 		void accept(Cancellable cancellable, int count, OreFeature feature, int minHeight, int maxHeight, Biome biome, World world, CustomizedWorldProperties properties);
+	}
+
+	/**
+	 * A hook into world decoration to add custom features and other post-generation tweaks.
+	 */
+	@FunctionalInterface
+	public interface WorldDecorate {
+		/**
+		 * Called when the world is being decorated, after vanilla decoration.
+		 *
+		 * @param world the world being decorated.
+		 * @param chunkProvider the chunk provider decorating the world.
+		 * @param rand the random instance for world gen.
+		 * @param pos the start block position for generation. (pos.x + 8, pos.z + 8) is usually used as the lowest start position for feature generation.
+		 */
+		void onWorldDecorate(World world, ChunkProvider chunkProvider, Random rand, BlockPos pos);
 	}
 }

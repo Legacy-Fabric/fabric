@@ -23,10 +23,11 @@ public class OreRegistryImpl implements OreRegistry, Iterable<OreRegistryImpl.En
 		this.entries.add(new Entry(count, feature, minHeight, maxHeight));
 	}
 
-	public void forEach(Consumer4 consumer) {
-		Preconditions.checkNotNull(consumer, "action was null");
+	public void forEach(@Nonnull Consumer4 action) {
+		Preconditions.checkNotNull(action, "action was null");
+
 		for (Entry e : this) {
-			consumer.accept(e.count, e.feature, e.maxHeight, e.minHeight);
+			action.accept(e.count, e.feature, e.maxHeight, e.minHeight);
 		}
 	}
 
