@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.base.util;
 
+import java.util.Objects;
+
 public class TypedActionResult<T> {
 	private final ActionResult result;
 	private final T value;
@@ -34,18 +36,37 @@ public class TypedActionResult<T> {
 	}
 
 	public static <T> TypedActionResult<T> success(T data) {
-		return new TypedActionResult(ActionResult.SUCCESS, data);
+		return new TypedActionResult<>(ActionResult.SUCCESS, data);
 	}
 
 	public static <T> TypedActionResult<T> consume(T data) {
-		return new TypedActionResult(ActionResult.CONSUME, data);
+		return new TypedActionResult<>(ActionResult.CONSUME, data);
 	}
 
 	public static <T> TypedActionResult<T> pass(T data) {
-		return new TypedActionResult(ActionResult.PASS, data);
+		return new TypedActionResult<>(ActionResult.PASS, data);
 	}
 
 	public static <T> TypedActionResult<T> fail(T data) {
-		return new TypedActionResult(ActionResult.FAIL, data);
+		return new TypedActionResult<>(ActionResult.FAIL, data);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (o == null || this.getClass() != o.getClass()) {
+			return false;
+		}
+
+		TypedActionResult<?> that = (TypedActionResult<?>) o;
+		return this.result == that.result && Objects.equals(this.value, that.value);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.result, this.value);
 	}
 }
