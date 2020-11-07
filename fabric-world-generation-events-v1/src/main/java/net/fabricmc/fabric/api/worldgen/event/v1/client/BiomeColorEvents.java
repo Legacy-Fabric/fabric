@@ -10,7 +10,7 @@ import net.fabricmc.fabric.impl.base.util.ActionResult;
 import net.fabricmc.fabric.impl.base.util.TypedActionResult;
 
 /**
- * Events that are fired when the color of foliage, water, or
+ * Stores events that are fired when the color of foliage, water, or
  * grass is requested.
  */
 public class BiomeColorEvents {
