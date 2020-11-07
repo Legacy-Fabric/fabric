@@ -12,8 +12,10 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.gen.CustomizedWorldProperties;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeature;
 
 import net.fabricmc.fabric.api.worldgen.event.v1.BiomeDecorationEvents;
+import net.fabricmc.fabric.impl.worldgen.event.OreCancellable;
 import net.fabricmc.fabric.impl.worldgen.event.OreRegistryImpl;
 
 @Mixin(BiomeDecorator.class)
@@ -40,5 +42,34 @@ public abstract class BiomeDecoratorMixin {
 		OreRegistryImpl registry = new OreRegistryImpl();
 		BiomeDecorationEvents.ORE_GENERATION.invoker().accept(registry, this.world, this.capturedBiome, this.worldProperties);
 		registry.forEach(this::generateOre);
+	}
+
+	@Inject(method = "generateOre", at = @At("HEAD"), cancellable = true)
+	public void cancelOreGen(int count, Feature feature, int minHeight, int maxHeight, CallbackInfo ci) {
+		this.cancel(count, feature, minHeight, maxHeight, ci);
+	}
+
+	@Inject(method = "method_565", at = @At("HEAD"), cancellable = true)
+	public void cancelLapisGen(int count, Feature feature, int minHeight, int maxHeight, CallbackInfo ci) {
+		this.cancel(count, feature, minHeight, maxHeight, ci);
+	}
+
+	@Unique
+	private void cancel(int count, Feature feature, int minHeight, int maxHeight, CallbackInfo ci) {
+		OreCancellable c = new OreCancellable();
+		BiomeDecorationEvents.ORE_CANCELLATION.invoker().accept(
+				c,
+				count,
+				(OreFeature) feature,
+				minHeight,
+				maxHeight,
+				this.capturedBiome,
+				this.world,
+				this.worldProperties
+		);
+
+		if (c.isCancelled()) {
+			ci.cancel();
+		}
 	}
 }
