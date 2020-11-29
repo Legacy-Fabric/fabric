@@ -34,7 +34,7 @@ public class MixinEnchantmentHelper {
 		return ItemStackHelper.getEnchantability(itemStack);
 	}
 
-	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "getEnchantmentInfoEntries", name = "j", index = 1)
+	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "getEnchantmentInfoEntries", name = "j")
 	private static int modifyJ(int j, Random random, ItemStack itemStack, int i) {
 		return ItemStackHelper.getEnchantability(itemStack);
 	}
