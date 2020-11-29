@@ -59,16 +59,16 @@ public abstract class MixinClientPlayNetworkHandler implements PacketContext {
 		}
 	}
 
-	@Inject(method = "onCustomPayload", at = @At(value = "CONSTANT", args = "stringValue=Unknown custom packed identifier: {}"), cancellable = true, locals = LocalCapture.CAPTURE_FAILSOFT, require = 0)
-	public void onCustomPayloadNotFound(CustomPayloadS2CPacket packet, CallbackInfo info, String id, PacketByteBuf buf) {
-		if (((CustomPayloadPacketAccessor) packet).getChannel().equals(PacketTypes.REGISTER) || ((CustomPayloadPacketAccessor) packet).getChannel().equals(PacketTypes.UNREGISTER)) {
-			if (buf.refCnt() > 0) {
-				buf.release();
-			}
-
-			info.cancel();
-		}
-	}
+//	@Inject(method = "onCustomPayload", at = @At(value = "CONSTANT", args = "stringValue=Unknown custom packed identifier: {}"), cancellable = true, locals = LocalCapture.CAPTURE_FAILSOFT, require = 0)
+//	public void onCustomPayloadNotFound(CustomPayloadS2CPacket packet, CallbackInfo info, String id, PacketByteBuf buf) {
+//		if (((CustomPayloadPacketAccessor) packet).getChannel().equals(PacketTypes.REGISTER) || ((CustomPayloadPacketAccessor) packet).getChannel().equals(PacketTypes.UNREGISTER)) {
+//			if (buf.refCnt() > 0) {
+//				buf.release();
+//			}
+//
+//			info.cancel();
+//		}
+//	}
 
 	@Inject(at = @At("RETURN"), method = "onGameJoin")
 	public void onGameJoin(GameJoinS2CPacket packet, CallbackInfo info) {
