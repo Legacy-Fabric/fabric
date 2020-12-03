@@ -36,7 +36,7 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 @Environment(EnvType.CLIENT)
 @Mixin(ClientPlayNetworkHandler.class)
 public class MixinClientPlayNetworkHandler {
-	/*@Shadow
+	@Shadow
 	@Final
 	private static Logger LOGGER;
 
@@ -60,11 +60,11 @@ public class MixinClientPlayNetworkHandler {
 						serializable.fromClientTag(packet.getCompoundTag());
 					}
 				}
+			} else {
+				throw new RuntimeException("Synced Block Entity sync Id was not 127! This is a bug!");
 			}
 
 			info.cancel();
-		} else {
-			throw new RuntimeException("Block Entity sync Id was not 127! This is a bug!");
 		}
-	}*/
+	}
 }
