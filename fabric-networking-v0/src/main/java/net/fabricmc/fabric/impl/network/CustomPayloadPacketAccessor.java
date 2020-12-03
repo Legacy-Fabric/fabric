@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.network;
+package net.fabricmc.fabric.impl.network;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
-
-import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
-import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.util.PacketByteBuf;
 
-@Mixin({CustomPayloadS2CPacket.class, CustomPayloadC2SPacket.class})
 public interface CustomPayloadPacketAccessor {
-	@Accessor
 	String getChannel();
 
-	@Accessor
-	PacketByteBuf getPayload();
+	PacketByteBuf getData();
 }
