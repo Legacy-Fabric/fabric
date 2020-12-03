@@ -63,8 +63,6 @@ public class MixinClientPlayNetworkHandler {
 			}
 
 			info.cancel();
-		} else {
-			throw new RuntimeException("Block Entity sync Id was not 127! This is a bug!");
 		}
 	}
 }
