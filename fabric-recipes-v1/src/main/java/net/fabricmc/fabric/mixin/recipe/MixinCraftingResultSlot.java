@@ -35,7 +35,7 @@ import net.fabricmc.fabric.impl.base.util.ActionResult;
 
 @Mixin(CraftingResultSlot.class)
 public class MixinCraftingResultSlot {
-	@Shadow
+	/*@Shadow
 	@Final
 	private CraftingInventory craftingInv;
 
@@ -63,5 +63,5 @@ public class MixinCraftingResultSlot {
 		}
 
 		return itemStacks;
-	}
+	}*/
 }
