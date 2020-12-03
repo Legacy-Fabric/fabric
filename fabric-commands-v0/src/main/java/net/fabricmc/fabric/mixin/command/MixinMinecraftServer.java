@@ -26,7 +26,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 
 import net.fabricmc.fabric.api.command.CommandSide;
-import net.fabricmc.fabric.api.event.server.FabricCommandRegisteredCallback;
 import net.fabricmc.fabric.impl.command.FabricCommandRegistryImpl;
 
 @Mixin(MinecraftServer.class)
