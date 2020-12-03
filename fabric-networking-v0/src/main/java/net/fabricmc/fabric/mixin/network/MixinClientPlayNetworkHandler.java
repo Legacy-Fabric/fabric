@@ -37,7 +37,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.impl.network.ClientSidePacketRegistryImpl;
-import net.fabricmc.fabric.impl.network.CustomPayloadPacketAccessor;
 import net.fabricmc.fabric.impl.network.PacketRegistryImpl;
 
 @Environment(EnvType.CLIENT)

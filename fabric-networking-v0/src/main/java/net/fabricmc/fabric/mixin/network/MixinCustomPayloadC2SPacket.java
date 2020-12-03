@@ -22,8 +22,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.util.PacketByteBuf;
 
-import net.fabricmc.fabric.impl.network.CustomPayloadPacketAccessor;
-
 @Mixin(value = CustomPayloadC2SPacket.class, priority = 500)
 public class MixinCustomPayloadC2SPacket implements CustomPayloadPacketAccessor {
 	@Shadow
@@ -38,7 +36,7 @@ public class MixinCustomPayloadC2SPacket implements CustomPayloadPacketAccessor 
 	}
 
 	@Override
-	public PacketByteBuf getData() {
+	public PacketByteBuf getPayload() {
 		return this.payload;
 	}
 }

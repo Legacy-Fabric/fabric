@@ -33,7 +33,6 @@ import net.minecraft.util.ThreadExecutor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-import net.fabricmc.fabric.impl.network.CustomPayloadPacketAccessor;
 import net.fabricmc.fabric.impl.network.ServerSidePacketRegistryImpl;
 
 @Mixin(ServerPlayNetworkHandler.class)
@@ -47,7 +46,7 @@ public class MixinServerPlayNetworkHandler implements PacketContext {
 
 	@Inject(method = "onCustomPayload", at = @At("HEAD"), cancellable = true)
 	public void onCustomPayload(CustomPayloadC2SPacket packet, CallbackInfo info) {
-		if (((ServerSidePacketRegistryImpl) ServerSidePacketRegistry.INSTANCE).accept(((CustomPayloadPacketAccessor) packet).getChannel(), this, ((CustomPayloadPacketAccessor) packet)::getData)) {
+		if (((ServerSidePacketRegistryImpl) ServerSidePacketRegistry.INSTANCE).accept(((CustomPayloadPacketAccessor) packet).getChannel(), this, ((CustomPayloadPacketAccessor) packet)::getPayload)) {
 			info.cancel();
 		}
 	}

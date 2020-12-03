@@ -3,6 +3,7 @@
   "package": "net.fabricmc.fabric.mixin.network",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "CustomPayloadPacketAccessor",
     "MixinCustomPayloadC2SPacket",
     "MixinCustomPayloadS2CPacket",
     "MixinPlayerManager",
