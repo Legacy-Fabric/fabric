@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "depends": {
     "fabric-api-base": "*",
-    "fabric-armor-api-v0": "*",
+    "fabric-armor-api-v1": "*",
     "fabric-content-registries-v1": "*"
   },
   "entrypoints": {
