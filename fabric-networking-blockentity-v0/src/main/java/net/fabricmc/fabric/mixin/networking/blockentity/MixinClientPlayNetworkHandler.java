@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright (c) 2020 Legacy Fabric
+ * Copyright (c) 2016 - 2020 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,11 +61,11 @@ public class MixinClientPlayNetworkHandler {
 						serializable.fromClientTag(packet.getCompoundTag());
 					}
 				}
+			} else {
+				throw new RuntimeException("Synced Block Entity sync Id was not 127! This is a bug!");
 			}
 
 			info.cancel();
-		} else {
-			throw new RuntimeException("Block Entity sync Id was not 127! This is a bug!");
 		}
 	}
 }

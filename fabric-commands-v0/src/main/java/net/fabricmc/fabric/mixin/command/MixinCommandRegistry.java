@@ -17,24 +17,25 @@
 
 package net.fabricmc.fabric.mixin.command;
 
-import com.mojang.brigadier.CommandDispatcher;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.minecraft.command.AbstractCommand;
+import net.minecraft.command.Command;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.CommandRegistry;
 
-import net.fabricmc.fabric.api.command.v1.DispatcherRegistrationCallback;
-import net.fabricmc.fabric.impl.command.CommandManagerHolder;
+import net.fabricmc.fabric.api.command.CommandSide;
+import net.fabricmc.fabric.api.event.server.FabricCommandRegisteredCallback;
 
-@Mixin(CommandManager.class)
-public class MixinCommandManager {
-	@Inject(method = "<init>", at = @At("RETURN"))
-	private void postInitialize(CallbackInfo info) {
-		DispatcherRegistrationCallback.EVENT.invoker().initialize(
-				CommandManagerHolder.COMMAND_DISPATCHER = new CommandDispatcher<>(),
-				MinecraftServer.getServer().isDedicated());
+@Mixin(CommandRegistry.class)
+public class MixinCommandRegistry {
+	@Inject(method = "registerCommand", at = @At("TAIL"))
+	public void afterRegister(Command command, CallbackInfoReturnable<Command> cir) {
+		if (command instanceof AbstractCommand) {
+			FabricCommandRegisteredCallback.EVENT.invoker().onCommandRegistered(MinecraftServer.getServer(), (AbstractCommand) command, CommandSide.COMMON);
+		}
 	}
 }
