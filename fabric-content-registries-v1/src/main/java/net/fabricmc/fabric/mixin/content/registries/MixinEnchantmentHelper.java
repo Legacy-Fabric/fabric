@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright (c) 2020 Legacy Fabric
+ * Copyright (c) 2016 - 2020 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,22 +21,23 @@ import java.util.Random;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.fabric.api.content.registry.v1.ItemStackHelper;
 
 @Mixin(EnchantmentHelper.class)
 public class MixinEnchantmentHelper {
-	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "calculateEnchantmentPower", name = "k", index = 1)
-	private static int modifyK(int k, Random random, int i, int j, ItemStack itemStack) {
-		return ItemStackHelper.getEnchantability(itemStack);
+	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "calculateEnchantmentPower")
+	private static int modifyEnchantmentPower(Item item, Random random, int i, int j, ItemStack stack) {
+		return ItemStackHelper.getEnchantability(stack);
 	}
 
-	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "getEnchantmentInfoEntries", name = "j")
-	private static int modifyJ(int j, Random random, ItemStack itemStack, int i) {
-		return ItemStackHelper.getEnchantability(itemStack);
+	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;getEnchantability()I"), method = "getEnchantmentInfoEntries")
+	private static int modifyInfoEntries(Item item, Random random, ItemStack stack, int i) {
+		return ItemStackHelper.getEnchantability(stack);
 	}
 }

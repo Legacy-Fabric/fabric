@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright (c) 2020 Legacy Fabric
+ * Copyright (c) 2016 - 2020 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +36,7 @@ import net.fabricmc.fabric.impl.base.util.ActionResult;
 
 @Mixin(CraftingResultSlot.class)
 public class MixinCraftingResultSlot {
-	/*@Shadow
+	@Shadow
 	@Final
 	private CraftingInventory craftingInv;
 
@@ -57,11 +58,11 @@ public class MixinCraftingResultSlot {
 		for (int i = 0; i < this.craftingInv.getInvSize(); i++) {
 			ItemStack invStack = this.craftingInv.getInvStack(i);
 
-			if (invStack.getItem() instanceof FabricRecipeRemainder) {
+			if (invStack != null && invStack.getItem() instanceof FabricRecipeRemainder) {
 				itemStacks[i] = ((FabricRecipeRemainder) invStack.getItem()).getRecipeRemainder(invStack.copy(), this.craftingInv, this.player);
 			}
 		}
 
 		return itemStacks;
-	}*/
+	}
 }
