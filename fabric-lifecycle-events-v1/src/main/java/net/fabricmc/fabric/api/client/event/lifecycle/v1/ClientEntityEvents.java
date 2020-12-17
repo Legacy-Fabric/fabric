@@ -14,47 +14,53 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.event.lifecycle.v1;
+package net.fabricmc.fabric.api.client.event.lifecycle.v1;
 
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.profiler.Profiler;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
-public final class ServerEntityEvents {
-	private ServerEntityEvents() {
+@Environment(EnvType.CLIENT)
+public final class ClientEntityEvents {
+	public ClientEntityEvents() {
 	}
 
 	/**
-	 * Called when an Entity is loaded into a ServerWorld.
+	 * Called when an Entity is about to be unloaded from a ClientWorld.
 	 *
-	 * <p>When this event is called, the entity is already in the world.
-	 *
-	 * <p>Note there is no corresponding unload event because entity unloads cannot be reliably tracked.
+	 * <p>When this event is called, the entity is still present in the world.
 	 */
-	public static final Event<ServerEntityEvents.Load> ENTITY_LOAD = EventFactory.createArrayBacked(ServerEntityEvents.Load.class, callbacks -> (entity, world) -> {
+	public static final Event<ClientEntityEvents.Unload> ENTITY_UNLOAD = EventFactory.createArrayBacked(ClientEntityEvents.Unload.class, callbacks -> (entity, world) -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = world.profiler;
-			profiler.push("fabricServerEntityLoad");
+			profiler.push("fabricClientEntityLoad");
 
-			for (ServerEntityEvents.Load callback : callbacks) {
+			for (ClientEntityEvents.Unload callback : callbacks) {
 				profiler.push(EventFactory.getHandlerName(callback));
-				callback.onLoad(entity, world);
+				callback.onUnload(entity, world);
 				profiler.pop();
 			}
 
 			profiler.pop();
 		} else {
-			for (ServerEntityEvents.Load callback : callbacks) {
-				callback.onLoad(entity, world);
+			for (ClientEntityEvents.Unload callback : callbacks) {
+				callback.onUnload(entity, world);
 			}
 		}
 	});
 
 	@FunctionalInterface
 	public interface Load {
-		void onLoad(Entity entity, ServerWorld world);
+		void onLoad(Entity entity, ClientWorld world);
+	}
+
+	@FunctionalInterface
+	public interface Unload {
+		void onUnload(Entity entity, ClientWorld world);
 	}
 }

@@ -34,7 +34,7 @@ public final class ServerChunkEvents {
 	 */
 	public static final Event<ServerChunkEvents.Load> CHUNK_LOAD = EventFactory.createArrayBacked(ServerChunkEvents.Load.class, callbacks -> (serverWorld, chunk) -> {
 		if (EventFactory.isProfilingEnabled()) {
-			final Profiler profiler = serverworld.profiler;
+			final Profiler profiler = serverWorld.profiler;
 			profiler.push("fabricServerChunkLoad");
 
 			for (ServerChunkEvents.Load callback : callbacks) {
@@ -58,7 +58,7 @@ public final class ServerChunkEvents {
 	 */
 	public static final Event<ServerChunkEvents.Unload> CHUNK_UNLOAD = EventFactory.createArrayBacked(ServerChunkEvents.Unload.class, callbacks -> (serverWorld, chunk) -> {
 		if (EventFactory.isProfilingEnabled()) {
-			final Profiler profiler = serverworld.profiler;
+			final Profiler profiler = serverWorld.profiler;
 			profiler.push("fabricServerChunkUnload");
 
 			for (ServerChunkEvents.Unload callback : callbacks) {

@@ -14,73 +14,70 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.client.event.lifecycle.v1;
+package net.fabricmc.fabric.api.event.lifecycle.v1;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.profiler.Profiler;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
-@Environment(EnvType.CLIENT)
-public final class ClientTickEvents {
-	public ClientTickEvents() {
+public final class ServerTickEvents {
+	private ServerTickEvents() {
 	}
 
 	/**
-	 * Called at the start of the client tick.
+	 * Called at the start of the server tick.
 	 */
-	public static final Event<StartTick> START_CLIENT_TICK = EventFactory.createArrayBacked(StartTick.class, callbacks -> client -> {
+	public static final Event<StartTick> START_SERVER_TICK = EventFactory.createArrayBacked(StartTick.class, callbacks -> server -> {
 		if (EventFactory.isProfilingEnabled()) {
-			final Profiler profiler = client.getProfiler();
-			profiler.push("fabricStartClientTick");
+			final Profiler profiler = server.profiler;
+			profiler.push("fabricStartServerTick");
 
 			for (StartTick event : callbacks) {
 				profiler.push(EventFactory.getHandlerName(event));
-				event.onStartTick(client);
+				event.onStartTick(server);
 				profiler.pop();
 			}
 
 			profiler.pop();
 		} else {
 			for (StartTick event : callbacks) {
-				event.onStartTick(client);
+				event.onStartTick(server);
 			}
 		}
 	});
 
 	/**
-	 * Called at the end of the client tick.
+	 * Called at the end of the server tick.
 	 */
-	public static final Event<EndTick> END_CLIENT_TICK = EventFactory.createArrayBacked(EndTick.class, callbacks -> client -> {
+	public static final Event<EndTick> END_SERVER_TICK = EventFactory.createArrayBacked(EndTick.class, callbacks -> server -> {
 		if (EventFactory.isProfilingEnabled()) {
-			final Profiler profiler = client.getProfiler();
-			profiler.push("fabricEndClientTick");
+			final Profiler profiler = server.profiler;
+			profiler.push("fabricEndServerTick");
 
 			for (EndTick event : callbacks) {
 				profiler.push(EventFactory.getHandlerName(event));
-				event.onEndTick(client);
+				event.onEndTick(server);
 				profiler.pop();
 			}
 
 			profiler.pop();
 		} else {
 			for (EndTick event : callbacks) {
-				event.onEndTick(client);
+				event.onEndTick(server);
 			}
 		}
 	});
 
 	/**
-	 * Called at the start of a ClientWorld's tick.
+	 * Called at the start of a ServerWorld's tick.
 	 */
 	public static final Event<StartWorldTick> START_WORLD_TICK = EventFactory.createArrayBacked(StartWorldTick.class, callbacks -> world -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = world.profiler;
-			profiler.push("fabricStartClientWorldTick");
+			profiler.push("fabricStartServerWorldTick");
 
 			for (StartWorldTick callback : callbacks) {
 				profiler.push(EventFactory.getHandlerName(callback));
@@ -97,14 +94,14 @@ public final class ClientTickEvents {
 	});
 
 	/**
-	 * Called at the end of a ClientWorld's tick.
+	 * Called at the end of a ServerWorld's tick.
 	 *
 	 * <p>End of world tick may be used to start async computations for the next tick.
 	 */
 	public static final Event<EndWorldTick> END_WORLD_TICK = EventFactory.createArrayBacked(EndWorldTick.class, callbacks -> world -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = world.profiler;
-			profiler.push("fabricEndClientWorldTick");
+			profiler.push("fabricEndServerWorldTick");
 
 			for (EndWorldTick callback : callbacks) {
 				profiler.push(EventFactory.getHandlerName(callback));
@@ -122,21 +119,21 @@ public final class ClientTickEvents {
 
 	@FunctionalInterface
 	public interface StartTick {
-		void onStartTick(MinecraftClient client);
+		void onStartTick(MinecraftServer server);
 	}
 
 	@FunctionalInterface
 	public interface EndTick {
-		void onEndTick(MinecraftClient client);
+		void onEndTick(MinecraftServer server);
 	}
 
 	@FunctionalInterface
 	public interface StartWorldTick {
-		void onStartTick(ClientWorld world);
+		void onStartTick(ServerWorld world);
 	}
 
 	@FunctionalInterface
 	public interface EndWorldTick {
-		void onEndTick(ClientWorld world);
+		void onEndTick(ServerWorld world);
 	}
 }

@@ -37,7 +37,7 @@ public final class ClientEntityEvents {
 	 */
 	public static final Event<ClientEntityEvents.Load> ENTITY_LOAD = EventFactory.createArrayBacked(ClientEntityEvents.Load.class, callbacks -> (entity, world) -> {
 		if (EventFactory.isProfilingEnabled()) {
-			final Profiler profiler = world.getProfiler();
+			final Profiler profiler = world.profiler;
 			profiler.push("fabricClientEntityLoad");
 
 			for (ClientEntityEvents.Load callback : callbacks) {
@@ -61,7 +61,7 @@ public final class ClientEntityEvents {
 	 */
 	public static final Event<ClientEntityEvents.Unload> ENTITY_UNLOAD = EventFactory.createArrayBacked(ClientEntityEvents.Unload.class, callbacks -> (entity, world) -> {
 		if (EventFactory.isProfilingEnabled()) {
-			final Profiler profiler = world.getProfiler();
+			final Profiler profiler = world.profiler;
 			profiler.push("fabricClientEntityLoad");
 
 			for (ClientEntityEvents.Unload callback : callbacks) {

@@ -34,7 +34,7 @@ public final class ServerBlockEntityEvents {
 	 */
 	public static final Event<ServerBlockEntityEvents.Load> BLOCK_ENTITY_LOAD = EventFactory.createArrayBacked(ServerBlockEntityEvents.Load.class, callbacks -> (blockEntity, world) -> {
 		if (EventFactory.isProfilingEnabled()) {
-			final Profiler profiler = world.getProfiler();
+			final Profiler profiler = world.profiler;
 			profiler.push("fabricServerBlockEntityLoad");
 
 			for (ServerBlockEntityEvents.Load callback : callbacks) {
@@ -58,7 +58,7 @@ public final class ServerBlockEntityEvents {
 	 */
 	public static final Event<Unload> BLOCK_ENTITY_UNLOAD = EventFactory.createArrayBacked(ServerBlockEntityEvents.Unload.class, callbacks -> (blockEntity, world) -> {
 		if (EventFactory.isProfilingEnabled()) {
-			final Profiler profiler = world.getProfiler();
+			final Profiler profiler = world.profiler;
 			profiler.push("fabricServerBlockEntityUnload");
 
 			for (ServerBlockEntityEvents.Unload callback : callbacks) {

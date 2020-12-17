@@ -20,7 +20,7 @@ def ENV = System.getenv()
 class Globals {
 	static def baseVersion = "0.28.1"
 	static def mcVersion = "1.12.2"
-	static def yarnVersion = "1.12.2+build.202012160519"
+	static def yarnVersion = "1.12.2+build.202012170913"
 	static def loaderVersion = "patch-1-SNAPSHOT"
 }
 
@@ -349,7 +349,7 @@ curseforge {
 		id = "306612"
 		changelog = "A changelog can be found at https://github.com/FabricMC/fabric/commits"
 		releaseType = "release"
-		addGameVersion "1.16.4"
+		addGameVersion "1.12.2"
 		addGameVersion "Fabric"
 
 		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
