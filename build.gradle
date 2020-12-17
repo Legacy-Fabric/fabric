@@ -1,63 +1,105 @@
-plugins {
-	id 'java'
-	id 'eclipse'
-	id 'idea'
-	id 'maven-publish'
-	id 'fabric-loom' version '0.4-SNAPSHOT' apply false
-	id 'net.minecrell.licenser' version '0.4.1'
-	id "org.ajoberstar.grgit" version "3.1.1"
-	id 'com.matthewprenger.cursegradle' version "1.4.0"
-	id 'maven'
-	id 'signing'
-	id 'com.jfrog.bintray' version '1.8.4'
+buildscript {
+	dependencies {
+		classpath 'org.kohsuke:github-api:1.114'
+	}
 }
+
+plugins {
+	id "java"
+	id "eclipse"
+	id "idea"
+	id "maven-publish"
+	id "fabric-loom" version "0.5.43" apply false
+	id "net.minecrell.licenser" version "0.4.1"
+	id "org.ajoberstar.grgit" version "3.1.1"
+	id "com.matthewprenger.cursegradle" version "1.4.0"
+}
+
+def ENV = System.getenv()
 
 class Globals {
-	static def baseVersion = "0.9.2"
-	static def mcVersion = "1.8.9"
-	static def yarnVersion = "+build.202009230433"
+	static def baseVersion = "0.28.1"
+	static def mcVersion = "1.12.2"
+	static def yarnVersion = "1.12.2+build.202012160519"
+	static def loaderVersion = "patch-1-SNAPSHOT"
 }
 
-version = Globals.baseVersion
+version = Globals.baseVersion + "+" + (ENV.GITHUB_RUN_NUMBER ? "" : "local-") + getBranch()
 logger.lifecycle("Building Fabric: " + version)
 
 import org.apache.commons.codec.digest.DigestUtils
+import net.fabricmc.loom.task.RunClientTask
+import net.fabricmc.loom.task.RunServerTask
 
 def getSubprojectVersion(project, version) {
 	if (grgit == null) {
 		return version + "+nogit"
 	}
+
 	def latestCommits = grgit.log(paths: [project.name], maxCommits: 1)
+
 	if (latestCommits.isEmpty()) {
 		return version + "+uncommited"
-	} else {
-		return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex(Globals.mcVersion).substring(0, 2)
 	}
+
+	return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex(Globals.mcVersion).substring(0, 2)
 }
 
 def getBranch() {
-	if (System.getenv().GIT_BRANCH) {
-		def branch = System.getenv().GIT_BRANCH
+	def ENV = System.getenv()
+	if (ENV.GITHUB_REF) {
+		def branch = ENV.GITHUB_REF
 		return branch.substring(branch.lastIndexOf("/") + 1)
 	}
+
 	if (grgit == null) {
 		return "unknown"
 	}
+
 	def branch = grgit.branch.current().name
 	return branch.substring(branch.lastIndexOf("/") + 1)
 }
 
-allprojects {
-	apply plugin: 'checkstyle'
-	apply plugin: 'maven-publish'
-	apply plugin: 'maven'
-	apply plugin: 'signing'
-	apply plugin: 'com.jfrog.bintray'
-	apply plugin: 'fabric-loom'
-	apply plugin: 'net.minecrell.licenser'
+def moduleDependencies(project, List<String> depNames) {
+	def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: 'dev') }
+	project.dependencies {
+		deps.each {
+			compile it
+		}
+	}
+	project.publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				pom.withXml {
+					def depsNode = asNode().appendNode("dependencies")
+					deps.each {
+						def depNode = depsNode.appendNode("dependency")
+						depNode.appendNode("groupId", it.group)
+						depNode.appendNode("artifactId", it.name)
+						depNode.appendNode("version", it.version)
+						depNode.appendNode("scope", "compile")
+					}
+				}
+			}
+		}
+	}
+}
 
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
+allprojects {
+	apply plugin: "checkstyle"
+	apply plugin: "maven-publish"
+	apply plugin: "fabric-loom"
+	apply plugin: "net.minecrell.licenser"
+
+	tasks.withType(JavaCompile).configureEach {
+		def targetVersion = 8
+		if (JavaVersion.current().isJava9Compatible()) {
+			it.options.release = targetVersion
+		} else {
+			sourceCompatibility = JavaVersion.toVersion(targetVersion)
+			targetCompatibility = JavaVersion.toVersion(targetVersion)
+		}
+	}
 
 	group = "net.fabricmc.fabric-api"
 
@@ -68,8 +110,17 @@ allprojects {
 		}
 	}
 
+	task runTestmodClient(type: RunClientTask) {
+		classpath sourceSets.testmod.runtimeClasspath
+	}
+
+	task runTestmodServer(type: RunServerTask) {
+		classpath sourceSets.testmod.runtimeClasspath
+	}
+
 	repositories {
 		maven { url "https://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven" }
+		maven { url "https://jitpack.io" }
 	}
 
 	minecraft {
@@ -79,18 +130,21 @@ allprojects {
 	}
 
 	dependencies {
-		compile "com.google.guava:guava:23.5-jre"
 		minecraft "com.mojang:minecraft:$Globals.mcVersion"
-		mappings "net.fabricmc:yarn:${Globals.mcVersion}${Globals.yarnVersion}:v2"
-		modCompile("net.fabricmc:fabric-loader-1.8.9:0.8.7+build.202008300717") {
-			exclude module: "guava"
-		}
-
-		implementation 'com.mojang:brigadier:1.0.17'
+		mappings "net.fabricmc:yarn:${Globals.yarnVersion}:v2"
+		modCompile "com.github.shedaniel:fabric-loader:${Globals.loaderVersion}"
 	}
 
 	configurations {
 		dev
+	}
+
+	loom {
+		shareCaches = true
+	}
+
+	repositories {
+		mavenLocal()
 	}
 
 	jar {
@@ -121,42 +175,44 @@ allprojects {
 		}
 
 		license {
-			header rootProject.file('HEADER')
-			include '**/*.java'
+			header rootProject.file("HEADER")
+			include "**/*.java"
 		}
 	}
 
 	task sourcesJar(type: Jar, dependsOn: classes) {
-		classifier = 'sources'
+		archiveClassifier = "sources"
 		from sourceSets.main.allSource
 	}
 
 	checkstyle {
 		configFile = rootProject.file("checkstyle.xml")
-		toolVersion = '8.31'
+		toolVersion = "8.31"
 	}
 }
 
 javadoc {
 	options {
 		source = "8"
-		encoding = 'UTF-8'
-		charSet = 'UTF-8'
+		encoding = "UTF-8"
+		charSet = "UTF-8"
 		memberLevel = JavadocMemberLevel.PACKAGE
 		links(
-				'https://guava.dev/releases/21.0/api/docs/',
-				'https://asm.ow2.io/javadoc/',
-				'https://docs.oracle.com/javase/8/docs/api/',
-				'http://jenkins.liteloader.com/job/Mixin/javadoc/',
-				'https://logging.apache.org/log4j/2.x/log4j-api/apidocs/'
+				"https://guava.dev/releases/21.0/api/docs/",
+				"https://asm.ow2.io/javadoc/",
+				"https://docs.oracle.com/javase/8/docs/api/",
+				"http://jenkins.liteloader.com/job/Mixin/javadoc/",
+				"https://logging.apache.org/log4j/2.x/log4j-api/apidocs/"
 				// Need to add minecraft jd publication etc once there is one available
 		)
 		// Disable the crazy super-strict doclint tool in Java 8
-		addStringOption('Xdoclint:none', '-quiet')
+		addStringOption("Xdoclint:none", "-quiet")
 	}
+
 	allprojects.each {
 		source(it.sourceSets.main.allJava.srcDirs)
 	}
+
 	classpath = sourceSets.main.compileClasspath
 	include("**/api/**")
 	failOnError false
@@ -166,15 +222,25 @@ task javadocJar(type: Jar) {
 	dependsOn javadoc
 	from javadoc.destinationDir
 	//Set as `fatjavadoc` to prevent an ide form trying to use this javadoc, over using the modules javadoc
-	classifier = 'fatjavadoc'
+	archiveClassifier = "fatjavadoc"
 }
+
 build.dependsOn javadocJar
+
+// Runs a dedicated headless server with all test mods that closes once complete.
+task runAutoTestServer(type: RunServerTask) {
+	project.subprojects {
+		classpath it.sourceSets.testmod.runtimeClasspath
+	}
+	jvmArgs "-Dfabric.autoTest"
+	args "--nogui"
+}
 
 subprojects {
 	dependencies {
 		testmodCompile sourceSets.main.output
 	}
-	
+
 	task remapMavenJar(type: Copy, dependsOn: remapJar) {
 		afterEvaluate {
 			from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
@@ -185,40 +251,20 @@ subprojects {
 
 	publishing {
 		publications {
-			create("${archivesBaseName}_mavenJava", MavenPublication) {
+			mavenJava(MavenPublication) {
 				afterEvaluate {
 					artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
 						builtBy remapMavenJar
 					}
+
 					artifact(sourcesJar) {
 						builtBy remapSourcesJar
 					}
 				}
 			}
 		}
-	}
 
-	bintray {
-		user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-		key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
-		publications = ["${archivesBaseName}_mavenJava"]
-		publish = true
-		pkg {
-			repo = "Legacy-Fabric-Maven"
-			name = archivesBaseName
-			userOrg = "legacy-fabric"
-			licenses = ["Apache-2.0"]
-			version {
-				released = new Date()
-				githubRepo = 'Legacy-Fabric/fabric'
-				websiteUrl = 'https://github.com/Legacy-Fabric/fabric'
-				issueTrackerUrl = 'https://github.com/Legacy-Fabric/fabric/issues'
-				vcsUrl = 'https://github.com/Legacy-Fabric/fabric.git'
-				gpg {
-					sign = true
-				}
-			}
-		}
+		setupRepositories(repositories)
 	}
 
 	javadoc.enabled = false
@@ -232,41 +278,19 @@ task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
 	}
 }
 
-subprojects.each { bintrayUpload.dependsOn("${it.path}:bintrayUpload") }
-
-bintray {
-	user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-	key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
-	publications = ["mavenJava"]
-	publish = true
-	pkg {
-		repo = "Legacy-Fabric-Maven"
-		name = "fabric"
-		userOrg = "legacy-fabric"
-		licenses = ["Apache-2.0"]
-		version {
-			released = new Date()
-			githubRepo = 'Legacy-Fabric/fabric'
-			websiteUrl = 'https://github.com/Legacy-Fabric/fabric'
-			issueTrackerUrl = 'https://github.com/Legacy-Fabric/fabric/issues'
-			vcsUrl = 'https://github.com/Legacy-Fabric/fabric.git'
-			gpg {
-				sign = true
-			}
-		}
-	}
-}
-
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
 				builtBy remapMavenJar
 			}
+
 			artifact(sourcesJar) {
 				builtBy remapSourcesJar
 			}
+
 			artifact javadocJar
+
 			pom.withXml {
 				def depsNode = asNode().appendNode("dependencies")
 				subprojects.each {
@@ -276,6 +300,22 @@ publishing {
 					depNode.appendNode("version", it.version)
 					depNode.appendNode("scope", "compile")
 				}
+			}
+		}
+	}
+
+	setupRepositories(repositories)
+}
+
+void setupRepositories(RepositoryHandler repositories) {
+	//repositories.mavenLocal() // uncomment for testing
+	def ENV = System.getenv()
+	if (ENV.MAVEN_URL) {
+		repositories.maven {
+			url ENV.MAVEN_URL
+			credentials {
+				username ENV.MAVEN_USERNAME
+				password ENV.MAVEN_PASSWORD
 			}
 		}
 	}
@@ -301,25 +341,65 @@ dependencies {
 }
 
 curseforge {
-    if (project.hasProperty('curse_api_key')) {
-        apiKey = project.getProperty('curse_api_key')
-    }
-    project {
-        id = '400281'
-        changelog = 'A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits'
-        releaseType = 'beta'
-        addGameVersion '1.8.9'
-        addGameVersion 'Fabric'
-        mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
-            displayName = "[$Globals.mcVersion] Legacy Fabric API $Globals.baseVersion"
-        }
-        afterEvaluate {
-            uploadTask.dependsOn("remapJar")
-        }
-    }
-    options {
-        forgeGradleIntegration = false
-    }
+	if (ENV.CURSEFORGE_API_KEY) {
+		apiKey = ENV.CURSEFORGE_API_KEY
+	}
+
+	project {
+		id = "306612"
+		changelog = "A changelog can be found at https://github.com/FabricMC/fabric/commits"
+		releaseType = "release"
+		addGameVersion "1.16.4"
+		addGameVersion "Fabric"
+
+		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
+			displayName = "[$Globals.mcVersion] Fabric API $Globals.baseVersion"
+		}
+
+		afterEvaluate {
+			uploadTask.dependsOn("remapJar")
+		}
+	}
+
+	options {
+		forgeGradleIntegration = false
+	}
 }
 
-//apply from: 'https://github.com/FabricMC/fabric-docs/raw/master/gradle/ideconfig.gradle'
+import org.kohsuke.github.GHReleaseBuilder
+import org.kohsuke.github.GitHub
+
+task github(dependsOn: remapMavenJar) {
+	onlyIf {
+		ENV.GITHUB_TOKEN
+	}
+
+	doLast {
+		def github = GitHub.connectUsingOAuth(ENV.GITHUB_TOKEN as String)
+		def repository = github.getRepository(ENV.GITHUB_REPOSITORY)
+
+		def releaseBuilder = new GHReleaseBuilder(repository, version as String)
+		releaseBuilder.name("[$Globals.mcVersion] Fabric API $Globals.baseVersion")
+		releaseBuilder.body("A changelog can be found at https://github.com/FabricMC/fabric/commits")
+		releaseBuilder.commitish(getBranch())
+
+		def ghRelease = releaseBuilder.create()
+		ghRelease.uploadAsset(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"), "application/java-archive");
+	}
+}
+
+// A task to ensure that the version being released has not already been released.
+task checkVersion {
+	doFirst {
+		def xml = new URL("https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml").text
+		def metadata = new XmlSlurper().parseText(xml)
+		def versions = metadata.versioning.versions.version*.text();
+		if (versions.contains(version)) {
+			throw new RuntimeException("${version} has already been released!")
+		}
+	}
+}
+
+github.mustRunAfter checkVersion
+publish.mustRunAfter checkVersion
+project.tasks.curseforge.mustRunAfter checkVersion

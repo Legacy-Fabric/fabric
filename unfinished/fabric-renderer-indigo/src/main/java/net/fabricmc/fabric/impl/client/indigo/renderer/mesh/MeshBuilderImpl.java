@@ -19,8 +19,6 @@ package net.fabricmc.fabric.impl.client.indigo.renderer.mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.impl.client.indigo.renderer.helper.ColorHelper;
-import net.fabricmc.fabric.impl.client.indigo.renderer.helper.GeometryHelper;
 
 /**
  * Our implementation of {@link MeshBuilder}, used for static mesh creation and baking.
@@ -38,7 +36,7 @@ public class MeshBuilderImpl implements MeshBuilder {
 	protected void ensureCapacity(int stride) {
 		if (stride > limit - index) {
 			limit *= 2;
-			int[] bigger = new int[limit];
+			final int[] bigger = new int[limit];
 			System.arraycopy(data, 0, bigger, 0, index);
 			data = bigger;
 			maker.data = bigger;
@@ -47,7 +45,7 @@ public class MeshBuilderImpl implements MeshBuilder {
 
 	@Override
 	public Mesh build() {
-		int[] packed = new int[index];
+		final int[] packed = new int[index];
 		System.arraycopy(data, 0, packed, 0, index);
 		index = 0;
 		maker.begin(data, index);
@@ -70,13 +68,7 @@ public class MeshBuilderImpl implements MeshBuilder {
 	private class Maker extends MutableQuadViewImpl implements QuadEmitter {
 		@Override
 		public Maker emit() {
-			lightFace(GeometryHelper.lightFace(this));
-
-			if (isGeometryInvalid) {
-				geometryFlags(GeometryHelper.computeShapeFlags(this));
-			}
-
-			ColorHelper.applyDiffuseShading(this, false);
+			computeGeometry();
 			index += EncodingFormat.TOTAL_STRIDE;
 			ensureCapacity(EncodingFormat.TOTAL_STRIDE);
 			baseIndex = index;

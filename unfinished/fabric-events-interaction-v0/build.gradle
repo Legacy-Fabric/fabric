@@ -1,0 +1,6 @@
+archivesBaseName = "fabric-events-interaction-v0"
+version = getSubprojectVersion(project, "0.4.1")
+
+moduleDependencies(project, [
+		'fabric-api-base'
+])

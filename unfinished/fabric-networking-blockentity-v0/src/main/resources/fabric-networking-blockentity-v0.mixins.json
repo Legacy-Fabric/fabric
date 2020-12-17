@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.mixin.networking.blockentity",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinBlockEntity"
+  ],
+  "client": [
+    "MixinClientPlayNetworkHandler"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

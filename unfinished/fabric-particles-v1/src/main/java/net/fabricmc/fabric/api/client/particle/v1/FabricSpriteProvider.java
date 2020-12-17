@@ -18,6 +18,7 @@ package net.fabricmc.fabric.api.client.particle.v1;
 
 import java.util.List;
 
+import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
@@ -32,7 +33,7 @@ import net.minecraft.particle.ParticleType;
  * interface containing the sprites set loaded for their particle from the
  * active resourcepacks.
  *
- * @see ParticleFactoryRegistry#register(ParticleType, ParticleFactoryRegistry.PendingParticleFactory)
+ * @see ParticleFactoryRegistry#register(ParticleType, ParticleFactory)
  * @see ParticleFactoryRegistry.PendingParticleFactory
  */
 public interface FabricSpriteProvider extends SpriteProvider {

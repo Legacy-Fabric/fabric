@@ -16,20 +16,23 @@
 
 package net.fabricmc.fabric.impl.tag.extension;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
 
+import net.minecraft.tag.TagGroup;
 import net.minecraft.tag.Tag;
-import net.minecraft.tag.TagContainer;
 import net.minecraft.util.Identifier;
 
-public final class TagDelegate<T> extends Tag<T> {
-	private final Supplier<TagContainer<T>> containerSupplier;
+import net.fabricmc.fabric.api.tag.FabricTag;
+
+public final class TagDelegate<T> implements Tag.Identified<T>, FabricTag<T>, FabricTagHooks {
+	private final Identifier id;
+	private final Supplier<TagGroup<T>> containerSupplier;
 	private volatile Target<T> target;
+	private int clearCount;
 
-	public TagDelegate(Identifier id, Supplier<TagContainer<T>> containerSupplier) {
-		super(id);
-
+	public TagDelegate(Identifier id, Supplier<TagGroup<T>> containerSupplier) {
+		this.id = id;
 		this.containerSupplier = containerSupplier;
 	}
 
@@ -39,13 +42,8 @@ public final class TagDelegate<T> extends Tag<T> {
 	}
 
 	@Override
-	public Collection<T> values() {
+	public List<T> values() {
 		return getTag().values();
-	}
-
-	@Override
-	public Collection<Tag.Entry<T>> entries() {
-		return getTag().entries();
 	}
 
 	/**
@@ -59,11 +57,11 @@ public final class TagDelegate<T> extends Tag<T> {
 	 */
 	private Tag<T> getTag() {
 		Target<T> target = this.target;
-		TagContainer<T> reqContainer = containerSupplier.get();
+		TagGroup<T> reqContainer = containerSupplier.get();
 		Tag<T> ret;
 
 		if (target == null || target.container != reqContainer) {
-			ret = reqContainer.getOrCreate(getId());
+			ret = reqContainer.getTagOrEmpty(getId());
 			this.target = new Target<>(reqContainer, ret);
 		} else {
 			ret = target.tag;
@@ -72,13 +70,28 @@ public final class TagDelegate<T> extends Tag<T> {
 		return ret;
 	}
 
+	@Override
+	public Identifier getId() {
+		return id;
+	}
+
+	@Override
+	public boolean hasBeenReplaced() {
+		return clearCount > 0;
+	}
+
+	@Override
+	public void fabric_setExtraData(int clearCount) {
+		this.clearCount = clearCount;
+	}
+
 	private static final class Target<T> {
-		Target(TagContainer<T> container, Tag<T> tag) {
+		Target(TagGroup<T> container, Tag<T> tag) {
 			this.container = container;
 			this.tag = tag;
 		}
 
-		final TagContainer<T> container;
+		final TagGroup<T> container;
 		final Tag<T> tag;
 	}
 }

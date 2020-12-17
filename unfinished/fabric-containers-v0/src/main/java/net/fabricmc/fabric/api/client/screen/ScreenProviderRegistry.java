@@ -16,14 +16,18 @@
 
 package net.fabricmc.fabric.api.client.screen;
 
-import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
-import net.minecraft.container.Container;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.api.container.ContainerFactory;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.fabricmc.fabric.impl.client.container.ScreenProviderRegistryImpl;
 
+/**
+ * @deprecated Use {@link net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry} instead.
+ */
+@Deprecated
 public interface ScreenProviderRegistry {
 	ScreenProviderRegistry INSTANCE = ScreenProviderRegistryImpl.INSTANCE;
 
@@ -33,14 +37,14 @@ public interface ScreenProviderRegistry {
 	 * @param identifier             a shared identifier, this identifier should also be used to register a container using {@link ContainerProviderRegistry}
 	 * @param containerScreenFactory the supplier that should be used to create the new gui
 	 */
-	<C extends Container> void registerFactory(Identifier identifier, ContainerScreenFactory<C> containerScreenFactory);
+	<C extends ScreenHandler> void registerFactory(Identifier identifier, ContainerScreenFactory<C> containerScreenFactory);
 
 	/**
 	 * Register a "packet -&gt; ContainerScreen" factory. This is used only on the client side, and allows you
 	 * to override the default behaviour of re-using the existing "packet -&gt; Container" logic.
 	 *
 	 * @param identifier a shared identifier, this identifier should also be used to register a container using {@link ContainerProviderRegistry}
-	 * @param factory    the gui factory, this should return a new {@link AbstractContainerScreen}
+	 * @param factory    the gui factory, this should return a new {@link HandledScreen}
 	 */
-	void registerFactory(Identifier identifier, ContainerFactory<AbstractContainerScreen> factory);
+	void registerFactory(Identifier identifier, ContainerFactory<HandledScreen> factory);
 }

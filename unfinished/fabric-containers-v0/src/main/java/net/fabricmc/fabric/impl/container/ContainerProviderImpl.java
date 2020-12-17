@@ -24,19 +24,19 @@ import io.netty.buffer.Unpooled;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.client.network.packet.CustomPayloadS2CPacket;
-import net.minecraft.container.Container;
+import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
 
 import net.fabricmc.fabric.api.container.ContainerFactory;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
-import net.fabricmc.fabric.impl.networking.PacketTypes;
 import net.fabricmc.fabric.mixin.container.ServerPlayerEntityAccessor;
 
 public class ContainerProviderImpl implements ContainerProviderRegistry {
+	public static final Identifier OPEN_CONTAINER = new Identifier("fabric", "container/open");
 	/**
 	 * Use the instance provided by ContainerProviderRegistry.
 	 */
@@ -44,10 +44,10 @@ public class ContainerProviderImpl implements ContainerProviderRegistry {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	private static final Map<Identifier, ContainerFactory<Container>> FACTORIES = new HashMap<>();
+	private static final Map<Identifier, ContainerFactory<ScreenHandler>> FACTORIES = new HashMap<>();
 
 	@Override
-	public void registerFactory(Identifier identifier, ContainerFactory<Container> factory) {
+	public void registerFactory(Identifier identifier, ContainerFactory<ScreenHandler> factory) {
 		if (FACTORIES.containsKey(identifier)) {
 			throw new RuntimeException("A factory has already been registered as " + identifier.toString());
 		}
@@ -80,8 +80,8 @@ public class ContainerProviderImpl implements ContainerProviderRegistry {
 				emittedNoSyncHookWarning = true;
 			}
 
-			syncId = (((ServerPlayerEntityAccessor) player).getContainerSyncId() + 1) % 100;
-			((ServerPlayerEntityAccessor) player).setContainerSyncId(syncId);
+			syncId = (((ServerPlayerEntityAccessor) player).getScreenHandlerSyncId() + 1) % 100;
+			((ServerPlayerEntityAccessor) player).setScreenHandlerSyncId(syncId);
 		} else {
 			throw new RuntimeException("Neither ServerPlayerEntitySyncHook nor Accessor present! This should not happen!");
 		}
@@ -91,24 +91,24 @@ public class ContainerProviderImpl implements ContainerProviderRegistry {
 		buf.writeByte(syncId);
 
 		writer.accept(buf);
-		player.networkHandler.sendPacket(new CustomPayloadS2CPacket(PacketTypes.OPEN_CONTAINER, buf));
+		player.networkHandler.sendPacket(new CustomPayloadS2CPacket(OPEN_CONTAINER, buf));
 
 		PacketByteBuf clonedBuf = new PacketByteBuf(buf.duplicate());
 		clonedBuf.readIdentifier();
 		clonedBuf.readUnsignedByte();
 
-		Container container = createContainer(syncId, identifier, player, clonedBuf);
+		ScreenHandler container = createContainer(syncId, identifier, player, clonedBuf);
 
 		if (container == null) {
 			return;
 		}
 
-		player.container = container;
-		player.container.addListener(player);
+		player.currentScreenHandler = container;
+		player.currentScreenHandler.addListener(player);
 	}
 
-	public <C extends Container> C createContainer(int syncId, Identifier identifier, PlayerEntity player, PacketByteBuf buf) {
-		ContainerFactory<Container> factory = FACTORIES.get(identifier);
+	public <C extends ScreenHandler> C createContainer(int syncId, Identifier identifier, PlayerEntity player, PacketByteBuf buf) {
+		ContainerFactory<ScreenHandler> factory = FACTORIES.get(identifier);
 
 		if (factory == null) {
 			LOGGER.error("No container factory found for {}!", identifier.toString());

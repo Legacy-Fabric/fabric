@@ -17,7 +17,6 @@
 package net.fabricmc.fabric.impl.client.indigo.renderer.render;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -34,11 +33,11 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.render.model.json.ModelTransformation.Mode;
-import net.minecraft.client.util.math.Matrix4f;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Matrix4f;
 
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
@@ -46,9 +45,9 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
+import net.fabricmc.fabric.impl.client.indigo.renderer.IndigoRenderer;
 import net.fabricmc.fabric.impl.client.indigo.renderer.RenderMaterialImpl;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.ColorHelper;
-import net.fabricmc.fabric.impl.client.indigo.renderer.helper.GeometryHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.EncodingFormat;
 import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.MeshImpl;
 import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.MutableQuadViewImpl;
@@ -107,7 +106,7 @@ public class ItemRenderContext extends AbstractRenderContext implements RenderCo
 		this.transformMode = transformMode;
 		this.vanillaHandler = vanillaHandler;
 		quadBlendMode = BlendMode.DEFAULT;
-		modelVertexConsumer = selectVertexConsumer(RenderLayers.getItemLayer(itemStack));
+		modelVertexConsumer = selectVertexConsumer(RenderLayers.getItemLayer(itemStack, transformMode != ModelTransformation.Mode.GROUND));
 
 		matrixStack.push();
 		((BakedModel) model).getTransformation().getTransformation(transformMode).apply(invert, matrixStack);
@@ -132,8 +131,8 @@ public class ItemRenderContext extends AbstractRenderContext implements RenderCo
 	 * support sprite layers, so this can't be helped in this implementation.
 	 */
 	private VertexConsumer selectVertexConsumer(RenderLayer layerIn) {
-		final RenderLayer layer = transformMode == ModelTransformation.Mode.GUI && Objects.equals(layerIn, TexturedRenderLayers.getEntityTranslucent()) ? TexturedRenderLayers.getEntityTranslucentCull() : layerIn;
-		return ItemRenderer.getArmorVertexConsumer(vertexConsumerProvider, layer, true, itemStack.hasEnchantmentGlint());
+		final RenderLayer layer = transformMode == ModelTransformation.Mode.GUI ? TexturedRenderLayers.getEntityTranslucentCull() : layerIn;
+		return ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, layer, true, itemStack.hasGlint());
 	}
 
 	private class Maker extends MutableQuadViewImpl implements QuadEmitter {
@@ -144,8 +143,7 @@ public class ItemRenderContext extends AbstractRenderContext implements RenderCo
 
 		@Override
 		public Maker emit() {
-			lightFace(GeometryHelper.lightFace(this));
-			ColorHelper.applyDiffuseShading(this, false);
+			computeGeometry();
 			renderQuad();
 			clear();
 			return this;
@@ -211,7 +209,7 @@ public class ItemRenderContext extends AbstractRenderContext implements RenderCo
 		if (blendMode == quadBlendMode) {
 			return quadVertexConsumer;
 		} else if (blendMode == BlendMode.TRANSLUCENT) {
-			quadVertexConsumer = selectVertexConsumer(TexturedRenderLayers.getEntityTranslucent());
+			quadVertexConsumer = selectVertexConsumer(TexturedRenderLayers.getEntityTranslucentCull());
 			quadBlendMode = BlendMode.TRANSLUCENT;
 		} else {
 			quadVertexConsumer = selectVertexConsumer(TexturedRenderLayers.getEntityCutout());
@@ -249,13 +247,7 @@ public class ItemRenderContext extends AbstractRenderContext implements RenderCo
 		final Maker editorQuad = this.editorQuad;
 
 		for (final BakedQuad q : quads) {
-			editorQuad.clear();
-			editorQuad.fromVanilla(q.getVertexData(), 0, false);
-			editorQuad.cullFace(cullFace);
-			final Direction lightFace = q.getFace();
-			editorQuad.lightFace(lightFace);
-			editorQuad.nominalFace(lightFace);
-			editorQuad.colorIndex(q.getColorIndex());
+			editorQuad.fromVanilla(q, IndigoRenderer.MATERIAL_STANDARD, cullFace);
 			renderQuad();
 		}
 	}

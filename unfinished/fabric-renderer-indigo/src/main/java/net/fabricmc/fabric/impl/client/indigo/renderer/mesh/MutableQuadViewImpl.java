@@ -31,6 +31,7 @@ import static net.fabricmc.fabric.impl.client.indigo.renderer.mesh.EncodingForma
 
 import com.google.common.base.Preconditions;
 
+import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.util.math.Direction;
 
@@ -38,16 +39,14 @@ import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.impl.client.indigo.renderer.IndigoRenderer;
 import net.fabricmc.fabric.impl.client.indigo.renderer.RenderMaterialImpl.Value;
-import net.fabricmc.fabric.impl.client.indigo.renderer.helper.GeometryHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.NormalHelper;
 import net.fabricmc.fabric.impl.client.indigo.renderer.helper.TextureHelper;
-import net.fabricmc.fabric.impl.client.indigo.renderer.helper.ColorHelper.ShadeableQuad;
 
 /**
  * Almost-concrete implementation of a mutable quad. The only missing part is {@link #emit()},
  * because that depends on where/how it is used. (Mesh encoding vs. render-time transformation).
  */
-public abstract class MutableQuadViewImpl extends QuadViewImpl implements QuadEmitter, ShadeableQuad {
+public abstract class MutableQuadViewImpl extends QuadViewImpl implements QuadEmitter {
 	public final void begin(int[] data, int baseIndex) {
 		this.data = data;
 		this.baseIndex = baseIndex;
@@ -56,7 +55,6 @@ public abstract class MutableQuadViewImpl extends QuadViewImpl implements QuadEm
 
 	public void clear() {
 		System.arraycopy(EMPTY, 0, data, baseIndex, EncodingFormat.TOTAL_STRIDE);
-		isFaceNormalInvalid = true;
 		isGeometryInvalid = true;
 		nominalFace = null;
 		normalFlags(0);
@@ -83,13 +81,6 @@ public abstract class MutableQuadViewImpl extends QuadViewImpl implements QuadEm
 		return this;
 	}
 
-	public final MutableQuadViewImpl lightFace(Direction face) {
-		Preconditions.checkNotNull(face);
-
-		data[baseIndex + HEADER_BITS] = EncodingFormat.lightFace(data[baseIndex + HEADER_BITS], face);
-		return this;
-	}
-
 	@Override
 	public final MutableQuadViewImpl nominalFace(Direction face) {
 		nominalFace = face;
@@ -108,21 +99,28 @@ public abstract class MutableQuadViewImpl extends QuadViewImpl implements QuadEm
 		return this;
 	}
 
+	/**
+	 * @deprecated will be removed in 1.17 cycle - see docs in interface
+	 */
+	@Deprecated
 	@Override
 	public final MutableQuadViewImpl fromVanilla(int[] quadData, int startIndex, boolean isItem) {
 		System.arraycopy(quadData, startIndex, data, baseIndex + HEADER_STRIDE, QUAD_STRIDE);
-		this.invalidateShape();
+		isGeometryInvalid = true;
 		return this;
 	}
 
 	@Override
-	public boolean isFaceAligned() {
-		return (geometryFlags() & GeometryHelper.AXIS_ALIGNED_FLAG) != 0;
-	}
-
-	@Override
-	public boolean needsDiffuseShading(int textureIndex) {
-		return textureIndex == 0 && !material().disableDiffuse(textureIndex);
+	public final MutableQuadViewImpl fromVanilla(BakedQuad quad, RenderMaterial material, Direction cullFace) {
+		System.arraycopy(quad.getVertexData(), 0, data, baseIndex + HEADER_STRIDE, QUAD_STRIDE);
+		data[baseIndex + HEADER_BITS] = EncodingFormat.cullFace(0, cullFace);
+		nominalFace(quad.getFace());
+		colorIndex(quad.getColorIndex());
+		material(material);
+		tag(0);
+		shade(quad.hasShade());
+		isGeometryInvalid = true;
+		return this;
 	}
 
 	@Override
@@ -131,11 +129,11 @@ public abstract class MutableQuadViewImpl extends QuadViewImpl implements QuadEm
 		data[index] = Float.floatToRawIntBits(x);
 		data[index + 1] = Float.floatToRawIntBits(y);
 		data[index + 2] = Float.floatToRawIntBits(z);
-		isFaceNormalInvalid = true;
+		isGeometryInvalid = true;
 		return this;
 	}
 
-	public void normalFlags(int flags) {
+	protected void normalFlags(int flags) {
 		data[baseIndex + HEADER_BITS] = EncodingFormat.normalFlags(data[baseIndex + HEADER_BITS], flags);
 	}
 

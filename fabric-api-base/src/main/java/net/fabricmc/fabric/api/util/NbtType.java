@@ -16,15 +16,11 @@
 
 package net.fabricmc.fabric.api.util;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-
 /**
  * NBT type ID constants. Useful for filtering by value type in a few cases.
  *
- * <p>For the current list of types, check with {@link Tag#TYPES}.
+ * <p>For the current list of types, check with Tag Types.
  *
- * @see CompoundTag#contains(String, int)
  */
 public final class NbtType {
 	public static final int END = 0;
@@ -44,7 +40,6 @@ public final class NbtType {
 	/**
 	 * Any numeric value: byte, short, int, long, float, double.
 	 *
-	 * @see CompoundTag#contains(String, int)
 	 */
 	public static final int NUMBER = 99;
 
