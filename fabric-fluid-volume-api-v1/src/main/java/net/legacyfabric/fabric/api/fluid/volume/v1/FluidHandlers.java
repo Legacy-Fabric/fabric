@@ -38,11 +38,11 @@ public class FluidHandlers {
 		HOLDERS.put(supports, holderFunction);
 	}
 
-	public static FluidStorageHandler getOrThrow(Object object, FluidType fluidType) {
-		return get(object, fluidType).orElseThrow(() -> new RuntimeException(String.format("object type (%s) not supported", object.getClass().getName())));
+	public static FluidStorageHandler get(Object object, FluidType fluidType) {
+		return getOptional(object, fluidType).orElseThrow(() -> new RuntimeException(String.format("object type (%s) not supported", object.getClass().getName())));
 	}
 
-	public static Optional<FluidStorageHandler> get(Object object, FluidType fluidType) {
+	public static Optional<FluidStorageHandler> getOptional(Object object, FluidType fluidType) {
 		if (object == null) {
 			return Optional.empty();
 		}
