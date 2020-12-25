@@ -86,6 +86,10 @@ allprojects {
 		}
 	}
 
+	test {
+		useJUnitPlatform()
+	}
+
 	configurations {
 		dev
 	}

@@ -23,6 +23,7 @@ import java.util.function.BiConsumer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import net.minecraft.Bootstrap;
 import net.minecraft.block.Blocks;
 
 import net.legacyfabric.fabric.api.fluid.volume.v1.FluidHandlers;
@@ -37,6 +38,7 @@ import net.legacyfabric.fabric.api.fluid.volume.v1.util.Side;
 public class FluidTransactionTest {
 	@Test
 	public void testSingleFluidTransaction() {
+		Bootstrap.initialize();
 		Fraction max = new Fraction(1000);
 		Fraction twenty = new Fraction(20);
 		FluidType water = FluidType.getOrCreate(Blocks.WATER, FluidSettings.builder().luminance(0).color(Color.BLUE).build());
@@ -83,10 +85,7 @@ public class FluidTransactionTest {
 		FluidContainer second = new FluidContainer(Fraction.ZERO);
 		FluidHandlers.get(first, water).set(Fraction.ONE_HUNDRED);
 		Assertions.assertEquals(FluidHandlers.get(first, water).getStored().longValue(), 100L);
-		long moveStart = System.nanoTime();
 		FluidHandlers.get(first, water).into(FluidHandlers.get(second, water)).move();
-		long moveEnd = System.nanoTime() - moveStart;
-		System.out.println("Moving: " + (moveEnd / 1_000_000D));
 		Assertions.assertEquals(80L, FluidHandlers.get(first, water).getStored().longValue());
 		Assertions.assertEquals(20L, FluidHandlers.get(second, water).getStored().longValue());
 	}
