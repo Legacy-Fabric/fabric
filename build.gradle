@@ -13,7 +13,7 @@ plugins {
 }
 
 class Globals {
-	static def baseVersion = "0.10.0"
+	static def baseVersion = "0.11.0"
 	static def mcVersion = "1.8.9"
 	static def yarnVersion = "+build.202009230433"
 }
@@ -33,18 +33,6 @@ def getSubprojectVersion(project, version) {
 	} else {
 		return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex(Globals.mcVersion).substring(0, 2)
 	}
-}
-
-def getBranch() {
-	if (System.getenv().GIT_BRANCH) {
-		def branch = System.getenv().GIT_BRANCH
-		return branch.substring(branch.lastIndexOf("/") + 1)
-	}
-	if (grgit == null) {
-		return "unknown"
-	}
-	def branch = grgit.branch.current().name
-	return branch.substring(branch.lastIndexOf("/") + 1)
 }
 
 allprojects {
@@ -87,6 +75,9 @@ allprojects {
 		}
 
 		implementation 'com.mojang:brigadier:1.0.17'
+
+		testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+		testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 
 		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
 			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
