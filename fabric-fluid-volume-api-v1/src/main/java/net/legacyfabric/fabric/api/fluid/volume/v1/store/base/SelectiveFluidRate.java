@@ -26,8 +26,7 @@ import net.legacyfabric.fabric.api.fluid.volume.v1.store.FluidRate;
 import net.legacyfabric.fabric.api.fluid.volume.v1.util.Side;
 
 /**
- * A {@link FluidRate} implementation that dynamically gets the i/o
- * rate depending on the {@link FluidType}
+ * A {@link FluidRate} implementation that dynamically gets the rate depending on the {@link FluidType}.
  */
 public class SelectiveFluidRate implements FluidRate {
 	private final Function<FluidType, Fraction> input;

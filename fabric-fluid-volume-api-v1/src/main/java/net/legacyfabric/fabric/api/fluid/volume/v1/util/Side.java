@@ -35,10 +35,11 @@ public enum Side {
 	private static final Side[] VALUES = values();
 
 	@Nonnull
-	public static Side fromDirection(Direction d){
-		if(d == null){
+	public static Side fromDirection(Direction d) {
+		if (d == null) {
 			return UNKNOWN;
 		}
+
 		return VALUES[d.ordinal()];
 	}
 

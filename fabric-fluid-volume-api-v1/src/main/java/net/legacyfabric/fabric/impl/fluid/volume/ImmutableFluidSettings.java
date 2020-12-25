@@ -60,11 +60,7 @@ public class ImmutableFluidSettings implements FluidSettings {
 
 	@Override
 	public String toString() {
-		return "ImmutableFluidSettings{" + "color=" + this.color +
-				", luminance=" + this.luminance +
-				", temperature=" + this.temperature +
-				", density=" + this.density +
-				'}';
+		return "ImmutableFluidSettings{" + "color=" + this.color + ", luminance=" + this.luminance + ", temperature=" + this.temperature + ", density=" + this.density + '}';
 	}
 
 	public static class Builder implements FluidSettings.Builder {
@@ -111,7 +107,7 @@ public class ImmutableFluidSettings implements FluidSettings {
 
 		@Override
 		public FluidSettings.Builder temperature(IntSupplier temperatureSupplier) {
-			this.temperature =temperatureSupplier.getAsInt();
+			this.temperature = temperatureSupplier.getAsInt();
 			return this;
 		}
 
@@ -126,19 +122,17 @@ public class ImmutableFluidSettings implements FluidSettings {
 			if (this.color == null) {
 				throw new IllegalStateException("Missing color!");
 			}
+
 			if (this.luminance == -1) {
 				throw new IllegalStateException("Missing luminance!");
 			}
+
 			return new ImmutableFluidSettings(this.color, this.luminance, this.temperature, this.density);
 		}
 
 		@Override
 		public String toString() {
-			return "ImmutableFluidSettings.Builder{" + "color=" + this.color +
-					", luminance=" + this.luminance +
-					", temperature=" + this.temperature +
-					", density=" + this.density +
-					'}';
+			return "ImmutableFluidSettings.Builder{" + "color=" + this.color + ", luminance=" + this.luminance + ", temperature=" + this.temperature + ", density=" + this.density + '}';
 		}
 	}
 }

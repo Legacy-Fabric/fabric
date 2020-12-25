@@ -28,7 +28,7 @@ import net.minecraft.util.PacketByteBuf;
 @SuppressWarnings("unused")
 public class Fraction extends Number implements Comparable<Fraction> {
 	public static final Fraction ZERO = Fraction.of(0, 0, 1);
-	public static final Fraction ONE_THIRD = Fraction.of(0, 1,3);
+	public static final Fraction ONE_THIRD = Fraction.of(0, 1, 3);
 	public static final Fraction HALF = Fraction.of(0, 1, 2);
 	public static final Fraction ONE = Fraction.of(1, 0, 1);
 	public static final Fraction ONE_HUNDRED = Fraction.of(100, 0, 1);
@@ -84,8 +84,8 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	/**
 	 * The whole-number portion of this fraction.
 	 *
-	 * If this fraction is negative, both {@code whole()} and {@link #numerator()}
-	 * will be zero or negative.
+	 * <p>If this fraction is negative, both {@code whole()} and {@link #numerator()}
+	 * will be zero or negative.</p>
 	 *
 	 * @return The whole-number portion of this fraction
 	 */
@@ -95,14 +95,14 @@ public class Fraction extends Number implements Comparable<Fraction> {
 
 	/**
 	 * The fractional portion of this fraction, or zero if the fraction
-	 * represents a whole number.<p>
+	 * represents a whole number.
 	 *
-	 * If this fraction is negative, both {@link #whole()} and {@code numerator()}
-	 * will be zero or negative.<p>
+	 * <p>If this fraction is negative, both {@link #whole()} and {@code numerator()}
+	 * will be zero or negative.</p>
 	 *
-	 * The absolute values of {@code numerator()} will always be zero
+	 * <p>The absolute values of {@code numerator()} will always be zero
 	 * or less than the value of {@link #divisor()}. Whole numbers are
-	 * always fully represented in {@link #whole()}.
+	 * always fully represented in {@link #whole()}.</p>
 	 *
 	 * @return The whole-number portion of this fraction
 	 */
@@ -353,8 +353,8 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	/**
 	 * Returns a new value equal to this value less the given parameter.
 	 *
-	 * This method is allocating and for frequent and repetitive operations
-	 * it will be preferable to use a mutable fraction instance.
+	 * <p>This method is allocating and for frequent and repetitive operations
+	 * it will be preferable to use a mutable fraction instance.</p>
 	 *
 	 * @param diff value to be subtracted from this value
 	 * @return a new value equal to this value less the given parameter
@@ -368,8 +368,8 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	/**
 	 * Returns a new value equal to this value plus the given parameter.
 	 *
-	 * This method is allocating and for frequent and repetitive operations
-	 * it will be preferable to use a mutable fraction instance.
+	 * <p>This method is allocating and for frequent and repetitive operations
+	 * it will be preferable to use a mutable fraction instance.</p>
 	 *
 	 * @param diff value to be added to this value
 	 * @return a new value equal to this value plus the given parameter
@@ -383,8 +383,8 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	/**
 	 * Returns a new value equal to this value multiplied by the given parameter.
 	 *
-	 * This method is allocating and for frequent and repetitive operations
-	 * it will be preferable to use a mutable fraction instance.
+	 * <p>This method is allocating and for frequent and repetitive operations
+	 * it will be preferable to use a mutable fraction instance.</p>
 	 *
 	 * @param diff value to be multiplied by this value
 	 * @return a new value equal to this value multiplied by the given parameter
@@ -406,5 +406,4 @@ public class Fraction extends Number implements Comparable<Fraction> {
 	public static Fraction of(long whole) {
 		return new Fraction(whole);
 	}
-
 }

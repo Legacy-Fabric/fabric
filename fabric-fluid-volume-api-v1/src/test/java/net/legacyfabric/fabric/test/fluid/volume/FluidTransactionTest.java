@@ -20,6 +20,7 @@ package net.legacyfabric.fabric.test.fluid.volume;
 import java.awt.Color;
 import java.util.function.BiConsumer;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import net.minecraft.block.Blocks;
@@ -33,8 +34,6 @@ import net.legacyfabric.fabric.api.fluid.volume.v1.store.FluidStorage;
 import net.legacyfabric.fabric.api.fluid.volume.v1.store.base.SimpleFluidRate;
 import net.legacyfabric.fabric.api.fluid.volume.v1.util.Side;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class FluidTransactionTest {
 	@Test
 	public void testSingleFluidTransaction() {
@@ -45,7 +44,7 @@ public class FluidTransactionTest {
 			private Fraction stored;
 			private final FluidRate fluidRate = SimpleFluidRate.of(twenty, twenty);
 
-			public FluidContainer(Fraction stored) {
+			FluidContainer(Fraction stored) {
 				this.stored = stored;
 			}
 
@@ -83,12 +82,12 @@ public class FluidTransactionTest {
 		FluidContainer first = new FluidContainer(Fraction.ONE_THOUSAND);
 		FluidContainer second = new FluidContainer(Fraction.ZERO);
 		FluidHandlers.get(first, water).set(Fraction.ONE_HUNDRED);
-		assertEquals(FluidHandlers.get(first, water).getStored().longValue(), 100L);
+		Assertions.assertEquals(FluidHandlers.get(first, water).getStored().longValue(), 100L);
 		long moveStart = System.nanoTime();
 		FluidHandlers.get(first, water).into(FluidHandlers.get(second, water)).move();
 		long moveEnd = System.nanoTime() - moveStart;
 		System.out.println("Moving: " + (moveEnd / 1_000_000D));
-		assertEquals(80L, FluidHandlers.get(first, water).getStored().longValue());
-		assertEquals(20L, FluidHandlers.get(second, water).getStored().longValue());
+		Assertions.assertEquals(80L, FluidHandlers.get(first, water).getStored().longValue());
+		Assertions.assertEquals(20L, FluidHandlers.get(second, water).getStored().longValue());
 	}
 }

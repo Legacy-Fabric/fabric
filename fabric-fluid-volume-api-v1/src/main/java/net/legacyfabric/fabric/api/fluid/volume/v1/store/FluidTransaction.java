@@ -50,7 +50,7 @@ public class FluidTransaction {
 	}
 
 	/**
-	 * Sets {@link #simulate} to {@code true}
+	 * Sets {@link #simulate} to {@code true}.
 	 */
 	public FluidTransaction simulate() {
 		this.simulate = true;
@@ -73,6 +73,7 @@ public class FluidTransaction {
 		if (!booleanSupplier.getAsBoolean()) {
 			this.disabled = true;
 		}
+
 		return this;
 	}
 
@@ -90,13 +91,16 @@ public class FluidTransaction {
 			this.source.simulate();
 			this.target.simulate();
 		}
+
 		Fraction targetMaxInput = this.target.getMaxInput();
 		Fraction sourceMaxOutput = this.source.getMaxOutput();
 		Fraction maxInserted = sourceMaxOutput.isLessThan(amount) ? sourceMaxOutput : amount;
 		Fraction maxMove = targetMaxInput.isLessThan(maxInserted) ? targetMaxInput : maxInserted;
+
 		if (maxMove.isNegative()) {
 			return Fraction.ZERO;
 		}
+
 		return this.target.insert(this.source.extract(amount));
 	}
 }

@@ -46,11 +46,13 @@ public class FluidHandlers {
 		if (object == null) {
 			return Optional.empty();
 		}
+
 		for (Map.Entry<Predicate<Object>, Function<Object, FluidStorage>> holder : HOLDERS.entrySet()) {
 			if (holder.getKey().test(object)) {
 				return Optional.of(new FluidStorageHandler(holder.getValue().apply(object), fluidType));
 			}
 		}
+
 		return Optional.empty();
 	}
 
@@ -60,6 +62,7 @@ public class FluidHandlers {
 				return true;
 			}
 		}
+
 		return false;
 	}
 

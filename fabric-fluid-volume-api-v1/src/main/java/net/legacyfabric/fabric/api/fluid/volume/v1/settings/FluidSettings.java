@@ -49,7 +49,7 @@ public interface FluidSettings {
 	float getDensity();
 
 	/**
-	 * Converts this to a builder
+	 * Converts this to a builder.
 	 * @return A {@link Builder} instance, containing the data in this
 	 */
 	default Builder toBuilder() {
@@ -57,7 +57,7 @@ public interface FluidSettings {
 	}
 
 	/**
-	 * Creates a new {@link Builder}
+	 * Creates a new {@link Builder}.
 	 * @return a builder
 	 */
 	static Builder builder() {
@@ -65,59 +65,59 @@ public interface FluidSettings {
 	}
 
 	/**
-	 * Helper class for creating {@link FluidSettings}
+	 * Helper class for creating {@link FluidSettings}.
 	 */
 	interface Builder {
 		/**
-		 * Sets the fluid's color
+		 * Sets the fluid's color.
 		 * @return this
 		 */
 		Builder color(Color color);
 
 		/**
-		 * Sets the fluid's luminance
+		 * Sets the fluid's luminance.
 		 * @return this
 		 */
 		Builder luminance(int luminance);
 
 		/**
-		 * Sets the fluid's temperature
+		 * Sets the fluid's temperature.
 		 * @return this
 		 */
 		Builder temperature(int temperature);
 
 		/**
-		 * Sets the fluid's density
+		 * Sets the fluid's density.
 		 * @return this
 		 */
 		Builder density(float density);
 
 		/**
-		 * Sets the fluid's color
+		 * Sets the fluid's color.
 		 * @return this
 		 */
 		Builder color(Supplier<Color> colorSupplier);
 
 		/**
-		 * Sets the fluid's luminance
+		 * Sets the fluid's luminance.
 		 * @return this
 		 */
 		Builder luminance(IntSupplier luminanceSupplier);
 
 		/**
-		 * Sets the fluid's temperature
+		 * Sets the fluid's temperature.
 		 * @return this
 		 */
 		Builder temperature(IntSupplier temperatureSupplier);
 
 		/**
-		 * Sets the fluid's density
+		 * Sets the fluid's density.
 		 * @return this
 		 */
 		Builder density(Supplier<Float> densitySupplier);
 
 		/**
-		 * Converts this builder to a {@link FluidSettings} instance
+		 * Converts this builder to a {@link FluidSettings} instance.
 		 * @return A {@link FluidSettings} instance, containing the data in this builder
 		 */
 		FluidSettings build();

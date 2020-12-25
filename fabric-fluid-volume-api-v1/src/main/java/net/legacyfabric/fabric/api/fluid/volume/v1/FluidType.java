@@ -55,10 +55,7 @@ public class FluidType {
 
 	@Override
 	public String toString() {
-		return "FluidType{" + "id=" + this.id +
-				", fluidBlock=" + this.fluidBlock.getTranslatedName() +
-				", settings=" + this.settings +
-				'}';
+		return "FluidType{" + "id=" + this.id + ", fluidBlock=" + this.fluidBlock.getTranslatedName() + ", settings=" + this.settings + '}';
 	}
 
 	@Override

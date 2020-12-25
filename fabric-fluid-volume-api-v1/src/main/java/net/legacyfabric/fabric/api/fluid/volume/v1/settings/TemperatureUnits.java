@@ -18,7 +18,7 @@
 package net.legacyfabric.fabric.api.fluid.volume.v1.settings;
 
 /**
- * Helper class that stores temperature units
+ * Helper class that stores temperature units.
  */
 public interface TemperatureUnits {
 	int ROOM_TEMPERATURE = 20;

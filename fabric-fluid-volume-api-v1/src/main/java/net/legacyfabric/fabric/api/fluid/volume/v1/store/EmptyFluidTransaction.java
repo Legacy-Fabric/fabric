@@ -35,9 +35,11 @@ public class EmptyFluidTransaction extends FluidTransaction {
 	@Override
 	public Fraction move() {
 		System.err.println("Attempted to move fluid in an empty transaction");
+
 		for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
 			System.err.println("\tat " + e);
 		}
+
 		return Fraction.ZERO;
 	}
 
@@ -47,9 +49,11 @@ public class EmptyFluidTransaction extends FluidTransaction {
 	@Override
 	public Fraction move(Fraction amount) {
 		System.err.println("Attempted to move fluid in an empty transaction");
+
 		for (StackTraceElement e : Thread.currentThread().getStackTrace()) {
 			System.err.println("\tat " + e);
 		}
+
 		return Fraction.ZERO;
 	}
 }
