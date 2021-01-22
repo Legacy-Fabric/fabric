@@ -19,8 +19,20 @@ package net.fabricmc.fabric.impl.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandManager;
+
+import net.fabricmc.fabric.api.command.v1.DispatcherRegistrationCallback;
 import net.fabricmc.fabric.api.command.v1.ServerCommandSource;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 
 public class CommandManagerHolder {
-	public static CommandDispatcher<ServerCommandSource> COMMAND_DISPATCHER;
+	public static final CommandDispatcher<ServerCommandSource> COMMAND_DISPATCHER = new CommandDispatcher<>();
+
+	public static void init() {
+		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+			DispatcherRegistrationCallback.EVENT.invoker().initialize(COMMAND_DISPATCHER, server.isDedicated());
+			Wrapper.afterEvaluate(server, (CommandManager) server.getCommandManager());
+		});
+	}
 }
