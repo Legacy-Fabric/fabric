@@ -53,7 +53,15 @@ public class Wrapper extends AbstractCommand {
 	@Override
 	public void execute(CommandSource source, String[] args) throws CommandException {
 		try {
-			CommandManagerHolder.COMMAND_DISPATCHER.execute(this.getCommandName() + " " + String.join(" ", args), ServerCommandSource.from(source));
+			String value;
+
+			if (args.length == 0) {
+				value = this.getCommandName();
+			} else {
+				value = this.getCommandName() + " " + String.join(" ", args);
+			}
+
+			CommandManagerHolder.COMMAND_DISPATCHER.execute(value, ServerCommandSource.from(source));
 		} catch (CommandSyntaxException e) {
 			e.printStackTrace();
 			throw new CommandException(e.getMessage());
