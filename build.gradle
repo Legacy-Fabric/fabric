@@ -123,16 +123,11 @@ allprojects {
 			spec.version = "1.12.2-3"
 		}
 		minecraft "com.mojang:minecraft:$Globals.mcVersion"
-		mappings "net.fabricmc:yarn:${Globals.yarnVersion}:v2"
 		modCompile "com.github.shedaniel:fabric-loader:${Globals.loaderVersion}"
 	}
 
 	configurations {
 		dev
-	}
-
-	loom {
-		shareCaches = true
 	}
 
 	repositories {
@@ -168,7 +163,7 @@ allprojects {
 
 		license {
 			header rootProject.file("HEADER")
-			include "**/*.java"
+			include "**/net/legacyfabric/**/*.java"
 		}
 	}
 
@@ -255,8 +250,6 @@ subprojects {
 				}
 			}
 		}
-
-		setupRepositories(repositories)
 	}
 
 	javadoc.enabled = false
@@ -295,8 +288,6 @@ publishing {
 			}
 		}
 	}
-
-	setupRepositories(repositories)
 }
 
 task licenseFormatAll
