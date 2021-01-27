@@ -21,18 +21,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.network.Packet;
-import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.util.PacketByteBuf;
-
 import net.legacyfabric.fabric.api.networking.v1.S2CPlayChannelEvents;
 import net.legacyfabric.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.legacyfabric.fabric.api.networking.v1.ServerPlayNetworking;
 import net.legacyfabric.fabric.impl.networking.AbstractChanneledNetworkAddon;
 import net.legacyfabric.fabric.impl.networking.ChannelInfoHolder;
 import net.legacyfabric.fabric.impl.networking.NetworkingImpl;
+
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.util.PacketByteBuf;
 
 public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<ServerPlayNetworking.PlayChannelHandler> {
 	private final ServerPlayNetworkHandler handler;

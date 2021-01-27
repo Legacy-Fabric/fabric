@@ -19,6 +19,7 @@ package net.legacyfabric.fabric.mixin.item;
 
 import java.util.Random;
 
+import net.legacyfabric.fabric.api.item.v1.Enchantable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -26,8 +27,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import net.legacyfabric.fabric.api.item.v1.Enchantable;
 
 @Mixin(EnchantmentHelper.class)
 public class EnchantmentHelperMixin {

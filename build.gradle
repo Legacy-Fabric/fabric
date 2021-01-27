@@ -21,9 +21,10 @@ class Globals {
 version = Globals.baseVersion + "+" + (ENV.GITHUB_RUN_NUMBER ? "" : "local-") + getBranch()
 logger.lifecycle("Building Fabric: " + version)
 
-import org.apache.commons.codec.digest.DigestUtils
+
 import net.fabricmc.loom.task.RunClientTask
 import net.fabricmc.loom.task.RunServerTask
+import org.apache.commons.codec.digest.DigestUtils
 
 def getSubprojectVersion(project, version) {
 	if (grgit == null) {

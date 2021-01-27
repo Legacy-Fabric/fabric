@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle;
 
+import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,8 +27,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
-
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 @Mixin(World.class)
 public abstract class WorldMixin {

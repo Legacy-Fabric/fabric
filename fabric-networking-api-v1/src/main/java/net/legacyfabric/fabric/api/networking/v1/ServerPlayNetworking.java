@@ -20,15 +20,14 @@ package net.legacyfabric.fabric.api.networking.v1;
 import java.util.Objects;
 import java.util.Set;
 
+import net.legacyfabric.fabric.impl.networking.server.ServerNetworkingImpl;
+import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerExtensions;
 
 import net.minecraft.network.Packet;
-import net.minecraft.util.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-
-import net.legacyfabric.fabric.impl.networking.server.ServerNetworkingImpl;
-import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerExtensions;
+import net.minecraft.util.PacketByteBuf;
 
 /**
  * Offers access to play stage server-side networking functionalities.

@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.item;
 
+import net.legacyfabric.fabric.api.item.v1.Fuel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,8 +27,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import net.legacyfabric.fabric.api.item.v1.Fuel;
 
 @Mixin(value = FurnaceBlockEntity.class, priority = 500)
 public class FurnaceBlockEntityMixin {

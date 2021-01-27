@@ -17,17 +17,8 @@
 
 package net.legacyfabric.fabric.impl.networking;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import net.minecraft.util.PacketByteBuf;
-
-import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
-import net.legacyfabric.fabric.api.networking.v1.ServerPlayNetworking;
 
 public final class NetworkingImpl {
 	public static final String MOD_ID = "fabric-networking-api-v1";

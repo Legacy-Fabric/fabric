@@ -17,14 +17,14 @@
 
 package net.legacyfabric.fabric.api.command.v1;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
-
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandManager;
+
 public interface CommandRegistrationCallback {
-	Event<CommandRegistrationCallback> EVENT = EventFactory.createArrayBacked(CommandRegistrationCallback.class, (listeners) -> (commandManager, server)  -> {
+	Event<CommandRegistrationCallback> EVENT = EventFactory.createArrayBacked(CommandRegistrationCallback.class, (listeners) -> (commandManager, server) -> {
 		for (CommandRegistrationCallback callback : listeners) {
 			callback.registerCommands(commandManager, server);
 		}

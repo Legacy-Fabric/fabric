@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.test.command;
 
+import net.legacyfabric.fabric.api.command.v1.CommandRegistrationCallback;
+
 import net.minecraft.class_1999;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandSource;
@@ -28,8 +30,6 @@ import net.minecraft.util.Formatting;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-
-import net.legacyfabric.fabric.api.command.v1.CommandRegistrationCallback;
 
 public class CommandTest extends class_1999 implements ModInitializer {
 	@Override

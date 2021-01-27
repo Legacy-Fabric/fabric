@@ -17,10 +17,10 @@
 
 package net.legacyfabric.fabric.api.gamerule.v1;
 
-import net.minecraft.world.GameRuleManager;
-
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
+
+import net.minecraft.world.GameRuleManager;
 
 public interface GameRuleRegistrationCallback {
 	Event<GameRuleRegistrationCallback> EVENT = EventFactory.createArrayBacked(GameRuleRegistrationCallback.class, (listeners) -> (gameRuleManager) -> {

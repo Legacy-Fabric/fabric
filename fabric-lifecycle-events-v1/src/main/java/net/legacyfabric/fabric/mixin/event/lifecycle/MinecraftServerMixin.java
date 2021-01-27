@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle;
 
+import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,9 +26,6 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.MinecraftServer;
-
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {

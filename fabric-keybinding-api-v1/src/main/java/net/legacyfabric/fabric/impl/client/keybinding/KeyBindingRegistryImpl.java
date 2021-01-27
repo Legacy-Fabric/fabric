@@ -22,12 +22,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.google.common.collect.Lists;
+import net.legacyfabric.fabric.mixin.keybinding.KeyBindingAccessor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.options.KeyBinding;
-
-import net.legacyfabric.fabric.mixin.keybinding.KeyBindingAccessor;
 
 public final class KeyBindingRegistryImpl {
 	private static final Logger LOGGER = LogManager.getLogger();

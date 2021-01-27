@@ -17,11 +17,11 @@
 
 package net.legacyfabric.fabric.test.gamerule;
 
+import net.legacyfabric.fabric.api.gamerule.v1.GameRuleRegistrationCallback;
+
 import net.minecraft.world.GameRuleManager;
 
 import net.fabricmc.api.ModInitializer;
-
-import net.legacyfabric.fabric.api.gamerule.v1.GameRuleRegistrationCallback;
 
 public class GameRuleTest implements ModInitializer {
 	@Override

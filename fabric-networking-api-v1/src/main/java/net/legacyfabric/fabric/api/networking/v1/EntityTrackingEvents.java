@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.api.networking.v1;
 
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
-
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
 
 /**
  * Events related to a tracking entities within a player's view distance.

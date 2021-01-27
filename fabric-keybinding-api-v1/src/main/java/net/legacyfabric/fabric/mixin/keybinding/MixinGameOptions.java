@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.keybinding;
 
+import net.legacyfabric.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,8 +26,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
-
-import net.legacyfabric.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
 
 @Mixin(GameOptions.class)
 public class MixinGameOptions {
