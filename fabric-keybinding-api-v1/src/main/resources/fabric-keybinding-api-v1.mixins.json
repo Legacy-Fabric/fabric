@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.keybinding",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "KeyBindingAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "MixinGameOptions"
+  ]
+}

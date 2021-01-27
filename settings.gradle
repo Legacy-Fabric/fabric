@@ -24,7 +24,6 @@ pluginManagement {
 rootProject.name = "fabric-api"
 
 include 'fabric-api-base'
-include 'fabric-armor-api-v1'
 include 'fabric-command-api-v1'
 include 'fabric-crash-report-info-v1'
 include 'fabric-gamerule-api-v1'
@@ -32,4 +31,3 @@ include 'fabric-item-api-v1'
 include 'fabric-keybinding-api-v1'
 include 'fabric-lifecycle-events-v1'
 include 'fabric-networking-api-v1'
-include 'fabric-object-builder-api-v1'
