@@ -23,22 +23,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
+
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.legacyfabric.fabric.mixin.event.lifecycle.WorldMixin;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ClientWorld.class)
 public abstract class ClientWorldMixin extends WorldMixin {
-	@Inject(method = "unloadEntity", at = @At("HEAD"))
-	private void onEntityUnload(Entity entity, CallbackInfo ci) {
-		ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ClientWorld) (Object) this);
-	}
-
 	// We override our injection on the clientworld so only the client world's tick invocations will run
 	@Override
 	protected void tickWorldAfterBlockEntities(CallbackInfo ci) {

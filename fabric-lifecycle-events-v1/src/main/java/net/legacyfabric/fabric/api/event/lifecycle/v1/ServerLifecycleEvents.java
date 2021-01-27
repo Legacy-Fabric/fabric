@@ -76,26 +76,6 @@ public final class ServerLifecycleEvents {
 		}
 	});
 
-	/**
-	 * Called before a Minecraft server reloads data packs.
-	 */
-	public static final Event<StartDataPackReload> START_DATA_PACK_RELOAD = EventFactory.createArrayBacked(StartDataPackReload.class, callbacks -> (server) -> {
-		for (StartDataPackReload callback : callbacks) {
-			callback.startDataPackReload(server);
-		}
-	});
-
-	/**
-	 * Called after a Minecraft server has reloaded data packs.
-	 *
-	 * <p>If reloading data packs was unsuccessful, the current data packs will be kept.
-	 */
-	public static final Event<EndDataPackReload> END_DATA_PACK_RELOAD = EventFactory.createArrayBacked(EndDataPackReload.class, callbacks -> (server, success) -> {
-		for (EndDataPackReload callback : callbacks) {
-			callback.endDataPackReload(server, success);
-		}
-	});
-
 	@FunctionalInterface
 	public interface ServerStarting {
 		void onServerStarting(MinecraftServer server);
