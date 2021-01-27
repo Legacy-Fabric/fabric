@@ -15,10 +15,6 @@
   "authors": [
     "Legacy-Fabric"
   ],
-  "depends": {
-    "fabricloader": ">=0.4.0",
-    "fabric-api-base": "*"
-  },
   "entrypoints": {
     "main": [
       "net.legacyfabric.fabric.impl.command.CommandApiImpl"

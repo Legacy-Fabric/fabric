@@ -15,10 +15,6 @@
   "authors": [
     "FabricMC"
   ],
-  "depends": {
-    "fabricloader": ">=0.4.0",
-    "fabric-api-base": "*"
-  },
   "description": "Hooks for items",
   "mixins": [
     "fabric-item-api-v1.mixins.json"

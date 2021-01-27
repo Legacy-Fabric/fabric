@@ -1,6 +1,10 @@
 archivesBaseName = "fabric-keybinding-api-v1"
 version = getSubprojectVersion(project, "1.0.0")
 
+dependencies {
+	testmodImplementation project(path: ":fabric-lifecycle-events-v1", configuration: 'dev')
+}
+
 moduleDependencies(project, [
 		'fabric-api-base'
 ])

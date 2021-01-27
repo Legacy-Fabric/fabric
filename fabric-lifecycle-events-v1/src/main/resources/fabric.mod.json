@@ -18,9 +18,5 @@
   "mixins": [
     "fabric-lifecycle-events-v1.mixins.json"
   ],
-  "depends": {
-    "fabricloader": "*",
-    "fabric-api-base": "*"
-  },
   "description": "Events for the game's lifecycle."
 }

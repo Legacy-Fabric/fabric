@@ -7,12 +7,13 @@
     "EntityTrackerAccessor",
     "EntityTrackerEntryAccessor",
     "EntityTrackerEntryMixin",
-    "PlayerManagerMixin"
+    "PlayerManagerMixin",
+    "ServerPlayNetworkHandlerMixin"
   ],
   "client": [
+    "client.ClientPlayNetworkHandlerMixin",
     "client.ConnectScreenAccessor",
-    "client.MinecraftClientAccessor",
-    "client.ClientPlayNetworkHandlerMixin"
+    "client.MinecraftClientAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

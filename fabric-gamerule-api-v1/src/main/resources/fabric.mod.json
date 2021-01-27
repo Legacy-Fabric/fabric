@@ -15,10 +15,6 @@
   "authors": [
     "Legacy-Fabric"
   ],
-  "depends": {
-    "fabricloader": ">=0.4.0",
-    "fabric-api-base": "*"
-  },
   "description": "Adds gamerule-related hooks.",
   "mixins": [
     "fabric-gamerule-api-v1.mixins.json"

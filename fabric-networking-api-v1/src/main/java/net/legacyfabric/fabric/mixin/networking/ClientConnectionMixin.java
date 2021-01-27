@@ -52,7 +52,7 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	public abstract void disconnect(Text disconnectReason);
 
 	@Shadow
-	public abstract void method_32195(Packet<?> arg, GenericFutureListener<? extends Future<? super Void>> genericFutureListener, GenericFutureListener<? extends Future<? super Void>>... genericFutureListeners);
+	public abstract void method_32194(Packet<?> arg);
 
 	@Unique
 	private Collection<String> playChannels;
@@ -62,20 +62,19 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 		this.playChannels = Collections.newSetFromMap(new ConcurrentHashMap<>());
 	}
 
-	// Must be fully qualified due to mixin not working in production without it
 	@SuppressWarnings("UnnecessaryQualifiedMemberReference")
-	@Redirect(method = "Lnet/minecraft/network/ClientConnection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;send(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V"))
-	private void resendOnExceptionCaught(ClientConnection self, Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener) {
+	@Redirect(method = "Lnet/minecraft/network/ClientConnection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;disconnect(Lnet/minecraft/text/Text;)V"))
+	private void resendOnExceptionCaught(ClientConnection clientConnection, Text disconnectReason) {
 		PacketListener handler = this.packetListener;
 
 		if (handler instanceof DisconnectPacketSource) {
-			this.method_32195(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason")), listener);
+			this.method_32194(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason")));
 		} else {
 			this.disconnect(new TranslatableText("disconnect.genericReason")); // Don't send packet if we cannot send proper packets
 		}
 	}
 
-	@Inject(method = "method_32196", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;"))
+	@Inject(method = "method_32196", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false))
 	private void checkPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>>[] genericFutureListeners, CallbackInfo ci) {
 		if (this.packetListener instanceof PacketCallbackListener) {
 			((PacketCallbackListener) this.packetListener).sent(packet);
