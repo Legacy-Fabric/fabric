@@ -22,7 +22,6 @@ import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.MinecraftServer;
@@ -49,7 +48,7 @@ abstract class MinecraftServerMixin {
 		ServerLifecycleEvents.SERVER_STOPPED.invoker().onServerStopped((MinecraftServer) (Object) this);
 	}
 
-	@Inject(slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;method_33699(Lnet/minecraft/network/Packet;I)V")), at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V", shift = At.Shift.AFTER), method = "tickWorlds")
+	@Inject(at = @At(value = "INVOKE_STRING", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V", args = "ldc=levels"), method = "tickWorlds")
 	private void onStartTick(CallbackInfo ci) {
 		ServerTickEvents.START_SERVER_TICK.invoker().onStartTick((MinecraftServer) (Object) this);
 	}

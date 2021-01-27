@@ -34,7 +34,7 @@ public final class ServerTickEvents {
 	public static final Event<StartTick> START_SERVER_TICK = EventFactory.createArrayBacked(StartTick.class, callbacks -> server -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = server.profiler;
-			profiler.push("fabricStartServerTick");
+			profiler.swap("fabricStartServerTick");
 
 			for (StartTick event : callbacks) {
 				profiler.push(EventFactory.getHandlerName(event));
