@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "fabric-keybinding-api-v1",
-  "name": "Fabric Key Binding API (v1)",
+  "name": "Legacy Fabric Key Binding API (v1)",
   "version": "${version}",
   "environment": "client",
   "license": "Apache-2.0",
