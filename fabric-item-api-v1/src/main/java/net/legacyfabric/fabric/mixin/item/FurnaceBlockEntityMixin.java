@@ -29,7 +29,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 @Mixin(value = FurnaceBlockEntity.class, priority = 500)
-public class FurnaceBlockEntityMixin {
+abstract class FurnaceBlockEntityMixin {
 	@Inject(cancellable = true, method = "method_26989", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void modifyBurnTime(ItemStack arg, CallbackInfoReturnable<Integer> cir, Item lv) {
 		if (lv instanceof Fuel) {

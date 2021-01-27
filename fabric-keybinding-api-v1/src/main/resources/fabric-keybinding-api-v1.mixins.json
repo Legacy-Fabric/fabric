@@ -3,12 +3,10 @@
   "package": "net.legacyfabric.fabric.mixin.keybinding",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "KeyBindingAccessor"
+    "KeyBindingAccessor",
+    "MixinGameOptions"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "MixinGameOptions"
-  ]
+  }
 }

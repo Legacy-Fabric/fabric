@@ -31,7 +31,7 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ClientWorld.class)
-public abstract class ClientWorldMixin extends WorldMixin {
+abstract class ClientWorldMixin extends WorldMixin {
 	// We override our injection on the clientworld so only the client world's tick invocations will run
 	@Override
 	protected void tickWorldAfterBlockEntities(CallbackInfo ci) {

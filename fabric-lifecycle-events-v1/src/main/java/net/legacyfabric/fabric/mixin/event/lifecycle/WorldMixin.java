@@ -28,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
+// Public because its being extended
 @Mixin(World.class)
 public abstract class WorldMixin {
 	@Shadow

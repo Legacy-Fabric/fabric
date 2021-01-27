@@ -29,7 +29,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 @Mixin(EnchantmentHelper.class)
-public class EnchantmentHelperMixin {
+abstract class EnchantmentHelperMixin {
 	@Redirect(method = "calculateEnchantmentPower", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;getEnchantability()I"))
 	private static int redirectCalculateEnchantmentPower(Item item, Random random, int num, int enchantmentPower, ItemStack stack) {
 		return Enchantable.enchantabilityOf(stack);

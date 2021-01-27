@@ -28,7 +28,7 @@ import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
 
 @Mixin(GameOptions.class)
-public class MixinGameOptions {
+abstract class MixinGameOptions {
 	@Shadow
 	public KeyBinding[] keysAll;
 

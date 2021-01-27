@@ -31,7 +31,7 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
-public abstract class MinecraftClientMixin {
+abstract class MinecraftClientMixin {
 	@Inject(at = @At("HEAD"), method = "tick")
 	private void onStartTick(CallbackInfo info) {
 		ClientTickEvents.START_CLIENT_TICK.invoker().onStartTick((MinecraftClient) (Object) this);

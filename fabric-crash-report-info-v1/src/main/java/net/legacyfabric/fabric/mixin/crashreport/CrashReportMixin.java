@@ -34,7 +34,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 
 @Mixin(CrashReport.class)
-public class CrashReportMixin {
+abstract class CrashReportMixin {
 	@Shadow
 	@Final
 	private CrashReportSection systemDetailsSection;
