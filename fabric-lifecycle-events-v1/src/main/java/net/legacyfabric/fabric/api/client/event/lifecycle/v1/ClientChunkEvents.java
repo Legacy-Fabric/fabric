@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.api.client.event.lifecycle.v1;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.profiler.Profiler;
-import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.world.chunk.Chunk;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -81,11 +81,11 @@ public final class ClientChunkEvents {
 
 	@FunctionalInterface
 	public interface Load {
-		void onChunkLoad(ClientWorld world, WorldChunk chunk);
+		void onChunkLoad(ClientWorld world, Chunk chunk);
 	}
 
 	@FunctionalInterface
 	public interface Unload {
-		void onChunkUnload(ClientWorld world, WorldChunk chunk);
+		void onChunkUnload(ClientWorld world, Chunk chunk);
 	}
 }

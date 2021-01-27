@@ -3,7 +3,7 @@ plugins {
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "fabric-loom" version "e3d1762" apply false
+	id "fabric-loom" version "0.4-SNAPSHOT" apply false
 	id "net.minecrell.licenser" version "0.4.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id "com.matthewprenger.cursegradle" version "1.4.0"
@@ -14,7 +14,7 @@ def ENV = System.getenv()
 class Globals {
 	static def baseVersion = "0.1.0"
 	static def mcVersion = "1.12.2"
-	static def yarnVersion = "da18539"
+	static def yarnVersion = "1.12.2+build.202101250709"
 	static def loaderVersion = "patch-1-SNAPSHOT"
 }
 
@@ -118,12 +118,15 @@ allprojects {
 	}
 
 	dependencies {
-		mappings loom.fromBranch("Legacy-Fabric/yarn", "1.12.2") {spec ->
-			spec.group = "net.legacyfabric"
-			spec.version = "1.12.2-3"
-		}
 		minecraft "com.mojang:minecraft:$Globals.mcVersion"
+		mappings "net.fabricmc:yarn:$Globals.yarnVersion:v2"
 		modCompile "com.github.shedaniel:fabric-loader:${Globals.loaderVersion}"
+	}
+
+	minecraft {
+		intermediaryUrl = {
+			return "https://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven/net/fabricmc/intermediary/" + it + "/intermediary-" + it + "-v2.jar";
+		}
 	}
 
 	configurations {

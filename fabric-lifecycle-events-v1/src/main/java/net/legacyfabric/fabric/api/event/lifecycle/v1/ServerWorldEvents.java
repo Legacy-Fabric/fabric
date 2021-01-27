@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.api.event.lifecycle.v1;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.PersistentState;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
@@ -27,8 +26,6 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 public final class ServerWorldEvents {
 	/**
 	 * Called when a world is loaded by a Minecraft server.
-	 *
-	 * <p>For example, this can be used to load world specific metadata or initialize a {@link PersistentState} on a server world.
 	 */
 	public static final Event<Load> LOAD = EventFactory.createArrayBacked(Load.class, callbacks -> (server, world) -> {
 		for (Load callback : callbacks) {
