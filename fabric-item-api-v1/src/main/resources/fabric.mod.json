@@ -13,7 +13,7 @@
     "sources": "https://github.com/Legacy-Fabric/fabric"
   },
   "authors": [
-    "FabricMC"
+    "Legacy Fabric"
   ],
   "description": "Hooks for items",
   "mixins": [
