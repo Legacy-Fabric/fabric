@@ -13,7 +13,7 @@
     "sources": "https://github.com/FabricMC/fabric"
   },
   "authors": [
-    "FabricMC"
+    "Legacy Fabric"
   ],
   "mixins": [
     "fabric-lifecycle-events-v1.mixins.json"
