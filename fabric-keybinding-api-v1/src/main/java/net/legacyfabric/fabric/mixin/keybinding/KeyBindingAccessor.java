@@ -26,8 +26,8 @@ import net.minecraft.client.options.KeyBinding;
 
 @Mixin(KeyBinding.class)
 public interface KeyBindingAccessor {
-	@Accessor
-	static Map<String, Integer> getCATEGORIES() {
+	@Accessor("CATEGORIES")
+	static Map<String, Integer> getCategoryMap() {
 		throw new UnsupportedOperationException();
 	}
 }

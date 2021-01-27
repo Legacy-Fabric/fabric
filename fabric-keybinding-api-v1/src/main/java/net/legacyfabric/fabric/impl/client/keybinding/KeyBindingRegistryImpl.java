@@ -37,7 +37,7 @@ public final class KeyBindingRegistryImpl {
 	}
 
 	private static Map<String, Integer> getCategoryMap() {
-		return KeyBindingAccessor.getCATEGORIES();
+		return KeyBindingAccessor.getCategoryMap();
 	}
 
 	private static boolean hasCategory(String categoryTranslationKey) {
