@@ -16,6 +16,7 @@ class Globals {
 	static def mcVersion = "1.12.2"
 	static def yarnVersion = "1.12.2+build.202101270657"
 	static def loaderVersion = "patch-1-SNAPSHOT"
+	static def preRelease = true
 }
 
 version = Globals.baseVersion + "+" + (ENV.GITHUB_RUN_NUMBER ? "" : "local-") + getBranch()
@@ -312,3 +313,48 @@ dependencies {
 		}
 	}
 }
+
+// A task to ensure that the version being released has not already been released.
+task checkVersion {
+	doFirst {
+		def xml = new URL("http://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven/net/fabricmc/fabric-api/fabric-api/:maven-metadata.xml").text
+		def metadata = new XmlSlurper().parseText(xml)
+		def versions = metadata.versioning.versions.version*.text();
+		if (versions.contains(version)) {
+			throw new RuntimeException("${version} has already been released!")
+		}
+	}
+}
+
+curseforge {
+	if (ENV.CURSEFORGE_API_KEY) {
+		apiKey = ENV.CURSEFORGE_API_KEY
+	} else if (project.curse_api_key) {
+		apiKey = project.curse_api_key
+	}
+
+	project {
+		id = "400281"
+		changelog = "A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits/1.12.2"
+		releaseType = Globals.preRelease ? "beta" : "release"
+		addGameVersion "1.12.2"
+		addGameVersion "Fabric"
+
+		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
+			displayName = "[$Globals.mcVersion] Legacy Fabric API $Globals.baseVersion"
+		}
+
+		afterEvaluate {
+			uploadTask.dependsOn("remapJar")
+		}
+	}
+
+	options {
+		forgeGradleIntegration = false
+	}
+}
+
+publish.mustRunAfter checkVersion
+project.tasks.curseforge.mustRunAfter checkVersion
+
+
