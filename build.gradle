@@ -121,7 +121,7 @@ allprojects {
 	dependencies {
 		minecraft "com.mojang:minecraft:$Globals.mcVersion"
 		mappings "net.fabricmc:yarn:$Globals.yarnVersion:v2"
-		modCompile "com.github.shedaniel:fabric-loader:${Globals.loaderVersion}"
+		modImplementation "com.github.shedaniel:fabric-loader:${Globals.loaderVersion}"
 	}
 
 	minecraft {
