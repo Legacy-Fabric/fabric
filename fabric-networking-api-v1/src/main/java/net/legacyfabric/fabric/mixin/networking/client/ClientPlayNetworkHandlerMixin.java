@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.networking.client;
 
+import net.legacyfabric.fabric.impl.networking.NetworkingImpl;
 import net.legacyfabric.fabric.impl.networking.client.ClientNetworkingImpl;
 import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkAddon;
 import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkHandlerExtensions;
@@ -62,7 +63,10 @@ abstract class ClientPlayNetworkHandlerMixin implements ClientPlayNetworkHandler
 	@Inject(method = "onCustomPayload", at = @At("HEAD"), cancellable = true)
 	private void handleCustomPayload(CustomPayloadS2CPacket packet, CallbackInfo ci) {
 		if (this.addon.handle(packet)) {
-			ci.cancel();
+			// Do not cancel minecraft's packets
+			if (!packet.getChannel().startsWith("MC")) {
+				ci.cancel();
+			}
 		}
 	}
 

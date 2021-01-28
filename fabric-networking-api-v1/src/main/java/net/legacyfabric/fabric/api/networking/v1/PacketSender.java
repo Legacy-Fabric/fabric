@@ -24,6 +24,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import net.minecraft.network.Packet;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 
 /**
@@ -38,6 +39,16 @@ public interface PacketSender {
 	 * @param buf     the content of the packet
 	 */
 	Packet<?> createPacket(String channelName, PacketByteBuf buf);
+
+	/**
+	 * Makes a packet for a channel.
+	 *
+	 * @param channelId the id of the channel
+	 * @param buf     the content of the packet
+	 */
+	default Packet<?> createPacket(Identifier channelId, PacketByteBuf buf) {
+		return this.createPacket(channelId.toString(), buf);
+	}
 
 	/**
 	 * Sends a packet.
@@ -70,6 +81,16 @@ public interface PacketSender {
 	/**
 	 * Sends a packet to a channel.
 	 *
+	 * @param channelId the id of the channel
+	 * @param buf the content of the packet
+	 */
+	default void sendPacket(Identifier channelId, PacketByteBuf buf) {
+		this.sendPacket(channelId.toString(), buf);
+	}
+
+	/**
+	 * Sends a packet to a channel.
+	 *
 	 * @param channel  the id of the channel
 	 * @param buf the content of the packet
 	 * @param callback an optional callback to execute after the packet is sent, may be {@code null}
@@ -80,5 +101,17 @@ public interface PacketSender {
 		Objects.requireNonNull(buf, "Payload cannot be null");
 
 		this.sendPacket(this.createPacket(channel, buf), callback);
+	}
+
+	/**
+	 * Sends a packet to a channel.
+	 *
+	 * @param channel  the id of the channel
+	 * @param buf the content of the packet
+	 * @param callback an optional callback to execute after the packet is sent, may be {@code null}
+	 */
+	// the generic future listener can accept ChannelFutureListener
+	default void sendPacket(Identifier channel, PacketByteBuf buf, GenericFutureListener<? extends Future<? super Void>> callback) {
+		this.sendPacket(channel.toString(), buf, callback);
 	}
 }

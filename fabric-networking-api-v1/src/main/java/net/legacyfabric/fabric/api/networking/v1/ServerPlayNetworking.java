@@ -27,6 +27,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 
 /**
@@ -55,6 +56,23 @@ public final class ServerPlayNetworking {
 	}
 
 	/**
+	 * Registers a handler to a channel.
+	 * A global receiver is registered to all connections, in the present and future.
+	 *
+	 * <p>If a handler is already registered to the {@code channel}, this method will return {@code false}, and no change will be made.
+	 * Use {@link #unregisterReceiver(ServerPlayNetworkHandler, Identifier)} to unregister the existing handler.
+	 *
+	 * @param channelId the id of the channel
+	 * @param channelHandler the handler
+	 * @return false if a handler is already registered to the channel
+	 * @see ServerPlayNetworking#unregisterGlobalReceiver(Identifier)
+	 * @see ServerPlayNetworking#registerReceiver(ServerPlayNetworkHandler, Identifier, PlayChannelHandler)
+	 */
+	public static boolean registerGlobalReceiver(Identifier channelId, PlayChannelHandler channelHandler) {
+		return registerGlobalReceiver(channelId.toString(), channelHandler);
+	}
+
+	/**
 	 * Removes the handler of a channel.
 	 * A global receiver is registered to all connections, in the present and future.
 	 *
@@ -67,6 +85,21 @@ public final class ServerPlayNetworking {
 	 */
 	public static PlayChannelHandler unregisterGlobalReceiver(String channelName) {
 		return ServerNetworkingImpl.PLAY.unregisterGlobalReceiver(channelName);
+	}
+
+	/**
+	 * Removes the handler of a channel.
+	 * A global receiver is registered to all connections, in the present and future.
+	 *
+	 * <p>The {@code channel} is guaranteed not to have a handler after this call.
+	 *
+	 * @param channelId the id of the channel
+	 * @return the previous handler, or {@code null} if no handler was bound to the channel
+	 * @see ServerPlayNetworking#registerGlobalReceiver(Identifier, PlayChannelHandler)
+	 * @see ServerPlayNetworking#unregisterReceiver(ServerPlayNetworkHandler, String)
+	 */
+	public static PlayChannelHandler unregisterGlobalReceiver(Identifier channelId) {
+		return unregisterGlobalReceiver(channelId.toString());
 	}
 
 	/**
@@ -100,6 +133,24 @@ public final class ServerPlayNetworking {
 	}
 
 	/**
+	 * Registers a handler to a channel.
+	 * This method differs from {@link ServerPlayNetworking#registerGlobalReceiver(Identifier, PlayChannelHandler)} since
+	 * the channel handler will only be applied to the player represented by the {@link ServerPlayNetworkHandler}.
+	 *
+	 * <p>If a handler is already registered to the {@code channelId}, this method will return {@code false}, and no change will be made.
+	 * Use {@link #unregisterReceiver(ServerPlayNetworkHandler, Identifier)} to unregister the existing handler.
+	 *
+	 * @param networkHandler the handler
+	 * @param channelId the id of the channel
+	 * @param channelHandler the handler
+	 * @return false if a handler is already registered to the channel name
+	 * @see ServerPlayConnectionEvents#INIT
+	 */
+	public static boolean registerReceiver(ServerPlayNetworkHandler networkHandler, Identifier channelId, PlayChannelHandler channelHandler) {
+		return registerReceiver(networkHandler, channelId.toString(), channelHandler);
+	}
+
+	/**
 	 * Removes the handler of a channel.
 	 *
 	 * <p>The {@code channelName} is guaranteed not to have a handler after this call.
@@ -111,6 +162,18 @@ public final class ServerPlayNetworking {
 		Objects.requireNonNull(networkHandler, "Network handler cannot be null");
 
 		return ServerNetworkingImpl.getAddon(networkHandler).unregisterChannel(channelName);
+	}
+
+	/**
+	 * Removes the handler of a channel.
+	 *
+	 * <p>The {@code channelId} is guaranteed not to have a handler after this call.
+	 *
+	 * @param channelId the id of the channel
+	 * @return the previous handler, or {@code null} if no handler was bound to the channel name
+	 */
+	public static PlayChannelHandler unregisterReceiver(ServerPlayNetworkHandler networkHandler, Identifier channelId) {
+		return unregisterReceiver(networkHandler, channelId.toString());
 	}
 
 	/**
@@ -203,6 +266,17 @@ public final class ServerPlayNetworking {
 	}
 
 	/**
+	 * Creates a packet which may be sent to a the connected client.
+	 *
+	 * @param channelId the channel name
+	 * @param buf the packet byte buf which represents the payload of the packet
+	 * @return a new packet
+	 */
+	public static Packet<?> createS2CPacket(Identifier channelId, PacketByteBuf buf) {
+		return createS2CPacket(channelId.toString(), buf);
+	}
+
+	/**
 	 * Gets the packet sender which sends packets to the connected client.
 	 *
 	 * @param player the player
@@ -239,6 +313,17 @@ public final class ServerPlayNetworking {
 		Objects.requireNonNull(buf, "Packet byte buf cannot be null");
 
 		player.networkHandler.sendPacket(createS2CPacket(channelName, buf));
+	}
+
+	/**
+	 * Sends a packet to a player.
+	 *
+	 * @param player the player to send the packet to
+	 * @param channelId the channel of the packet
+	 * @param buf the payload of the packet.
+	 */
+	public static void send(ServerPlayerEntity player, Identifier channelId, PacketByteBuf buf) {
+		send(player, channelId.toString(), buf);
 	}
 
 	// Helper methods

@@ -27,6 +27,7 @@ import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkAddon;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.Packet;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
@@ -60,6 +61,23 @@ public final class ClientPlayNetworking {
 	}
 
 	/**
+	 * Registers a handler to a channel.
+	 * A global receiver is registered to all connections, in the present and future.
+	 *
+	 * <p>If a handler is already registered to the {@code channel}, this method will return {@code false}, and no change will be made.
+	 * Use {@link #unregisterGlobalReceiver(Identifier)} to unregister the existing handler.
+	 *
+	 * @param channelId the id of the channel
+	 * @param channelHandler the handler
+	 * @return false if a handler is already registered to the channel
+	 * @see ClientPlayNetworking#unregisterGlobalReceiver(Identifier)
+	 * @see ClientPlayNetworking#registerReceiver(Identifier, PlayChannelHandler)
+	 */
+	public static boolean registerGlobalReceiver(Identifier channelId, PlayChannelHandler channelHandler) {
+		return registerGlobalReceiver(channelId.toString(), channelHandler);
+	}
+
+	/**
 	 * Removes the handler of a channel.
 	 * A global receiver is registered to all connections, in the present and future.
 	 *
@@ -73,6 +91,22 @@ public final class ClientPlayNetworking {
 	public static PlayChannelHandler unregisterGlobalReceiver(String channelName) {
 		return ClientNetworkingImpl.PLAY.unregisterGlobalReceiver(channelName);
 	}
+
+	/**
+	 * Removes the handler of a channel.
+	 * A global receiver is registered to all connections, in the present and future.
+	 *
+	 * <p>The {@code channel} is guaranteed not to have a handler after this call.
+	 *
+	 * @param channelId the id of the channel
+	 * @return the previous handler, or {@code null} if no handler was bound to the channel
+	 * @see ClientPlayNetworking#registerGlobalReceiver(Identifier, PlayChannelHandler)
+	 * @see ClientPlayNetworking#unregisterReceiver(Identifier)
+	 */
+	public static PlayChannelHandler unregisterGlobalReceiver(Identifier channelId) {
+		return unregisterGlobalReceiver(channelId.toString());
+	}
+
 
 	/**
 	 * Gets all channel names which global receivers are registered for.
@@ -106,6 +140,21 @@ public final class ClientPlayNetworking {
 	}
 
 	/**
+	 * Registers a handler to a channel.
+	 *
+	 * <p>If a handler is already registered to the {@code channel}, this method will return {@code false}, and no change will be made.
+	 * Use {@link #unregisterReceiver(String)} to unregister the existing handler.
+	 *
+	 * @param channelId the id of the channel
+	 * @return false if a handler is already registered to the channel
+	 * @throws IllegalStateException if the client is not connected to a server
+	 * @see ClientPlayConnectionEvents#INIT
+	 */
+	public static boolean registerReceiver(Identifier channelId, PlayChannelHandler channelHandler) {
+		return registerReceiver(channelId.toString(), channelHandler);
+	}
+
+	/**
 	 * Removes the handler of a channel.
 	 *
 	 * <p>The {@code channelName} is guaranteed not to have a handler after this call.
@@ -122,6 +171,19 @@ public final class ClientPlayNetworking {
 		}
 
 		throw new IllegalStateException("Cannot unregister receiver while not in game!");
+	}
+
+	/**
+	 * Removes the handler of a channel.
+	 *
+	 * <p>The {@code channelId} is guaranteed not to have a handler after this call.
+	 *
+	 * @param channelId the id of the channel
+	 * @return the previous handler, or {@code null} if no handler was bound to the channel
+	 * @throws IllegalStateException if the client is not connected to a server
+	 */
+	public static PlayChannelHandler unregisterReceiver(Identifier channelId) throws IllegalStateException {
+		return unregisterReceiver(channelId.toString());
 	}
 
 	/**
@@ -173,6 +235,17 @@ public final class ClientPlayNetworking {
 	}
 
 	/**
+	 * Checks if the connected server declared the ability to receive a packet on a specified channel name.
+	 *
+	 * @param channelId the channel name
+	 * @return True if the connected server has declared the ability to receive a packet on the specified channel.
+	 * False if the client is not in game.
+	 */
+	public static boolean canSend(Identifier channelId) throws IllegalArgumentException {
+		return canSend(channelId.toString());
+	}
+
+	/**
 	 * Creates a packet which may be sent to a the connected server.
 	 *
 	 * @param channelName the channel name
@@ -184,6 +257,17 @@ public final class ClientPlayNetworking {
 		Objects.requireNonNull(buf, "Buf cannot be null");
 
 		return ClientNetworkingImpl.createPlayC2SPacket(channelName, buf);
+	}
+
+	/**
+	 * Creates a packet which may be sent to a the connected server.
+	 *
+	 * @param channelId the channel name
+	 * @param buf the packet byte buf which represents the payload of the packet
+	 * @return a new packet
+	 */
+	public static Packet<?> createC2SPacket(Identifier channelId, PacketByteBuf buf) {
+		return createC2SPacket(channelId.toString(), buf);
 	}
 
 	/**
@@ -212,6 +296,23 @@ public final class ClientPlayNetworking {
 		// You cant send without a client player, so this is fine
 		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
 			MinecraftClient.getInstance().getNetworkHandler().sendPacket(createC2SPacket(channelName, buf));
+			return;
+		}
+
+		throw new IllegalStateException("Cannot send packets when not in game!");
+	}
+
+	/**
+	 * Sends a packet to the connected server.
+	 *
+	 * @param channelId the channel of the packet
+	 * @param buf the payload of the packet
+	 * @throws IllegalStateException if the client is not connected to a server
+	 */
+	public static void send(Identifier channelId, PacketByteBuf buf) throws IllegalStateException {
+		// You cant send without a client player, so this is fine
+		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+			MinecraftClient.getInstance().getNetworkHandler().sendPacket(createC2SPacket(channelId, buf));
 			return;
 		}
 
