@@ -1,6 +1,0 @@
-archivesBaseName = "fabric-loot-tables-v1"
-version = getSubprojectVersion(project, "1.0.1")
-
-moduleDependencies(project, [
-		'fabric-api-base'
-])
