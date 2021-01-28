@@ -107,7 +107,6 @@ public final class ClientPlayNetworking {
 		return unregisterGlobalReceiver(channelId.toString());
 	}
 
-
 	/**
 	 * Gets all channel names which global receivers are registered for.
 	 * A global receiver is registered to all connections, in the present and future.

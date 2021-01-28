@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.networking.client;
 
-import net.legacyfabric.fabric.impl.networking.NetworkingImpl;
 import net.legacyfabric.fabric.impl.networking.client.ClientNetworkingImpl;
 import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkAddon;
 import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkHandlerExtensions;
