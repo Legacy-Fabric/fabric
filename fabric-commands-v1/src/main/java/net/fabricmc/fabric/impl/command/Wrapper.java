@@ -19,7 +19,6 @@ package net.fabricmc.fabric.impl.command;
 
 import com.google.common.base.Preconditions;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.exceptions.BuiltInExceptions;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 
