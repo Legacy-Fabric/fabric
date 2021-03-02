@@ -23,7 +23,7 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
 /**
- * Allows adding custom game rules
+ * Allows adding custom game rules.
  * <p>To add a game rule, hook into {@code GameRulesInitializedCallback}
  * and call {@code dispatcher.addGameRule("name", "default_value", variableType)}</p>
  */
