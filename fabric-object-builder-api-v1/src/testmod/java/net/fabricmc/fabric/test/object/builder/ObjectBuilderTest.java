@@ -41,13 +41,13 @@ public class ObjectBuilderTest implements ModInitializer {
 			.doesNotBlockMovement()
 			.noCollision()
 			.setFlammable();
-	public static final Block TEST_BLOCK = BlockRegistry.register(new Identifier("fabric-object-builder-api-v1-testmod", "test_block"), new Block(TEST_MATERIAL, MaterialColor.AIR));
+	public static final Block TEST_BLOCK = BlockRegistry.register(new Identifier("fabric-object-builder-api-v1-testmod:test_block"), new Block(TEST_MATERIAL, MaterialColor.AIR));
 	public static final ArmorMaterial TEST_ARMOR_MATERIAL = new ArmorMaterialBuilder("test")
 			.setDurabilityMultiplier(5)
 			.setEnchantability(14)
 			.setProtectionValues(new int[]{3, 4, 3, 2}).setRepairIngredient(Items.APPLE)
 			.build();
-	public static final Item TEST_ARMOR_ITEM = ItemRegistry.register(new Identifier("fabric-object-builder-api-v1-testmod", "test_helmet"), new FabricArmorItem(TEST_ARMOR_MATERIAL, EquipmentSlot.HEAD).setItemGroup(ItemGroup.FOOD));
+	public static final Item TEST_ARMOR_ITEM = ItemRegistry.register(new Identifier("fabric-object-builder-api-v1-testmod:test_helmet"), new FabricArmorItem(TEST_ARMOR_MATERIAL, EquipmentSlot.HEAD).setItemGroup(ItemGroup.FOOD));
 
 	@Override
 	public void onInitialize() {
