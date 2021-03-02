@@ -40,6 +40,11 @@ public final class NbtType {
 	public static final int LIST = 9;
 	public static final int COMPOUND = 10;
 	public static final int INT_ARRAY = 11;
+
+	/**
+	 * @deprecated Long Array Tags do not exist in 1.8.9
+	 */
+	@Deprecated
 	public static final int LONG_ARRAY = 12;
 
 	/**
