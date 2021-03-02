@@ -23,7 +23,6 @@ import net.minecraft.util.Identifier;
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
 public final class ItemRegistry {
-	public static boolean itemIdsSetup = false;
 
 	private ItemRegistry() {
 	}

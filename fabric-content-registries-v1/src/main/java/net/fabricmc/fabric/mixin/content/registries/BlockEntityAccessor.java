@@ -33,7 +33,7 @@ public interface BlockEntityAccessor {
 	}
 
 	@Accessor("stringClassMap")
-	static Map<Class<? extends BlockEntity>, String> getStringClassMap() {
+	static Map<String, Class<? extends BlockEntity>> getStringClassMap() {
 		throw new AssertionError();
 	}
 }

@@ -23,8 +23,6 @@ import net.minecraft.util.Identifier;
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
 public final class EntityRegistry {
-	public static boolean entityIdsSetup = false;
-
 	private EntityRegistry() {
 	}
 
