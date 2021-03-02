@@ -1,0 +1,8 @@
+archivesBaseName = "fabric-networking-api-v1"
+version = getSubprojectVersion(project, "1.0.0")
+
+dependencies {
+	implementation project(path: ":fabric-api-base", configuration: 'dev')
+	testmodImplementation project(path: ":fabric-lifecycle-events-v1", configuration: 'dev')
+	testmodImplementation project(path: ":fabric-key-binding-api-v1", configuration: 'dev')
+}
