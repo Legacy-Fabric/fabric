@@ -33,17 +33,17 @@ public class EntityRendererRegistryImpl implements EntityRendererRegistry {
 	private final Map<EntityRenderDispatcher, Context> renderManagerMap = new WeakHashMap<>();
 	private final Map<Class<? extends Entity>, Factory> renderSupplierMap = new HashMap<>();
 
-	public void initialize(EntityRenderDispatcher manager, TextureManager textureManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> map) {
+	public void initialize(EntityRenderDispatcher dispatcher, TextureManager textureManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<? extends Entity>> map) {
 		synchronized (renderSupplierMap) {
-			if (renderManagerMap.containsKey(manager)) {
+			if (renderManagerMap.containsKey(dispatcher)) {
 				return;
 			}
 
 			Context context = new Context(textureManager, itemRenderer, map);
-			renderManagerMap.put(manager, context);
+			renderManagerMap.put(dispatcher, context);
 
 			for (Class<? extends Entity> c : renderSupplierMap.keySet()) {
-				map.put(c, renderSupplierMap.get(c).create(manager, context));
+				map.put(c, renderSupplierMap.get(c).create(dispatcher, context));
 			}
 		}
 	}
@@ -81,6 +81,6 @@ public class EntityRendererRegistryImpl implements EntityRendererRegistry {
 
 	@FunctionalInterface
 	public interface Factory {
-		EntityRenderer<? extends Entity> create(EntityRenderDispatcher manager, Context context);
+		EntityRenderer<? extends Entity> create(EntityRenderDispatcher dispatcher, Context context);
 	}
 }
