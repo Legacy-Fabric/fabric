@@ -33,7 +33,6 @@ import net.fabricmc.fabric.api.command.v1.DispatcherRegistrationCallback;
 import net.fabricmc.fabric.api.command.v1.ServerCommandSource;
 
 public class Wrapper extends AbstractCommand {
-	private static final BuiltInExceptions BUILT_IN_EXCEPTIONS = new BuiltInExceptions();
 	private final LiteralCommandNode<ServerCommandSource> inner;
 
 	public Wrapper(LiteralCommandNode<ServerCommandSource> inner) {

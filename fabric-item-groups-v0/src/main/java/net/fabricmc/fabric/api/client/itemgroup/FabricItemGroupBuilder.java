@@ -76,6 +76,11 @@ public class FabricItemGroupBuilder {
 				return getIcon().getItem();
 			}
 
+			@Override
+			public int getIconMeta() {
+				return this.getIcon().getMeta();
+			}
+
 			@Environment(EnvType.CLIENT)
 			@Override
 			public void showItems(List<ItemStack> list) {
