@@ -26,9 +26,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.container.Container;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.screen.ScreenHandler;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -47,8 +47,8 @@ public abstract class MixinCreativeInventoryScreen extends InventoryScreen imple
 	@Unique
 	private static int fabric_currentPage = 0;
 
-	public MixinCreativeInventoryScreen(Container container) {
-		super(container);
+	public MixinCreativeInventoryScreen(ScreenHandler screenHandler) {
+		super(screenHandler);
 	}
 
 	@Unique
