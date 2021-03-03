@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2020 Legacy Fabric
- * Copyright (c) 2016 - 2020 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,9 +42,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.level.LevelProperties;
 
-import net.fabricmc.fabric.api.content.registry.v1.BlockRegistry;
-import net.fabricmc.fabric.api.content.registry.v1.EntityRegistry;
-import net.fabricmc.fabric.api.content.registry.v1.ItemRegistry;
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
 @Mixin(World.class)
@@ -57,7 +54,7 @@ public class MixinWorld {
 	public void init(SaveHandler arg, LevelProperties levelProperties, Dimension dimension, Profiler profiler, boolean client, CallbackInfo ci) {
 		if (!isClient) {
 			try {
-				if (!BlockRegistry.blockIdsSetup) {
+				if (!ContentRegistryImpl.blockIdsSetup) {
 					File blockIds = new File(arg.getDataFile("blocks").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
 					blockIds.getParentFile().mkdirs();
 					BiMap<Integer, Identifier> idMap = HashBiMap.create();
@@ -74,7 +71,7 @@ public class MixinWorld {
 					ContentRegistryImpl.reorderBlockEntries(idMap);
 				}
 
-				if (!ItemRegistry.itemIdsSetup) {
+				if (!ContentRegistryImpl.itemIdsSetup) {
 					File itemIds = new File(arg.getDataFile("items").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
 					itemIds.getParentFile().mkdirs();
 					BiMap<Integer, Identifier> idMap = HashBiMap.create();
@@ -91,7 +88,7 @@ public class MixinWorld {
 					ContentRegistryImpl.reorderItemEntries(idMap);
 				}
 
-				if (!EntityRegistry.entityIdsSetup) {
+				if (!ContentRegistryImpl.entityIdsSetup) {
 					File entityIds = new File(arg.getDataFile("entities").getAbsoluteFile().getAbsolutePath().replace(".dat", ".registry"));
 					entityIds.getParentFile().mkdirs();
 					BiMap<Integer, String> idMap = HashBiMap.create();

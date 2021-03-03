@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2020 Legacy Fabric
- * Copyright (c) 2016 - 2020 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,11 @@ public final class NbtType {
 	public static final int LIST = 9;
 	public static final int COMPOUND = 10;
 	public static final int INT_ARRAY = 11;
+
+	/**
+	 * @deprecated Long Array Tags do not exist in 1.8.9
+	 */
+	@Deprecated
 	public static final int LONG_ARRAY = 12;
 
 	/**
