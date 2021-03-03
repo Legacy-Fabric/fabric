@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2020 Legacy Fabric
- * Copyright (c) 2016 - 2020 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,16 +53,32 @@ public class FabricItemGroupBuilder {
 		return this;
 	}
 
-	public static ItemGroup build(Identifier identifier, Supplier<ItemStack> stackSupplier) {
-		return new FabricItemGroupBuilder(identifier).icon(stackSupplier).build();
+	public static ItemGroup build(Identifier identifier, Supplier<ItemStack> iconSupplier) {
+		return new FabricItemGroupBuilder(identifier).icon(iconSupplier).build();
 	}
 
 	public ItemGroup build() {
 		((ItemGroupExtensions) ItemGroup.BUILDING_BLOCKS).fabric_expandArray();
 		return new ItemGroup(ItemGroup.itemGroups.length - 1, String.format("%s.%s", identifier.getNamespace(), identifier.getPath())) {
+			private ItemStack cachedStack;
+
+			@Override
+			public ItemStack getIcon() {
+				if (cachedStack != null) {
+					return cachedStack;
+				}
+
+				return cachedStack = stackSupplier.get();
+			}
+
 			@Override
 			public Item getIconItem() {
-				return stackSupplier.get().getItem();
+				return getIcon().getItem();
+			}
+
+			@Override
+			public int getIconMeta() {
+				return this.getIcon().getMeta();
 			}
 
 			@Environment(EnvType.CLIENT)

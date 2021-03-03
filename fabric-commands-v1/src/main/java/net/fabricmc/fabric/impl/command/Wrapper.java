@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2020 Legacy Fabric
- * Copyright (c) 2016 - 2020 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package net.fabricmc.fabric.impl.command;
 
 import com.google.common.base.Preconditions;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.exceptions.BuiltInExceptions;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 
@@ -33,7 +32,6 @@ import net.fabricmc.fabric.api.command.v1.DispatcherRegistrationCallback;
 import net.fabricmc.fabric.api.command.v1.ServerCommandSource;
 
 public class Wrapper extends AbstractCommand {
-	private static final BuiltInExceptions BUILT_IN_EXCEPTIONS = new BuiltInExceptions();
 	private final LiteralCommandNode<ServerCommandSource> inner;
 
 	public Wrapper(LiteralCommandNode<ServerCommandSource> inner) {

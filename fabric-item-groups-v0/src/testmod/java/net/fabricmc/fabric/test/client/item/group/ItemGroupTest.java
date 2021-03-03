@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2020 Legacy Fabric
- * Copyright (c) 2016 - 2020 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,9 @@
 
 package net.fabricmc.fabric.test.client.item.group;
 
-import net.minecraft.item.ItemGroup;
+import java.util.stream.IntStream;
+
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -29,9 +31,8 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 
 @Environment(EnvType.CLIENT)
 public class ItemGroupTest implements ClientModInitializer {
-	public static final ItemGroup TEST_ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("fabric-item-groups-v0-testmod:test_itemgroup")).icon(() -> new ItemStack(Items.MINECART_WITH_COMMAND_BLOCK)).appendItems((list) -> Items.DYE.appendItemStacks(Items.DYE, null, list)).build();
-
 	@Override
 	public void onInitializeClient() {
+		IntStream.range(0, 25).forEach(i -> FabricItemGroupBuilder.create(new Identifier("fabric-item-groups-v0-testmod:test_itemgroup_" + i)).appendItems(list -> Items.DYE.appendItemStacks(Items.DYE, null, list)).icon(() -> new ItemStack(Block.getById(i + 1))).build());
 	}
 }

@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2020 Legacy Fabric
- * Copyright (c) 2016 - 2020 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,8 @@
 
 package net.fabricmc.fabric.api.content.registry.v1;
 
-import net.java.games.input.Component;
-
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
@@ -27,7 +26,7 @@ public final class BlockEntityRegistry {
 	private BlockEntityRegistry() {
 	}
 
-	public static void registerBlockEntity(Class<? extends BlockEntity> clazz, Component.Identifier name) {
+	public static void registerBlockEntity(Class<? extends BlockEntity> clazz, Identifier name) {
 		ContentRegistryImpl.registerBlockEntity(clazz, name.toString());
 	}
 }
