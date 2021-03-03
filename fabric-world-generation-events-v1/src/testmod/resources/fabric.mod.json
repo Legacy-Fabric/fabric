@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "fabric-world-generation-v1-testmod",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "contact": {
+    "homepage": "https://legacy-fabric.github.io/",
+    "irc": "irc://irc.esper.net:6667/legacyfabric",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "entrypoints": {
+    "main": [
+      "net.fabricmc.fabric.test.worldgen.WorldgenEventsTest"
+    ]
+  },
+  "authors": [
+    "Legacy-Fabric"
+  ]
+}

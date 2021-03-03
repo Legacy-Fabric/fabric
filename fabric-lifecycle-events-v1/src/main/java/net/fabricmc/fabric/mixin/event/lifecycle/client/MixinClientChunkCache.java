@@ -38,18 +38,18 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 @Mixin(ClientChunkCache.class)
 public abstract class MixinClientChunkCache {
 	@Shadow
-	private World field_3987;
+	private World world;
 
 	@Shadow
 	public abstract Chunk getChunk(int i, int j);
 
 	@Inject(at = @At("RETURN"), method = "method_3120")
 	public void chunkUnload(int i, int j, CallbackInfo ci) {
-		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.field_3987, this.getChunk(i, j));
+		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getChunk(i, j));
 	}
 
 	@Inject(at = @At("RETURN"), method = "method_3121", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
-		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.field_3987, chunk);
+		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, chunk);
 	}
 }

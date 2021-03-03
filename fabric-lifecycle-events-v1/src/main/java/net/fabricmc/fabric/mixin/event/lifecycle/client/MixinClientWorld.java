@@ -43,12 +43,12 @@ public class MixinClientWorld {
 		ClientTickEvents.END_WORLD_TICK.invoker().onEndTick((ClientWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "method_326")
+	@Inject(at = @At("TAIL"), method = "onEntitySpawned")
 	public void unloadEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ClientWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "method_372")
+	@Inject(at = @At("TAIL"), method = "onEntityRemoved")
 	public void loadEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ClientWorld) (Object) this);
 	}
