@@ -15,34 +15,27 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.content.registries;
+package net.fabricmc.fabric.mixin.command;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.block.entity.FurnaceBlockEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.command.AbstractCommand;
+import net.minecraft.command.Command;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandRegistry;
 
-import net.fabricmc.fabric.api.content.registry.v1.FuelAccess;
-import net.fabricmc.fabric.impl.content.registries.FuelRegistryImpl;
+import net.fabricmc.fabric.api.command.CommandSide;
+import net.fabricmc.fabric.api.event.server.FabricCommandRegisteredCallback;
 
-@Mixin(FurnaceBlockEntity.class)
-public class MixinFurnaceBlockEntity {
-	@Inject(at = @At("HEAD"), method = "getBurnTime", cancellable = true)
-	private static void registerFuels(ItemStack stack, CallbackInfoReturnable<Integer> info) {
-		if (stack == null) return;
-
-		if (stack.getItem() instanceof FuelAccess) {
-			info.setReturnValue(((FuelAccess) stack.getItem()).getBurnTime(stack));
-			return;
-		}
-
-		Integer value = FuelRegistryImpl.INSTANCE.getFuelMap().get(stack.getItem());
-
-		if (value != null) {
-			info.setReturnValue(value);
+@Mixin(CommandRegistry.class)
+public class MixinCommandRegistry {
+	@Inject(method = "registerCommand", at = @At("TAIL"))
+	public void afterRegister(Command command, CallbackInfoReturnable<Command> cir) {
+		if (command instanceof AbstractCommand) {
+			FabricCommandRegisteredCallback.EVENT.invoker().onCommandRegistered(MinecraftServer.getServer(), (AbstractCommand) command, CommandSide.COMMON);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +39,9 @@ import net.minecraft.util.Identifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.ResourceReloadListenerKeys;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.MappingResolver;
 
 @Environment(EnvType.CLIENT)
 public class MixinKeyedResourceReloadListener {
@@ -49,44 +53,47 @@ public class MixinKeyedResourceReloadListener {
 		private Collection<Identifier> fabric_idDeps;
 		private Identifier fabric_id;
 
+		@SuppressWarnings("ConstantConditions")
 		@Override
 		public Collection<Identifier> getFabricDependencies() {
-			if (fabric_idDeps == null) {
+			if (this.fabric_idDeps == null) {
 				Object self = this;
 
-				//				if (self instanceof BakedModelManager || self instanceof WorldRenderer) {
-				//					fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.TEXTURES);
-				//				} else if (self instanceof ItemRenderer || self instanceof BlockRenderManager) {
-				//					fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.MODELS);
-				//				} else {
-				//				}
-				fabric_idDeps = Collections.emptyList();
+				if (self instanceof BakedModelManager || self instanceof WorldRenderer) {
+					this.fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.TEXTURES);
+				} else if (self instanceof ItemRenderer || self instanceof BlockRenderManager) {
+					this.fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.MODELS);
+				} else {
+					this.fabric_idDeps = Collections.emptyList();
+				}
 			}
 
-			return fabric_idDeps;
+			return this.fabric_idDeps;
 		}
 
+		@SuppressWarnings("ConstantConditions")
 		@Override
 		public Identifier getFabricId() {
-			if (fabric_id == null) {
+			if (this.fabric_id == null) {
 				Object self = this;
 
-				//				if (self instanceof SoundLoader) {
-				//					fabric_id = ResourceReloadListenerKeys.SOUNDS;
-				//				} else if (self instanceof FontManager) {
-				//					fabric_id = ResourceReloadListenerKeys.FONTS;
-				//				} else if (self instanceof BakedModelManager) {
-				//					fabric_id = ResourceReloadListenerKeys.MODELS;
-				//				} else if (self instanceof class_1270) {
-				//					fabric_id = ResourceReloadListenerKeys.LANGUAGES;
-				//				} else if (self instanceof TextureManager) {
-				//					fabric_id = ResourceReloadListenerKeys.TEXTURES;
-				//				} else {
-				//				}
-				fabric_id = new Identifier("minecraft", "private/" + self.getClass().getSimpleName().toLowerCase(Locale.ROOT));
+				if (self instanceof SoundManager) {
+					this.fabric_id = ResourceReloadListenerKeys.SOUNDS;
+				} else if (self instanceof TextRenderer) {
+					this.fabric_id = ResourceReloadListenerKeys.FONTS;
+				} else if (self instanceof BakedModelManager) {
+					this.fabric_id = ResourceReloadListenerKeys.MODELS;
+				} else if (self instanceof LanguageManager) {
+					this.fabric_id = ResourceReloadListenerKeys.LANGUAGES;
+				} else if (self instanceof TextureManager) {
+					this.fabric_id = ResourceReloadListenerKeys.TEXTURES;
+				} else {
+					MappingResolver resolver = FabricLoader.getInstance().getMappingResolver();
+					this.fabric_id = new Identifier("minecraft", "private/" + resolver.mapClassName("intermediary", self.getClass().getName()).toLowerCase(Locale.ROOT));
+				}
 			}
 
-			return fabric_id;
+			return this.fabric_id;
 		}
 	}
 }

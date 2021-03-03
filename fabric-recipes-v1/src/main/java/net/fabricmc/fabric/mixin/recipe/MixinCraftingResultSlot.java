@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +58,7 @@ public class MixinCraftingResultSlot {
 		for (int i = 0; i < this.craftingInv.getInvSize(); i++) {
 			ItemStack invStack = this.craftingInv.getInvStack(i);
 
-			if (invStack.getItem() instanceof FabricRecipeRemainder) {
+			if (invStack != null && invStack.getItem() instanceof FabricRecipeRemainder) {
 				itemStacks[i] = ((FabricRecipeRemainder) invStack.getItem()).getRecipeRemainder(invStack.copy(), this.craftingInv, this.player);
 			}
 		}

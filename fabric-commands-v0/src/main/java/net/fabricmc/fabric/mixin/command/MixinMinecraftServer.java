@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 
-import net.fabricmc.fabric.api.event.server.FabricCommandRegisteredCallback;
+import net.fabricmc.fabric.api.command.CommandSide;
 import net.fabricmc.fabric.impl.command.FabricCommandRegistryImpl;
 
 @Mixin(MinecraftServer.class)
@@ -38,15 +39,9 @@ public abstract class MixinMinecraftServer {
 		FabricCommandRegistryImpl.getCommandMap().forEach((command, side) -> {
 			boolean dedicated = this.isDedicated();
 
-			if (!(dedicated) && side.isIntegrated()) {
+			if ((side == CommandSide.DEDICATED && dedicated) || (side == CommandSide.INTEGRATED && !dedicated) || side == CommandSide.COMMON) {
 				cir.getReturnValue().registerCommand(command);
 			}
-
-			if (dedicated && side.isDedicated()) {
-				cir.getReturnValue().registerCommand(command);
-			}
-
-			FabricCommandRegisteredCallback.EVENT.invoker().onCommandRegistered(MinecraftServer.getServer(), command, side);
 		});
 	}
 }

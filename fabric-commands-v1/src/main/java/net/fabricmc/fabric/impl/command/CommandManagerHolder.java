@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +19,19 @@ package net.fabricmc.fabric.impl.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 
+import net.minecraft.server.command.CommandManager;
+
+import net.fabricmc.fabric.api.command.v1.DispatcherRegistrationCallback;
 import net.fabricmc.fabric.api.command.v1.ServerCommandSource;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 
 public class CommandManagerHolder {
-	public static CommandDispatcher<ServerCommandSource> COMMAND_DISPATCHER;
+	public static final CommandDispatcher<ServerCommandSource> COMMAND_DISPATCHER = new CommandDispatcher<>();
+
+	public static void init() {
+		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+			DispatcherRegistrationCallback.EVENT.invoker().initialize(COMMAND_DISPATCHER, server.isDedicated());
+			Wrapper.afterEvaluate(server, (CommandManager) server.getCommandManager());
+		});
+	}
 }

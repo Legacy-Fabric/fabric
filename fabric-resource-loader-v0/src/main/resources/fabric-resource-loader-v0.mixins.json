@@ -4,8 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "client.MixinDefaultResourcePack",
-    "MixinKeyedResourceReloadListener$Client",
-    "client.MixinMinecraftClient"
+    "client.MixinMinecraftClient",
+    "client.MixinKeyedResourceReloadListener$Client"
   ],
   "injectors": {
     "defaultRequire": 1

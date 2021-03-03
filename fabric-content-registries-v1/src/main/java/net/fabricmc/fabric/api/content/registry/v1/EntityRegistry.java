@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +23,6 @@ import net.minecraft.util.Identifier;
 import net.fabricmc.fabric.impl.content.registries.ContentRegistryImpl;
 
 public final class EntityRegistry {
-	public static boolean entityIdsSetup = false;
-
 	private EntityRegistry() {
 	}
 
