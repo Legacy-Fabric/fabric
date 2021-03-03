@@ -46,7 +46,6 @@ public class BiomeDecorationEvents {
 		}
 	});
 
-
 	/**
 	 * Fired after all vanilla ores have finished generating.
 	 */
@@ -66,7 +65,7 @@ public class BiomeDecorationEvents {
 			if (cancellable.isCancelled()) {
 				break;
 			}
- 		}
+		}
 	});
 
 	@FunctionalInterface

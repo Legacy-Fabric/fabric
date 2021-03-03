@@ -26,49 +26,36 @@ import com.google.common.base.Preconditions;
 
 import net.minecraft.world.gen.feature.OreFeature;
 
+import net.fabricmc.fabric.api.worldgen.event.v1.OreEntry;
 import net.fabricmc.fabric.api.worldgen.event.v1.OreRegistry;
 
-public class OreRegistryImpl implements OreRegistry, Iterable<OreRegistryImpl.Entry> {
-	private final Set<Entry> entries;
+public class OreRegistryImpl implements OreRegistry, Iterable<OreEntry> {
+	private final Set<OreEntry> entries;
 
 	public OreRegistryImpl() {
 		this.entries = new HashSet<>();
 	}
 
 	public void register(int count, OreFeature feature, int minHeight, int maxHeight) {
-		this.entries.add(new Entry(count, feature, minHeight, maxHeight));
+		this.entries.add(new OreEntry(count, feature, minHeight, maxHeight));
 	}
 
-	public void forEach(@Nonnull Consumer4 action) {
+	public void forEach(@Nonnull OreConsumer action) {
 		Preconditions.checkNotNull(action, "action was null");
 
-		for (Entry e : this) {
-			action.accept(e.count, e.feature, e.maxHeight, e.minHeight);
+		for (OreEntry e : this) {
+			action.accept(e.getCount(), e.getFeature(), e.getMaxHeight(), e.getMinHeight());
 		}
 	}
 
 	@Nonnull
 	@Override
-	public Iterator<Entry> iterator() {
+	public Iterator<OreEntry> iterator() {
 		return this.entries.iterator();
 	}
 
-	static class Entry {
-		private final int count;
-		private final OreFeature feature;
-		private final int minHeight;
-		private final int maxHeight;
-
-		private Entry(int count, OreFeature feature, int minHeight, int maxHeight) {
-			this.count = count;
-			this.feature = feature;
-			this.minHeight = minHeight;
-			this.maxHeight = maxHeight;
-		}
-	}
-
 	@FunctionalInterface
-	public interface Consumer4 {
+	public interface OreConsumer {
 		void accept(int count, OreFeature feature, int maxHeight, int minHeight);
 	}
 }

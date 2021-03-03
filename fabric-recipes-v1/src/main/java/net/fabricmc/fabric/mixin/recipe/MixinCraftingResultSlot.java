@@ -24,9 +24,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.container.CraftingResultSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.slot.CraftingResultSlot;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.fabric.api.recipe.v1.FabricRecipeRemainder;

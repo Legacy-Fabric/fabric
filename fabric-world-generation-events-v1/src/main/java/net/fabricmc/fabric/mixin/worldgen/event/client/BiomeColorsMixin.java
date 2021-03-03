@@ -27,16 +27,16 @@ import net.minecraft.world.WorldView;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.util.IntActionResult;
 import net.fabricmc.fabric.api.worldgen.event.v1.client.BiomeColorEvents;
 import net.fabricmc.fabric.impl.base.util.ActionResult;
-import net.fabricmc.fabric.impl.base.util.TypedActionResult;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BiomeColors.class)
 public class BiomeColorsMixin {
 	@Inject(method = "getGrassColor", at = @At("TAIL"), cancellable = true)
 	private static void callGrassEvent(WorldView view, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
-		TypedActionResult<Integer> retVal = BiomeColorEvents.GRASS.invoker().apply(cir.getReturnValue(), view, pos, view.getBiomeAt(pos));
+		IntActionResult retVal = BiomeColorEvents.GRASS.invoker().apply(cir.getReturnValue(), view, pos, view.getBiomeAt(pos));
 
 		if (retVal.getResult() == ActionResult.SUCCESS) {
 			cir.setReturnValue(retVal.getValue());
@@ -45,7 +45,7 @@ public class BiomeColorsMixin {
 
 	@Inject(method = "getFoliageColor", at = @At("TAIL"), cancellable = true)
 	private static void callFoliageEvent(WorldView view, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
-		TypedActionResult<Integer> retVal = BiomeColorEvents.FOLIAGE.invoker().apply(cir.getReturnValue(), view, pos, view.getBiomeAt(pos));
+		IntActionResult retVal = BiomeColorEvents.FOLIAGE.invoker().apply(cir.getReturnValue(), view, pos, view.getBiomeAt(pos));
 
 		if (retVal.getResult() == ActionResult.SUCCESS) {
 			cir.setReturnValue(retVal.getValue());
@@ -54,7 +54,7 @@ public class BiomeColorsMixin {
 
 	@Inject(method = "getWaterColor", at = @At("TAIL"), cancellable = true)
 	private static void callWaterEvent(WorldView view, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
-		TypedActionResult<Integer> retVal = BiomeColorEvents.FOLIAGE.invoker().apply(cir.getReturnValue(), view, pos, view.getBiomeAt(pos));
+		IntActionResult retVal = BiomeColorEvents.FOLIAGE.invoker().apply(cir.getReturnValue(), view, pos, view.getBiomeAt(pos));
 
 		if (retVal.getResult() == ActionResult.SUCCESS) {
 			cir.setReturnValue(retVal.getValue());

@@ -22,8 +22,8 @@ import net.minecraft.world.biome.Biome;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.api.util.IntActionResult;
 import net.fabricmc.fabric.impl.base.util.ActionResult;
-import net.fabricmc.fabric.impl.base.util.TypedActionResult;
 
 /**
  * Stores events that are fired when the color of foliage, water, or
@@ -43,14 +43,14 @@ public class BiomeColorEvents {
 	 */
 	public static final Event<ColorEvent> GRASS = EventFactory.createArrayBacked(ColorEvent.class, listeners -> (original, world, pos, biome) -> {
 		for (ColorEvent e : listeners) {
-			TypedActionResult<Integer> result  = e.apply(original, world, pos, biome);
+			IntActionResult result = e.apply(original, world, pos, biome);
 
 			if (result.getResult() == ActionResult.SUCCESS) {
 				break;
 			}
 		}
 
-		return TypedActionResult.pass(original);
+		return IntActionResult.pass(original);
 	});
 
 	/**
@@ -63,14 +63,14 @@ public class BiomeColorEvents {
 	 */
 	public static final Event<ColorEvent> FOLIAGE = EventFactory.createArrayBacked(ColorEvent.class, listeners -> (original, world, pos, biome) -> {
 		for (ColorEvent e : listeners) {
-			TypedActionResult<Integer> result  = e.apply(original, world, pos, biome);
+			IntActionResult result = e.apply(original, world, pos, biome);
 
 			if (result.getResult() == ActionResult.SUCCESS) {
 				break;
 			}
 		}
 
-		return TypedActionResult.pass(original);
+		return IntActionResult.pass(original);
 	});
 
 	/**
@@ -83,17 +83,17 @@ public class BiomeColorEvents {
 	 */
 	public static final Event<ColorEvent> WATER = EventFactory.createArrayBacked(ColorEvent.class, listeners -> (original, world, pos, biome) -> {
 		for (ColorEvent e : listeners) {
-			TypedActionResult<Integer> result  = e.apply(original, world, pos, biome);
+			IntActionResult result = e.apply(original, world, pos, biome);
 
 			if (result.getResult() == ActionResult.SUCCESS) {
 				break;
 			}
 		}
 
-		return TypedActionResult.pass(original);
+		return IntActionResult.pass(original);
 	});
 
 	public interface ColorEvent {
-		TypedActionResult<Integer> apply(int original, WorldView world, BlockPos pos, Biome biome);
+		IntActionResult apply(int original, WorldView world, BlockPos pos, Biome biome);
 	}
 }

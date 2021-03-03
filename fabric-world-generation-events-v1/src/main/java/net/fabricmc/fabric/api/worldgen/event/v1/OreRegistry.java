@@ -25,7 +25,7 @@ import net.minecraft.world.gen.feature.OreFeature;
 /**
  * A registry that stores a list of ore entries.
  */
-public interface OreRegistry {
+public interface OreRegistry extends Iterable<OreEntry> {
 	/**
 	 * Adds a new entry to this ore registry.
 	 *
