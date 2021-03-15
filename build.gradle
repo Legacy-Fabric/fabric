@@ -254,53 +254,29 @@ subprojects.each {
 }
 
 
-//publishing {
-//	publications {
-//		mavenJava(MavenPublication) {
-//			artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
-//				builtBy remapMavenJar
-//			}
-//			artifact(sourcesJar) {
-//				builtBy remapSourcesJar
-//			}
-//
-//
-//			artifact javadocJar
-//			pom.withXml {
-//				def depsNode = asNode().appendNode("dependencies")
-//				subprojects.each {
-//					def depNode = depsNode.appendNode("dependency")
-//					depNode.appendNode("groupId", it.group)
-//					depNode.appendNode("artifactId", it.name)
-//					depNode.appendNode("version", it.version)
-//					depNode.appendNode("scope", "compile")
-//				}
-//			}
-//		}
-//	}
-//}
-
 publishing {
 	publications {
-		maven(MavenPublication) {
-			groupId 'net.fabricmc'
-			artifactId "yarn"
-			version yarnVersion
+		mavenJava(MavenPublication) {
+			artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
+				builtBy remapMavenJar
+			}
+			artifact(sourcesJar) {
+				builtBy remapSourcesJar
+			}
 
-			artifact(compressTiny.output) {
-				classifier "tiny"
-				builtBy compressTiny
-			}
-			artifact(tinyJar)
-			artifact(v2UnmergedYarnJar) {
-				classifier "v2"
-			}
-			artifact(v2MergedYarnJar) {
-				classifier "mergedv2"
-			}
+
 			artifact javadocJar
+			pom.withXml {
+				def depsNode = asNode().appendNode("dependencies")
+				subprojects.each {
+					def depNode = depsNode.appendNode("dependency")
+					depNode.appendNode("groupId", it.group)
+					depNode.appendNode("artifactId", it.name)
+					depNode.appendNode("version", it.version)
+					depNode.appendNode("scope", "compile")
+				}
+			}
 		}
-
 	}
 	repositories {
 		if (ENV.MAVEN_PUBLISH_TOKEN) {
