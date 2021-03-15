@@ -1,8 +1,8 @@
 name: Release
-on: [workflow_dispatch] # Manual trigger
+on: [workflow_dispatch, push] # Manual trigger
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     container:
       image: openjdk:15-jdk
       options: --user root
