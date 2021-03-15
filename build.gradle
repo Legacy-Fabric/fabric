@@ -108,7 +108,7 @@ allprojects {
 				force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
 			}
 		}
-	}
+	}-+
 
 	jar {
 		classifier = "dev"
