@@ -52,7 +52,6 @@ allprojects {
 	apply plugin: 'maven-publish'
 	apply plugin: 'maven'
 	apply plugin: 'signing'
-	apply plugin: 'com.jfrog.bintray'
 	apply plugin: 'fabric-loom'
 	apply plugin: 'net.minecrell.licenser'
 
@@ -216,28 +215,28 @@ subprojects {
 		}
 	}
 
-	bintray {
-		user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-		key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
-		publications = ["${archivesBaseName}_mavenJava"]
-		publish = true
-		pkg {
-			repo = "Legacy-Fabric-Maven"
-			name = archivesBaseName
-			userOrg = "legacy-fabric"
-			licenses = ["Apache-2.0"]
-			version {
-				released = new Date()
-				githubRepo = 'Legacy-Fabric/fabric'
-				websiteUrl = 'https://github.com/Legacy-Fabric/fabric'
-				issueTrackerUrl = 'https://github.com/Legacy-Fabric/fabric/issues'
-				vcsUrl = 'https://github.com/Legacy-Fabric/fabric.git'
-				gpg {
-					sign = true
-				}
-			}
-		}
-	}
+//	bintray {
+//		user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+//		key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
+//		publications = ["${archivesBaseName}_mavenJava"]
+//		publish = true
+//		pkg {
+//			repo = "Legacy-Fabric-Maven"
+//			name = archivesBaseName
+//			userOrg = "legacy-fabric"
+//			licenses = ["Apache-2.0"]
+//			version {
+//				released = new Date()
+//				githubRepo = 'Legacy-Fabric/fabric'
+//				websiteUrl = 'https://github.com/Legacy-Fabric/fabric'
+//				issueTrackerUrl = 'https://github.com/Legacy-Fabric/fabric/issues'
+//				vcsUrl = 'https://github.com/Legacy-Fabric/fabric.git'
+//				gpg {
+//					sign = true
+//				}
+//			}
+//		}
+//	}
 
 	javadoc.enabled = false
 }
@@ -250,7 +249,9 @@ task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
 	}
 }
 
-subprojects.each { bintrayUpload.dependsOn("${it.path}:bintrayUpload") }
+subprojects.each {
+//	bintrayUpload.dependsOn("${it.path}:bintrayUpload")
+}
 
 
 //publishing {
