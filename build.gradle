@@ -47,6 +47,22 @@ def getBranch() {
 	return branch.substring(branch.lastIndexOf("/") + 1)
 }
 
+def setupRepositories(RepositoryHandler repositories) {
+	def ENV = System.getenv()
+	if (ENV.MAVEN_PUBLISH_TOKEN) {
+		repositories.maven {
+			url 'https://maven.legacyfabric.net/'
+			credentials {
+				username 'BobTheBuildSlave'
+				password ENV.MAVEN_PUBLISH_TOKEN
+			}
+			authentication {
+				basic(BasicAuthentication)
+			}
+		}
+	}
+}
+
 allprojects {
 	apply plugin: 'checkstyle'
 	apply plugin: 'maven-publish'
@@ -191,7 +207,7 @@ subprojects {
 	dependencies {
 		testmodCompile sourceSets.main.output
 	}
-	
+
 	task remapMavenJar(type: Copy, dependsOn: remapJar) {
 		afterEvaluate {
 			from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
@@ -202,42 +218,21 @@ subprojects {
 
 	publishing {
 		publications {
-			create("${archivesBaseName}_mavenJava", MavenPublication) {
+			mavenJava(MavenPublication) {
 				afterEvaluate {
 					artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
 						builtBy remapMavenJar
 					}
+
 					artifact(sourcesJar) {
 						builtBy remapSourcesJar
 					}
 				}
 			}
 		}
+
+		setupRepositories(repositories)
 	}
-
-//	bintray {
-//		user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-//		key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
-//		publications = ["${archivesBaseName}_mavenJava"]
-//		publish = true
-//		pkg {
-//			repo = "Legacy-Fabric-Maven"
-//			name = archivesBaseName
-//			userOrg = "legacy-fabric"
-//			licenses = ["Apache-2.0"]
-//			version {
-//				released = new Date()
-//				githubRepo = 'Legacy-Fabric/fabric'
-//				websiteUrl = 'https://github.com/Legacy-Fabric/fabric'
-//				issueTrackerUrl = 'https://github.com/Legacy-Fabric/fabric/issues'
-//				vcsUrl = 'https://github.com/Legacy-Fabric/fabric.git'
-//				gpg {
-//					sign = true
-//				}
-//			}
-//		}
-//	}
-
 	javadoc.enabled = false
 }
 
@@ -251,6 +246,7 @@ task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
 
 subprojects.each {
 //	bintrayUpload.dependsOn("${it.path}:bintrayUpload")
+	publish.dependsOn("${it.path}:publish")
 }
 
 
@@ -314,25 +310,25 @@ dependencies {
 }
 
 curseforge {
-    if (project.hasProperty('curse_api_key')) {
-        apiKey = project.getProperty('curse_api_key')
-    }
-    project {
-        id = '400281'
-        changelog = 'A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits'
-        releaseType = 'beta'
-        addGameVersion '1.8.9'
-        addGameVersion 'Fabric'
-        mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
-            displayName = "[$Globals.mcVersion] Legacy Fabric API $Globals.baseVersion"
-        }
-        afterEvaluate {
-            uploadTask.dependsOn("remapJar")
-        }
-    }
-    options {
-        forgeGradleIntegration = false
-    }
+	if (project.hasProperty('curse_api_key')) {
+		apiKey = project.getProperty('curse_api_key')
+	}
+	project {
+		id = '400281'
+		changelog = 'A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits'
+		releaseType = 'beta'
+		addGameVersion '1.8.9'
+		addGameVersion 'Fabric'
+		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
+			displayName = "[$Globals.mcVersion] Legacy Fabric API $Globals.baseVersion"
+		}
+		afterEvaluate {
+			uploadTask.dependsOn("remapJar")
+		}
+	}
+	options {
+		forgeGradleIntegration = false
+	}
 }
 
 //apply from: 'https://github.com/FabricMC/fabric-docs/raw/master/gradle/ideconfig.gradle'
