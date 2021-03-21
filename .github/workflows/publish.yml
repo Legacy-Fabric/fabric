@@ -1,5 +1,5 @@
 name: Release
-on: [workflow_dispatch, push] # Manual trigger
+on: [workflow_dispatch] # Manual trigger
 jobs:
   build:
     runs-on: ubuntu-latest
