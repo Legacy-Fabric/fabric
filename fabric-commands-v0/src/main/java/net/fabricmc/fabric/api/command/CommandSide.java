@@ -19,6 +19,9 @@ package net.fabricmc.fabric.api.command;
 
 import com.google.common.annotations.Beta;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
+
 public enum CommandSide {
 	/**
 	 * Not Implemented Yet!
@@ -43,5 +46,9 @@ public enum CommandSide {
 
 	public boolean isIntegrated() {
 		return this.integrated;
+	}
+
+	public static CommandSide getServerSide() {
+		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? INTEGRATED : DEDICATED;
 	}
 }
