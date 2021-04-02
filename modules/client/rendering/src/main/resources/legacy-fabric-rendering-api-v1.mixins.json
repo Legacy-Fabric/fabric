@@ -1,15 +1,14 @@
 {
   "required": true,
-  "package": "net.fabricmc.fabric.mixin.client.rendering",
+  "package": "net.legacyfabric.fabric.mixin.client.rendering",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "net.legacyfabric.fabric.mixin.client.rendering.MixinArmorFeatureRenderer",
-    "net.legacyfabric.fabric.mixin.client.rendering.MixinBlockColorMap",
-    "MixinBuiltinModelItemRenderer",
-    "net.legacyfabric.fabric.mixin.client.rendering.MixinInGameHud",
-    "net.legacyfabric.fabric.mixin.client.rendering.MixinItem",
-    "net.legacyfabric.fabric.mixin.client.rendering.MixinItemColorMap",
-    "net.legacyfabric.fabric.mixin.client.rendering.MixinWorldRenderer"
+    "ItemRendererMixin",
+    "BlockEntityRenderDispatcherMixin",
+    "EntityRenderDispatcherMixin",
+    "InGameHudMixin",
+    "LivingEntityRendererAccessor",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

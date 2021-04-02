@@ -32,7 +32,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
 @Mixin(BlockEntityRenderDispatcher.class)
-public abstract class MixinBlockEntityRenderDispatcher {
+public abstract class BlockEntityRenderDispatcherMixin {
 	@Shadow
 	@Final
 	private Map<Class<? extends BlockEntity>, BlockEntityRenderer<?>> renderers;

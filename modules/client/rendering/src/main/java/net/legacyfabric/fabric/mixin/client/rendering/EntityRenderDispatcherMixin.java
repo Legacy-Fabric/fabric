@@ -40,7 +40,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.resource.ReloadableResourceManager;
 
 @Mixin(EntityRenderDispatcher.class)
-public abstract class MixinEntityRenderDispatcher {
+public abstract class EntityRenderDispatcherMixin {
 	@Shadow
 	@Final
 	private Map<Class<? extends Entity>, EntityRenderer<?>> renderers;
