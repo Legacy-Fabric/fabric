@@ -1,6 +1,5 @@
 pluginManagement {
 	repositories {
-		jcenter()
 		gradlePluginPortal()
 		maven {
 			name = 'Fabric'
@@ -10,25 +9,6 @@ pluginManagement {
 	}
 }
 
-rootProject.name = "fabric-api"
+rootProject.name = "legacy-fabric-api"
 
-include 'fabric-api-base'
-include 'fabric-armor-api-v1'
-include 'fabric-commands-v0'
-include 'fabric-commands-v1'
-include 'fabric-sponge-command-api-v2' 
-include 'fabric-content-registries-v1'
-include 'fabric-crash-report-info-v1'
-include 'fabric-events-interaction-v0'
-include 'fabric-events-lifecycle-v0'
-include 'fabric-gamerule-api-v1'
-include 'fabric-item-groups-v0'
-include 'fabric-key-binding-api-v1'
-include 'fabric-lifecycle-events-v1'
-include 'fabric-networking-blockentity-v0'
-include 'fabric-networking-v0'
-include 'fabric-object-builder-api-v1'
-include 'fabric-permission-api-v1'
-include 'fabric-recipes-v1'
-include 'fabric-rendering-v1'
-include 'fabric-resource-loader-v0'
+include("modules/base") 

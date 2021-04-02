@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-api",
-  "name": "Legacy Fabric API",
+  "id": "legacy-fabric-api-base",
+  "name": "Legacy Fabric API Base",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
@@ -18,5 +18,5 @@
   "depends": {
     "minecraft": "1.8.x"
   },
-  "description": "Core API module providing key hooks and intercompatibility features for 1.8.9."
+  "description": "Shared hooks used by other api modules"
 }
