@@ -29,12 +29,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.resource.ReloadableResourceManager;
@@ -50,10 +52,10 @@ public abstract class EntityRenderDispatcherMixin {
 	private Map<String, PlayerEntityRenderer> modelRenderers;
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	@Inject(method = "registerRenderers", at = @At(value = "TAIL"))
-	public void onRegisterRenderers(ItemRenderer itemRenderer, ReloadableResourceManager manager, CallbackInfo info) {
+	@Inject(method = "<init>", at = @At("TAIL"))
+	private void afterRegisterRenderers(TextureManager textureManager, ItemRenderer itemRenderer, CallbackInfo ci) {
 		final EntityRenderDispatcher me = (EntityRenderDispatcher) (Object) this;
-		EntityRendererRegistry.INSTANCE.initialize(me, me.textureManager, manager, itemRenderer, renderers);
+		EntityRendererRegistry.INSTANCE.initialize(me, textureManager, MinecraftClient.getInstance().getResourceManager(), itemRenderer, renderers);
 
 		// Dispatch events to register feature renderers.
 		for (Map.Entry<Class<? extends Entity>, EntityRenderer<?>> entry : this.renderers.entrySet()) {
@@ -63,11 +65,7 @@ public abstract class EntityRenderDispatcherMixin {
 				LivingEntityFeatureRendererRegistrationCallback.EVENT.invoker().registerRenderers((Class<? extends LivingEntity>) entry.getKey(), (LivingEntityRenderer) entry.getValue(), new RegistrationHelperImpl(accessor::callAddFeature));
 			}
 		}
-	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	@Inject(method = "<init>", at = @At("TAIL"))
-	private void afterRegisterPlayerModels(CallbackInfo ci) {
 		// Players are a fun case, we need to do these separately and per model type
 		for (Map.Entry<String, PlayerEntityRenderer> entry : this.modelRenderers.entrySet()) {
 			LivingEntityRendererAccessor accessor = (LivingEntityRendererAccessor) entry.getValue();

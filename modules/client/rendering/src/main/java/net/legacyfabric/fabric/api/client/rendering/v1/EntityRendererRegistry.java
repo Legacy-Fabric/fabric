@@ -28,6 +28,7 @@ import net.minecraft.client.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.resource.ReloadableResourceManager;
+import net.minecraft.resource.ResourceManager;
 
 /**
  * Helper class for registering EntityRenderers.
@@ -40,11 +41,11 @@ public class EntityRendererRegistry {
 
 	public static final class Context {
 		private final TextureManager textureManager;
-		private final ReloadableResourceManager resourceManager;
+		private final ResourceManager resourceManager;
 		private final ItemRenderer itemRenderer;
 		private final Map<Class<? extends Entity>, EntityRenderer<?>> rendererMap;
 
-		private Context(TextureManager textureManager, ReloadableResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<?>> rendererMap) {
+		private Context(TextureManager textureManager, ResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<?>> rendererMap) {
 			this.textureManager = textureManager;
 			this.resourceManager = resourceManager;
 			this.itemRenderer = itemRenderer;
@@ -55,7 +56,7 @@ public class EntityRendererRegistry {
 			return textureManager;
 		}
 
-		public ReloadableResourceManager getResourceManager() {
+		public ResourceManager getResourceManager() {
 			return resourceManager;
 		}
 
@@ -70,7 +71,7 @@ public class EntityRendererRegistry {
 
 	private EntityRendererRegistry() { }
 
-	public void initialize(EntityRenderDispatcher manager, TextureManager textureManager, ReloadableResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<?>> renderers) {
+	public void initialize(EntityRenderDispatcher manager, TextureManager textureManager, ResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<?>> renderers) {
 		synchronized (renderSupplierMap) {
 			if (renderManagerMap.containsKey(manager)) {
 				return;

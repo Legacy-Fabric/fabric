@@ -15,9 +15,6 @@
     "Legacy Fabric",
     "FabricMC"
   ],
-  "depends": {
-    "fabric-api-base": "*"
-  },
   "description": "Hooks and registries for rendering-related things.",
   "mixins": [
     "legacy-fabric-rendering-api-v1.mixins.json"
