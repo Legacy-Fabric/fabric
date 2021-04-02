@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.event.lifecycle",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "DamageTrackerMixin",
+    "EntityMixin",
+    "LightningBoltEntityMixin",
+    "MinecraftServerMixin",
+    "PlayerManagerMixin",
+    "ServerChunkCacheMixin",
+    "ServerPlayerEntityMixin",
+    "ServerPlayNetworkHandlerMixin",
+    "ServerWorldMixin"
+  ],
+  "client": [
+    "client.ClientChunkCacheMixin",
+    "client.ClientWorldMixin",
+    "client.GameOptionsMixin",
+    "client.IntegratedServerMixin",
+    "client.ItemStackMixin",
+    "client.MinecraftClientMixin",
+    "client.ClientPlayNetworkHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

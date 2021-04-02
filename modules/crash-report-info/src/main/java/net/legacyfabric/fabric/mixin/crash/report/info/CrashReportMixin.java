@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.crash.report.info;
+package net.legacyfabric.fabric.mixin.crash.report.info;
 
 import java.util.Map;
 import java.util.TreeMap;
