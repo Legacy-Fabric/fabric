@@ -1,9 +1,9 @@
 {
   "required": true,
-  "package": "net.legacyfabric.fabric.mixin.client.keybinding",
+  "package": "net.legacyfabric.fabric.mixin.crash.report.info",
   "compatibilityLevel": "JAVA_8",
-  "client": [
-    "GameOptionsMixin"
+  "mixins": [
+    "CrashReportMixin"
   ],
   "injectors": {
     "defaultRequire": 1

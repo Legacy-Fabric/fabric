@@ -16,6 +16,7 @@ class Globals {
 	static def baseVersion = "1.0.0"
 	static def mcVersion = "1.8.9"
 	static def yarnVersion = "+build.202103291533"
+	static def testmodsProject = "testmods"
 }
 
 version = Globals.baseVersion + "+" + Globals.mcVersion
@@ -75,13 +76,6 @@ allprojects {
 	targetCompatibility = 1.8
 
 	group = "net.legacyfabric.legacy-fabric-api"
-
-	sourceSets {
-		testmod {
-			compileClasspath += main.compileClasspath
-			runtimeClasspath += main.runtimeClasspath
-		}
-	}
 
 	repositories {
 		maven { url "https://maven.legacyfabric.net/" }
@@ -204,36 +198,34 @@ task javadocJar(type: Jar) {
 build.dependsOn javadocJar
 
 subprojects {
-	dependencies {
-		testmodCompile sourceSets.main.output
-	}
-
-	task remapMavenJar(type: Copy, dependsOn: remapJar) {
-		afterEvaluate {
-			from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
-			into("${project.buildDir}/libs/")
-			rename { String fn -> "$archivesBaseName-${version}-maven.jar" }
-		}
-	}
-
-	publishing {
-		publications {
-			mavenJava(MavenPublication) {
-				afterEvaluate {
-					artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
-						builtBy remapMavenJar
-					}
-
-					artifact(sourcesJar) {
-						builtBy remapSourcesJar
-					}
-				}
+	if (project.name != Globals.testmodsProject) {
+		task remapMavenJar(type: Copy, dependsOn: remapJar) {
+			afterEvaluate {
+				from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
+				into("${project.buildDir}/libs/")
+				rename { String fn -> "$archivesBaseName-${version}-maven.jar" }
 			}
 		}
 
-		setupRepositories(repositories)
+		publishing {
+			publications {
+				mavenJava(MavenPublication) {
+					afterEvaluate {
+						artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
+							builtBy remapMavenJar
+						}
+
+						artifact(sourcesJar) {
+							builtBy remapSourcesJar
+						}
+					}
+				}
+			}
+
+			setupRepositories(repositories)
+		}
+		javadoc.enabled = false
 	}
-	javadoc.enabled = false
 }
 
 task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
@@ -245,7 +237,9 @@ task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
 }
 
 subprojects.each {
-	publish.dependsOn("${it.path}:publish")
+	if (it.name != Globals.testmodsProject) {
+		publish.dependsOn("${it.path}:publish")
+	}
 }
 
 
@@ -264,11 +258,13 @@ publishing {
 			pom.withXml {
 				def depsNode = asNode().appendNode("dependencies")
 				subprojects.each {
-					def depNode = depsNode.appendNode("dependency")
-					depNode.appendNode("groupId", it.group)
-					depNode.appendNode("artifactId", it.name)
-					depNode.appendNode("version", it.version)
-					depNode.appendNode("scope", "compile")
+					if (it.name != Globals.testmodsProject) {
+						def depNode = depsNode.appendNode("dependency")
+						depNode.appendNode("groupId", it.group)
+						depNode.appendNode("artifactId", it.name)
+						depNode.appendNode("version", it.version)
+						depNode.appendNode("scope", "compile")
+					}
 				}
 			}
 		}
@@ -293,17 +289,11 @@ task licenseFormatAll
 subprojects { p -> licenseFormatAll.dependsOn("${p.path}:licenseFormat") }
 subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
 
-sourceSets {
-	testmod
-}
-
 dependencies {
 	afterEvaluate {
 		subprojects.each {
 			compile project(path: ":${it.name}", configuration: "dev")
 			include project("${it.name}:")
-
-			testmodCompile project("${it.name}:").sourceSets.testmod.output
 		}
 	}
 }

@@ -18,33 +18,15 @@
 package net.legacyfabric.fabric.impl.client.keybinding;
 
 import java.util.List;
-import java.util.Set;
 
 import com.google.common.collect.Lists;
-import net.legacyfabric.fabric.mixin.client.keybinding.KeyBindingAccessor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.options.KeyBinding;
 
 public final class KeyBindingRegistryImpl {
-	private static final Logger LOGGER = LogManager.getLogger();
-
 	private static final List<KeyBinding> moddedKeyBindings = Lists.newArrayList();
 
 	private KeyBindingRegistryImpl() {
-	}
-
-	private static Set<String> getCategoryMap() {
-		return KeyBindingAccessor.fabric_getCategoryMap();
-	}
-
-	private static boolean hasCategory(String categoryTranslationKey) {
-		return getCategoryMap().contains(categoryTranslationKey);
-	}
-
-	public static void addCategory(String categoryTranslationKey) {
-		getCategoryMap().add(categoryTranslationKey);
 	}
 
 	public static KeyBinding registerKeyBinding(KeyBinding binding) {
@@ -54,10 +36,6 @@ public final class KeyBindingRegistryImpl {
 			} else if (existingKeyBindings.getTranslationKey().equals(binding.getTranslationKey())) {
 				throw new RuntimeException("Attempted to register two key bindings with equal ID: " + binding.getTranslationKey() + "!");
 			}
-		}
-
-		if (!hasCategory(binding.getCategory())) {
-			addCategory(binding.getCategory());
 		}
 
 		moddedKeyBindings.add(binding);

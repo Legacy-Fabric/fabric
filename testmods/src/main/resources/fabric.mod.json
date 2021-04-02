@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-api-testmods",
+  "description": "Tests for api features",
+  "version": "1.0.0",
+  "entrypoints": {
+    "main": [],
+    "client": [
+      "net.legacyfabric.fabric.test.client.KeybindingTest",
+      "net.legacyfabric.fabric.test.client.ModelFeatureTest"
+    ]
+  }
+}
