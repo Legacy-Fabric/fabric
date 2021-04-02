@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.fabricmc.fabric.mixin.crash.report.info",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "CrashReportMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
