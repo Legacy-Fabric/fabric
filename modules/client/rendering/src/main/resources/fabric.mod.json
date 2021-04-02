@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-rendering-api-v1",
+  "name": "Legacy Fabric Rendering API (V1)",
+  "version": "${version}",
+  "environment": "client",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-fabric/icon.png",
+  "contact": {
+    "homepage": "https://legacy-fabric.github.io/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "Legacy Fabric",
+    "FabricMC"
+  ],
+  "depends": {
+    "fabric-api-base": "*"
+  },
+  "description": "Hooks and registries for rendering-related things.",
+  "mixins": [
+    "legacy-fabric-rendering-api-v1.mixins.json"
+  ]
+}
