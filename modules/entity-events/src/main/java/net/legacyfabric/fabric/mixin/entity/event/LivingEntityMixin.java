@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +32,7 @@ import net.minecraft.server.world.ServerWorld;
 @Mixin(LivingEntity.class)
 abstract class LivingEntityMixin extends EntityMixin {
 	@Inject(method = "onKilled", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;method_6939(Lnet/minecraft/entity/LivingEntity;)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	private void onEntityKilledOther(DamageSource source, CallbackInfo ci, Entity attacker, LivingEntity livingEntity) {
+	private void onEntityKilledOther(DamageSource source, CallbackInfo ci, Entity attacker) {
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(attacker, (LivingEntity) (Object) this);
 	}
 }
