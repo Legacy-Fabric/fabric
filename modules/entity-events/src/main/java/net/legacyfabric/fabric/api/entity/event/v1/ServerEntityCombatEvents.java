@@ -17,11 +17,11 @@
 
 package net.legacyfabric.fabric.api.entity.event.v1;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
 
 /**
  * Events related to entities in combat.
@@ -43,7 +43,7 @@ public final class ServerEntityCombatEvents {
 		/**
 		 * Called after an entity has killed another entity.
 		 *
-		 * @param entity the entity
+		 * @param entity       the entity
 		 * @param killedEntity the entity which was killed by the {@code entity}
 		 */
 		void afterKilledOtherEntity(Entity entity, LivingEntity killedEntity);

@@ -162,6 +162,10 @@ allprojects {
 		configFile = rootProject.file("checkstyle.xml")
 		toolVersion = '8.31'
 	}
+
+	tasks.withType(Checkstyle) {
+		exclude '**/net/legacyfabric/fabric/test/**'
+	}
 }
 
 javadoc {

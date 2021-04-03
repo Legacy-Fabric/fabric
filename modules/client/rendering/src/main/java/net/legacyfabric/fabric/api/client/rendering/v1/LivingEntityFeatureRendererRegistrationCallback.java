@@ -17,17 +17,16 @@
 
 package net.legacyfabric.fabric.api.client.rendering.v1;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
-
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.feature.Deadmau5FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
-import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.entity.LivingEntity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
 
 /**
  * Called when {@link FeatureRenderer feature renderers} for a {@link LivingEntityRenderer living entity renderer} are registered.
@@ -42,7 +41,7 @@ import net.fabricmc.api.Environment;
  * LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper) -> {
  * 	if (entityRenderer instanceof PlayerEntityModel) {
  * 		registrationHelper.register(new MyFeatureRenderer((PlayerEntityModel) entityRenderer));
- * 	}
+ *    }
  * });
  * </pre></blockquote>
  */
@@ -58,7 +57,7 @@ public interface LivingEntityFeatureRendererRegistrationCallback {
 	/**
 	 * Called when feature renderers may be registered.
 	 *
-	 * @param entityClass the entity class
+	 * @param entityClass    the entity class
 	 * @param entityRenderer the entity renderer
 	 */
 	void registerRenderers(Class<? extends LivingEntity> entityClass, LivingEntityRenderer<?> entityRenderer, RegistrationHelper registrationHelper);
@@ -73,7 +72,7 @@ public interface LivingEntityFeatureRendererRegistrationCallback {
 		 * Adds a feature renderer to the entity renderer.
 		 *
 		 * @param featureRenderer the feature renderer
-		 * @param <T> the type of entity
+		 * @param <T>             the type of entity
 		 */
 		<T extends LivingEntity> void register(FeatureRenderer<T> featureRenderer);
 	}

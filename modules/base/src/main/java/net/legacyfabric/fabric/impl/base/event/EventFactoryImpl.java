@@ -33,7 +33,8 @@ import net.legacyfabric.fabric.api.event.Event;
 public final class EventFactoryImpl {
 	private static final List<ArrayBackedEvent<?>> ARRAY_BACKED_EVENTS = new ArrayList<>();
 
-	private EventFactoryImpl() { }
+	private EventFactoryImpl() {
+	}
 
 	public static void invalidate() {
 		ARRAY_BACKED_EVENTS.forEach(ArrayBackedEvent::update);
@@ -100,6 +101,6 @@ public final class EventFactoryImpl {
 		final Object returnValue = defValue;
 		//noinspection unchecked
 		return (T) Proxy.newProxyInstance(EventFactoryImpl.class.getClassLoader(), new Class[]{handlerClass},
-			(proxy, method, args) -> returnValue);
+				(proxy, method, args) -> returnValue);
 	}
 }

@@ -32,7 +32,7 @@ public interface HudRenderCallback {
 	/**
 	 * Called after rendering the whole hud, which is displayed in game, in a world.
 	 *
-	 * @param client the client
+	 * @param client    the client
 	 * @param tickDelta Progress for linearly interpolating between the previous and current game state
 	 */
 	void onHudRender(MinecraftClient client, float tickDelta);

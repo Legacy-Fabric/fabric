@@ -27,7 +27,8 @@ import net.legacyfabric.fabric.impl.base.event.EventFactoryImpl;
 public final class EventFactory {
 	private static boolean profilingEnabled = true;
 
-	private EventFactory() { }
+	private EventFactory() {
+	}
 
 	/**
 	 * @return True if events are supposed to be profiled.

@@ -3,10 +3,10 @@
   "package": "net.legacyfabric.fabric.mixin.client.rendering",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "ItemRendererMixin",
     "BlockEntityRenderDispatcherMixin",
     "EntityRenderDispatcherMixin",
     "InGameHudMixin",
+    "ItemRendererMixin",
     "LivingEntityRendererAccessor",
     "WorldRendererMixin"
   ],

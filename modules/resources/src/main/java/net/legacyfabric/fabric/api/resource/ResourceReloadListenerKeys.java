@@ -32,5 +32,6 @@ public final class ResourceReloadListenerKeys {
 	public static final Identifier LANGUAGES = new Identifier("minecraft:languages");
 	public static final Identifier TEXTURES = new Identifier("minecraft:textures");
 
-	private ResourceReloadListenerKeys() { }
+	private ResourceReloadListenerKeys() {
+	}
 }

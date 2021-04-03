@@ -38,10 +38,11 @@ import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.legacyfabric.fabric.api.resource.ResourceReloadListenerKeys;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.MappingResolver;
+
+import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.legacyfabric.fabric.api.resource.ResourceReloadListenerKeys;
 
 @Mixin({
 		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorResourceReloadListener.class, FoliageColorResourceReloadListener.class, TextureManager.class,

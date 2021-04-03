@@ -19,11 +19,11 @@ package net.legacyfabric.fabric.api.client.rendering.v1;
 
 import java.util.function.Function;
 
-import net.legacyfabric.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
-
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+
+import net.legacyfabric.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
 
 /**
  * Helper class for registering BlockEntityRenderers.
@@ -34,11 +34,11 @@ public interface BlockEntityRendererRegistry {
 	/**
 	 * Register a BlockEntityRenderer for a BlockEntityType. Can be called clientside before the world is rendered.
 	 *
-	 * @param clazz the block entity {@link Class} to register a renderer for
+	 * @param clazz               the block entity {@link Class} to register a renderer for
 	 * @param blockEntityRenderer a function that returns a {@link BlockEntityRenderer}, called
 	 *                            when {@link BlockEntityRenderDispatcher} is initialized or immediately if the dispatcher
 	 *                            class is already loaded
-	 * @param <E> the {@link BlockEntity}
+	 * @param <E>                 the {@link BlockEntity}
 	 */
 	<E extends BlockEntity> void register(Class<E> clazz, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<E>> blockEntityRenderer);
 }

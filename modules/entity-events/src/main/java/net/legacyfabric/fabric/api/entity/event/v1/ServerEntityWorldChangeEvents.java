@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.api.entity.event.v1;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
 
 /**
  * Events related to an entity being moved to another world.
@@ -69,9 +69,9 @@ public final class ServerEntityWorldChangeEvents {
 		 * {@link AfterPlayerChange} should be used to track when a player has changed worlds.
 		 *
 		 * @param originalEntity the original entity
-		 * @param newEntity the new entity at the destination
-		 * @param origin the world the original entity is in
-		 * @param destination the destination world the new entity is in
+		 * @param newEntity      the new entity at the destination
+		 * @param origin         the world the original entity is in
+		 * @param destination    the destination world the new entity is in
 		 */
 		void afterChangeWorld(Entity originalEntity, Entity newEntity, ServerWorld origin, ServerWorld destination);
 	}
@@ -81,8 +81,8 @@ public final class ServerEntityWorldChangeEvents {
 		/**
 		 * Called after a player has been moved to different world.
 		 *
-		 * @param player the player
-		 * @param origin the original world the player was in
+		 * @param player      the player
+		 * @param origin      the original world the player was in
 		 * @param destination the new world the player was moved to
 		 */
 		void afterChangeWorld(ServerPlayerEntity player, ServerWorld origin, ServerWorld destination);

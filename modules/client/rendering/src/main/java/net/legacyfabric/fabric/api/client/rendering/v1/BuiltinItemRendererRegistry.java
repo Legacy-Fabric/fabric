@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.api.client.rendering.v1;
 
-import net.legacyfabric.fabric.impl.client.rendering.BuiltinItemRendererRegistryImpl;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.render.model.json.ModelTransformation;
@@ -26,6 +25,8 @@ import net.minecraft.item.ItemStack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import net.legacyfabric.fabric.impl.client.rendering.BuiltinItemRendererRegistryImpl;
 
 /**
  * This registry holds {@linkplain DynamicItemRenderer builtin item renderers} for items.
@@ -48,7 +49,7 @@ public interface BuiltinItemRendererRegistry {
 	 * @param item     the item
 	 * @param renderer the renderer
 	 * @throws IllegalArgumentException if the item already has a registered renderer
-	 * @throws NullPointerException if either the item or the renderer is null
+	 * @throws NullPointerException     if either the item or the renderer is null
 	 */
 	void register(@NotNull Item item, @NotNull DynamicItemRenderer renderer);
 
@@ -65,7 +66,7 @@ public interface BuiltinItemRendererRegistry {
 		/**
 		 * Renders an item stack.
 		 *
-		 * @param stack the rendered item stack
+		 * @param stack               the rendered item stack
 		 * @param modelTransformation the builtin item model's transformation
 		 */
 		void render(ItemStack stack, ModelTransformation modelTransformation);

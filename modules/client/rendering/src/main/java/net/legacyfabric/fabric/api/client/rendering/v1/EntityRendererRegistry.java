@@ -26,8 +26,6 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
 
 /**
@@ -69,7 +67,8 @@ public class EntityRendererRegistry {
 	private final Map<EntityRenderDispatcher, Context> renderManagerMap = new WeakHashMap<>();
 	private final Map<Class<? extends Entity>, Factory> renderSupplierMap = new HashMap<>();
 
-	private EntityRendererRegistry() { }
+	private EntityRendererRegistry() {
+	}
 
 	public void initialize(EntityRenderDispatcher manager, TextureManager textureManager, ResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<?>> renderers) {
 		synchronized (renderSupplierMap) {

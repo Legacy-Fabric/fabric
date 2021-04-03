@@ -94,5 +94,6 @@ public final class NbtType {
 	 */
 	public static final int NUMBER = 99;
 
-	private NbtType() { }
+	private NbtType() {
+	}
 }

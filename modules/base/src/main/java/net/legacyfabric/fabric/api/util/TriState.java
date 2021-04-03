@@ -109,7 +109,7 @@ public enum TriState {
 	 * Maps the boolean value of this tri-state if it is {@link TriState#TRUE} or {@link TriState#FALSE}.
 	 *
 	 * @param mapper the mapper to use
-	 * @param <T> the type of object being supplier by the mapper
+	 * @param <T>    the type of object being supplier by the mapper
 	 * @return an optional containing the mapped value; {@link Optional#empty()} if the tri-state is {@link TriState#DEFAULT} or the value provided by the mapper is {@code null}.
 	 */
 	public <T> Optional<T> map(BooleanFunction<@Nullable ? extends T> mapper) {
@@ -126,7 +126,7 @@ public enum TriState {
 	 * Gets the value of this tri-state, or throws an exception if this tri-state's value is {@link TriState#DEFAULT}.
 	 *
 	 * @param exceptionSupplier the supplying function that produces an exception to be thrown
-	 * @param <X> Type of the exception to be thrown
+	 * @param <X>               Type of the exception to be thrown
 	 * @return the value
 	 * @throws X if the value is {@link TriState#DEFAULT}
 	 */

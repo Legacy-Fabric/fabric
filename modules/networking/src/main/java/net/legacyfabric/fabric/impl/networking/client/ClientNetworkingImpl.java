@@ -27,6 +27,7 @@ import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.legacyfabric.fabric.impl.networking.GlobalReceiverRegistry;
