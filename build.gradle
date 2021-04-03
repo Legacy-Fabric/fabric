@@ -301,7 +301,7 @@ dependencies {
 curseforge {
 	if (project.hasProperty('curse_api_key')) {
 		apiKey = project.getProperty('curse_api_key')
-	} else {
+	} else if (ENV.CURSE_API_KEY) {
 		apiKey = ENV.CURSE_API_KEY
 	}
 	project {
