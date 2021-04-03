@@ -11,9 +11,10 @@
     "client": [
       "net.legacyfabric.fabric.test.client.KeybindingTest",
       "net.legacyfabric.fabric.test.client.ModelFeatureTest",
-      "net.legacyfabric.fabric.test.client.HudRenderingTest",
+      "net.legacyfabric.fabric.test.client.RenderingEventsTest",
       "net.legacyfabric.fabric.test.client.ClientNetworkingTest",
-      "net.legacyfabric.fabric.test.client.ClientLifecycleEventsTest"
+      "net.legacyfabric.fabric.test.client.ClientLifecycleEventsTest",
+      "net.legacyfabric.fabric.test.client.ResourceReloadTest"
     ]
   }
 }

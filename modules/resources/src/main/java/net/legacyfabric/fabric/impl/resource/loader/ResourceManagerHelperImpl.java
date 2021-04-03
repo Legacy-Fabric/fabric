@@ -40,7 +40,7 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 	private final Set<Identifier> addedListenerIds = new HashSet<>();
 	private final Set<IdentifiableResourceReloadListener> addedListeners = new LinkedHashSet<>();
 
-	public static ResourceManagerHelper getInstance() {
+	public static ResourceManagerHelperImpl getInstance() {
 		return INSTANCE;
 	}
 

@@ -3,9 +3,10 @@
   "package": "net.legacyfabric.fabric.mixin.resource.loader",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "client.ClientResourceReloadListenerMixins",
     "client.DefaultResourcePackMixin",
     "client.MinecraftClientMixin",
-    "client.ClientResourceReloadListenerMixins"
+    "client.ReloadableResourceManagerImplMixin"
   ],
   "injectors": {
     "defaultRequire": 1
