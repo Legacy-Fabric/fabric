@@ -312,7 +312,7 @@ curseforge {
 	project {
 		id = '400281'
 		changelog = 'A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits'
-		releaseType = 'alpha'
+		releaseType = 'beta'
 		addGameVersion '1.8.9'
 		addGameVersion 'Fabric'
 		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
