@@ -257,7 +257,6 @@ publishing {
 				builtBy remapSourcesJar
 			}
 
-
 			artifact javadocJar
 			pom.withXml {
 				def depsNode = asNode().appendNode("dependencies")
@@ -296,8 +295,10 @@ subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
 dependencies {
 	afterEvaluate {
 		subprojects.each {
-			compile project(path: ":${it.name}", configuration: "dev")
-			include project("${it.name}:")
+			if (it.name != Globals.testmodsProject) {
+				compile project(path: ":${it.name}", configuration: "dev")
+				include project("${it.name}:")
+			}
 		}
 	}
 }

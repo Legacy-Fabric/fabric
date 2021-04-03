@@ -25,6 +25,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
+import net.minecraft.util.ThreadExecutor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -328,7 +329,7 @@ public final class ClientPlayNetworking {
 		 * Handles an incoming packet.
 		 *
 		 * <p>This method is executed on {@linkplain io.netty.channel.EventLoop netty's event loops}.
-		 * Modification to the game should be {@linkplain net.minecraft.class_2152#addTask(Runnable) scheduled} using the provided Minecraft client instance.
+		 * Modification to the game should be {@linkplain ThreadExecutor#execute(Runnable) scheduled} using the provided Minecraft client instance.
 		 *
 		 * <p>An example usage of this is to display an overlay message:
 		 * <pre>{@code

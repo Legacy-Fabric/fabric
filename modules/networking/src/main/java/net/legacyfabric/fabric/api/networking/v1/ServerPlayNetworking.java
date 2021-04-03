@@ -348,7 +348,7 @@ public final class ServerPlayNetworking {
 		 * Handles an incoming packet.
 		 *
 		 * <p>This method is executed on {@linkplain io.netty.channel.EventLoop netty's event loops}.
-		 * Modification to the game should be {@linkplain net.minecraft.class_2152#addTask(Runnable)}  scheduled} using the provided Minecraft server instance.
+		 * Modification to the game should be {@linkplain net.minecraft.util.ThreadExecutor#execute(Runnable)}  scheduled} using the provided Minecraft server instance.
 		 *
 		 * <p>An example usage of this is to create an explosion where the player is looking:
 		 * <pre>{@code
