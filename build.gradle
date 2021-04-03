@@ -28,7 +28,7 @@ def getSubprojectVersion(project, version) {
 	if (grgit == null) {
 		return version + "+nogit"
 	}
-	def latestCommits = grgit.log(paths: [project.name], maxCommits: 1)
+	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath()).toString()], maxCommits: 1)
 	if (latestCommits.isEmpty()) {
 		return version + "+uncommited"
 	} else {
