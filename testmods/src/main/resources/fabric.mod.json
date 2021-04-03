@@ -4,10 +4,16 @@
   "description": "Tests for api features",
   "version": "1.0.0",
   "entrypoints": {
-    "main": [],
+    "main": [
+      "net.legacyfabric.fabric.test.ServerLifecycleEventsTest",
+      "net.legacyfabric.fabric.test.ServerNetworkingTest"
+    ],
     "client": [
       "net.legacyfabric.fabric.test.client.KeybindingTest",
-      "net.legacyfabric.fabric.test.client.ModelFeatureTest"
+      "net.legacyfabric.fabric.test.client.ModelFeatureTest",
+      "net.legacyfabric.fabric.test.client.HudRenderingTest",
+      "net.legacyfabric.fabric.test.client.ClientNetworkingTest",
+      "net.legacyfabric.fabric.test.client.ClientLifecycleEventsTest"
     ]
   }
 }
