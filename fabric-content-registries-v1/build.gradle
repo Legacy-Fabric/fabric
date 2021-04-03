@@ -1,6 +1,0 @@
-archivesBaseName = "fabric-content-registries-v1"
-version = getSubprojectVersion(project, "1.3.0")
-
-dependencies {
-    implementation project(path: ':fabric-api-base', configuration: 'dev')
-}
