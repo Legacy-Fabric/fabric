@@ -29,6 +29,6 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
 public interface MinecraftClientAccessor {
-	@Accessor
+	@Accessor("connection")
 	ClientConnection getClientConnection();
 }

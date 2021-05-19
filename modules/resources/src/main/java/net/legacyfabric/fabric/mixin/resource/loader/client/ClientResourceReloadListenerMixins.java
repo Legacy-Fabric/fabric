@@ -21,6 +21,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
 
+import net.minecraft.class_6067;
+import net.minecraft.client.resource.FoliageColorMapListener;
+import net.minecraft.client.resource.GrassColorMapListener;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.client.font.TextRenderer;
@@ -28,12 +31,9 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.texture.TextureManager;
-import net.minecraft.resource.FoliageColorResourceReloadListener;
-import net.minecraft.resource.GrassColorResourceReloadListener;
 import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.EnvType;
@@ -45,8 +45,8 @@ import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.api.resource.ResourceReloadListenerKeys;
 
 @Mixin({
-		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorResourceReloadListener.class, FoliageColorResourceReloadListener.class, TextureManager.class,
-		WorldRenderer.class, BlockRenderManager.class, ItemRenderer.class, BakedModelManager.class, TextRenderer.class
+		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorMapListener.class, FoliageColorMapListener.class, TextureManager.class,
+		WorldRenderer.class, BlockRenderManager.class, ItemRenderer.class, class_6067.class, TextRenderer.class
 })
 @Environment(EnvType.CLIENT)
 public abstract class ClientResourceReloadListenerMixins implements IdentifiableResourceReloadListener {
@@ -59,7 +59,7 @@ public abstract class ClientResourceReloadListenerMixins implements Identifiable
 		if (this.fabric_idDeps == null) {
 			Object self = this;
 
-			if (self instanceof BakedModelManager || self instanceof WorldRenderer) {
+			if (self instanceof class_6067 || self instanceof WorldRenderer) {
 				this.fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.TEXTURES);
 			} else if (self instanceof ItemRenderer || self instanceof BlockRenderManager) {
 				this.fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.MODELS);
@@ -81,7 +81,7 @@ public abstract class ClientResourceReloadListenerMixins implements Identifiable
 				this.fabric_id = ResourceReloadListenerKeys.SOUNDS;
 			} else if (self instanceof TextRenderer) {
 				this.fabric_id = ResourceReloadListenerKeys.FONTS;
-			} else if (self instanceof BakedModelManager) {
+			} else if (self instanceof class_6067) {
 				this.fabric_id = ResourceReloadListenerKeys.MODELS;
 			} else if (self instanceof LanguageManager) {
 				this.fabric_id = ResourceReloadListenerKeys.LANGUAGES;

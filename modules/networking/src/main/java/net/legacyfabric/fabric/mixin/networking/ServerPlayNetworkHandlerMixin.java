@@ -61,7 +61,7 @@ abstract class ServerPlayNetworkHandlerMixin implements ServerPlayNetworkHandler
 	private void handleCustomPayloadReceivedAsync(CustomPayloadC2SPacket packet, CallbackInfo ci) {
 		if (this.addon.handle(packet)) {
 			// Do not cancel minecraft's packets
-			if (!packet.getChannel().startsWith("MC")) {
+			if (!packet.method_32939().startsWith("MC")) {
 				ci.cancel();
 			}
 		}

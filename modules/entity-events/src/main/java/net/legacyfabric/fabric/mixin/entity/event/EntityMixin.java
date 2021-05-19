@@ -17,10 +17,12 @@
 
 package net.legacyfabric.fabric.mixin.entity.event;
 
+import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.entity.Entity;
@@ -31,8 +33,8 @@ import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents
 
 @Mixin(Entity.class)
 abstract class EntityMixin {
-	@Inject(method = "teleportToDimension", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	private void afterWorldChanged(int dimensionId, CallbackInfo ci, MinecraftServer minecraftServer, int i, ServerWorld serverWorld, ServerWorld serverWorld2, Entity entity) {
+	@Inject(method = "changeDimension", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	private void afterWorldChanged(int dimensionId, CallbackInfoReturnable<Entity> cir, MinecraftServer minecraftServer, int i, ServerWorld serverWorld, ServerWorld serverWorld2, BlockPos pos,  Entity entity) {
 		ServerEntityWorldChangeEvents.AFTER_ENTITY_CHANGE_WORLD.invoker().afterChangeWorld((Entity) (Object) this, entity, serverWorld, serverWorld2);
 	}
 }

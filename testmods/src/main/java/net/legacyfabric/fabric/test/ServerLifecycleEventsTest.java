@@ -34,19 +34,19 @@ public class ServerLifecycleEventsTest implements ModInitializer {
 	public void onInitialize() {
 		ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 			if (chunk != null) {
-				LOGGER.info("Server chunk loaded at {} {}", chunk.chunkZ, chunk.chunkZ);
+				LOGGER.info("Server chunk loaded at {} {}", chunk.x, chunk.z);
 			}
 		});
 		ServerChunkEvents.CHUNK_UNLOAD.register((world, chunk) -> {
 			if (chunk != null) {
-				LOGGER.info("Server chunk unloaded at {} {}", chunk.chunkZ, chunk.chunkZ);
+				LOGGER.info("Server chunk unloaded at {} {}", chunk.x, chunk.z);
 			}
 		});
 		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			LOGGER.info("Server Entity {} loaded", EntityType.getEntityName(entity));
+			LOGGER.info("Server Entity {} loaded", EntityType.getName(entity));
 		});
 		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-			LOGGER.info("Server Entity {} unloaded", EntityType.getEntityName(entity));
+			LOGGER.info("Server Entity {} unloaded", EntityType.getName(entity));
 		});
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
 			LOGGER.info("Server starting");

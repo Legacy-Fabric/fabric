@@ -22,21 +22,21 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 
+import net.minecraft.client.resource.DefaultClientResourcePack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.resource.DefaultResourcePack;
 import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-@Mixin(DefaultResourcePack.class)
+@Mixin(DefaultClientResourcePack.class)
 public class DefaultResourcePackMixin {
-	@Inject(method = "openClassLoader", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "open", at = @At("HEAD"), cancellable = true)
 	protected void onFindInputStream(Identifier identifier, CallbackInfoReturnable<InputStream> callback) {
 		//		if (DefaultResourcePack.resourcePath != null) {
 		// Fall through to Vanilla logic, they have a special case here.
@@ -47,7 +47,7 @@ public class DefaultResourcePackMixin {
 		URL found = null;
 
 		try {
-			Enumeration<URL> candidates = DefaultResourcePack.class.getClassLoader().getResources(path);
+			Enumeration<URL> candidates = DefaultClientResourcePack.class.getClassLoader().getResources(path);
 
 			// Get the last element
 			while (candidates.hasMoreElements()) {

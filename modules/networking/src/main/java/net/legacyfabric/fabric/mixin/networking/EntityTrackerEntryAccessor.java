@@ -19,14 +19,14 @@ package net.legacyfabric.fabric.mixin.networking;
 
 import java.util.Set;
 
+import net.minecraft.server.network.EntityTrackerEntry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.entity.TrackedEntityInstance;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-@Mixin(TrackedEntityInstance.class)
+@Mixin(EntityTrackerEntry.class)
 public interface EntityTrackerEntryAccessor {
-	@Accessor
+	@Accessor("field_31790")
 	Set<ServerPlayerEntity> getPlayers();
 }

@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
+import net.minecraft.client.resource.ResourceListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.util.Identifier;
 
 import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
@@ -44,7 +44,7 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 		return INSTANCE;
 	}
 
-	public void sort(List<ResourceReloadListener> listeners) {
+	public void sort(List<ResourceListener> listeners) {
 		listeners.removeAll(addedListeners);
 
 		// General rules:
@@ -56,7 +56,7 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 		List<IdentifiableResourceReloadListener> listenersToAdd = Lists.newArrayList(addedListeners);
 		Set<Identifier> resolvedIds = new HashSet<>();
 
-		for (ResourceReloadListener listener : listeners) {
+		for (ResourceListener listener : listeners) {
 			if (listener instanceof IdentifiableResourceReloadListener) {
 				resolvedIds.add(((IdentifiableResourceReloadListener) listener).getFabricId());
 			}

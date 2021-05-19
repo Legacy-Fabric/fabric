@@ -16,7 +16,7 @@
     "FabricMC"
   ],
   "depends": {
-    "minecraft": "1.8.x"
+    "minecraft": "1.12.x"
   },
-  "description": "Core API module providing key hooks and intercompatibility features for 1.8.9."
+  "description": "Core API module providing key hooks and intercompatibility features for 1.12.2."
 }

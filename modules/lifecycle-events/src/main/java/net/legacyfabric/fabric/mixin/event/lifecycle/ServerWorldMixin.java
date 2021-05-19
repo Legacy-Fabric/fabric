@@ -27,6 +27,7 @@ import net.minecraft.server.world.ServerWorld;
 
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin {
@@ -40,12 +41,12 @@ public abstract class ServerWorldMixin {
 		ServerTickEvents.END_WORLD_TICK.invoker().onEndTick((ServerWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "onEntitySpawned")
-	public void loadEntity(Entity entity, CallbackInfo ci) {
+	@Inject(at = @At("TAIL"), method = "spawnEntity")
+	public void loadEntity(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		ServerEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ServerWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "onEntityRemoved")
+	@Inject(at = @At("TAIL"), method = "unloadEntity")
 	public void unloadEntity(Entity entity, CallbackInfo ci) {
 		ServerEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ServerWorld) (Object) this);
 	}

@@ -33,12 +33,12 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-	@Inject(at = @At("HEAD"), method = "runGameLoop")
+	@Inject(at = @At("HEAD"), method = "render")
 	private void onStartTick(CallbackInfo info) {
 		ClientTickEvents.START_CLIENT_TICK.invoker().onStartTick((MinecraftClient) (Object) this);
 	}
 
-	@Inject(at = @At("RETURN"), method = "runGameLoop")
+	@Inject(at = @At("RETURN"), method = "render")
 	private void onEndTick(CallbackInfo info) {
 		ClientTickEvents.END_CLIENT_TICK.invoker().onEndTick((MinecraftClient) (Object) this);
 	}

@@ -17,6 +17,9 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle.client;
 
+import net.minecraft.client.world.ClientChunkCache;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ClientChunkCache;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -38,18 +40,20 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 @Environment(EnvType.CLIENT)
 @Mixin(ClientChunkCache.class)
 public abstract class ClientChunkCacheMixin {
+	@Final
 	@Shadow
 	private World world;
 
 	@Shadow
-	public abstract Chunk getChunk(int i, int j);
+	@Nullable
+	public abstract Chunk getLoadedChunk(int x, int z);
 
-	@Inject(at = @At("RETURN"), method = "method_3120")
+	@Inject(at = @At("RETURN"), method = "method_29930")
 	public void chunkUnload(int i, int j, CallbackInfo ci) {
-		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getChunk(i, j));
+		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getLoadedChunk(i, j));
 	}
 
-	@Inject(at = @At("RETURN"), method = "method_3121", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	@Inject(at = @At("RETURN"), method = "method_29931", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
 		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, chunk);
 	}

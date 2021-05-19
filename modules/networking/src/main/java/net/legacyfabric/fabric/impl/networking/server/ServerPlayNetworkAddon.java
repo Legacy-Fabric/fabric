@@ -79,7 +79,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 			return false;
 		}
 
-		return this.handle(packet.getChannel(), packet.getPayload());
+		return this.handle(packet.method_32939(), packet.method_32941());
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 
 	@Override
 	protected void schedule(Runnable task) {
-		this.handler.player.server.execute(task);
+		this.handler.player.server.addTask(task);
 	}
 
 	@Override

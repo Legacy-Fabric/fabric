@@ -19,6 +19,7 @@ package net.legacyfabric.fabric.mixin.resource.loader.client;
 
 import java.util.List;
 
+import net.minecraft.client.resource.ResourceListener;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,7 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.minecraft.resource.ResourcePack;
-import net.minecraft.resource.ResourceReloadListener;
 
 import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
@@ -36,9 +36,9 @@ import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 public class ReloadableResourceManagerImplMixin {
 	@Shadow
 	@Final
-	private List<ResourceReloadListener> listeners;
+	private List<ResourceListener> listeners;
 
-	@Inject(method = "reload", at = @At(value = "INVOKE", remap = false, target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V"))
+	@Inject(method = "reload", at = @At(value = "INVOKE", remap = false, target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;Ljava/lang/Object;)V"))
 	public void onReload(List<ResourcePack> resourcePacks, CallbackInfo ci) {
 		ResourceManagerHelperImpl.getInstance().sort(this.listeners);
 	}

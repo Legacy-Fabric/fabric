@@ -34,19 +34,19 @@ public class ClientLifecycleEventsTest implements ClientModInitializer {
 	public void onInitializeClient() {
 		ClientChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 			if (chunk != null) {
-				LOGGER.info("Client chunk loaded at {} {}", chunk.chunkZ, chunk.chunkZ);
+				LOGGER.info("Client chunk loaded at {} {}", chunk.x, chunk.z);
 			}
 		});
 		ClientChunkEvents.CHUNK_UNLOAD.register((world, chunk) -> {
 			if (chunk != null) {
-				LOGGER.info("Client chunk unloaded at {} {}", chunk.chunkZ, chunk.chunkZ);
+				LOGGER.info("Client chunk unloaded at {} {}", chunk.x, chunk.z);
 			}
 		});
 		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			LOGGER.info("Client Entity {} loaded", EntityType.getEntityName(entity));
+			LOGGER.info("Client Entity {} loaded", EntityType.getName(entity));
 		});
 		ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-			LOGGER.info("Client Entity {} unloaded", EntityType.getEntityName(entity));
+			LOGGER.info("Client Entity {} unloaded", EntityType.getName(entity));
 		});
 		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
 			LOGGER.info("Client started");

@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.impl.command;
 
-import net.minecraft.server.command.CommandManager;
+import net.minecraft.command.AbstractCommandManager;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -28,10 +28,10 @@ public class CommandInitializer implements ModInitializer {
 	public void onInitialize() {
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
 			boolean dedicated = server.isDedicated();
-			CommandManager manager = (CommandManager) server.getCommandManager();
+			AbstractCommandManager manager = (AbstractCommandManager) server.worldGenerationProgressListenerFactory;
 			CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
 				if ((dedicated && commandSide.isDedicated()) || (!dedicated && commandSide.isIntegrated())) {
-					manager.registerCommand(command);
+					manager.register(command);
 				}
 			});
 		});

@@ -30,6 +30,7 @@ import net.fabricmc.api.Environment;
 
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ClientWorld.class)
@@ -44,13 +45,13 @@ public class ClientWorldMixin {
 		ClientTickEvents.END_WORLD_TICK.invoker().onEndTick((ClientWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "onEntitySpawned")
-	public void unloadEntity(Entity entity, CallbackInfo ci) {
+	@Inject(at = @At("TAIL"), method = "spawnEntity")
+	public void loadEntity(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		ClientEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ClientWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "onEntityRemoved")
-	public void loadEntity(Entity entity, CallbackInfo ci) {
+	@Inject(at = @At("TAIL"), method = "removeEntity")
+	public void unloadEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ClientWorld) (Object) this);
 	}
 }
