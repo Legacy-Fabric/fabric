@@ -173,7 +173,7 @@
 			- net.fabricmc.fabric.(impl|mixin).server.<module-name>[.<extra packages...>]
 			- net.fabricmc.fabric.(impl|mixin).<module-name>[.<extra packages...>]
 			- <any legacy package>
-			where <module-name> is a set of '.'-separated words, all in singular (not ending with s except for ss) and not starting with client. or server.
+			where <module-name> is a set of '.'-separated words, all in singular (not ending with s) and not starting with client. or server.
 			and <version> is a positive integer (1, 2, 3, ...)
 			and <extra packages...> is a set of '.'-separated words with all the first potentially containing digits.
 			Negative lookahead ensures that client/server can't be replaced with common disguised as the module name.
