@@ -12,6 +12,8 @@ plugins {
 }
 def ENV = System.getenv()
 
+def ENV = System.getenv()
+
 class Globals {
 	static def baseVersion = "1.1.0"
 	static def mcVersion = "1.12.2"
@@ -22,6 +24,9 @@ class Globals {
 version = Globals.baseVersion + "+" + Globals.mcVersion
 logger.lifecycle("Building Fabric: " + version)
 
+
+import net.fabricmc.loom.task.RunClientTask
+import net.fabricmc.loom.task.RunServerTask
 import org.apache.commons.codec.digest.DigestUtils
 
 def getSubprojectVersion(project, version) {
@@ -31,19 +36,22 @@ def getSubprojectVersion(project, version) {
 	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath()).toString()], maxCommits: 1)
 	if (latestCommits.isEmpty()) {
 		return version + "+uncommited"
-	} else {
-		return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex(Globals.mcVersion).substring(0, 2)
 	}
+
+	return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex(Globals.mcVersion).substring(0, 2)
 }
 
 def getBranch() {
-	if (System.getenv().GIT_BRANCH) {
-		def branch = System.getenv().GIT_BRANCH
+	def ENV = System.getenv()
+	if (ENV.GITHUB_REF) {
+		def branch = ENV.GITHUB_REF
 		return branch.substring(branch.lastIndexOf("/") + 1)
 	}
+
 	if (grgit == null) {
 		return "unknown"
 	}
+
 	def branch = grgit.branch.current().name
 	return branch.substring(branch.lastIndexOf("/") + 1)
 }
@@ -65,17 +73,31 @@ def setupRepositories(RepositoryHandler repositories) {
 }
 
 allprojects {
-	apply plugin: 'checkstyle'
-	apply plugin: 'maven-publish'
-	apply plugin: 'maven'
-	apply plugin: 'signing'
-	apply plugin: 'fabric-loom'
-	apply plugin: 'net.minecrell.licenser'
+	apply plugin: "checkstyle"
+	apply plugin: "maven-publish"
+	apply plugin: "fabric-loom"
+	apply plugin: "com.jfrog.bintray"
+	apply plugin: "net.minecrell.licenser"
 
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
+	tasks.withType(JavaCompile).configureEach {
+		def targetVersion = 8
+		if (JavaVersion.current().isJava9Compatible()) {
+			it.options.release = targetVersion
+		} else {
+			sourceCompatibility = JavaVersion.toVersion(targetVersion)
+			targetCompatibility = JavaVersion.toVersion(targetVersion)
+		}
+	}
 
 	group = "net.legacyfabric.legacy-fabric-api"
+
+	task runTestmodClient(type: RunClientTask) {
+		classpath sourceSets.testmod.runtimeClasspath
+	}
+
+	task runTestmodServer(type: RunServerTask) {
+		classpath sourceSets.testmod.runtimeClasspath
+	}
 
 	repositories {
 		maven { url "https://maven.legacyfabric.net/" }
@@ -83,7 +105,7 @@ allprojects {
 
 	minecraft {
 		intermediaryUrl = {
-			return "https://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven/net/fabricmc/intermediary/" + it + "/intermediary-" + it + "-v2.jar";
+			return "https://maven.legacyfabric.net/net/fabricmc/intermediary/" + it + "/intermediary-" + it + "-v2.jar";
 		}
 	}
 
@@ -154,13 +176,13 @@ allprojects {
 	}
 
 	task sourcesJar(type: Jar, dependsOn: classes) {
-		classifier = 'sources'
+		archiveClassifier = "sources"
 		from sourceSets.main.allSource
 	}
 
 	checkstyle {
 		configFile = rootProject.file("checkstyle.xml")
-		toolVersion = '8.31'
+		toolVersion = "8.31"
 	}
 
 	tasks.withType(Checkstyle) {
@@ -171,8 +193,8 @@ allprojects {
 javadoc {
 	options {
 		source = "8"
-		encoding = 'UTF-8'
-		charSet = 'UTF-8'
+		encoding = "UTF-8"
+		charSet = "UTF-8"
 		memberLevel = JavadocMemberLevel.PACKAGE
 		links(
 				'https://guava.dev/releases/21.0/api/docs/',
@@ -183,11 +205,13 @@ javadoc {
 				// Need to add minecraft jd publication etc once there is one available
 		)
 		// Disable the crazy super-strict doclint tool in Java 8
-		addStringOption('Xdoclint:none', '-quiet')
+		addStringOption("Xdoclint:none", "-quiet")
 	}
+
 	allprojects.each {
 		source(it.sourceSets.main.allJava.srcDirs)
 	}
+
 	classpath = sourceSets.main.compileClasspath
 	include("**/api/**")
 	failOnError false
@@ -197,9 +221,19 @@ task javadocJar(type: Jar) {
 	dependsOn javadoc
 	from javadoc.destinationDir
 	//Set as `fatjavadoc` to prevent an ide form trying to use this javadoc, over using the modules javadoc
-	classifier = 'fatjavadoc'
+	archiveClassifier = "fatjavadoc"
 }
+
 build.dependsOn javadocJar
+
+// Runs a dedicated headless server with all test mods that closes once complete.
+task runAutoTestServer(type: RunServerTask) {
+	project.subprojects {
+		classpath it.sourceSets.testmod.runtimeClasspath
+	}
+	jvmArgs "-Dfabric.autoTest"
+	args "--nogui"
+}
 
 subprojects {
 	if (project.name != Globals.testmodsProject) {
@@ -253,11 +287,13 @@ publishing {
 			artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
 				builtBy remapMavenJar
 			}
+
 			artifact(sourcesJar) {
 				builtBy remapSourcesJar
 			}
 
 			artifact javadocJar
+
 			pom.withXml {
 				def depsNode = asNode().appendNode("dependencies")
 				subprojects.each {
@@ -298,6 +334,41 @@ dependencies {
 			if (it.name != Globals.testmodsProject) {
 				implementation project(path: ":${it.name}", configuration: "dev")
 				include project("${it.name}:")
+			}
+		}
+	}
+}
+
+// A task to ensure that the version being released has not already been released.
+task checkVersion {
+	doFirst {
+		def xml = new URL("http://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven/net/fabricmc/fabric-api/fabric-api/:maven-metadata.xml").text
+		def metadata = new XmlSlurper().parseText(xml)
+		def versions = metadata.versioning.versions.version*.text();
+		if (versions.contains(version)) {
+			throw new RuntimeException("${version} has already been released!")
+		}
+	}
+}
+
+bintray {
+	user = System.getenv('BINTRAY_USER')
+	key = System.getenv('BINTRAY_KEY')
+	publications = ["${archivesBaseName}_mavenJava"]
+	publish = true
+	pkg {
+		repo = "Legacy-Fabric-Maven"
+		name = "fabric"
+		userOrg = "legacy-fabric"
+		licenses = ["Apache-2.0"]
+		version {
+			released = new Date()
+			githubRepo = 'Legacy-Fabric/fabric'
+			websiteUrl = 'https://github.com/Legacy-Fabric/fabric'
+			issueTrackerUrl = 'https://github.com/Legacy-Fabric/fabric/issues'
+			vcsUrl = 'https://github.com/Legacy-Fabric/fabric.git'
+			gpg {
+				sign = true
 			}
 		}
 	}
