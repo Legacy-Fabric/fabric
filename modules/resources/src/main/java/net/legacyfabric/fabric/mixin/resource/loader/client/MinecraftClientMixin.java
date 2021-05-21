@@ -20,14 +20,14 @@ package net.legacyfabric.fabric.mixin.resource.loader.client;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import net.minecraft.client.resource.DefaultClientResourcePack;
-import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.resource.DefaultClientResourcePack;
 import net.minecraft.resource.ResourcePack;
 
 import net.legacyfabric.fabric.impl.resource.loader.ModResourcePackUtil;

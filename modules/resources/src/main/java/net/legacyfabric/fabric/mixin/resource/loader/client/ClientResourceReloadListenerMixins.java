@@ -21,16 +21,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
 
-import net.minecraft.class_6067;
-import net.minecraft.client.resource.FoliageColorMapListener;
-import net.minecraft.client.resource.GrassColorMapListener;
 import org.spongepowered.asm.mixin.Mixin;
 
+import net.minecraft.class_6067;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.resource.FoliageColorMapListener;
+import net.minecraft.client.resource.GrassColorMapListener;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.texture.TextureManager;

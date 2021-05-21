@@ -27,7 +27,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -35,7 +34,6 @@ import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
-
 	@Shadow
 	public ServerWorld[] worlds;
 
