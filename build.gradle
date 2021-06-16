@@ -17,7 +17,7 @@ logger.lifecycle("Building Fabric: " + version)
 
 
 import net.fabricmc.loom.task.RemapJarTask
-import org.apache.commons.codec.digest.
+import org.apache.commons.codec.digest.DigestUtils
 
 
 def getSubprojectVersion(project, version) {
@@ -28,7 +28,8 @@ def getSubprojectVersion(project, version) {
 	if (latestCommits.isEmpty()) {
 		return version + "+uncommited"
 	} else {
-		return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex("${project.mc_version}").substring(0, 2)
+		return version + "+" + latestCommits.get(0).id.substring(0, 8) + 
+		Utils.sha256Hex("${project.mc_version}").substring(0, 2)
 	}
 }
 
