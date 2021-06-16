@@ -67,7 +67,7 @@ allprojects {
 	apply plugin: 'net.minecrell.licenser'
 
 	sourceCompatibility = 1.8
-	targetCompatibility = 11
+	targetCompatibility = 1.8
 
 	group = "net.legacyfabric.legacy-fabric-api"
 
