@@ -11,7 +11,7 @@ plugins {
 }
 def ENV = System.getenv()
 
-version = "${project.base_version}+${project.mc_version}"
+setVersion("${project.base_version}+${project.mc_version}")
 logger.lifecycle("Building Fabric: " + version)
 
 import net.fabricmc.loom.task.RemapJarTask
