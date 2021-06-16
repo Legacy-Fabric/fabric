@@ -5,18 +5,34 @@
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
-  "icon": "assets/legacy-fabric-api/icon.png",
+  "icon": "assets/legacy-fabric/icon.png",
   "contact": {
     "homepage": "https://legacy-fabric.github.io/",
     "issues": "https://github.com/Legacy-Fabric/fabric/issues",
     "sources": "https://github.com/Legacy-Fabric/fabric"
   },
   "authors": [
-    "Legacy Fabric",
-    "FabricMC"
+    {
+      "name": "Legacy Fabric/Quilt",
+      "contact": {
+        "homepage": "https://legacyfabric.net/",
+        "discord": "https://discord.com/invite/yBTpRXe",
+        "sources": "https://github.com/Legacy-Fabric/fabric",
+        "issues": "https://github.com/Legacy-Fabric/fabric/issues"
+      }
+    },
+    {
+      "name": "FabricMC",
+      "contact": {
+        "homepage": "https://fabricmc.net",
+        "discord": "https://discord.gg/v6v4pMv",
+        "sources": "https://github.com/FabricMC/fabric",
+        "issues": "https://github.com/FabricMC/fabric/issues"
+      }
+    }
   ],
   "depends": {
     "minecraft": "1.12.x"
   },
-  "description": "Core API module providing key hooks and intercompatibility features for 1.12.2."
+  "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.8.9."
 }
