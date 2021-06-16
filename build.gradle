@@ -11,9 +11,8 @@ plugins {
 }
 def ENV = System.getenv()
 
-version = "${project.base_version} + "+" + ${project.mc_version}"
+version = "${project.base_version}+${project.mc_version}"
 logger.lifecycle("Building Fabric: " + version)
-
 
 import net.fabricmc.loom.task.RemapJarTask
 import org.apache.commons.codec.digest.DigestUtils
@@ -22,11 +21,11 @@ def getSubprojectVersion(project, version) {
 	if (grgit == null) {
 		return version + "+nogit"
 	}
-	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath()).toString()], maxCommits: 1)
+	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath() as java.nio.file.Path).toString()], maxCommits: 1)
 	if (latestCommits.isEmpty()) {
 		return version + "+uncommited"
 	} else {
-		return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex(Globals.mcVersion).substring(0, 2)
+		return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex("${project.mc_version}").substring(0, 2)
 	}
 }
 
