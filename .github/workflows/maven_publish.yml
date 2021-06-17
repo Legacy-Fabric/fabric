@@ -1,6 +1,6 @@
 
 name: Maven Only
-on: [push, workflow_dispatch] # Manual trigger
+on: [workflow_dispatch] # Manual trigger
 jobs:
   build:
     runs-on: ubuntu-latest
