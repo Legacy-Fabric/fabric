@@ -1,5 +1,5 @@
 name: test build
-on: [push, pull_request] # Manual trigger
+on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
