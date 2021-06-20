@@ -1,4 +1,4 @@
-name: Maven Only
+name: publish
 on: [workflow_dispatch] # Manual trigger
 jobs:
   build:
