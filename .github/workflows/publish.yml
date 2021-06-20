@@ -1,4 +1,3 @@
-
 name: Maven Only
 on: [workflow_dispatch] # Manual trigger
 jobs:
