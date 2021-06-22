@@ -38,6 +38,7 @@ addModule("base", "legacy-fabric-api-base")
 addModule("resources", "legacy-fabric-resource-loader-v1")
 addModule("client", "rendering", "legacy-fabric-rendering-api-v1")
 addModule("client", "keybindings", "legacy-fabric-keybinding-api-v1")
+addModule("client", "screen", "legacy-fabric-screen-api-v1")
 addModule("networking", "legacy-fabric-networking-api-v1")
 addModule("crash-report-info", "legacy-fabric-crash-report-info-v1")
 addModule("lifecycle-events", "legacy-fabric-lifecycle-events-v1")
@@ -46,3 +47,4 @@ addModule("server", "vanilla-commands", "legacy-fabric-vanilla-command-api-v1")
 addModule("server", "gamerules", "legacy-fabric-gamerule-api-v1")
 
 include("testmods")
+

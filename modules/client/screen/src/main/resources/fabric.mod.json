@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-screen-api-v1",
+  "name": "Legacy Fabric Screen API (v1)",
+  "version": "${version}",
+  "environment": "client",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-fabric/icon.png",
+  "contact": {
+    "homepage": "https://legacy-fabric.github.io/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "Legacy Fabric/Quilt",
+    "FabricMC"
+  ],
+  "depends": {
+    "fabricloader": ">=0.8.2"
+  },
+  "description": "Adds screen related hooks.",
+  "mixins": [
+    "fabric-screen-api-v1.mixins.json"
+  ]
+}
