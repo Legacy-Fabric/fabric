@@ -16,7 +16,7 @@
  */
 
 /**
- * Fabric Screen API v1.
+ * Legacy Fabric Screen API v1.
  *
  * <p>The screen api provides events and utilities in this package are related to the lifecycle of a {@link net.minecraft.client.gui.screen.Screen}.
  *
