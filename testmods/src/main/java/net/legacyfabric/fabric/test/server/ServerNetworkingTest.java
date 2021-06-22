@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.test;
+package net.legacyfabric.fabric.test.server;
 
 import java.util.Arrays;
 

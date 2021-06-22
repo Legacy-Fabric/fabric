@@ -5,9 +5,9 @@
   "version": "1.0.0",
   "entrypoints": {
     "main": [
-      "net.legacyfabric.fabric.test.ServerLifecycleEventsTest",
-      "net.legacyfabric.fabric.test.ServerNetworkingTest",
-      "net.legacyfabric.fabric.test.EntityEventsTest"
+      "net.legacyfabric.fabric.test.server.ServerLifecycleEventsTest",
+      "net.legacyfabric.fabric.test.server.ServerNetworkingTest",
+      "net.legacyfabric.fabric.test.common.EntityEventsTest"
     ],
     "client": [
       "net.legacyfabric.fabric.test.client.KeybindingTest",
