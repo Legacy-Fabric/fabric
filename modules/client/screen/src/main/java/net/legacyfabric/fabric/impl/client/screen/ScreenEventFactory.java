@@ -187,10 +187,10 @@ public final class ScreenEventFactory {
 		});
 	}
 
-	public static Event<ScreenMouseEvents.AllowMouseScroll> createAllowMouseScrollEvent() {
-		return EventFactory.createArrayBacked(ScreenMouseEvents.AllowMouseScroll.class, callbacks -> (screen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
-			for (ScreenMouseEvents.AllowMouseScroll callback : callbacks) {
-				if (!callback.allowMouseScroll(screen, mouseX, mouseY, horizontalAmount, verticalAmount)) {
+	public static Event<ScreenMouseEvents.AllowMouseDrag> createAllowMouseScrollEvent() {
+		return EventFactory.createArrayBacked(ScreenMouseEvents.AllowMouseDrag.class, callbacks -> (screen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
+			for (ScreenMouseEvents.AllowMouseDrag callback : callbacks) {
+				if (!callback.allowMouseDrag(screen, mouseX, mouseY, horizontalAmount, verticalAmount)) {
 					return false;
 				}
 			}
@@ -199,17 +199,17 @@ public final class ScreenEventFactory {
 		});
 	}
 
-	public static Event<ScreenMouseEvents.BeforeMouseScroll> createBeforeMouseScrollEvent() {
-		return EventFactory.createArrayBacked(ScreenMouseEvents.BeforeMouseScroll.class, callbacks -> (screen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
-			for (ScreenMouseEvents.BeforeMouseScroll callback : callbacks) {
-				callback.beforeMouseScroll(screen, mouseX, mouseY, horizontalAmount, verticalAmount);
+	public static Event<ScreenMouseEvents.BeforeMouseDrag> createBeforeMouseScrollEvent() {
+		return EventFactory.createArrayBacked(ScreenMouseEvents.BeforeMouseDrag.class, callbacks -> (screen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
+			for (ScreenMouseEvents.BeforeMouseDrag callback : callbacks) {
+				callback.beforeMouseDrag(screen, mouseX, mouseY, horizontalAmount, verticalAmount);
 			}
 		});
 	}
 
-	public static Event<ScreenMouseEvents.AfterMouseScroll> createAfterMouseScrollEvent() {
-		return EventFactory.createArrayBacked(ScreenMouseEvents.AfterMouseScroll.class, callbacks -> (screen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
-			for (ScreenMouseEvents.AfterMouseScroll callback : callbacks) {
+	public static Event<ScreenMouseEvents.AfterMouseDrag> createAfterMouseScrollEvent() {
+		return EventFactory.createArrayBacked(ScreenMouseEvents.AfterMouseDrag.class, callbacks -> (screen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
+			for (ScreenMouseEvents.AfterMouseDrag callback : callbacks) {
 				callback.afterMouseScroll(screen, mouseX, mouseY, horizontalAmount, verticalAmount);
 			}
 		});

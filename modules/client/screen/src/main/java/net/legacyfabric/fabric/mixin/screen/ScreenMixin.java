@@ -21,6 +21,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -81,11 +82,11 @@ abstract class ScreenMixin implements ScreenExtensions {
 	@Unique
 	private Event<ScreenMouseEvents.AfterMouseRelease> afterMouseReleaseEvent;
 	@Unique
-	private Event<ScreenMouseEvents.AllowMouseScroll> allowMouseScrollEvent;
+	private Event<ScreenMouseEvents.AllowMouseDrag> allowMouseDragEvent;
 	@Unique
-	private Event<ScreenMouseEvents.BeforeMouseScroll> beforeMouseScrollEvent;
+	private Event<ScreenMouseEvents.BeforeMouseDrag> beforeMouseDragEvent;
 	@Unique
-	private Event<ScreenMouseEvents.AfterMouseScroll> afterMouseScrollEvent;
+	private Event<ScreenMouseEvents.AfterMouseDrag> afterMouseDragEvent;
 
 	@Inject(method = "init(Lnet/minecraft/client/MinecraftClient;II)V", at = @At("HEAD"))
 	private void beforeInitScreen(MinecraftClient client, int width, int height, CallbackInfo ci) {
@@ -112,9 +113,9 @@ abstract class ScreenMixin implements ScreenExtensions {
 		this.allowMouseReleaseEvent = ScreenEventFactory.createAllowMouseReleaseEvent();
 		this.beforeMouseReleaseEvent = ScreenEventFactory.createBeforeMouseReleaseEvent();
 		this.afterMouseReleaseEvent = ScreenEventFactory.createAfterMouseReleaseEvent();
-		this.allowMouseScrollEvent = ScreenEventFactory.createAllowMouseScrollEvent();
-		this.beforeMouseScrollEvent = ScreenEventFactory.createBeforeMouseScrollEvent();
-		this.afterMouseScrollEvent = ScreenEventFactory.createAfterMouseScrollEvent();
+		this.allowMouseDragEvent = ScreenEventFactory.createAllowMouseScrollEvent();
+		this.beforeMouseDragEvent = ScreenEventFactory.createBeforeMouseScrollEvent();
+		this.afterMouseDragEvent = ScreenEventFactory.createAfterMouseScrollEvent();
 
 		ScreenEvents.BEFORE_INIT.invoker().beforeInit(client, (Screen) (Object) this, width, height);
 	}
@@ -141,6 +142,64 @@ abstract class ScreenMixin implements ScreenExtensions {
 		}
 
 		return event;
+	}
+
+	@Inject(method = "mouseClicked(III)V", at = @At(value = "HEAD"), cancellable = true)
+	private void beforeMouseClickedEvent(CallbackInfo ci) {
+		Screen thisRef = (Screen) (Object) this;
+		MinecraftClient client = MinecraftClient.getInstance();
+		int i = Mouse.getEventX() * thisRef.width / client.width;
+		int j = thisRef.height - Mouse.getEventY() * thisRef.height / client.height - 1;
+		int k = Mouse.getEventButton();
+
+		if (!ScreenMouseEvents.allowMouseClick(thisRef).invoker().allowMouseClick(thisRef, i, j, k)) {
+			ci.cancel();
+			return;
+		}
+
+		ScreenMouseEvents.beforeMouseClick(thisRef).invoker().beforeMouseClick(thisRef, i, j, k);
+	}
+
+	@Inject(method = "mouseClicked", at = @At("TAIL"))
+	private void afterMouseClickedEvent(CallbackInfo ci) {
+		Screen thisRef = (Screen) (Object) this;
+		MinecraftClient client = MinecraftClient.getInstance();
+		int i = Mouse.getEventX() * thisRef.width / client.width;
+		int j = thisRef.height - Mouse.getEventY() * thisRef.height / client.height - 1;
+		int k = Mouse.getEventButton();
+
+		ScreenMouseEvents.afterMouseClick(thisRef).invoker().afterMouseClick(thisRef, i, j, k);
+	}
+
+	@Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true)
+	private void beforeMouseReleasedEvent(int x, int y, int button, CallbackInfo ci) {
+		Screen thisRef = (Screen) (Object) this;
+
+		if (!ScreenMouseEvents.allowMouseRelease(thisRef).invoker().allowMouseRelease(thisRef, x, y, button)) {
+			ci.cancel();
+			return;
+		}
+
+		ScreenMouseEvents.beforeMouseRelease(thisRef).invoker().beforeMouseRelease(thisRef, x, y, button);
+	}
+
+	@Inject(method = "mouseReleased", at = @At("TAIL"))
+	private void afterMouseReleaseEvent(int x, int y, int button, CallbackInfo ci) {
+		Screen thisRef = (Screen) (Object) this;
+
+		ScreenMouseEvents.afterMouseRelease(thisRef).invoker().afterMouseRelease(thisRef, x, y, button);
+	}
+
+	@Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
+	private void beforeMouseDragEvent(int x, int y, int mouseButton, long duration, CallbackInfo ci) {
+		Screen thisRef = (Screen) (Object) this;
+
+		if (!ScreenMouseEvents.allowMouseDrag(thisRef).invoker().allowMouseDrag(thisRef, x, y, mouseButton, duration)) {
+			ci.cancel();
+			return;
+		}
+
+		ScreenMouseEvents.beforeMouseDrag(thisRef).invoker().beforeMouseDrag(thisRef, x, y, mouseButton, duration);
 	}
 
 	@Override
@@ -233,17 +292,17 @@ abstract class ScreenMixin implements ScreenExtensions {
 	}
 
 	@Override
-	public Event<ScreenMouseEvents.AllowMouseScroll> fabric_getAllowMouseScrollEvent() {
-		return ensureEventsAreInitialised(this.allowMouseScrollEvent);
+	public Event<ScreenMouseEvents.AllowMouseDrag> fabric_getAllowMouseDragEvent() {
+		return ensureEventsAreInitialised(this.allowMouseDragEvent);
 	}
 
 	@Override
-	public Event<ScreenMouseEvents.BeforeMouseScroll> fabric_getBeforeMouseScrollEvent() {
-		return ensureEventsAreInitialised(this.beforeMouseScrollEvent);
+	public Event<ScreenMouseEvents.BeforeMouseDrag> fabric_getBeforeMouseDragEvent() {
+		return ensureEventsAreInitialised(this.beforeMouseDragEvent);
 	}
 
 	@Override
-	public Event<ScreenMouseEvents.AfterMouseScroll> fabric_getAfterMouseScrollEvent() {
-		return ensureEventsAreInitialised(this.afterMouseScrollEvent);
+	public Event<ScreenMouseEvents.AfterMouseDrag> fabric_getAfterMouseDragEvent() {
+		return ensureEventsAreInitialised(this.afterMouseDragEvent);
 	}
 }

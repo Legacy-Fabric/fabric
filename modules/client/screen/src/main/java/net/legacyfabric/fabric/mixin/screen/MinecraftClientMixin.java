@@ -45,7 +45,7 @@ abstract class MinecraftClientMixin {
 	}
 
 	@Inject(method = "stop", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/Display;destroy()V"))
-	private void onDisplayDestroy(CallbackInfo ci) {
+	private void onDisplayDestroyBecauseStopping(CallbackInfo ci) {
 		ScreenEvents.remove(this.currentScreen).invoker().onRemove(this.currentScreen);
 	}
 

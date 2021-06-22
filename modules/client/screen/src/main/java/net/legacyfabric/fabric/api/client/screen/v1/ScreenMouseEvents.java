@@ -115,10 +115,10 @@ public final class ScreenMouseEvents {
 	 *
 	 * @return the event
 	 */
-	public static Event<AllowMouseScroll> allowMouseScroll(Screen screen) {
+	public static Event<AllowMouseDrag> allowMouseDrag(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
 
-		return ScreenExtensions.getExtensions(screen).fabric_getAllowMouseScrollEvent();
+		return ScreenExtensions.getExtensions(screen).fabric_getAllowMouseDragEvent();
 	}
 
 	/**
@@ -128,10 +128,10 @@ public final class ScreenMouseEvents {
 	 *
 	 * @return the event
 	 */
-	public static Event<BeforeMouseScroll> beforeMouseScroll(Screen screen) {
+	public static Event<BeforeMouseDrag> beforeMouseDrag(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
 
-		return ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseScrollEvent();
+		return ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseDragEvent();
 	}
 
 	/**
@@ -141,10 +141,10 @@ public final class ScreenMouseEvents {
 	 *
 	 * @return the event
 	 */
-	public static Event<AfterMouseScroll> afterMouseScroll(Screen screen) {
+	public static Event<AfterMouseDrag> afterMouseScroll(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
 
-		return ScreenExtensions.getExtensions(screen).fabric_getAfterMouseScrollEvent();
+		return ScreenExtensions.getExtensions(screen).fabric_getAfterMouseDragEvent();
 	}
 
 	private ScreenMouseEvents() {
@@ -180,8 +180,8 @@ public final class ScreenMouseEvents {
 		/**
 		 * @param mouseX the x position of the mouse
 		 * @param mouseY the y position of the mouse
-		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW}.
-		 * @see org.lwjgl.glfw.GLFW#GLFW_MOUSE_BUTTON_1
+		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.input.Mouse Mouse}.
+		 * @see org.lwjgl.input.Mouse
 		 */
 		void afterMouseClick(Screen screen, double mouseX, double mouseY, int button);
 	}
@@ -194,8 +194,8 @@ public final class ScreenMouseEvents {
 		 *
 		 * @param mouseX the x position of the mouse
 		 * @param mouseY the y position of the mouse
-		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW}.
-		 * @see org.lwjgl.glfw.GLFW#GLFW_MOUSE_BUTTON_1
+		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.input.Mouse Mouse}.
+		 * @see org.lwjgl.input.Mouse
 		 */
 		boolean allowMouseRelease(Screen screen, double mouseX, double mouseY, int button);
 	}
@@ -208,8 +208,8 @@ public final class ScreenMouseEvents {
 		 *
 		 * @param mouseX the x position of the mouse
 		 * @param mouseY the y position of the mouse
-		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW}.
-		 * @see org.lwjgl.glfw.GLFW#GLFW_MOUSE_BUTTON_1
+		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.input.Mouse Mouse}.
+		 * @see org.lwjgl.input.Mouse
 		 */
 		void beforeMouseRelease(Screen screen, double mouseX, double mouseY, int button);
 	}
@@ -222,52 +222,52 @@ public final class ScreenMouseEvents {
 		 *
 		 * @param mouseX the x position of the mouse
 		 * @param mouseY the y position of the mouse
-		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW}.
-		 * @see org.lwjgl.glfw.GLFW#GLFW_MOUSE_BUTTON_1
+		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.input.Mouse Mouse}.
+		 * @see org.lwjgl.input.Mouse
 		 */
 		void afterMouseRelease(Screen screen, double mouseX, double mouseY, int button);
 	}
 
 	@FunctionalInterface
 	@Environment(EnvType.CLIENT)
-	public interface AllowMouseScroll {
+	public interface AllowMouseDrag {
 		/**
-		 * Checks if the mouse should be allowed to scroll in a screen.
+		 * Checks if the mouse should be allowed to dragged in a screen.
 		 *
 		 * @param mouseX the x position of the mouse
 		 * @param mouseY the y position of the mouse
-		 * @param horizontalAmount the horizontal scroll amount
-		 * @param verticalAmount the vertical scroll amount
+		 * @param mouseButton the button number, which can be identified by the constants in {@link org.lwjgl.input.Mouse Mouse}.
+		 * @param duration the length of time in tick the button was held down
 		 * @return whether the mouse should be allowed to scroll
 		 */
-		boolean allowMouseScroll(Screen screen, double mouseX, double mouseY, double horizontalAmount, double verticalAmount);
+		boolean allowMouseDrag(Screen screen, double mouseX, double mouseY, double mouseButton, double duration);
 	}
 
 	@FunctionalInterface
 	@Environment(EnvType.CLIENT)
-	public interface BeforeMouseScroll {
+	public interface BeforeMouseDrag {
 		/**
-		 * Called before a mouse has scrolled on screen.
+		 * Called before a mouse has dragged on screen.
 		 *
 		 * @param mouseX the x position of the mouse
 		 * @param mouseY the y position of the mouse
-		 * @param horizontalAmount the horizontal scroll amount
-		 * @param verticalAmount the vertical scroll amount
+		 * @param mouseButton the button number, which can be identified by the constants in {@link org.lwjgl.input.Mouse Mouse}.
+		 * @param duration the length of time in tick the button was held down
 		 */
-		void beforeMouseScroll(Screen screen, double mouseX, double mouseY, double horizontalAmount, double verticalAmount);
+		void beforeMouseDrag(Screen screen, double mouseX, double mouseY, double mouseButton, double duration);
 	}
 
 	@FunctionalInterface
 	@Environment(EnvType.CLIENT)
-	public interface AfterMouseScroll {
+	public interface AfterMouseDrag {
 		/**
-		 * Called after a mouse has scrolled on screen.
+		 * Called after a mouse has dragged on screen.
 		 *
 		 * @param mouseX the x position of the mouse
 		 * @param mouseY the y position of the mouse
-		 * @param horizontalAmount the horizontal scroll amount
-		 * @param verticalAmount the vertical scroll amount
+		 * @param mouseButton the button number, which can be identified by the constants in {@link org.lwjgl.input.Mouse Mouse}.
+		 * @param duration the length of time in tick the button was held down
 		 */
-		void afterMouseScroll(Screen screen, double mouseX, double mouseY, double horizontalAmount, double verticalAmount);
+		void afterMouseScroll(Screen screen, double mouseX, double mouseY, double mouseButton, double duration);
 	}
 }
