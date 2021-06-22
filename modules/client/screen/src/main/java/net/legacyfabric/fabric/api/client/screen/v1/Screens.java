@@ -28,6 +28,7 @@ import net.minecraft.client.render.item.ItemRenderer;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.legacyfabric.fabric.impl.client.screen.ScreenExtensions;
 import net.legacyfabric.fabric.mixin.screen.ScreenAccessor;
 
@@ -47,10 +48,10 @@ public final class Screens {
 	 */
 	public static List<ButtonWidget> getButtons(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getButtons();
 	}
-	
+
 	/**
 	 * Gets a screen's item renderer.
 	 *
@@ -58,10 +59,10 @@ public final class Screens {
 	 */
 	public static ItemRenderer getItemRenderer(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ((ScreenAccessor) screen).getItemRenderer();
 	}
-	
+
 	/**
 	 * Gets a screen's text renderer.
 	 *
@@ -69,16 +70,16 @@ public final class Screens {
 	 */
 	public static TextRenderer getTextRenderer(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ((ScreenAccessor) screen).getTextRenderer();
 	}
-	
+
 	public static MinecraftClient getClient(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ((ScreenAccessor) screen).getClient();
 	}
-	
+
 	private Screens() {
 	}
 }

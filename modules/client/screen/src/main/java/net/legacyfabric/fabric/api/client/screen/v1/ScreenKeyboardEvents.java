@@ -19,12 +19,13 @@ package net.legacyfabric.fabric.api.client.screen.v1;
 
 import java.util.Objects;
 
-import net.legacyfabric.fabric.api.event.Event;
 import net.minecraft.client.gui.screen.Screen;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.legacyfabric.fabric.impl.client.screen.ScreenExtensions;
+import net.legacyfabric.fabric.api.event.Event;
 
 /**
  * Events related to use of the keyboard in a {@link Screen}.
@@ -41,152 +42,152 @@ import net.legacyfabric.fabric.impl.client.screen.ScreenExtensions;
  */
 @Environment(EnvType.CLIENT)
 public final class ScreenKeyboardEvents {
-    /**
-     * An event that checks if a key press should be allowed.
-     *
-     * @return the event
-     */
-    public static Event<AllowKeyPress> allowKeyPress(Screen screen) {
-        Objects.requireNonNull(screen, "Screen cannot be null");
+	/**
+	 * An event that checks if a key press should be allowed.
+	 *
+	 * @return the event
+	 */
+	public static Event<AllowKeyPress> allowKeyPress(Screen screen) {
+		Objects.requireNonNull(screen, "Screen cannot be null");
 
-        return ScreenExtensions.getExtensions(screen).fabric_getAllowKeyPressEvent();
-    }
+		return ScreenExtensions.getExtensions(screen).fabric_getAllowKeyPressEvent();
+	}
 
-    /**
-     * An event that is called before a key press is processed for a screen.
-     *
-     * @return the event
-     */
-    public static Event<BeforeKeyPress> beforeKeyPress(Screen screen) {
-        Objects.requireNonNull(screen, "Screen cannot be null");
+	/**
+	 * An event that is called before a key press is processed for a screen.
+	 *
+	 * @return the event
+	 */
+	public static Event<BeforeKeyPress> beforeKeyPress(Screen screen) {
+		Objects.requireNonNull(screen, "Screen cannot be null");
 
-        return ScreenExtensions.getExtensions(screen).fabric_getBeforeKeyPressEvent();
-    }
+		return ScreenExtensions.getExtensions(screen).fabric_getBeforeKeyPressEvent();
+	}
 
-    /**
-     * An event that is called after a key press is processed for a screen.
-     *
-     * @return the event
-     */
-    public static Event<AfterKeyPress> afterKeyPress(Screen screen) {
-        Objects.requireNonNull(screen, "Screen cannot be null");
+	/**
+	 * An event that is called after a key press is processed for a screen.
+	 *
+	 * @return the event
+	 */
+	public static Event<AfterKeyPress> afterKeyPress(Screen screen) {
+		Objects.requireNonNull(screen, "Screen cannot be null");
 
-        return ScreenExtensions.getExtensions(screen).fabric_getAfterKeyPressEvent();
-    }
+		return ScreenExtensions.getExtensions(screen).fabric_getAfterKeyPressEvent();
+	}
 
-    /**
-     * An event that checks if a pressed key should be allowed to release.
-     *
-     * @return the event
-     */
-    public static Event<AllowKeyRelease> allowKeyRelease(Screen screen) {
-        Objects.requireNonNull(screen, "Screen cannot be null");
+	/**
+	 * An event that checks if a pressed key should be allowed to release.
+	 *
+	 * @return the event
+	 */
+	public static Event<AllowKeyRelease> allowKeyRelease(Screen screen) {
+		Objects.requireNonNull(screen, "Screen cannot be null");
 
-        return ScreenExtensions.getExtensions(screen).fabric_getAllowKeyReleaseEvent();
-    }
+		return ScreenExtensions.getExtensions(screen).fabric_getAllowKeyReleaseEvent();
+	}
 
-    /**
-     * An event that is called after the release of a key is processed for a screen.
-     *
-     * @return the event
-     */
-    public static Event<BeforeKeyRelease> beforeKeyRelease(Screen screen) {
-        Objects.requireNonNull(screen, "Screen cannot be null");
+	/**
+	 * An event that is called after the release of a key is processed for a screen.
+	 *
+	 * @return the event
+	 */
+	public static Event<BeforeKeyRelease> beforeKeyRelease(Screen screen) {
+		Objects.requireNonNull(screen, "Screen cannot be null");
 
-        return ScreenExtensions.getExtensions(screen).fabric_getBeforeKeyReleaseEvent();
-    }
+		return ScreenExtensions.getExtensions(screen).fabric_getBeforeKeyReleaseEvent();
+	}
 
-    /**
-     * An event that is called after the release a key is processed for a screen.
-     *
-     * @return the event
-     */
-    public static Event<AfterKeyRelease> afterKeyRelease(Screen screen) {
-        Objects.requireNonNull(screen, "Screen cannot be null");
+	/**
+	 * An event that is called after the release a key is processed for a screen.
+	 *
+	 * @return the event
+	 */
+	public static Event<AfterKeyRelease> afterKeyRelease(Screen screen) {
+		Objects.requireNonNull(screen, "Screen cannot be null");
 
-        return ScreenExtensions.getExtensions(screen).fabric_getAfterKeyReleaseEvent();
-    }
+		return ScreenExtensions.getExtensions(screen).fabric_getAfterKeyReleaseEvent();
+	}
 
-    private ScreenKeyboardEvents() {
-    }
+	private ScreenKeyboardEvents() {
+	}
 
-    @Environment(EnvType.CLIENT)
-    @FunctionalInterface
-    public interface AllowKeyPress {
-        /**
-         * Checks if a key should be allowed to be pressed.
-         *
-         * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
-         * @return whether the key press should be processed
-         * @see org.lwjgl.input.Keyboard#KEY_Q
-         * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
-         */
-        boolean allowKeyPress(Screen screen, int key);
-    }
+	@Environment(EnvType.CLIENT)
+	@FunctionalInterface
+	public interface AllowKeyPress {
+		/**
+		 * Checks if a key should be allowed to be pressed.
+		 *
+		 * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
+		 * @return whether the key press should be processed
+		 * @see org.lwjgl.input.Keyboard#KEY_Q
+		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
+		 */
+		boolean allowKeyPress(Screen screen, int key);
+	}
 
-    @Environment(EnvType.CLIENT)
-    @FunctionalInterface
-    public interface BeforeKeyPress {
-        /**
-         * Called before a key press is handled.
-         *
-         * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
-         * @see org.lwjgl.input.Keyboard#KEY_Q
-         * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
-         */
-        void beforeKeyPress(Screen screen, int key);
-    }
+	@Environment(EnvType.CLIENT)
+	@FunctionalInterface
+	public interface BeforeKeyPress {
+		/**
+		 * Called before a key press is handled.
+		 *
+		 * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
+		 * @see org.lwjgl.input.Keyboard#KEY_Q
+		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
+		 */
+		void beforeKeyPress(Screen screen, int key);
+	}
 
-    @Environment(EnvType.CLIENT)
-    @FunctionalInterface
-    public interface AfterKeyPress {
-        /**
-         * Called after a key press is handled.
-         *
-         * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
-         * @see org.lwjgl.input.Keyboard#KEY_Q
-         * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
-         */
-        void afterKeyPress(Screen screen, int key);
-    }
+	@Environment(EnvType.CLIENT)
+	@FunctionalInterface
+	public interface AfterKeyPress {
+		/**
+		 * Called after a key press is handled.
+		 *
+		 * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
+		 * @see org.lwjgl.input.Keyboard#KEY_Q
+		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
+		 */
+		void afterKeyPress(Screen screen, int key);
+	}
 
-    @Environment(EnvType.CLIENT)
-    @FunctionalInterface
-    public interface AllowKeyRelease {
-        /**
-         * Checks if a pressed key should be allowed to be released.
-         *
-         * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
-         * @return whether the key press should be released
-         * @see org.lwjgl.input.Keyboard#KEY_Q
-         * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
-         */
-        boolean allowKeyRelease(Screen screen, int key);
-    }
+	@Environment(EnvType.CLIENT)
+	@FunctionalInterface
+	public interface AllowKeyRelease {
+		/**
+		 * Checks if a pressed key should be allowed to be released.
+		 *
+		 * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
+		 * @return whether the key press should be released
+		 * @see org.lwjgl.input.Keyboard#KEY_Q
+		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
+		 */
+		boolean allowKeyRelease(Screen screen, int key);
+	}
 
-    @Environment(EnvType.CLIENT)
-    @FunctionalInterface
-    public interface BeforeKeyRelease {
-        /**
-         * Called before a pressed key has been released.
-         *
-         * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
-         * @see org.lwjgl.input.Keyboard#KEY_Q
-         * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
-         */
-        void beforeKeyRelease(Screen screen, int key);
-    }
+	@Environment(EnvType.CLIENT)
+	@FunctionalInterface
+	public interface BeforeKeyRelease {
+		/**
+		 * Called before a pressed key has been released.
+		 *
+		 * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
+		 * @see org.lwjgl.input.Keyboard#KEY_Q
+		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
+		 */
+		void beforeKeyRelease(Screen screen, int key);
+	}
 
-    @Environment(EnvType.CLIENT)
-    @FunctionalInterface
-    public interface AfterKeyRelease {
-        /**
-         * Called after a pressed key has been released.
-         *
-         * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
-         * @see org.lwjgl.input.Keyboard#KEY_Q
-         * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
-         */
-        void afterKeyRelease(Screen screen, int key);
-    }
+	@Environment(EnvType.CLIENT)
+	@FunctionalInterface
+	public interface AfterKeyRelease {
+		/**
+		 * Called after a pressed key has been released.
+		 *
+		 * @param key the named key code which can be identified by the constants in {@link org.lwjgl.input.Keyboard LWJGL}
+		 * @see org.lwjgl.input.Keyboard#KEY_Q
+		 * @see <a href="https://www.glfw.org/docs/3.3/group__mods.html">Modifier key flags</a>
+		 */
+		void afterKeyRelease(Screen screen, int key);
+	}
 }

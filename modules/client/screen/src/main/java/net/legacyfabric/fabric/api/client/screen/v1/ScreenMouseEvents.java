@@ -23,6 +23,7 @@ import net.minecraft.client.gui.screen.Screen;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.impl.client.screen.ScreenExtensions;
 
@@ -48,10 +49,10 @@ public final class ScreenMouseEvents {
 	 */
 	public static Event<AllowMouseClick> allowMouseClick(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getAllowMouseClickEvent();
 	}
-	
+
 	/**
 	 * An event that is called before a mouse click is processed for a screen.
 	 *
@@ -59,10 +60,10 @@ public final class ScreenMouseEvents {
 	 */
 	public static Event<BeforeMouseClick> beforeMouseClick(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseClickEvent();
 	}
-	
+
 	/**
 	 * An event that is called after a mouse click is processed for a screen.
 	 *
@@ -70,10 +71,10 @@ public final class ScreenMouseEvents {
 	 */
 	public static Event<AfterMouseClick> afterMouseClick(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getAfterMouseClickEvent();
 	}
-	
+
 	/**
 	 * An event that checks if the mouse click should be allowed to release in a screen.
 	 *
@@ -81,10 +82,10 @@ public final class ScreenMouseEvents {
 	 */
 	public static Event<AllowMouseRelease> allowMouseRelease(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getAllowMouseReleaseEvent();
 	}
-	
+
 	/**
 	 * An event that is called before the release of a mouse click is processed for a screen.
 	 *
@@ -92,10 +93,10 @@ public final class ScreenMouseEvents {
 	 */
 	public static Event<BeforeMouseRelease> beforeMouseRelease(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseReleaseEvent();
 	}
-	
+
 	/**
 	 * An event that is called after the release of a mouse click is processed for a screen.
 	 *
@@ -103,10 +104,10 @@ public final class ScreenMouseEvents {
 	 */
 	public static Event<AfterMouseRelease> afterMouseRelease(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getAfterMouseReleaseEvent();
 	}
-	
+
 	/**
 	 * An event that is checks if the mouse should be allowed to scroll in a screen.
 	 *
@@ -116,10 +117,10 @@ public final class ScreenMouseEvents {
 	 */
 	public static Event<AllowMouseScroll> allowMouseScroll(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getAllowMouseScrollEvent();
 	}
-	
+
 	/**
 	 * An event that is called after mouse scrolling is processed for a screen.
 	 *
@@ -129,10 +130,10 @@ public final class ScreenMouseEvents {
 	 */
 	public static Event<BeforeMouseScroll> beforeMouseScroll(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseScrollEvent();
 	}
-	
+
 	/**
 	 * An event that is called after mouse scrolling is processed for a screen.
 	 *
@@ -142,39 +143,39 @@ public final class ScreenMouseEvents {
 	 */
 	public static Event<AfterMouseScroll> afterMouseScroll(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getAfterMouseScrollEvent();
 	}
-	
+
 	private ScreenMouseEvents() {
 	}
-	
+
 	@Environment(EnvType.CLIENT)
 	@FunctionalInterface
 	public interface AllowMouseClick {
 		/**
 		 * @param mouseX the x position of the mouse
 		 * @param mouseY the y position of the mouse
-		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW}.
-		 * @see org.lwjgl.glfw.GLFW#GLFW_MOUSE_BUTTON_1
+		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.input.Mouse Mouse}.
+		 * @see org.lwjgl.input.Mouse
 		 */
 		boolean allowMouseClick(Screen screen, double mouseX, double mouseY, int button);
 	}
-	
+
 	@Environment(EnvType.CLIENT)
 	@FunctionalInterface
 	public interface BeforeMouseClick {
 		/**
 		 * @param mouseX the x position of the mouse
 		 * @param mouseY the y position of the mouse
-		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW}.
-		 * @see org.lwjgl.glfw.GLFW#GLFW_MOUSE_BUTTON_1
+		 * @param button the button number, which can be identified by the constants in {@link org.lwjgl.input.Mouse Mouse}.
+		 * @see org.lwjgl.input.Mouse
 		 */
 		void beforeMouseClick(Screen screen, double mouseX, double mouseY, int button);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface AfterMouseClick {
 		/**
 		 * @param mouseX the x position of the mouse
@@ -184,9 +185,9 @@ public final class ScreenMouseEvents {
 		 */
 		void afterMouseClick(Screen screen, double mouseX, double mouseY, int button);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface AllowMouseRelease {
 		/**
 		 * Checks if the mouse click should be allowed to release in a screen.
@@ -198,9 +199,9 @@ public final class ScreenMouseEvents {
 		 */
 		boolean allowMouseRelease(Screen screen, double mouseX, double mouseY, int button);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface BeforeMouseRelease {
 		/**
 		 * Called before a mouse click has released in a screen.
@@ -212,9 +213,9 @@ public final class ScreenMouseEvents {
 		 */
 		void beforeMouseRelease(Screen screen, double mouseX, double mouseY, int button);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface AfterMouseRelease {
 		/**
 		 * Called after a mouse click has released in a screen.
@@ -226,9 +227,9 @@ public final class ScreenMouseEvents {
 		 */
 		void afterMouseRelease(Screen screen, double mouseX, double mouseY, int button);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface AllowMouseScroll {
 		/**
 		 * Checks if the mouse should be allowed to scroll in a screen.
@@ -241,9 +242,9 @@ public final class ScreenMouseEvents {
 		 */
 		boolean allowMouseScroll(Screen screen, double mouseX, double mouseY, double horizontalAmount, double verticalAmount);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface BeforeMouseScroll {
 		/**
 		 * Called before a mouse has scrolled on screen.
@@ -255,9 +256,9 @@ public final class ScreenMouseEvents {
 		 */
 		void beforeMouseScroll(Screen screen, double mouseX, double mouseY, double horizontalAmount, double verticalAmount);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface AfterMouseScroll {
 		/**
 		 * Called after a mouse has scrolled on screen.

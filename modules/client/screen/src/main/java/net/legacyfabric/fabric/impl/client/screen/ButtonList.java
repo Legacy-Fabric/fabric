@@ -24,4 +24,5 @@ import org.jetbrains.annotations.ApiStatus;
  */
 @ApiStatus.Internal
 @Deprecated
-public final class ButtonList {}
+public final class ButtonList {
+}

@@ -17,11 +17,11 @@
 
 package net.legacyfabric.fabric.mixin.screen;
 
-import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -33,6 +33,7 @@ import net.minecraft.client.render.GameRenderer;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
 import net.legacyfabric.fabric.api.client.screen.v1.ScreenEvents;
 
 @Environment(EnvType.CLIENT)
@@ -41,10 +42,10 @@ abstract class GameRendererMixin {
 	@Shadow
 	@Final
 	private MinecraftClient client;
-	
+
 	@Unique
 	private Screen renderingScreen;
-	
+
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;render(IIF)V"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	private void onBeforeRenderScreen(float tickDelta, long startTime, CallbackInfo ci) {
 		// Store the screen in a variable in case someone tries to change the screen during this before render event.
@@ -52,7 +53,7 @@ abstract class GameRendererMixin {
 		this.renderingScreen = this.client.currentScreen;
 		ScreenEvents.beforeRender(this.renderingScreen).invoker().beforeRender(this.renderingScreen, Mouse.getX(), Mouse.getY(), tickDelta);
 	}
-	
+
 	// This injection should end up in the try block so exceptions are caught
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;render(IIF)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	private void onAfterRenderScreen(float tickDelta, long startTime, CallbackInfo ci) {

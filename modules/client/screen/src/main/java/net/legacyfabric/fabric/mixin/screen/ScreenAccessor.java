@@ -29,10 +29,10 @@ import net.minecraft.client.render.item.ItemRenderer;
 public interface ScreenAccessor {
 	@Accessor
 	ItemRenderer getItemRenderer();
-	
+
 	@Accessor
 	TextRenderer getTextRenderer();
-	
+
 	@Accessor
 	MinecraftClient getClient();
 }

@@ -19,14 +19,15 @@ package net.legacyfabric.fabric.api.client.screen.v1;
 
 import java.util.Objects;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
-import net.legacyfabric.fabric.impl.client.screen.ScreenExtensions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
+import net.legacyfabric.fabric.impl.client.screen.ScreenExtensions;
 
 /**
  * Holds events related to {@link Screen}s.
@@ -77,7 +78,7 @@ public final class ScreenEvents {
 					callback.beforeInit(client, screen, scaledWidth, scaledHeight);
 				}
 			});
-	
+
 	/**
 	 * An event that is called after {@link Screen#init(MinecraftClient, int, int) a screen is initialized} to it's default state.
 	 *
@@ -105,7 +106,7 @@ public final class ScreenEvents {
 					callback.afterInit(client, screen, scaledWidth, scaledHeight);
 				}
 			});
-	
+
 	/**
 	 * An event that is called after {@link Screen#removed()} is called.
 	 * This event signifies that the screen is now closed.
@@ -118,10 +119,10 @@ public final class ScreenEvents {
 	 */
 	public static Event<Remove> remove(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getRemoveEvent();
 	}
-	
+
 	/**
 	 * An event that is called before a screen is rendered.
 	 *
@@ -129,10 +130,10 @@ public final class ScreenEvents {
 	 */
 	public static Event<BeforeRender> beforeRender(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getBeforeRenderEvent();
 	}
-	
+
 	/**
 	 * An event that is called after a screen is rendered.
 	 *
@@ -140,10 +141,10 @@ public final class ScreenEvents {
 	 */
 	public static Event<AfterRender> afterRender(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getAfterRenderEvent();
 	}
-	
+
 	/**
 	 * An event that is called before a screen is ticked.
 	 *
@@ -151,10 +152,10 @@ public final class ScreenEvents {
 	 */
 	public static Event<BeforeTick> beforeTick(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getBeforeTickEvent();
 	}
-	
+
 	/**
 	 * An event that is called after a screen is ticked.
 	 *
@@ -162,51 +163,52 @@ public final class ScreenEvents {
 	 */
 	public static Event<AfterTick> afterTick(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
-		
+
 		return ScreenExtensions.getExtensions(screen).fabric_getAfterTickEvent();
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface BeforeInit {
 		void beforeInit(MinecraftClient client, Screen screen, int scaledWidth, int scaledHeight);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface AfterInit {
 		void afterInit(MinecraftClient client, Screen screen, int scaledWidth, int scaledHeight);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface Remove {
 		void onRemove(Screen screen);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface BeforeRender {
 		void beforeRender(Screen screen, int mouseX, int mouseY, float tickDelta);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface AfterRender {
 		void afterRender(Screen screen, int mouseX, int mouseY, float tickDelta);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface BeforeTick {
 		void beforeTick(Screen screen);
 	}
-	
-	@Environment(EnvType.CLIENT)
+
 	@FunctionalInterface
+	@Environment(EnvType.CLIENT)
 	public interface AfterTick {
 		void afterTick(Screen screen);
 	}
-	
-	private ScreenEvents() {}
+
+	private ScreenEvents() {
+	}
 }
