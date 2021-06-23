@@ -12,11 +12,27 @@
     "sources": "https://github.com/Legacy-Fabric/fabric"
   },
   "authors": [
-    "Legacy Fabric",
-    "FabricMC"
+    {
+      "name": "Legacy Fabric/Quilt",
+      "contact": {
+        "homepage": "https://legacyfabric.net/",
+        "discord": "https://legacyfabric.net/discord",
+        "sources": "https://github.com/Legacy-Fabric/fabric",
+        "issues": "https://github.com/Legacy-Fabric/fabric/issues"
+      }
+    },
+    {
+      "name": "FabricMC",
+      "contact": {
+        "homepage": "https://fabricmc.net",
+        "discord": "https://discord.gg/v6v4pMv",
+        "sources": "https://github.com/FabricMC/fabric",
+        "issues": "https://github.com/FabricMC/fabric/issues"
+      }
+    }
   ],
   "depends": {
     "minecraft": "1.8.x"
   },
-  "description": "Core API module providing key hooks and intercompatibility features for 1.8.9."
+  "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.8.9."
 }
