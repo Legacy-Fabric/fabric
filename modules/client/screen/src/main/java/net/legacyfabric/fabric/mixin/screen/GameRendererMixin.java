@@ -46,7 +46,7 @@ abstract class GameRendererMixin {
 	@Unique
 	private Screen renderingScreen;
 
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;render(IIF)V"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;render(IIF)V"))
 	private void onBeforeRenderScreen(float tickDelta, long startTime, CallbackInfo ci) {
 		// Store the screen in a variable in case someone tries to change the screen during this before render event.
 		// If someone changes the screen, the after render event will likely have class cast exceptions or an NPE.
@@ -55,7 +55,7 @@ abstract class GameRendererMixin {
 	}
 
 	// This injection should end up in the try block so exceptions are caught
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;render(IIF)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;render(IIF)V", shift = At.Shift.AFTER))
 	private void onAfterRenderScreen(float tickDelta, long startTime, CallbackInfo ci) {
 		ScreenEvents.afterRender(this.renderingScreen).invoker().afterRender(this.renderingScreen, Mouse.getX(), Mouse.getY(), tickDelta);
 		// Finally set the currently rendering screen to null
