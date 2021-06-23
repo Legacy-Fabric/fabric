@@ -1,23 +1,24 @@
 pluginManagement {
 	repositories {
-		gradlePluginPortal()
 		maven {
 			name = 'Fabric'
 			url = 'https://maven.fabricmc.net/'
 		}
+		gradlePluginPortal()
+		mavenCentral()
 		mavenLocal()
  		maven {
 			name = 'Jitpack'
 			url = 'https://jitpack.io'
 		}
 	}
-	resolutionStrategy {
-		eachPlugin {
-			if (requested.id.id == "fabric-loom" && !requested.version?.endsWith("-SNAPSHOT")) {
-				useModule("com.github.Chocohead.Fabric-Loom:fabric-loom:${requested.version}")
-			}
-		}
-	}
+//	resolutionStrategy {
+//		eachPlugin {
+//			if (requested.id.id == "fabric-loom" && !requested.version?.endsWith("-SNAPSHOT")) {
+//				useModule("com.github.Chocohead.Fabric-Loom:fabric-loom:${requested.version}")
+//			}
+//		}
+//	}
 }
 
 rootProject.name = "legacy-fabric-api"

@@ -35,4 +35,7 @@ public interface ScreenAccessor {
 
 	@Accessor
 	MinecraftClient getClient();
+
+	@Accessor
+	long getMouseClickTime();
 }

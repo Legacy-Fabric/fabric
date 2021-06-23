@@ -20,6 +20,6 @@
   },
   "description": "Adds screen related hooks.",
   "mixins": [
-    "fabric-screen-api-v1.mixins.json"
+    "legacy-fabric-screen-api-v1.mixins.json"
   ]
 }

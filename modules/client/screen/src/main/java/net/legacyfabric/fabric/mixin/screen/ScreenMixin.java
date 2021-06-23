@@ -138,42 +138,46 @@ abstract class ScreenMixin implements ScreenExtensions {
 	@Unique
 	private <T> Event<T> ensureEventsAreInitialised(Event<T> event) {
 		if (event == null) {
-			throw new IllegalStateException(String.format("[fabric-screen-api-v1] The current screen (%s) has not been correctly initialised, please send this crash log to the mod author. This is usually caused by the screen not calling super.init(Lnet/minecraft/client/MinecraftClient;II)V", this.getClass().getSuperclass().getName()));
+			throw new IllegalStateException(String.format("[legacy-fabric-screen-api-v1] The current screen (%s) has not been correctly initialised, please send this crash log to the mod author. This is usually caused by the screen not calling super.init(Lnet/minecraft/client/MinecraftClient;II)V", this.getClass().getSuperclass().getName()));
 		}
 
 		return event;
 	}
 
-	@Inject(method = "mouseClicked(III)V", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "handleMouseEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;mouseClicked(III)V"), cancellable = true)
 	private void beforeMouseClickedEvent(CallbackInfo ci) {
 		Screen thisRef = (Screen) (Object) this;
-		MinecraftClient client = MinecraftClient.getInstance();
-		int i = Mouse.getEventX() * thisRef.width / client.width;
-		int j = thisRef.height - Mouse.getEventY() * thisRef.height / client.height - 1;
-		int k = Mouse.getEventButton();
+		MinecraftClient client = ((ScreenAccessor) this).getClient();
+		int x = Mouse.getEventX() * thisRef.width / client.width;
+		int y = thisRef.height - Mouse.getEventY() * thisRef.height / client.height - 1;
+		int button = Mouse.getEventButton();
 
-		if (!ScreenMouseEvents.allowMouseClick(thisRef).invoker().allowMouseClick(thisRef, i, j, k)) {
+		if (!ScreenMouseEvents.allowMouseClick(thisRef).invoker().allowMouseClick(thisRef, x, y, button)) {
 			ci.cancel();
 			return;
 		}
 
-		ScreenMouseEvents.beforeMouseClick(thisRef).invoker().beforeMouseClick(thisRef, i, j, k);
+		ScreenMouseEvents.beforeMouseClick(thisRef).invoker().beforeMouseClick(thisRef, x, y, button);
 	}
 
-	@Inject(method = "mouseClicked", at = @At("TAIL"))
+	@Inject(method = "handleMouseEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;mouseClicked(III)V", shift = At.Shift.AFTER))
 	private void afterMouseClickedEvent(CallbackInfo ci) {
 		Screen thisRef = (Screen) (Object) this;
-		MinecraftClient client = MinecraftClient.getInstance();
-		int i = Mouse.getEventX() * thisRef.width / client.width;
-		int j = thisRef.height - Mouse.getEventY() * thisRef.height / client.height - 1;
-		int k = Mouse.getEventButton();
+		MinecraftClient client = ((ScreenAccessor) this).getClient();
+		int x = Mouse.getEventX() * thisRef.width / client.width;
+		int y = thisRef.height - Mouse.getEventY() * thisRef.height / client.height - 1;
+		int button = Mouse.getEventButton();
 
-		ScreenMouseEvents.afterMouseClick(thisRef).invoker().afterMouseClick(thisRef, i, j, k);
+		ScreenMouseEvents.afterMouseClick(thisRef).invoker().afterMouseClick(thisRef, x, y, button);
 	}
 
-	@Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true)
-	private void beforeMouseReleasedEvent(int x, int y, int button, CallbackInfo ci) {
+	@Inject(method = "handleMouseEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;mouseReleased(III)V"), cancellable = true)
+	private void beforeMouseReleasedEvent(CallbackInfo ci) {
 		Screen thisRef = (Screen) (Object) this;
+		MinecraftClient client = ((ScreenAccessor) this).getClient();
+		int x = Mouse.getEventX() * thisRef.width / client.width;
+		int y = thisRef.height - Mouse.getEventY() * thisRef.height / client.height - 1;
+		int button = Mouse.getEventButton();
 
 		if (!ScreenMouseEvents.allowMouseRelease(thisRef).invoker().allowMouseRelease(thisRef, x, y, button)) {
 			ci.cancel();
@@ -183,23 +187,32 @@ abstract class ScreenMixin implements ScreenExtensions {
 		ScreenMouseEvents.beforeMouseRelease(thisRef).invoker().beforeMouseRelease(thisRef, x, y, button);
 	}
 
-	@Inject(method = "mouseReleased", at = @At("TAIL"))
-	private void afterMouseReleaseEvent(int x, int y, int button, CallbackInfo ci) {
+	@Inject(method = "handleMouseEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;mouseReleased(III)V", shift = At.Shift.AFTER))
+	private void afterMouseReleaseEvent(CallbackInfo ci) {
 		Screen thisRef = (Screen) (Object) this;
+		MinecraftClient client = ((ScreenAccessor) this).getClient();
+		int x = Mouse.getEventX() * thisRef.width / client.width;
+		int y = thisRef.height - Mouse.getEventY() * thisRef.height / client.height - 1;
+		int button = Mouse.getEventButton();
 
 		ScreenMouseEvents.afterMouseRelease(thisRef).invoker().afterMouseRelease(thisRef, x, y, button);
 	}
 
-	@Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
-	private void beforeMouseDragEvent(int x, int y, int mouseButton, long duration, CallbackInfo ci) {
+	@Inject(method = "handleMouseEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;mouseDragged(IIIJ)V"), cancellable = true)
+	private void beforeMouseDragEvent(CallbackInfo ci) {
 		Screen thisRef = (Screen) (Object) this;
+		MinecraftClient client = ((ScreenAccessor) this).getClient();
+		int x = Mouse.getEventX() * thisRef.width / client.width;
+		int y = thisRef.height - Mouse.getEventY() * thisRef.height / client.height - 1;
+		int button = Mouse.getEventButton();
+		long duration = MinecraftClient.getTime() - ((ScreenAccessor) this).getMouseClickTime();
 
-		if (!ScreenMouseEvents.allowMouseDrag(thisRef).invoker().allowMouseDrag(thisRef, x, y, mouseButton, duration)) {
+		if (!ScreenMouseEvents.allowMouseDrag(thisRef).invoker().allowMouseDrag(thisRef, x, y, button, duration)) {
 			ci.cancel();
 			return;
 		}
 
-		ScreenMouseEvents.beforeMouseDrag(thisRef).invoker().beforeMouseDrag(thisRef, x, y, mouseButton, duration);
+		ScreenMouseEvents.beforeMouseDrag(thisRef).invoker().beforeMouseDrag(thisRef, x, y, button, duration);
 	}
 
 	@Override
