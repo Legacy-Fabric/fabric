@@ -25,7 +25,6 @@ import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -51,6 +50,7 @@ abstract class GameRendererMixin {
 		// Store the screen in a variable in case someone tries to change the screen during this before render event.
 		// If someone changes the screen, the after render event will likely have class cast exceptions or an NPE.
 		this.renderingScreen = this.client.currentScreen;
+
 		ScreenEvents.beforeRender(this.renderingScreen).invoker().beforeRender(this.renderingScreen, Mouse.getX(), Mouse.getY(), tickDelta);
 	}
 

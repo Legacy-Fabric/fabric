@@ -30,7 +30,7 @@ import net.legacyfabric.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.legacyfabric.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
 
 public class RenderingEventsTest implements ClientModInitializer {
-	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Logger LOGGER = LogManager.getLogger("LegacyFabricRenderingEventsTest");
 
 	@Override
 	public void onInitializeClient() {

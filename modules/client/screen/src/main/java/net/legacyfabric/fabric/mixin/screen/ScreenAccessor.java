@@ -17,9 +17,13 @@
 
 package net.legacyfabric.fabric.mixin.screen;
 
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
+import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -38,4 +42,10 @@ public interface ScreenAccessor {
 
 	@Accessor
 	long getMouseClickTime();
+
+	@Accessor
+	List<ButtonWidget> getButtons();
+
+	@Accessor
+	List<Element> getChildren();
 }

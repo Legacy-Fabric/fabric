@@ -15,7 +15,8 @@
       "net.legacyfabric.fabric.test.client.RenderingEventsTest",
       "net.legacyfabric.fabric.test.client.ClientNetworkingTest",
       "net.legacyfabric.fabric.test.client.ClientLifecycleEventsTest",
-      "net.legacyfabric.fabric.test.client.ResourceReloadTest"
+      "net.legacyfabric.fabric.test.client.ResourceReloadTest",
+      "net.legacyfabric.fabric.test.client.ScreenTest"
     ]
   }
 }

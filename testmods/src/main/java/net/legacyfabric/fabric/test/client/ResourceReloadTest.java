@@ -31,7 +31,7 @@ import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
 
 public class ResourceReloadTest implements ClientModInitializer {
-	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Logger LOGGER = LogManager.getLogger("LegacyFabricResourceReloadTest");
 
 	@Override
 	public void onInitializeClient() {

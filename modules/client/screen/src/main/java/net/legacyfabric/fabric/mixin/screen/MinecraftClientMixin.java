@@ -56,12 +56,14 @@ abstract class MinecraftClientMixin {
 		// Store the screen in a variable in case someone tries to change the screen during this before tick event.
 		// If someone changes the screen, the after tick event will likely have class cast exceptions or an NPE.
 		this.tickingScreen = this.currentScreen;
+		if (this.tickingScreen == null) return;
 		ScreenEvents.beforeTick(this.tickingScreen).invoker().beforeTick(this.tickingScreen);
 	}
 
 	// Synthetic method in `tick`
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void afterScreenTick(CallbackInfo ci) {
+		if (this.tickingScreen == null) return;
 		ScreenEvents.afterTick(this.tickingScreen).invoker().afterTick(this.tickingScreen);
 		// Finally set the currently ticking screen to null
 		this.tickingScreen = null;
@@ -74,11 +76,13 @@ abstract class MinecraftClientMixin {
 		// Store the screen in a variable in case someone tries to change the screen during this before tick event.
 		// If someone changes the screen, the after tick event will likely have class cast exceptions or throw a NPE.
 		this.tickingScreen = this.currentScreen;
+		if (this.tickingScreen == null) return;
 		ScreenEvents.beforeTick(this.tickingScreen).invoker().beforeTick(this.tickingScreen);
 	}
 
 	@Inject(method = "startIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;getServerId()Ljava/lang/String;"))
 	private void afterLoadingScreenTick(String name, String displayName, LevelInfo levelInfo, CallbackInfo ci) {
+		if (this.tickingScreen == null) return;
 		ScreenEvents.afterTick(this.tickingScreen).invoker().afterTick(this.tickingScreen);
 		// Finally set the currently ticking screen to null
 		this.tickingScreen = null;
