@@ -23,8 +23,6 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEven
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.entity.EntityType;
-
 import net.fabricmc.api.ClientModInitializer;
 
 public class ClientLifecycleEventsTest implements ClientModInitializer {
@@ -43,10 +41,10 @@ public class ClientLifecycleEventsTest implements ClientModInitializer {
 			}
 		});
 		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			LOGGER.info("Client Entity {} loaded", EntityType.getEntityName(entity));
+			LOGGER.info("Client Entity {} loaded", entity.getName());
 		});
 		ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-			LOGGER.info("Client Entity {} unloaded", EntityType.getEntityName(entity));
+			LOGGER.info("Client Entity {} unloaded", entity.getName());
 		});
 		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
 			LOGGER.info("Client started");

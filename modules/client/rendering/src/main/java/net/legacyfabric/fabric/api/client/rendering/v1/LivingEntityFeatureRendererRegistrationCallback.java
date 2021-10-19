@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.api.client.rendering.v1;
 
+import net.minecraft.class_2366;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.feature.Deadmau5FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
@@ -60,7 +61,7 @@ public interface LivingEntityFeatureRendererRegistrationCallback {
 	 * @param entityClass    the entity class
 	 * @param entityRenderer the entity renderer
 	 */
-	void registerRenderers(Class<? extends LivingEntity> entityClass, LivingEntityRenderer<?> entityRenderer, RegistrationHelper registrationHelper);
+	void registerRenderers(Class<? extends LivingEntity> entityClass, class_2366 entityRenderer, RegistrationHelper registrationHelper);
 
 	/**
 	 * A delegate object used to help register feature renderers for an entity renderer.

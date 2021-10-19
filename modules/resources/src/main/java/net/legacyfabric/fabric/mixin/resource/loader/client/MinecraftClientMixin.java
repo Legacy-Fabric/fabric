@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.resource.loader.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -62,8 +63,8 @@ public class MinecraftClientMixin {
 		}
 	}
 
-	@Inject(method = "stitchTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
-	public void reloadResources(CallbackInfo ci, List<ResourcePack> list) {
+	@Inject(method = "stitchTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;method_4357(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
+	public void reloadResources(CallbackInfo ci, ArrayList list) {
 		fabric_modifyResourcePackList(list);
 	}
 }

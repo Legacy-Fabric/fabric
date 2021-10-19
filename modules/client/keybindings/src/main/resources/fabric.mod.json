@@ -16,7 +16,7 @@
     "FabricMC"
   ],
   "depends": {
-    "minecraft": "1.8.x"
+    "minecraft": "1.7.x"
   },
   "mixins": [
     "legacy-fabric-keybinding-api-v1.mixins.json"

@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.api.client.rendering.v1;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 

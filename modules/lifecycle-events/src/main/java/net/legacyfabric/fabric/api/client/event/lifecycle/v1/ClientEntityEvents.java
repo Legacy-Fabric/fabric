@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.api.client.event.lifecycle.v1;
 
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.profiler.Profiler;
 
@@ -26,6 +25,7 @@ import net.fabricmc.api.Environment;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
+import net.minecraft.world.client.ClientWorld;
 
 @Environment(EnvType.CLIENT)
 public final class ClientEntityEvents {

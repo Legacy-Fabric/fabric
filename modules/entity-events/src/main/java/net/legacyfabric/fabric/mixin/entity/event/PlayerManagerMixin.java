@@ -45,7 +45,7 @@ abstract class PlayerManagerMixin {
 	 * This is called by both "moveToWorld" and "teleport".
 	 * So this is suitable to handle the after event from both call sites.
 	 */
-	@Inject(method = "teleportToDimension", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(method = "method_10422", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void afterWorldChanged(ServerPlayerEntity player, int dimension, CallbackInfo ci, int i, ServerWorld serverWorld, ServerWorld serverWorld2, Iterator iterator) {
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.invoker().afterChangeWorld(player, serverWorld, serverWorld2);
 	}

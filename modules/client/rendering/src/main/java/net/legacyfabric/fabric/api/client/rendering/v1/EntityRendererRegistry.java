@@ -34,16 +34,16 @@ import net.minecraft.resource.ResourceManager;
 public class EntityRendererRegistry {
 	@FunctionalInterface
 	public interface Factory {
-		EntityRenderer<? extends Entity> create(EntityRenderDispatcher manager, Context context);
+		EntityRenderer create(EntityRenderDispatcher manager, Context context);
 	}
 
 	public static final class Context {
 		private final TextureManager textureManager;
 		private final ResourceManager resourceManager;
 		private final ItemRenderer itemRenderer;
-		private final Map<Class<? extends Entity>, EntityRenderer<?>> rendererMap;
+		private final Map<Class<? extends Entity>, EntityRenderer> rendererMap;
 
-		private Context(TextureManager textureManager, ResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<?>> rendererMap) {
+		private Context(TextureManager textureManager, ResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer> rendererMap) {
 			this.textureManager = textureManager;
 			this.resourceManager = resourceManager;
 			this.itemRenderer = itemRenderer;
@@ -70,7 +70,7 @@ public class EntityRendererRegistry {
 	private EntityRendererRegistry() {
 	}
 
-	public void initialize(EntityRenderDispatcher manager, TextureManager textureManager, ResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<?>> renderers) {
+	public void initialize(EntityRenderDispatcher manager, TextureManager textureManager, ResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer> renderers) {
 		synchronized (renderSupplierMap) {
 			if (renderManagerMap.containsKey(manager)) {
 				return;

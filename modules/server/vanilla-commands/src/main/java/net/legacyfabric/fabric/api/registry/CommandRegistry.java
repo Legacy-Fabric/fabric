@@ -17,10 +17,9 @@
 
 package net.legacyfabric.fabric.api.registry;
 
-import net.minecraft.command.AbstractCommand;
-
 import net.legacyfabric.fabric.impl.command.CommandRegistryImpl;
 import net.legacyfabric.fabric.api.command.CommandSide;
+import net.minecraft.class_2662;
 
 /**
  * Base class for registration of commands.
@@ -28,9 +27,9 @@ import net.legacyfabric.fabric.api.command.CommandSide;
 public interface CommandRegistry {
 	CommandRegistry INSTANCE = CommandRegistryImpl.INSTANCE;
 
-	void register(AbstractCommand command, CommandSide side);
+	void register(class_2662 command, CommandSide side);
 
-	default void register(AbstractCommand command) {
+	default void register(class_2662 command) {
 		this.register(command, CommandSide.COMMON);
 	}
 }

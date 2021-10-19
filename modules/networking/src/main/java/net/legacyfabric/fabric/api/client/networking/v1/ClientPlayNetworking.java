@@ -25,7 +25,6 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
-import net.minecraft.util.ThreadExecutor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -252,7 +251,7 @@ public final class ClientPlayNetworking {
 	 * @param buf         the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	public static Packet<?> createC2SPacket(String channelName, PacketByteBuf buf) {
+	public static Packet createC2SPacket(String channelName, PacketByteBuf buf) {
 		Objects.requireNonNull(channelName, "Channel name cannot be null");
 		Objects.requireNonNull(buf, "Buf cannot be null");
 
@@ -266,7 +265,7 @@ public final class ClientPlayNetworking {
 	 * @param buf       the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	public static Packet<?> createC2SPacket(Identifier channelId, PacketByteBuf buf) {
+	public static Packet createC2SPacket(Identifier channelId, PacketByteBuf buf) {
 		return createC2SPacket(channelId.toString(), buf);
 	}
 
@@ -295,7 +294,7 @@ public final class ClientPlayNetworking {
 	public static void send(String channelName, PacketByteBuf buf) throws IllegalStateException {
 		// You cant send without a client player, so this is fine
 		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-			MinecraftClient.getInstance().getNetworkHandler().sendPacket(createC2SPacket(channelName, buf));
+			MinecraftClient.getInstance().getNetworkHandler().method_9280(createC2SPacket(channelName, buf));
 			return;
 		}
 
@@ -312,7 +311,7 @@ public final class ClientPlayNetworking {
 	public static void send(Identifier channelId, PacketByteBuf buf) throws IllegalStateException {
 		// You cant send without a client player, so this is fine
 		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-			MinecraftClient.getInstance().getNetworkHandler().sendPacket(createC2SPacket(channelId, buf));
+			MinecraftClient.getInstance().getNetworkHandler().method_9280(createC2SPacket(channelId, buf));
 			return;
 		}
 

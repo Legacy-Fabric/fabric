@@ -25,9 +25,9 @@ def addModule(String dir, String subdir, String name) {
 
 addModule("base", "legacy-fabric-api-base")
 addModule("resources", "legacy-fabric-resource-loader-v1")
-addModule("client", "rendering", "legacy-fabric-rendering-api-v1")
+//addModule("client", "rendering", "legacy-fabric-rendering-api-v1")
 addModule("client", "keybindings", "legacy-fabric-keybinding-api-v1")
-addModule("networking", "legacy-fabric-networking-api-v1")
+//addModule("networking", "legacy-fabric-networking-api-v1")
 addModule("crash-report-info", "legacy-fabric-crash-report-info-v1")
 addModule("lifecycle-events", "legacy-fabric-lifecycle-events-v1")
 addModule("entity-events", "legacy-fabric-entity-events-v1")

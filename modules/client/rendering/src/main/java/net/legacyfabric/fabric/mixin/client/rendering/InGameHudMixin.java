@@ -34,10 +34,10 @@ import net.legacyfabric.fabric.api.client.rendering.v1.HudRenderCallback;
 public class InGameHudMixin {
 	@Shadow
 	@Final
-	private MinecraftClient client;
+	private MinecraftClient minecraftClient;
 
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;color4f(FFFF)V"), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(I)V")))
-	public void render(float tickDelta, CallbackInfo callbackInfo) {
-		HudRenderCallback.EVENT.invoker().onHudRender(this.client, tickDelta);
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glColor4f(FFFF)V"), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(I)V")))
+	public void render(float screenOpen, boolean mouseX, int mouseY, int par4, CallbackInfo ci) {
+		HudRenderCallback.EVENT.invoker().onHudRender(this.minecraftClient, screenOpen);
 	}
 }

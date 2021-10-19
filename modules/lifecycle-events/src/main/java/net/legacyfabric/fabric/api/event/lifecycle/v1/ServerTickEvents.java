@@ -33,7 +33,7 @@ public final class ServerTickEvents {
 	 */
 	public static final Event<StartTick> START_SERVER_TICK = EventFactory.createArrayBacked(StartTick.class, callbacks -> server -> {
 		if (EventFactory.isProfilingEnabled()) {
-			final Profiler profiler = server.profiler;
+			final Profiler profiler = server.field_11272;
 			profiler.push("fabricStartServerTick");
 
 			for (StartTick event : callbacks) {
@@ -55,7 +55,7 @@ public final class ServerTickEvents {
 	 */
 	public static final Event<EndTick> END_SERVER_TICK = EventFactory.createArrayBacked(EndTick.class, callbacks -> server -> {
 		if (EventFactory.isProfilingEnabled()) {
-			final Profiler profiler = server.profiler;
+			final Profiler profiler = server.field_11272;
 			profiler.push("fabricEndServerTick");
 
 			for (EndTick event : callbacks) {

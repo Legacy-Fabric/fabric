@@ -31,10 +31,10 @@ import net.legacyfabric.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
 	@Shadow
-	public KeyBinding[] keysAll;
+	public KeyBinding[] ingameKeys;
 
-	@Inject(at = @At("HEAD"), method = "method_2336()V")
+	@Inject(at = @At("HEAD"), method = "readOptionsFile()V")
 	public void loadHook(CallbackInfo info) {
-		keysAll = KeyBindingRegistryImpl.process(keysAll);
+		ingameKeys = KeyBindingRegistryImpl.process(ingameKeys);
 	}
 }

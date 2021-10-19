@@ -95,7 +95,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	}
 
 	@Override
-	public Packet<?> createPacket(String channelName, PacketByteBuf buf) {
+	public Packet createPacket(String channelName, PacketByteBuf buf) {
 		return ServerPlayNetworking.createS2CPacket(channelName, buf);
 	}
 

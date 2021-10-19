@@ -22,21 +22,21 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import net.minecraft.command.AbstractCommand;
+import net.minecraft.class_2662;
 
 import net.legacyfabric.fabric.api.command.CommandSide;
 import net.legacyfabric.fabric.api.registry.CommandRegistry;
 
 public class CommandRegistryImpl implements CommandRegistry {
 	public static final CommandRegistryImpl INSTANCE = new CommandRegistryImpl();
-	private static final Map<AbstractCommand, CommandSide> FABRIC_COMMANDS = Maps.newHashMap();
+	private static final Map<class_2662, CommandSide> FABRIC_COMMANDS = Maps.newHashMap();
 
 	@Override
-	public void register(AbstractCommand command, CommandSide side) {
+	public void register(class_2662 command, CommandSide side) {
 		FABRIC_COMMANDS.put(command, side);
 	}
 
-	public static Map<AbstractCommand, CommandSide> getCommandMap() {
+	public static Map<class_2662, CommandSide> getCommandMap() {
 		return Collections.unmodifiableMap(FABRIC_COMMANDS);
 	}
 }

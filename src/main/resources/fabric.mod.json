@@ -32,7 +32,7 @@
     }
   ],
   "depends": {
-    "minecraft": "1.8.x"
+    "minecraft": "1.7.x"
   },
-  "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.8.9."
+  "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10."
 }

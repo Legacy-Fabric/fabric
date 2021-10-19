@@ -28,7 +28,6 @@ public final class ResourceReloadListenerKeys {
 	// client
 	public static final Identifier SOUNDS = new Identifier("minecraft:sounds");
 	public static final Identifier FONTS = new Identifier("minecraft:fonts");
-	public static final Identifier MODELS = new Identifier("minecraft:models");
 	public static final Identifier LANGUAGES = new Identifier("minecraft:languages");
 	public static final Identifier TEXTURES = new Identifier("minecraft:textures");
 

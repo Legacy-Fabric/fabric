@@ -35,11 +35,10 @@ import net.legacyfabric.fabric.impl.client.rendering.BlockEntityRendererRegistry
 @Mixin(BlockEntityRenderDispatcher.class)
 public abstract class BlockEntityRenderDispatcherMixin {
 	@Shadow
-	@Final
-	private Map<Class<? extends BlockEntity>, BlockEntityRenderer<?>> renderers;
+	private Map field_10608;
 
 	@Inject(at = @At("RETURN"), method = "<init>")
 	private void init(CallbackInfo ci) {
-		BlockEntityRendererRegistryImpl.setup(((t, function) -> renderers.put(t, function.apply((BlockEntityRenderDispatcher) (Object) this))));
+		BlockEntityRendererRegistryImpl.setup(((t, function) -> field_10608.put(t, function.apply((BlockEntityRenderDispatcher) (Object) this))));
 	}
 }
