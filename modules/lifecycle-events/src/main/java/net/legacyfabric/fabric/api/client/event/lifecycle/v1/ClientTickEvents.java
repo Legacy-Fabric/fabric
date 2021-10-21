@@ -19,13 +19,13 @@ package net.legacyfabric.fabric.api.client.event.lifecycle.v1;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.world.client.ClientWorld;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
-import net.minecraft.world.client.ClientWorld;
 
 @Environment(EnvType.CLIENT)
 public final class ClientTickEvents {

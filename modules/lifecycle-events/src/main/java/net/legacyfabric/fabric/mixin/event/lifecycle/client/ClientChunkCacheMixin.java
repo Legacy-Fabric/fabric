@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle.client;
 
-import net.minecraft.world.client.ClientWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,6 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.world.World;
+import net.minecraft.world.client.ClientWorld;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ClientChunkCache;
 
