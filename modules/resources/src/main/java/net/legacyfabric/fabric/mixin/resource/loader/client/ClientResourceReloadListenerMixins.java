@@ -21,9 +21,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
 
-import net.minecraft.class_2341;
 import org.spongepowered.asm.mixin.Mixin;
 
+import net.minecraft.class_2341;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.sound.SoundManager;

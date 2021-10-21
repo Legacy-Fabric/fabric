@@ -105,6 +105,7 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		return null;
 	}
 
