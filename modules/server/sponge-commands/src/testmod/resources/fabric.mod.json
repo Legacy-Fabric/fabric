@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "fabric-sponge-command-api-v2-testmod",
+  "name": "Fabric Sponge Command API (v2) Test Mod",
+  "version": "1.0.0",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "entrypoints": {
+    "fabric-sponge-command-api-v2:registrar": [
+      "net.fabricmc.fabric.test.command.SpongeCommandTest"
+    ]
+  }
+}
