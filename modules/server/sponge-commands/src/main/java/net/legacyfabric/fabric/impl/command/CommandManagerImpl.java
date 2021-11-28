@@ -37,9 +37,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.permission.v1.PermissibleCommandSource;
-import net.fabricmc.fabric.api.util.Location;
-
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
@@ -51,6 +48,8 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.InvocationCommandExcept
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.Disambiguator;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.Location;
 
 public class CommandManagerImpl implements CommandManager {
 	private static final Logger LOGGER = LogManager.getLogger("Fabric Command Manager");
