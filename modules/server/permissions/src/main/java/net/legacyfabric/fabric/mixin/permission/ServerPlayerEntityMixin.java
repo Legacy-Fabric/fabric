@@ -19,13 +19,15 @@ package net.legacyfabric.fabric.mixin.permission;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.permission.v1.PermissionsApiHolder;
+
 @Mixin(ServerPlayerEntity.class)
-public abstract class ServerPlayerEntityMixin extends PlayerEntityMixin {
+public abstract class ServerPlayerEntityMixin implements PermissibleCommandSource {
 	@Override
 	public boolean hasPermission(String perm) {
-		return MinecraftServer.getServer().getPlayerManager().isOperator(this.getGameProfile()) || super.hasPermission(perm);
+		return PermissionsApiHolder.getPlayerPermissionsApi().hasPermission((ServerPlayerEntity) (Object) this, perm);
 	}
 }

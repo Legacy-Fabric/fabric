@@ -19,19 +19,10 @@ package net.legacyfabric.fabric.mixin.command;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
 
-import net.fabricmc.loader.api.FabricLoader;
-
-import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.legacyfabric.fabric.impl.command.CommandWrapper;
-import net.legacyfabric.fabric.impl.command.InternalObjects;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin implements PermissibleCommandSource {

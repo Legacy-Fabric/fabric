@@ -8,7 +8,6 @@
     "ConsoleMixin",
     "EntityMixin",
     "ExecuteCommand_1Mixin",
-    "PlayerEntityMixin",
     "ServerPlayerEntityMixin",
     "SignBlockEntity_1Mixin",
     "SignBlockEntity_2Mixin"

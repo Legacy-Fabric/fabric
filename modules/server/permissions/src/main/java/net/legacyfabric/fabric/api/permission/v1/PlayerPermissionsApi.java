@@ -15,24 +15,12 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.permission;
+package net.legacyfabric.fabric.api.permission.v1;
 
-import com.mojang.authlib.GameProfile;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import net.minecraft.server.network.ServerPlayerEntity;
 
-import net.minecraft.entity.player.PlayerEntity;
+public interface PlayerPermissionsApi {
+	String getId();
 
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-
-@Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin implements PermissibleCommandSource {
-	@Shadow
-	public abstract GameProfile getGameProfile();
-
-	// TODO
-	@Override
-	public boolean hasPermission(String perm) {
-		return false;
-	}
+	boolean hasPermission(ServerPlayerEntity player, String perm);
 }
