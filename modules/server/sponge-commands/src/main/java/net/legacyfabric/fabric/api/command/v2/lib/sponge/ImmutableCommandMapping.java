@@ -31,9 +31,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * An immutable command mapping instance that returns the same objects that
@@ -53,7 +52,7 @@ public final class ImmutableCommandMapping implements CommandMapping {
 	 * @throws IllegalArgumentException Thrown if aliases are duplicated
 	 */
 	public ImmutableCommandMapping(CommandCallable callable, String primary, String... alias) {
-		this(callable, primary, Arrays.asList(checkNotNull(alias, "alias")));
+		this(callable, primary, Arrays.asList(Preconditions.checkNotNull(alias, "alias")));
 	}
 
 	/**
@@ -65,12 +64,12 @@ public final class ImmutableCommandMapping implements CommandMapping {
 	 * @throws IllegalArgumentException Thrown if aliases are duplicated
 	 */
 	public ImmutableCommandMapping(CommandCallable callable, String primary, Collection<String> aliases) {
-		checkNotNull(primary, "primary");
-		checkNotNull(aliases, "aliases");
+		Preconditions.checkNotNull(primary, "primary");
+		Preconditions.checkNotNull(aliases, "aliases");
 		this.primary = primary;
 		this.aliases = new HashSet<>(aliases);
 		this.aliases.add(primary);
-		this.callable = checkNotNull(callable, "callable");
+		this.callable = Preconditions.checkNotNull(callable, "callable");
 	}
 
 	@Override

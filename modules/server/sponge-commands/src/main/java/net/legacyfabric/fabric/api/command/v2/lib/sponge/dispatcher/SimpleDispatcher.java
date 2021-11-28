@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
@@ -63,8 +64,6 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.ImmutableCommandMapping;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.InvocationCommandException;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A simple implementation of a {@link Dispatcher}.
@@ -120,7 +119,7 @@ public final class SimpleDispatcher implements Dispatcher {
 	 * registered
 	 */
 	public Optional<CommandMapping> register(CommandCallable callable, String... alias) {
-		checkNotNull(alias, "alias");
+		Preconditions.checkNotNull(alias, "alias");
 		return this.register(callable, Arrays.asList(alias));
 	}
 
@@ -165,9 +164,9 @@ public final class SimpleDispatcher implements Dispatcher {
 	 * be registered
 	 */
 	public synchronized Optional<CommandMapping> register(CommandCallable callable, List<String> aliases, Function<List<String>, List<String>> callback) {
-		checkNotNull(aliases, "aliases");
-		checkNotNull(callable, "callable");
-		checkNotNull(callback, "callback");
+		Preconditions.checkNotNull(aliases, "aliases");
+		Preconditions.checkNotNull(callable, "callable");
+		Preconditions.checkNotNull(callback, "callback");
 
 		// Invoke the callback with the commands that /can/ be registered
 		aliases = ImmutableList.copyOf(callback.apply(aliases));
@@ -204,7 +203,7 @@ public final class SimpleDispatcher implements Dispatcher {
 	 * @return Whether any were found
 	 */
 	public synchronized boolean removeAll(Collection<?> aliases) {
-		checkNotNull(aliases, "aliases");
+		Preconditions.checkNotNull(aliases, "aliases");
 
 		boolean found = false;
 
@@ -224,7 +223,7 @@ public final class SimpleDispatcher implements Dispatcher {
 	 * @return The previous mapping associated with the alias, if one was found
 	 */
 	public synchronized Optional<CommandMapping> removeMapping(CommandMapping mapping) {
-		checkNotNull(mapping, "mapping");
+		Preconditions.checkNotNull(mapping, "mapping");
 
 		CommandMapping found = null;
 
@@ -249,7 +248,7 @@ public final class SimpleDispatcher implements Dispatcher {
 	 * @return Whether the at least one command was removed
 	 */
 	public synchronized boolean removeMappings(Collection<?> mappings) {
-		checkNotNull(mappings, "mappings");
+		Preconditions.checkNotNull(mappings, "mappings");
 		boolean found = false;
 		Iterator<CommandMapping> it = this.commands.values().iterator();
 
@@ -320,7 +319,7 @@ public final class SimpleDispatcher implements Dispatcher {
 
 	@Override
 	public boolean containsMapping(CommandMapping mapping) {
-		checkNotNull(mapping, "mapping");
+		Preconditions.checkNotNull(mapping, "mapping");
 
 		for (CommandMapping test : this.commands.values()) {
 			if (mapping.equals(test)) {

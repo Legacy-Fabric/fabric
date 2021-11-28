@@ -33,6 +33,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -44,8 +45,6 @@ import net.minecraft.text.TranslatableText;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.util.Location;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Context that a command is executed in.
@@ -190,7 +189,7 @@ public final class CommandContext {
 	 * @param value the value for this argument
 	 */
 	public void putArg(String key, Object value) {
-		checkNotNull(value, "value");
+		Preconditions.checkNotNull(value, "value");
 		this.parsedArgs.put(key, value);
 	}
 

@@ -35,6 +35,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.text.LiteralText;
@@ -54,8 +55,6 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.GenericArguments;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.parsing.InputTokenizer;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.util.Location;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Specification for how command arguments should be parsed.
@@ -130,7 +129,7 @@ public final class CommandSpec implements CommandCallable {
 		 * @return this
 		 */
 		public Builder executor(CommandExecutor executor) {
-			checkNotNull(executor, "executor");
+			Preconditions.checkNotNull(executor, "executor");
 			this.executor = executor;
 			return this;
 		}
@@ -143,7 +142,7 @@ public final class CommandSpec implements CommandCallable {
 		 * @return this
 		 */
 		public Builder children(Map<List<String>, ? extends CommandCallable> children) {
-			checkNotNull(children, "children");
+			Preconditions.checkNotNull(children, "children");
 
 			if (this.childCommandMap == null) {
 				this.childCommandMap = new HashMap<>();
@@ -248,7 +247,7 @@ public final class CommandSpec implements CommandCallable {
 		 * @see GenericArguments
 		 */
 		public Builder arguments(CommandElement args) {
-			checkNotNull(args, "args");
+			Preconditions.checkNotNull(args, "args");
 			this.args = GenericArguments.seq(args);
 			return this;
 		}
@@ -263,7 +262,7 @@ public final class CommandSpec implements CommandCallable {
 		 * @see GenericArguments
 		 */
 		public Builder arguments(CommandElement... args) {
-			checkNotNull(args, "args");
+			Preconditions.checkNotNull(args, "args");
 			this.args = GenericArguments.seq(args);
 			return this;
 		}
@@ -277,7 +276,7 @@ public final class CommandSpec implements CommandCallable {
 		 * @see InputTokenizer for common input parser implementations
 		 */
 		public Builder inputTokenizer(InputTokenizer parser) {
-			checkNotNull(parser, "parser");
+			Preconditions.checkNotNull(parser, "parser");
 			this.argumentParser = parser;
 			return this;
 		}
@@ -290,7 +289,7 @@ public final class CommandSpec implements CommandCallable {
 		 */
 		public CommandSpec build() {
 			if (this.childCommandMap == null || this.childCommandMap.isEmpty()) {
-				checkNotNull(this.executor, "An executor is required");
+				Preconditions.checkNotNull(this.executor, "An executor is required");
 			} else if (this.executor == null) {
 				ChildCommandElementExecutor childCommandElementExecutor =
 						this.registerInDispatcher(new ChildCommandElementExecutor(null, null, false));
@@ -327,7 +326,7 @@ public final class CommandSpec implements CommandCallable {
 	 * @throws CommandException if the source does not have permission
 	 */
 	public void checkPermission(PermissibleCommandSource source) throws CommandException {
-		checkNotNull(source, "source");
+		Preconditions.checkNotNull(source, "source");
 
 		if (!this.testPermission(source)) {
 			throw new CommandPermissionException();
@@ -362,7 +361,7 @@ public final class CommandSpec implements CommandCallable {
 	 * @return possible completions, or an empty list if none
 	 */
 	public List<String> complete(PermissibleCommandSource source, CommandArgs args, CommandContext context) {
-		checkNotNull(source, "source");
+		Preconditions.checkNotNull(source, "source");
 		List<String> ret = this.args.complete(source, args, context);
 		return ret == null ? ImmutableList.of() : ImmutableList.copyOf(ret);
 	}
@@ -443,7 +442,7 @@ public final class CommandSpec implements CommandCallable {
 	 */
 	@Override
 	public Text getUsage(PermissibleCommandSource source) {
-		checkNotNull(source, "source");
+		Preconditions.checkNotNull(source, "source");
 		return this.args.getUsage(source);
 	}
 
@@ -457,7 +456,7 @@ public final class CommandSpec implements CommandCallable {
 	 */
 	@Override
 	public Optional<Text> getHelp(PermissibleCommandSource source) {
-		checkNotNull(source, "source");
+		Preconditions.checkNotNull(source, "source");
 		StringBuilder builder = new StringBuilder();
 		this.getShortDescription(source).ifPresent((a) -> builder.append(a.getString()).append("\n"));
 		builder.append(this.getUsage(source));
