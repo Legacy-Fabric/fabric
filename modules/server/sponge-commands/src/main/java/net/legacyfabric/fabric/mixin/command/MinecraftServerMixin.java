@@ -42,15 +42,4 @@ public abstract class MinecraftServerMixin implements PermissibleCommandSource {
 	public boolean hasPermission(String perm) {
 		return true;
 	}
-
-	@Inject(at = @At("RETURN"), method = "createCommandManager")
-	public void initCommands(CallbackInfoReturnable<CommandManager> cir) {
-		FabricLoader.getInstance().getEntrypoints("legacy-fabric-sponge-command-api-v2:registrar", CommandRegistrar.class).forEach(registrar -> {
-			registrar.register(InternalObjects.getCommandManager(), this.isDedicated());
-		});
-		InternalObjects.getCommandManager().getCommands().forEach(mapping -> {
-			CommandWrapper wrapper = new CommandWrapper(mapping);
-			cir.getReturnValue().registerCommand(wrapper);
-		});
-	}
 }

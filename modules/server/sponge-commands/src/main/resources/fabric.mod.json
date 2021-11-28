@@ -19,7 +19,10 @@
     "fabricloader": ">=0.4.0"
   },
   "entrypoints": {
-    "legacy-fabric-sponge-command-api-v2:registrar": [
+    "client": [
+      "net.legacyfabric.fabric.impl.command.ImplInit"
+    ],
+    "server": [
       "net.legacyfabric.fabric.impl.command.ImplInit"
     ]
   },

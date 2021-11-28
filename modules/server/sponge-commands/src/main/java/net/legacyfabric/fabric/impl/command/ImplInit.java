@@ -17,12 +17,31 @@
 
 package net.legacyfabric.fabric.impl.command;
 
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.api.ModInitializer;
+
 import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
+import net.legacyfabric.fabric.api.registry.CommandRegistry;
 
-public class ImplInit implements CommandRegistrar {
+public class ImplInit implements DedicatedServerModInitializer, ClientModInitializer, CommandRegistrar {
 	@Override
 	public void register(CommandManager manager, boolean dedicated) {
 		CommandRegistrar.EVENT.invoker().register(manager, dedicated);
+		InternalObjects.getCommandManager().getCommands().forEach(mapping -> {
+			CommandWrapper wrapper = new CommandWrapper(mapping);
+			CommandRegistry.INSTANCE.register(wrapper);
+		});
+	}
+
+	@Override
+	public void onInitializeClient() {
+		this.register(InternalObjects.getCommandManager(), false);
+	}
+
+	@Override
+	public void onInitializeServer() {
+		this.register(InternalObjects.getCommandManager(), true);
 	}
 }

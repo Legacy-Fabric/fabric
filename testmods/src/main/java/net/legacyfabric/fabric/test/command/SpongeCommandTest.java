@@ -15,14 +15,17 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.test.command;
+package net.legacyfabric.fabric.test.command;
 
-import net.fabricmc.fabric.api.command.v2.CommandRegistrar;
-import net.fabricmc.fabric.api.command.v2.lib.sponge.CommandManager;
+import net.fabricmc.api.ModInitializer;
 
-public class SpongeCommandTest implements CommandRegistrar {
+import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
+
+public class SpongeCommandTest implements ModInitializer {
 	@Override
-	public void register(CommandManager manager, boolean dedicated) {
-		ModMetadataCommand.register(manager);
+	public void onInitialize() {
+		CommandRegistrar.EVENT.register((manager, dedicated) -> {
+			ModMetadataCommand.register(manager);
+		});
 	}
 }
