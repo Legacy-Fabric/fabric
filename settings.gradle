@@ -32,8 +32,6 @@ addModule("crash-report-info", "legacy-fabric-crash-report-info-v1")
 addModule("lifecycle-events", "legacy-fabric-lifecycle-events-v1")
 addModule("entity-events", "legacy-fabric-entity-events-v1")
 addModule("server", "vanilla-commands", "legacy-fabric-vanilla-command-api-v1")
-addModule("server", "sponge-commands", "legacy-fabric-sponge-command-api-v2")
-addModule("server", "permissions", "legacy-fabric-permissions-api-v1")
 addModule("server", "gamerules", "legacy-fabric-gamerule-api-v1")
 
 include("testmods")
