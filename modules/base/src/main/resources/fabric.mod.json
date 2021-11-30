@@ -18,5 +18,8 @@
   "depends": {
     "minecraft": "1.8.x"
   },
-  "description": "Shared hooks used by other api modules"
+  "description": "Shared hooks used by other api modules",
+  "mixins": [
+    "legacy-fabric-base.mixins.json"
+  ]
 }

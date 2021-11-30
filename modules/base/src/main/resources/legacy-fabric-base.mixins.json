@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.impl.base.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "RealmsBridgeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
