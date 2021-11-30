@@ -31,6 +31,8 @@ public class CommandRegistryMixin {
 			boolean isBrigadierCommand = !e.getMessage().startsWith("Unknown command at");
 			if (source.sendCommandFeedback() && isBrigadierCommand) {
 				source.sendMessage(new LiteralText(e.getMessage()).setStyle(ERROR_STYLE));
+				e.printStackTrace();
+				System.out.println(stringReader.getString());
 				cir.setReturnValue(0);
 			}
 		}
