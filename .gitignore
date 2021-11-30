@@ -1,45 +1,4 @@
-# Gradle
-.gradle
 
-# Eclipse
-.checkstyle
-.classpath
-.metadata
-.settings
-.project
-*.launch
+.idea/
 
-# Intellij/Idea
-.factorypath
-.idea
-*.iml
-*.ipr
-*.iws
-
-# Build artifacts
-bin/
-build/
-jars/
-out/
-classes/
-
-# Debug artifacts
-run
-*.log
-
-# Windows
-*.db
-$RECYCLE.BIN/
-
-# Mac
-.DS_Store
-
-# Other
-*~
-[._]*.s[a-v][a-z]
-[._]*.sw[a-p]
-[._]s[a-rt-v][a-z]
-[._]ss[a-gi-z]
-[._]sw[a-p]
-[._]*.un~
-!*.svg 
+.gradle/
