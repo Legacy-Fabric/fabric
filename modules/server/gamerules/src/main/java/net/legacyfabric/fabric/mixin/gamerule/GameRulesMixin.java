@@ -17,19 +17,18 @@
 
 package net.legacyfabric.fabric.mixin.gamerule;
 
+import net.minecraft.world.GameRuleManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.world.GameRuleDispatcher;
-
 import net.legacyfabric.fabric.api.gamerule.v1.GameRulesInitializedCallback;
 
-@Mixin(GameRuleDispatcher.class)
+@Mixin(GameRuleManager.class)
 public class GameRulesMixin {
 	@Inject(at = @At("RETURN"), method = "<init>")
 	public void registerModdedGamerules(CallbackInfo ci) {
-		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleDispatcher) (Object) this);
+		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleManager) (Object) this);
 	}
 }

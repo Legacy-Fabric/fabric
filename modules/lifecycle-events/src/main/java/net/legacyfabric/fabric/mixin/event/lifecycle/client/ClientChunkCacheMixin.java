@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle.client;
 
+import net.minecraft.world.chunk.ClientChunkProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,7 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ClientChunkCache;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -36,7 +36,7 @@ import net.fabricmc.api.Environment;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 
 @Environment(EnvType.CLIENT)
-@Mixin(ClientChunkCache.class)
+@Mixin(ClientChunkProvider.class)
 public abstract class ClientChunkCacheMixin {
 	@Shadow
 	private World world;
