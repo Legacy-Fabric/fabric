@@ -7,7 +7,8 @@
     "main": [
       "net.legacyfabric.fabric.test.ServerLifecycleEventsTest",
       "net.legacyfabric.fabric.test.ServerNetworkingTest",
-      "net.legacyfabric.fabric.test.EntityEventsTest"
+      "net.legacyfabric.fabric.test.EntityEventsTest",
+      "net.legacyfabric.fabric.test.CommandsTest"
     ],
     "client": [
       "net.legacyfabric.fabric.test.client.KeybindingTest",

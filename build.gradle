@@ -84,6 +84,7 @@ allprojects {
 	}
 
 	dependencies {
+		implementation("com.mojang:brigadier:1.0.17")
 		implementation("com.google.guava:guava:23.5-jre")
 		minecraft("com.mojang:minecraft:${project.mc_version}")
 		mappings("net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2")
@@ -91,7 +92,6 @@ allprojects {
 			exclude module: "guava"
 		}
 
-		implementation 'com.mojang:brigadier:1.0.17'
 
 		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
 			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
