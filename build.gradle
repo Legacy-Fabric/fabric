@@ -55,12 +55,34 @@ def static setupRepositories(RepositoryHandler repositories) {
 	}
 }
 
-def moduleDependencies(project, List<String> name) {
-	def version = project.name
-	def deps = name.iterator().collect { project.dependencies.project(path: ":$version" + "_$it", configuration: 'dev') }
-	project.dependencies {
+def moduleDependencies(proj, List<String> names) {
+	def version = proj.name
+	def deps = names.iterator().collect { project.dependencies.project(path: ":$version" + "_$it", configuration: 'dev') }
+	proj.dependencies {
 		deps.each {
+			System.out.println(it);
 			include it
+		}
+	}
+}
+
+def subModuleDependencies(proj, List<String> names) {
+	def version = proj.name.split("_")[0]
+	def deps = names.iterator().collect { project.dependencies.project(path: ":$version" + "_$it", configuration: 'dev') }
+	proj.dependencies {
+		deps.each {
+			System.out.println(it);
+			implementation it
+		}
+	}
+}
+
+def subModuleCommonDependencies(proj, List<String> names) {
+	def deps = names.iterator().collect { project.dependencies.project(path: ":common_$it", configuration: 'dev') }
+	proj.dependencies {
+		deps.each {
+			System.out.println(it);
+			implementation it
 		}
 	}
 }

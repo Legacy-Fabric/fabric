@@ -2,3 +2,9 @@
 .idea/
 
 .gradle/
+
+common/crash-report-info/build/
+
+common/base/build/
+
+1.8.9/crash-report-info/build/

@@ -24,10 +24,11 @@ def addModule(String version) {
 }
 
 addSubModule("common", "base")
+addSubModule("common", "crash-report-info")
 addModule("common")
 
-addSubModule("1.8.9", "base")
+addSubModule("1.8.9", "crash-report-info")
 addModule("1.8.9")
 
-addSubModule("1.12.2", "base")
+addSubModule("1.12.2", "crash-report-info")
 addModule("1.12.2")
