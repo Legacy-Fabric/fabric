@@ -45,19 +45,10 @@ def getBranch() {
 	return branch.substring(branch.lastIndexOf("/") + 1)
 }
 
-def static setupRepositories(RepositoryHandler repositories) {
+def setupRepositories(RepositoryHandler repositories) {
 	def ENV = System.getenv()
-	if (ENV.MAVEN_PUBLISH_TOKEN) {
-		repositories.maven {
-			url 'https://maven.legacyfabric.net/'
-			credentials {
-				username 'BobTheBuildSlave'
-				password ENV.MAVEN_PUBLISH_TOKEN
-			}
-			authentication {
-				basic(BasicAuthentication)
-			}
-		}
+	repositories.maven {
+		url = rootProject.projectDir.toPath().resolve("../legacy-rewoven-maven").toString()
 	}
 }
 
@@ -266,17 +257,8 @@ publishing {
 		}
 	}
 	repositories {
-		if (ENV.MAVEN_PUBLISH_TOKEN) {
-			maven {
-				url 'https://maven.legacyfabric.net/'
-				credentials {
-					username 'BobTheBuildSlave'
-					password ENV.MAVEN_PUBLISH_TOKEN
-				}
-				authentication {
-					basic(BasicAuthentication)
-				}
-			}
+		maven {
+			url = rootProject.projectDir.toPath().resolve("../legacy-rewoven-maven").toString()
 		}
 	}
 }
