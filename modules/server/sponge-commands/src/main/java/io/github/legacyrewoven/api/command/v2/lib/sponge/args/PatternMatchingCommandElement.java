@@ -125,7 +125,7 @@ public abstract class PatternMatchingCommandElement extends CommandElement {
 	 * @return If matched, an {@link Optional} containing the matched value
 	 */
 	protected Optional<Object> getExactMatch(final Iterable<String> choices, final String potentialChoice) {
-		return Iterables.tryFind(choices, potentialChoice::equalsIgnoreCase).toJavaUtil().map(this::getValue);
+		return Iterables.tryFind(choices, potentialChoice::equalsIgnoreCase).transform(Optional::of).or(Optional.empty()).map(this::getValue);
 	}
 
 	/**

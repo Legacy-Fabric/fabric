@@ -25,6 +25,7 @@
 
 package io.github.legacyrewoven.api.command.v2.lib.sponge.dispatcher;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -356,7 +357,7 @@ public final class SimpleDispatcher implements Dispatcher {
 		Optional<CommandMapping> cmdOptional = this.get(argSplit[0], src);
 
 		if (argSplit.length == 1) {
-			return this.filterCommands(src, argSplit[0]).stream().collect(ImmutableList.toImmutableList());
+			return Collections.unmodifiableList(new ArrayList<>(this.filterCommands(src, argSplit[0])));
 		} else if (!cmdOptional.isPresent()) {
 			return ImmutableList.of();
 		}
