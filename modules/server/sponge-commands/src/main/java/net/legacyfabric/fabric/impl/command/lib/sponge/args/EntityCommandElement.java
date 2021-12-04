@@ -36,6 +36,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Sets;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -98,10 +99,10 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		Set<String> worldEntities = Arrays.stream(MinecraftServer.getServer().worlds).flatMap(world -> world.entities.stream())
+		Set<String> worldEntities = Arrays.stream(MinecraftClient.getInstance().getServer().worlds).flatMap(world -> world.field_23572.stream())
 				.filter(this::checkEntity)
 				.map(entity -> entity.getUuid().toString()).collect(Collectors.toSet());
-		Collection<PlayerEntity> players = Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers());
+		Collection<PlayerEntity> players = Sets.newHashSet(MinecraftClient.getInstance().getServer().getPlayerManager().getPlayerList());
 
 		if (!players.isEmpty() && this.checkEntity(players.iterator().next())) {
 			final Set<String> setToReturn = Sets.newHashSet(worldEntities); // to ensure mutability
@@ -120,11 +121,11 @@ public class EntityCommandElement extends SelectorCommandElement {
 			uuid = UUID.fromString(choice);
 		} catch (IllegalArgumentException ignored) {
 			// Player could be a name
-			return Optional.ofNullable(MinecraftServer.getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
+			return Optional.ofNullable(MinecraftClient.getInstance().getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
 		}
 
 		boolean found = false;
-		Optional<Entity> ret = Optional.ofNullable(MinecraftServer.getServer().getEntity(uuid));
+		Optional<Entity> ret = Optional.ofNullable(MinecraftClient.getInstance().getServer().getEntity(uuid));
 
 		if (ret.isPresent()) {
 			Entity entity = ret.get();

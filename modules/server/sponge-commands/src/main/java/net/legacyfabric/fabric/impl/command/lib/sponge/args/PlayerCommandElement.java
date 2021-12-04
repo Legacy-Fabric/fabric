@@ -30,6 +30,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -72,12 +73,12 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		return MinecraftServer.getServer().getPlayerManager().getPlayers().stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
+		return MinecraftClient.getInstance().getServer().getPlayerManager().getPlayerList().stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
 	}
 
 	@Override
 	protected Object getValue(String choice) throws IllegalArgumentException {
-		Optional<PlayerEntity> ret = MinecraftServer.getServer().getPlayerManager().getPlayers().stream().findFirst().map(Function.identity());
+		Optional<PlayerEntity> ret = MinecraftClient.getInstance().getServer().getPlayerManager().getPlayerList().stream().findFirst().map(Function.identity());
 
 		if (!ret.isPresent()) {
 			throw new IllegalArgumentException("Input value " + choice + " was not a player");
