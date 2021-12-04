@@ -58,7 +58,7 @@ allprojects {
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 
-	group = "net.legacyfabric.legacy-fabric-api"
+	group = "io.github.legacyrewoven.rewoven-api"
 
 	repositories {
 		maven {
