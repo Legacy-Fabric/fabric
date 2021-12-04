@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-networking-api-v1",
-  "name": "Legacy Fabric Networking API (v1)",
+  "id": "legacy-rewoven-networking-api-v1",
+  "name": "Legacy Rewoven Networking API (v1)",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
