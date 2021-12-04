@@ -28,9 +28,9 @@ public class CommandInitializer implements ModInitializer {
 	public void onInitialize() {
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
 			boolean dedicated = server.isDedicated();
-			CommandManager manager = (CommandManager) server.getCommandManager();
+			CommandManager manager = (CommandManager) server.method_33193();
 			CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
-				if ((dedicated && commandSide.isDedicated()) || (!dedicated && commandSide.isIntegrated())) {
+				if (commandSide.isIntegrated()) {
 					manager.registerCommand(command);
 				}
 			});
