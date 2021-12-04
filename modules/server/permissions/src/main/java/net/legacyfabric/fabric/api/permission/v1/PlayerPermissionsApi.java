@@ -15,21 +15,12 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.gamerule;
+package net.legacyfabric.fabric.api.permission.v1;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.minecraft.server.network.ServerPlayerEntity;
 
-import net.minecraft.world.GameRuleManager;
+public interface PlayerPermissionsApi {
+	String getId();
 
-import net.legacyfabric.fabric.api.gamerule.v1.GameRulesInitializedCallback;
-
-@Mixin(GameRuleManager.class)
-public class GameRulesMixin {
-	@Inject(at = @At("RETURN"), method = "<init>")
-	public void registerModdedGamerules(CallbackInfo ci) {
-		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleManager) (Object) this);
-	}
+	boolean hasPermission(ServerPlayerEntity player, String perm);
 }

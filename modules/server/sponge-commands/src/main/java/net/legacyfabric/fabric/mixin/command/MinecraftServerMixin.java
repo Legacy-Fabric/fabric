@@ -15,21 +15,22 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.gamerule;
+package net.legacyfabric.fabric.mixin.command;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.world.GameRuleManager;
+import net.minecraft.server.MinecraftServer;
 
-import net.legacyfabric.fabric.api.gamerule.v1.GameRulesInitializedCallback;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
-@Mixin(GameRuleManager.class)
-public class GameRulesMixin {
-	@Inject(at = @At("RETURN"), method = "<init>")
-	public void registerModdedGamerules(CallbackInfo ci) {
-		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleManager) (Object) this);
+@Mixin(MinecraftServer.class)
+public abstract class MinecraftServerMixin implements PermissibleCommandSource {
+	@Shadow
+	public abstract boolean isDedicated();
+
+	@Override
+	public boolean hasPermission(String perm) {
+		return true;
 	}
 }

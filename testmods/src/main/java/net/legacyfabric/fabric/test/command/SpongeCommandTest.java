@@ -15,25 +15,17 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.command;
-
-import net.minecraft.command.CommandManager;
+package net.legacyfabric.fabric.test.command;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
 
-public class CommandInitializer implements ModInitializer {
+public class SpongeCommandTest implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-			boolean dedicated = server.isDedicated();
-			CommandManager manager = (CommandManager) server.getCommandManager();
-			CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
-				if ((dedicated && commandSide.isDedicated()) || (!dedicated && commandSide.isIntegrated())) {
-					manager.registerCommand(command);
-				}
-			});
+		CommandRegistrar.EVENT.register((manager, dedicated) -> {
+			ModMetadataCommand.register(manager);
 		});
 	}
 }

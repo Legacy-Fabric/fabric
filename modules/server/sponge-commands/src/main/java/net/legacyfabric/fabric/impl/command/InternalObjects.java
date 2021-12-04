@@ -17,23 +17,12 @@
 
 package net.legacyfabric.fabric.impl.command;
 
-import net.minecraft.command.CommandManager;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
 
-import net.fabricmc.api.ModInitializer;
+public class InternalObjects {
+	private static final CommandManagerImpl COMMAND_MANAGER = new CommandManagerImpl(SimpleDispatcher.FIRST_DISAMBIGUATOR);
 
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-
-public class CommandInitializer implements ModInitializer {
-	@Override
-	public void onInitialize() {
-		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-			boolean dedicated = server.isDedicated();
-			CommandManager manager = (CommandManager) server.getCommandManager();
-			CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
-				if ((dedicated && commandSide.isDedicated()) || (!dedicated && commandSide.isIntegrated())) {
-					manager.registerCommand(command);
-				}
-			});
-		});
+	public static CommandManagerImpl getCommandManager() {
+		return COMMAND_MANAGER;
 	}
 }

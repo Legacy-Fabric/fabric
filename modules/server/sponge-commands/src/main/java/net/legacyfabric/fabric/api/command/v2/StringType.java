@@ -15,21 +15,22 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.gamerule;
+package net.legacyfabric.fabric.api.command.v2;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+/**
+ * Specifies a method to parse {@link String}s in a command.
+ */
+public enum StringType {
+	SINGLE_WORD(false),
+	GREEDY_PHRASE(true);
 
-import net.minecraft.world.GameRuleManager;
+	private final boolean all;
 
-import net.legacyfabric.fabric.api.gamerule.v1.GameRulesInitializedCallback;
+	StringType(boolean all) {
+		this.all = all;
+	}
 
-@Mixin(GameRuleManager.class)
-public class GameRulesMixin {
-	@Inject(at = @At("RETURN"), method = "<init>")
-	public void registerModdedGamerules(CallbackInfo ci) {
-		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleManager) (Object) this);
+	public boolean isAll() {
+		return this.all;
 	}
 }
