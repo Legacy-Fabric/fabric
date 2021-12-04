@@ -28,10 +28,9 @@ package io.github.legacyrewoven.api.command.v2.lib.sponge.dispatcher;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandMapping;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import org.jetbrains.annotations.Nullable;
 
 @FunctionalInterface
 public interface Disambiguator {

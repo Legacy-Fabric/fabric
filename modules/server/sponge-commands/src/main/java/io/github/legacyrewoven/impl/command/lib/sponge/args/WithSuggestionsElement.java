@@ -30,14 +30,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableList;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.ArgumentParseException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandArgs;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandContext;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandElement;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import org.jetbrains.annotations.Nullable;
 
 public class WithSuggestionsElement extends CommandElement {
 	private final CommandElement wrapped;

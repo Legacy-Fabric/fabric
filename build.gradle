@@ -3,23 +3,20 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version "0.7-SNAPSHOT"
+	id 'fabric-loom' version "0.10-SNAPSHOT"
 	id 'org.cadixdev.licenser' version "0.6.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'signing'
 }
 
-def ENV = System.getenv()
-
 setVersion("${project.base_version}+${project.mc_version}")
 logger.lifecycle("Building Fabric: " + version)
-
 
 import net.fabricmc.loom.task.RemapJarTask
 
 def getSubprojectVersion(project, version) {
 	if (grgit == null) {
-		return version + "+nogßit"
+		return version + "+nogit"
 	}
 	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath()).toString()], maxCommits: 1)
 	if (latestCommits.isEmpty()) {
@@ -27,18 +24,6 @@ def getSubprojectVersion(project, version) {
 	} else {
 		return version + "+" + latestCommits.get(0).id.substring(0, 10)
 	}
-}
-
-def getBranch() {
-	if (System.getenv().GIT_BRANCH) {
-		def branch = System.getenv().GIT_BRANCH
-		return branch.substring(branch.lastIndexOf("/") + 1)
-	}
-	if (grgit == null) {
-		return "unknown"
-	}
-	def branch = grgit.branch.current().name
-	return branch.substring(branch.lastIndexOf("/") + 1)
 }
 
 def setupRepositories(RepositoryHandler repositories) {
@@ -67,19 +52,14 @@ allprojects {
 		}
 	}
 
-	minecraft {
-		intermediaryUrl = {
-			return "https://maven.legacyfabric.net/net/fabricmc/intermediary/" + it + "/intermediary-" + it + "-v2.jar"
-		}
+	loom {
+		setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar');
 	}
 
 	dependencies {
-		implementation("com.google.guava:guava:23.5-jre")
 		minecraft("com.mojang:minecraft:${project.mc_version}")
 		mappings("io.github.legacyrewoven:yarn:${project.mc_version}+build.${project.yarn_version}:v2")
-		modApi("net.fabricmc:fabric-loader-1.8.9:0.11.1+build.202112040255") {
-			exclude module: "guava"
-		}
+		modImplementation("net.fabricmc:fabric-loader:0.12.5")
 
 		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
 			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
@@ -134,9 +114,8 @@ allprojects {
 		}
 	}
 
-	task sourcesJar(type: Jar, dependsOn: classes) {
-		classifier('sources')
-		from sourceSets.main.allSource
+	java {
+		withSourcesJar()
 	}
 
 	checkstyle {
@@ -195,15 +174,7 @@ subprojects {
 		publishing {
 			publications {
 				mavenJava(MavenPublication) {
-					afterEvaluate {
-						artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
-							builtBy remapMavenJar
-						}
-
-						artifact(sourcesJar) {
-							builtBy remapSourcesJar
-						}
-					}
+					from components.java
 				}
 			}
 

@@ -35,10 +35,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableList;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;

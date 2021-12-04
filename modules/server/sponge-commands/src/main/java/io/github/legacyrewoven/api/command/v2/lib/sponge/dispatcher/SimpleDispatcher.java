@@ -36,8 +36,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
@@ -56,6 +54,7 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.ImmutableCommandMapping
 import io.github.legacyrewoven.api.command.v2.lib.sponge.InvocationCommandException;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.Location;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;

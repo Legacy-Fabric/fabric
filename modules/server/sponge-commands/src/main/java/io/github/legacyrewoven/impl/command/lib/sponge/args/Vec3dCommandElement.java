@@ -28,8 +28,6 @@ package io.github.legacyrewoven.impl.command.lib.sponge.args;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.ArgumentParseException;
@@ -37,6 +35,7 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandArgs;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandContext;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandElement;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;

@@ -27,7 +27,7 @@ package io.github.legacyrewoven.api.command.v2.lib.sponge;
 
 import java.util.Optional;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents the result of a command in Sponge.
