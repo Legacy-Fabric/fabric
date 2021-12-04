@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "net.legacyfabric.fabric.mixin.entity.event",
+  "package": "io.github.legacyrewoven.mixin.entity.event",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "EntityMixin",

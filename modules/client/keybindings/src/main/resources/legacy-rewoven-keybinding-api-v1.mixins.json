@@ -1,9 +1,9 @@
 {
   "required": true,
-  "package": "io.github.legacyrewoven.mixin.gamerule",
+  "package": "io.github.legacyrewoven.mixin.client.keybinding",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
-    "GameRuleManagerMixin"
+  "client": [
+    "GameOptionsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

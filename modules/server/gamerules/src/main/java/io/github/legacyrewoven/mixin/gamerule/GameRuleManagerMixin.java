@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.world.GameRuleManager;
 
 @Mixin(GameRuleManager.class)
-public class GameRulesMixin {
+public class GameRuleManagerMixin {
 	@Inject(at = @At("RETURN"), method = "<init>")
 	public void registerModdedGamerules(CallbackInfo ci) {
 		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleManager) (Object) this);

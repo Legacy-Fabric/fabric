@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-vanilla-command-api-v1",
-  "name": "Legacy Fabric Vanilla Command API (V0)",
+  "id": "legacy-rewoven-vanilla-command-api-v1",
+  "name": "Legacy Rewoven Vanilla Command API (V0)",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
-  "icon": "assets/legacy-fabric/icon.png",
+  "icon": "assets/legacy-rewoven-api/icon.png",
   "contact": {
-    "homepage": "https://legacy-fabric.github.io/",
-    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
-    "sources": "https://github.com/Legacy-Fabric/fabric"
+    "homepage": "https://legacyrewoven.github.io/",
+    "issues": "https://github.com/LegacyRewoven/rewoven-api/issues",
+    "sources": "https://github.com/LegacyRewoven/rewoven-api"
   },
   "entrypoints": {
     "main": [
@@ -17,8 +17,9 @@
     ]
   },
   "authors": [
-    "Legacy-Fabric",
-    "FabricMC"
+    "Legacy Rewoven",
+    "FabricMC",
+    "Legacy Fabric"
   ],
   "description": "Adds command-related hooks."
 }
