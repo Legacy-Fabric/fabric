@@ -3,7 +3,7 @@
   "package": "net.legacyfabric.fabric.mixin.crash.report.info",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "CrashReportMixin"
+    "io.github.legacyrewoven.mixin.crash.report.info.CrashReportMixin"
   ],
   "injectors": {
     "defaultRequire": 1

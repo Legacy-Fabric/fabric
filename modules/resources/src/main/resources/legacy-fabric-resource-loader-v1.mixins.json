@@ -3,10 +3,10 @@
   "package": "net.legacyfabric.fabric.mixin.resource.loader",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "client.ClientResourceReloadListenerMixins",
-    "client.DefaultResourcePackMixin",
-    "client.MinecraftClientMixin",
-    "client.ReloadableResourceManagerImplMixin"
+    "io.github.legacyrewoven.mixin.resource.loader.client.ClientResourceReloadListenerMixins",
+    "io.github.legacyrewoven.mixin.resource.loader.client.DefaultResourcePackMixin",
+    "io.github.legacyrewoven.mixin.resource.loader.client.MinecraftClientMixin",
+    "io.github.legacyrewoven.mixin.resource.loader.client.ReloadableResourceManagerImplMixin"
   ],
   "injectors": {
     "defaultRequire": 1

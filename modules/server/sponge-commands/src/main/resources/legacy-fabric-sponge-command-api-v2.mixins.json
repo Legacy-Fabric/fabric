@@ -3,7 +3,7 @@
   "package": "net.legacyfabric.fabric.mixin.command",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MinecraftServerMixin"
+    "io.github.legacyrewoven.mixin.command.MinecraftServerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

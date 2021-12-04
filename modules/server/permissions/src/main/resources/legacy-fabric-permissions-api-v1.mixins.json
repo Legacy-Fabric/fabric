@@ -3,14 +3,14 @@
   "package": "net.legacyfabric.fabric.mixin.permission",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "CommandBlockExecutorMixin",
-    "CommandStats_1Mixin",
-    "ConsoleMixin",
-    "EntityMixin",
-    "ExecuteCommand_1Mixin",
-    "ServerPlayerEntityMixin",
-    "SignBlockEntity_1Mixin",
-    "SignBlockEntity_2Mixin"
+    "io.github.legacyrewoven.mixin.permission.CommandBlockExecutorMixin",
+    "io.github.legacyrewoven.mixin.permission.CommandStats_1Mixin",
+    "io.github.legacyrewoven.mixin.permission.ConsoleMixin",
+    "io.github.legacyrewoven.mixin.permission.EntityMixin",
+    "io.github.legacyrewoven.mixin.permission.ExecuteCommand_1Mixin",
+    "io.github.legacyrewoven.mixin.permission.ServerPlayerEntityMixin",
+    "io.github.legacyrewoven.mixin.permission.SignBlockEntity_1Mixin",
+    "io.github.legacyrewoven.mixin.permission.SignBlockEntity_2Mixin"
   ],
   "injectors": {
     "defaultRequire": 1

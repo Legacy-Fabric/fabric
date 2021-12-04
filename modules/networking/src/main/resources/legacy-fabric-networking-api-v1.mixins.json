@@ -4,16 +4,16 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "ClientConnectionMixin",
-    "EntityTrackerAccessor",
-    "EntityTrackerEntryAccessor",
+    "io.github.legacyrewoven.mixin.networking.EntityTrackerAccessor",
+    "io.github.legacyrewoven.mixin.networking.EntityTrackerEntryAccessor",
     "EntityTrackerEntryMixin",
     "PlayerManagerMixin",
     "ServerPlayNetworkHandlerMixin"
   ],
   "client": [
     "client.ClientPlayNetworkHandlerMixin",
-    "client.ConnectScreenAccessor",
-    "client.MinecraftClientAccessor"
+    "io.github.legacyrewoven.mixin.networking.client.ConnectScreenAccessor",
+    "io.github.legacyrewoven.mixin.networking.client.MinecraftClientAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -13,7 +13,7 @@
   },
   "entrypoints": {
     "main": [
-      "net.legacyfabric.fabric.impl.command.CommandInitializer"
+      "io.github.legacyrewoven.impl.command.CommandInitializer"
     ]
   },
   "authors": [

@@ -3,12 +3,12 @@
   "package": "net.legacyfabric.fabric.mixin.client.rendering",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "BlockEntityRenderDispatcherMixin",
-    "EntityRenderDispatcherMixin",
-    "InGameHudMixin",
-    "ItemRendererMixin",
-    "LivingEntityRendererAccessor",
-    "WorldRendererMixin"
+    "io.github.legacyrewoven.mixin.client.rendering.BlockEntityRenderDispatcherMixin",
+    "io.github.legacyrewoven.mixin.client.rendering.EntityRenderDispatcherMixin",
+    "io.github.legacyrewoven.mixin.client.rendering.InGameHudMixin",
+    "io.github.legacyrewoven.mixin.client.rendering.ItemRendererMixin",
+    "io.github.legacyrewoven.mixin.client.rendering.LivingEntityRendererAccessor",
+    "io.github.legacyrewoven.mixin.client.rendering.WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

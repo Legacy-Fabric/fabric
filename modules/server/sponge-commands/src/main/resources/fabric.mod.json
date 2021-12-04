@@ -20,10 +20,10 @@
   },
   "entrypoints": {
     "client": [
-      "net.legacyfabric.fabric.impl.command.ImplInit"
+      "io.github.legacyrewoven.impl.command.ImplInit"
     ],
     "server": [
-      "net.legacyfabric.fabric.impl.command.ImplInit"
+      "io.github.legacyrewoven.impl.command.ImplInit"
     ]
   },
   "description": "Command API that utilizes SpongeAPI's command api",
