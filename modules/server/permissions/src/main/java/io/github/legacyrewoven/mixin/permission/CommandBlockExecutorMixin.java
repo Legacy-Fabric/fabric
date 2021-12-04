@@ -18,11 +18,10 @@
 
 package io.github.legacyrewoven.mixin.permission;
 
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.world.CommandBlockExecutor;
-
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(CommandBlockExecutor.class)
 public abstract class CommandBlockExecutorMixin implements PermissibleCommandSource {

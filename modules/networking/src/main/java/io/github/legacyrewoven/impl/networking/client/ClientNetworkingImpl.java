@@ -18,6 +18,8 @@
 
 package io.github.legacyrewoven.impl.networking.client;
 
+import io.github.legacyrewoven.api.client.networking.v1.ClientPlayConnectionEvents;
+import io.github.legacyrewoven.api.client.networking.v1.ClientPlayNetworking;
 import io.github.legacyrewoven.impl.networking.GlobalReceiverRegistry;
 import io.github.legacyrewoven.mixin.networking.client.ConnectScreenAccessor;
 import io.github.legacyrewoven.mixin.networking.client.MinecraftClientAccessor;
@@ -32,9 +34,6 @@ import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import io.github.legacyrewoven.api.client.networking.v1.ClientPlayConnectionEvents;
-import io.github.legacyrewoven.api.client.networking.v1.ClientPlayNetworking;
 
 @Environment(EnvType.CLIENT)
 public final class ClientNetworkingImpl {

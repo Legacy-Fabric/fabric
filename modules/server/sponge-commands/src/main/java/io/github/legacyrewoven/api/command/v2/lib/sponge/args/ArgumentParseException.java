@@ -26,11 +26,10 @@
 package io.github.legacyrewoven.api.command.v2.lib.sponge.args;
 
 import com.google.common.base.Strings;
+import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-
-import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
 
 /**
  * Exception thrown when an error occurs while parsing arguments.

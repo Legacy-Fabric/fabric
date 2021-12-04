@@ -21,6 +21,7 @@ package io.github.legacyrewoven.mixin.resource.loader.client;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import io.github.legacyrewoven.impl.resource.loader.ModResourcePackUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,8 +31,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.DefaultResourcePack;
 import net.minecraft.resource.ResourcePack;
-
-import io.github.legacyrewoven.impl.resource.loader.ModResourcePackUtil;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {

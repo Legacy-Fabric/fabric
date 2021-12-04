@@ -18,9 +18,9 @@
 
 package io.github.legacyrewoven.api.client.keybinding.v1;
 
-import net.minecraft.client.options.KeyBinding;
-
 import io.github.legacyrewoven.impl.client.keybinding.KeyBindingRegistryImpl;
+
+import net.minecraft.client.options.KeyBinding;
 
 /**
  * Helper for registering key bindings.

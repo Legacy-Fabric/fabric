@@ -46,15 +46,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-import io.github.legacyrewoven.api.util.Location;
-
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
-
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandCallable;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandMapping;
@@ -64,6 +55,14 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandResult;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.ImmutableCommandMapping;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.InvocationCommandException;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import io.github.legacyrewoven.api.util.Location;
+
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+import net.minecraft.world.World;
 
 /**
  * A simple implementation of a {@link Dispatcher}.

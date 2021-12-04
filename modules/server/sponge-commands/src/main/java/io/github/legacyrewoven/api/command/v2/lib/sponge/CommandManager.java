@@ -32,11 +32,10 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import io.github.legacyrewoven.api.command.v2.lib.sponge.dispatcher.Dispatcher;
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.Location;
 
 import net.minecraft.world.World;
-
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 /**
  * A command dispatcher watches for commands (such as those said in chat)

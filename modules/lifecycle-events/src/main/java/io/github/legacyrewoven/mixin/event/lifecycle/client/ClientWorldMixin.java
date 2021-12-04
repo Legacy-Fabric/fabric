@@ -18,6 +18,8 @@
 
 package io.github.legacyrewoven.mixin.event.lifecycle.client;
 
+import io.github.legacyrewoven.api.client.event.lifecycle.v1.ClientEntityEvents;
+import io.github.legacyrewoven.api.client.event.lifecycle.v1.ClientTickEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,9 +30,6 @@ import net.minecraft.entity.Entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import io.github.legacyrewoven.api.client.event.lifecycle.v1.ClientEntityEvents;
-import io.github.legacyrewoven.api.client.event.lifecycle.v1.ClientTickEvents;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ClientWorld.class)

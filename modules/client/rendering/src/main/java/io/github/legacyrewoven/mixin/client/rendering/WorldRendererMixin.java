@@ -18,14 +18,13 @@
 
 package io.github.legacyrewoven.mixin.client.rendering;
 
+import io.github.legacyrewoven.api.client.rendering.v1.InvalidateRenderStateCallback;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.render.WorldRenderer;
-
-import io.github.legacyrewoven.api.client.rendering.v1.InvalidateRenderStateCallback;
 
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin {

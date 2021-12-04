@@ -20,6 +20,8 @@ package io.github.legacyrewoven.mixin.entity.event;
 
 import java.util.Iterator;
 
+import io.github.legacyrewoven.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import io.github.legacyrewoven.api.entity.event.v1.ServerPlayerEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,9 +33,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-
-import io.github.legacyrewoven.api.entity.event.v1.ServerEntityWorldChangeEvents;
-import io.github.legacyrewoven.api.entity.event.v1.ServerPlayerEvents;
 
 @Mixin(PlayerManager.class)
 abstract class PlayerManagerMixin {

@@ -28,15 +28,15 @@ package io.github.legacyrewoven.impl.command.lib.sponge.args;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandMessageFormatting;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.ArgumentParseException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandArgs;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandContext;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandElement;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public class AllOfCommandElement extends CommandElement {
 	private final CommandElement element;

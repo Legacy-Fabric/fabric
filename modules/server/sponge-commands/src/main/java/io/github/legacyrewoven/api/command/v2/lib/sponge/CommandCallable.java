@@ -31,12 +31,11 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 import io.github.legacyrewoven.api.command.v2.lib.sponge.spec.CommandSpec;
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.Location;
 
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 /**
  * A low-level interface for commands that can be executed. For almost all use

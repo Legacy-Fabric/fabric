@@ -18,6 +18,7 @@
 
 package io.github.legacyrewoven.mixin.event.lifecycle.client;
 
+import io.github.legacyrewoven.api.client.event.lifecycle.v1.ClientChunkEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,8 +34,6 @@ import net.minecraft.world.chunk.ClientChunkProvider;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import io.github.legacyrewoven.api.client.event.lifecycle.v1.ClientChunkEvents;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ClientChunkProvider.class)

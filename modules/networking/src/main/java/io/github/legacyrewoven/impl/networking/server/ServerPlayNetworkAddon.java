@@ -22,18 +22,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.network.Packet;
-import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.util.PacketByteBuf;
-
 import io.github.legacyrewoven.api.networking.v1.S2CPlayChannelEvents;
 import io.github.legacyrewoven.api.networking.v1.ServerPlayConnectionEvents;
 import io.github.legacyrewoven.api.networking.v1.ServerPlayNetworking;
 import io.github.legacyrewoven.impl.networking.AbstractChanneledNetworkAddon;
 import io.github.legacyrewoven.impl.networking.ChannelInfoHolder;
 import io.github.legacyrewoven.impl.networking.NetworkingImpl;
+
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.util.PacketByteBuf;
 
 public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<ServerPlayNetworking.PlayChannelHandler> {
 	private final ServerPlayNetworkHandler handler;

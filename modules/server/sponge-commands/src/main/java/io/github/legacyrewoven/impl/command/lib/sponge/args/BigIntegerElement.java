@@ -29,13 +29,13 @@ import java.math.BigInteger;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.ArgumentParseException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandArgs;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.KeyElement;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public class BigIntegerElement extends KeyElement {
 	public BigIntegerElement(Text key) {

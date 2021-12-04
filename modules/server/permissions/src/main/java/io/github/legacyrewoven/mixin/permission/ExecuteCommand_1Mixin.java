@@ -18,12 +18,11 @@
 
 package io.github.legacyrewoven.mixin.permission;
 
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.entity.Entity;
-
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(targets = "net/minecraft/server/command/ExecuteCommand$1")
 public abstract class ExecuteCommand_1Mixin implements PermissibleCommandSource {

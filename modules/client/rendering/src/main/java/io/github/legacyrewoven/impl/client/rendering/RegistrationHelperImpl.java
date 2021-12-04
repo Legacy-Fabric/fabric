@@ -21,10 +21,10 @@ package io.github.legacyrewoven.impl.client.rendering;
 import java.util.Objects;
 import java.util.function.Function;
 
+import io.github.legacyrewoven.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.entity.LivingEntity;
-
-import io.github.legacyrewoven.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 
 public final class RegistrationHelperImpl implements LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper {
 	private final Function<FeatureRenderer<?>, Boolean> delegate;

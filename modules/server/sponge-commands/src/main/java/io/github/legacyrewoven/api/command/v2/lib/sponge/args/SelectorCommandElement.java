@@ -31,12 +31,11 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
+import io.github.legacyrewoven.api.command.v2.Selector;
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-
-import io.github.legacyrewoven.api.command.v2.Selector;
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 public abstract class SelectorCommandElement extends PatternMatchingCommandElement {
 	protected SelectorCommandElement(@Nullable Text key) {

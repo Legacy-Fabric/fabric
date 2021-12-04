@@ -31,7 +31,6 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Multimap;
-
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandCallable;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandMapping;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;

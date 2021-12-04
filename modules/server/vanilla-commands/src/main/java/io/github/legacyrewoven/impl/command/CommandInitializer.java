@@ -18,11 +18,11 @@
 
 package io.github.legacyrewoven.impl.command;
 
+import io.github.legacyrewoven.api.event.lifecycle.v1.ServerLifecycleEvents;
+
 import net.minecraft.server.command.CommandManager;
 
 import net.fabricmc.api.ModInitializer;
-
-import io.github.legacyrewoven.api.event.lifecycle.v1.ServerLifecycleEvents;
 
 public class CommandInitializer implements ModInitializer {
 	@Override
