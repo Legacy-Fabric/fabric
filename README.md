@@ -1,8 +1,8 @@
-# Rewoven API
+# Legacy Rewoven API
 
 Essential hooks for modding on 1.8.9 and 1.12.2.
 
-Rewoven API is the library for essential hooks and interoperability mechanisms for Legacy Rewoven mods. Examples include:
+Legacy Rewoven API is the library for essential hooks and interoperability mechanisms for Legacy Rewoven mods. Examples include:
 
 - Exposing functionality that is useful but difficult to access for many mods such as biomes and enchantments
 - Adding events, hooks, APIs and commonly used hacks to improve interoperability between mods such as resource loading, networking and gamerules
