@@ -18,13 +18,13 @@
 
 package io.github.legacyrewoven.impl.networking.server;
 
+import io.github.legacyrewoven.api.networking.v1.ServerPlayNetworking;
+import io.github.legacyrewoven.impl.networking.GlobalReceiverRegistry;
+
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.util.PacketByteBuf;
-
-import io.github.legacyrewoven.api.networking.v1.ServerPlayNetworking;
-import io.github.legacyrewoven.impl.networking.GlobalReceiverRegistry;
 
 public final class ServerNetworkingImpl {
 	public static final GlobalReceiverRegistry<ServerPlayNetworking.PlayChannelHandler> PLAY = new GlobalReceiverRegistry<>();

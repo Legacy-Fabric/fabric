@@ -20,6 +20,7 @@ package io.github.legacyrewoven.mixin.resource.loader.client;
 
 import java.util.List;
 
+import io.github.legacyrewoven.impl.resource.loader.ResourceManagerHelperImpl;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,8 +31,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceReloadListener;
-
-import io.github.legacyrewoven.impl.resource.loader.ResourceManagerHelperImpl;
 
 @Mixin(ReloadableResourceManagerImpl.class)
 public class ReloadableResourceManagerImplMixin {

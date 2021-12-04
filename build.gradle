@@ -145,7 +145,7 @@ allprojects {
 	}
 
 	tasks.withType(Checkstyle) {
-		exclude '**/net/legacyfabric/fabric/test/**'
+		exclude '**/io/github/legacyrewoven/test/**'
 	}
 }
 

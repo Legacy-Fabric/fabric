@@ -30,14 +30,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
-
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandCallable;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandManager;
@@ -51,6 +43,13 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.dispatcher.Disambiguato
 import io.github.legacyrewoven.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.Location;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.world.World;
 
 public class CommandManagerImpl implements CommandManager {
 	private static final Logger LOGGER = LogManager.getLogger("Fabric Command Manager");

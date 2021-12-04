@@ -37,12 +37,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import io.github.legacyrewoven.api.util.Location;
-
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
-
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandCallable;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandPermissionException;
@@ -55,6 +49,11 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandElement;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.GenericArguments;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.parsing.InputTokenizer;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import io.github.legacyrewoven.api.util.Location;
+
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.world.World;
 
 /**
  * Specification for how command arguments should be parsed.

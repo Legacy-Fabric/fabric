@@ -44,16 +44,37 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import io.github.legacyrewoven.api.command.v2.StringType;
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.TriState;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.AllOfCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.BigDecimalElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.BigIntegerElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.ChoicesCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.DateTimeElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.DurationElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.EntityCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.EnumValueElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.FilteredSuggestionsElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.FirstParsingCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.IpElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.LiteralCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.MarkTrueCommandElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.ModCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.NumericElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.OnlyOneCommandElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.OptionalCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.PermissionCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.PlayerCommandElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.RemainingJoinedStringsCommandElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.RepeatedCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.SequenceCommandElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.StringCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.StringElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.UrlElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.UuidElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.Vec3dCommandElement;
+import io.github.legacyrewoven.impl.command.lib.sponge.args.WithSuggestionsElement;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -62,28 +83,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
 import net.fabricmc.loader.api.ModContainer;
-
-import io.github.legacyrewoven.api.command.v2.StringType;
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.BigDecimalElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.ChoicesCommandElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.DateTimeElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.DurationElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.EnumValueElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.FilteredSuggestionsElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.FirstParsingCommandElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.IpElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.LiteralCommandElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.MarkTrueCommandElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.NumericElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.OnlyOneCommandElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.PermissionCommandElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.PlayerCommandElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.SequenceCommandElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.StringElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.UrlElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.UuidElement;
-import io.github.legacyrewoven.impl.command.lib.sponge.args.WithSuggestionsElement;
 
 /**
  * Class containing factory methods for common command elements.

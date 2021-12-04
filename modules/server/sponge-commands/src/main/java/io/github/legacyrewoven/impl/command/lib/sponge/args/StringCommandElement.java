@@ -27,13 +27,13 @@ package io.github.legacyrewoven.impl.command.lib.sponge.args;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.text.Text;
-
 import io.github.legacyrewoven.api.command.v2.StringType;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.ArgumentParseException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandArgs;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.KeyElement;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+
+import net.minecraft.text.Text;
 
 public class StringCommandElement extends KeyElement {
 	private final StringType stringType;

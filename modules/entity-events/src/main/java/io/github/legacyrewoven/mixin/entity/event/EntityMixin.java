@@ -18,6 +18,7 @@
 
 package io.github.legacyrewoven.mixin.entity.event;
 
+import io.github.legacyrewoven.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,8 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
-
-import io.github.legacyrewoven.api.entity.event.v1.ServerEntityWorldChangeEvents;
 
 @Mixin(Entity.class)
 abstract class EntityMixin {

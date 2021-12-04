@@ -30,13 +30,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import io.github.legacyrewoven.api.command.v2.lib.sponge.args.PatternMatchingCommandElement;
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+
 import net.minecraft.text.Text;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-
-import io.github.legacyrewoven.api.command.v2.lib.sponge.args.PatternMatchingCommandElement;
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 public class ModCommandElement extends PatternMatchingCommandElement {
 	public ModCommandElement(@Nullable Text key) {

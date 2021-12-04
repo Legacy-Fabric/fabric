@@ -18,9 +18,8 @@
 
 package io.github.legacyrewoven.mixin.permission;
 
-import org.spongepowered.asm.mixin.Mixin;
-
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$1")
 public abstract class SignBlockEntity_1Mixin implements PermissibleCommandSource {

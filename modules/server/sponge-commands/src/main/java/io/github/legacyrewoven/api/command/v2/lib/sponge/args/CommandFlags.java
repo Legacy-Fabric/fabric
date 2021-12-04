@@ -38,11 +38,10 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 public final class CommandFlags extends CommandElement {
 	@Nullable

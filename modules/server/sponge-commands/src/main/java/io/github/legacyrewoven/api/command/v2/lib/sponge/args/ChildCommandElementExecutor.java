@@ -36,21 +36,20 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
-import io.github.legacyrewoven.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
-import io.github.legacyrewoven.api.command.v2.lib.sponge.spec.CommandExecutor;
-import io.github.legacyrewoven.api.command.v2.lib.sponge.spec.CommandSpec;
-import io.github.legacyrewoven.api.util.Location;
-
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
-
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandCallable;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandMapping;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandMessageFormatting;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandResult;
+import io.github.legacyrewoven.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
+import io.github.legacyrewoven.api.command.v2.lib.sponge.spec.CommandExecutor;
+import io.github.legacyrewoven.api.command.v2.lib.sponge.spec.CommandSpec;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import io.github.legacyrewoven.api.util.Location;
+
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.world.World;
 
 public class ChildCommandElementExecutor extends CommandElement implements CommandExecutor {
 	private static final AtomicInteger COUNTER = new AtomicInteger();

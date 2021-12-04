@@ -18,6 +18,7 @@
 
 package io.github.legacyrewoven.mixin.client.rendering;
 
+import io.github.legacyrewoven.api.client.rendering.v1.HudRenderCallback;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,8 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
-
-import io.github.legacyrewoven.api.client.rendering.v1.HudRenderCallback;
 
 @Mixin(InGameHud.class)
 public class InGameHudMixin {

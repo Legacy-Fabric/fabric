@@ -22,6 +22,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.github.legacyrewoven.impl.networking.ChannelInfoHolder;
+import io.github.legacyrewoven.impl.networking.DisconnectPacketSource;
+import io.github.legacyrewoven.impl.networking.PacketCallbackListener;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,10 +41,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-
-import io.github.legacyrewoven.impl.networking.ChannelInfoHolder;
-import io.github.legacyrewoven.impl.networking.DisconnectPacketSource;
-import io.github.legacyrewoven.impl.networking.PacketCallbackListener;
 
 @Mixin(ClientConnection.class)
 abstract class ClientConnectionMixin implements ChannelInfoHolder {

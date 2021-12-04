@@ -18,6 +18,9 @@
 
 package io.github.legacyrewoven.mixin.networking.client;
 
+import io.github.legacyrewoven.impl.networking.client.ClientNetworkingImpl;
+import io.github.legacyrewoven.impl.networking.client.ClientPlayNetworkAddon;
+import io.github.legacyrewoven.impl.networking.client.ClientPlayNetworkHandlerExtensions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -33,10 +36,6 @@ import net.minecraft.text.Text;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import io.github.legacyrewoven.impl.networking.client.ClientNetworkingImpl;
-import io.github.legacyrewoven.impl.networking.client.ClientPlayNetworkAddon;
-import io.github.legacyrewoven.impl.networking.client.ClientPlayNetworkHandlerExtensions;
 
 // We want to apply a bit earlier than other mods which may not use us in order to prevent refCount issues
 @Environment(EnvType.CLIENT)

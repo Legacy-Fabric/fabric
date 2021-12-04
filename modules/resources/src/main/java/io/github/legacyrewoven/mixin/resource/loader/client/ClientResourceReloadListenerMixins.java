@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
 
+import io.github.legacyrewoven.api.resource.IdentifiableResourceReloadListener;
+import io.github.legacyrewoven.api.resource.ResourceReloadListenerKeys;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.client.font.TextRenderer;
@@ -41,9 +43,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.MappingResolver;
-
-import io.github.legacyrewoven.api.resource.IdentifiableResourceReloadListener;
-import io.github.legacyrewoven.api.resource.ResourceReloadListenerKeys;
 
 @Mixin({
 		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorResourceReloadListener.class, FoliageColorResourceReloadListener.class, TextureManager.class,

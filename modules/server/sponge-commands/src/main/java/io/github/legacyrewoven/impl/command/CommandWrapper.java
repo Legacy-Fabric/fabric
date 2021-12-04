@@ -24,14 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import io.github.legacyrewoven.api.util.Location;
-
-import net.minecraft.command.AbstractCommand;
-import net.minecraft.command.CommandSource;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandMapping;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandMessageFormatting;
@@ -39,6 +31,13 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandPermissionExcept
 import io.github.legacyrewoven.api.command.v2.lib.sponge.InvocationCommandException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.ArgumentParseException;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import io.github.legacyrewoven.api.util.Location;
+
+import net.minecraft.command.AbstractCommand;
+import net.minecraft.command.CommandSource;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 
 public class CommandWrapper extends AbstractCommand {
 	private final CommandMapping mapping;

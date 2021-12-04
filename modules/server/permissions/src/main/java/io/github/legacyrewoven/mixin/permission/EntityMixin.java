@@ -18,11 +18,10 @@
 
 package io.github.legacyrewoven.mixin.permission;
 
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.entity.Entity;
-
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements PermissibleCommandSource {

@@ -18,12 +18,12 @@
 
 package io.github.legacyrewoven.impl.command;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.DedicatedServerModInitializer;
-
 import io.github.legacyrewoven.api.command.v2.CommandRegistrar;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandManager;
 import io.github.legacyrewoven.api.registry.CommandRegistry;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
 
 public class ImplInit implements DedicatedServerModInitializer, ClientModInitializer, CommandRegistrar {
 	@Override

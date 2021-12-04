@@ -18,6 +18,7 @@
 
 package io.github.legacyrewoven.mixin.entity.event;
 
+import io.github.legacyrewoven.api.entity.event.v1.ServerEntityCombatEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,8 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-
-import io.github.legacyrewoven.api.entity.event.v1.ServerEntityCombatEvents;
 
 @Mixin(LivingEntity.class)
 abstract class LivingEntityMixin extends EntityMixin {

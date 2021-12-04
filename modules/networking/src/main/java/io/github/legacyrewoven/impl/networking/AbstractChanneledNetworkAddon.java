@@ -27,15 +27,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import io.github.legacyrewoven.api.networking.v1.PacketByteBufs;
+import io.github.legacyrewoven.api.networking.v1.PacketSender;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.util.PacketByteBuf;
-
-import io.github.legacyrewoven.api.networking.v1.PacketByteBufs;
-import io.github.legacyrewoven.api.networking.v1.PacketSender;
 
 /**
  * A network addon which is aware of the channels the other side may receive.

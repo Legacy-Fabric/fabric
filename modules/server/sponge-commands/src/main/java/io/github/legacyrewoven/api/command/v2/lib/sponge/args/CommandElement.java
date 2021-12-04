@@ -29,11 +29,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 /**
  * Represents a command argument element.

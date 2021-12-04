@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import io.github.legacyrewoven.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,8 +30,6 @@ import net.minecraft.item.Item;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import io.github.legacyrewoven.api.client.rendering.v1.BuiltinItemRendererRegistry;
 
 @Environment(EnvType.CLIENT)
 public final class BuiltinItemRendererRegistryImpl implements BuiltinItemRendererRegistry {

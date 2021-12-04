@@ -37,14 +37,13 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
+import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.Location;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-
-import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
-import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
 /**
  * Context that a command is executed in.

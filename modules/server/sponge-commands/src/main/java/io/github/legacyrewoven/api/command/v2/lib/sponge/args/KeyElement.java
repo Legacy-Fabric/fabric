@@ -3,9 +3,9 @@ package io.github.legacyrewoven.api.command.v2.lib.sponge.args;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.text.Text;
-
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+
+import net.minecraft.text.Text;
 
 /**
  * Parent class that specifies elements as having no tab completions.

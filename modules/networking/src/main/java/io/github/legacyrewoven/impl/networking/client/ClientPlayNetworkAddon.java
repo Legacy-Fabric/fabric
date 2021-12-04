@@ -22,6 +22,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import io.github.legacyrewoven.api.client.networking.v1.C2SPlayChannelEvents;
+import io.github.legacyrewoven.api.client.networking.v1.ClientPlayConnectionEvents;
+import io.github.legacyrewoven.api.client.networking.v1.ClientPlayNetworking;
+import io.github.legacyrewoven.impl.networking.AbstractChanneledNetworkAddon;
+import io.github.legacyrewoven.impl.networking.ChannelInfoHolder;
+import io.github.legacyrewoven.impl.networking.NetworkingImpl;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.Packet;
@@ -30,13 +37,6 @@ import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import io.github.legacyrewoven.api.client.networking.v1.C2SPlayChannelEvents;
-import io.github.legacyrewoven.api.client.networking.v1.ClientPlayConnectionEvents;
-import io.github.legacyrewoven.api.client.networking.v1.ClientPlayNetworking;
-import io.github.legacyrewoven.impl.networking.AbstractChanneledNetworkAddon;
-import io.github.legacyrewoven.impl.networking.ChannelInfoHolder;
-import io.github.legacyrewoven.impl.networking.NetworkingImpl;
 
 @Environment(EnvType.CLIENT)
 public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<ClientPlayNetworking.PlayChannelHandler> {
