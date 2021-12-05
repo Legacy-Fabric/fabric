@@ -8,5 +8,4 @@ jobs:
       options: --user root
     steps:
       - uses: actions/checkout@v1
-      - uses: gradle/wrapper-validation-action@v1
       - run: ./gradlew build --stacktrace
