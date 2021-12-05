@@ -23,7 +23,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.server.MinecraftServer;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin implements PermissibleCommandSource {

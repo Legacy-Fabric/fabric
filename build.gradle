@@ -137,8 +137,10 @@ allprojects {
 		}
 
 		license {
-			header = rootProject.file('HEADER')
+			header rootProject.file('HEADER')
 			include '**/*.java'
+			exclude '**/lib/sponge/*.java'
+			exclude '**/lib/sponge/**/*.java'
 		}
 	}
 

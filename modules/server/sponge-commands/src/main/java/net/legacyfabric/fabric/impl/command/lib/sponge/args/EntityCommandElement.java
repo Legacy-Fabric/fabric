@@ -36,11 +36,8 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Sets;
 
-import net.legacyfabric.fabric.impl.command.CommandInitializer;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
@@ -48,6 +45,7 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseExcep
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.SelectorCommandElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.impl.command.CommandInitializer;
 
 public class EntityCommandElement extends SelectorCommandElement {
 	private final boolean returnTarget;
@@ -60,9 +58,7 @@ public class EntityCommandElement extends SelectorCommandElement {
 		this.returnSource = returnSource;
 		this.returnTarget = returnTarget;
 		this.clazz = clazz;
-
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -18,11 +18,11 @@
 package net.legacyfabric.fabric.impl.command;
 
 import net.minecraft.command.AbstractCommandManager;
+import net.minecraft.server.MinecraftServer;
 
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.server.MinecraftServer;
 
 public class CommandInitializer implements ModInitializer {
 	public static MinecraftServer getServerInstance;
