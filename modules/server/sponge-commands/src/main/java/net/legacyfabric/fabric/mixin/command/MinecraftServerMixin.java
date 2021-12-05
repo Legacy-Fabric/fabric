@@ -23,11 +23,15 @@ import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.server.MinecraftServer;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin implements PermissibleCommandSource {
 	@Shadow
 	public abstract boolean isDedicated();
+
+	@Shadow
+	public abstract MinecraftServer getServer();
 
 	@Override
 	public boolean hasPermission(String perm) {

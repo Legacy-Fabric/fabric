@@ -36,6 +36,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Sets;
 
+import net.legacyfabric.fabric.impl.command.CommandInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -59,7 +60,9 @@ public class EntityCommandElement extends SelectorCommandElement {
 		this.returnSource = returnSource;
 		this.returnTarget = returnTarget;
 		this.clazz = clazz;
+
 	}
+
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -99,14 +102,14 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		Set<String> worldEntities = Arrays.stream(MinecraftClient.getInstance().getServer().worlds).flatMap(world -> world.field_23572.stream())
+		Set<String> worldEntities = Arrays.stream(source.getServer().worlds).flatMap(world -> world.field_23572.stream())
 				.filter(this::checkEntity)
 				.map(entity -> entity.getUuid().toString()).collect(Collectors.toSet());
-		Collection<PlayerEntity> players = Sets.newHashSet(MinecraftClient.getInstance().getServer().getPlayerManager().getPlayerList());
+		Collection<PlayerEntity> players = Sets.newHashSet(source.getServer().getPlayerManager().getPlayerList());
 
 		if (!players.isEmpty() && this.checkEntity(players.iterator().next())) {
 			final Set<String> setToReturn = Sets.newHashSet(worldEntities); // to ensure mutability
-			players.forEach(x -> setToReturn.add(x.getTranslationKey()));
+			players.forEach(x -> setToReturn.add(x.getName()));
 			return setToReturn;
 		}
 
@@ -121,11 +124,11 @@ public class EntityCommandElement extends SelectorCommandElement {
 			uuid = UUID.fromString(choice);
 		} catch (IllegalArgumentException ignored) {
 			// Player could be a name
-			return Optional.ofNullable(MinecraftClient.getInstance().getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
+			return Optional.ofNullable(CommandInitializer.getServerInstance.getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
 		}
 
 		boolean found = false;
-		Optional<Entity> ret = Optional.ofNullable(MinecraftClient.getInstance().getServer().getEntity(uuid));
+		Optional<Entity> ret = Optional.ofNullable(CommandInitializer.getServerInstance.getPlayerByUuid(uuid));
 
 		if (ret.isPresent()) {
 			Entity entity = ret.get();

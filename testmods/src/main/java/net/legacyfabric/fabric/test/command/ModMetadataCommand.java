@@ -70,7 +70,7 @@ public class ModMetadataCommand {
 		}
 
 		builder.append("Metadata Type: ".concat(container.getMetadata().getType()).concat("\n"));
-		source.sendMessage(builder);
+		source.sendSystemMessage(builder);
 		return CommandResult.success();
 	}
 }

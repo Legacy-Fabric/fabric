@@ -111,13 +111,13 @@ public class CommandManagerImpl implements CommandManager {
 				}
 			} catch (CommandPermissionException e) {
 				if (e.getText() != null) {
-					source.sendMessage(CommandMessageFormatting.error(e.getText()));
+					source.sendSystemMessage(CommandMessageFormatting.error(e.getText()));
 				}
 			} catch (CommandException e) {
 				Text text = e.getText();
 
 				if (text != null) {
-					source.sendMessage(CommandMessageFormatting.error(text));
+					source.sendSystemMessage(CommandMessageFormatting.error(text));
 				}
 
 				if (e.shouldIncludeUsage()) {
@@ -132,7 +132,7 @@ public class CommandManagerImpl implements CommandManager {
 							usage = mapping.get().getCallable().getUsage(source);
 						}
 
-						source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", argSplit[0], usage))));
+						source.sendSystemMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", argSplit[0], usage))));
 					}
 				}
 			}
@@ -146,7 +146,7 @@ public class CommandManagerImpl implements CommandManager {
 
 			Text message = CommandMessageFormatting.error(new LiteralText("An unexpected error happened executing the command"));
 			message.setStyle(message.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Stacktrace: \n" + Arrays.stream(t.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("\n"))))));
-			source.sendMessage(message);
+			source.sendSystemMessage(message);
 		}
 
 		return CommandResult.empty();
@@ -158,7 +158,7 @@ public class CommandManagerImpl implements CommandManager {
 			final String[] argSplit = arguments.split(" ", 2);
 			return Lists.newArrayList(this.dispatcher.getSuggestions(source, arguments, targetPosition));
 		} catch (CommandException e) {
-			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
+			source.sendSystemMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
 			return Collections.emptyList();
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Error occured while tab completing '%s'", arguments), e);

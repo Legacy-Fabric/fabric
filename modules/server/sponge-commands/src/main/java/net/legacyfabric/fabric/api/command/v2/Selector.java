@@ -54,7 +54,7 @@ public enum Selector {
 	RANDOM_PLAYER('r') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(MinecraftClient.getInstance().getServer().getPlayerManager().getPlayerList().stream().findAny().orElseThrow(NullPointerException::new));
+			return Sets.newHashSet(sender.getServer().getPlayerManager().getPlayerList().stream().findAny().orElseThrow(NullPointerException::new));
 		}
 	},
 	EXECUTING_ENTITY('s') {

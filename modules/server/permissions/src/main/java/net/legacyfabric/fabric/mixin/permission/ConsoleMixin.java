@@ -19,11 +19,12 @@ package net.legacyfabric.fabric.mixin.permission;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.server.command.Console;
+//import net.minecraft.server.command.Console;
+import net.minecraft.server.dedicated.ServerCommandOutput;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
-@Mixin(Console.class)
+@Mixin(ServerCommandOutput.class)
 public abstract class ConsoleMixin implements PermissibleCommandSource {
 	@Override
 	public boolean hasPermission(String perm) {

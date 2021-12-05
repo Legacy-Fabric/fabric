@@ -25,22 +25,21 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.SelectorCommandElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+
+import net.legacyfabric.fabric.impl.command.CommandInitializer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class PlayerCommandElement extends SelectorCommandElement {
 	private final boolean returnSource;
@@ -73,12 +72,12 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		return MinecraftClient.getInstance().getServer().getPlayerManager().getPlayerList().stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
+		return source.getServer().getPlayerManager().getPlayerList().stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
 	}
 
 	@Override
 	protected Object getValue(String choice) throws IllegalArgumentException {
-		Optional<PlayerEntity> ret = MinecraftClient.getInstance().getServer().getPlayerManager().getPlayerList().stream().findFirst().map(Function.identity());
+		Optional<PlayerEntity> ret = CommandInitializer.getServerInstance.getPlayerManager().getPlayerList().stream().findFirst().map(Function.identity());
 
 		if (!ret.isPresent()) {
 			throw new IllegalArgumentException("Input value " + choice + " was not a player");
