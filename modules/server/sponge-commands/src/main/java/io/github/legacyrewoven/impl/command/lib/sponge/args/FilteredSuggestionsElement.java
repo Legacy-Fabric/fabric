@@ -25,17 +25,17 @@
 
 package io.github.legacyrewoven.impl.command.lib.sponge.args;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
-
-import com.google.common.collect.ImmutableList;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.ArgumentParseException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandArgs;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandContext;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandElement;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import org.jetbrains.annotations.Nullable;
 
 public class FilteredSuggestionsElement extends CommandElement {
 	private final CommandElement wrapped;
@@ -55,6 +55,6 @@ public class FilteredSuggestionsElement extends CommandElement {
 
 	@Override
 	public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
-		return this.wrapped.complete(src, args, context).stream().filter(this.predicate).collect(ImmutableList.toImmutableList());
+		return Collections.unmodifiableList(this.wrapped.complete(src, args, context).stream().filter(this.predicate).collect(Collectors.toList()));
 	}
 }

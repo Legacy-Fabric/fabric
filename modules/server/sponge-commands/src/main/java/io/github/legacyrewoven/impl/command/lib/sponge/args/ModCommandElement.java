@@ -28,10 +28,9 @@ package io.github.legacyrewoven.impl.command.lib.sponge.args;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
-
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.PatternMatchingCommandElement;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.Text;
 

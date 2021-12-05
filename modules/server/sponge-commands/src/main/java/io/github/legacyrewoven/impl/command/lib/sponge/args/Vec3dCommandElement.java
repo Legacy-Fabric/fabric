@@ -25,10 +25,10 @@
 
 package io.github.legacyrewoven.impl.command.lib.sponge.args;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import javax.annotation.Nullable;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -37,6 +37,7 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandArgs;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandContext;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandElement;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -98,7 +99,7 @@ public class Vec3dCommandElement extends CommandElement {
 		if (arg.isPresent()) {
 			if (arg.get().startsWith("#")) {
 				Optional<String> finalArg = arg;
-				return SPECIAL_TOKENS.stream().filter((input) -> input.startsWith(finalArg.get())).collect(ImmutableList.toImmutableList());
+				return Collections.unmodifiableList(SPECIAL_TOKENS.stream().filter((input) -> input.startsWith(finalArg.get())).collect(Collectors.toList()));
 			} else if (arg.get().contains(",") || !args.hasNext()) {
 				return ImmutableList.of(arg.get());
 			} else {

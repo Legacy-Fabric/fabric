@@ -39,8 +39,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import javax.annotation.Nullable;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -75,6 +74,7 @@ import io.github.legacyrewoven.impl.command.lib.sponge.args.UrlElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.UuidElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.Vec3dCommandElement;
 import io.github.legacyrewoven.impl.command.lib.sponge.args.WithSuggestionsElement;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -314,7 +314,7 @@ public class GenericArguments {
 	 */
 	public static CommandElement choices(Text key, Map<String, ?> choices, boolean choicesInUsage, boolean caseSensitive) {
 		if (!caseSensitive) {
-			Map<String, Object> immChoices = choices.entrySet().stream().collect(ImmutableMap.toImmutableMap(x -> x.getKey().toLowerCase(), Map.Entry::getValue));
+			Map<String, Object> immChoices = choices.entrySet().stream().collect(Collectors.toMap(x -> x.getKey().toLowerCase(), Map.Entry::getValue));
 			return choices(key, immChoices::keySet, selection -> immChoices.get(selection.toLowerCase()), choicesInUsage);
 		}
 

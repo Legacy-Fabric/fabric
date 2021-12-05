@@ -30,8 +30,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-
-import javax.annotation.Nullable;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -46,6 +45,7 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.spec.CommandExecutor;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.spec.CommandSpec;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.Location;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -159,7 +159,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 					String test = commandComponent.get();
 					return input.toLowerCase().startsWith(test.toLowerCase());
 				}))
-				.collect(ImmutableList.toImmutableList()));
+				.collect(Collectors.toList()));
 		return completions;
 	}
 

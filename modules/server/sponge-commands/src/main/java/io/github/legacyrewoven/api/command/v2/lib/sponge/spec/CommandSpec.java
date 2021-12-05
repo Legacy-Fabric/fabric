@@ -31,9 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -50,6 +47,7 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.args.GenericArguments;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.parsing.InputTokenizer;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.Location;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -489,7 +487,7 @@ public final class CommandSpec implements CommandCallable {
 
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this)
+		return Objects.toStringHelper(this)
 				.add("args", this.args)
 				.add("executor", this.executor)
 				.add("description", this.description)
