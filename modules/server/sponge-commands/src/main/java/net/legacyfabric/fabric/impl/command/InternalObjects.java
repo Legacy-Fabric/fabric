@@ -15,21 +15,14 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.gamerule;
+package net.legacyfabric.fabric.impl.command;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
 
-import net.minecraft.world.GameRuleManager;
+public class InternalObjects {
+	private static final CommandManagerImpl COMMAND_MANAGER = new CommandManagerImpl(SimpleDispatcher.FIRST_DISAMBIGUATOR);
 
-import net.legacyfabric.fabric.api.gamerule.v1.GameRulesInitializedCallback;
-
-@Mixin(GameRuleManager.class)
-public class GameRulesMixin {
-	@Inject(at = @At("RETURN"), method = "<init>")
-	public void registerModdedGamerules(CallbackInfo ci) {
-		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleManager) (Object) this);
+	public static CommandManagerImpl getCommandManager() {
+		return COMMAND_MANAGER;
 	}
 }

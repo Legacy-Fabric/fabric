@@ -15,21 +15,24 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.gamerule;
+package net.legacyfabric.fabric.api.util;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.minecraft.util.math.BlockPos;
 
-import net.minecraft.world.GameRuleManager;
+public class Location<T> {
+	private final T t;
+	private final BlockPos pos;
 
-import net.legacyfabric.fabric.api.gamerule.v1.GameRulesInitializedCallback;
+	public Location(T t, BlockPos pos) {
+		this.t = t;
+		this.pos = pos;
+	}
 
-@Mixin(GameRuleManager.class)
-public class GameRulesMixin {
-	@Inject(at = @At("RETURN"), method = "<init>")
-	public void registerModdedGamerules(CallbackInfo ci) {
-		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleManager) (Object) this);
+	public BlockPos getPos() {
+		return this.pos;
+	}
+
+	public T getT() {
+		return this.t;
 	}
 }

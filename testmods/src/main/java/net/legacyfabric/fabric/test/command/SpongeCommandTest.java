@@ -15,21 +15,17 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.gamerule;
+package net.legacyfabric.fabric.test.command;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.fabricmc.api.ModInitializer;
 
-import net.minecraft.world.GameRuleManager;
+import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
 
-import net.legacyfabric.fabric.api.gamerule.v1.GameRulesInitializedCallback;
-
-@Mixin(GameRuleManager.class)
-public class GameRulesMixin {
-	@Inject(at = @At("RETURN"), method = "<init>")
-	public void registerModdedGamerules(CallbackInfo ci) {
-		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleManager) (Object) this);
+public class SpongeCommandTest implements ModInitializer {
+	@Override
+	public void onInitialize() {
+		CommandRegistrar.EVENT.register((manager, dedicated) -> {
+			ModMetadataCommand.register(manager);
+		});
 	}
 }
