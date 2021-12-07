@@ -72,6 +72,12 @@ allprojects {
 	group = "net.legacyfabric.legacy-fabric-api"
 
 	repositories {
+		maven {
+			name = "Legacy Rewoven"
+			url = "https://github.com/LegacyRewoven/maven/raw/main/"
+		}
+
+		// Left here until 1.12.2 Yarn hits Rewoven's maven
 		maven { url "https://maven.legacyfabric.net/" }
 	}
 
@@ -82,37 +88,33 @@ allprojects {
 	}
 
 	dependencies {
-		implementation "com.google.guava:guava:23.5-jre"
 		minecraft "com.mojang:minecraft:${project.mc_version}"
+
 		mappings "net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2"
-		modApi("net.fabricmc:fabric-loader:${project.loader_version}") {
-			exclude module: "guava"
+		modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
+
+		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
+			implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209'
+			implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
 		}
-
-		implementation 'com.mojang:brigadier:1.0.17'
-
-		// if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-		// 	implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
-		// 	implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209'
-		// 	implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
-		// }
 	}
 
 	configurations {
 		dev
 	}
 
-	// if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-	// 	configurations.all {
-	// 		resolutionStrategy {
-	// 			dependencySubstitution {
-	// 				substitute module('org.lwjgl.lwjgl:lwjgl_util:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209')
-	// 				substitute module('org.lwjgl.lwjgl:lwjgl:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209')
-	// 			}
-	// 			force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
-	// 		}
-	// 	}
-	// }
+	if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+		configurations.all {
+			resolutionStrategy {
+				dependencySubstitution {
+					substitute module('org.lwjgl.lwjgl:lwjgl_util:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209')
+					substitute module('org.lwjgl.lwjgl:lwjgl:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209')
+				}
+				force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
+			}
+		}
+	}
 
 	jar {
 		classifier("dev")
@@ -155,7 +157,7 @@ allprojects {
 	}
 
 	tasks.withType(Checkstyle) {
-		exclude '**/net/legacyfabric/fabric/test/**'
+		exclude '**/io/github/legacyrewoven/test/**'
 	}
 }
 
