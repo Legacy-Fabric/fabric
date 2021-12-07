@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "io.github.legacyrewoven.mixin.entity.event",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "EntityMixin",
+    "LivingEntityMixin",
+    "PlayerManagerMixin",
+    "ServerPlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
