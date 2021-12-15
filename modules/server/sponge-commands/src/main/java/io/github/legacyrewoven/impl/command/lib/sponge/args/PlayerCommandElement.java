@@ -25,6 +25,7 @@
 
 package io.github.legacyrewoven.impl.command.lib.sponge.args;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -72,12 +73,13 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		return MinecraftServer.getServer().getPlayerManager().getPlayers().stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
+		List<PlayerEntity> playerList = (List<PlayerEntity>) MinecraftServer.getServer().getPlayerManager().players;
+		return playerList.stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
 	}
 
 	@Override
 	protected Object getValue(String choice) throws IllegalArgumentException {
-		Optional<PlayerEntity> ret = MinecraftServer.getServer().getPlayerManager().getPlayers().stream().findFirst().map(Function.identity());
+		Optional<PlayerEntity> ret = MinecraftServer.getServer().getPlayerManager().players.stream().findFirst().map(Function.identity());
 
 		if (!ret.isPresent()) {
 			throw new IllegalArgumentException("Input value " + choice + " was not a player");

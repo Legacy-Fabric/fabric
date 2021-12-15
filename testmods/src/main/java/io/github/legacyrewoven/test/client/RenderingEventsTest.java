@@ -20,8 +20,8 @@ package io.github.legacyrewoven.test.client;
 
 import java.awt.Color;
 
-import io.github.legacyrewoven.api.client.rendering.v1.HudRenderCallback;
-import io.github.legacyrewoven.api.client.rendering.v1.InvalidateRenderStateCallback;
+//import io.github.legacyrewoven.api.client.rendering.v1.HudRenderCallback;
+//import io.github.legacyrewoven.api.client.rendering.v1.InvalidateRenderStateCallback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,11 +34,11 @@ public class RenderingEventsTest implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		HudRenderCallback.EVENT.register((client, tickDelta) -> {
+		/*HudRenderCallback.EVENT.register((client, tickDelta) -> {
 			client.textRenderer.draw(I18n.translate("legacyrewoven.api.youreTesting"), 10, 10, Color.RED.getRGB());
 		});
 		InvalidateRenderStateCallback.EVENT.register(() -> {
 			LOGGER.info("Render state invalidated aka chunks rebuilt");
-		});
+		});*/
 	}
 }

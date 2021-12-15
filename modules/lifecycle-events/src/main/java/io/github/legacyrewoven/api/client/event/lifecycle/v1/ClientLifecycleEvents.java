@@ -23,6 +23,7 @@ import io.github.legacyrewoven.api.event.EventFactory;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.GameOptions;
+import net.minecraft.world.GameMode;
 import net.minecraft.world.level.LevelInfo;
 
 import net.fabricmc.api.EnvType;
@@ -69,7 +70,7 @@ public final class ClientLifecycleEvents {
 
 	@FunctionalInterface
 	public interface IntegratedServerPublished {
-		void onServerPublished(MinecraftClient client, LevelInfo.GameMode gameMode, boolean cheats, LevelInfo levelInfo);
+		void onServerPublished(MinecraftClient client, GameMode gameMode, boolean cheats, LevelInfo levelInfo);
 	}
 
 	@FunctionalInterface

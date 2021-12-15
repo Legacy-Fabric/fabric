@@ -55,7 +55,7 @@ public final class PlayerLookup {
 
 		// return an immutable collection to guard against accidental removals.
 		if (server.getPlayerManager() != null) {
-			return Collections.unmodifiableCollection(server.getPlayerManager().getPlayers());
+			return Collections.unmodifiableCollection(server.getPlayerManager().players);
 		}
 
 		return Collections.emptyList();
@@ -73,7 +73,7 @@ public final class PlayerLookup {
 		Objects.requireNonNull(world, "The world cannot be null");
 
 		// return an immutable collection to guard against accidental removals.
-		return Collections.unmodifiableCollection(world.getServer().getPlayerManager().getPlayers());
+		return Collections.unmodifiableCollection(world.getServer().getPlayerManager().players);
 	}
 
 	/**
@@ -98,9 +98,9 @@ public final class PlayerLookup {
 					.map(ServerWorld::getEntityTracker)
 					.map(EntityTrackerAccessor.class::cast)
 					.map(EntityTrackerAccessor::getTrackedEntityIds)
-					.map(c -> c.get(entity.getEntityId()))
+					.map(c -> c.getByKeycode(entity.getEntityId()))
 					.map(EntityTrackerEntryAccessor.class::cast)
-					.map(EntityTrackerEntryAccessor::getPlayers)
+					.map(EntityTrackerEntryAccessor::getField_11249)
 					.map(Collections::unmodifiableSet)
 					.orElseGet(Collections::emptySet);
 		}
@@ -142,7 +142,7 @@ public final class PlayerLookup {
 
 		return world(world)
 				.stream()
-				.filter((p) -> p.getDistanceTo(pos.getX(), pos.getY(), pos.getZ()) <= radiusSq)
+				.filter((p) -> p.getDistanceTo(pos.x, pos.y, pos.z) <= radiusSq)
 				.collect(Collectors.toList());
 	}
 

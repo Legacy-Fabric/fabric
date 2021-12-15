@@ -44,7 +44,7 @@ public final class ClientNetworkingImpl {
 		return ((ClientPlayNetworkHandlerExtensions) handler).getAddon();
 	}
 
-	public static Packet<?> createPlayC2SPacket(String channelName, PacketByteBuf buf) {
+	public static Packet createPlayC2SPacket(String channelName, PacketByteBuf buf) {
 		return new CustomPayloadC2SPacket(channelName, buf);
 	}
 

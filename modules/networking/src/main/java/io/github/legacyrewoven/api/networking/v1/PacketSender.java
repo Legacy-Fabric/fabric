@@ -40,7 +40,7 @@ public interface PacketSender {
 	 * @param channelName the id of the channel
 	 * @param buf         the content of the packet
 	 */
-	Packet<?> createPacket(String channelName, PacketByteBuf buf);
+	Packet createPacket(String channelName, PacketByteBuf buf);
 
 	/**
 	 * Makes a packet for a channel.
@@ -48,7 +48,7 @@ public interface PacketSender {
 	 * @param channelId the id of the channel
 	 * @param buf       the content of the packet
 	 */
-	default Packet<?> createPacket(Identifier channelId, PacketByteBuf buf) {
+	default Packet createPacket(Identifier channelId, PacketByteBuf buf) {
 		return this.createPacket(channelId.toString(), buf);
 	}
 
@@ -57,7 +57,7 @@ public interface PacketSender {
 	 *
 	 * @param packet the packet
 	 */
-	void sendPacket(Packet<?> packet);
+	void sendPacket(Packet packet);
 
 	/**
 	 * Sends a packet.
@@ -65,7 +65,7 @@ public interface PacketSender {
 	 * @param packet   the packet
 	 * @param callback an optional callback to execute after the packet is sent, may be {@code null}. The callback may also accept a {@link ChannelFutureListener}.
 	 */
-	void sendPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> callback);
+	void sendPacket(Packet packet, GenericFutureListener<? extends Future<? super Void>> callback);
 
 	/**
 	 * Sends a packet to a channel.

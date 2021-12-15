@@ -21,7 +21,7 @@ package io.github.legacyrewoven.api.client.event.lifecycle.v1;
 import io.github.legacyrewoven.api.event.Event;
 import io.github.legacyrewoven.api.event.EventFactory;
 
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.world.client.ClientWorld;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.world.chunk.Chunk;
 

@@ -34,9 +34,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.ItemRenderer;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -45,7 +44,7 @@ import net.minecraft.entity.LivingEntity;
 public abstract class EntityRenderDispatcherMixin {
 	@Shadow
 	@Final
-	private Map<Class<? extends Entity>, EntityRenderer<?>> renderers;
+	private Map<Class<? extends Entity>, EntityRenderer> renderers;
 
 	@Shadow
 	@Final

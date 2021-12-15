@@ -37,7 +37,7 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 @Mixin(DefaultResourcePack.class)
 public class DefaultResourcePackMixin {
-	@Inject(method = "openClassLoader", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "method_4350", at = @At("HEAD"), cancellable = true)
 	protected void onFindInputStream(Identifier identifier, CallbackInfoReturnable<InputStream> callback) {
 		//		if (DefaultResourcePack.resourcePath != null) {
 		// Fall through to Vanilla logic, they have a special case here.

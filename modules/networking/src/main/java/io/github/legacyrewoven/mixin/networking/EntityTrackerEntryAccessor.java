@@ -23,11 +23,11 @@ import java.util.Set;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.entity.TrackedEntityInstance;
+import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-@Mixin(TrackedEntityInstance.class)
+@Mixin(EntityTrackerEntry.class)
 public interface EntityTrackerEntryAccessor {
 	@Accessor
-	Set<ServerPlayerEntity> getPlayers();
+	Set<ServerPlayerEntity> getField_11249();
 }

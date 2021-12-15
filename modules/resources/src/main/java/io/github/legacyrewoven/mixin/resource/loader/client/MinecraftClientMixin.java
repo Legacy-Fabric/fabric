@@ -62,7 +62,7 @@ public class MinecraftClientMixin {
 		}
 	}
 
-	@Inject(method = "stitchTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(method = "stitchTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;method_4357(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
 	public void reloadResources(CallbackInfo ci, List<ResourcePack> list) {
 		fabric_modifyResourcePackList(list);
 	}

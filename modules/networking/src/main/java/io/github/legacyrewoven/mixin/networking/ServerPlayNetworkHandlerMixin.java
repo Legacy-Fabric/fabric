@@ -78,7 +78,7 @@ abstract class ServerPlayNetworkHandlerMixin implements ServerPlayNetworkHandler
 	}
 
 	@Override
-	public Packet<?> createDisconnectPacket(Text message) {
+	public Packet createDisconnectPacket(Text message) {
 		return new DisconnectS2CPacket(message);
 	}
 }

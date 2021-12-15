@@ -18,10 +18,7 @@
 
 package io.github.legacyrewoven.api.command.v2;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
@@ -36,31 +33,32 @@ public enum Selector {
 	ALL_ENTITIES('e') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getWorld().entities);
+			return Sets.newHashSet(sender.getWorld().field_9132);
 		}
 	},
 	ALL_PLAYERS('a') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return sender.getWorld().playerEntities.stream().map(e -> (Entity) e).collect(Collectors.toSet());
+			return (Set<Entity>) sender.getWorld().players.stream().map(e -> (Entity) e).collect(Collectors.toSet());
 		}
 	},
 	NEAREST_PLAYER('p') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.getPos().x, sender.getPos().y, sender.getPos().z, 50.0D));
+			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.getBlockPos().x, sender.getBlockPos().y, sender.getBlockPos().z, 50.0D));
 		}
 	},
 	RANDOM_PLAYER('r') {
 		@Override
-		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers().stream().findAny().orElseThrow(NullPointerException::new));
+		public Set<Optional> resolve(CommandSource sender) {
+			return Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().players.stream().findAny());
 		}
 	},
 	EXECUTING_ENTITY('s') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getEntity());
+			//return Sets.newHashSet(sender.getEntity()); @s didn't exist this early in the game, and there seems to be no code to handle it, so I'll null it out for now.
+			return null;
 		}
 	};
 
@@ -75,7 +73,7 @@ public enum Selector {
 		return this.key;
 	}
 
-	public abstract Set<Entity> resolve(CommandSource sender);
+	public abstract Set resolve(CommandSource sender);
 
 	public static List<String> complete(String s) {
 		if (s.startsWith("@") && s.length() == 2) {

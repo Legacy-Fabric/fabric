@@ -17,7 +17,7 @@
     "Legacy Fabric"
   ],
   "depends": {
-    "minecraft": "1.8.x"
+    "minecraft": "1.7.x"
   },
   "mixins": [
     "legacy-rewoven-keybinding-api-v1.mixins.json"

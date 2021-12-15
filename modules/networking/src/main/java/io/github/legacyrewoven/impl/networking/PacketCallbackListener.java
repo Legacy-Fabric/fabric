@@ -26,5 +26,5 @@ public interface PacketCallbackListener {
 	 *
 	 * @param packet the packet
 	 */
-	void sent(Packet<?> packet);
+	void sent(Packet packet);
 }

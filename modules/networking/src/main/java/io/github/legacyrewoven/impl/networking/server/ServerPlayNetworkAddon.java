@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import io.github.legacyrewoven.api.networking.v1.PacketByteBufs;
 import io.github.legacyrewoven.api.networking.v1.S2CPlayChannelEvents;
 import io.github.legacyrewoven.api.networking.v1.ServerPlayConnectionEvents;
 import io.github.legacyrewoven.api.networking.v1.ServerPlayNetworking;
@@ -75,12 +76,14 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	 * @return true if the packet has been handled
 	 */
 	public boolean handle(CustomPayloadC2SPacket packet) {
-		// Do not handle the packet on game thread
-		if (this.server.isOnThread()) {
+		//TODO: Do not handle the packet on game thread
+		/*if (this.server.isOnThread()) {
 			return false;
-		}
-
-		return this.handle(packet.getChannel(), packet.getPayload());
+		}*/
+		byte[] data = packet.getData();
+		PacketByteBuf payload = new PacketByteBuf(PacketByteBufs.empty());
+		//return this.handle(packet.getChannel(), payload);
+		return false;
 	}
 
 	@Override
@@ -89,14 +92,14 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	}
 
 	// impl details
-
+	//TODO: WTF
 	@Override
 	protected void schedule(Runnable task) {
-		this.handler.player.server.execute(task);
+		//this.handler.player.server.execute(task);
 	}
 
 	@Override
-	public Packet<?> createPacket(String channelName, PacketByteBuf buf) {
+	public Packet createPacket(String channelName, PacketByteBuf buf) {
 		return ServerPlayNetworking.createS2CPacket(channelName, buf);
 	}
 

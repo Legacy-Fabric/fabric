@@ -37,6 +37,7 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandArgs;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandContext;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.args.CommandElement;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
@@ -79,16 +80,17 @@ public class Vec3dCommandElement extends CommandElement {
 			yStr = split[1];
 			zStr = split[2];
 		} else if (xStr.equalsIgnoreCase("#me")) {
-			return source.getPos();
+			return source.getBlockPos();
 		} else {
 			yStr = args.next();
 			zStr = args.next();
 		}
 
-		double x = this.parseRelativeDouble(args, xStr, source.getPos().x);
-		double y = this.parseRelativeDouble(args, yStr, source.getPos().y);
-		double z = this.parseRelativeDouble(args, zStr, source.getPos().z);
-		return new Vec3d(x, y, z);
+		//TODO: Vec3i in API so I can get rid of this concfest
+		int x = (int) this.parseRelativeDouble(args, xStr, (double) source.getBlockPos().x);
+		int y = (int) this.parseRelativeDouble(args, yStr, (double) source.getBlockPos().y);
+		int z = (int) this.parseRelativeDouble(args, zStr, (double) source.getBlockPos().z);
+		return new BlockPos(x, y, z);
 	}
 
 	@Override

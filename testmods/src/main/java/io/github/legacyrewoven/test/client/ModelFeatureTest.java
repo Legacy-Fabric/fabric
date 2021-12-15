@@ -18,14 +18,14 @@
 
 package io.github.legacyrewoven.test.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import io.github.legacyrewoven.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+//import com.mojang.blaze3d.platform.GlStateManager;
+//import io.github.legacyrewoven.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 
-import net.minecraft.block.BlockState;
+//import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
+//import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.entity.LivingEntity;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -33,7 +33,7 @@ import net.fabricmc.api.ClientModInitializer;
 public class ModelFeatureTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityClass, entityRenderer, registrationHelper) -> {
+	/*	LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityClass, entityRenderer, registrationHelper) -> {
 			if (entityRenderer instanceof PlayerEntityRenderer) {
 				registrationHelper.register(new FeatureRenderer<LivingEntity>() {
 					private final BlockState state = Blocks.DIRT.getDefaultState();
@@ -54,6 +54,6 @@ public class ModelFeatureTest implements ClientModInitializer {
 					}
 				});
 			}
-		});
+		});*/
 	}
 }

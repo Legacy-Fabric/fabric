@@ -24,8 +24,8 @@ def addModule(String dir, String subdir, String name) {
 }
 
 addModule("base", "rewoven-api-base")
-addModule("resources", "rewoven-resource-loader-v1")
-addModule("client", "rendering", "rewoven-rendering-api-v1")
+//addModule("resources", "rewoven-resource-loader-v1")
+//addModule("client", "rendering", "rewoven-rendering-api-v1")
 addModule("client", "keybindings", "rewoven-keybinding-api-v1")
 addModule("networking", "rewoven-networking-api-v1")
 addModule("crash-report-info", "rewoven-crash-report-info-v1")

@@ -259,7 +259,7 @@ public final class ServerPlayNetworking {
 	 * @param buf         the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	public static Packet<?> createS2CPacket(String channelName, PacketByteBuf buf) {
+	public static Packet createS2CPacket(String channelName, PacketByteBuf buf) {
 		Objects.requireNonNull(channelName, "Channel cannot be null");
 		Objects.requireNonNull(buf, "Buf cannot be null");
 
@@ -273,7 +273,7 @@ public final class ServerPlayNetworking {
 	 * @param buf       the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	public static Packet<?> createS2CPacket(Identifier channelId, PacketByteBuf buf) {
+	public static Packet createS2CPacket(Identifier channelId, PacketByteBuf buf) {
 		return createS2CPacket(channelId.toString(), buf);
 	}
 

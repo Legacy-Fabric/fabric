@@ -22,7 +22,6 @@ import io.github.legacyrewoven.api.event.Event;
 import io.github.legacyrewoven.api.event.EventFactory;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.TrackedEntityInstance;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 /**

@@ -25,6 +25,7 @@ import java.util.Map;
 import io.github.legacyrewoven.api.client.networking.v1.C2SPlayChannelEvents;
 import io.github.legacyrewoven.api.client.networking.v1.ClientPlayConnectionEvents;
 import io.github.legacyrewoven.api.client.networking.v1.ClientPlayNetworking;
+import io.github.legacyrewoven.api.networking.v1.PacketByteBufs;
 import io.github.legacyrewoven.impl.networking.AbstractChanneledNetworkAddon;
 import io.github.legacyrewoven.impl.networking.ChannelInfoHolder;
 import io.github.legacyrewoven.impl.networking.NetworkingImpl;
@@ -45,7 +46,8 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	private boolean sentInitialRegisterPacket;
 
 	public ClientPlayNetworkAddon(ClientPlayNetworkHandler handler, MinecraftClient client) {
-		super(ClientNetworkingImpl.PLAY, handler.getClientConnection(), "ClientPlayNetworkAddon for " + handler.getProfile().getName());
+		//** Definitely wrong. */
+		super(ClientNetworkingImpl.PLAY, handler.method_9281(), "ClientPlayNetworkAddon for " + handler.toString());
 		this.handler = handler;
 		this.client = client;
 
@@ -81,16 +83,17 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	 */
 	public boolean handle(CustomPayloadS2CPacket packet) {
 		// Do not handle the packet on game thread
-		if (this.client.isOnThread()) {
+		if (this.client.method_9146()) {
 			return false;
 		}
 
-		PacketByteBuf buf = packet.getPayload();
+		//PacketByteBuf buf = packet.getPayload();
+		byte[] data = packet.getData();
 
 		try {
-			return this.handle(packet.getChannel(), buf);
+			return this.handle(packet.getChannel(), data);
 		} finally {
-			buf.release();
+			new PacketByteBuf(PacketByteBufs.empty().writeBytes(data)).release();
 		}
 	}
 
@@ -103,11 +106,11 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 
 	@Override
 	protected void schedule(Runnable task) {
-		MinecraftClient.getInstance().execute(task);
+		MinecraftClient.getInstance().method_9144(task);
 	}
 
 	@Override
-	public Packet<?> createPacket(String channelName, PacketByteBuf buf) {
+	public Packet createPacket(String channelName, PacketByteBuf buf) {
 		return ClientPlayNetworking.createC2SPacket(channelName, buf);
 	}
 

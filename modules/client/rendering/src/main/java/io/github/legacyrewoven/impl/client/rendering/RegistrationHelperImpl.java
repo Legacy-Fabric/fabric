@@ -23,11 +23,12 @@ import java.util.function.Function;
 
 import io.github.legacyrewoven.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
+//import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.entity.LivingEntity;
 
-public final class RegistrationHelperImpl implements LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper {
-	private final Function<FeatureRenderer<?>, Boolean> delegate;
+public final class RegistrationHelperImpl {
+	//implements LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper
+	/*private final Function<FeatureRenderer<?>, Boolean> delegate;
 
 	public RegistrationHelperImpl(Function<FeatureRenderer<?>, Boolean> delegate) {
 		this.delegate = delegate;
@@ -37,6 +38,6 @@ public final class RegistrationHelperImpl implements LivingEntityFeatureRenderer
 	public <T extends LivingEntity> void register(FeatureRenderer<T> featureRenderer) {
 		Objects.requireNonNull(featureRenderer, "Feature renderer cannot be null");
 		this.delegate.apply(featureRenderer);
-	}
+	}*/
 }
 

@@ -25,11 +25,7 @@
 
 package io.github.legacyrewoven.impl.command.lib.sponge.args;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
@@ -40,6 +36,7 @@ import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.LiteralText;
@@ -94,12 +91,16 @@ public class EntityCommandElement extends SelectorCommandElement {
 		}
 	}
 
+	protected List<Entity> getWorldEntityListDuringIteration(World world) {
+		return (List<Entity>) world.field_9132;
+	}
+
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		Set<String> worldEntities = Arrays.stream(MinecraftServer.getServer().worlds).flatMap(world -> world.entities.stream())
+		Set<String> worldEntities = Arrays.stream(MinecraftServer.getServer().worlds).flatMap(world -> getWorldEntityListDuringIteration(world).stream())
 				.filter(this::checkEntity)
 				.map(entity -> entity.getUuid().toString()).collect(Collectors.toSet());
-		Collection<PlayerEntity> players = Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers());
+		Collection<PlayerEntity> players = Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().players);
 
 		if (!players.isEmpty() && this.checkEntity(players.iterator().next())) {
 			final Set<String> setToReturn = Sets.newHashSet(worldEntities); // to ensure mutability
@@ -118,11 +119,11 @@ public class EntityCommandElement extends SelectorCommandElement {
 			uuid = UUID.fromString(choice);
 		} catch (IllegalArgumentException ignored) {
 			// Player could be a name
-			return Optional.ofNullable(MinecraftServer.getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
+			return Optional.ofNullable(MinecraftServer.getServer().getPlayerManager().method_10419(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
 		}
 
 		boolean found = false;
-		Optional<Entity> ret = Optional.ofNullable(MinecraftServer.getServer().getEntity(uuid));
+		Optional<Entity> ret = Optional.ofNullable(MinecraftServer.getServer().getWorld().getPlayerByUuid(uuid));
 
 		if (ret.isPresent()) {
 			Entity entity = ret.get();

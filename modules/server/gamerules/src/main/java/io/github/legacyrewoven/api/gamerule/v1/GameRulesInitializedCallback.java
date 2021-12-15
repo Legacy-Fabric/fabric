@@ -21,7 +21,7 @@ package io.github.legacyrewoven.api.gamerule.v1;
 import io.github.legacyrewoven.api.event.Event;
 import io.github.legacyrewoven.api.event.EventFactory;
 
-import net.minecraft.world.GameRuleManager;
+import net.minecraft.world.GameRuleDispatcher;
 
 /**
  * Allows adding custom game rules.
@@ -37,5 +37,5 @@ public interface GameRulesInitializedCallback {
 			}
 	);
 
-	void onGameRulesRegistered(GameRuleManager manager);
+	void onGameRulesRegistered(GameRuleDispatcher manager);
 }

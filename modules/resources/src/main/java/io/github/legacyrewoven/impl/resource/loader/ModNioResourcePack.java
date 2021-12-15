@@ -68,39 +68,37 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	}
 
 	@Override
-	protected InputStream openFile(String filename) throws IOException {
+	protected InputStream openFile(String filename) {
 		InputStream stream;
+		try {
+			if (DeferredNioExecutionHandler.shouldDefer()) {
+				stream = DeferredNioExecutionHandler.submit(() -> {
+					Path path = getPath(filename);
 
-		if (DeferredNioExecutionHandler.shouldDefer()) {
-			stream = DeferredNioExecutionHandler.submit(() -> {
+					if (path != null && Files.isRegularFile(path)) {
+						return new DeferredInputStream(Files.newInputStream(path));
+					} else {
+						return null;
+					}
+				});
+
+				if (stream != null) {
+					return stream;
+				}
+			} else {
 				Path path = getPath(filename);
 
 				if (path != null && Files.isRegularFile(path)) {
-					return new DeferredInputStream(Files.newInputStream(path));
-				} else {
-					return null;
+					return Files.newInputStream(path);
 				}
-			});
-
-			if (stream != null) {
-				return stream;
 			}
-		} else {
-			Path path = getPath(filename);
-
-			if (path != null && Files.isRegularFile(path)) {
-				return Files.newInputStream(path);
-			}
-		}
-
+		} catch (IOException e) {e.printStackTrace();}
 		stream = ModResourcePackUtil.openDefault(this.getFabricModMetadata(), filename);
 
 		if (stream != null) {
 			return stream;
 		}
-
-		// ReloadableResourceManagerImpl gets away with FileNotFoundException.
-		throw new FileNotFoundException("\"" + filename + "\" in Fabric mod \"" + this.getFabricModMetadata().getId() + "\"");
+		return null;
 	}
 
 	@Override
@@ -163,7 +161,7 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	}
 
 	@Override
-	public Set<String> getNamespaces() {
+	public Set<String> method_4372() {
 		if (namespaceCache != null) {
 			return namespaceCache;
 		}

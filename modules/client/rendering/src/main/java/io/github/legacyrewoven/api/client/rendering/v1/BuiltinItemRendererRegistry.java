@@ -18,15 +18,15 @@
 
 package io.github.legacyrewoven.api.client.rendering.v1;
 
-import io.github.legacyrewoven.impl.client.rendering.BuiltinItemRendererRegistryImpl;
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import io.github.legacyrewoven.impl.client.rendering.BuiltinItemRendererRegistryImpl;
 
 /**
  * This registry holds {@linkplain DynamicItemRenderer builtin item renderers} for items.
@@ -60,7 +60,7 @@ public interface BuiltinItemRendererRegistry {
 	 * <p>An item with a dynamic renderer must have a model extending {@code minecraft:builtin/entity}.
 	 * The renderers are registered with {@link BuiltinItemRendererRegistry#register(Item, DynamicItemRenderer)}.
 	 */
-	@FunctionalInterface
+	//@FunctionalInterface
 	@Environment(EnvType.CLIENT)
 	interface DynamicItemRenderer {
 		/**
@@ -69,6 +69,6 @@ public interface BuiltinItemRendererRegistry {
 		 * @param stack               the rendered item stack
 		 * @param modelTransformation the builtin item model's transformation
 		 */
-		void render(ItemStack stack, ModelTransformation modelTransformation);
+		//void render(ItemStack stack, ModelTransformation modelTransformation);
 	}
 }

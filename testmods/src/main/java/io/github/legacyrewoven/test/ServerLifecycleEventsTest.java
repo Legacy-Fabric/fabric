@@ -24,7 +24,7 @@ import io.github.legacyrewoven.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.entity.EntityType;
+//import net.minecraft.entity.EntityType;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -44,10 +44,10 @@ public class ServerLifecycleEventsTest implements ModInitializer {
 			}
 		});
 		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			LOGGER.info("Server Entity {} loaded", EntityType.getEntityName(entity));
+			//LOGGER.info("Server Entity {} loaded", EntityType.getEntityName(entity));
 		});
 		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-			LOGGER.info("Server Entity {} unloaded", EntityType.getEntityName(entity));
+			//LOGGER.info("Server Entity {} unloaded", EntityType.getEntityName(entity));
 		});
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
 			LOGGER.info("Server starting");

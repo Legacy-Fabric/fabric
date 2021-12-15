@@ -21,9 +21,9 @@ package io.github.legacyrewoven.api.client.rendering.v1;
 import io.github.legacyrewoven.api.event.Event;
 import io.github.legacyrewoven.api.event.EventFactory;
 
-import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.feature.Deadmau5FeatureRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
+import net.minecraft.client.render.entity.EntityRenderer;
+//import net.minecraft.client.render.entity.feature.Deadmau5FeatureRenderer;
+//import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.entity.LivingEntity;
 
 import net.fabricmc.api.EnvType;
@@ -61,7 +61,7 @@ public interface LivingEntityFeatureRendererRegistrationCallback {
 	 * @param entityClass    the entity class
 	 * @param entityRenderer the entity renderer
 	 */
-	void registerRenderers(Class<? extends LivingEntity> entityClass, LivingEntityRenderer<?> entityRenderer, RegistrationHelper registrationHelper);
+	void registerRenderers(Class<? extends LivingEntity> entityClass, EntityRenderer entityRenderer, RegistrationHelper registrationHelper);
 
 	/**
 	 * A delegate object used to help register feature renderers for an entity renderer.
@@ -75,6 +75,6 @@ public interface LivingEntityFeatureRendererRegistrationCallback {
 		 * @param featureRenderer the feature renderer
 		 * @param <T>             the type of entity
 		 */
-		<T extends LivingEntity> void register(FeatureRenderer<T> featureRenderer);
+		//<T extends LivingEntity> void register(FeatureRenderer<T> featureRenderer);
 	}
 }

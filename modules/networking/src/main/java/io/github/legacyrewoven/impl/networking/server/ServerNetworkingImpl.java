@@ -33,7 +33,7 @@ public final class ServerNetworkingImpl {
 		return ((ServerPlayNetworkHandlerExtensions) handler).getAddon();
 	}
 
-	public static Packet<?> createPlayC2SPacket(String channel, PacketByteBuf buf) {
+	public static Packet createPlayC2SPacket(String channel, PacketByteBuf buf) {
 		return new CustomPayloadS2CPacket(channel, buf);
 	}
 }
