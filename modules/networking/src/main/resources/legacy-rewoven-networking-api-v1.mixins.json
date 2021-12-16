@@ -8,7 +8,8 @@
     "EntityTrackerEntryAccessor",
     "EntityTrackerEntryMixin",
     "PlayerManagerMixin",
-    "ServerPlayNetworkHandlerMixin"
+    "ServerPlayNetworkHandlerMixin",
+    "server.MinecraftServerMixin"
   ],
   "client": [
     "client.ClientPlayNetworkHandlerMixin",
