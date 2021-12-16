@@ -57,8 +57,8 @@ public enum Selector {
 	EXECUTING_ENTITY('s') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			//return Sets.newHashSet(sender.getEntity()); @s didn't exist this early in the game, and there seems to be no code to handle it, so I'll null it out for now.
-			return null;
+			//TODO @s didn't exist this early in the game, and there seems to be no code to handle it, so maybe this'll work?
+			return Sets.newHashSet(sender.getWorld().getPlayerFromName(sender.getTranslationKey()));
 		}
 	};
 

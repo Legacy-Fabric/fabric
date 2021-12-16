@@ -76,11 +76,9 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	 * @return true if the packet has been handled
 	 */
 	public boolean handle(CustomPayloadC2SPacket packet) {
-		//TODO: Do not handle the packet on game thread
 		if (((MinecraftServerExtensions) this.server).isOnThread()) {
 			return false;
 		}
-
 		//hack to work around the fact that for some reason le PacketByteBufs don't work the same
 		byte[] data = packet.getData();
 		PacketByteBuf payload = new PacketByteBuf(PacketByteBufs.create().writeBytes(data));
@@ -93,10 +91,8 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	}
 
 	// impl details
-	//TODO: WTF
 	@Override
 	protected void schedule(Runnable task) {
-		System.out.println("Sheduel");
 		((MinecraftServerExtensions)this.handler.player.server).execute(task);
 	}
 
