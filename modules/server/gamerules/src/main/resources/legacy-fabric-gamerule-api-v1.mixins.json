@@ -1,9 +1,9 @@
 {
   "required": true,
-  "package": "net.legacyfabric.fabric.mixin.gamerule",
+  "package": "io.github.legacyrewoven.mixin.gamerule",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "GameRulesMixin"
+    "GameRuleManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
