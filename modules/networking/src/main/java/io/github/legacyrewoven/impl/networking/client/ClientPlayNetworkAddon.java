@@ -46,7 +46,7 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	private boolean sentInitialRegisterPacket;
 
 	public ClientPlayNetworkAddon(ClientPlayNetworkHandler handler, MinecraftClient client) {
-		//** Definitely wrong. */
+		//TODO Definitely wrong.
 		super(ClientNetworkingImpl.PLAY, handler.method_9281(), "ClientPlayNetworkAddon for " + handler.toString());
 		this.handler = handler;
 		this.client = client;

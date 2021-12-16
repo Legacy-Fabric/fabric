@@ -33,7 +33,7 @@ public class ClientLifecycleEventsTest implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		ClientChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
+		/*ClientChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 			if (chunk != null) {
 				LOGGER.info("Client chunk loaded at {} {}", chunk.chunkX, chunk.chunkZ);
 			}
@@ -42,7 +42,7 @@ public class ClientLifecycleEventsTest implements ClientModInitializer {
 			if (chunk != null) {
 				LOGGER.info("Client chunk unloaded at {} {}", chunk.chunkX, chunk.chunkZ);
 			}
-		});
+		});*/
 		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 			//LOGGER.info("Client Entity {} loaded", EntityType.getEntityName(entity));
 		});

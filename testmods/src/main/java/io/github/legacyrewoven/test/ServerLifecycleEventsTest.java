@@ -33,7 +33,7 @@ public class ServerLifecycleEventsTest implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
+		/*ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 			if (chunk != null) {
 				LOGGER.info("Server chunk loaded at {} {}", chunk.chunkX, chunk.chunkZ);
 			}
@@ -42,7 +42,7 @@ public class ServerLifecycleEventsTest implements ModInitializer {
 			if (chunk != null) {
 				LOGGER.info("Server chunk unloaded at {} {}", chunk.chunkX, chunk.chunkZ);
 			}
-		});
+		});*/
 		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 			//LOGGER.info("Server Entity {} loaded", EntityType.getEntityName(entity));
 		});

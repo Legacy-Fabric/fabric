@@ -30,7 +30,6 @@ import io.github.legacyrewoven.impl.networking.AbstractChanneledNetworkAddon;
 import io.github.legacyrewoven.impl.networking.ChannelInfoHolder;
 import io.github.legacyrewoven.impl.networking.NetworkingImpl;
 
-import io.github.legacyrewoven.mixin.networking.server.MinecraftServerAccess;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.server.MinecraftServer;
@@ -78,9 +77,9 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	 */
 	public boolean handle(CustomPayloadC2SPacket packet) {
 		//TODO: Do not handle the packet on game thread
-		/*if (this.server.isOnThread()) {
+		if (((MinecraftServerExtensions) this.server).isOnThread()) {
 			return false;
-		}*/
+		}
 
 		//hack to work around the fact that for some reason le PacketByteBufs don't work the same
 		byte[] data = packet.getData();
@@ -97,7 +96,8 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	//TODO: WTF
 	@Override
 	protected void schedule(Runnable task) {
-		((MinecraftServerAccess)this.handler.player.server).execute(task);
+		System.out.println("Sheduel");
+		((MinecraftServerExtensions)this.handler.player.server).execute(task);
 	}
 
 	@Override
