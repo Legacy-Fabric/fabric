@@ -20,8 +20,8 @@ package io.github.legacyrewoven.test.client;
 
 import java.util.Arrays;
 
-//import io.github.legacyrewoven.api.resource.IdentifiableResourceReloadListener;
-//import io.github.legacyrewoven.api.resource.ResourceManagerHelper;
+import io.github.legacyrewoven.api.resource.IdentifiableResourceReloadListener;
+import io.github.legacyrewoven.api.resource.ResourceManagerHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +36,7 @@ public class ResourceReloadTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		Identifier id = new Identifier("legacy-fabric-api", "test_reload");
-		/*ResourceManagerHelper.getInstance().registerReloadListener(new IdentifiableResourceReloadListener() {
+		ResourceManagerHelper.getInstance().registerReloadListener(new IdentifiableResourceReloadListener() {
 			@Override
 			public Identifier getFabricId() {
 				return id;
@@ -47,6 +47,6 @@ public class ResourceReloadTest implements ClientModInitializer {
 				LOGGER.info("Resources and reloading");
 				LOGGER.info("Namespaces are {}", Arrays.toString(resourceManager.getAllNamespaces().toArray()));
 			}
-		});*/
+		});
 	}
 }
