@@ -25,18 +25,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.ItemRenderer;
+//import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.item.ItemStack;
-
+//TODO: Item Renderer
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
-	@Inject(method = "method_3982", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityItemStackRenderHelper;method_3349(Lnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER))
+	/*@Inject(method = "method_3982", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityItemStackRenderHelper;method_3349(Lnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER))
 	public void onRender(ItemStack stack, BakedModel bakedModel, CallbackInfo ci) {
 		BuiltinItemRendererRegistry.DynamicItemRenderer renderer = BuiltinItemRendererRegistryImpl.getRenderer(stack.getItem());
 
 		if (renderer != null) {
 			renderer.render(stack, bakedModel.getTransformation());
 		}
-	}
+	}*/
 }

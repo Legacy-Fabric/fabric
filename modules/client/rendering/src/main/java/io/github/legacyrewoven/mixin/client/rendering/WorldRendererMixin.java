@@ -24,12 +24,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.render.WorldRenderer;
+//import net.minecraft.client.render.WorldRenderer;
 
-@Mixin(WorldRenderer.class)
+//@Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin {
-	@Inject(method = "reload()V", at = @At("HEAD"))
+	/*@Inject(method = "reload()V", at = @At("HEAD"))
 	private void onReload(CallbackInfo ci) {
 		InvalidateRenderStateCallback.EVENT.invoker().onInvalidate();
-	}
+	}*/
 }

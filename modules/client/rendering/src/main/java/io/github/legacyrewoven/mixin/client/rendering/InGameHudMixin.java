@@ -34,10 +34,10 @@ import net.minecraft.client.gui.hud.InGameHud;
 public class InGameHudMixin {
 	@Shadow
 	@Final
-	private MinecraftClient client;
+	private MinecraftClient minecraftClient;
 
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;color4f(FFFF)V"), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(I)V")))
-	public void render(float tickDelta, CallbackInfo callbackInfo) {
-		HudRenderCallback.EVENT.invoker().onHudRender(this.client, tickDelta);
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glColor4f(FFFF)V"), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(I)V")))
+	public void render(float tickDelta, boolean screenOpen, int mouseX, int mouseY, CallbackInfo ci) {
+		HudRenderCallback.EVENT.invoker().onHudRender(this.minecraftClient, tickDelta);
 	}
 }

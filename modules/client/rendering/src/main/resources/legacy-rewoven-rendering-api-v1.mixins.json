@@ -7,8 +7,7 @@
     "EntityRenderDispatcherMixin",
     "InGameHudMixin",
     "ItemRendererMixin",
-    "LivingEntityRendererAccessor",
-    "WorldRendererMixin"
+    "LivingEntityRendererAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

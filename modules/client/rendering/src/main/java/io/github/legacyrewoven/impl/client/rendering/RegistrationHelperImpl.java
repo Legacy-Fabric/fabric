@@ -17,27 +17,6 @@
  */
 
 package io.github.legacyrewoven.impl.client.rendering;
-
-import java.util.Objects;
-import java.util.function.Function;
-
-import io.github.legacyrewoven.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
-
-//import net.minecraft.client.render.entity.feature.FeatureRenderer;
-import net.minecraft.entity.LivingEntity;
-
-public final class RegistrationHelperImpl {
-	//implements LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper
-	/*private final Function<FeatureRenderer<?>, Boolean> delegate;
-
-	public RegistrationHelperImpl(Function<FeatureRenderer<?>, Boolean> delegate) {
-		this.delegate = delegate;
-	}
-
-	@Override
-	public <T extends LivingEntity> void register(FeatureRenderer<T> featureRenderer) {
-		Objects.requireNonNull(featureRenderer, "Feature renderer cannot be null");
-		this.delegate.apply(featureRenderer);
-	}*/
-}
+//TODO: Kept here for no real reason, can be removed, or replaced with a new interface for features at some point if that happens.
+public final class RegistrationHelperImpl {}
 

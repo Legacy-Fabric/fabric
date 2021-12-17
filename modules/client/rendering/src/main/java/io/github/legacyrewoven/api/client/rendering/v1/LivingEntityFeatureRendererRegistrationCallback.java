@@ -21,18 +21,20 @@ package io.github.legacyrewoven.api.client.rendering.v1;
 import io.github.legacyrewoven.api.event.Event;
 import io.github.legacyrewoven.api.event.EventFactory;
 
+import net.minecraft.class_2366;
 import net.minecraft.client.render.entity.EntityRenderer;
 //import net.minecraft.client.render.entity.feature.Deadmau5FeatureRenderer;
 //import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.class_2366;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 /**
- * Called when {@link FeatureRenderer feature renderers} for a {@link LivingEntityRenderer living entity renderer} are registered.
+ * Called when {@link NOT_IN_1_7 feature renderers} for a {@link class_2366 living entity renderer} are registered.
  *
- * <p>Feature renderers are typically used for rendering additional objects on an entity, such as armor, an elytra or {@link Deadmau5FeatureRenderer Deadmau5's ears}.
+ * <p>Feature renderers are typically used for rendering additional objects on an entity, such as armor, an elytra or {@link UNKNOWN Deadmau5's ears}.
  * This callback lets developers add additional feature renderers for use in entity rendering.
  * Listeners should filter out the specific entity renderer they want to hook into, usually through {@code instanceof} checks or filtering by entity type.
  * Once listeners find a suitable entity renderer, they should register their feature renderer via the registration helper.
@@ -49,9 +51,9 @@ import net.fabricmc.api.Environment;
 @FunctionalInterface
 @Environment(EnvType.CLIENT)
 public interface LivingEntityFeatureRendererRegistrationCallback {
-	Event<LivingEntityFeatureRendererRegistrationCallback> EVENT = EventFactory.createArrayBacked(LivingEntityFeatureRendererRegistrationCallback.class, callbacks -> (entityClass, entityRenderer, registrationHelper) -> {
+	Event<LivingEntityFeatureRendererRegistrationCallback> EVENT = EventFactory.createArrayBacked(LivingEntityFeatureRendererRegistrationCallback.class, callbacks -> (entityClass, entityRenderer) -> {
 		for (LivingEntityFeatureRendererRegistrationCallback callback : callbacks) {
-			callback.registerRenderers(entityClass, entityRenderer, registrationHelper);
+			callback.registerRenderers(entityClass, entityRenderer);
 		}
 	});
 
@@ -61,20 +63,5 @@ public interface LivingEntityFeatureRendererRegistrationCallback {
 	 * @param entityClass    the entity class
 	 * @param entityRenderer the entity renderer
 	 */
-	void registerRenderers(Class<? extends LivingEntity> entityClass, EntityRenderer entityRenderer, RegistrationHelper registrationHelper);
-
-	/**
-	 * A delegate object used to help register feature renderers for an entity renderer.
-	 *
-	 * <p>This is not meant for implementation by users of the API.
-	 */
-	interface RegistrationHelper {
-		/**
-		 * Adds a feature renderer to the entity renderer.
-		 *
-		 * @param featureRenderer the feature renderer
-		 * @param <T>             the type of entity
-		 */
-		//<T extends LivingEntity> void register(FeatureRenderer<T> featureRenderer);
-	}
+	void registerRenderers(Class<? extends LivingEntity> entityClass, class_2366 entityRenderer);
 }
