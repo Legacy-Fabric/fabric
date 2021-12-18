@@ -1,6 +1,6 @@
 # Legacy Rewoven API
 
-Essential hooks for modding on 1.8.9 and 1.12.2.
+Essential hooks for modding on 1.7.10, 1.8.9 and 1.12.2.
 
 Legacy Rewoven API is the library for essential hooks and interoperability mechanisms for Legacy Rewoven mods. Examples include:
 
