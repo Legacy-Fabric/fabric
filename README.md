@@ -2,7 +2,7 @@
 
 
 
-Essential hooks for modding on 1.8.9 and 1.12.2.
+Essential hooks for modding on 1.7.10, 1.8.9 and 1.12.2.
 
 
 
