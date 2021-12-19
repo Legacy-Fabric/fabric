@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "io.github.legacyrewoven.mixin.event.lifecycle",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MinecraftServerMixin",
+    "ServerChunkCacheMixin",
+    "ServerWorldMixin"
+  ],
+  "client": [
+    "client.ClientChunkCacheMixin",
+    "client.ClientWorldMixin",
+    "client.MinecraftClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

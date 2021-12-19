@@ -1,21 +1,22 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-api-testmods",
+  "id": "legacy-rewoven-api-testmods",
   "description": "Tests for api features",
   "version": "1.0.0",
   "entrypoints": {
     "main": [
-      "net.legacyfabric.fabric.test.ServerLifecycleEventsTest",
-      "net.legacyfabric.fabric.test.ServerNetworkingTest",
-      "net.legacyfabric.fabric.test.EntityEventsTest"
+      "io.github.legacyrewoven.test.ServerLifecycleEventsTest",
+      "io.github.legacyrewoven.test.ServerNetworkingTest",
+      "io.github.legacyrewoven.test.EntityEventsTest",
+      "io.github.legacyrewoven.test.command.SpongeCommandTest"
     ],
     "client": [
-      "net.legacyfabric.fabric.test.client.KeybindingTest",
-      "net.legacyfabric.fabric.test.client.ModelFeatureTest",
-      "net.legacyfabric.fabric.test.client.RenderingEventsTest",
-      "net.legacyfabric.fabric.test.client.ClientNetworkingTest",
-      "net.legacyfabric.fabric.test.client.ClientLifecycleEventsTest",
-      "net.legacyfabric.fabric.test.client.ResourceReloadTest"
+      "io.github.legacyrewoven.test.client.KeybindingTest",
+      "io.github.legacyrewoven.test.client.ModelFeatureTest",
+      "io.github.legacyrewoven.test.client.RenderingEventsTest",
+      "io.github.legacyrewoven.test.client.ClientNetworkingTest",
+      "io.github.legacyrewoven.test.client.ClientLifecycleEventsTest",
+      "io.github.legacyrewoven.test.client.ResourceReloadTest"
     ]
   }
 }

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-rewoven-sponge-command-api-v2",
+  "name": "Legacy Rewoven Sponge Command API (v2)",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-rewoven-api/icon.png",
+  "contact": {
+    "homepage": "https://legacyrewoven.github.io/",
+    "issues": "https://github.com/LegacyRewoven/rewoven-api/issues",
+    "sources": "https://github.com/LegacyRewoven/rewoven-api"
+  },
+  "authors": [
+    "Legacy Rewoven",
+    "SpongePowered"
+  ],
+  "depends": {
+    "fabricloader": ">=0.4.0"
+  },
+  "entrypoints": {
+    "client": [
+      "io.github.legacyrewoven.impl.command.ImplInit"
+    ],
+    "server": [
+      "io.github.legacyrewoven.impl.command.ImplInit"
+    ]
+  },
+  "description": "Command API that utilizes SpongeAPI's command api",
+  "mixins": [
+    "legacy-rewoven-sponge-command-api-v2.mixins.json"
+  ]
+}
