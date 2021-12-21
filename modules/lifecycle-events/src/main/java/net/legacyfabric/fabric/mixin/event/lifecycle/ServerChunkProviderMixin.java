@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.event.lifecycle.client;
+package net.legacyfabric.fabric.mixin.event.lifecycle;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,32 +25,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.world.World;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ClientChunkCache;
+import net.minecraft.world.chunk.ServerChunkProvider;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
-
-@Environment(EnvType.CLIENT)
-@Mixin(ClientChunkCache.class)
-public abstract class ClientChunkCacheMixin {
+@Mixin(ServerChunkProvider.class)
+public class ServerChunkProviderMixin {
 	@Shadow
-	private World world;
+	private ServerWorld world;
 
-	@Shadow
-	public abstract Chunk getChunk(int i, int j);
-
-	@Inject(at = @At("RETURN"), method = "method_3120")
-	public void chunkUnload(int i, int j, CallbackInfo ci) {
-		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getChunk(i, j));
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/ChunkStorage;writeChunk(Lnet/minecraft/world/World;Lnet/minecraft/world/chunk/Chunk;)V"), method = "saveChunk")
+	public void chunkUnload(Chunk chunk, CallbackInfo ci) {
+		ServerChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, chunk);
 	}
 
-	@Inject(at = @At("RETURN"), method = "method_3121", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
-		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, chunk);
+	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/chunk/ChunkStorage;loadChunk(Lnet/minecraft/world/World;II)Lnet/minecraft/world/chunk/Chunk;"), method = "loadChunk", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	public void chunkLoad(int x, int z, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
+		ServerChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, chunk);
 	}
 }

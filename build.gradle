@@ -84,12 +84,9 @@ allprojects {
 	}
 
 	dependencies {
-		implementation("com.google.guava:guava:23.5-jre")
 		minecraft("com.mojang:minecraft:${project.mc_version}")
 		mappings("net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2")
-		modApi("net.fabricmc:fabric-loader-1.8.9:${project.loader_version}") {
-			exclude module: "guava"
-		}
+		modApi("net.fabricmc:fabric-loader:${project.loader_version}")
 
 		implementation 'com.mojang:brigadier:1.0.17'
 
