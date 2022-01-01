@@ -48,7 +48,7 @@ public class CommandMessageFormatting {
 	 * @return The formatted error message.
 	 */
 	public static Text error(Text error) {
-		return error.setStyle(error.getStyle().setColor(Formatting.RED));
+		return error.setStyle(error.getStyle().setFormatting(Formatting.RED));
 	}
 
 	/**
@@ -58,6 +58,6 @@ public class CommandMessageFormatting {
 	 * @return The formatted debug message.
 	 */
 	public static Text debug(Text debug) {
-		return debug.setStyle(debug.getStyle().setColor(Formatting.GRAY));
+		return debug.setStyle(debug.getStyle().setFormatting(Formatting.GRAY));
 	}
 }

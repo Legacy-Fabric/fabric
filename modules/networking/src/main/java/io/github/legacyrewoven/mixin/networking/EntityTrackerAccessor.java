@@ -20,12 +20,12 @@ package io.github.legacyrewoven.mixin.networking;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.class_6411;
+import net.minecraft.util.IntObjectStorage;
 import net.minecraft.entity.EntityTracker;
-import net.minecraft.server.network.EntityTrackerEntry;
+import net.minecraft.entity.TrackedEntityInstance;
 
 @Mixin(EntityTracker.class)
 public interface EntityTrackerAccessor {
-	@Accessor("field_31686")
-	class_6411<EntityTrackerEntry> getTrackedEntityIds();
+	@Accessor("trackedEntityIds")
+	IntObjectStorage<TrackedEntityInstance> getTrackedEntityIds();
 }

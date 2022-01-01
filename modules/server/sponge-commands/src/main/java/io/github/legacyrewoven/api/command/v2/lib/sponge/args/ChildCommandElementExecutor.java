@@ -146,7 +146,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 				Text eText = e.getText();
 
 				if (eText != null) {
-					src.sendSystemMessage(CommandMessageFormatting.error(eText));
+					src.sendMessage(CommandMessageFormatting.error(eText));
 				}
 
 				return ImmutableList.of();

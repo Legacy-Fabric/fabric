@@ -45,7 +45,7 @@ public abstract class ServerWorldMixin {
 		ServerEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ServerWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "unloadEntity")
+	@Inject(at = @At("TAIL"), method = "onEntityRemoved")
 	public void unloadEntity(Entity entity, CallbackInfo ci) {
 		ServerEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ServerWorld) (Object) this);
 	}

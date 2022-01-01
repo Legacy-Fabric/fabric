@@ -1,7 +1,7 @@
 version = getSubprojectVersion(project, "1.0.0")
 
 dependencies {
-	implementation project(path: ":legacy-rewoven-api-base", configuration: 'dev')
-	implementation project(path: ":legacy-rewoven-vanilla-command-api-v1", configuration: 'dev')
-	implementation project(path: ":legacy-rewoven-permissions-api-v1", configuration: 'dev')
+	implementation project(path: ":rewoven-api-base", configuration: 'dev')
+	implementation project(path: ":rewoven-vanilla-command-api-v1", configuration: 'dev')
+	implementation project(path: ":rewoven-permissions-api-v1", configuration: 'dev')
 }

@@ -162,7 +162,7 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	}
 
 	@Override
-	public Set<String> method_31465() {
+	public Set<String> getNamespaces() {
 		if (namespaceCache != null) {
 			return namespaceCache;
 		}

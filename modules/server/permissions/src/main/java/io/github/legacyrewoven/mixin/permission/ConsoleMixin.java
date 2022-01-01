@@ -20,10 +20,9 @@ package io.github.legacyrewoven.mixin.permission;
 import org.spongepowered.asm.mixin.Mixin;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
-//import net.minecraft.server.command.Console;
-import net.minecraft.server.dedicated.ServerCommandOutput;
+import net.minecraft.server.command.Console;
 
-@Mixin(ServerCommandOutput.class)
+@Mixin(Console.class)
 public abstract class ConsoleMixin implements PermissibleCommandSource {
 	@Override
 	public boolean hasPermission(String perm) {

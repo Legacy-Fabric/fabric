@@ -47,7 +47,7 @@ public class CommandWrapper extends AbstractCommand {
 	}
 
 	@Override
-	public String getName() {
+	public String getCommandName() {
 		return this.mapping.getPrimaryAlias();
 	}
 
@@ -57,12 +57,12 @@ public class CommandWrapper extends AbstractCommand {
 	}
 
 	@Override
-	public String getUsage(CommandSource source) {
+	public String getUsageTranslationKey(CommandSource source) {
 		return this.mapping.getCallable().getHelp((PermissibleCommandSource) source).map(Text::asString).orElse("");
 	}
 
 	@Override
-	public void execute(MinecraftServer server, CommandSource source, String[] args) {
+	public void method_3279(MinecraftServer server, CommandSource source, String[] args) {
 		try {
 			try {
 				this.mapping.getCallable().process((PermissibleCommandSource) source, String.join(" ", args));
@@ -72,13 +72,13 @@ public class CommandWrapper extends AbstractCommand {
 				}
 			} catch (CommandPermissionException e) {
 				if (e.getText() != null) {
-					source.sendSystemMessage(CommandMessageFormatting.error(e.getText()));
+					source.sendMessage(CommandMessageFormatting.error(e.getText()));
 				}
 			} catch (CommandException e) {
 				Text text = e.getText();
 
 				if (text != null) {
-					source.sendSystemMessage(CommandMessageFormatting.error(text));
+					source.sendMessage(CommandMessageFormatting.error(text));
 				}
 
 				if (e.shouldIncludeUsage()) {
@@ -90,7 +90,7 @@ public class CommandWrapper extends AbstractCommand {
 						usage = this.mapping.getCallable().getUsage((PermissibleCommandSource) source);
 					}
 
-					source.sendSystemMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", this.getName(), usage))));
+					source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", this.getCommandName(), usage))));
 				}
 			}
 		} catch (Throwable t) {
@@ -101,16 +101,16 @@ public class CommandWrapper extends AbstractCommand {
 
 	//isAccessible
 	@Override
-	public boolean canUse(MinecraftServer server, CommandSource source) {
+	public boolean method_3278(MinecraftServer server, CommandSource source) {
 		return this.mapping.getCallable().testPermission((PermissibleCommandSource) source);
 	}
 
 	@Override
-	public List<String> getSuggestions(MinecraftServer server, CommandSource source, String[] args, BlockPos pos) {
+	public List<String> method_10738(MinecraftServer server, CommandSource source, String[] args, BlockPos pos) {
 		try {
-			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getEntityWorld(), pos));
+			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getWorld(), pos));
 		} catch (CommandException e) {
-			source.sendSystemMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
+			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
 			return Collections.emptyList();
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Error occurred while providing auto complete hints for '%s'", String.join(" ", args)), e);
