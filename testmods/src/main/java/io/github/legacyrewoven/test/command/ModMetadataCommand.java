@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/**
 package io.github.legacyrewoven.test.command;
 
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
@@ -75,4 +75,4 @@ public class ModMetadataCommand {
 		source.sendMessage(builder);
 		return CommandResult.success();
 	}
-}
+}**/
