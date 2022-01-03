@@ -18,18 +18,18 @@
 
 package io.github.legacyrewoven.api.util;
 
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.class_851;
 
 public class Location<T> {
 	private final T t;
-	private final Vec3i pos;
+	private final class_851 pos;
 
-	public Location(T t, Vec3i pos) {
+	public Location(T t, class_851 pos) {
 		this.t = t;
 		this.pos = pos;
 	}
 
-	public Vec3i getPos() {
+	public class_851 getPos() {
 		return this.pos;
 	}
 
