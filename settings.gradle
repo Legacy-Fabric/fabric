@@ -20,7 +20,7 @@ pluginManagement {
 	}
 }
 
-rootProject.name = "legacy-rewoven-api"
+rootProject.name = "rewoven-api"
 
 def addModule(String dir, String name) {
 	include(dir)
@@ -34,17 +34,17 @@ def addModule(String dir, String subdir, String name) {
 	project(":$dir").name = name
 }
 
-addModule("base", "legacy-rewoven-api-base")
-addModule("resources", "legacy-rewoven-resource-loader-v1")
-addModule("client", "rendering", "legacy-rewoven-rendering-api-v1")
-addModule("client", "keybindings", "legacy-rewoven-keybinding-api-v1")
-addModule("networking", "legacy-rewoven-networking-api-v1")
-addModule("crash-report-info", "legacy-rewoven-crash-report-info-v1")
-addModule("lifecycle-events", "legacy-rewoven-lifecycle-events-v1")
-addModule("entity-events", "legacy-rewoven-entity-events-v1")
-addModule("server", "vanilla-commands", "legacy-rewoven-vanilla-command-api-v1")
-addModule("server", "sponge-commands", "legacy-rewoven-sponge-command-api-v2")
-addModule("server", "permissions", "legacy-rewoven-permissions-api-v1")
-addModule("server", "gamerules", "legacy-rewoven-gamerule-api-v1")
+addModule("base", "rewoven-api-base")
+addModule("resources", "rewoven-resource-loader-v1")
+addModule("client", "rendering", "rewoven-rendering-api-v1")
+addModule("client", "keybindings", "rewoven-keybinding-api-v1")
+addModule("networking", "rewoven-networking-api-v1")
+addModule("crash-report-info", "rewoven-crash-report-info-v1")
+addModule("lifecycle-events", "rewoven-lifecycle-events-v1")
+addModule("entity-events", "rewoven-entity-events-v1")
+addModule("server", "vanilla-commands", "rewoven-vanilla-command-api-v1")
+addModule("server", "sponge-commands", "rewoven-sponge-command-api-v2")
+addModule("server", "permissions", "rewoven-permissions-api-v1")
+addModule("server", "gamerules", "rewoven-gamerule-api-v1")
 
 include("testmods")

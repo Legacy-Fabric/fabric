@@ -36,14 +36,14 @@ import net.minecraft.server.world.ServerWorld;
 abstract class PlayerManagerMixin {
 	@Inject(method = "respawnPlayer", at = @At("TAIL"))
 	private void afterRespawn(ServerPlayerEntity oldPlayer, int dimension, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
-		ServerPlayerEvents.AFTER_RESPAWN.invoker().afterRespawn(oldPlayer, cir.getReturnValue(), oldPlayer.server.getWorldById(dimension), alive);
+		ServerPlayerEvents.AFTER_RESPAWN.invoker().afterRespawn(oldPlayer, cir.getReturnValue(), oldPlayer.server.getWorld(dimension), alive);
 	}
 
 	/**
 	 * This is called by both "moveToWorld" and "teleport".
 	 * So this is suitable to handle the after event from both call sites.
 	 */
-	@Inject(method = "changeDimension", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(method = "teleportToDimension", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void afterWorldChanged(ServerPlayerEntity player, int dimension, CallbackInfo ci, int i, ServerWorld serverWorld, ServerWorld serverWorld2, Iterator iterator) {
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.invoker().afterChangeWorld(player, serverWorld, serverWorld2);
 	}

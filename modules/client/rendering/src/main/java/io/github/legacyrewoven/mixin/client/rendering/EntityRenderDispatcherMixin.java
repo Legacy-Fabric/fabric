@@ -44,7 +44,7 @@ import net.minecraft.entity.LivingEntity;
 public abstract class EntityRenderDispatcherMixin {
 	@Shadow
 	@Final
-	private Map<Class<? extends Entity>, EntityRenderer<?>> field_29694;
+	private Map<Class<? extends Entity>, EntityRenderer<?>> renderers;
 
 	@Shadow
 	@Final
@@ -54,10 +54,10 @@ public abstract class EntityRenderDispatcherMixin {
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void afterRegisterRenderers(TextureManager textureManager, ItemRenderer itemRenderer, CallbackInfo ci) {
 		final EntityRenderDispatcher me = (EntityRenderDispatcher) (Object) this;
-		EntityRendererRegistry.INSTANCE.initialize(me, textureManager, MinecraftClient.getInstance().getResourceManager(), itemRenderer, field_29694);
+		EntityRendererRegistry.INSTANCE.initialize(me, textureManager, MinecraftClient.getInstance().getResourceManager(), itemRenderer, renderers);
 
 		// Dispatch events to register feature renderers.
-		for (Map.Entry<Class<? extends Entity>, EntityRenderer<?>> entry : this.field_29694.entrySet()) {
+		for (Map.Entry<Class<? extends Entity>, EntityRenderer<?>> entry : this.renderers.entrySet()) {
 			if (entry.getValue() instanceof LivingEntityRenderer) { // Must be living for features
 				LivingEntityRendererAccessor accessor = (LivingEntityRendererAccessor) entry.getValue();
 

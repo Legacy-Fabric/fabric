@@ -44,7 +44,7 @@ import net.minecraft.text.TranslatableText;
 @Mixin(ClientConnection.class)
 abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	@Shadow
-	private PacketListener packetListener;
+	private PacketListener field_8432;
 
 	@Shadow
 	public abstract void disconnect(Text disconnectReason);
@@ -63,7 +63,7 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	@SuppressWarnings("UnnecessaryQualifiedMemberReference")
 	@Redirect(method = "Lnet/minecraft/network/ClientConnection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;disconnect(Lnet/minecraft/text/Text;)V"))
 	private void resendOnExceptionCaught(ClientConnection clientConnection, Text disconnectReason) {
-		PacketListener handler = this.packetListener;
+		PacketListener handler = this.field_8432;
 
 		if (handler instanceof DisconnectPacketSource) {
 			this.send(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason")));
@@ -72,10 +72,10 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 		}
 	}
 
-	@Inject(method = "method_32196", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false))
+	@Inject(method = "method_7401", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false))
 	private void checkPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>>[] genericFutureListeners, CallbackInfo ci) {
-		if (this.packetListener instanceof PacketCallbackListener) {
-			((PacketCallbackListener) this.packetListener).sent(packet);
+		if (this.field_8432 instanceof PacketCallbackListener) {
+			((PacketCallbackListener) this.field_8432).sent(packet);
 		}
 	}
 

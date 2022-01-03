@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.client.world.ClientChunkCache;
+import net.minecraft.world.chunk.ClientChunkProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -37,7 +37,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-@Mixin(ClientChunkCache.class)
+@Mixin(ClientChunkProvider.class)
 public abstract class ClientChunkCacheMixin {
 	@Final
 	@Shadow
@@ -47,12 +47,12 @@ public abstract class ClientChunkCacheMixin {
 	@Nullable
 	public abstract Chunk getLoadedChunk(int x, int z);
 
-	@Inject(at = @At("RETURN"), method = "method_29930")
+	@Inject(at = @At("RETURN"), method = "unloadChunk")
 	public void chunkUnload(int i, int j, CallbackInfo ci) {
 		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getLoadedChunk(i, j));
 	}
 
-	@Inject(at = @At("RETURN"), method = "method_29931", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	@Inject(at = @At("RETURN"), method = "getOrGenerateChunk", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
 		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, chunk);
 	}

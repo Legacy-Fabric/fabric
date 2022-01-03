@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import io.github.legacyrewoven.impl.resource.loader.ResourceManagerHelperImpl;
 
-import net.minecraft.client.resource.ResourceListener;
+import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.minecraft.resource.ResourcePack;
 
@@ -35,7 +35,7 @@ import net.minecraft.resource.ResourcePack;
 public class ReloadableResourceManagerImplMixin {
 	@Shadow
 	@Final
-	private List<ResourceListener> listeners;
+	private List<ResourceReloadListener> listeners;
 
 	@Inject(method = "reload", at = @At(value = "INVOKE", remap = false, target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;Ljava/lang/Object;)V"))
 	public void onReload(List<ResourcePack> resourcePacks, CallbackInfo ci) {

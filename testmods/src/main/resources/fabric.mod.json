@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-rewoven-api-testmods",
+  "id": "rewoven-api-testmods",
   "description": "Tests for api features",
   "version": "1.0.0",
   "entrypoints": {

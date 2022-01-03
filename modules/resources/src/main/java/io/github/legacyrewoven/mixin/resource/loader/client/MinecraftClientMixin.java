@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import io.github.legacyrewoven.impl.resource.loader.ModResourcePackUtil;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.DefaultClientResourcePack;
+import net.minecraft.resource.DefaultResourcePack;
 import net.minecraft.resource.ResourcePack;
 
 @Mixin(MinecraftClient.class)
@@ -42,7 +42,7 @@ public class MinecraftClientMixin {
 		for (ResourcePack pack : oldList) {
 			list.add(pack);
 
-			boolean isDefaultResources = pack instanceof DefaultClientResourcePack;
+			boolean isDefaultResources = pack instanceof DefaultResourcePack;
 
 			if (isDefaultResources) {
 				ModResourcePackUtil.appendModResourcePacks(list);
@@ -61,7 +61,7 @@ public class MinecraftClientMixin {
 		}
 	}
 
-	@Inject(method = "reloadResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(method = "stitchTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
 	public void reloadResources(CallbackInfo ci, List<ResourcePack> list) {
 		fabric_modifyResourcePackList(list);
 	}

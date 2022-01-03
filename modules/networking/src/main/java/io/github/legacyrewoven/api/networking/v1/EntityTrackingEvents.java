@@ -22,7 +22,7 @@ import io.github.legacyrewoven.api.event.EventFactory;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.network.EntityTrackerEntry;
+import net.minecraft.entity.TrackedEntityInstance;
 
 /**
  * Events related to a tracking entities within a player's view distance.
@@ -31,7 +31,7 @@ public final class EntityTrackingEvents {
 	/**
 	 * An event that is called before player starts tracking an entity.
 	 * Typically this occurs when an entity enters a client's view distance.
-	 * This event is called before the player's client is sent the entity's {@link EntityTrackerEntry#createSpawnPacket() spawn packet}.
+	 * This event is called before the player's client is sent the entity's {@link TrackedEntityInstance#method_2182()}  spawn packet}.
 	 */
 	public static final Event<StartTracking> START_TRACKING = EventFactory.createArrayBacked(StartTracking.class, callbacks -> (trackedEntity, player) -> {
 		for (StartTracking callback : callbacks) {

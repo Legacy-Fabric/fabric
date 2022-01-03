@@ -56,7 +56,7 @@ public class IpElement extends KeyElement {
 			return InetAddress.getByName(s);
 		} catch (UnknownHostException e) {
 			try {
-				return ((ServerPlayerEntity) Objects.requireNonNull(this.possiblePlayer.parseValue(source, args))).networkHandler.method_33621().getAddress();
+				return ((ServerPlayerEntity) Objects.requireNonNull(this.possiblePlayer.parseValue(source, args))).networkHandler.getConnection().getAddress();
 			} catch (ArgumentParseException ex) {
 				throw args.createError(new LiteralText("Invalid IP address!"));
 			}

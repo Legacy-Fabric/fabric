@@ -32,12 +32,12 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-	@Inject(at = @At("HEAD"), method = "render")
+	@Inject(at = @At("HEAD"), method = "runGameLoop")
 	private void onStartTick(CallbackInfo info) {
 		ClientTickEvents.START_CLIENT_TICK.invoker().onStartTick((MinecraftClient) (Object) this);
 	}
 
-	@Inject(at = @At("RETURN"), method = "render")
+	@Inject(at = @At("RETURN"), method = "runGameLoop")
 	private void onEndTick(CallbackInfo info) {
 		ClientTickEvents.END_CLIENT_TICK.invoker().onEndTick((MinecraftClient) (Object) this);
 	}

@@ -19,7 +19,7 @@ package io.github.legacyrewoven.impl.command;
 
 import io.github.legacyrewoven.api.event.lifecycle.v1.ServerLifecycleEvents;
 
-import net.minecraft.command.AbstractCommandManager;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.MinecraftServer;
 
 import net.fabricmc.api.ModInitializer;
@@ -31,10 +31,10 @@ public class CommandInitializer implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
 			getServerInstance = server;
 			boolean dedicated = server.isDedicated();
-			AbstractCommandManager manager = (AbstractCommandManager) server.worldGenerationProgressListenerFactory;
+			CommandManager manager = (CommandManager) server.getCommandManager();
 			CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
 				if ((dedicated && commandSide.isDedicated()) || (!dedicated && commandSide.isIntegrated())) {
-					manager.register(command);
+					manager.registerCommand(command);
 				}
 			});
 		});

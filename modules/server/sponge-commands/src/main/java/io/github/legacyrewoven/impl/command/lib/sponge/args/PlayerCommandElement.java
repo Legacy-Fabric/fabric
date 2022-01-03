@@ -72,12 +72,12 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		return source.getServer().getPlayerManager().getPlayerList().stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
+		return source.method_12833().getPlayerManager().getPlayers().stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
 	}
 
 	@Override
 	protected Object getValue(String choice) throws IllegalArgumentException {
-		Optional<PlayerEntity> ret = CommandInitializer.getServerInstance.getPlayerManager().getPlayerList().stream().findFirst().map(Function.identity());
+		Optional<PlayerEntity> ret = CommandInitializer.getServerInstance.getPlayerManager().getPlayers().stream().findFirst().map(Function.identity());
 
 		if (!ret.isPresent()) {
 			throw new IllegalArgumentException("Input value " + choice + " was not a player");

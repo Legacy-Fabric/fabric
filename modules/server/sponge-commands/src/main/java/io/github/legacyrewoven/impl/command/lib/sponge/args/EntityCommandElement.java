@@ -96,14 +96,14 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		Set<String> worldEntities = Arrays.stream(source.getServer().worlds).flatMap(world -> world.field_23572.stream())
+		Set<String> worldEntities = Arrays.stream(source.method_12833().worlds).flatMap(world -> world.entities.stream())
 				.filter(this::checkEntity)
 				.map(entity -> entity.getUuid().toString()).collect(Collectors.toSet());
-		Collection<PlayerEntity> players = Sets.newHashSet(source.getServer().getPlayerManager().getPlayerList());
+		Collection<PlayerEntity> players = Sets.newHashSet(source.method_12833().getPlayerManager().getPlayers());
 
 		if (!players.isEmpty() && this.checkEntity(players.iterator().next())) {
 			final Set<String> setToReturn = Sets.newHashSet(worldEntities); // to ensure mutability
-			players.forEach(x -> setToReturn.add(x.getName()));
+			players.forEach(x -> setToReturn.add(x.getTranslationKey()));
 			return setToReturn;
 		}
 
@@ -122,7 +122,7 @@ public class EntityCommandElement extends SelectorCommandElement {
 		}
 
 		boolean found = false;
-		Optional<Entity> ret = Optional.ofNullable(CommandInitializer.getServerInstance.getPlayerByUuid(uuid));
+		Optional<Entity> ret = Optional.ofNullable(CommandInitializer.getServerInstance.getEntity(uuid));
 
 		if (ret.isPresent()) {
 			Entity entity = ret.get();

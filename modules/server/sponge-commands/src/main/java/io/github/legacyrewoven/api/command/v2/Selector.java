@@ -34,31 +34,31 @@ public enum Selector {
 	ALL_ENTITIES('e') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getEntityWorld().field_23577);
+			return Sets.newHashSet(sender.getWorld().entities);
 		}
 	},
 	ALL_PLAYERS('a') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return sender.getEntityWorld().field_23576.stream().map(e -> (Entity) e).collect(Collectors.toSet());
+			return sender.getWorld().playerEntities.stream().map(e -> (Entity) e).collect(Collectors.toSet());
 		}
 	},
 	NEAREST_PLAYER('p') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getEntityWorld().getClosestPlayer((Entity) sender, 50.0D));
+			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.getEntity(), 50.0D));
 		}
 	},
 	RANDOM_PLAYER('r') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getServer().getPlayerManager().getPlayerList().stream().findAny().orElseThrow(NullPointerException::new));
+			return Sets.newHashSet(sender.getWorld().getServer().getPlayerManager().getPlayers().stream().findAny().orElseThrow(NullPointerException::new));
 		}
 	},
 	EXECUTING_ENTITY('s') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getCommandInvoker());
+			return Sets.newHashSet(sender.getEntity());
 		}
 	};
 

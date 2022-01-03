@@ -29,7 +29,7 @@ public abstract class MinecraftServerMixin implements PermissibleCommandSource {
 	public abstract boolean isDedicated();
 
 	@Shadow
-	public abstract MinecraftServer getServer();
+	public abstract MinecraftServer method_12833();
 
 	@Override
 	public boolean hasPermission(String perm) {

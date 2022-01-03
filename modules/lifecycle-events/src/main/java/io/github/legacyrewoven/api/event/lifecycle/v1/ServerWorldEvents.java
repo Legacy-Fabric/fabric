@@ -22,7 +22,7 @@ import io.github.legacyrewoven.api.event.EventFactory;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.storage.PersistentState;
+import net.minecraft.world.PersistentState;
 
 public final class ServerWorldEvents {
 	/**
