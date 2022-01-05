@@ -74,11 +74,8 @@ allprojects {
 	repositories {
 		maven {
 			name = "Legacy Rewoven"
-			url = "https://github.com/LegacyRewoven/maven/raw/main/"
+			url = "https://maven.rewovenmc.tk"
 		}
-
-		// Left here until 1.12.2 Yarn hits Rewoven's maven
-		maven { url "https://maven.legacyfabric.net/" }
 	}
 
 	minecraft {
