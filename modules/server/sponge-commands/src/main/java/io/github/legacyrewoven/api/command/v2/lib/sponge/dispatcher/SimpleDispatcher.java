@@ -45,6 +45,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import org.jetbrains.annotations.Nullable;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandCallable;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandException;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.CommandMapping;
@@ -55,9 +56,8 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.ImmutableCommandMapping
 import io.github.legacyrewoven.api.command.v2.lib.sponge.InvocationCommandException;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.Location;
-import net.minecraft.class_1981;
-import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.class_1981;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;

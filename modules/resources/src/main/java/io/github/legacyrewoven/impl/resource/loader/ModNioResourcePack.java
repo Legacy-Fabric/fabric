@@ -19,7 +19,6 @@
 package io.github.legacyrewoven.impl.resource.loader;
 
 import java.io.Closeable;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.DirectoryStream;
@@ -70,6 +69,7 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	@Override
 	protected InputStream openFile(String filename) {
 		InputStream stream;
+
 		try {
 			if (DeferredNioExecutionHandler.shouldDefer()) {
 				stream = DeferredNioExecutionHandler.submit(() -> {
@@ -92,12 +92,16 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 					return Files.newInputStream(path);
 				}
 			}
-		} catch (IOException e) {e.printStackTrace();}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		stream = ModResourcePackUtil.openDefault(this.getFabricModMetadata(), filename);
 
 		if (stream != null) {
 			return stream;
 		}
+
 		return null;
 	}
 

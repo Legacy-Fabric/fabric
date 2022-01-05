@@ -19,14 +19,12 @@
 package io.github.legacyrewoven.api.client.rendering.v1;
 
 import org.jetbrains.annotations.NotNull;
+import io.github.legacyrewoven.impl.client.rendering.BuiltinItemRendererRegistryImpl;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import io.github.legacyrewoven.impl.client.rendering.BuiltinItemRendererRegistryImpl;
 
 /**
  * This registry holds {@linkplain DynamicItemRenderer builtin item renderers} for items.

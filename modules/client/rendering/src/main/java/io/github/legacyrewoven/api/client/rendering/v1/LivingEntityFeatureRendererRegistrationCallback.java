@@ -22,9 +22,6 @@ import io.github.legacyrewoven.api.event.Event;
 import io.github.legacyrewoven.api.event.EventFactory;
 
 import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.EntityRenderer;
-//import net.minecraft.client.render.entity.feature.Deadmau5FeatureRenderer;
-//import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.entity.LivingEntity;
 
 import net.fabricmc.api.EnvType;

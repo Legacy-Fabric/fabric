@@ -24,13 +24,11 @@ import java.util.Locale;
 
 import io.github.legacyrewoven.api.resource.IdentifiableResourceReloadListener;
 import io.github.legacyrewoven.api.resource.ResourceReloadListenerKeys;
-
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.WorldRenderer;
-//import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.sound.SoundManager;

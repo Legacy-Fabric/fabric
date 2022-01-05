@@ -79,6 +79,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 		if (((MinecraftServerExtensions) this.server).isOnThread()) {
 			return false;
 		}
+
 		//hack to work around the fact that for some reason le PacketByteBufs don't work the same
 		byte[] data = packet.method_7981();
 		PacketByteBuf payload = new PacketByteBuf(PacketByteBufs.create().writeBytes(data));
@@ -93,7 +94,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	// impl details
 	@Override
 	protected void schedule(Runnable task) {
-		((MinecraftServerExtensions)this.handler.player.server).execute(task);
+		((MinecraftServerExtensions) this.handler.player.server).execute(task);
 	}
 
 	@Override

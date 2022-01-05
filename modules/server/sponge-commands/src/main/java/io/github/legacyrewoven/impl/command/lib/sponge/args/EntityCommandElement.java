@@ -25,7 +25,12 @@
 
 package io.github.legacyrewoven.impl.command.lib.sponge.args;
 
-import java.util.*;
+import java.util.Set;
+import java.util.Optional;
+import java.util.Collection;
+import java.util.UUID;
+import java.util.List;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;

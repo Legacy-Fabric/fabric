@@ -39,7 +39,8 @@ import net.minecraft.entity.LivingEntity;
 
 @Mixin(EntityRenderDispatcher.class)
 public abstract class EntityRenderDispatcherMixin {
-	@Shadow	private Map<Class<? extends Entity>, EntityRenderer> renderers;
+	@Shadow
+	private Map<Class<? extends Entity>, EntityRenderer> renderers;
 	@Shadow public TextureManager textureManager;
 	//TODO: Make this something more useful.
 	private ItemRenderer itemRenderer = new ItemRenderer();
@@ -52,9 +53,7 @@ public abstract class EntityRenderDispatcherMixin {
 
 		for (Map.Entry<Class<? extends Entity>, EntityRenderer> entry : this.renderers.entrySet()) {
 			if (entry.getValue() instanceof LivingEntityRenderer) {
-				LivingEntityRendererAccessor accessor = (LivingEntityRendererAccessor) entry.getValue();
-
-				/**Sorry, features are built into the entity renderer in versions < 1.8.*/
+				/**"Features" are built into the entity renderer in versions < 1.8.*/
 				LivingEntityFeatureRendererRegistrationCallback.EVENT.invoker().registerRenderers((Class<? extends LivingEntity>) entry.getKey(), (LivingEntityRenderer) entry.getValue());
 			}
 		}

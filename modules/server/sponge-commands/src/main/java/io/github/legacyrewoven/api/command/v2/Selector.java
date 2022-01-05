@@ -18,7 +18,11 @@
 
 package io.github.legacyrewoven.api.command.v2;
 
-import java.util.*;
+import java.util.Set;
+import java.util.Optional;
+import java.util.Map;
+import java.util.List;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
