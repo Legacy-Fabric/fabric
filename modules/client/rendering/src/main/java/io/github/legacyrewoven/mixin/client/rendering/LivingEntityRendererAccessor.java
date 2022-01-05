@@ -21,10 +21,10 @@ package io.github.legacyrewoven.mixin.client.rendering;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-import net.minecraft.class_2366;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
 //import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.entity.LivingEntity;
 
-@Mixin(class_2366.class)
+@Mixin(LivingEntityRenderer.class)
 //TODO: Still no features, this class is pointless.
 public interface LivingEntityRendererAccessor<T extends LivingEntity> {}

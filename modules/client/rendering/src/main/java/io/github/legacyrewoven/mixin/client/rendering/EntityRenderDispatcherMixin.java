@@ -31,16 +31,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.ItemRenderer;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.texture.TextureManager;
-import net.minecraft.class_2366;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 
 @Mixin(EntityRenderDispatcher.class)
 public abstract class EntityRenderDispatcherMixin {
-	@Shadow	private Map<Class<? extends Entity>, EntityRenderer> field_10639;
-	@Shadow private TextureManager field_10635;
+	@Shadow	private Map<Class<? extends Entity>, EntityRenderer> renderers;
+	@Shadow public TextureManager textureManager;
 	//TODO: Make this something more useful.
 	private ItemRenderer itemRenderer = new ItemRenderer();
 
@@ -48,14 +48,14 @@ public abstract class EntityRenderDispatcherMixin {
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void afterRegisterRenderers(CallbackInfo ci) {
 		final EntityRenderDispatcher me = (EntityRenderDispatcher) (Object) this;
-		EntityRendererRegistry.INSTANCE.initialize(me, this.field_10635, MinecraftClient.getInstance().getResourceManager(), itemRenderer, field_10639);
+		EntityRendererRegistry.INSTANCE.initialize(me, this.textureManager, MinecraftClient.getInstance().getResourceManager(), itemRenderer, renderers);
 
-		for (Map.Entry<Class<? extends Entity>, EntityRenderer> entry : this.field_10639.entrySet()) {
-			if (entry.getValue() instanceof class_2366) {
+		for (Map.Entry<Class<? extends Entity>, EntityRenderer> entry : this.renderers.entrySet()) {
+			if (entry.getValue() instanceof LivingEntityRenderer) {
 				LivingEntityRendererAccessor accessor = (LivingEntityRendererAccessor) entry.getValue();
 
 				/**Sorry, features are built into the entity renderer in versions < 1.8.*/
-				LivingEntityFeatureRendererRegistrationCallback.EVENT.invoker().registerRenderers((Class<? extends LivingEntity>) entry.getKey(), (class_2366) entry.getValue());
+				LivingEntityFeatureRendererRegistrationCallback.EVENT.invoker().registerRenderers((Class<? extends LivingEntity>) entry.getKey(), (LivingEntityRenderer) entry.getValue());
 			}
 		}
 	}

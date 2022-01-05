@@ -55,7 +55,7 @@ public class PermissionsApiHolder {
 
 		@Override
 		public boolean hasPermission(ServerPlayerEntity player, String perm) {
-			return MinecraftServer.getServer().getPlayerManager().method_10448(player.getGameProfile());
+			return MinecraftServer.getServer().getPlayerManager().isOperator(player.getGameProfile());
 		}
 	}
 }

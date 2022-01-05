@@ -33,19 +33,19 @@ public enum Selector {
 	ALL_ENTITIES('e') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getWorld().field_9132);
+			return Sets.newHashSet(sender.getWorld().entities);
 		}
 	},
 	ALL_PLAYERS('a') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return (Set<Entity>) sender.getWorld().players.stream().map(e -> (Entity) e).collect(Collectors.toSet());
+			return (Set<Entity>) sender.getWorld().playerEntities.stream().map(e -> (Entity) e).collect(Collectors.toSet());
 		}
 	},
 	NEAREST_PLAYER('p') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.getBlockPos().x, sender.getBlockPos().y, sender.getBlockPos().z, 50.0D));
+			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.method_4086().field_3112, sender.method_4086().field_3113, sender.method_4086().field_3114, 50.0D));
 		}
 	},
 	RANDOM_PLAYER('r') {
@@ -58,7 +58,7 @@ public enum Selector {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
 			//TODO @s didn't exist this early in the game, and there seems to be no code to handle it, so maybe this'll work?
-			return Sets.newHashSet(sender.getWorld().getPlayerFromName(sender.getTranslationKey()));
+			return Sets.newHashSet(sender.getWorld().getPlayerByName(sender.getTranslationKey()));
 		}
 	};
 

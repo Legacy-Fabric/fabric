@@ -26,7 +26,7 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.args.GenericArguments;
 import io.github.legacyrewoven.api.command.v2.lib.sponge.spec.CommandSpec;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 
-import net.minecraft.class_2432;
+import net.minecraft.class_1981;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 
@@ -55,7 +55,7 @@ public class ModMetadataCommand {
 			LiteralText issueText = new LiteralText("");
 			issueText.append("Issues: ");
 			LiteralText issueUrl = new LiteralText(contact.get("issues").get());
-			issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(class_2432.field_10875, issueUrl.asString())));
+			issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(class_1981.field_8476, issueUrl.asString())));
 			issueText.append(issueUrl);
 			issueText.append("\n");
 			builder.append(issueText);
@@ -65,7 +65,7 @@ public class ModMetadataCommand {
 			LiteralText sourcesText = new LiteralText("");
 			sourcesText.append("Sources: ");
 			LiteralText sourcesUrl = new LiteralText(contact.get("sources").get());
-			sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(class_2432.field_10875, sourcesUrl.asString())));
+			sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(class_1981.field_8476, sourcesUrl.asString())));
 			sourcesText.append(sourcesUrl);
 			sourcesText.append("\n");
 			builder.append(sourcesText);

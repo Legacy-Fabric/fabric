@@ -33,14 +33,14 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.args.ArgumentParseExcep
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.Location;
 
-import net.minecraft.class_2662;
+import net.minecraft.command.AbstractCommand;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.class_851;
 import org.jetbrains.annotations.NotNull;
 
-public class CommandWrapper extends class_2662 {
+public class CommandWrapper extends AbstractCommand {
 	private final CommandMapping mapping;
 
 	public CommandWrapper(CommandMapping mapping) {
@@ -106,9 +106,9 @@ public class CommandWrapper extends class_2662 {
 	}
 
 	@Override
-	public List<String> method_8398(CommandSource source, String[] args) {
+	public List<String> method_3276(CommandSource source, String[] args) {
 		try {
-			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getWorld(), source.getBlockPos()));
+			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getWorld(), source.method_4086()));
 		} catch (CommandException e) {
 			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
 			return Collections.emptyList();

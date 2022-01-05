@@ -80,7 +80,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 			return false;
 		}
 		//hack to work around the fact that for some reason le PacketByteBufs don't work the same
-		byte[] data = packet.getData();
+		byte[] data = packet.method_7981();
 		PacketByteBuf payload = new PacketByteBuf(PacketByteBufs.create().writeBytes(data));
 		return this.handle(packet.getChannel(), payload);
 	}

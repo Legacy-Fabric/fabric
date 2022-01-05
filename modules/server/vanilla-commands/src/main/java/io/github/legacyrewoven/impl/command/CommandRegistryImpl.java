@@ -25,18 +25,18 @@ import com.google.common.collect.Maps;
 import io.github.legacyrewoven.api.command.CommandSide;
 import io.github.legacyrewoven.api.registry.CommandRegistry;
 
-import net.minecraft.class_2662;
+import net.minecraft.command.AbstractCommand;
 
 public class CommandRegistryImpl implements CommandRegistry {
 	public static final CommandRegistryImpl INSTANCE = new CommandRegistryImpl();
-	private static final Map<class_2662, CommandSide> FABRIC_COMMANDS = Maps.newHashMap();
+	private static final Map<AbstractCommand, CommandSide> FABRIC_COMMANDS = Maps.newHashMap();
 
 	@Override
-	public void register(class_2662 command, CommandSide side) {
+	public void register(AbstractCommand command, CommandSide side) {
 		FABRIC_COMMANDS.put(command, side);
 	}
 
-	public static Map<class_2662, CommandSide> getCommandMap() {
+	public static Map<AbstractCommand, CommandSide> getCommandMap() {
 		return Collections.unmodifiableMap(FABRIC_COMMANDS);
 	}
 }

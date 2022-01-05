@@ -24,12 +24,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.world.GameRuleDispatcher;
+import net.minecraft.world.GameRuleManager;
 
-@Mixin(GameRuleDispatcher.class)
+@Mixin(GameRuleManager.class)
 public class GameRuleManagerMixin {
 	@Inject(at = @At("RETURN"), method = "<init>")
 	public void registerModdedGamerules(CallbackInfo ci) {
-		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleDispatcher) (Object) this);
+		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleManager) (Object) this);
 	}
 }

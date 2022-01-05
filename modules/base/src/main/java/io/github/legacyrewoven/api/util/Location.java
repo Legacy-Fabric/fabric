@@ -18,18 +18,18 @@
 
 package io.github.legacyrewoven.api.util;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.class_851;
 
 public class Location<T> {
 	private final T t;
-	private final BlockPos pos;
+	private final class_851 pos;
 
-	public Location(T t, BlockPos pos) {
+	public Location(T t, class_851 pos) {
 		this.t = t;
 		this.pos = pos;
 	}
 
-	public BlockPos getPos() {
+	public class_851 getPos() {
 		return this.pos;
 	}
 

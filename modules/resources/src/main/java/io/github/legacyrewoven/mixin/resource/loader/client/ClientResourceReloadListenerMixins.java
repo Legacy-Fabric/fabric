@@ -24,13 +24,14 @@ import java.util.Locale;
 
 import io.github.legacyrewoven.api.resource.IdentifiableResourceReloadListener;
 import io.github.legacyrewoven.api.resource.ResourceReloadListenerKeys;
+
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.class_2341;
-import net.minecraft.class_2346;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.WorldRenderer;
 //import net.minecraft.client.render.block.BlockRenderManager;
-import net.minecraft.client.render.ItemRenderer;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.texture.TextureManager;
@@ -44,8 +45,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.MappingResolver;
 
 @Mixin({
-		SoundManager.class, class_2341.class, LanguageManager.class, GrassColorResourceReloadListener.class, FoliageColorResourceReloadListener.class, TextureManager.class,
-		class_2346.class, /*BlockRenderManager.class,*/ ItemRenderer.class, TextRenderer.class
+		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorResourceReloadListener.class, FoliageColorResourceReloadListener.class, TextureManager.class,
+		WorldRenderer.class, /*BlockRenderManager.class,*/ ItemRenderer.class, TextRenderer.class
 		//Can't find BlockRenderManager.
 })
 @Environment(EnvType.CLIENT)
@@ -59,7 +60,7 @@ public abstract class ClientResourceReloadListenerMixins implements Identifiable
 		if (this.fabric_idDeps == null) {
 			Object self = this;
 
-			if (/*self instanceof BakedModelManager ||*/ self instanceof class_2346) {
+			if (/*self instanceof BakedModelManager ||*/ self instanceof WorldRenderer) {
 				this.fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.TEXTURES);
 			} else if (self instanceof ItemRenderer/* || self instanceof BlockRenderManager*/) {
 				this.fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.MODELS);

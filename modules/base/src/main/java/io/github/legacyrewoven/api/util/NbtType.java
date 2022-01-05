@@ -19,17 +19,17 @@
 package io.github.legacyrewoven.api.util;
 
 import net.minecraft.nbt.ByteArrayTag;
-//import net.minecraft.nbt.ByteTag;
-//import net.minecraft.nbt.CompoundTag;
-//import net.minecraft.nbt.DoubleTag;
-//import net.minecraft.nbt.EndTag;
+import net.minecraft.nbt.ByteTag;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.EndTag;
 import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.ShortTag;
-//import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 
 /**

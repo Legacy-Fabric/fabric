@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.render.ItemRenderer;
+import net.minecraft.client.render.item.ItemRenderer;
 //import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.item.ItemStack;
 //TODO: Item Renderer

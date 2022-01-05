@@ -22,10 +22,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.entity.EntityTracker;
-import net.minecraft.class_2610;
+import net.minecraft.util.IntObjectStorage;
 
 @Mixin(EntityTracker.class)
 public interface EntityTrackerAccessor {
 	@Accessor
-	class_2610 getTrackedEntityIds();
+	IntObjectStorage getTrackedEntityIds();
 }

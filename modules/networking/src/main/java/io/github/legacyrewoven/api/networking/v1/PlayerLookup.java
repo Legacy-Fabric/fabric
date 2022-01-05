@@ -98,9 +98,9 @@ public final class PlayerLookup {
 					.map(ServerWorld::getEntityTracker)
 					.map(EntityTrackerAccessor.class::cast)
 					.map(EntityTrackerAccessor::getTrackedEntityIds)
-					.map(c -> c.getByKeycode(entity.getEntityId()))
+					.map(c -> c.get(entity.getEntityId()))
 					.map(EntityTrackerEntryAccessor.class::cast)
-					.map(EntityTrackerEntryAccessor::getField_11249)
+					.map(EntityTrackerEntryAccessor::getPlayers)
 					.map(Collections::unmodifiableSet)
 					.orElseGet(Collections::emptySet);
 		}
@@ -142,7 +142,7 @@ public final class PlayerLookup {
 
 		return world(world)
 				.stream()
-				.filter((p) -> p.getDistanceTo(pos.x, pos.y, pos.z) <= radiusSq)
+				.filter((p) -> p.getDistanceTo(pos.field_4613, pos.field_4614, pos.field_4615) <= radiusSq)
 				.collect(Collectors.toList());
 	}
 

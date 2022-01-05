@@ -47,7 +47,7 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 
 	public ClientPlayNetworkAddon(ClientPlayNetworkHandler handler, MinecraftClient client) {
 		//TODO Definitely wrong.
-		super(ClientNetworkingImpl.PLAY, handler.method_9281(), "ClientPlayNetworkAddon for " + handler.toString());
+		super(ClientNetworkingImpl.PLAY, handler.getClientConnection(), "ClientPlayNetworkAddon for " + handler.toString());
 		this.handler = handler;
 		this.client = client;
 
@@ -83,12 +83,12 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	 */
 	public boolean handle(CustomPayloadS2CPacket packet) {
 		// Do not handle the packet on game thread
-		if (this.client.method_9146()) {
+		if (this.client.method_6640()) {
 			return false;
 		}
 
 		//PacketByteBuf buf = packet.getPayload();
-		byte[] data = packet.getData();
+		byte[] data = packet.method_7734();
 
 		try {
 			return this.handle(packet.getChannel(), data);
@@ -106,7 +106,7 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 
 	@Override
 	protected void schedule(Runnable task) {
-		MinecraftClient.getInstance().method_9144(task);
+		MinecraftClient.getInstance().method_6635(task);
 	}
 
 	@Override

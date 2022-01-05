@@ -21,18 +21,17 @@ package io.github.legacyrewoven.api.client.rendering.v1;
 import io.github.legacyrewoven.api.event.Event;
 import io.github.legacyrewoven.api.event.EventFactory;
 
-import net.minecraft.class_2366;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.EntityRenderer;
 //import net.minecraft.client.render.entity.feature.Deadmau5FeatureRenderer;
 //import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.class_2366;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 /**
- * Called when {@link NOT_IN_1_7 feature renderers} for a {@link class_2366 living entity renderer} are registered.
+ * Called when {@link NOT_IN_1_7 feature renderers} for a {@link LivingEntityRenderer living entity renderer} are registered.
  *
  * <p>Feature renderers are typically used for rendering additional objects on an entity, such as armor, an elytra or {@link UNKNOWN Deadmau5's ears}.
  * This callback lets developers add additional feature renderers for use in entity rendering.
@@ -63,5 +62,5 @@ public interface LivingEntityFeatureRendererRegistrationCallback {
 	 * @param entityClass    the entity class
 	 * @param entityRenderer the entity renderer
 	 */
-	void registerRenderers(Class<? extends LivingEntity> entityClass, class_2366 entityRenderer);
+	void registerRenderers(Class<? extends LivingEntity> entityClass, LivingEntityRenderer entityRenderer);
 }

@@ -55,7 +55,7 @@ import io.github.legacyrewoven.api.command.v2.lib.sponge.ImmutableCommandMapping
 import io.github.legacyrewoven.api.command.v2.lib.sponge.InvocationCommandException;
 import io.github.legacyrewoven.api.permission.v1.PermissibleCommandSource;
 import io.github.legacyrewoven.api.util.Location;
-import net.minecraft.class_2432;
+import net.minecraft.class_1981;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.ClickEvent;
@@ -400,7 +400,7 @@ public final class SimpleDispatcher implements Dispatcher {
 			CommandMapping mapping = mappingOpt.get();
 			final Optional<Text> description = mapping.getCallable().getShortDescription(source);
 			Text text = new LiteralText(mapping.getPrimaryAlias());
-			build.append(text.setStyle(text.getStyle().setColor(Formatting.GREEN).setUnderline(Boolean.TRUE).setClickEvent(new ClickEvent(class_2432.field_10877, "/" + mapping.getPrimaryAlias())))).append(CommandMessageFormatting.SPACE_TEXT).append(description.orElse(mapping.getCallable().getUsage(source)));
+			build.append(text.setStyle(text.getStyle().setFormatting(Formatting.GREEN).setUnderline(Boolean.TRUE).setClickEvent(new ClickEvent(class_1981.field_8478, "/" + mapping.getPrimaryAlias())))).append(CommandMessageFormatting.SPACE_TEXT).append(description.orElse(mapping.getCallable().getUsage(source)));
 
 			if (it.hasNext()) {
 				build.append("\n");

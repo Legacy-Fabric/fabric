@@ -49,7 +49,7 @@ import net.minecraft.text.HoverEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import net.minecraft.util.Action;
+import net.minecraft.class_1985;
 
 public class CommandManagerImpl implements CommandManager {
 	private static final Logger LOGGER = LogManager.getLogger("Fabric Command Manager");
@@ -145,7 +145,7 @@ public class CommandManagerImpl implements CommandManager {
 			}
 
 			Text message = CommandMessageFormatting.error(new LiteralText("An unexpected error happened executing the command"));
-			message.setStyle(message.getStyle().setHoverEvent(new HoverEvent(Action.SHOW_TEXT, new LiteralText("Stacktrace: \n" + Arrays.stream(t.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("\n"))))));
+			message.setStyle(message.getStyle().setHoverEvent(new HoverEvent(class_1985.field_8488, new LiteralText("Stacktrace: \n" + Arrays.stream(t.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("\n"))))));
 			source.sendMessage(message);
 		}
 

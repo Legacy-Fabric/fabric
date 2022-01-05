@@ -31,10 +31,10 @@ import net.minecraft.client.options.KeyBinding;
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
 	@Shadow
-	public KeyBinding[] ingameKeys;
+	public KeyBinding[] keysAll;
 
-	@Inject(at = @At("HEAD"), method = "readOptionsFile")
+	@Inject(at = @At("HEAD"), method = "load")
 	public void loadHook(CallbackInfo info) {
-		ingameKeys = KeyBindingRegistryImpl.process(ingameKeys);
+		keysAll = KeyBindingRegistryImpl.process(keysAll);
 	}
 }

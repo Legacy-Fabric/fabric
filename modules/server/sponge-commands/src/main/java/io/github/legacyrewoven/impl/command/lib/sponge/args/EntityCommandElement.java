@@ -92,7 +92,7 @@ public class EntityCommandElement extends SelectorCommandElement {
 	}
 
 	protected List<Entity> getWorldEntityListDuringIteration(World world) {
-		return (List<Entity>) world.field_9132;
+		return (List<Entity>) world.entities;
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class EntityCommandElement extends SelectorCommandElement {
 			uuid = UUID.fromString(choice);
 		} catch (IllegalArgumentException ignored) {
 			// Player could be a name
-			return Optional.ofNullable(MinecraftServer.getServer().getPlayerManager().method_10419(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
+			return Optional.ofNullable(MinecraftServer.getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
 		}
 
 		boolean found = false;

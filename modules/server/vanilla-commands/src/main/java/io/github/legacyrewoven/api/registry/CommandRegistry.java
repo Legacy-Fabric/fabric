@@ -21,7 +21,7 @@ package io.github.legacyrewoven.api.registry;
 import io.github.legacyrewoven.api.command.CommandSide;
 import io.github.legacyrewoven.impl.command.CommandRegistryImpl;
 
-import net.minecraft.class_2662;
+import net.minecraft.command.AbstractCommand;
 
 /**
  * Base class for registration of commands.
@@ -29,9 +29,9 @@ import net.minecraft.class_2662;
 public interface CommandRegistry {
 	CommandRegistry INSTANCE = CommandRegistryImpl.INSTANCE;
 
-	void register(class_2662 command, CommandSide side);
+	void register(AbstractCommand command, CommandSide side);
 
-	default void register(class_2662 command) {
+	default void register(AbstractCommand command) {
 		this.register(command, CommandSide.COMMON);
 	}
 }

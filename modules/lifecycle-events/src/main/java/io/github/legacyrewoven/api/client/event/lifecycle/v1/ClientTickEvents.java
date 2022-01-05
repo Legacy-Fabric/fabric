@@ -22,7 +22,7 @@ import io.github.legacyrewoven.api.event.Event;
 import io.github.legacyrewoven.api.event.EventFactory;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.world.client.ClientWorld;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.profiler.Profiler;
 
 import net.fabricmc.api.EnvType;

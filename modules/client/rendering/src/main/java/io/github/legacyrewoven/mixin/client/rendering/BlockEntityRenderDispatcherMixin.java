@@ -34,10 +34,10 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
 @Mixin(BlockEntityRenderDispatcher.class)
 public abstract class BlockEntityRenderDispatcherMixin {
-	@Shadow	private Map<Class<? extends BlockEntity>, BlockEntityRenderer> field_10608;
+	@Shadow	private Map<Class<? extends BlockEntity>, BlockEntityRenderer> renderers;
 
 	@Inject(at = @At("RETURN"), method = "<init>")
 	private void init(CallbackInfo ci) {
-		BlockEntityRendererRegistryImpl.setup(((t, function) -> field_10608.put(t, function.apply((BlockEntityRenderDispatcher) (Object) this))));
+		BlockEntityRendererRegistryImpl.setup(((t, function) -> renderers.put(t, function.apply((BlockEntityRenderDispatcher) (Object) this))));
 	}
 }

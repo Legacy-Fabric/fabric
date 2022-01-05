@@ -296,7 +296,7 @@ public final class ClientPlayNetworking {
 	public static void send(String channelName, PacketByteBuf buf) throws IllegalStateException {
 		// You cant send without a client player, so this is fine
 		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-			MinecraftClient.getInstance().getNetworkHandler().method_9280(createC2SPacket(channelName, buf));
+			MinecraftClient.getInstance().getNetworkHandler().sendPacket(createC2SPacket(channelName, buf));
 			return;
 		}
 
@@ -313,7 +313,7 @@ public final class ClientPlayNetworking {
 	public static void send(Identifier channelId, PacketByteBuf buf) throws IllegalStateException {
 		// You cant send without a client player, so this is fine
 		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-			MinecraftClient.getInstance().getNetworkHandler().method_9280(createC2SPacket(channelId, buf));
+			MinecraftClient.getInstance().getNetworkHandler().sendPacket(createC2SPacket(channelId, buf));
 			return;
 		}
 
