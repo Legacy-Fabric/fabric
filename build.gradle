@@ -47,7 +47,7 @@ def static setupRepositories(RepositoryHandler repositories) {
 	def ENV = System.getenv()
 	if (ENV.MAVEN_PUBLISH_TOKEN) {
 		repositories.maven {
-			url 'https://maven.legacyfabric.net/'
+			url 'https://maven.rewovenmc.tk/'
 			credentials {
 				username 'BobTheBuildSlave'
 				password ENV.MAVEN_PUBLISH_TOKEN
