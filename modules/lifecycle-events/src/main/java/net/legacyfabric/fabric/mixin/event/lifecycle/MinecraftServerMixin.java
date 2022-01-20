@@ -78,7 +78,7 @@ public abstract class MinecraftServerMixin {
 		}
 	}
 
-	@Inject(at = @At(value = "TAIL"), method = "method_6466")
+	@Inject(at = @At(value = "TAIL"), method = "method_2980")
 	public void serverWorldLoad(CallbackInfo ci) {
 		for (ServerWorld world : this.worlds) {
 			ServerWorldEvents.LOAD.invoker().onWorldLoad((MinecraftServer) (Object) this, world);

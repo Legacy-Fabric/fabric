@@ -4,11 +4,11 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MinecraftServerMixin",
-    "ServerChunkCacheMixin",
+    "ServerChunkProviderMixin",
     "ServerWorldMixin"
   ],
   "client": [
-    "client.ClientChunkCacheMixin",
+    "client.ClientChunkProviderMixin",
     "client.ClientWorldMixin",
     "client.MinecraftClientMixin"
   ],
