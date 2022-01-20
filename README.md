@@ -1,4 +1,4 @@
-# Legacy Rewoven API
+# Legacy Fabric API
 
 
 
@@ -6,7 +6,7 @@ Essential hooks for modding on 1.7.10, 1.8.9 and 1.12.2.
 
 
 
-Legacy Rewoven API is the library for essential hooks and interoperability mechanisms for Legacy Rewoven mods. Examples include:
+Legacy Fabric API is the library for essential hooks and interoperability mechanisms for Legacy Fabric mods. Examples include:
 
 
 
@@ -18,7 +18,7 @@ Legacy Rewoven API is the library for essential hooks and interoperability mecha
 
 
 
-For support, consider joining the [Legacy Rewoven discord server](https://discord.gg/K9U4PfmFfp), opening an issue, or creating a discussion.
+For support, consider joining the [Legacy Fabric discord server](https://discord.gg/emgF7bp), opening an issue, or creating a discussion.
 
 
 

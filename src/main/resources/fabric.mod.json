@@ -1,21 +1,35 @@
-
 {
   "schemaVersion": 1,
-  "id": "legacy-rewoven-api",
-  "name": "Legacy Rewoven API",
+  "id": "legacy-fabric-api",
+  "name": "Legacy Fabric API",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
-  "icon": "assets/legacy-rewoven-api/icon.png",
+  "icon": "assets/legacy-fabric-api/icon.png",
   "contact": {
-    "homepage": "https://legacyrewoven.github.io/",
-    "issues": "https://github.com/LegacyRewoven/rewoven-api/issues",
-    "sources": "https://github.com/LegacyRewoven/rewoven-api"
+    "homepage": "https://legacy-fabric.github.io/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
   },
   "authors": [
-    "Legacy Rewoven",
-    "FabricMC",
-    "Legacy Fabric"
+    {
+      "name": "Legacy Fabric",
+      "contact": {
+        "homepage": "https://legacyfabric.net/",
+        "discord": "https://discord.com/invite/yBTpRXe",
+        "sources": "https://github.com/Legacy-Fabric/fabric",
+        "issues": "https://github.com/Legacy-Fabric/fabric/issues"
+      }
+    },
+    {
+      "name": "FabricMC",
+      "contact": {
+        "homepage": "https://fabricmc.net",
+        "discord": "https://discord.gg/v6v4pMv",
+        "sources": "https://github.com/FabricMC/fabric",
+        "issues": "https://github.com/FabricMC/fabric/issues"
+      }
+    }
   ],
   "depends": {
     "minecraft": "1.12.x"

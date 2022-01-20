@@ -47,7 +47,7 @@ def static setupRepositories(RepositoryHandler repositories) {
 	def ENV = System.getenv()
 	if (ENV.MAVEN_PUBLISH_TOKEN) {
 		repositories.maven {
-			url 'https://maven.rewovenmc.tk/'
+			url 'https://maven.legacyfabric.net/'
 			credentials {
 				username 'BobTheBuildSlave'
 				password ENV.MAVEN_PUBLISH_TOKEN
@@ -73,8 +73,8 @@ allprojects {
 
 	repositories {
 		maven {
-			name = "Legacy Rewoven"
-			url = "https://maven.rewovenmc.tk"
+			name = "Legacy Fabric"
+			url = "https://maven.legacyfabric.net"
 		}
 	}
 
@@ -154,7 +154,7 @@ allprojects {
 	}
 
 	tasks.withType(Checkstyle) {
-		exclude '**/io/github/legacyrewoven/test/**'
+		exclude '**/net/legacyfabric/fabric/test/**'
 	}
 }
 
@@ -270,7 +270,7 @@ publishing {
 	repositories {
 		if (ENV.MAVEN_PUBLISH_TOKEN) {
 			maven {
-				url 'https://maven.rewovenmc.tk/'
+				url 'https://maven.legacyfabric.net/'
 				credentials {
 					username 'BobTheBuildSlave'
 					password ENV.MAVEN_PUBLISH_TOKEN
@@ -306,12 +306,12 @@ curseforge {
 	}
 	project {
 		id = '400281'
-		changelog = 'A changelog can be found at https://github.com/LegacyRewoven/rewoven-api/commits'
+		changelog = 'https://github.com/Legacy-Fabric/fabric/commits/'
 		releaseType = 'beta'
 		addGameVersion '1.12.2'
 		addGameVersion 'Fabric'
 		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${project.version}.jar")) {
-			displayName = "[${project.mc_version}] Rewoven API ${project.base_version}"
+			displayName = "[${project.mc_version}] Legacy Fabric API ${project.base_version}"
 		}
 		afterEvaluate {
 			uploadTask.dependsOn("remapJar")
