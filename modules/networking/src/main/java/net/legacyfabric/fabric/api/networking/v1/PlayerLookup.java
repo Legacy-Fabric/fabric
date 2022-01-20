@@ -122,7 +122,7 @@ public final class PlayerLookup {
 
 		return world(world)
 				.stream()
-				.filter((p) -> p.getDistanceTo(pos.x, pos.y, pos.z) <= radiusSq)
+				.filter((p) -> p.distanceTo(pos.x, pos.y, pos.z) <= radiusSq)
 				.collect(Collectors.toList());
 	}
 
@@ -141,7 +141,7 @@ public final class PlayerLookup {
 
 		return world(world)
 				.stream()
-				.filter((p) -> p.getDistanceTo(pos.getX(), pos.getY(), pos.getZ()) <= radiusSq)
+				.filter((p) -> p.distanceTo(pos.getX(), pos.getY(), pos.getZ()) <= radiusSq)
 				.collect(Collectors.toList());
 	}
 

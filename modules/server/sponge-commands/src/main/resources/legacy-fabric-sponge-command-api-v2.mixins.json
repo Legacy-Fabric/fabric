@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "inet.legacyfabric.mixin.command",
+  "package": "net.legacyfabric.fabric.mixin.command",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MinecraftServerMixin"
