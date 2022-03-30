@@ -34,7 +34,7 @@ public class RenderingEventsTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		HudRenderCallback.EVENT.register((client, tickDelta) -> {
-			client.textRenderer.draw(I18n.translate("legacyrewoven.api.youreTesting"), 10, 10, Color.RED.getRGB());
+			client.textRenderer.draw(I18n.translate("legacyfabric.api.youreTesting"), 10, 10, Color.RED.getRGB());
 		});
 		InvalidateRenderStateCallback.EVENT.register(() -> {
 			LOGGER.info("Render state invalidated aka chunks rebuilt");
