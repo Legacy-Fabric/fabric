@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-rewoven-rendering-api-v1",
-  "name": "Legacy Rewoven Rendering API (V1)",
+  "id": "legacy-fabric-rendering-api-v1",
+  "name": "Legacy Fabric Rendering API (V1)",
   "version": "${version}",
   "environment": "client",
   "license": "Apache-2.0",
-  "icon": "assets/legacy-rewoven-api/icon.png",
+  "icon": "assets/legacy-fabric-api/icon.png",
   "contact": {
-    "homepage": "https://legacyrewoven.github.io/",
-    "issues": "https://github.com/LegacyRewoven/rewoven-api/issues",
-    "sources": "https://github.com/LegacyRewoven/rewoven-api"
+    "homepage": "https://legacy-fabric.github.io/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
   },
   "authors": [
     "Legacy Fabric",
@@ -17,6 +17,6 @@
   ],
   "description": "Hooks and registries for rendering-related things.",
   "mixins": [
-    "legacy-rewoven-rendering-api-v1.mixins.json"
+    "legacy-fabric-rendering-api-v1.mixins.json"
   ]
 }
