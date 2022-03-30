@@ -1,17 +1,18 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-rewoven-permissions-api-v1",
-  "name": "Legacy Rewoven Permissions API (v2)",
+  "id": "legacy-fabric-permissions-api-v1",
+  "name": "Legacy Fabric Permissions API (v2)",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
-  "icon": "assets/legacy-rewoven-api/icon.png",
+  "icon": "assets/legacy-fabric-api/icon.png",
   "contact": {
-    "homepage": "https://legacyrewoven.github.io/",
-    "issues": "https://github.com/LegacyRewoven/rewoven-api/issues",
-    "sources": "https://github.com/LegacyRewoven/rewoven-api"
+    "homepage": "https://legacy-fabric.github.io/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
   },
   "authors": [
+    "Legacy Fabric",
     "FabricMC"
   ],
   "depends": {
@@ -19,6 +20,6 @@
   },
   "description": "Simple permission api",
   "mixins": [
-    "legacy-rewoven-permissions-api-v1.mixins.json"
+    "legacy-fabric-permissions-api-v1.mixins.json"
   ]
 }

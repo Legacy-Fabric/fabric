@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.base.event",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "TitleScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

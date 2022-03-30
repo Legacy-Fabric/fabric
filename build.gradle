@@ -3,16 +3,18 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version '0.7-SNAPSHOT'
+	id 'fabric-loom' version "0.7-SNAPSHOT"
 	id 'org.cadixdev.licenser' version "0.6.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
 	id 'signing'
 }
+
 def ENV = System.getenv()
 
 setVersion("${project.base_version}+${project.mc_version}")
 logger.lifecycle("Building Fabric: " + version)
+
 
 import net.fabricmc.loom.task.RemapJarTask
 import org.apache.commons.codec.digest.DigestUtils
@@ -21,24 +23,23 @@ def getSubprojectVersion(project, version) {
 	if (grgit == null) {
 		return version + "+nogit"
 	}
-	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath() as java.nio.file.Path).toString()], maxCommits: 1)
+	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath()).toString()], maxCommits: 1)
 	if (latestCommits.isEmpty()) {
 		return version + "+uncommited"
 	} else {
-		return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex("${project.mc_version}").substring(0, 2)
+		return version + "+" + latestCommits.get(0).id.substring(0, 8) +
+				DigestUtils.sha256Hex("${project.mc_version}").substring(0, 2)
 	}
 }
 
 def getBranch() {
 	if (System.getenv().GIT_BRANCH) {
-		def branch = System.getenv().GITHUB_REF
+		def branch = System.getenv().GIT_BRANCH
 		return branch.substring(branch.lastIndexOf("/") + 1)
 	}
-
 	if (grgit == null) {
 		return "unknown"
 	}
-
 	def branch = grgit.branch.current().name
 	return branch.substring(branch.lastIndexOf("/") + 1)
 }
@@ -72,12 +73,6 @@ allprojects {
 	group = "net.legacyfabric.legacy-fabric-api"
 
 	repositories {
-		maven {
-			name = "Legacy Rewoven"
-			url = "https://github.com/LegacyRewoven/maven/raw/main/"
-		}
-
-		// Left here until 1.12.2 Yarn hits Rewoven's maven
 		maven { url "https://maven.legacyfabric.net/" }
 	}
 
@@ -96,10 +91,11 @@ allprojects {
 	}
 
 	dependencies {
-		minecraft "com.mojang:minecraft:${project.mc_version}"
-
-		mappings "net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2"
-		modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
+		minecraft("com.mojang:minecraft:${project.mc_version}")
+		mappings("net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2")
+		modApi "net.fabricmc:fabric-loader:${project.loader_version}"
+		implementation("com.google.guava:guava:31.1-jre")
+		//implementation 'com.mojang:brigadier:1.0.17'
 
 		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
 			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
@@ -147,7 +143,7 @@ allprojects {
 		}
 
 		license {
-			header rootProject.file('HEADER')
+			header = rootProject.file('HEADER')
 			include '**/*.java'
 			exclude '**/lib/sponge/*.java'
 			exclude '**/lib/sponge/**/*.java'
@@ -165,7 +161,7 @@ allprojects {
 	}
 
 	tasks.withType(Checkstyle) {
-		exclude '**/io/github/legacyrewoven/test/**'
+		exclude '**/net/legacyfabric/fabric/test/**'
 	}
 }
 
@@ -186,11 +182,9 @@ javadoc {
 		// Disable the crazy super-strict doclint tool in Java 8
 		addStringOption('Xdoclint:none', '-quiet')
 	}
-
 	allprojects.each {
 		source(it.sourceSets.main.allJava.srcDirs)
 	}
-
 	classpath = sourceSets.main.compileClasspath
 	include("**/api/**")
 	failOnError false
@@ -202,7 +196,6 @@ task javadocJar(type: Jar) {
 	//Set as `fatjavadoc` to prevent an ide form trying to use this javadoc, over using the modules javadoc
 	classifier('fatjavadoc')
 }
-
 build.dependsOn javadocJar
 
 subprojects {
@@ -257,13 +250,11 @@ publishing {
 			artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
 				builtBy remapMavenJar
 			}
-
 			artifact(sourcesJar) {
 				builtBy remapSourcesJar
 			}
 
 			artifact javadocJar
-
 			pom.withXml {
 				def depsNode = asNode().appendNode("dependencies")
 				subprojects.each {
@@ -283,7 +274,7 @@ publishing {
 			maven {
 				url 'https://maven.legacyfabric.net/'
 				credentials {
-					username 'BobTheBuildSlave'
+					username 'legacyfabric-ci'
 					password ENV.MAVEN_PUBLISH_TOKEN
 				}
 				authentication {
@@ -302,7 +293,7 @@ dependencies {
 	afterEvaluate {
 		subprojects.each {
 			if (it.name != project.testmods_project) {
-//				implementation project(path: ":${it.name}", configuration: "dev")
+				implementation project(path: ":${it.name}", configuration: "dev")
 				include project("${it.name}:")
 			}
 		}
@@ -319,9 +310,9 @@ curseforge {
 		id = '400281'
 		changelog = 'A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits'
 		releaseType = 'beta'
-		addGameVersion '1.12.2'
+		addGameVersion '1.7.10'
 		addGameVersion 'Fabric'
-		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${project.version}.jar")) {
+		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
 			displayName = "[${project.mc_version}] Legacy Fabric API ${project.base_version}"
 		}
 		afterEvaluate {
