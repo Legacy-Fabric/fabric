@@ -17,13 +17,12 @@
 
 package net.legacyfabric.fabric.test;
 
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.entity.EntityType;
+//import net.minecraft.entity.EntityType;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -32,7 +31,7 @@ public class ServerLifecycleEventsTest implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
+		/*ServerChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 			if (chunk != null) {
 				LOGGER.info("Server chunk loaded at {} {}", chunk.chunkX, chunk.chunkZ);
 			}
@@ -41,12 +40,12 @@ public class ServerLifecycleEventsTest implements ModInitializer {
 			if (chunk != null) {
 				LOGGER.info("Server chunk unloaded at {} {}", chunk.chunkX, chunk.chunkZ);
 			}
-		});
+		});*/
 		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			LOGGER.info("Server Entity {} loaded", EntityType.getEntityName(entity));
+			//LOGGER.info("Server Entity {} loaded", EntityType.getEntityName(entity));
 		});
 		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-			LOGGER.info("Server Entity {} unloaded", EntityType.getEntityName(entity));
+			//LOGGER.info("Server Entity {} unloaded", EntityType.getEntityName(entity));
 		});
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
 			LOGGER.info("Server starting");

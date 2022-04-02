@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.api.event.lifecycle.v1;
 
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
+
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.world.chunk.Chunk;
-
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
 
 public final class ServerChunkEvents {
 	private ServerChunkEvents() {

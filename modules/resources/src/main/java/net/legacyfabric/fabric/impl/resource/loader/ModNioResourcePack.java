@@ -18,7 +18,6 @@
 package net.legacyfabric.fabric.impl.resource.loader;
 
 import java.io.Closeable;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.DirectoryStream;
@@ -29,6 +28,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import net.legacyfabric.fabric.api.resource.ModResourcePack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,8 +36,6 @@ import net.minecraft.resource.AbstractFileResourcePack;
 
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
-
-import net.legacyfabric.fabric.api.resource.ModResourcePack;
 
 public class ModNioResourcePack extends AbstractFileResourcePack implements ModResourcePack, Closeable {
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -68,29 +66,33 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	}
 
 	@Override
-	protected InputStream openFile(String filename) throws IOException {
+	protected InputStream openFile(String filename) {
 		InputStream stream;
 
-		if (DeferredNioExecutionHandler.shouldDefer()) {
-			stream = DeferredNioExecutionHandler.submit(() -> {
+		try {
+			if (DeferredNioExecutionHandler.shouldDefer()) {
+				stream = DeferredNioExecutionHandler.submit(() -> {
+					Path path = getPath(filename);
+
+					if (path != null && Files.isRegularFile(path)) {
+						return new DeferredInputStream(Files.newInputStream(path));
+					} else {
+						return null;
+					}
+				});
+
+				if (stream != null) {
+					return stream;
+				}
+			} else {
 				Path path = getPath(filename);
 
 				if (path != null && Files.isRegularFile(path)) {
-					return new DeferredInputStream(Files.newInputStream(path));
-				} else {
-					return null;
+					return Files.newInputStream(path);
 				}
-			});
-
-			if (stream != null) {
-				return stream;
 			}
-		} else {
-			Path path = getPath(filename);
-
-			if (path != null && Files.isRegularFile(path)) {
-				return Files.newInputStream(path);
-			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		stream = ModResourcePackUtil.openDefault(this.getFabricModMetadata(), filename);
@@ -99,8 +101,7 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 			return stream;
 		}
 
-		// ReloadableResourceManagerImpl gets away with FileNotFoundException.
-		throw new FileNotFoundException("\"" + filename + "\" in Fabric mod \"" + this.getFabricModMetadata().getId() + "\"");
+		return null;
 	}
 
 	@Override

@@ -17,13 +17,12 @@
 
 package net.legacyfabric.fabric.test.client;
 
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.entity.EntityType;
+//import net.minecraft.entity.EntityType;
 
 import net.fabricmc.api.ClientModInitializer;
 
@@ -32,7 +31,7 @@ public class ClientLifecycleEventsTest implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		ClientChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
+		/*ClientChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
 			if (chunk != null) {
 				LOGGER.info("Client chunk loaded at {} {}", chunk.chunkX, chunk.chunkZ);
 			}
@@ -41,12 +40,12 @@ public class ClientLifecycleEventsTest implements ClientModInitializer {
 			if (chunk != null) {
 				LOGGER.info("Client chunk unloaded at {} {}", chunk.chunkX, chunk.chunkZ);
 			}
-		});
+		});*/
 		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			LOGGER.info("Client Entity {} loaded", EntityType.getEntityName(entity));
+			//LOGGER.info("Client Entity {} loaded", EntityType.getEntityName(entity));
 		});
 		ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-			LOGGER.info("Client Entity {} unloaded", EntityType.getEntityName(entity));
+			//LOGGER.info("Client Entity {} unloaded", EntityType.getEntityName(entity));
 		});
 		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
 			LOGGER.info("Client started");

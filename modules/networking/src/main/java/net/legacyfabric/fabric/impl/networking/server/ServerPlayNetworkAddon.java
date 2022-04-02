@@ -21,18 +21,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.network.Packet;
-import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.util.PacketByteBuf;
-
+import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
 import net.legacyfabric.fabric.api.networking.v1.S2CPlayChannelEvents;
 import net.legacyfabric.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.legacyfabric.fabric.api.networking.v1.ServerPlayNetworking;
 import net.legacyfabric.fabric.impl.networking.AbstractChanneledNetworkAddon;
 import net.legacyfabric.fabric.impl.networking.ChannelInfoHolder;
 import net.legacyfabric.fabric.impl.networking.NetworkingImpl;
+
+import net.minecraft.network.Packet;
+import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.util.PacketByteBuf;
 
 public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<ServerPlayNetworking.PlayChannelHandler> {
 	private final ServerPlayNetworkHandler handler;
@@ -74,12 +75,14 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	 * @return true if the packet has been handled
 	 */
 	public boolean handle(CustomPayloadC2SPacket packet) {
-		// Do not handle the packet on game thread
-		if (this.server.isOnThread()) {
+		if (((MinecraftServerExtensions) this.server).isOnThread()) {
 			return false;
 		}
 
-		return this.handle(packet.getChannel(), packet.getPayload());
+		//hack to work around the fact that for some reason le PacketByteBufs don't work the same
+		byte[] data = packet.method_7981();
+		PacketByteBuf payload = new PacketByteBuf(PacketByteBufs.create().writeBytes(data));
+		return this.handle(packet.getChannel(), payload);
 	}
 
 	@Override
@@ -88,14 +91,13 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	}
 
 	// impl details
-
 	@Override
 	protected void schedule(Runnable task) {
-		this.handler.player.server.execute(task);
+		((MinecraftServerExtensions) this.handler.player.server).execute(task);
 	}
 
 	@Override
-	public Packet<?> createPacket(String channelName, PacketByteBuf buf) {
+	public Packet createPacket(String channelName, PacketByteBuf buf) {
 		return ServerPlayNetworking.createS2CPacket(channelName, buf);
 	}
 

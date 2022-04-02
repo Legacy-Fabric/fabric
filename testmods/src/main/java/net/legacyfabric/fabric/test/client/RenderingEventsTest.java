@@ -37,7 +37,7 @@ public class RenderingEventsTest implements ClientModInitializer {
 			client.textRenderer.draw(I18n.translate("legacyfabric.api.youreTesting"), 10, 10, Color.RED.getRGB());
 		});
 		InvalidateRenderStateCallback.EVENT.register(() -> {
-			LOGGER.info("Render state invalidated");
+			LOGGER.info("Render state invalidated aka chunks rebuilt");
 		});
 	}
 }

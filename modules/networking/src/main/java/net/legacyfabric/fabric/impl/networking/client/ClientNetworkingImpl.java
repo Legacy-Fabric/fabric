@@ -17,6 +17,12 @@
 
 package net.legacyfabric.fabric.impl.networking.client;
 
+import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.legacyfabric.fabric.impl.networking.GlobalReceiverRegistry;
+import net.legacyfabric.fabric.mixin.networking.client.ConnectScreenAccessor;
+import net.legacyfabric.fabric.mixin.networking.client.MinecraftClientAccessor;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConnectScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -28,12 +34,6 @@ import net.minecraft.util.PacketByteBuf;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.legacyfabric.fabric.impl.networking.GlobalReceiverRegistry;
-import net.legacyfabric.fabric.mixin.networking.client.ConnectScreenAccessor;
-import net.legacyfabric.fabric.mixin.networking.client.MinecraftClientAccessor;
-
 @Environment(EnvType.CLIENT)
 public final class ClientNetworkingImpl {
 	public static final GlobalReceiverRegistry<ClientPlayNetworking.PlayChannelHandler> PLAY = new GlobalReceiverRegistry<>();
@@ -43,7 +43,7 @@ public final class ClientNetworkingImpl {
 		return ((ClientPlayNetworkHandlerExtensions) handler).getAddon();
 	}
 
-	public static Packet<?> createPlayC2SPacket(String channelName, PacketByteBuf buf) {
+	public static Packet createPlayC2SPacket(String channelName, PacketByteBuf buf) {
 		return new CustomPayloadC2SPacket(channelName, buf);
 	}
 

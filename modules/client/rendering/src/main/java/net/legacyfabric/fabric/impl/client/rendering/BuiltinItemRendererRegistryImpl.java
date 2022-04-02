@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import net.legacyfabric.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,8 +29,6 @@ import net.minecraft.item.Item;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.legacyfabric.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 
 @Environment(EnvType.CLIENT)
 public final class BuiltinItemRendererRegistryImpl implements BuiltinItemRendererRegistry {
@@ -46,7 +45,7 @@ public final class BuiltinItemRendererRegistryImpl implements BuiltinItemRendere
 		Objects.requireNonNull(renderer, "Renderer is null");
 
 		if (RENDERERS.putIfAbsent(item, renderer) != null) {
-			throw new IllegalArgumentException("Item " + Item.REGISTRY.getIdentifier(item) + " already has a builtin renderer!");
+			throw new IllegalArgumentException("Item " + Item.REGISTRY.method_7332(item) + " already has a builtin renderer!");
 		}
 	}
 

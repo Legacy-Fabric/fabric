@@ -3,7 +3,7 @@
   "package": "net.legacyfabric.fabric.mixin.gamerule",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "GameRulesMixin"
+    "GameRuleManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

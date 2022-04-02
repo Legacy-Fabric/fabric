@@ -20,19 +20,19 @@ package net.legacyfabric.fabric.api.client.networking.v1;
 import java.util.Objects;
 import java.util.Set;
 
+import net.legacyfabric.fabric.api.networking.v1.PacketSender;
+import net.legacyfabric.fabric.impl.networking.client.ClientNetworkingImpl;
+import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkAddon;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
-import net.minecraft.util.ThreadExecutor;
+//import net.minecraft.util.ThreadExecutor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
-import net.legacyfabric.fabric.api.networking.v1.PacketSender;
-import net.legacyfabric.fabric.impl.networking.client.ClientNetworkingImpl;
-import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkAddon;
 
 /**
  * Offers access to play stage client-side networking functionalities.
@@ -252,7 +252,7 @@ public final class ClientPlayNetworking {
 	 * @param buf         the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	public static Packet<?> createC2SPacket(String channelName, PacketByteBuf buf) {
+	public static Packet createC2SPacket(String channelName, PacketByteBuf buf) {
 		Objects.requireNonNull(channelName, "Channel name cannot be null");
 		Objects.requireNonNull(buf, "Buf cannot be null");
 
@@ -266,7 +266,7 @@ public final class ClientPlayNetworking {
 	 * @param buf       the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	public static Packet<?> createC2SPacket(Identifier channelId, PacketByteBuf buf) {
+	public static Packet createC2SPacket(Identifier channelId, PacketByteBuf buf) {
 		return createC2SPacket(channelId.toString(), buf);
 	}
 

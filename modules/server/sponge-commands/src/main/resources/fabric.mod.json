@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-sponge-command-api-v2",
+  "name": "Legacy Fabric Sponge Command API (v2)",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-fabric-api/icon.png",
+  "contact": {
+    "homepage": "https://legacy-fabric.github.io/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "Legacy Rewoven",
+    "Legacy Fabric",
+    "SpongePowered"
+  ],
+  "depends": {
+    "fabricloader": ">=0.4.0"
+  },
+  "entrypoints": {
+    "client": [
+      "net.legacyfabric.fabric.impl.command.ImplInit"
+    ], "server": [
+      "net.legacyfabric.fabric.impl.command.ImplInit"
+    ]
+  },
+  "description": "Command API that utilizes SpongeAPI's command api",
+  "mixins": [
+    "legacy-fabric-sponge-command-api-v2.mixins.json"
+  ]
+}

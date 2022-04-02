@@ -19,6 +19,8 @@ package net.legacyfabric.fabric.mixin.entity.event;
 
 import java.util.Iterator;
 
+import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,11 +30,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-
-import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
-import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 
 @Mixin(PlayerManager.class)
 abstract class PlayerManagerMixin {

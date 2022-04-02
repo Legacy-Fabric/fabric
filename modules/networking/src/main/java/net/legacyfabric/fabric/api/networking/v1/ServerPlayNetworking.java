@@ -20,15 +20,15 @@ package net.legacyfabric.fabric.api.networking.v1;
 import java.util.Objects;
 import java.util.Set;
 
+import net.legacyfabric.fabric.impl.networking.server.ServerNetworkingImpl;
+import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerExtensions;
+
 import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
-
-import net.legacyfabric.fabric.impl.networking.server.ServerNetworkingImpl;
-import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerExtensions;
 
 /**
  * Offers access to play stage server-side networking functionalities.
@@ -258,7 +258,7 @@ public final class ServerPlayNetworking {
 	 * @param buf         the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	public static Packet<?> createS2CPacket(String channelName, PacketByteBuf buf) {
+	public static Packet createS2CPacket(String channelName, PacketByteBuf buf) {
 		Objects.requireNonNull(channelName, "Channel cannot be null");
 		Objects.requireNonNull(buf, "Buf cannot be null");
 
@@ -272,7 +272,7 @@ public final class ServerPlayNetworking {
 	 * @param buf       the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	public static Packet<?> createS2CPacket(Identifier channelId, PacketByteBuf buf) {
+	public static Packet createS2CPacket(Identifier channelId, PacketByteBuf buf) {
 		return createS2CPacket(channelId.toString(), buf);
 	}
 

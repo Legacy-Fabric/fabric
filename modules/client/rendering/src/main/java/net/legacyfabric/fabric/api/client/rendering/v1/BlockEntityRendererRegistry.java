@@ -19,11 +19,11 @@ package net.legacyfabric.fabric.api.client.rendering.v1;
 
 import java.util.function.Function;
 
+import net.legacyfabric.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
+
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-
-import net.legacyfabric.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
 
 /**
  * Helper class for registering BlockEntityRenderers.
@@ -40,5 +40,5 @@ public interface BlockEntityRendererRegistry {
 	 *                            class is already loaded
 	 * @param <E>                 the {@link BlockEntity}
 	 */
-	<E extends BlockEntity> void register(Class<E> clazz, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<E>> blockEntityRenderer);
+	<E extends BlockEntity> void register(Class<E> clazz, Function<BlockEntityRenderDispatcher, BlockEntityRenderer> blockEntityRenderer);
 }

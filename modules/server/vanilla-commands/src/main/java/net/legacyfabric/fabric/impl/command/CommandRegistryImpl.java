@@ -21,11 +21,10 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-
-import net.minecraft.command.AbstractCommand;
-
 import net.legacyfabric.fabric.api.command.CommandSide;
 import net.legacyfabric.fabric.api.registry.CommandRegistry;
+
+import net.minecraft.command.AbstractCommand;
 
 public class CommandRegistryImpl implements CommandRegistry {
 	public static final CommandRegistryImpl INSTANCE = new CommandRegistryImpl();

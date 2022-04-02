@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.client.keybinding;
 
+import net.legacyfabric.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,14 +27,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
 
-import net.legacyfabric.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
-
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
 	@Shadow
 	public KeyBinding[] keysAll;
 
-	@Inject(at = @At("HEAD"), method = "method_2336()V")
+	@Inject(at = @At("HEAD"), method = "load")
 	public void loadHook(CallbackInfo info) {
 		keysAll = KeyBindingRegistryImpl.process(keysAll);
 	}

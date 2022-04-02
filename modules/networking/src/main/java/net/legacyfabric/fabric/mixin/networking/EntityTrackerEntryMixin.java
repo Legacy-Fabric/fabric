@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.networking;
 
+import net.legacyfabric.fabric.api.networking.v1.EntityTrackingEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,9 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TrackedEntityInstance;
-import net.minecraft.server.network.ServerPlayerEntity;
-
-import net.legacyfabric.fabric.api.networking.v1.EntityTrackingEvents;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 @Mixin(TrackedEntityInstance.class)
 abstract class EntityTrackerEntryMixin {
@@ -39,17 +38,17 @@ abstract class EntityTrackerEntryMixin {
 		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.trackedEntity, player);
 	}
 
-	@Inject(method = "method_6102", at = @At(value = "INVOKE", target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z", shift = At.Shift.AFTER, remap = false))
+	@Inject(method = "method_2180", at = @At(value = "INVOKE", target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z", shift = At.Shift.AFTER, remap = false))
 	private void onStopTracking2(ServerPlayerEntity player, CallbackInfo ci) {
 		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.trackedEntity, player);
 	}
 
-	@Inject(method = "method_6106", at = @At(value = "INVOKE", target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z", shift = At.Shift.AFTER, remap = false))
+	@Inject(method = "method_2184", at = @At(value = "INVOKE", target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z", shift = At.Shift.AFTER, remap = false))
 	private void onStopTracking3(ServerPlayerEntity player, CallbackInfo ci) {
 		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.trackedEntity, player);
 	}
 
-	@Inject(method = "method_6106", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/Set;add(Ljava/lang/Object;)Z", remap = false))
+	@Inject(method = "method_2184", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/Set;add(Ljava/lang/Object;)Z", remap = false))
 	private void onStartTracking(ServerPlayerEntity player, CallbackInfo ci) {
 		EntityTrackingEvents.START_TRACKING.invoker().onStartTracking(this.trackedEntity, player);
 	}

@@ -1,12 +1,12 @@
 {
   "required": true,
-  "package": "net.legacyfabric.fabric.mixin.resource.loader",
+  "package": "net.legacyfabric.fabric.mixin.resource.loader.client",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "client.ClientResourceReloadListenerMixins",
-    "client.DefaultResourcePackMixin",
-    "client.MinecraftClientMixin",
-    "client.ReloadableResourceManagerImplMixin"
+    "ClientResourceReloadListenerMixins",
+    "DefaultResourcePackMixin",
+    "MinecraftClientMixin",
+    "ReloadableResourceManagerImplMixin"
   ],
   "injectors": {
     "defaultRequire": 1

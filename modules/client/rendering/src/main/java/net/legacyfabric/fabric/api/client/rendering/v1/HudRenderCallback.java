@@ -17,10 +17,10 @@
 
 package net.legacyfabric.fabric.api.client.rendering.v1;
 
-import net.minecraft.client.MinecraftClient;
-
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
+
+import net.minecraft.client.MinecraftClient;
 
 public interface HudRenderCallback {
 	Event<HudRenderCallback> EVENT = EventFactory.createArrayBacked(HudRenderCallback.class, (listeners) -> (client, delta) -> {

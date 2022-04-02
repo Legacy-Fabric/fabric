@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.client.rendering;
 
+import net.legacyfabric.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,11 +25,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.render.WorldRenderer;
 
-import net.legacyfabric.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
-
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin {
-	@Inject(method = "reload()V", at = @At("HEAD"))
+	@Inject(method = "reload", at = @At("HEAD"))
 	private void onReload(CallbackInfo ci) {
 		InvalidateRenderStateCallback.EVENT.invoker().onInvalidate();
 	}

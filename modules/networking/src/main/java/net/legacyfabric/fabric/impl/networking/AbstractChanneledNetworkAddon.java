@@ -26,15 +26,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
+import net.legacyfabric.fabric.api.networking.v1.PacketSender;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.util.PacketByteBuf;
-
-import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
-import net.legacyfabric.fabric.api.networking.v1.PacketSender;
 
 /**
  * A network addon which is aware of the channels the other side may receive.
@@ -92,6 +91,38 @@ public abstract class AbstractChanneledNetworkAddon<H> extends AbstractNetworkAd
 		}
 
 		PacketByteBuf buf = PacketByteBufs.slice(originalBuf);
+
+		try {
+			this.receive(handler, buf);
+		} catch (Throwable ex) {
+			this.logger.error("Encountered exception while handling in channel with name \"{}\"", channelName, ex);
+			throw ex;
+		}
+
+		return true;
+	}
+
+	protected boolean handle(String channelName, byte[] originalData) {
+		this.logger.debug("Handling inbound packet from channel with name \"{}\"", channelName);
+
+		// Handle reserved packets
+		if (NetworkingImpl.REGISTER_CHANNEL.equals(channelName)) {
+			this.receiveRegistration(true, new PacketByteBuf(PacketByteBufs.empty().writeBytes(originalData)));
+			return true;
+		}
+
+		if (NetworkingImpl.UNREGISTER_CHANNEL.equals(channelName)) {
+			this.receiveRegistration(false, new PacketByteBuf(PacketByteBufs.empty().writeBytes(originalData)));
+			return true;
+		}
+
+		H handler = this.getHandler(channelName);
+
+		if (handler == null) {
+			return false;
+		}
+
+		PacketByteBuf buf = new PacketByteBuf(PacketByteBufs.empty().writeBytes(originalData));
 
 		try {
 			this.receive(handler, buf);
@@ -165,17 +196,17 @@ public abstract class AbstractChanneledNetworkAddon<H> extends AbstractNetworkAd
 	}
 
 	@Override
-	public void sendPacket(Packet<?> packet) {
+	public void sendPacket(Packet packet) {
 		Objects.requireNonNull(packet, "Packet cannot be null");
 
-		this.connection.send(packet);
+		this.connection.method_7395(packet);
 	}
 
 	@Override
-	public void sendPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> callback) {
+	public void sendPacket(Packet packet, GenericFutureListener<? extends Future<? super Void>> callback) {
 		Objects.requireNonNull(packet, "Packet cannot be null");
 
-		this.connection.send(packet, callback);
+		this.connection.method_7395(packet, callback);
 	}
 
 	/**

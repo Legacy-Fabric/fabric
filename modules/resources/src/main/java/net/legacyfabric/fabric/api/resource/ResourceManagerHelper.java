@@ -17,9 +17,9 @@
 
 package net.legacyfabric.fabric.api.resource;
 
-import net.minecraft.resource.ResourceManager;
-
 import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
+
+import net.minecraft.resource.ResourceManager;
 
 /**
  * Helper for working with {@link ResourceManager} instances.
