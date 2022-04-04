@@ -25,7 +25,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
-//import net.minecraft.util.ThreadExecutor;
+import net.minecraft.util.ThreadExecutor;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -44,6 +44,9 @@ import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkAddon;
  */
 @Environment(EnvType.CLIENT)
 public final class ClientPlayNetworking {
+	private ClientPlayNetworking() {
+	}
+
 	/**
 	 * Registers a handler to a channel.
 	 * A global receiver is registered to all connections, in the present and future.
@@ -317,9 +320,6 @@ public final class ClientPlayNetworking {
 		}
 
 		throw new IllegalStateException("Cannot send packets when not in game!");
-	}
-
-	private ClientPlayNetworking() {
 	}
 
 	@Environment(EnvType.CLIENT)

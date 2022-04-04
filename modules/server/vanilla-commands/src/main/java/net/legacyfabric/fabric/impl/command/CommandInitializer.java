@@ -17,21 +17,25 @@
 
 package net.legacyfabric.fabric.impl.command;
 
-import net.minecraft.command.AbstractCommandManager;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandManager;
 
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 
 public class CommandInitializer implements ModInitializer {
+	public static MinecraftServer getServerInstance;
+
 	@Override
 	public void onInitialize() {
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+			getServerInstance = server;
 			boolean dedicated = server.isDedicated();
-			AbstractCommandManager manager = (AbstractCommandManager) server.worldGenerationProgressListenerFactory;
+			CommandManager manager = (CommandManager) server.getCommandManager();
 			CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
 				if ((dedicated && commandSide.isDedicated()) || (!dedicated && commandSide.isIntegrated())) {
-					manager.register(command);
+					manager.registerCommand(command);
 				}
 			});
 		});

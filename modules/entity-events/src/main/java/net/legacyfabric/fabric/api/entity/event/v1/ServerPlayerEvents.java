@@ -47,6 +47,9 @@ public final class ServerPlayerEvents {
 		}
 	});
 
+	private ServerPlayerEvents() {
+	}
+
 	@FunctionalInterface
 	public interface CopyFrom {
 		/**
@@ -69,8 +72,5 @@ public final class ServerPlayerEvents {
 		 * @param alive     whether the old player is still alive
 		 */
 		void afterRespawn(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, ServerWorld world, boolean alive);
-	}
-
-	private ServerPlayerEvents() {
 	}
 }

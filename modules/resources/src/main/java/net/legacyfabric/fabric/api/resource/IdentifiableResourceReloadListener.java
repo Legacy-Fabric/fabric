@@ -20,7 +20,7 @@ package net.legacyfabric.fabric.api.resource;
 import java.util.Collection;
 import java.util.Collections;
 
-import net.minecraft.client.resource.ResourceListener;
+import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.util.Identifier;
 
 /**
@@ -32,7 +32,7 @@ import net.minecraft.util.Identifier;
  *
  * @see ResourceReloadListenerKeys
  */
-public interface IdentifiableResourceReloadListener extends ResourceListener {
+public interface IdentifiableResourceReloadListener extends ResourceReloadListener {
 	/**
 	 * @return The unique identifier of this listener.
 	 */

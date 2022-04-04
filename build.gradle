@@ -4,7 +4,7 @@ plugins {
 	id 'idea'
 	id 'maven-publish'
 	id 'fabric-loom' version '0.7-SNAPSHOT'
-	id 'org.cadixdev.licenser' version "0.6.0"
+	id 'org.cadixdev.licenser' version "0.6.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
 	id 'signing'
@@ -72,7 +72,10 @@ allprojects {
 	group = "net.legacyfabric.legacy-fabric-api"
 
 	repositories {
-		maven { url "https://maven.legacyfabric.net/" }
+		maven {
+			name = "Legacy Fabric"
+			url = "https://maven.legacyfabric.net"
+		}
 	}
 
 	minecraft {
@@ -82,37 +85,33 @@ allprojects {
 	}
 
 	dependencies {
-		implementation "com.google.guava:guava:23.5-jre"
 		minecraft "com.mojang:minecraft:${project.mc_version}"
+
 		mappings "net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2"
-		modApi("net.fabricmc:fabric-loader:${project.loader_version}") {
-			exclude module: "guava"
+		modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
+
+		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
+			implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209'
+			implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
 		}
-
-		implementation 'com.mojang:brigadier:1.0.17'
-
-		// if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-		// 	implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
-		// 	implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209'
-		// 	implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
-		// }
 	}
 
 	configurations {
 		dev
 	}
 
-	// if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-	// 	configurations.all {
-	// 		resolutionStrategy {
-	// 			dependencySubstitution {
-	// 				substitute module('org.lwjgl.lwjgl:lwjgl_util:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209')
-	// 				substitute module('org.lwjgl.lwjgl:lwjgl:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209')
-	// 			}
-	// 			force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
-	// 		}
-	// 	}
-	// }
+	if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+		configurations.all {
+			resolutionStrategy {
+				dependencySubstitution {
+					substitute module('org.lwjgl.lwjgl:lwjgl_util:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209')
+					substitute module('org.lwjgl.lwjgl:lwjgl:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209')
+				}
+				force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
+			}
+		}
+	}
 
 	jar {
 		classifier("dev")
@@ -137,8 +136,10 @@ allprojects {
 		}
 
 		license {
-			header = rootProject.file('HEADER')
+			header rootProject.file('HEADER')
 			include '**/*.java'
+			exclude '**/lib/sponge/*.java'
+			exclude '**/lib/sponge/**/*.java'
 		}
 	}
 
@@ -305,7 +306,7 @@ curseforge {
 	}
 	project {
 		id = '400281'
-		changelog = 'A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits'
+		changelog = 'https://github.com/Legacy-Fabric/fabric/commits/'
 		releaseType = 'beta'
 		addGameVersion '1.12.2'
 		addGameVersion 'Fabric'

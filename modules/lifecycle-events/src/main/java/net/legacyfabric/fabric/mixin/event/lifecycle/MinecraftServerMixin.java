@@ -37,7 +37,7 @@ public abstract class MinecraftServerMixin {
 	@Shadow
 	public ServerWorld[] worlds;
 
-	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/MinecraftServer;getMeasuringTimeMs()J"), method = "run",
+	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J"), method = "run",
 			slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setFavicon(Lnet/minecraft/server/ServerMetadata;)V")))
 	public void startServerTick(CallbackInfo ci) {
 		ServerTickEvents.START_SERVER_TICK.invoker().onStartTick((MinecraftServer) (Object) this);
@@ -53,7 +53,7 @@ public abstract class MinecraftServerMixin {
 		ServerLifecycleEvents.SERVER_STOPPING.invoker().onServerStopping((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At(value = "TAIL"), method = "shutdown")
+	@Inject(at = @At(value = "TAIL"), method = "stopServer")
 	public void afterServerShutDown(CallbackInfo ci) {
 		ServerLifecycleEvents.SERVER_STOPPED.invoker().onServerStopped((MinecraftServer) (Object) this);
 	}
@@ -63,19 +63,19 @@ public abstract class MinecraftServerMixin {
 		ServerLifecycleEvents.SERVER_STARTING.invoker().onServerStarting((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setFavicon(Lnet/minecraft/server/ServerMetadata;)V", shift = At.Shift.AFTER), method = "run")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setServerMeta(Lnet/minecraft/server/ServerMetadata;)V", shift = At.Shift.AFTER), method = "run")
 	public void afterServerStart(CallbackInfo ci) {
 		ServerLifecycleEvents.SERVER_STARTED.invoker().onServerStarted((MinecraftServer) (Object) this);
 	}
 
 	@Inject(at = @At("HEAD"), method = "save")
-	public void serverWorldUnload(boolean silent, CallbackInfo ci) {
+	public void serverWorldUnload(CallbackInfo ci) {
 		for (ServerWorld world : this.worlds) {
 			ServerWorldEvents.UNLOAD.invoker().onWorldUnload((MinecraftServer) (Object) this, world);
 		}
 	}
 
-	@Inject(at = @At(value = "TAIL"), method = "prepareStartRegion")
+	@Inject(at = @At(value = "TAIL"), method = "prepareWorlds")
 	public void serverWorldLoad(CallbackInfo ci) {
 		for (ServerWorld world : this.worlds) {
 			ServerWorldEvents.LOAD.invoker().onWorldLoad((MinecraftServer) (Object) this, world);

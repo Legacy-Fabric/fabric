@@ -38,6 +38,9 @@ import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerEx
  * <p>This class should be only used for the logical server.
  */
 public final class ServerPlayNetworking {
+	private ServerPlayNetworking() {
+	}
+
 	/**
 	 * Registers a handler to a channel.
 	 * A global receiver is registered to all connections, in the present and future.
@@ -315,6 +318,8 @@ public final class ServerPlayNetworking {
 		player.networkHandler.sendPacket(createS2CPacket(channelName, buf));
 	}
 
+	// Helper methods
+
 	/**
 	 * Sends a packet to a player.
 	 *
@@ -326,8 +331,6 @@ public final class ServerPlayNetworking {
 		send(player, channelId.toString(), buf);
 	}
 
-	// Helper methods
-
 	/**
 	 * Returns the <i>Minecraft</i> Server of a server play network handler.
 	 *
@@ -337,9 +340,6 @@ public final class ServerPlayNetworking {
 		Objects.requireNonNull(handler, "Network handler cannot be null");
 
 		return handler.player.server;
-	}
-
-	private ServerPlayNetworking() {
 	}
 
 	@FunctionalInterface

@@ -42,11 +42,10 @@ import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerEx
 abstract class ServerPlayNetworkHandlerMixin implements ServerPlayNetworkHandlerExtensions, DisconnectPacketSource {
 	@Shadow
 	@Final
-	private MinecraftServer server;
+	public ClientConnection connection;
 	@Shadow
 	@Final
-	public ClientConnection connection;
-
+	private MinecraftServer server;
 	@Unique
 	private ServerPlayNetworkAddon addon;
 
@@ -61,7 +60,7 @@ abstract class ServerPlayNetworkHandlerMixin implements ServerPlayNetworkHandler
 	private void handleCustomPayloadReceivedAsync(CustomPayloadC2SPacket packet, CallbackInfo ci) {
 		if (this.addon.handle(packet)) {
 			// Do not cancel minecraft's packets
-			if (!packet.method_32939().startsWith("MC")) {
+			if (!packet.getChannel().startsWith("MC")) {
 				ci.cancel();
 			}
 		}

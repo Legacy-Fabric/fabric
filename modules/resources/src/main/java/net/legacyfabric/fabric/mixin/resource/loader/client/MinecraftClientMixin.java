@@ -20,14 +20,14 @@ package net.legacyfabric.fabric.mixin.resource.loader.client;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.DefaultClientResourcePack;
+import net.minecraft.resource.DefaultResourcePack;
 import net.minecraft.resource.ResourcePack;
 
 import net.legacyfabric.fabric.impl.resource.loader.ModResourcePackUtil;
@@ -43,7 +43,7 @@ public class MinecraftClientMixin {
 		for (ResourcePack pack : oldList) {
 			list.add(pack);
 
-			boolean isDefaultResources = pack instanceof DefaultClientResourcePack;
+			boolean isDefaultResources = pack instanceof DefaultResourcePack;
 
 			if (isDefaultResources) {
 				ModResourcePackUtil.appendModResourcePacks(list);
@@ -62,7 +62,7 @@ public class MinecraftClientMixin {
 		}
 	}
 
-	@Inject(method = "reloadResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(method = "stitchTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
 	public void reloadResources(CallbackInfo ci, List<ResourcePack> list) {
 		fabric_modifyResourcePackList(list);
 	}

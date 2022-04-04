@@ -42,7 +42,7 @@ public class ResourceReloadTest implements ClientModInitializer {
 			}
 
 			@Override
-			public void onReload(ResourceManager resourceManager) {
+			public void reload(ResourceManager resourceManager) {
 				LOGGER.info("Resources and reloading");
 				LOGGER.info("Namespaces are {}", Arrays.toString(resourceManager.getAllNamespaces().toArray()));
 			}

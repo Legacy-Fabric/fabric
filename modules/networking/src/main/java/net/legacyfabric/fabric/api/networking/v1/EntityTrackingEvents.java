@@ -18,8 +18,8 @@
 package net.legacyfabric.fabric.api.networking.v1;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.TrackedEntityInstance;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.network.EntityTrackerEntry;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
@@ -31,7 +31,7 @@ public final class EntityTrackingEvents {
 	/**
 	 * An event that is called before player starts tracking an entity.
 	 * Typically this occurs when an entity enters a client's view distance.
-	 * This event is called before the player's client is sent the entity's {@link EntityTrackerEntry#createSpawnPacket() spawn packet}.
+	 * This event is called before the player's client is sent the entity's {@link TrackedEntityInstance#method_2182()}  spawn packet}.
 	 */
 	public static final Event<StartTracking> START_TRACKING = EventFactory.createArrayBacked(StartTracking.class, callbacks -> (trackedEntity, player) -> {
 		for (StartTracking callback : callbacks) {
@@ -49,6 +49,9 @@ public final class EntityTrackingEvents {
 			callback.onStopTracking(trackedEntity, player);
 		}
 	});
+
+	private EntityTrackingEvents() {
+	}
 
 	@FunctionalInterface
 	public interface StartTracking {
@@ -70,8 +73,5 @@ public final class EntityTrackingEvents {
 		 * @param player        the player that is no longer tracking the entity
 		 */
 		void onStopTracking(Entity trackedEntity, ServerPlayerEntity player);
-	}
-
-	private EntityTrackingEvents() {
 	}
 }

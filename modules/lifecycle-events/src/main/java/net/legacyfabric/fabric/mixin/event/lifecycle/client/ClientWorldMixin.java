@@ -17,11 +17,13 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle.client;
 
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -34,7 +36,11 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ClientWorld.class)
-public class ClientWorldMixin {
+public abstract class ClientWorldMixin {
+	@Shadow
+	@Nullable
+	public abstract Entity getEntityById(int id);
+
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;tick()V", shift = At.Shift.AFTER), method = "tick")
 	public void startWorldTick(CallbackInfo ci) {
 		ClientTickEvents.START_WORLD_TICK.invoker().onStartTick((ClientWorld) (Object) this);
@@ -50,8 +56,13 @@ public class ClientWorldMixin {
 		ClientEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ClientWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "removeEntity")
+	@Inject(at = @At("TAIL"), method = "removeEntity(Lnet/minecraft/entity/Entity;)V")
 	public void unloadEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ClientWorld) (Object) this);
+	}
+
+	@Inject(at = @At("TAIL"), method = "removeEntity(I)Lnet/minecraft/entity/Entity;")
+	public void unloadEntityInt(int i, CallbackInfoReturnable<Entity> cir) {
+		ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(getEntityById(i), (ClientWorld) (Object) this);
 	}
 }

@@ -17,34 +17,33 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle;
 
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.server.world.ServerChunkCache;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ServerChunkProvider;
 
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 
-@Mixin(ServerChunkCache.class)
+@Mixin(ServerChunkProvider.class)
 public class ServerChunkCacheMixin {
 	@Final
 	@Shadow
 	private ServerWorld world;
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerChunkCache;scheduleUnload(Lnet/minecraft/world/chunk/Chunk;)V"), method = "unloadAll", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	public void chunkUnload(CallbackInfo ci, ObjectIterator<?> iterator, Chunk chunk) {
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/ChunkStorage;writeChunk(Lnet/minecraft/world/World;Lnet/minecraft/world/chunk/Chunk;)V"), method = "saveChunk", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	public void chunkUnload(Chunk chunk, CallbackInfo ci) {
 		ServerChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, chunk);
 	}
 
-	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/world/ChunkStorage;loadChunk(Lnet/minecraft/world/World;II)Lnet/minecraft/world/chunk/Chunk;"), method = "loadChunk", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/chunk/ChunkStorage;loadChunk(Lnet/minecraft/world/World;II)Lnet/minecraft/world/chunk/Chunk;"), method = "loadChunk", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
 		ServerChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, chunk);
 	}

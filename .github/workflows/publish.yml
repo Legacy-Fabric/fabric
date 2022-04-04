@@ -1,10 +1,13 @@
-name: Maven Only
+name: publish
 on: [workflow_dispatch] # Manual trigger
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 17-jdk ]
+    runs-on: ubuntu-20.04
     container:
-      image: openjdk:11-jdk
+      image: eclipse-temurin:${{ matrix.java }}
       options: --user root
     steps:
       - uses: actions/checkout@v1

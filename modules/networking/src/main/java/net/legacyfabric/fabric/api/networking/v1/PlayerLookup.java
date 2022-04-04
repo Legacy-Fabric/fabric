@@ -41,6 +41,9 @@ import net.legacyfabric.fabric.mixin.networking.EntityTrackerEntryAccessor;
  * <p>These methods should only be called on the server thread and only be used on logical a server.
  */
 public final class PlayerLookup {
+	private PlayerLookup() {
+	}
+
 	/**
 	 * Gets all the players on the minecraft server.
 	 *
@@ -54,7 +57,7 @@ public final class PlayerLookup {
 
 		// return an immutable collection to guard against accidental removals.
 		if (server.getPlayerManager() != null) {
-			return Collections.unmodifiableCollection(server.getPlayerManager().getPlayerList());
+			return Collections.unmodifiableCollection(server.getPlayerManager().getPlayers());
 		}
 
 		return Collections.emptyList();
@@ -72,7 +75,7 @@ public final class PlayerLookup {
 		Objects.requireNonNull(world, "The world cannot be null");
 
 		// return an immutable collection to guard against accidental removals.
-		return Collections.unmodifiableCollection(world.getServer().getPlayerManager().getPlayerList());
+		return Collections.unmodifiableCollection(world.getServer().getPlayerManager().getPlayers());
 	}
 
 	/**
@@ -97,7 +100,7 @@ public final class PlayerLookup {
 					.map(ServerWorld::getEntityTracker)
 					.map(EntityTrackerAccessor.class::cast)
 					.map(EntityTrackerAccessor::getTrackedEntityIds)
-					.map(c -> c.method_34013(entity.getEntityId()))
+					.map(c -> c.get(entity.getEntityId()))
 					.map(EntityTrackerEntryAccessor.class::cast)
 					.map(EntityTrackerEntryAccessor::getPlayers)
 					.map(Collections::unmodifiableSet)
@@ -143,8 +146,5 @@ public final class PlayerLookup {
 				.stream()
 				.filter((p) -> p.distanceTo(pos.getX(), pos.getY(), pos.getZ()) <= radiusSq)
 				.collect(Collectors.toList());
-	}
-
-	private PlayerLookup() {
 	}
 }

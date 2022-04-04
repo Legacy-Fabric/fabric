@@ -18,41 +18,41 @@
 package net.legacyfabric.fabric.mixin.networking;
 
 import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.server.network.EntityTrackerEntry;
+import net.minecraft.entity.TrackedEntityInstance;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.api.networking.v1.EntityTrackingEvents;
 
-@Mixin(EntityTrackerEntry.class)
+@Mixin(TrackedEntityInstance.class)
 abstract class EntityTrackerEntryMixin {
 	@Final
 	@Shadow
-	private Entity entity;
+	private Entity trackedEntity;
 
-	@Inject(method = "method_33549", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;onStoppedTracking(Lnet/minecraft/entity/Entity;)V", shift = At.Shift.AFTER))
+	@Inject(method = "removeTrackingPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;stopTracking(Lnet/minecraft/entity/Entity;)V", shift = At.Shift.AFTER))
 	private void onStopTracking1(ServerPlayerEntity player, CallbackInfo ci) {
-		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.entity, player);
+		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.trackedEntity, player);
 	}
 
-	@Inject(method = "method_33557", at = @At(value = "INVOKE", target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z", shift = At.Shift.AFTER, remap = false))
+	@Inject(method = "method_2180", at = @At(value = "INVOKE", target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z", shift = At.Shift.AFTER, remap = false))
 	private void onStopTracking2(ServerPlayerEntity player, CallbackInfo ci) {
-		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.entity, player);
+		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.trackedEntity, player);
 	}
 
-	@Inject(method = "method_33553", at = @At(value = "INVOKE", target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z", shift = At.Shift.AFTER, remap = false))
+	@Inject(method = "method_2184", at = @At(value = "INVOKE", target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z", shift = At.Shift.AFTER, remap = false))
 	private void onStopTracking3(ServerPlayerEntity player, CallbackInfo ci) {
-		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.entity, player);
+		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.trackedEntity, player);
 	}
 
-	@Inject(method = "method_33553", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/Set;add(Ljava/lang/Object;)Z", remap = false))
+	@Inject(method = "method_2184", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/Set;add(Ljava/lang/Object;)Z", remap = false))
 	private void onStartTracking(ServerPlayerEntity player, CallbackInfo ci) {
-		EntityTrackingEvents.START_TRACKING.invoker().onStartTracking(this.entity, player);
+		EntityTrackingEvents.START_TRACKING.invoker().onStartTracking(this.trackedEntity, player);
 	}
 }

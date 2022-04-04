@@ -30,9 +30,6 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 
 @Environment(EnvType.CLIENT)
 public final class ClientLifecycleEvents {
-	private ClientLifecycleEvents() {
-	}
-
 	/**
 	 * Called when Minecraft has started and it's client about to tick for the first time.
 	 */
@@ -41,7 +38,6 @@ public final class ClientLifecycleEvents {
 			callback.onClientStarted(client);
 		}
 	});
-
 	/**
 	 * Called when Minecraft's client begins to stop.
 	 * This is caused by quitting while in game, or closing the game window.
@@ -51,6 +47,9 @@ public final class ClientLifecycleEvents {
 			callback.onClientStopping(client);
 		}
 	});
+
+	private ClientLifecycleEvents() {
+	}
 
 	@FunctionalInterface
 	public interface ClientStarted {

@@ -43,13 +43,12 @@ public class ModelFeatureTest implements ClientModInitializer {
 						GlStateManager.enableTexture();
 						GlStateManager.translatef(0.0F, 1.0F, 0.0F);
 						GlStateManager.scalef(2, 2, 2);
-						MinecraftClient.getInstance().getBlockRenderManager().method_30516(state, state.getBlock().getMaterial(state).getColor().color);
-						GlStateManager.disableTexture();
+						MinecraftClient.getInstance().getBlockRenderManager().method_9949(state, state.getBlock().getMaterial(state).getColor().color);
 						GlStateManager.popMatrix();
 					}
 
 					@Override
-					public boolean method_31186() {
+					public boolean combineTextures() {
 						return false;
 					}
 				});
