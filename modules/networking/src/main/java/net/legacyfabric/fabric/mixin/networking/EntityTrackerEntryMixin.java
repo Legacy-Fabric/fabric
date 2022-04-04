@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TrackedEntityInstance;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.api.networking.v1.EntityTrackingEvents;
 
@@ -36,7 +36,7 @@ abstract class EntityTrackerEntryMixin {
 	@Shadow
 	private Entity trackedEntity;
 
-	@Inject(method = "removeTrackingPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;stopTracking(Lnet/minecraft/entity/Entity;)V", shift = At.Shift.AFTER))
+	@Inject(method = "removeTrackingPlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;stopTracking(Lnet/minecraft/entity/Entity;)V", shift = At.Shift.AFTER))
 	private void onStopTracking1(ServerPlayerEntity player, CallbackInfo ci) {
 		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.trackedEntity, player);
 	}

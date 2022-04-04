@@ -97,10 +97,10 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		Set<String> worldEntities = Arrays.stream(source.method_12833().worlds).flatMap(world -> world.entities.stream())
+		Set<String> worldEntities = Arrays.stream(source.getMinecraftServer().worlds).flatMap(world -> world.entities.stream())
 				.filter(this::checkEntity)
 				.map(entity -> entity.getUuid().toString()).collect(Collectors.toSet());
-		Collection<PlayerEntity> players = Sets.newHashSet(source.method_12833().getPlayerManager().getPlayers());
+		Collection<PlayerEntity> players = Sets.newHashSet(source.getMinecraftServer().getPlayerManager().getPlayers());
 
 		if (!players.isEmpty() && this.checkEntity(players.iterator().next())) {
 			final Set<String> setToReturn = Sets.newHashSet(worldEntities); // to ensure mutability
