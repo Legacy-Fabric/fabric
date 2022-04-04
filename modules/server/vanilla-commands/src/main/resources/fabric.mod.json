@@ -10,7 +10,7 @@
   "contact": {
     "homepage": "https://legacyrewoven.github.io/",
     "issues": "https://github.com/LegacyRewoven/rewoven-api/issues",
-    "sources": "https://github.com/LegacyRewoven/rewoven-api"
+    "sources": "https://github.com/Legacy-Fabric/fabric"
   },
   "entrypoints": {
     "main": [
