@@ -36,10 +36,10 @@ public class EntityEventsTest implements ModInitializer {
 			LOGGER.info("{} killed {}", EntityType.getEntityName(entity), EntityType.getEntityName(killedEntity));
 		});
 		ServerEntityWorldChangeEvents.AFTER_ENTITY_CHANGE_WORLD.register((originalEntity, newEntity, origin, destination) -> {
-			LOGGER.info("{} went from dim {} to dim {}", EntityType.getEntityName(newEntity), origin.dimension.method_11789().getName(), destination.dimension.method_11789().getName());
+			LOGGER.info("{} went from dim {} to dim {}", EntityType.getEntityName(newEntity), origin.dimension.getDimensionType().getName(), destination.dimension.getDimensionType().getName());
 		});
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
-			LOGGER.info("Player went from dim {} to dim {}", origin.dimension.method_11789().getName(), destination.dimension.method_11789().getName());
+			LOGGER.info("Player went from dim {} to dim {}", origin.dimension.getDimensionType().getName(), destination.dimension.getDimensionType().getName());
 		});
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, world, alive) -> {
 			LOGGER.info("Player {} respawned", newPlayer.getGameProfile().getName());

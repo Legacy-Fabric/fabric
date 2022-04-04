@@ -35,6 +35,7 @@ public class EntityRendererRegistry {
 	public static final EntityRendererRegistry INSTANCE = new EntityRendererRegistry();
 	private final Map<EntityRenderDispatcher, Context> renderManagerMap = new WeakHashMap<>();
 	private final Map<Class<? extends Entity>, Factory> renderSupplierMap = new HashMap<>();
+
 	private EntityRendererRegistry() {
 	}
 

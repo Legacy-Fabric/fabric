@@ -36,6 +36,7 @@ public class CommandMessageFormatting {
 	public static final Text LT_TEXT = new LiteralText("<");
 	public static final Text GT_TEXT = new LiteralText(">");
 	public static final Text ELLIPSIS_TEXT = new LiteralText("…");
+
 	private CommandMessageFormatting() {
 	}
 

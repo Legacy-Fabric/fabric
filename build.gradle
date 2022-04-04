@@ -1,9 +1,9 @@
 plugins {
-	id 'java'
+	id 'java-library'
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version '0.7-SNAPSHOT'
+	id 'fabric-loom' version '0.12-SNAPSHOT' apply false
 	id 'org.cadixdev.licenser' version "0.6.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
@@ -14,7 +14,6 @@ def ENV = System.getenv()
 setVersion("${project.base_version}+${project.mc_version}")
 logger.lifecycle("Building Fabric: " + version)
 
-import net.fabricmc.loom.task.RemapJarTask
 import org.apache.commons.codec.digest.DigestUtils
 
 def getSubprojectVersion(project, version) {
@@ -59,7 +58,35 @@ def static setupRepositories(RepositoryHandler repositories) {
 	}
 }
 
+def moduleDependencies(project, List<String> depNames) {
+	def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: 'namedElements') }
+	project.dependencies {
+		deps.each {
+			api it
+		}
+	}
+
+	// As we manually handle the maven artifacts, we need to also manually specify the deps.
+	project.publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				pom.withXml {
+					def depsNode = asNode().appendNode("dependencies")
+					deps.each {
+						def depNode = depsNode.appendNode("dependency")
+						depNode.appendNode("groupId", it.group)
+						depNode.appendNode("artifactId", it.name)
+						depNode.appendNode("version", it.version)
+						depNode.appendNode("scope", "compile")
+					}
+				}
+			}
+		}
+	}
+}
+
 allprojects {
+	apply plugin: "java-library"
 	apply plugin: 'checkstyle'
 	apply plugin: 'maven-publish'
 	apply plugin: 'signing'
@@ -78,10 +105,11 @@ allprojects {
 		}
 	}
 
-	minecraft {
-		intermediaryUrl = {
-			return "https://maven.legacyfabric.net/net/fabricmc/intermediary/" + it + "/intermediary-" + it + "-v2.jar"
-		}
+	loom {
+		shareRemapCaches = true
+
+		setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar');
+		customMinecraftManifest.set("https://meta.legacyfabric.net/v2/manifest/${mc_version}")
 	}
 
 	dependencies {
@@ -97,10 +125,6 @@ allprojects {
 		}
 	}
 
-	configurations {
-		dev
-	}
-
 	if (System.getProperty("os.name").toLowerCase().contains("mac")) {
 		configurations.all {
 			resolutionStrategy {
@@ -113,48 +137,37 @@ allprojects {
 		}
 	}
 
-	jar {
-		classifier("dev")
-	}
+	processResources {
+		inputs.property "version", project.base_version
 
-	afterEvaluate {
-		remapJar {
-			input = file("${project.buildDir}/libs/$archivesBaseName-${project.version}-dev.jar")
-			archiveName("${archivesBaseName}-${project.version}.jar")
-		}
-
-		artifacts {
-			dev file: file("${project.buildDir}/libs/$archivesBaseName-${project.version}-dev.jar"), type: "jar", builtBy: jar
-		}
-
-		processResources {
-			inputs.property "version", project.base_version
-
-			filesMatching("fabric.mod.json") {
-				expand "version": project.base_version
-			}
-		}
-
-		license {
-			header rootProject.file('HEADER')
-			include '**/*.java'
-			exclude '**/lib/sponge/*.java'
-			exclude '**/lib/sponge/**/*.java'
+		filesMatching("fabric.mod.json") {
+			expand "version": project.base_version
 		}
 	}
 
-	task sourcesJar(type: Jar, dependsOn: classes) {
-		classifier('sources')
-		from sourceSets.main.allSource
+	license {
+		header rootProject.file('HEADER')
+		include '**/*.java'
+		exclude '**/lib/sponge/*.java'
+		exclude '**/lib/sponge/**/*.java'
+	}
+
+	java {
+		withSourcesJar()
 	}
 
 	checkstyle {
 		configFile = rootProject.file("checkstyle.xml")
-		toolVersion = '8.31'
+		toolVersion = '9.1'
 	}
 
 	tasks.withType(Checkstyle) {
 		exclude '**/net/legacyfabric/fabric/test/**'
+	}
+
+	tasks.withType(AbstractArchiveTask) {
+		preserveFileTimestamps = false
+		reproducibleFileOrder = true
 	}
 }
 
@@ -189,30 +202,22 @@ task javadocJar(type: Jar) {
 	dependsOn javadoc
 	from javadoc.destinationDir
 	//Set as `fatjavadoc` to prevent an ide form trying to use this javadoc, over using the modules javadoc
-	classifier('fatjavadoc')
+	archiveClassifier = "fatjavadoc"
 }
 
 build.dependsOn javadocJar
 
 subprojects {
 	if (project.name != project.testmods_project) {
-		task remapMavenJar(type: Copy, dependsOn: remapJar) {
-			afterEvaluate {
-				from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
-				into("${project.buildDir}/libs/")
-				rename { String fn -> "$archivesBaseName-${version}-maven.jar" }
-			}
-		}
-
 		publishing {
 			publications {
 				mavenJava(MavenPublication) {
 					afterEvaluate {
-						artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
-							builtBy remapMavenJar
+						artifact(remapJar) {
+							builtBy remapJar
 						}
 
-						artifact(sourcesJar) {
+						artifact(remapSourcesJar) {
 							builtBy remapSourcesJar
 						}
 					}
@@ -221,29 +226,28 @@ subprojects {
 
 			setupRepositories(repositories)
 		}
+
 		javadoc.enabled = false
+
+		afterEvaluate {
+			// Disable the gen sources task on sub projects
+			genSourcesWithFernFlower.enabled = false
+			genSourcesWithCfr.enabled = false
+		}
 	}
 }
 
-task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
-	afterEvaluate {
-		input = file("${project.buildDir}/libs/${archivesBaseName}-${project.version}-dev.jar")
-		archiveName("${archivesBaseName}-${project.version}-maven.jar")
-		addNestedDependencies = false
-	}
+task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
+	input = jar.archiveFile
+	archiveFileName = "${archivesBaseName}-${project.version}-maven.jar"
+	addNestedDependencies = false
 }
-
-subprojects.each {
-	if (it.name != project.testmods_project) {
-		publish.dependsOn("${it.path}:publish")
-	}
-}
-
+build.dependsOn remapMavenJar
 
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
+			artifact(remapMavenJar) {
 				builtBy remapMavenJar
 			}
 
@@ -267,20 +271,8 @@ publishing {
 			}
 		}
 	}
-	repositories {
-		if (ENV.MAVEN_PUBLISH_TOKEN) {
-			maven {
-				url 'https://maven.legacyfabric.net/'
-				credentials {
-					username 'legacyfabric-ci'
-					password ENV.MAVEN_PUBLISH_TOKEN
-				}
-				authentication {
-					basic(BasicAuthentication)
-				}
-			}
-		}
-	}
+
+	setupRepositories(repositories)
 }
 
 task licenseFormatAll
@@ -291,9 +283,19 @@ dependencies {
 	afterEvaluate {
 		subprojects.each {
 			if (it.name != project.testmods_project) {
-				implementation project(path: ":${it.name}", configuration: "dev")
-				include project("${it.name}:")
+				api project(path: ":${it.name}", configuration: "namedElements")
 			}
+		}
+	}
+}
+
+remapJar {
+	afterEvaluate {
+		subprojects.each {
+			if (it.name == project.testmods_project) return
+
+			// Include the signed or none signed jar from the sub project.
+			nestedJars.from project("${it.name}:").tasks.getByName("remapJar")
 		}
 	}
 }

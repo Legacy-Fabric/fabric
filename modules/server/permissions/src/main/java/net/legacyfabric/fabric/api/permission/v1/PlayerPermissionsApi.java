@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 public interface PlayerPermissionsApi {
 	String getId();
