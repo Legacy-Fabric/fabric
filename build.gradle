@@ -73,12 +73,9 @@ allprojects {
 
 	repositories {
 		maven {
-			name = "Legacy Rewoven"
-			url = "https://github.com/LegacyRewoven/maven/raw/main/"
+			name = "Legacy Fabric"
+			url = "https://maven.legacyfabric.net"
 		}
-
-		// Left here until 1.12.2 Yarn hits Rewoven's maven
-		maven { url "https://maven.legacyfabric.net/" }
 	}
 
 	minecraft {
@@ -157,7 +154,7 @@ allprojects {
 	}
 
 	tasks.withType(Checkstyle) {
-		exclude '**/io/github/legacyrewoven/test/**'
+		exclude '**/net/legacyfabric/fabric/test/**'
 	}
 }
 
@@ -309,7 +306,7 @@ curseforge {
 	}
 	project {
 		id = '400281'
-		changelog = 'A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits'
+		changelog = 'https://github.com/Legacy-Fabric/fabric/commits/'
 		releaseType = 'beta'
 		addGameVersion '1.12.2'
 		addGameVersion 'Fabric'
