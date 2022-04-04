@@ -291,7 +291,7 @@ dependencies {
 	afterEvaluate {
 		subprojects.each {
 			if (it.name != project.testmods_project) {
-//				implementation project(path: ":${it.name}", configuration: "dev")
+				implementation project(path: ":${it.name}", configuration: "dev")
 				include project("${it.name}:")
 			}
 		}
