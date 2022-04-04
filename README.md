@@ -18,7 +18,7 @@ Legacy Fabric API is the library for essential hooks and interoperability mechan
 
 
 
-For support, consider joining the [Legacy Fabric discord server](https://discord.gg/emgF7bp), opening an issue, or creating a discussion.
+For support, consider joining the [Legacy Fabric discord server](https://legacyfabric.net/discord), opening an issue, or creating a discussion.
 
 
 
