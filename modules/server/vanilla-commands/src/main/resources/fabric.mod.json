@@ -9,7 +9,7 @@
   "icon": "assets/legacy-fabric-api/icon.png",
   "contact": {
     "homepage": "https://legacyfabric.net/",
-    "issues": "https://github.com/LegacyRewoven/rewoven-api/issues",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
     "sources": "https://github.com/Legacy-Fabric/fabric"
   },
   "entrypoints": {
