@@ -18,6 +18,7 @@
 package net.legacyfabric.fabric.mixin.permission;
 
 import org.spongepowered.asm.mixin.Mixin;
+
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(targets = "net/minecraft/command/CommandStats$1")

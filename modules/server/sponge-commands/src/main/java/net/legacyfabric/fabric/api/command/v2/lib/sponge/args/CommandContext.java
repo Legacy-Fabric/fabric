@@ -35,14 +35,15 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import net.legacyfabric.fabric.api.util.Location;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.Location;
 
 /**
  * Context that a command is executed in.
@@ -69,6 +70,24 @@ public final class CommandContext {
 	public CommandContext() {
 		this.parsedArgs = ArrayListMultimap.create();
 		this.definedFlags = Sets.newHashSet();
+	}
+
+	/**
+	 * Converts a {@link Text} into a String key.
+	 *
+	 * @param key the text to be converted into a string key
+	 * @return the string key. if {@code key} is a {@link TranslatableText}, the translation key.
+	 */
+	public static String textToArgKey(@Nullable Text key) {
+		if (key == null) {
+			return null;
+		}
+
+		if (key instanceof TranslatableText) { // Use translation key
+			return ((TranslatableText) key).getKey();
+		}
+
+		return key.asString();
 	}
 
 	/**
@@ -314,22 +333,5 @@ public final class CommandContext {
 			this.args = ArrayListMultimap.create(args);
 			this.flags = Sets.newHashSet(flags);
 		}
-	}
-
-	/**
-	 * Converts a {@link Text} into a String key.
-	 * @param key the text to be converted into a string key
-	 * @return the string key. if {@code key} is a {@link TranslatableText}, the translation key.
-	 */
-	public static String textToArgKey(@Nullable Text key) {
-		if (key == null) {
-			return null;
-		}
-
-		if (key instanceof TranslatableText) { // Use translation key
-			return ((TranslatableText) key).getKey();
-		}
-
-		return key.asString();
 	}
 }

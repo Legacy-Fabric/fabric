@@ -29,10 +29,11 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.google.common.collect.Multimap;
+import org.jetbrains.annotations.Nullable;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMapping;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Executes a command based on user input.

@@ -29,12 +29,13 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import org.jetbrains.annotations.Nullable;
 
 public class FilteredSuggestionsElement extends CommandElement {
 	private final CommandElement wrapped;

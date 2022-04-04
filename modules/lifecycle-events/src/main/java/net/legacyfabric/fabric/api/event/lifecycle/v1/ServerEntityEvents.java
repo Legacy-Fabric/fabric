@@ -18,17 +18,15 @@
 package net.legacyfabric.fabric.api.event.lifecycle.v1;
 
 import com.google.common.annotations.Beta;
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.profiler.Profiler;
 
-public final class ServerEntityEvents {
-	private ServerEntityEvents() {
-	}
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
 
+public final class ServerEntityEvents {
 	/**
 	 * Called when an Entity is loaded into a ServerWorld.
 	 *
@@ -52,7 +50,6 @@ public final class ServerEntityEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called when an Entity is unloaded from a ServerWorld.
 	 *
@@ -77,6 +74,9 @@ public final class ServerEntityEvents {
 			}
 		}
 	});
+
+	private ServerEntityEvents() {
+	}
 
 	@FunctionalInterface
 	public interface Load {

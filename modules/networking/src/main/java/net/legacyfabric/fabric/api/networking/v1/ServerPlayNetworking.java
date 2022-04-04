@@ -20,15 +20,15 @@ package net.legacyfabric.fabric.api.networking.v1;
 import java.util.Objects;
 import java.util.Set;
 
-import net.legacyfabric.fabric.impl.networking.server.ServerNetworkingImpl;
-import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerExtensions;
-
 import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
+
+import net.legacyfabric.fabric.impl.networking.server.ServerNetworkingImpl;
+import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerExtensions;
 
 /**
  * Offers access to play stage server-side networking functionalities.
@@ -38,6 +38,9 @@ import net.minecraft.util.PacketByteBuf;
  * <p>This class should be only used for the logical server.
  */
 public final class ServerPlayNetworking {
+	private ServerPlayNetworking() {
+	}
+
 	/**
 	 * Registers a handler to a channel.
 	 * A global receiver is registered to all connections, in the present and future.
@@ -315,6 +318,8 @@ public final class ServerPlayNetworking {
 		player.networkHandler.sendPacket(createS2CPacket(channelName, buf));
 	}
 
+	// Helper methods
+
 	/**
 	 * Sends a packet to a player.
 	 *
@@ -326,8 +331,6 @@ public final class ServerPlayNetworking {
 		send(player, channelId.toString(), buf);
 	}
 
-	// Helper methods
-
 	/**
 	 * Returns the <i>Minecraft</i> Server of a server play network handler.
 	 *
@@ -337,9 +340,6 @@ public final class ServerPlayNetworking {
 		Objects.requireNonNull(handler, "Network handler cannot be null");
 
 		return handler.player.server;
-	}
-
-	private ServerPlayNetworking() {
 	}
 
 	@FunctionalInterface

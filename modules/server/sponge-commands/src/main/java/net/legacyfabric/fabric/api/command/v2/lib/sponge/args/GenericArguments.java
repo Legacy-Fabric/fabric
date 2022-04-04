@@ -42,9 +42,19 @@ import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.legacyfabric.fabric.api.util.TriState;
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
+
+import net.fabricmc.loader.api.ModContainer;
+
 import net.legacyfabric.fabric.api.command.v2.StringType;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.TriState;
 import net.legacyfabric.fabric.impl.command.lib.sponge.args.AllOfCommandElement;
 import net.legacyfabric.fabric.impl.command.lib.sponge.args.BigDecimalElement;
 import net.legacyfabric.fabric.impl.command.lib.sponge.args.BigIntegerElement;
@@ -73,15 +83,6 @@ import net.legacyfabric.fabric.impl.command.lib.sponge.args.UrlElement;
 import net.legacyfabric.fabric.impl.command.lib.sponge.args.UuidElement;
 import net.legacyfabric.fabric.impl.command.lib.sponge.args.Vec3dCommandElement;
 import net.legacyfabric.fabric.impl.command.lib.sponge.args.WithSuggestionsElement;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
-
-import net.fabricmc.loader.api.ModContainer;
 
 /**
  * Class containing factory methods for common command elements.
@@ -89,6 +90,20 @@ import net.fabricmc.loader.api.ModContainer;
 @SuppressWarnings({"UnstableApiUsage"})
 public class GenericArguments {
 	private static final CommandElement NONE = new SequenceCommandElement(ImmutableList.of());
+	private static final Map<String, Boolean> BOOLEAN_CHOICES = ImmutableMap.<String, Boolean>builder()
+			.put("true", true)
+			.put("t", true)
+			.put("y", true)
+			.put("yes", true)
+			.put("verymuchso", true)
+			.put("1", true)
+			.put("false", false)
+			.put("f", false)
+			.put("n", false)
+			.put("no", false)
+			.put("notatall", false)
+			.put("0", false)
+			.build();
 
 	private GenericArguments() {
 	}
@@ -452,6 +467,8 @@ public class GenericArguments {
 		return new RepeatedCommandElement(element, times);
 	}
 
+	// -- Argument types for basic java types
+
 	/**
 	 * Require all remaining args to match as many instances of
 	 * {@link CommandElement} as will fit. Command element values will be stored
@@ -463,8 +480,6 @@ public class GenericArguments {
 	public static CommandElement allOf(CommandElement element) {
 		return new AllOfCommandElement(element);
 	}
-
-	// -- Argument types for basic java types
 
 	/**
 	 * Require an argument to be a string. Any provided argument will fit in
@@ -518,21 +533,6 @@ public class GenericArguments {
 	public static CommandElement doubleNum(Text key) {
 		return new NumericElement<>(key, Double::parseDouble, null, input -> new LiteralText(String.format("Expected a number, but input '%s' was not", input)));
 	}
-
-	private static final Map<String, Boolean> BOOLEAN_CHOICES = ImmutableMap.<String, Boolean>builder()
-			.put("true", true)
-			.put("t", true)
-			.put("y", true)
-			.put("yes", true)
-			.put("verymuchso", true)
-			.put("1", true)
-			.put("false", false)
-			.put("f", false)
-			.put("n", false)
-			.put("no", false)
-			.put("notatall", false)
-			.put("0", false)
-			.build();
 
 	/**
 	 * Require an argument to be a boolean.

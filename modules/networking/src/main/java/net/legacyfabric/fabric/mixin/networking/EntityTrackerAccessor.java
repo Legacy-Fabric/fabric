@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.mixin.networking;
 
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.util.IntObjectStorage;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.TrackedEntityInstance;
+import net.minecraft.util.IntObjectStorage;
 
 @Mixin(EntityTracker.class)
 public interface EntityTrackerAccessor {

@@ -17,9 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.networking;
 
-import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkAddon;
-import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerExtensions;
-import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,16 +33,19 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.text.Text;
 
+import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
+import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkAddon;
+import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerExtensions;
+
 // We want to apply a bit earlier than other mods which may not use us in order to prevent refCount issues
 @Mixin(value = ServerPlayNetworkHandler.class, priority = 999)
 abstract class ServerPlayNetworkHandlerMixin implements ServerPlayNetworkHandlerExtensions, DisconnectPacketSource {
 	@Shadow
 	@Final
-	private MinecraftServer server;
+	public ClientConnection connection;
 	@Shadow
 	@Final
-	public ClientConnection connection;
-
+	private MinecraftServer server;
 	@Unique
 	private ServerPlayNetworkAddon addon;
 

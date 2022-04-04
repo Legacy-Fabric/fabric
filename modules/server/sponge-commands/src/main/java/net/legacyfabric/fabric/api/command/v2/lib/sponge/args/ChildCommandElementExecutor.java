@@ -34,21 +34,22 @@ import java.util.function.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandExecutor;
-import net.legacyfabric.fabric.api.util.Location;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMapping;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMapping;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandExecutor;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.Location;
 
 public class ChildCommandElementExecutor extends CommandElement implements CommandExecutor {
 	private static final AtomicInteger COUNTER = new AtomicInteger();

@@ -33,10 +33,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.parsing.SingleArg;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.parsing.SingleArg;
 
 /**
  * Holder for command arguments.

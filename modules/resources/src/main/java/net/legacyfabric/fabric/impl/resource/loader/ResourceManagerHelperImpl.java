@@ -24,13 +24,14 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
-import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.util.Identifier;
+
+import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
 
 public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 	private static final ResourceManagerHelperImpl INSTANCE = new ResourceManagerHelperImpl();

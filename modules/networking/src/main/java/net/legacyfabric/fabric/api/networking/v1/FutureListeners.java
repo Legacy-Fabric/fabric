@@ -36,6 +36,9 @@ import net.minecraft.util.PacketByteBuf;
  * @see ChannelFutureListener
  */
 public final class FutureListeners {
+	private FutureListeners() {
+	}
+
 	/**
 	 * Returns a future listener that releases a packet byte buf when the buffer has been sent to a remote connection.
 	 *
@@ -92,8 +95,5 @@ public final class FutureListeners {
 			first.operationComplete((A) future);
 			second.operationComplete((B) future);
 		};
-	}
-
-	private FutureListeners() {
 	}
 }

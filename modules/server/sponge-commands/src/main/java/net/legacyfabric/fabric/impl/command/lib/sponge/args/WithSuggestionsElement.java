@@ -31,12 +31,13 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import org.jetbrains.annotations.Nullable;
 
 public class WithSuggestionsElement extends CommandElement {
 	private final CommandElement wrapped;

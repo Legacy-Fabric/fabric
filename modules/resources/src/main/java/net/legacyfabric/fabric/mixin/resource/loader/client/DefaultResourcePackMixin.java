@@ -22,10 +22,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 
+import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.resource.DefaultResourcePack;
 import net.minecraft.util.Identifier;

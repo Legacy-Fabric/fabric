@@ -17,21 +17,14 @@
 
 package net.legacyfabric.fabric.api.resource;
 
-import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
-
 import net.minecraft.resource.ResourceManager;
+
+import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
 /**
  * Helper for working with {@link ResourceManager} instances.
  */
 public interface ResourceManagerHelper {
-	/**
-	 * Register a resource reload listener for a given resource manager type.
-	 *
-	 * @param listener The resource reload listener.
-	 */
-	void registerReloadListener(IdentifiableResourceReloadListener listener);
-
 	/**
 	 * Get the ResourceManagerHelper instance for a given resource type.
 	 *
@@ -40,4 +33,11 @@ public interface ResourceManagerHelper {
 	static ResourceManagerHelper getInstance() {
 		return ResourceManagerHelperImpl.getInstance();
 	}
+
+	/**
+	 * Register a resource reload listener for a given resource manager type.
+	 *
+	 * @param listener The resource reload listener.
+	 */
+	void registerReloadListener(IdentifiableResourceReloadListener listener);
 }

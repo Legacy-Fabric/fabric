@@ -29,9 +29,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
-
 import net.minecraft.text.LiteralText;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 
 /**
  * Parser for converting a quoted string into a list of arguments.

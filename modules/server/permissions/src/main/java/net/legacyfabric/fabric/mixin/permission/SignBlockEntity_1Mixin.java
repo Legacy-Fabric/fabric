@@ -17,8 +17,9 @@
 
 package net.legacyfabric.fabric.mixin.permission;
 
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import org.spongepowered.asm.mixin.Mixin;
+
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$1")
 public abstract class SignBlockEntity_1Mixin implements PermissibleCommandSource {

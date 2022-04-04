@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.api.entity.event.v1;
 
-import net.legacyfabric.fabric.api.event.EventFactory;
-import net.legacyfabric.fabric.api.event.Event;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
 
 /**
  * Events related to an entity being moved to another world.
@@ -60,6 +60,9 @@ public final class ServerEntityWorldChangeEvents {
 		}
 	});
 
+	private ServerEntityWorldChangeEvents() {
+	}
+
 	@FunctionalInterface
 	public interface AfterEntityChange {
 		/**
@@ -86,8 +89,5 @@ public final class ServerEntityWorldChangeEvents {
 		 * @param destination the new world the player was moved to
 		 */
 		void afterChangeWorld(ServerPlayerEntity player, ServerWorld origin, ServerWorld destination);
-	}
-
-	private ServerEntityWorldChangeEvents() {
 	}
 }

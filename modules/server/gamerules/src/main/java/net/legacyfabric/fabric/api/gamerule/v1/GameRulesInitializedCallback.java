@@ -17,10 +17,10 @@
 
 package net.legacyfabric.fabric.api.gamerule.v1;
 
+import net.minecraft.world.GameRuleManager;
+
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
-
-import net.minecraft.world.GameRuleManager;
 
 /**
  * Allows adding custom game rules.

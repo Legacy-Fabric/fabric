@@ -29,14 +29,15 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class UrlElement extends KeyElement {
 	public UrlElement(Text key) {

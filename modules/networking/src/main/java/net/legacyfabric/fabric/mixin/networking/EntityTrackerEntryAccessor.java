@@ -19,8 +19,8 @@ package net.legacyfabric.fabric.mixin.networking;
 
 import java.util.Set;
 
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.entity.TrackedEntityInstance;
 import net.minecraft.server.network.ServerPlayerEntity;

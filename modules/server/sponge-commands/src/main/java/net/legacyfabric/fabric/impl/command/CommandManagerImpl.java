@@ -27,19 +27,6 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.Disambiguator;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
-import net.legacyfabric.fabric.api.util.Location;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMapping;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandPermissionException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.InvocationCommandException;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -48,6 +35,20 @@ import net.minecraft.text.HoverEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMapping;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandPermissionException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.InvocationCommandException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.Disambiguator;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.Location;
 
 public class CommandManagerImpl implements CommandManager {
 	private static final Logger LOGGER = LogManager.getLogger("Fabric Command Manager");

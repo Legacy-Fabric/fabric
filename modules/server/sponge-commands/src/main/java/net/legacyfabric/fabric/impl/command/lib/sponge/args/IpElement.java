@@ -29,15 +29,16 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class IpElement extends KeyElement {
 	private final PlayerCommandElement possiblePlayer;

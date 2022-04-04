@@ -29,12 +29,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.Dispatcher;
-import net.legacyfabric.fabric.api.util.Location;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.World;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.Dispatcher;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.Location;
 
 /**
  * A command dispatcher watches for commands (such as those said in chat)
@@ -52,8 +53,8 @@ public interface CommandManager extends Dispatcher {
 	 *
 	 * <p>The first non-conflicted alias becomes the "primary alias."</p>
 	 *
-	 * @param callable  The command
-	 * @param alias An array of aliases
+	 * @param callable The command
+	 * @param alias    An array of aliases
 	 * @return The registered command mapping, unless no aliases could be
 	 * registered
 	 */
@@ -70,8 +71,8 @@ public interface CommandManager extends Dispatcher {
 	 *
 	 * <p>The first non-conflicted alias becomes the "primary alias."</p>
 	 *
-	 * @param callable    The command
-	 * @param aliases A list of aliases
+	 * @param callable The command
+	 * @param aliases  A list of aliases
 	 * @return The registered command mapping, unless no aliases could be
 	 * registered
 	 * @throws IllegalArgumentException Thrown if {@code plugin} is not a
@@ -93,7 +94,7 @@ public interface CommandManager extends Dispatcher {
 	 *
 	 * <p>The first non-conflicted alias becomes the "primary alias."</p>
 	 *
-	 * @param callable     The command
+	 * @param callable The command
 	 * @param aliases  A list of aliases
 	 * @param callback The callback
 	 * @return The registered command mapping, unless no aliases could be

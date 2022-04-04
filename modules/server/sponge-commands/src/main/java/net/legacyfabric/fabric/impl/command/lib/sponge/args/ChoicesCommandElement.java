@@ -32,16 +32,17 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableList;
+
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandElement;
-import net.legacyfabric.fabric.api.util.TriState;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
+import net.legacyfabric.fabric.api.util.TriState;
 
 public class ChoicesCommandElement extends CommandElement {
 	public static final int CUTOFF = 5;

@@ -34,11 +34,12 @@ import java.util.stream.StreamSupport;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 /**
  * Abstract command element that matches values based on a regex pattern.

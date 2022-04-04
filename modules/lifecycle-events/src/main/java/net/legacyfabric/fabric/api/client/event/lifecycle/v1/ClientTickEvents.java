@@ -17,9 +17,6 @@
 
 package net.legacyfabric.fabric.api.client.event.lifecycle.v1;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.profiler.Profiler;
@@ -27,11 +24,11 @@ import net.minecraft.util.profiler.Profiler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
+
 @Environment(EnvType.CLIENT)
 public final class ClientTickEvents {
-	public ClientTickEvents() {
-	}
-
 	/**
 	 * Called at the start of the client tick.
 	 */
@@ -53,7 +50,6 @@ public final class ClientTickEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called at the end of the client tick.
 	 */
@@ -75,7 +71,6 @@ public final class ClientTickEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called at the start of a ClientWorld's tick.
 	 */
@@ -97,7 +92,6 @@ public final class ClientTickEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called at the end of a ClientWorld's tick.
 	 *
@@ -121,6 +115,9 @@ public final class ClientTickEvents {
 			}
 		}
 	});
+
+	public ClientTickEvents() {
+	}
 
 	@FunctionalInterface
 	public interface StartTick {

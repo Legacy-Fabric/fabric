@@ -28,9 +28,10 @@ package net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher;
 import java.util.List;
 import java.util.Optional;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMapping;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import org.jetbrains.annotations.Nullable;
 
 @FunctionalInterface
 public interface Disambiguator {
