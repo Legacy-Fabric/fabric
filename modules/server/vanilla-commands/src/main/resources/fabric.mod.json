@@ -6,7 +6,7 @@
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
-  "icon": "assets/legacy-fabric/icon.png",
+  "icon": "assets/legacy-fabric-api/icon.png",
   "contact": {
     "homepage": "https://legacyrewoven.github.io/",
     "issues": "https://github.com/LegacyRewoven/rewoven-api/issues",
