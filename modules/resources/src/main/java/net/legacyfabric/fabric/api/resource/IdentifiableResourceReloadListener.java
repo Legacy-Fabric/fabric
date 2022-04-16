@@ -17,11 +17,11 @@
 
 package net.legacyfabric.fabric.api.resource;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import net.minecraft.resource.ResourceReloadListener;
 import net.minecraft.util.Identifier;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Interface for "identifiable" resource reload listeners.

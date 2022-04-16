@@ -17,6 +17,13 @@
 
 package net.legacyfabric.fabric.impl.resource.loader;
 
+import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.legacyfabric.fabric.api.resource.ModResourcePack;
+import net.minecraft.resource.AbstractFileResourcePack;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,16 +36,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import net.minecraft.resource.AbstractFileResourcePack;
-
-import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.api.metadata.ModMetadata;
-
-import net.legacyfabric.fabric.api.resource.ModResourcePack;
-
 public class ModNioResourcePack extends AbstractFileResourcePack implements ModResourcePack, Closeable {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Pattern RESOURCE_PACK_PATH = Pattern.compile("[a-z0-9-_]+");
@@ -47,6 +44,7 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	private final boolean cacheable;
 	private final AutoCloseable closer;
 	private final String separator;
+	private Set<String> namespaceCache;
 
 	public ModNioResourcePack(ModContainer container, Path path, AutoCloseable closer) {
 		super(null);
@@ -103,27 +101,6 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 		throw new FileNotFoundException("\"" + filename + "\" in Fabric mod \"" + this.getFabricModMetadata().getId() + "\"");
 	}
 
-	@Override
-	protected boolean containsFile(String filename) {
-		if (ModResourcePackUtil.containsDefault(this.getFabricModMetadata(), filename)) {
-			return true;
-		}
-
-		if (DeferredNioExecutionHandler.shouldDefer()) {
-			try {
-				return DeferredNioExecutionHandler.submit(() -> {
-					Path path = getPath(filename);
-					return path != null && Files.isRegularFile(path);
-				});
-			} catch (IOException e) {
-				return false;
-			}
-		} else {
-			Path path = getPath(filename);
-			return path != null && Files.isRegularFile(path);
-		}
-	}
-
 	//	@Override
 	//	public Collection<Identifier> findResources(String namespace, String path, int depth, Predicate<String> predicate) {
 	//		List<Identifier> ids = new ArrayList<>();
@@ -156,7 +133,26 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	//		return ids;
 	//	}
 
-	private Set<String> namespaceCache;
+	@Override
+	protected boolean containsFile(String filename) {
+		if (ModResourcePackUtil.containsDefault(this.getFabricModMetadata(), filename)) {
+			return true;
+		}
+
+		if (DeferredNioExecutionHandler.shouldDefer()) {
+			try {
+				return DeferredNioExecutionHandler.submit(() -> {
+					Path path = getPath(filename);
+					return path != null && Files.isRegularFile(path);
+				});
+			} catch (IOException e) {
+				return false;
+			}
+		} else {
+			Path path = getPath(filename);
+			return path != null && Files.isRegularFile(path);
+		}
+	}
 
 	protected void warnInvalidNamespace(String s) {
 		LOGGER.warn("Fabric NioResourcePack: ignored invalid namespace: {} in mod ID {}", s, this.getFabricModMetadata().getId());

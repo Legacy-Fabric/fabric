@@ -17,27 +17,26 @@
 
 package net.legacyfabric.fabric.impl.client.rendering;
 
-import java.util.HashMap;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-
+import net.legacyfabric.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
-import net.legacyfabric.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import java.util.HashMap;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 public class BlockEntityRendererRegistryImpl implements BlockEntityRendererRegistry {
 	private static final HashMap<Class<? extends BlockEntity>, Function<BlockEntityRenderDispatcher, ? extends BlockEntityRenderer<?>>> map = new HashMap<>();
 	private static BiConsumer<Class<? extends BlockEntity>, Function<BlockEntityRenderDispatcher, ? extends BlockEntityRenderer<?>>> handler = (type, function) -> map.put(type, function);
 
-	@Override
-	public <E extends BlockEntity> void register(Class<E> clazz, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<E>> blockEntityRenderer) {
-		handler.accept(clazz, blockEntityRenderer);
-	}
-
 	public static void setup(BiConsumer<Class<? extends BlockEntity>, Function<BlockEntityRenderDispatcher, ? extends BlockEntityRenderer<?>>> vanillaHandler) {
 		map.forEach(vanillaHandler);
 		handler = vanillaHandler;
+	}
+
+	@Override
+	public <E extends BlockEntity> void register(Class<E> clazz, Function<BlockEntityRenderDispatcher, BlockEntityRenderer<E>> blockEntityRenderer) {
+		handler.accept(clazz, blockEntityRenderer);
 	}
 }

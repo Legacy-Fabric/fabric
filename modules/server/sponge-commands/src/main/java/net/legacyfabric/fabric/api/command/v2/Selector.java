@@ -17,19 +17,18 @@
 
 package net.legacyfabric.fabric.api.command.v2;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
+import net.minecraft.command.CommandSource;
+import net.minecraft.entity.Entity;
+import net.minecraft.server.MinecraftServer;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
-
-import net.minecraft.command.CommandSource;
-import net.minecraft.entity.Entity;
-import net.minecraft.server.MinecraftServer;
 
 public enum Selector {
 	ALL_ENTITIES('e') {
@@ -63,18 +62,23 @@ public enum Selector {
 		}
 	};
 
-	private final char key;
 	private static final Map<String, Selector> MAP;
+
+	static {
+		ImmutableMap.Builder<String, Selector> builder = ImmutableMap.builder();
+
+		for (Selector s : values()) {
+			builder.put("@" + s.getKey(), s);
+		}
+
+		MAP = builder.build();
+	}
+
+	private final char key;
 
 	Selector(char key) {
 		this.key = key;
 	}
-
-	public char getKey() {
-		return this.key;
-	}
-
-	public abstract Set<Entity> resolve(CommandSource sender);
 
 	public static List<String> complete(String s) {
 		if (s.startsWith("@") && s.length() == 2) {
@@ -92,13 +96,9 @@ public enum Selector {
 		throw new IllegalArgumentException("Unknown selector");
 	}
 
-	static {
-		ImmutableMap.Builder<String, Selector> builder = ImmutableMap.builder();
-
-		for (Selector s : values()) {
-			builder.put("@" + s.getKey(), s);
-		}
-
-		MAP = builder.build();
+	public char getKey() {
+		return this.key;
 	}
+
+	public abstract Set<Entity> resolve(CommandSource sender);
 }

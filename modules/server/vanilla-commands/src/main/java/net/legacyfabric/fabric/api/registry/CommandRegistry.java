@@ -17,10 +17,9 @@
 
 package net.legacyfabric.fabric.api.registry;
 
-import net.minecraft.command.AbstractCommand;
-
-import net.legacyfabric.fabric.impl.command.CommandRegistryImpl;
 import net.legacyfabric.fabric.api.command.CommandSide;
+import net.legacyfabric.fabric.impl.command.CommandRegistryImpl;
+import net.minecraft.command.AbstractCommand;
 
 /**
  * Base class for registration of commands.

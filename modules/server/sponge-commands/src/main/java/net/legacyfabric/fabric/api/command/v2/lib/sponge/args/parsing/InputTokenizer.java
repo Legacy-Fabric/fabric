@@ -25,9 +25,9 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.args.parsing;
 
-import java.util.List;
-
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
+
+import java.util.List;
 
 public interface InputTokenizer {
 	/**

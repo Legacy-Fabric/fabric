@@ -17,21 +17,16 @@
 
 package net.legacyfabric.fabric.api.client.event.lifecycle.v1;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.world.chunk.Chunk;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
-
 @Environment(EnvType.CLIENT)
 public final class ClientChunkEvents {
-	private ClientChunkEvents() {
-	}
-
 	/**
 	 * Called when a chunk is loaded into a ClientWorld.
 	 *
@@ -55,7 +50,6 @@ public final class ClientChunkEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called when a chunk is about to be unloaded from a ClientWorld.
 	 *
@@ -79,6 +73,9 @@ public final class ClientChunkEvents {
 			}
 		}
 	});
+
+	private ClientChunkEvents() {
+	}
 
 	@FunctionalInterface
 	public interface Load {

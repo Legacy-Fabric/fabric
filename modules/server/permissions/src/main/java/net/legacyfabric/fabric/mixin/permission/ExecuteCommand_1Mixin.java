@@ -17,12 +17,10 @@
 
 package net.legacyfabric.fabric.mixin.permission;
 
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-
-import net.minecraft.entity.Entity;
-
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(targets = "net/minecraft/server/command/ExecuteCommand$1")
 public abstract class ExecuteCommand_1Mixin implements PermissibleCommandSource {

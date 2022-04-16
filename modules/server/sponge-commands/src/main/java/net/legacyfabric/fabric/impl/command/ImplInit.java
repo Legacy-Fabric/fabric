@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.impl.command;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
-
 import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
 import net.legacyfabric.fabric.api.registry.CommandRegistry;

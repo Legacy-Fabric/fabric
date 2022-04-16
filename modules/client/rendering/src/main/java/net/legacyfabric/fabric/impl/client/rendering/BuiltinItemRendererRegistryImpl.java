@@ -17,19 +17,16 @@
 
 package net.legacyfabric.fabric.impl.client.rendering;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.legacyfabric.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.minecraft.item.Item;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.item.Item;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.legacyfabric.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public final class BuiltinItemRendererRegistryImpl implements BuiltinItemRendererRegistry {
@@ -40,6 +37,11 @@ public final class BuiltinItemRendererRegistryImpl implements BuiltinItemRendere
 	private BuiltinItemRendererRegistryImpl() {
 	}
 
+	@Nullable
+	public static DynamicItemRenderer getRenderer(Item item) {
+		return RENDERERS.get(item);
+	}
+
 	@Override
 	public void register(@NotNull Item item, @NotNull DynamicItemRenderer renderer) {
 		Objects.requireNonNull(item, "Item is null");
@@ -48,10 +50,5 @@ public final class BuiltinItemRendererRegistryImpl implements BuiltinItemRendere
 		if (RENDERERS.putIfAbsent(item, renderer) != null) {
 			throw new IllegalArgumentException("Item " + Item.REGISTRY.getIdentifier(item) + " already has a builtin renderer!");
 		}
-	}
-
-	@Nullable
-	public static DynamicItemRenderer getRenderer(Item item) {
-		return RENDERERS.get(item);
 	}
 }

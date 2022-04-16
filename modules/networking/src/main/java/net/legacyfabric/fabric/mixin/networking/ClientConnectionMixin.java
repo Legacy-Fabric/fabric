@@ -17,12 +17,17 @@
 
 package net.legacyfabric.fabric.mixin.networking;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
-
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import net.legacyfabric.fabric.impl.networking.ChannelInfoHolder;
+import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
+import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.network.NetworkSide;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.PacketListener;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -31,30 +36,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.NetworkSide;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.PacketListener;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-
-import net.legacyfabric.fabric.impl.networking.ChannelInfoHolder;
-import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
-import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Mixin(ClientConnection.class)
 abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	@Shadow
 	private PacketListener field_8432;
+	@Unique
+	private Collection<String> playChannels;
 
 	@Shadow
 	public abstract void disconnect(Text disconnectReason);
 
 	@Shadow
 	public abstract void send(Packet<?> arg);
-
-	@Unique
-	private Collection<String> playChannels;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void initAddedFields(NetworkSide side, CallbackInfo ci) {

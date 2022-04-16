@@ -17,9 +17,8 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
-import org.jetbrains.annotations.ApiStatus;
-
 import net.minecraft.command.CommandSource;
+import org.jetbrains.annotations.ApiStatus;
 
 /**
  * Represents a {@link CommandSource} that can not be able to run

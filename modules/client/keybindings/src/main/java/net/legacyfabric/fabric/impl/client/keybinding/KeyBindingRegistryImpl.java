@@ -17,11 +17,10 @@
 
 package net.legacyfabric.fabric.impl.client.keybinding;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import net.minecraft.client.options.KeyBinding;
+
+import java.util.List;
 
 public final class KeyBindingRegistryImpl {
 	private static final List<KeyBinding> moddedKeyBindings = Lists.newArrayList();

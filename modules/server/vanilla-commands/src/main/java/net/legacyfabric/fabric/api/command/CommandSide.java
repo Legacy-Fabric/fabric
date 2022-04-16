@@ -36,15 +36,15 @@ public enum CommandSide {
 		this.integrated = integrated;
 	}
 
+	public static CommandSide getServerSide() {
+		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? INTEGRATED : DEDICATED;
+	}
+
 	public boolean isDedicated() {
 		return this.dedicated;
 	}
 
 	public boolean isIntegrated() {
 		return this.integrated;
-	}
-
-	public static CommandSide getServerSide() {
-		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT ? INTEGRATED : DEDICATED;
 	}
 }

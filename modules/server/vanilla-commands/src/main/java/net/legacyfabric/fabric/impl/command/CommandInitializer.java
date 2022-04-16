@@ -17,11 +17,9 @@
 
 package net.legacyfabric.fabric.impl.command;
 
-import net.minecraft.server.command.CommandManager;
-
 import net.fabricmc.api.ModInitializer;
-
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.server.command.CommandManager;
 
 public class CommandInitializer implements ModInitializer {
 	@Override

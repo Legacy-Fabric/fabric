@@ -17,13 +17,11 @@
 
 package net.legacyfabric.fabric.test.client;
 
+import net.fabricmc.api.ClientModInitializer;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.legacyfabric.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.options.KeyBinding;
-
-import net.fabricmc.api.ClientModInitializer;
+import org.lwjgl.input.Keyboard;
 
 public class KeybindingTest implements ClientModInitializer {
 	@Override

@@ -17,16 +17,14 @@
 
 package net.legacyfabric.fabric.test.client;
 
-import java.awt.Color;
-
+import net.fabricmc.api.ClientModInitializer;
 import net.legacyfabric.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.legacyfabric.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
+import net.minecraft.client.resource.language.I18n;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.client.resource.language.I18n;
-
-import net.fabricmc.api.ClientModInitializer;
+import java.awt.*;
 
 public class RenderingEventsTest implements ClientModInitializer {
 	private static final Logger LOGGER = LogManager.getLogger();

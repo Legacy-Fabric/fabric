@@ -17,15 +17,13 @@
 
 package net.legacyfabric.fabric.test;
 
+import net.fabricmc.api.ModInitializer;
 import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.minecraft.entity.EntityType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import net.minecraft.entity.EntityType;
-
-import net.fabricmc.api.ModInitializer;
 
 public class EntityEventsTest implements ModInitializer {
 	private static final Logger LOGGER = LogManager.getLogger();

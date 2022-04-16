@@ -17,15 +17,13 @@
 
 package net.legacyfabric.fabric.api.client.networking.v1;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.networking.v1.PacketSender;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 
 /**
  * Offers access to events related to the connection to a server on a logical client.

@@ -25,15 +25,14 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.PatternMatchingCommandElement;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.minecraft.text.Text;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import net.minecraft.text.Text;
-
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.PatternMatchingCommandElement;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class EnumValueElement<T extends Enum<T>> extends PatternMatchingCommandElement {
 	private final Class<T> type;

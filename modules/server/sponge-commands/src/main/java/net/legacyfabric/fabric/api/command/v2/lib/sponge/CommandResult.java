@@ -25,9 +25,9 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
-import java.util.Optional;
-
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 /**
  * Represents the result of a command in Sponge.
@@ -41,6 +41,23 @@ public class CommandResult {
 	private final Optional<Integer> affectedEntities;
 	private final Optional<Integer> affectedItems;
 	private final Optional<Integer> queryResult;
+
+	/**
+	 * Constructs a new command result.
+	 *
+	 * @param successCount     The success count
+	 * @param affectedBlocks   The number of affected blocks
+	 * @param affectedEntities The number of affected entities
+	 * @param affectedItems    The number of affected items
+	 * @param queryResult      The query result
+	 */
+	CommandResult(@Nullable Integer successCount, @Nullable Integer affectedBlocks, @Nullable Integer affectedEntities, @Nullable Integer affectedItems, @Nullable Integer queryResult) {
+		this.successCount = Optional.ofNullable(successCount);
+		this.affectedBlocks = Optional.ofNullable(affectedBlocks);
+		this.affectedEntities = Optional.ofNullable(affectedEntities);
+		this.affectedItems = Optional.ofNullable(affectedItems);
+		this.queryResult = Optional.ofNullable(queryResult);
+	}
 
 	/**
 	 * Returns a {@link Builder}.
@@ -124,23 +141,6 @@ public class CommandResult {
 	 */
 	public static CommandResult queryResult(int count) {
 		return builder().queryResult(count).build();
-	}
-
-	/**
-	 * Constructs a new command result.
-	 *
-	 * @param successCount     The success count
-	 * @param affectedBlocks   The number of affected blocks
-	 * @param affectedEntities The number of affected entities
-	 * @param affectedItems    The number of affected items
-	 * @param queryResult      The query result
-	 */
-	CommandResult(@Nullable Integer successCount, @Nullable Integer affectedBlocks, @Nullable Integer affectedEntities, @Nullable Integer affectedItems, @Nullable Integer queryResult) {
-		this.successCount = Optional.ofNullable(successCount);
-		this.affectedBlocks = Optional.ofNullable(affectedBlocks);
-		this.affectedEntities = Optional.ofNullable(affectedEntities);
-		this.affectedItems = Optional.ofNullable(affectedItems);
-		this.queryResult = Optional.ofNullable(queryResult);
 	}
 
 	/**

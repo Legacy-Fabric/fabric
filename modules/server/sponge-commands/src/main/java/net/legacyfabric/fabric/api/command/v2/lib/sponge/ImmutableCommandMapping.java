@@ -25,14 +25,10 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+
+import java.util.*;
 
 /**
  * An immutable command mapping instance that returns the same objects that

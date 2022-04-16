@@ -17,11 +17,10 @@
 
 package net.legacyfabric.fabric.api.entity.event.v1;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 
 public final class ServerPlayerEvents {
 	/**
@@ -47,6 +46,9 @@ public final class ServerPlayerEvents {
 		}
 	});
 
+	private ServerPlayerEvents() {
+	}
+
 	@FunctionalInterface
 	public interface CopyFrom {
 		/**
@@ -69,8 +71,5 @@ public final class ServerPlayerEvents {
 		 * @param alive     whether the old player is still alive
 		 */
 		void afterRespawn(ServerPlayerEntity oldPlayer, ServerPlayerEntity newPlayer, ServerWorld world, boolean alive);
-	}
-
-	private ServerPlayerEvents() {
 	}
 }

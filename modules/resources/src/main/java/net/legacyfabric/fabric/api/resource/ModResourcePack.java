@@ -17,10 +17,9 @@
 
 package net.legacyfabric.fabric.api.resource;
 
-import net.minecraft.resource.ResourcePack;
-
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.resource.ResourcePack;
 
 /**
  * Interface implemented by mod-provided resource packs.

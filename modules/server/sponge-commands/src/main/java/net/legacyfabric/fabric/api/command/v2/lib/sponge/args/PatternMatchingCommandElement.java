@@ -25,21 +25,19 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.args;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 /**
  * Abstract command element that matches values based on a regex pattern.

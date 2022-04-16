@@ -17,26 +17,24 @@
 
 package net.legacyfabric.fabric.impl.command;
 
-import java.util.Collections;
-import java.util.Map;
-
 import com.google.common.collect.Maps;
-
-import net.minecraft.command.AbstractCommand;
-
 import net.legacyfabric.fabric.api.command.CommandSide;
 import net.legacyfabric.fabric.api.registry.CommandRegistry;
+import net.minecraft.command.AbstractCommand;
+
+import java.util.Collections;
+import java.util.Map;
 
 public class CommandRegistryImpl implements CommandRegistry {
 	public static final CommandRegistryImpl INSTANCE = new CommandRegistryImpl();
 	private static final Map<AbstractCommand, CommandSide> FABRIC_COMMANDS = Maps.newHashMap();
 
+	public static Map<AbstractCommand, CommandSide> getCommandMap() {
+		return Collections.unmodifiableMap(FABRIC_COMMANDS);
+	}
+
 	@Override
 	public void register(AbstractCommand command, CommandSide side) {
 		FABRIC_COMMANDS.put(command, side);
-	}
-
-	public static Map<AbstractCommand, CommandSide> getCommandMap() {
-		return Collections.unmodifiableMap(FABRIC_COMMANDS);
 	}
 }

@@ -26,11 +26,9 @@
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.args;
 
 import com.google.common.base.Strings;
-
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 
 /**
  * Exception thrown when an error occurs while parsing arguments.

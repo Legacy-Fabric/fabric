@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.api.networking.v1;
 
-import java.util.Objects;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.local.LocalChannel;
@@ -26,8 +24,9 @@ import io.netty.channel.local.LocalServerChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.FutureListener;
 import io.netty.util.concurrent.GenericFutureListener;
-
 import net.minecraft.util.PacketByteBuf;
+
+import java.util.Objects;
 
 /**
  * Utilities for working with netty's future listeners.
@@ -36,6 +35,9 @@ import net.minecraft.util.PacketByteBuf;
  * @see ChannelFutureListener
  */
 public final class FutureListeners {
+	private FutureListeners() {
+	}
+
 	/**
 	 * Returns a future listener that releases a packet byte buf when the buffer has been sent to a remote connection.
 	 *
@@ -92,8 +94,5 @@ public final class FutureListeners {
 			first.operationComplete((A) future);
 			second.operationComplete((B) future);
 		};
-	}
-
-	private FutureListeners() {
 	}
 }

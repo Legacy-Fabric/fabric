@@ -17,21 +17,19 @@
 
 package net.legacyfabric.fabric.mixin.resource.loader.client;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Enumeration;
-
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.resource.DefaultResourcePack;
+import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.resource.DefaultResourcePack;
-import net.minecraft.util.Identifier;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Enumeration;
 
 @Environment(EnvType.CLIENT)
 @Mixin(DefaultResourcePack.class)

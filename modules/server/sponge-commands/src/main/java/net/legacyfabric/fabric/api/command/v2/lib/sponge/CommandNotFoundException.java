@@ -26,7 +26,6 @@
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
 import com.google.common.base.Preconditions;
-
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 

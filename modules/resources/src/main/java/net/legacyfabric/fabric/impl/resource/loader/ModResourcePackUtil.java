@@ -17,20 +17,18 @@
 
 package net.legacyfabric.fabric.impl.resource.loader;
 
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.List;
-
 import com.google.common.base.Charsets;
-import org.apache.commons.io.IOUtils;
-
-import net.minecraft.resource.ResourcePack;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.resource.ResourcePack;
+import org.apache.commons.io.IOUtils;
+
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.List;
 
 /**
  * Internal utilities for managing resource packs.

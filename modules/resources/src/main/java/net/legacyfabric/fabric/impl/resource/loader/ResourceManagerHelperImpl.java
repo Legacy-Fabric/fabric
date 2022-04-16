@@ -17,21 +17,15 @@
 
 package net.legacyfabric.fabric.impl.resource.loader;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.google.common.collect.Lists;
+import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.resource.ResourceReloadListener;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.resource.ResourceReloadListener;
-import net.minecraft.util.Identifier;
-
-import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
+import java.util.*;
 
 public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 	private static final ResourceManagerHelperImpl INSTANCE = new ResourceManagerHelperImpl();
