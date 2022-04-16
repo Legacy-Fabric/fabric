@@ -30,6 +30,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -159,7 +160,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 					String test = commandComponent.get();
 					return input.toLowerCase().startsWith(test.toLowerCase());
 				}))
-				.collect(ImmutableList.toImmutableList()));
+				.collect(Collectors.toList()));
 		return completions;
 	}
 

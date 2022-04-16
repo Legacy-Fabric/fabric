@@ -25,10 +25,11 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.Nullable;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
@@ -55,6 +56,6 @@ public class FilteredSuggestionsElement extends CommandElement {
 
 	@Override
 	public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
-		return this.wrapped.complete(src, args, context).stream().filter(this.predicate).collect(ImmutableList.toImmutableList());
+		return Collections.unmodifiableList(this.wrapped.complete(src, args, context).stream().filter(this.predicate).collect(Collectors.toList()));
 	}
 }

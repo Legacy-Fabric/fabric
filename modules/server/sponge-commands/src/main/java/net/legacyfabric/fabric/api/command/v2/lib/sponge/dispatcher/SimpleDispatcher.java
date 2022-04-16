@@ -25,6 +25,7 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -357,7 +358,7 @@ public final class SimpleDispatcher implements Dispatcher {
 		Optional<CommandMapping> cmdOptional = this.get(argSplit[0], src);
 
 		if (argSplit.length == 1) {
-			return this.filterCommands(src, argSplit[0]).stream().collect(ImmutableList.toImmutableList());
+			return Collections.unmodifiableList(new ArrayList<>(this.filterCommands(src, argSplit[0])));
 		} else if (!cmdOptional.isPresent()) {
 			return ImmutableList.of();
 		}
@@ -399,7 +400,7 @@ public final class SimpleDispatcher implements Dispatcher {
 			CommandMapping mapping = mappingOpt.get();
 			final Optional<Text> description = mapping.getCallable().getShortDescription(source);
 			Text text = new LiteralText(mapping.getPrimaryAlias());
-			build.append(text.setStyle(text.getStyle().setColor(Formatting.GREEN).setUnderline(Boolean.TRUE).setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + mapping.getPrimaryAlias())))).append(CommandMessageFormatting.SPACE_TEXT).append(description.orElse(mapping.getCallable().getUsage(source)));
+			build.append(text.setStyle(text.getStyle().setFormatting(Formatting.GREEN).setUnderline(Boolean.TRUE).setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + mapping.getPrimaryAlias())))).append(CommandMessageFormatting.SPACE_TEXT).append(description.orElse(mapping.getCallable().getUsage(source)));
 
 			if (it.hasNext()) {
 				build.append("\n");

@@ -25,7 +25,6 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.args.parsing;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 /**
@@ -100,7 +99,7 @@ public class SingleArg {
 
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this)
+		return Objects.toStringHelper(this)
 				.add("value", this.value)
 				.add("startIdx", this.startIdx)
 				.add("endIdx", this.endIdx)

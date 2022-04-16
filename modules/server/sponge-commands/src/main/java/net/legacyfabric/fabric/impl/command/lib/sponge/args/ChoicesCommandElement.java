@@ -26,12 +26,12 @@
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import com.google.common.collect.ImmutableList;
+import java.util.stream.Collectors;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -71,7 +71,7 @@ public class ChoicesCommandElement extends CommandElement {
 	@Override
 	public List<String> complete(PermissibleCommandSource src, CommandArgs args, CommandContext context) {
 		final String prefix = args.nextIfPresent().orElse("");
-		return this.keySupplier.get().stream().filter((input) -> input.startsWith(prefix)).collect(ImmutableList.toImmutableList());
+		return Collections.unmodifiableList(this.keySupplier.get().stream().filter((input) -> input.startsWith(prefix)).collect(Collectors.toList()));
 	}
 
 	@Override
