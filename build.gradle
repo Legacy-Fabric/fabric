@@ -22,14 +22,14 @@ import org.apache.commons.codec.digest.DigestUtils
 
 def getSubprojectVersion(project, version) {
 	if (grgit == null) {
-		return version + "+nogßit"
+		return version + "+nogit"
 	}
 	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath()).toString()], maxCommits: 1)
 	if (latestCommits.isEmpty()) {
 		return version + "+uncommited"
 	} else {
-		return version + "+" + latestCommits.get(0).id.substring(0, 8) + 
-		DigestUtils.sha256Hex("${project.mc_version}").substring(0, 2)
+		return version + "+" + latestCommits.get(0).id.substring(0, 8) +
+				DigestUtils.sha256Hex("${project.mc_version}").substring(0, 2)
 	}
 }
 
@@ -51,7 +51,7 @@ def static setupRepositories(RepositoryHandler repositories) {
 		repositories.maven {
 			url 'https://maven.legacyfabric.net/'
 			credentials {
-				username 'BobTheBuildSlave'
+				username 'legacyfabric-ci'
 				password ENV.MAVEN_PUBLISH_TOKEN
 			}
 			authentication {
@@ -84,12 +84,9 @@ allprojects {
 	}
 
 	dependencies {
-		implementation("com.google.guava:guava:23.5-jre")
 		minecraft("com.mojang:minecraft:${project.mc_version}")
 		mappings("net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2")
-		modApi("net.fabricmc:fabric-loader-1.8.9:0.8.7+build.202008300717") {
-			exclude module: "guava"
-		}
+		modApi("net.fabricmc:fabric-loader:${project.loader_version}")
 
 		implementation 'com.mojang:brigadier:1.0.17'
 
@@ -141,8 +138,6 @@ allprojects {
 		license {
 			header rootProject.file('HEADER')
 			include '**/*.java'
-			exclude '**/lib/sponge/*.java'
-			exclude '**/lib/sponge/**/*.java'
 		}
 	}
 
@@ -270,7 +265,7 @@ publishing {
 			maven {
 				url 'https://maven.legacyfabric.net/'
 				credentials {
-					username 'BobTheBuildSlave'
+					username 'legacyfabric-ci'
 					password ENV.MAVEN_PUBLISH_TOKEN
 				}
 				authentication {

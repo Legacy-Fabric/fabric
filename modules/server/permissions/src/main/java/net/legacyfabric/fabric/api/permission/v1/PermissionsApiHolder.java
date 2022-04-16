@@ -19,10 +19,16 @@ package net.legacyfabric.fabric.api.permission.v1;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+/**
+ * @deprecated Unstable API, may change in the future.
+*/
+@Deprecated
+@ApiStatus.Experimental
 public class PermissionsApiHolder {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static PlayerPermissionsApi PLAYER_PERMISSIONS_API = null;

@@ -17,8 +17,15 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import net.minecraft.server.network.ServerPlayerEntity;
 
+/**
+ * @deprecated Unstable API, may change in the future.
+ */
+@Deprecated
+@ApiStatus.Experimental
 public interface PlayerPermissionsApi {
 	String getId();
 
