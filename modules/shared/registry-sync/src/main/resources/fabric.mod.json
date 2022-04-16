@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-registry-api-v1",
-  "name": "Legacy Fabric Registry API (V1)",
+  "id": "legacy-fabric-registry-sync-api-v1",
+  "name": "Legacy Fabric Registry Sync API (V1)",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
@@ -19,7 +19,12 @@
     "fabricloader": ">=0.4.0"
   },
   "description": "Registry hooks",
+  "entrypoints": {
+    "client": [
+      "net.legacyfabric.fabric.impl.client.registry.sync.ClientRemapInitializer"
+    ]
+  },
   "mixins": [
-    "legacy-fabric-registry-api-v1.mixins.json"
+    "legacy-fabric-registry-sync-api-v1.mixins.json"
   ]
 }

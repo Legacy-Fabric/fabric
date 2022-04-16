@@ -1,12 +1,14 @@
-package net.legacyfabric.fabric.impl.registry;
+package net.legacyfabric.fabric.impl.registry.sync;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import net.legacyfabric.fabric.mixin.registry.IdListAccessor;
-import net.legacyfabric.fabric.mixin.registry.SimpleRegistryAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.IdListAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.SimpleRegistryAccessor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.IdentityHashMap;
 import java.util.Objects;
 import java.util.function.IntSupplier;
@@ -14,9 +16,11 @@ import java.util.function.IntSupplier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.IdList;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.registry.SimpleRegistry;
 
 public class RegistryRemapper {
+	public static final Identifier PACKET_ID = new Identifier("legacy-fabric-api", "registry_remap");
 	private static final Logger LOGGER = LogManager.getLogger();
 	private final SimpleRegistry<Identifier, ?> registry;
 	private BiMap<Identifier, Integer> entryDump;
@@ -45,6 +49,18 @@ public class RegistryRemapper {
 			Identifier identifier = new Identifier(key);
 			int id = tag.getInt(key);
 			this.entryDump.put(identifier, id);
+		}
+	}
+
+	public void writePacketByteBuf(PacketByteBuf buf) {
+		buf.writeCompoundTag(this.toTag());
+	}
+
+	public void readPacketByteBuf(PacketByteBuf buf) {
+		try {
+			this.fromTag(buf.readCompoundTag());
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
 	}
 

@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.registry.sync",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "IdListAccessor",
+    "LevelPropertiesMixin",
+    "MinecraftServerMixin",
+    "PlayerManagerMixin",
+    "SimpleRegistryAccessor",
+    "WorldSaveHandlerMixin"
+  ],
+  "client": [
+    "client.MinecraftClientMixin"
+  ]
+}

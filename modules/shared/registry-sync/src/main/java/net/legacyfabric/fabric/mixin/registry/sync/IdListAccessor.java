@@ -1,4 +1,4 @@
-package net.legacyfabric.fabric.mixin.registry;
+package net.legacyfabric.fabric.mixin.registry.sync;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;

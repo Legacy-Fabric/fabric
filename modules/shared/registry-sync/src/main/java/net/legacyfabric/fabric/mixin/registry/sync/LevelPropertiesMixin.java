@@ -1,7 +1,7 @@
-package net.legacyfabric.fabric.mixin.registry;
+package net.legacyfabric.fabric.mixin.registry.sync;
 
-import net.legacyfabric.fabric.impl.registry.RegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.RegistryRemapperAccess;
+import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,7 +12,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.LevelProperties;
-import net.minecraft.world.level.ReadOnlyLevelProperties;
 
 @Mixin(LevelProperties.class)
 public class LevelPropertiesMixin implements RegistryRemapperAccess {
