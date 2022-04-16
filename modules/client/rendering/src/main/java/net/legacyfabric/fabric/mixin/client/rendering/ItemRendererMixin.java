@@ -31,7 +31,7 @@ import net.legacyfabric.fabric.impl.client.rendering.BuiltinItemRendererRegistry
 
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
-	@Inject(method = "method_3982", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityItemStackRenderHelper;method_3349(Lnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER))
+	@Inject(method = "method_10243", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityItemStackRenderHelper;method_9772(Lnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER))
 	public void onRender(ItemStack stack, BakedModel bakedModel, CallbackInfo ci) {
 		BuiltinItemRendererRegistry.DynamicItemRenderer renderer = BuiltinItemRendererRegistryImpl.getRenderer(stack.getItem());
 

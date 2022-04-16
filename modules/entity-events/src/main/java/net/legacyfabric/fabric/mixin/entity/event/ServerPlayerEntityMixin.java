@@ -37,13 +37,13 @@ abstract class ServerPlayerEntityMixin extends LivingEntityMixin {
 	 * This is a Mojang bug.
 	 * This is implements the method call on the server player entity and then calls the corresponding event.
 	 */
-	@Inject(method = "onKilled", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;method_7142()Lnet/minecraft/entity/LivingEntity;"))
+	@Inject(method = "onKilled", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;method_6124()Lnet/minecraft/entity/LivingEntity;"))
 	private void callOnKillForPlayer(DamageSource source, CallbackInfo ci) {
 		final Entity attacker = source.getAttacker();
 
 		// If the damage source that killed the player was an entity, then fire the event.
 		if (attacker != null) {
-			attacker.method_6939((ServerPlayerEntity) (Object) this);
+			attacker.method_6098((ServerPlayerEntity) (Object) this);
 			ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(attacker, (ServerPlayerEntity) (Object) this);
 		}
 	}

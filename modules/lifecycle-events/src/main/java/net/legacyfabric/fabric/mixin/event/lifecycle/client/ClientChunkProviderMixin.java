@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.event.lifecycle;
+package net.legacyfabric.fabric.mixin.event.lifecycle.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,24 +25,32 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ServerChunkCache;
+import net.minecraft.world.chunk.ClientChunkProvider;
 
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerChunkEvents;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-@Mixin(ServerChunkCache.class)
-public class ServerChunkCacheMixin {
+import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
+
+@Environment(EnvType.CLIENT)
+@Mixin(ClientChunkProvider.class)
+public abstract class ClientChunkProviderMixin {
 	@Shadow
-	private ServerWorld world;
+	private World world;
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/ChunkWriter;method_1442(Lnet/minecraft/world/World;Lnet/minecraft/world/chunk/Chunk;)V"), method = "method_6029")
-	public void chunkUnload(Chunk chunk, CallbackInfo ci) {
-		ServerChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, chunk);
+	@Shadow
+	public abstract Chunk getChunk(int i, int j);
+
+	@Inject(at = @At("RETURN"), method = "method_1220")
+	public void chunkUnload(int i, int j, CallbackInfo ci) {
+		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getChunk(i, j));
 	}
 
-	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/chunk/ChunkWriter;method_1441(Lnet/minecraft/world/World;II)Lnet/minecraft/world/chunk/Chunk;"), method = "loadChunk", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+	@Inject(at = @At("RETURN"), method = "method_3871", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
-		ServerChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, chunk);
+		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, chunk);
 	}
 }
