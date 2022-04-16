@@ -28,8 +28,8 @@ def getSubprojectVersion(project, version) {
 	if (latestCommits.isEmpty()) {
 		return version + "+uncommited"
 	} else {
-		return version + "+" + latestCommits.get(0).id.substring(0, 8) + 
-		DigestUtils.sha256Hex("${project.mc_version}").substring(0, 2)
+		return version + "+" + latestCommits.get(0).id.substring(0, 8) +
+				DigestUtils.sha256Hex("${project.mc_version}").substring(0, 2)
 	}
 }
 
@@ -138,6 +138,8 @@ allprojects {
 		license {
 			header rootProject.file('HEADER')
 			include '**/*.java'
+			exclude '**/lib/sponge/*.java'
+			exclude '**/lib/sponge/**/*.java'
 		}
 	}
 
