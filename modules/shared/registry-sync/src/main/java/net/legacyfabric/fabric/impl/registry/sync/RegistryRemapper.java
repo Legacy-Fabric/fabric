@@ -54,6 +54,9 @@ public class RegistryRemapper {
 	}
 
 	public CompoundTag toTag() {
+		if (this.entryDump == null) {
+			this.dump();
+		}
 		CompoundTag tag = new CompoundTag();
 		this.entryDump.forEach((key, value) -> tag.putInt(key.toString(), value));
 		return tag;
