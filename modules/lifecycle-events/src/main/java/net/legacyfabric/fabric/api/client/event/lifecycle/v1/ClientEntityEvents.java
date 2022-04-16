@@ -29,9 +29,6 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 
 @Environment(EnvType.CLIENT)
 public final class ClientEntityEvents {
-	public ClientEntityEvents() {
-	}
-
 	/**
 	 * Called when an Entity is loaded into a ClientWorld.
 	 *
@@ -55,7 +52,6 @@ public final class ClientEntityEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called when an Entity is about to be unloaded from a ClientWorld.
 	 *
@@ -79,6 +75,9 @@ public final class ClientEntityEvents {
 			}
 		}
 	});
+
+	public ClientEntityEvents() {
+	}
 
 	@FunctionalInterface
 	public interface Load {

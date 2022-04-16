@@ -46,15 +46,14 @@ import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
 abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	@Shadow
 	private PacketListener field_8432;
+	@Unique
+	private Collection<String> playChannels;
 
 	@Shadow
 	public abstract void disconnect(Text disconnectReason);
 
 	@Shadow
 	public abstract void send(Packet<?> arg);
-
-	@Unique
-	private Collection<String> playChannels;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void initAddedFields(NetworkSide side, CallbackInfo ci) {

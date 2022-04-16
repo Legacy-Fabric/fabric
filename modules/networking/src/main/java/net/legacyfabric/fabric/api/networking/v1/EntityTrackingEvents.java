@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.api.networking.v1;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TrackedEntityInstance;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
@@ -50,6 +50,9 @@ public final class EntityTrackingEvents {
 		}
 	});
 
+	private EntityTrackingEvents() {
+	}
+
 	@FunctionalInterface
 	public interface StartTracking {
 		/**
@@ -70,8 +73,5 @@ public final class EntityTrackingEvents {
 		 * @param player        the player that is no longer tracking the entity
 		 */
 		void onStopTracking(Entity trackedEntity, ServerPlayerEntity player);
-	}
-
-	private EntityTrackingEvents() {
 	}
 }

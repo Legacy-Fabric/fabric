@@ -25,9 +25,6 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 
 public final class ServerTickEvents {
-	private ServerTickEvents() {
-	}
-
 	/**
 	 * Called at the start of the server tick.
 	 */
@@ -49,7 +46,6 @@ public final class ServerTickEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called at the end of the server tick.
 	 */
@@ -71,7 +67,6 @@ public final class ServerTickEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called at the start of a ServerWorld's tick.
 	 */
@@ -93,7 +88,6 @@ public final class ServerTickEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called at the end of a ServerWorld's tick.
 	 *
@@ -117,6 +111,9 @@ public final class ServerTickEvents {
 			}
 		}
 	});
+
+	private ServerTickEvents() {
+	}
 
 	@FunctionalInterface
 	public interface StartTick {

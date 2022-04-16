@@ -30,15 +30,15 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class CommandMessageFormatting {
-	private CommandMessageFormatting() {
-	}
-
 	public static final Text PIPE_TEXT = new LiteralText("|");
 	public static final Text SPACE_TEXT = new LiteralText(" ");
 	public static final Text STAR_TEXT = new LiteralText("*");
 	public static final Text LT_TEXT = new LiteralText("<");
 	public static final Text GT_TEXT = new LiteralText(">");
 	public static final Text ELLIPSIS_TEXT = new LiteralText("…");
+
+	private CommandMessageFormatting() {
+	}
 
 	/**
 	 * Format text to be output as an error directly to a sender. Not necessary

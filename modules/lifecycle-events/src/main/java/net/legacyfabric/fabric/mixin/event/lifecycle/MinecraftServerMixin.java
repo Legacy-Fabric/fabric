@@ -36,10 +36,10 @@ import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
 	@Shadow
-	public abstract World getWorld();
+	public ServerWorld[] worlds;
 
 	@Shadow
-	public ServerWorld[] worlds;
+	public abstract World getWorld();
 
 	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J"), method = "run", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setServerMeta(Lnet/minecraft/server/ServerMetadata;)V")))
 	public void startServerTick(CallbackInfo ci) {

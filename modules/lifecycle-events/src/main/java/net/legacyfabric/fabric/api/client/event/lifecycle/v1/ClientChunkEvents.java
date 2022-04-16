@@ -29,9 +29,6 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 
 @Environment(EnvType.CLIENT)
 public final class ClientChunkEvents {
-	private ClientChunkEvents() {
-	}
-
 	/**
 	 * Called when a chunk is loaded into a ClientWorld.
 	 *
@@ -55,7 +52,6 @@ public final class ClientChunkEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called when a chunk is about to be unloaded from a ClientWorld.
 	 *
@@ -79,6 +75,9 @@ public final class ClientChunkEvents {
 			}
 		}
 	});
+
+	private ClientChunkEvents() {
+	}
 
 	@FunctionalInterface
 	public interface Load {

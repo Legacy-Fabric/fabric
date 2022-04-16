@@ -73,6 +73,24 @@ public final class CommandContext {
 	}
 
 	/**
+	 * Converts a {@link Text} into a String key.
+	 *
+	 * @param key the text to be converted into a string key
+	 * @return the string key. if {@code key} is a {@link TranslatableText}, the translation key.
+	 */
+	public static String textToArgKey(@Nullable Text key) {
+		if (key == null) {
+			return null;
+		}
+
+		if (key instanceof TranslatableText) { // Use translation key
+			return ((TranslatableText) key).getKey();
+		}
+
+		return key.asString();
+	}
+
+	/**
 	 * Gets all values for the given argument. May return an empty list if no
 	 * values are present.
 	 *
@@ -315,22 +333,5 @@ public final class CommandContext {
 			this.args = ArrayListMultimap.create(args);
 			this.flags = Sets.newHashSet(flags);
 		}
-	}
-
-	/**
-	 * Converts a {@link Text} into a String key.
-	 * @param key the text to be converted into a string key
-	 * @return the string key. if {@code key} is a {@link TranslatableText}, the translation key.
-	 */
-	public static String textToArgKey(@Nullable Text key) {
-		if (key == null) {
-			return null;
-		}
-
-		if (key instanceof TranslatableText) { // Use translation key
-			return ((TranslatableText) key).getKey();
-		}
-
-		return key.asString();
 	}
 }

@@ -38,6 +38,9 @@ public final class ServerEntityCombatEvents {
 		}
 	});
 
+	private ServerEntityCombatEvents() {
+	}
+
 	@FunctionalInterface
 	public interface AfterKilledOtherEntity {
 		/**
@@ -47,8 +50,5 @@ public final class ServerEntityCombatEvents {
 		 * @param killedEntity the entity which was killed by the {@code entity}
 		 */
 		void afterKilledOtherEntity(Entity entity, LivingEntity killedEntity);
-	}
-
-	private ServerEntityCombatEvents() {
 	}
 }

@@ -32,37 +32,6 @@ import net.minecraft.resource.ResourceManager;
  * Helper class for registering EntityRenderers.
  */
 public class EntityRendererRegistry {
-	@FunctionalInterface
-	public interface Factory {
-		EntityRenderer<? extends Entity> create(EntityRenderDispatcher manager, Context context);
-	}
-
-	public static final class Context {
-		private final TextureManager textureManager;
-		private final ResourceManager resourceManager;
-		private final ItemRenderer itemRenderer;
-		private final Map<Class<? extends Entity>, EntityRenderer<?>> rendererMap;
-
-		private Context(TextureManager textureManager, ResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<?>> rendererMap) {
-			this.textureManager = textureManager;
-			this.resourceManager = resourceManager;
-			this.itemRenderer = itemRenderer;
-			this.rendererMap = rendererMap;
-		}
-
-		public TextureManager getTextureManager() {
-			return textureManager;
-		}
-
-		public ResourceManager getResourceManager() {
-			return resourceManager;
-		}
-
-		public ItemRenderer getItemRenderer() {
-			return itemRenderer;
-		}
-	}
-
 	public static final EntityRendererRegistry INSTANCE = new EntityRendererRegistry();
 	private final Map<EntityRenderDispatcher, Context> renderManagerMap = new WeakHashMap<>();
 	private final Map<Class<? extends Entity>, Factory> renderSupplierMap = new HashMap<>();
@@ -93,6 +62,37 @@ public class EntityRendererRegistry {
 			for (EntityRenderDispatcher manager : renderManagerMap.keySet()) {
 				renderManagerMap.get(manager).rendererMap.put(entityClass, factory.create(manager, renderManagerMap.get(manager)));
 			}
+		}
+	}
+
+	@FunctionalInterface
+	public interface Factory {
+		EntityRenderer<? extends Entity> create(EntityRenderDispatcher manager, Context context);
+	}
+
+	public static final class Context {
+		private final TextureManager textureManager;
+		private final ResourceManager resourceManager;
+		private final ItemRenderer itemRenderer;
+		private final Map<Class<? extends Entity>, EntityRenderer<?>> rendererMap;
+
+		private Context(TextureManager textureManager, ResourceManager resourceManager, ItemRenderer itemRenderer, Map<Class<? extends Entity>, EntityRenderer<?>> rendererMap) {
+			this.textureManager = textureManager;
+			this.resourceManager = resourceManager;
+			this.itemRenderer = itemRenderer;
+			this.rendererMap = rendererMap;
+		}
+
+		public TextureManager getTextureManager() {
+			return textureManager;
+		}
+
+		public ResourceManager getResourceManager() {
+			return resourceManager;
+		}
+
+		public ItemRenderer getItemRenderer() {
+			return itemRenderer;
 		}
 	}
 }

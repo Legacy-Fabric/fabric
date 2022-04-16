@@ -27,9 +27,6 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 
 public final class ServerEntityEvents {
-	private ServerEntityEvents() {
-	}
-
 	/**
 	 * Called when an Entity is loaded into a ServerWorld.
 	 *
@@ -53,7 +50,6 @@ public final class ServerEntityEvents {
 			}
 		}
 	});
-
 	/**
 	 * Called when an Entity is unloaded from a ServerWorld.
 	 *
@@ -78,6 +74,9 @@ public final class ServerEntityEvents {
 			}
 		}
 	});
+
+	private ServerEntityEvents() {
+	}
 
 	@FunctionalInterface
 	public interface Load {

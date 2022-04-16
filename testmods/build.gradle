@@ -3,7 +3,7 @@ version = "1.0.0" // Dont change
 dependencies {
 	rootProject.subprojects.each {
 		if (it.name != this.name) {
-			implementation project(path: ":${it.name}", configuration: "dev")
+			api project(path: ":${it.name}", configuration: "namedElements")
 		}
 	}
 }
