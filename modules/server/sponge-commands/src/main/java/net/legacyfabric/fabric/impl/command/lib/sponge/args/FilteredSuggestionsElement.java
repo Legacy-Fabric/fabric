@@ -28,9 +28,8 @@ package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 import java.util.List;
 import java.util.function.Predicate;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;

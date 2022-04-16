@@ -28,9 +28,8 @@ package net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Multimap;
+import org.jetbrains.annotations.Nullable;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMapping;

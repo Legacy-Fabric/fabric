@@ -28,7 +28,7 @@ package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.Text;
 

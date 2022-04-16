@@ -27,7 +27,7 @@ package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
 import java.util.UUID;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
