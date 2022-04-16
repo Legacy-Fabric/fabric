@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
+import net.minecraft.entity.player.ServerPlayerEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
 
 /**
  * @deprecated Unstable API, may change in the future.

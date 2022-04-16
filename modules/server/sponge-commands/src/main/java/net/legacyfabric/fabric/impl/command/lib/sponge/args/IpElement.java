@@ -29,9 +29,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
+import net.minecraft.entity.player.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 

@@ -62,6 +62,6 @@ public abstract class CrashReportMixin {
 
 	@Inject(at = @At("RETURN"), method = "fillSystemDetails")
 	private void fillSystemDetails(CallbackInfo info) {
-		this.systemDetailsSection.addElement("Fabric Mods", getFabricMods());
+		this.systemDetailsSection.add("Fabric Mods", getFabricMods());
 	}
 }

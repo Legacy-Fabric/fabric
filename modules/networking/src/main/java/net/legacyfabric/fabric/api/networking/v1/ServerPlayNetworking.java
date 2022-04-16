@@ -20,10 +20,10 @@ package net.legacyfabric.fabric.api.networking.v1;
 import java.util.Objects;
 import java.util.Set;
 
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 
