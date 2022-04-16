@@ -17,16 +17,24 @@
 
 package net.legacyfabric.fabric.impl.networking;
 
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
-import net.legacyfabric.fabric.api.networking.v1.PacketSender;
+
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.util.PacketByteBuf;
 
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
+import net.legacyfabric.fabric.api.networking.v1.PacketSender;
 
 /**
  * A network addon which is aware of the channels the other side may receive.

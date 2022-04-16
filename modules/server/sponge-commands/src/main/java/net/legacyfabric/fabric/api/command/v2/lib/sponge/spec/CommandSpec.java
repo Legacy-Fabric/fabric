@@ -25,23 +25,34 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.spec;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.world.World;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandPermissionException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.*;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ChildCommandElementExecutor;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandElement;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.GenericArguments;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.parsing.InputTokenizer;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.util.Location;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
 
 /**
  * Specification for how command arguments should be parsed.

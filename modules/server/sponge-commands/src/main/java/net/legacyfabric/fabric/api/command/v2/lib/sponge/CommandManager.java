@@ -25,15 +25,17 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.Dispatcher;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.legacyfabric.fabric.api.util.Location;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.world.World;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.Dispatcher;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.Location;
 
 /**
  * A command dispatcher watches for commands (such as those said in chat)

@@ -17,9 +17,11 @@
 
 package net.legacyfabric.fabric.mixin.permission;
 
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.minecraft.world.CommandBlockExecutor;
 import org.spongepowered.asm.mixin.Mixin;
+
+import net.minecraft.world.CommandBlockExecutor;
+
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(CommandBlockExecutor.class)
 public abstract class CommandBlockExecutorMixin implements PermissibleCommandSource {

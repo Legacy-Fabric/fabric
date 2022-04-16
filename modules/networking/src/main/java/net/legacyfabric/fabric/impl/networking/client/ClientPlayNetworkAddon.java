@@ -17,23 +17,25 @@
 
 package net.legacyfabric.fabric.impl.networking.client;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.legacyfabric.fabric.api.client.networking.v1.C2SPlayChannelEvents;
-import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.legacyfabric.fabric.impl.networking.AbstractChanneledNetworkAddon;
-import net.legacyfabric.fabric.impl.networking.ChannelInfoHolder;
-import net.legacyfabric.fabric.impl.networking.NetworkingImpl;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.util.PacketByteBuf;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import net.legacyfabric.fabric.api.client.networking.v1.C2SPlayChannelEvents;
+import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.legacyfabric.fabric.impl.networking.AbstractChanneledNetworkAddon;
+import net.legacyfabric.fabric.impl.networking.ChannelInfoHolder;
+import net.legacyfabric.fabric.impl.networking.NetworkingImpl;
 
 @Environment(EnvType.CLIENT)
 public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<ClientPlayNetworking.PlayChannelHandler> {

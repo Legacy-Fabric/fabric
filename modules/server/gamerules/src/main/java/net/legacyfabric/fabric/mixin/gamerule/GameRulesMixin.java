@@ -17,12 +17,14 @@
 
 package net.legacyfabric.fabric.mixin.gamerule;
 
-import net.legacyfabric.fabric.api.gamerule.v1.GameRulesInitializedCallback;
-import net.minecraft.world.GameRuleManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.world.GameRuleManager;
+
+import net.legacyfabric.fabric.api.gamerule.v1.GameRulesInitializedCallback;
 
 @Mixin(GameRuleManager.class)
 public class GameRulesMixin {

@@ -17,8 +17,12 @@
 
 package net.legacyfabric.fabric.test.command;
 
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.LiteralText;
+
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ContactInformation;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
@@ -26,8 +30,6 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.GenericArguments;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.LiteralText;
 
 public class ModMetadataCommand {
 	public static void register(CommandManager manager) {

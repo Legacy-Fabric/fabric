@@ -17,10 +17,12 @@
 
 package net.legacyfabric.fabric.mixin.command;
 
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+
+import net.minecraft.server.MinecraftServer;
+
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin implements PermissibleCommandSource {

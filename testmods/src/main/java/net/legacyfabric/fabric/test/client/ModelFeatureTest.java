@@ -18,14 +18,17 @@
 package net.legacyfabric.fabric.test.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.fabricmc.api.ClientModInitializer;
-import net.legacyfabric.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.entity.LivingEntity;
+
+import net.fabricmc.api.ClientModInitializer;
+
+import net.legacyfabric.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 
 public class ModelFeatureTest implements ClientModInitializer {
 	@Override

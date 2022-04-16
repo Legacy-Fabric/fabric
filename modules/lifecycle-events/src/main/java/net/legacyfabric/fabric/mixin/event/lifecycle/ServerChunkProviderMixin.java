@@ -17,10 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle;
 
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerChunkEvents;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ServerChunkProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,6 +24,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ServerChunkProvider;
+
+import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 
 @Mixin(ServerChunkProvider.class)
 public class ServerChunkProviderMixin {

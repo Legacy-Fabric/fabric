@@ -25,21 +25,23 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class FirstParsingCommandElement extends CommandElement {
 	private final List<CommandElement> elements;

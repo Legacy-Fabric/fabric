@@ -17,16 +17,16 @@
 
 package net.legacyfabric.fabric.api.client.rendering.v1;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.resource.ResourceManager;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * Helper class for registering EntityRenderers.
@@ -35,6 +35,7 @@ public class EntityRendererRegistry {
 	public static final EntityRendererRegistry INSTANCE = new EntityRendererRegistry();
 	private final Map<EntityRenderDispatcher, Context> renderManagerMap = new WeakHashMap<>();
 	private final Map<Class<? extends Entity>, Factory> renderSupplierMap = new HashMap<>();
+
 	private EntityRendererRegistry() {
 	}
 

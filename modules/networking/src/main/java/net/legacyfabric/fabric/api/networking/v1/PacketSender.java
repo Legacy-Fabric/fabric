@@ -17,14 +17,15 @@
 
 package net.legacyfabric.fabric.api.networking.v1;
 
+import java.util.Objects;
+
 import io.netty.channel.ChannelFutureListener;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+
 import net.minecraft.network.Packet;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
-
-import java.util.Objects;
 
 /**
  * Represents something that supports sending packets to channels.

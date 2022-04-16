@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.api.networking.v1;
 
+import java.util.Objects;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.local.LocalChannel;
@@ -24,9 +26,8 @@ import io.netty.channel.local.LocalServerChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.FutureListener;
 import io.netty.util.concurrent.GenericFutureListener;
-import net.minecraft.util.PacketByteBuf;
 
-import java.util.Objects;
+import net.minecraft.util.PacketByteBuf;
 
 /**
  * Utilities for working with netty's future listeners.

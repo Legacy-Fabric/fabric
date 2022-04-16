@@ -17,15 +17,17 @@
 
 package net.legacyfabric.fabric.mixin.client.rendering;
 
-import net.legacyfabric.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
-import net.legacyfabric.fabric.impl.client.rendering.BuiltinItemRendererRegistryImpl;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.item.ItemStack;
+
+import net.legacyfabric.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.legacyfabric.fabric.impl.client.rendering.BuiltinItemRendererRegistryImpl;
 
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {

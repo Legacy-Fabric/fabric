@@ -17,12 +17,13 @@
 
 package net.legacyfabric.fabric.impl.client.rendering;
 
-import net.legacyfabric.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+import java.util.Objects;
+import java.util.function.Function;
+
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.entity.LivingEntity;
 
-import java.util.Objects;
-import java.util.function.Function;
+import net.legacyfabric.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 
 public final class RegistrationHelperImpl implements LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper {
 	private final Function<FeatureRenderer<?>, Boolean> delegate;

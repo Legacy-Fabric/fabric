@@ -25,22 +25,45 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import com.google.common.base.Preconditions;
-import com.google.common.collect.*;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.*;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.legacyfabric.fabric.api.util.Location;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMapping;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandNotFoundException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.ImmutableCommandMapping;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.InvocationCommandException;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.Location;
 
 /**
  * A simple implementation of a {@link Dispatcher}.

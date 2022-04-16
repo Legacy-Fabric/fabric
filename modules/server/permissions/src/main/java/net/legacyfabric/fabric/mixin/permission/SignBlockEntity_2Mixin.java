@@ -17,12 +17,14 @@
 
 package net.legacyfabric.fabric.mixin.permission;
 
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+
+import net.minecraft.entity.player.PlayerEntity;
+
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$2")
 public abstract class SignBlockEntity_2Mixin implements PermissibleCommandSource {

@@ -17,14 +17,15 @@
 
 package net.legacyfabric.fabric.impl.client.rendering;
 
-import net.legacyfabric.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import java.util.HashMap;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 
-import java.util.HashMap;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
+import net.legacyfabric.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 
 public class BlockEntityRendererRegistryImpl implements BlockEntityRendererRegistry {
 	private static final HashMap<Class<? extends BlockEntity>, Function<BlockEntityRenderDispatcher, ? extends BlockEntityRenderer<?>>> map = new HashMap<>();

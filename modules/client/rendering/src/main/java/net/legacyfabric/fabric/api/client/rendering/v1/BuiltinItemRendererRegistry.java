@@ -17,13 +17,16 @@
 
 package net.legacyfabric.fabric.api.client.rendering.v1;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.legacyfabric.fabric.impl.client.rendering.BuiltinItemRendererRegistryImpl;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+import net.legacyfabric.fabric.impl.client.rendering.BuiltinItemRendererRegistryImpl;
 
 /**
  * This registry holds {@linkplain DynamicItemRenderer builtin item renderers} for items.

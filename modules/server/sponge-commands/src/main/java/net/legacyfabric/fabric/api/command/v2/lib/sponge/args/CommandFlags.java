@@ -25,15 +25,23 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.args;
 
-import com.google.common.collect.ImmutableList;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public final class CommandFlags extends CommandElement {
 	@Nullable
@@ -97,20 +105,20 @@ public final class CommandFlags extends CommandElement {
 
 		if (element == null) {
 			switch (this.unknownLongFlagBehavior) {
-				case ERROR:
-					throw args.createError(new LiteralText(String.format("Unknown long flag %s specified", flagSplit[0])));
-				case ACCEPT_NONVALUE:
-					context.addFlag(flag);
-					context.putArg(flag, flagSplit.length == 2 ? flagSplit[1] : true);
-					return true;
-				case ACCEPT_VALUE:
-					context.addFlag(flag);
-					context.putArg(flag, flagSplit.length == 2 ? flagSplit[1] : args.next());
-					return true;
-				case IGNORE:
-					return false;
-				default:
-					throw new Error("New UnknownFlagBehavior added without corresponding case clauses");
+			case ERROR:
+				throw args.createError(new LiteralText(String.format("Unknown long flag %s specified", flagSplit[0])));
+			case ACCEPT_NONVALUE:
+				context.addFlag(flag);
+				context.putArg(flag, flagSplit.length == 2 ? flagSplit[1] : true);
+				return true;
+			case ACCEPT_VALUE:
+				context.addFlag(flag);
+				context.putArg(flag, flagSplit.length == 2 ? flagSplit[1] : args.next());
+				return true;
+			case IGNORE:
+				return false;
+			default:
+				throw new Error("New UnknownFlagBehavior added without corresponding case clauses");
 			}
 		} else if (flagSplit.length == 2) {
 			args.insertArg(flagSplit[1]);
@@ -127,24 +135,24 @@ public final class CommandFlags extends CommandElement {
 
 			if (element == null) {
 				switch (this.unknownShortFlagBehavior) {
-					case IGNORE:
-						if (i == 0) {
-							return false;
-						}
+				case IGNORE:
+					if (i == 0) {
+						return false;
+					}
 
-						throw args.createError(new LiteralText(String.format("Unknown short flag %s specified", shortFlag)));
-					case ERROR:
-						throw args.createError(new LiteralText(String.format("Unknown short flag %s specified", shortFlag)));
-					case ACCEPT_NONVALUE:
-						context.addFlag(shortFlag);
-						context.putArg(shortFlag, true);
-						break;
-					case ACCEPT_VALUE:
-						context.addFlag(shortFlag);
-						context.putArg(shortFlag, args.next());
-						break;
-					default:
-						throw new Error("New UnknownFlagBehavior added without corresponding case clauses");
+					throw args.createError(new LiteralText(String.format("Unknown short flag %s specified", shortFlag)));
+				case ERROR:
+					throw args.createError(new LiteralText(String.format("Unknown short flag %s specified", shortFlag)));
+				case ACCEPT_NONVALUE:
+					context.addFlag(shortFlag);
+					context.putArg(shortFlag, true);
+					break;
+				case ACCEPT_VALUE:
+					context.addFlag(shortFlag);
+					context.putArg(shortFlag, args.next());
+					break;
+				default:
+					throw new Error("New UnknownFlagBehavior added without corresponding case clauses");
 				}
 			} else {
 				element.parse(source, args, context);
