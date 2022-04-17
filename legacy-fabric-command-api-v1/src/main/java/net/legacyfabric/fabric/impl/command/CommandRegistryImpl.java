@@ -24,8 +24,8 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.command.AbstractCommand;
 
-import net.legacyfabric.fabric.api.command.v1.CommandSide;
-import net.legacyfabric.fabric.api.command.v1.CommandRegistry;
+import net.legacyfabric.fabric.api.command.CommandSide;
+import net.legacyfabric.fabric.api.registry.CommandRegistry;
 
 public class CommandRegistryImpl implements CommandRegistry {
 	public static final CommandRegistryImpl INSTANCE = new CommandRegistryImpl();
