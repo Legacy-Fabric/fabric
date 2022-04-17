@@ -24,6 +24,9 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 
 public final class ServerLifecycleEvents {
+	private ServerLifecycleEvents() {
+	}
+
 	/**
 	 * Called when a Minecraft server is starting.
 	 *
@@ -34,6 +37,7 @@ public final class ServerLifecycleEvents {
 			callback.onServerStarting(server);
 		}
 	});
+
 	/**
 	 * Called when a Minecraft server has started and is about to tick for the first time.
 	 *
@@ -44,6 +48,7 @@ public final class ServerLifecycleEvents {
 			callback.onServerStarted(server);
 		}
 	});
+
 	/**
 	 * Called when a Minecraft server has started shutting down.
 	 * This occurs before the server's network channel is closed and before any players are disconnected.
@@ -57,6 +62,7 @@ public final class ServerLifecycleEvents {
 			callback.onServerStopping(server);
 		}
 	});
+
 	/**
 	 * Called when a Minecraft server has stopped.
 	 * All worlds have been closed and all (block)entities and players have been unloaded.
@@ -69,9 +75,6 @@ public final class ServerLifecycleEvents {
 			callback.onServerStopped(server);
 		}
 	});
-
-	private ServerLifecycleEvents() {
-	}
 
 	@FunctionalInterface
 	public interface ServerStarting {

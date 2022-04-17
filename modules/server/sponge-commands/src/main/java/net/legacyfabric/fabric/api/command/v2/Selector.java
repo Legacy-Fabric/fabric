@@ -63,23 +63,18 @@ public enum Selector {
 		}
 	};
 
-	private static final Map<String, Selector> MAP;
-
-	static {
-		ImmutableMap.Builder<String, Selector> builder = ImmutableMap.builder();
-
-		for (Selector s : values()) {
-			builder.put("@" + s.getKey(), s);
-		}
-
-		MAP = builder.build();
-	}
-
 	private final char key;
+	private static final Map<String, Selector> MAP;
 
 	Selector(char key) {
 		this.key = key;
 	}
+
+	public char getKey() {
+		return this.key;
+	}
+
+	public abstract Set<Entity> resolve(CommandSource sender);
 
 	public static List<String> complete(String s) {
 		if (s.startsWith("@") && s.length() == 2) {
@@ -97,9 +92,13 @@ public enum Selector {
 		throw new IllegalArgumentException("Unknown selector");
 	}
 
-	public char getKey() {
-		return this.key;
-	}
+	static {
+		ImmutableMap.Builder<String, Selector> builder = ImmutableMap.builder();
 
-	public abstract Set<Entity> resolve(CommandSource sender);
+		for (Selector s : values()) {
+			builder.put("@" + s.getKey(), s);
+		}
+
+		MAP = builder.build();
+	}
 }

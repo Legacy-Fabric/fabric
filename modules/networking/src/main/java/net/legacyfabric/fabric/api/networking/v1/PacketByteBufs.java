@@ -30,9 +30,6 @@ import net.minecraft.util.PacketByteBuf;
 public final class PacketByteBufs {
 	private static final PacketByteBuf EMPTY_PACKET_BYTE_BUF = new PacketByteBuf(Unpooled.EMPTY_BUFFER);
 
-	private PacketByteBufs() {
-	}
-
 	/**
 	 * Returns an empty instance of packet byte buf.
 	 *
@@ -42,8 +39,6 @@ public final class PacketByteBufs {
 		return EMPTY_PACKET_BYTE_BUF;
 	}
 
-	// Convenience methods for byte buf methods that return a new byte buf
-
 	/**
 	 * Returns a new heap memory-backed instance of packet byte buf.
 	 *
@@ -52,6 +47,8 @@ public final class PacketByteBufs {
 	public static PacketByteBuf create() {
 		return new PacketByteBuf(Unpooled.buffer());
 	}
+
+	// Convenience methods for byte buf methods that return a new byte buf
 
 	/**
 	 * Wraps the newly created buf from {@code buf.readBytes} in a packet byte buf.
@@ -148,5 +145,8 @@ public final class PacketByteBufs {
 		Objects.requireNonNull(buf, "ByteBuf cannot be null");
 
 		return new PacketByteBuf(buf.duplicate());
+	}
+
+	private PacketByteBufs() {
 	}
 }

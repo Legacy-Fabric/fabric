@@ -25,6 +25,9 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 
 public final class ServerChunkEvents {
+	private ServerChunkEvents() {
+	}
+
 	/**
 	 * Called when an chunk is loaded into a ServerWorld.
 	 *
@@ -48,6 +51,7 @@ public final class ServerChunkEvents {
 			}
 		}
 	});
+
 	/**
 	 * Called when an chunk is unloaded from a ServerWorld.
 	 *
@@ -71,9 +75,6 @@ public final class ServerChunkEvents {
 			}
 		}
 	});
-
-	private ServerChunkEvents() {
-	}
 
 	@FunctionalInterface
 	public interface Load {

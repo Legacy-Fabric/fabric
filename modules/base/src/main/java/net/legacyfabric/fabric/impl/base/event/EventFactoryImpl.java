@@ -100,7 +100,7 @@ public final class EventFactoryImpl {
 
 		final Object returnValue = defValue;
 		//noinspection unchecked
-		return (T) Proxy.newProxyInstance(EventFactoryImpl.class.getClassLoader(), new Class[] {handlerClass},
+		return (T) Proxy.newProxyInstance(EventFactoryImpl.class.getClassLoader(), new Class[]{handlerClass},
 				(proxy, method, args) -> returnValue);
 	}
 }

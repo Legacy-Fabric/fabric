@@ -40,11 +40,6 @@ public final class BuiltinItemRendererRegistryImpl implements BuiltinItemRendere
 	private BuiltinItemRendererRegistryImpl() {
 	}
 
-	@Nullable
-	public static DynamicItemRenderer getRenderer(Item item) {
-		return RENDERERS.get(item);
-	}
-
 	@Override
 	public void register(@NotNull Item item, @NotNull DynamicItemRenderer renderer) {
 		Objects.requireNonNull(item, "Item is null");
@@ -53,5 +48,10 @@ public final class BuiltinItemRendererRegistryImpl implements BuiltinItemRendere
 		if (RENDERERS.putIfAbsent(item, renderer) != null) {
 			throw new IllegalArgumentException("Item " + Item.REGISTRY.getIdentifier(item) + " already has a builtin renderer!");
 		}
+	}
+
+	@Nullable
+	public static DynamicItemRenderer getRenderer(Item item) {
+		return RENDERERS.get(item);
 	}
 }

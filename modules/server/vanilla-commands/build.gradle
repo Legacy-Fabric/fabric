@@ -1,6 +1,6 @@
 version = getSubprojectVersion(project, "1.0.0")
 
-moduleDependencies(project, [
-		"legacy-fabric-api-base",
-		"legacy-fabric-lifecycle-events-v1"
-])
+dependencies {
+	implementation project(path: ":legacy-fabric-api-base", configuration: 'dev')
+	implementation project(path: ":legacy-fabric-lifecycle-events-v1", configuration: 'dev')
+}

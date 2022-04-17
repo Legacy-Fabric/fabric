@@ -43,23 +43,6 @@ public class CommandResult {
 	private final Optional<Integer> queryResult;
 
 	/**
-	 * Constructs a new command result.
-	 *
-	 * @param successCount     The success count
-	 * @param affectedBlocks   The number of affected blocks
-	 * @param affectedEntities The number of affected entities
-	 * @param affectedItems    The number of affected items
-	 * @param queryResult      The query result
-	 */
-	CommandResult(@Nullable Integer successCount, @Nullable Integer affectedBlocks, @Nullable Integer affectedEntities, @Nullable Integer affectedItems, @Nullable Integer queryResult) {
-		this.successCount = Optional.ofNullable(successCount);
-		this.affectedBlocks = Optional.ofNullable(affectedBlocks);
-		this.affectedEntities = Optional.ofNullable(affectedEntities);
-		this.affectedItems = Optional.ofNullable(affectedItems);
-		this.queryResult = Optional.ofNullable(queryResult);
-	}
-
-	/**
 	 * Returns a {@link Builder}.
 	 *
 	 * @return A new command result builder
@@ -141,6 +124,23 @@ public class CommandResult {
 	 */
 	public static CommandResult queryResult(int count) {
 		return builder().queryResult(count).build();
+	}
+
+	/**
+	 * Constructs a new command result.
+	 *
+	 * @param successCount     The success count
+	 * @param affectedBlocks   The number of affected blocks
+	 * @param affectedEntities The number of affected entities
+	 * @param affectedItems    The number of affected items
+	 * @param queryResult      The query result
+	 */
+	CommandResult(@Nullable Integer successCount, @Nullable Integer affectedBlocks, @Nullable Integer affectedEntities, @Nullable Integer affectedItems, @Nullable Integer queryResult) {
+		this.successCount = Optional.ofNullable(successCount);
+		this.affectedBlocks = Optional.ofNullable(affectedBlocks);
+		this.affectedEntities = Optional.ofNullable(affectedEntities);
+		this.affectedItems = Optional.ofNullable(affectedItems);
+		this.queryResult = Optional.ofNullable(queryResult);
 	}
 
 	/**

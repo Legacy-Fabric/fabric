@@ -42,10 +42,11 @@ import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerEx
 abstract class ServerPlayNetworkHandlerMixin implements ServerPlayNetworkHandlerExtensions, DisconnectPacketSource {
 	@Shadow
 	@Final
-	public ClientConnection connection;
+	private MinecraftServer server;
 	@Shadow
 	@Final
-	private MinecraftServer server;
+	public ClientConnection connection;
+
 	@Unique
 	private ServerPlayNetworkAddon addon;
 

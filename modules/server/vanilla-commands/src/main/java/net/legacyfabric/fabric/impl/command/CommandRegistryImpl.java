@@ -31,12 +31,12 @@ public class CommandRegistryImpl implements CommandRegistry {
 	public static final CommandRegistryImpl INSTANCE = new CommandRegistryImpl();
 	private static final Map<AbstractCommand, CommandSide> FABRIC_COMMANDS = Maps.newHashMap();
 
-	public static Map<AbstractCommand, CommandSide> getCommandMap() {
-		return Collections.unmodifiableMap(FABRIC_COMMANDS);
-	}
-
 	@Override
 	public void register(AbstractCommand command, CommandSide side) {
 		FABRIC_COMMANDS.put(command, side);
+	}
+
+	public static Map<AbstractCommand, CommandSide> getCommandMap() {
+		return Collections.unmodifiableMap(FABRIC_COMMANDS);
 	}
 }

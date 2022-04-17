@@ -17,16 +17,15 @@
 
 package net.legacyfabric.fabric.test.client;
 
+import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
+import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
+import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.entity.EntityType;
 
 import net.fabricmc.api.ClientModInitializer;
-
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 
 public class ClientLifecycleEventsTest implements ClientModInitializer {
 	private static final Logger LOGGER = LogManager.getLogger();

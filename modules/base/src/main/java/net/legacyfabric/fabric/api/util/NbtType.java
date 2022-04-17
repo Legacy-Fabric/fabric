@@ -17,80 +17,80 @@
 
 package net.legacyfabric.fabric.api.util;
 
-import net.minecraft.nbt.NbtByte;
-import net.minecraft.nbt.NbtByteArray;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtDouble;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtEnd;
-import net.minecraft.nbt.NbtFloat;
-import net.minecraft.nbt.NbtInt;
-import net.minecraft.nbt.NbtIntArray;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtLong;
-import net.minecraft.nbt.NbtShort;
-import net.minecraft.nbt.NbtString;
+import net.minecraft.nbt.ByteArrayTag;
+import net.minecraft.nbt.ByteTag;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.EndTag;
+import net.minecraft.nbt.FloatTag;
+import net.minecraft.nbt.IntArrayTag;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.LongTag;
+import net.minecraft.nbt.ShortTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 
 /**
  * NBT type ID constants. Useful for filtering by value type in a few cases.
  *
- * <p>For the current list of types, check with {@link NbtElement#TYPES}.
+ * <p>For the current list of types, check with {@link Tag#TYPES}.
  *
- * @see NbtCompound#contains(String, int)
+ * @see CompoundTag#contains(String, int)
  */
 public final class NbtType {
 	/**
-	 * @see NbtEnd
+	 * @see EndTag
 	 */
 	public static final int END = 0;
 	/**
-	 * @see NbtByte
+	 * @see ByteTag
 	 */
 	public static final int BYTE = 1;
 	/**
-	 * @see NbtShort
+	 * @see ShortTag
 	 */
 	public static final int SHORT = 2;
 	/**
-	 * @see NbtInt
+	 * @see IntTag
 	 */
 	public static final int INT = 3;
 	/**
-	 * @see NbtLong
+	 * @see LongTag
 	 */
 	public static final int LONG = 4;
 	/**
-	 * @see NbtFloat
+	 * @see FloatTag
 	 */
 	public static final int FLOAT = 5;
 	/**
-	 * @see NbtDouble
+	 * @see DoubleTag
 	 */
 	public static final int DOUBLE = 6;
 	/**
-	 * @see NbtByteArray
+	 * @see ByteArrayTag
 	 */
 	public static final int BYTE_ARRAY = 7;
 	/**
-	 * @see NbtString
+	 * @see StringTag
 	 */
 	public static final int STRING = 8;
 	/**
-	 * @see NbtList
+	 * @see ListTag
 	 */
 	public static final int LIST = 9;
 	/**
-	 * @see NbtCompound
+	 * @see CompoundTag
 	 */
 	public static final int COMPOUND = 10;
 	/**
-	 * @see NbtIntArray
+	 * @see IntArrayTag
 	 */
 	public static final int INT_ARRAY = 11;
 	/**
 	 * Any numeric value: byte, short, int, long, float, double.
 	 *
-	 * @see NbtCompound#contains(String, int)
+	 * @see CompoundTag#contains(String, int)
 	 */
 	public static final int NUMBER = 99;
 

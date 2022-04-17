@@ -29,6 +29,9 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 
 @Environment(EnvType.CLIENT)
 public final class ClientTickEvents {
+	public ClientTickEvents() {
+	}
+
 	/**
 	 * Called at the start of the client tick.
 	 */
@@ -50,6 +53,7 @@ public final class ClientTickEvents {
 			}
 		}
 	});
+
 	/**
 	 * Called at the end of the client tick.
 	 */
@@ -71,6 +75,7 @@ public final class ClientTickEvents {
 			}
 		}
 	});
+
 	/**
 	 * Called at the start of a ClientWorld's tick.
 	 */
@@ -92,6 +97,7 @@ public final class ClientTickEvents {
 			}
 		}
 	});
+
 	/**
 	 * Called at the end of a ClientWorld's tick.
 	 *
@@ -115,9 +121,6 @@ public final class ClientTickEvents {
 			}
 		}
 	});
-
-	public ClientTickEvents() {
-	}
 
 	@FunctionalInterface
 	public interface StartTick {
