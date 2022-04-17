@@ -17,11 +17,11 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
-import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
-
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
+
+import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
 
 public interface RegistryRemapperAccess {
 	Identifier PACKET_ID = new Identifier("legacy-fabric-api", "registry_remap");

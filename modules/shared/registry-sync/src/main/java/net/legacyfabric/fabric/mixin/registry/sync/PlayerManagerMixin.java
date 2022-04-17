@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync;
 
-import net.legacyfabric.fabric.api.networking.v1.ServerPlayNetworking;
-import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,6 +34,9 @@ import net.minecraft.server.integrated.IntegratedServer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
+import net.legacyfabric.fabric.api.networking.v1.ServerPlayNetworking;
+import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
+
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
 	@Shadow
@@ -52,9 +53,11 @@ public class PlayerManagerMixin {
 	@Unique
 	private boolean fabric_shouldSend() {
 		boolean published = false;
+
 		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
 			published = fabric_isPublished();
 		}
+
 		return this.server.isDedicated() || published;
 	}
 

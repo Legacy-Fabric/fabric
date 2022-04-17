@@ -17,15 +17,15 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync;
 
-import net.legacyfabric.fabric.impl.registry.sync.BlockRegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
+
+import net.legacyfabric.fabric.impl.registry.sync.BlockRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin implements RegistryRemapperAccess {

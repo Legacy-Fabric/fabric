@@ -19,10 +19,10 @@ package net.legacyfabric.fabric.mixin.permission;
 
 import org.spongepowered.asm.mixin.Mixin;
 
+import net.minecraft.entity.player.ServerPlayerEntity;
+
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.permission.v1.PermissionsApiHolder;
-
-import net.minecraft.entity.player.ServerPlayerEntity;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin implements PermissibleCommandSource {

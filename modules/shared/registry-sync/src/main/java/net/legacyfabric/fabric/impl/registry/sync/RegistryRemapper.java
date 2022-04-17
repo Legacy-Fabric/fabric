@@ -17,24 +17,25 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import net.legacyfabric.fabric.mixin.registry.sync.IdListAccessor;
-import net.legacyfabric.fabric.mixin.registry.sync.SimpleRegistryAccessor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.IdentityHashMap;
 import java.util.Objects;
 import java.util.function.IntSupplier;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
+
+import net.legacyfabric.fabric.mixin.registry.sync.IdListAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.SimpleRegistryAccessor;
 
 public class RegistryRemapper {
 	protected static final Logger LOGGER = LogManager.getLogger();
@@ -57,6 +58,7 @@ public class RegistryRemapper {
 		if (this.entryDump == null) {
 			this.dump();
 		}
+
 		NbtCompound nbt = new NbtCompound();
 		this.entryDump.forEach((key, value) -> nbt.putInt(key.toString(), value));
 		return nbt;
@@ -64,6 +66,7 @@ public class RegistryRemapper {
 
 	public void readNbt(NbtCompound tag) {
 		this.entryDump = HashBiMap.create();
+
 		for (String key : tag.getKeys()) {
 			Identifier identifier = new Identifier(key);
 			int id = tag.getInt(key);
@@ -93,6 +96,7 @@ public class RegistryRemapper {
 		});
 		IntSupplier currentSize = () -> getIdMap(newList).size();
 		IntSupplier previousSize = () -> getObjects(this.registry).size();
+
 		if (currentSize.getAsInt() > previousSize.getAsInt()) {
 			throw new IllegalStateException("Registry size increased from " + previousSize + " to " + currentSize + " after remapping! This is not possible!");
 		} else if (currentSize.getAsInt() < previousSize.getAsInt()) {
@@ -102,19 +106,23 @@ public class RegistryRemapper {
 				newList.set(missing, id);
 			});
 		}
+
 		if (currentSize.getAsInt() != previousSize.getAsInt()) {
 			throw new IllegalStateException("An error occured during remapping");
 		}
+
 		((SimpleRegistryAccessor) this.registry).setIds(newList);
 		this.dump();
-		LOGGER.info("Remapped "  + previousSize + " entries");
+		LOGGER.info("Remapped " + previousSize.getAsInt() + " entries");
 	}
 
 	public int nextId() {
 		int id = 0;
+
 		while (getIdList(this.registry).fromId(id) != null) {
 			id++;
 		}
+
 		return id;
 	}
 

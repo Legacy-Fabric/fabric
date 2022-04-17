@@ -17,18 +17,18 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync.client;
 
-import net.legacyfabric.fabric.impl.registry.sync.BlockRegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import net.legacyfabric.fabric.impl.registry.sync.BlockRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
 
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
