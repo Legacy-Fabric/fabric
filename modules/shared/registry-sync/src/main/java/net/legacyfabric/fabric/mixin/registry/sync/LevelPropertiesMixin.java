@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.level.LevelProperties;
 
 @Mixin(LevelProperties.class)
@@ -54,10 +54,10 @@ public class LevelPropertiesMixin implements RegistryRemapperAccess {
 	}
 
 
-	@Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/nbt/CompoundTag;)V")
-	public void init(CompoundTag worldNbt, CallbackInfo ci) {
-		this.itemRemapper.fromTag(worldNbt.getCompound("FabricItemRegistry"));
-		this.blockRemapper.fromTag(worldNbt.getCompound("FabricBlockRegistry"));
+	@Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/nbt/NbtCompound;)V")
+	public void init(NbtCompound worldNbt, CallbackInfo ci) {
+		this.itemRemapper.readNbt(worldNbt.getCompound("FabricItemRegistry"));
+		this.blockRemapper.readNbt(worldNbt.getCompound("FabricBlockRegistry"));
 	}
 
 	@Inject(at = @At("TAIL"), method = "<init>(Lnet/minecraft/world/level/LevelProperties;)V")

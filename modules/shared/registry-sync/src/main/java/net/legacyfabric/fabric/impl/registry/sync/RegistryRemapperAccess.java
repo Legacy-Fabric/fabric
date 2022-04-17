@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.impl.registry.sync;
 
 import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 
@@ -35,22 +35,22 @@ public interface RegistryRemapperAccess {
 		this.getBlockRemapper().remap();
 	}
 
-	default void readAndRemap(CompoundTag tag) {
-		this.getItemRemapper().fromTag(tag.getCompound("Items"));
-		this.getBlockRemapper().fromTag(tag.getCompound("Blocks"));
+	default void readAndRemap(NbtCompound nbt) {
+		this.getItemRemapper().readNbt(nbt.getCompound("Items"));
+		this.getBlockRemapper().readNbt(nbt.getCompound("Blocks"));
 		this.remap();
 	}
 
-	default CompoundTag toRegistryTag() {
-		CompoundTag tag = new CompoundTag();
-		tag.put("Items", this.getItemRemapper().toTag());
-		tag.put("Blocks", this.getBlockRemapper().toTag());
-		return tag;
+	default NbtCompound toNbtCompound() {
+		NbtCompound nbt = new NbtCompound();
+		nbt.put("Items", this.getItemRemapper().toNbt());
+		nbt.put("Blocks", this.getBlockRemapper().toNbt());
+		return nbt;
 	}
 
 	default PacketByteBuf createBuf() {
 		PacketByteBuf buf = PacketByteBufs.create();
-		buf.writeCompoundTag(this.toRegistryTag());
+		buf.writeNbtCompound(this.toNbtCompound());
 		return buf;
 	}
 }

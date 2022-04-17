@@ -21,8 +21,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
 
 /**
  * @deprecated Unstable API, may change in the future.
@@ -47,11 +47,8 @@ public class PermissionsApiHolder {
 		return PLAYER_PERMISSIONS_API != null ? PLAYER_PERMISSIONS_API : FallbackPlayerPermissionsApi.INSTANCE;
 	}
 
-	private static class FallbackPlayerPermissionsApi implements PlayerPermissionsApi {
-		private static final FallbackPlayerPermissionsApi INSTANCE = new FallbackPlayerPermissionsApi();
-
-		private FallbackPlayerPermissionsApi() {
-		}
+	private enum FallbackPlayerPermissionsApi implements PlayerPermissionsApi {
+		INSTANCE;
 
 		@Override
 		public String getId() {

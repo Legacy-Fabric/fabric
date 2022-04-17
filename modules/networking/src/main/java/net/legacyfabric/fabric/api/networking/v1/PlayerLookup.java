@@ -24,8 +24,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -122,7 +122,7 @@ public final class PlayerLookup {
 
 		return world(world)
 				.stream()
-				.filter((p) -> p.getDistanceTo(pos.x, pos.y, pos.z) <= radiusSq)
+				.filter((p) -> p.squaredDistanceTo(pos.x, pos.y, pos.z) <= radiusSq)
 				.collect(Collectors.toList());
 	}
 
@@ -141,7 +141,7 @@ public final class PlayerLookup {
 
 		return world(world)
 				.stream()
-				.filter((p) -> p.getDistanceTo(pos.getX(), pos.getY(), pos.getZ()) <= radiusSq)
+				.filter((p) -> p.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ()) <= radiusSq)
 				.collect(Collectors.toList());
 	}
 

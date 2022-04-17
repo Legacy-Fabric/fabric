@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.api.networking.v1;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TrackedEntityInstance;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;

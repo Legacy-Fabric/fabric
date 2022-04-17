@@ -23,8 +23,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.Map;
 
-import net.minecraft.util.IdList;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
 @Mixin(SimpleRegistry.class)

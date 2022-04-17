@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "fabric-gamerule-api-v1",
+  "id": "legacy-fabric-gamerule-api-v1",
   "name": "Fabric Gamerule API (v1)",
   "version": "${version}",
   "environment": "*",

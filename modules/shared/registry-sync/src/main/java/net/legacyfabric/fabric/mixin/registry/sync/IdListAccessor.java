@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.IdentityHashMap;
 import java.util.List;
 
-import net.minecraft.util.IdList;
+import net.minecraft.util.collection.IdList;
 
 @Mixin(IdList.class)
 public interface IdListAccessor {

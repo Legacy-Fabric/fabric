@@ -17,18 +17,12 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
-import org.jetbrains.annotations.ApiStatus;
-
 import net.minecraft.command.CommandSource;
 
 /**
  * Represents a {@link CommandSource} that can not be able to run
  * a command if they do not have the permission to do so.
- *
- * @deprecated Unstable API, may change in the future.
  */
-@Deprecated
-@ApiStatus.Experimental
 public interface PermissibleCommandSource extends CommandSource {
 	boolean hasPermission(String perm);
 }

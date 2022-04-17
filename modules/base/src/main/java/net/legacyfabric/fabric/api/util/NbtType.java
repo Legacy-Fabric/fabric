@@ -17,80 +17,66 @@
 
 package net.legacyfabric.fabric.api.util;
 
-import net.minecraft.nbt.ByteArrayTag;
-import net.minecraft.nbt.ByteTag;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.DoubleTag;
-import net.minecraft.nbt.EndTag;
-import net.minecraft.nbt.FloatTag;
-import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.LongTag;
-import net.minecraft.nbt.ShortTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.nbt.Tag;
-
 /**
  * NBT type ID constants. Useful for filtering by value type in a few cases.
  *
- * <p>For the current list of types, check with {@link Tag#TYPES}.
+ * <p>For the current list of types, check with {@link net.minecraft.nbt.NbtElement#TYPES}.
  *
- * @see CompoundTag#contains(String, int)
+ * @see net.minecraft.nbt.NbtCompound#contains(String, int)
  */
 public final class NbtType {
 	/**
-	 * @see EndTag
+	 * @see net.minecraft.nbt.NbtEnd
 	 */
 	public static final int END = 0;
 	/**
-	 * @see ByteTag
+	 * @see net.minecraft.nbt.NbtByte
 	 */
 	public static final int BYTE = 1;
 	/**
-	 * @see ShortTag
+	 * @see net.minecraft.nbt.NbtShort
 	 */
 	public static final int SHORT = 2;
 	/**
-	 * @see IntTag
+	 * @see net.minecraft.nbt.NbtInt
 	 */
 	public static final int INT = 3;
 	/**
-	 * @see LongTag
+	 * @see net.minecraft.nbt.NbtLong
 	 */
 	public static final int LONG = 4;
 	/**
-	 * @see FloatTag
+	 * @see net.minecraft.nbt.NbtFloat
 	 */
 	public static final int FLOAT = 5;
 	/**
-	 * @see DoubleTag
+	 * @see net.minecraft.nbt.NbtDouble
 	 */
 	public static final int DOUBLE = 6;
 	/**
-	 * @see ByteArrayTag
+	 * @see net.minecraft.nbt.NbtByteArray
 	 */
 	public static final int BYTE_ARRAY = 7;
 	/**
-	 * @see StringTag
+	 * @see net.minecraft.nbt.NbtString
 	 */
 	public static final int STRING = 8;
 	/**
-	 * @see ListTag
+	 * @see net.minecraft.nbt.NbtList
 	 */
 	public static final int LIST = 9;
 	/**
-	 * @see CompoundTag
+	 * @see net.minecraft.nbt.NbtCompound
 	 */
 	public static final int COMPOUND = 10;
 	/**
-	 * @see IntArrayTag
+	 * @see net.minecraft.nbt.NbtIntArray
 	 */
 	public static final int INT_ARRAY = 11;
 	/**
 	 * Any numeric value: byte, short, int, long, float, double.
 	 *
-	 * @see CompoundTag#contains(String, int)
+	 * @see net.minecraft.nbt.NbtCompound#contains(String, int)
 	 */
 	public static final int NUMBER = 99;
 

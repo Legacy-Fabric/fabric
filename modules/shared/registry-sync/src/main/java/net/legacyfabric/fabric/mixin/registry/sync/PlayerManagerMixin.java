@@ -27,11 +27,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.server.network.ServerPlayerEntity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -42,7 +42,7 @@ public class PlayerManagerMixin {
 	@Final
 	private MinecraftServer server;
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/DifficultyS2CPacket;<init>(Lnet/minecraft/world/Difficulty;Z)V"), method = "onPlayerConnect")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V", ordinal = 2), method = "onPlayerConnect")
 	public void playerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
 		if (fabric_shouldSend()) {
 			player.networkHandler.sendPacket(ServerPlayNetworking.createS2CPacket(RegistryRemapperAccess.PACKET_ID, ((RegistryRemapperAccess) this.server).createBuf()));

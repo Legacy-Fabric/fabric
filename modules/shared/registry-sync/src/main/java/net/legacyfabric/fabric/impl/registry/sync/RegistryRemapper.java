@@ -30,10 +30,10 @@ import java.util.IdentityHashMap;
 import java.util.Objects;
 import java.util.function.IntSupplier;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.IdList;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
+import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
 public class RegistryRemapper {
@@ -53,16 +53,16 @@ public class RegistryRemapper {
 		});
 	}
 
-	public CompoundTag toTag() {
+	public NbtCompound toNbt() {
 		if (this.entryDump == null) {
 			this.dump();
 		}
-		CompoundTag tag = new CompoundTag();
-		this.entryDump.forEach((key, value) -> tag.putInt(key.toString(), value));
-		return tag;
+		NbtCompound nbt = new NbtCompound();
+		this.entryDump.forEach((key, value) -> nbt.putInt(key.toString(), value));
+		return nbt;
 	}
 
-	public void fromTag(CompoundTag tag) {
+	public void readNbt(NbtCompound tag) {
 		this.entryDump = HashBiMap.create();
 		for (String key : tag.getKeys()) {
 			Identifier identifier = new Identifier(key);
@@ -72,12 +72,12 @@ public class RegistryRemapper {
 	}
 
 	public void writePacketByteBuf(PacketByteBuf buf) {
-		buf.writeCompoundTag(this.toTag());
+		buf.writeNbtCompound(this.toNbt());
 	}
 
 	public void readPacketByteBuf(PacketByteBuf buf) {
 		try {
-			this.fromTag(buf.readCompoundTag());
+			this.readNbt(buf.readNbtCompound());
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}

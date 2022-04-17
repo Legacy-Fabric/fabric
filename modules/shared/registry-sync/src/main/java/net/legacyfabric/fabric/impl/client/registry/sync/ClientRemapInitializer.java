@@ -23,7 +23,7 @@ import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -34,14 +34,14 @@ public class ClientRemapInitializer implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(RegistryRemapperAccess.PACKET_ID, (client, handler, buf, responseSender) -> {
-			CompoundTag tag;
+			NbtCompound nbt;
 			try {
-				tag = buf.readCompoundTag();
+				nbt = buf.readNbtCompound();
 			} catch (IOException e) {
 				throw new UncheckedIOException(e);
 			}
 			client.execute(() -> {
-				((RegistryRemapperAccess) client.world).readAndRemap(tag);
+				((RegistryRemapperAccess) client.world).readAndRemap(nbt);
 			});
 		});
 	}

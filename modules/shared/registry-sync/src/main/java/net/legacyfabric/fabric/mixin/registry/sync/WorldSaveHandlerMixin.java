@@ -35,7 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldSaveHandler;
@@ -44,7 +44,7 @@ import net.minecraft.world.level.LevelProperties;
 @Mixin(WorldSaveHandler.class)
 public class WorldSaveHandlerMixin {
 	@Unique
-	private CompoundTag fabric_lastSavedIdMap = null;
+	private NbtCompound fabric_lastSavedIdMap = null;
 	@Unique
 	private static final int FABRIC_ID_REGISTRY_BACKUPS = 3;
 	@Unique
@@ -56,14 +56,14 @@ public class WorldSaveHandlerMixin {
 	@Unique
 	private boolean fabric_readIdMapFile(File file) throws IOException {
 		if (file.exists()) {
-			CompoundTag tag;
+			NbtCompound nbt;
 
 			try (FileInputStream fileInputStream = new FileInputStream(file)) {
-				tag = NbtIo.readCompressed(fileInputStream);
+				nbt = NbtIo.readCompressed(fileInputStream);
 			}
 
-			if (tag != null) {
-				((RegistryRemapperAccess) MinecraftServer.getServer()).readAndRemap(tag);
+			if (nbt != null) {
+				((RegistryRemapperAccess) MinecraftServer.getServer()).readAndRemap(nbt);
 				return true;
 			}
 		}
@@ -78,7 +78,7 @@ public class WorldSaveHandlerMixin {
 
 	@Unique
 	private void fabric_saveRegistryData() {
-		CompoundTag newIdMap = ((RegistryRemapperAccess) MinecraftServer.getServer()).toRegistryTag();
+		NbtCompound newIdMap = ((RegistryRemapperAccess) MinecraftServer.getServer()).toNbtCompound();
 
 		if (!newIdMap.equals(this.fabric_lastSavedIdMap)) {
 			for (int i = FABRIC_ID_REGISTRY_BACKUPS - 1; i >= 0; i--) {
@@ -115,8 +115,8 @@ public class WorldSaveHandlerMixin {
 		}
 	}
 
-	@Inject(method = "saveWorld(Lnet/minecraft/world/level/LevelProperties;Lnet/minecraft/nbt/CompoundTag;)V", at = @At("HEAD"))
-	public void saveWorld(LevelProperties levelProperties, CompoundTag compoundTag, CallbackInfo info) {
+	@Inject(method = "saveWorld(Lnet/minecraft/world/level/LevelProperties;Lnet/minecraft/nbt/NbtCompound;)V", at = @At("HEAD"))
+	public void saveWorld(LevelProperties levelProperties, NbtCompound nbt, CallbackInfo info) {
 		if (!worldDir.exists()) {
 			return;
 		}
