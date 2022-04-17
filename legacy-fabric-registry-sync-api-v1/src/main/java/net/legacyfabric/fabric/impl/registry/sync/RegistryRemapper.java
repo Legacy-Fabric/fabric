@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.function.IntSupplier;
 
