@@ -24,8 +24,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -41,9 +41,6 @@ import net.legacyfabric.fabric.mixin.networking.EntityTrackerEntryAccessor;
  * <p>These methods should only be called on the server thread and only be used on logical a server.
  */
 public final class PlayerLookup {
-	private PlayerLookup() {
-	}
-
 	/**
 	 * Gets all the players on the minecraft server.
 	 *
@@ -125,7 +122,7 @@ public final class PlayerLookup {
 
 		return world(world)
 				.stream()
-				.filter((p) -> p.distanceTo(pos.x, pos.y, pos.z) <= radiusSq)
+				.filter((p) -> p.getDistanceTo(pos.x, pos.y, pos.z) <= radiusSq)
 				.collect(Collectors.toList());
 	}
 
@@ -144,7 +141,10 @@ public final class PlayerLookup {
 
 		return world(world)
 				.stream()
-				.filter((p) -> p.distanceTo(pos.getX(), pos.getY(), pos.getZ()) <= radiusSq)
+				.filter((p) -> p.getDistanceTo(pos.getX(), pos.getY(), pos.getZ()) <= radiusSq)
 				.collect(Collectors.toList());
+	}
+
+	private PlayerLookup() {
 	}
 }

@@ -28,6 +28,14 @@ import java.util.concurrent.Callable;
 class DeferredInputStream extends InputStream {
 	private final InputStream stream;
 
+	public static InputStream deferIfNeeded(Callable<InputStream> streamSupplier) throws IOException {
+		if (DeferredNioExecutionHandler.shouldDefer()) {
+			return new DeferredInputStream(streamSupplier);
+		} else {
+			return DeferredNioExecutionHandler.submit(streamSupplier, false);
+		}
+	}
+
 	DeferredInputStream(Callable<InputStream> streamSupplier) throws IOException {
 		stream = DeferredNioExecutionHandler.submit(streamSupplier);
 
@@ -41,14 +49,6 @@ class DeferredInputStream extends InputStream {
 
 		if (this.stream == null) {
 			throw new IOException("Something happened while trying to create an InputStream!");
-		}
-	}
-
-	public static InputStream deferIfNeeded(Callable<InputStream> streamSupplier) throws IOException {
-		if (DeferredNioExecutionHandler.shouldDefer()) {
-			return new DeferredInputStream(streamSupplier);
-		} else {
-			return DeferredNioExecutionHandler.submit(streamSupplier, false);
 		}
 	}
 

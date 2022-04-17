@@ -87,189 +87,6 @@ public final class CommandSpec implements CommandCallable {
 	}
 
 	/**
-	 * Check the relevant permission for this command with the provided source,
-	 * throwing an exception if the source does not have permission to use
-	 * the command.
-	 *
-	 * @param source The source to check
-	 * @throws CommandException if the source does not have permission
-	 */
-	public void checkPermission(PermissibleCommandSource source) throws CommandException {
-		Preconditions.checkNotNull(source, "source");
-
-		if (!this.testPermission(source)) {
-			throw new CommandPermissionException();
-		}
-	}
-
-	/**
-	 * Process this command with existing arguments and context objects.
-	 *
-	 * @param source  The source to populate the context with
-	 * @param args    The arguments to process with
-	 * @param context The context to put data in
-	 * @throws ArgumentParseException if an invalid argument is provided
-	 */
-	public void populateContext(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
-		this.args.parse(source, args, context);
-
-		if (args.hasNext()) {
-			args.next();
-			throw args.createError(new LiteralText("Too many arguments!"));
-		}
-	}
-
-	/**
-	 * Return tab completion results using the existing parsed arguments and
-	 * context. Primarily useful when including a subcommand in an existing
-	 * specification.
-	 *
-	 * @param source  The source to parse arguments for
-	 * @param args    The arguments object
-	 * @param context The context object
-	 * @return possible completions, or an empty list if none
-	 */
-	public List<String> complete(PermissibleCommandSource source, CommandArgs args, CommandContext context) {
-		Preconditions.checkNotNull(source, "source");
-		List<String> ret = this.args.complete(source, args, context);
-		return ret == null ? ImmutableList.of() : ImmutableList.copyOf(ret);
-	}
-
-	/**
-	 * Gets the active executor for this command. Generally not a good idea to
-	 * call this directly, unless you are handling arg parsing specially
-	 *
-	 * @return The active executor for this command
-	 */
-	public CommandExecutor getExecutor() {
-		return this.executor;
-	}
-
-	/**
-	 * Gets the active input tokenizer used for this command.
-	 *
-	 * @return This command's input tokenizer
-	 */
-	public InputTokenizer getInputTokenizer() {
-		return this.argumentParser;
-	}
-
-	@Override
-	public CommandResult process(PermissibleCommandSource source, String arguments) throws CommandException {
-		this.checkPermission(source);
-		final CommandArgs args = new CommandArgs(arguments, this.getInputTokenizer().tokenize(arguments, false));
-		final CommandContext context = new CommandContext();
-		this.populateContext(source, args, context);
-		return this.getExecutor().execute(source, context);
-	}
-
-	@Override
-	public List<String> getSuggestions(PermissibleCommandSource source, String arguments, @Nullable Location<World> targetPos) throws CommandException {
-		CommandArgs args = new CommandArgs(arguments, this.getInputTokenizer().tokenize(arguments, true));
-		CommandContext ctx = new CommandContext();
-
-		if (targetPos != null) {
-			ctx.putArg(CommandContext.TARGET_BLOCK_ARG, targetPos);
-		}
-
-		ctx.putArg(CommandContext.TAB_COMPLETION, true);
-		return this.complete(source, args, ctx);
-	}
-
-	@Override
-	public boolean testPermission(PermissibleCommandSource source) {
-		return source.hasPermission(this.permission);
-	}
-
-	/**
-	 * Gets a short, one-line description used with this command if any is
-	 * present.
-	 *
-	 * @return the short description.
-	 */
-	@Override
-	public Optional<Text> getShortDescription(PermissibleCommandSource source) {
-		return this.description;
-	}
-
-	/**
-	 * Gets the extended description used with this command if any is present.
-	 *
-	 * @param source The source to get the description for
-	 * @return the extended description.
-	 */
-	public Optional<Text> getExtendedDescription(PermissibleCommandSource source) {
-		return this.extendedDescription;
-	}
-
-	/**
-	 * Gets the usage for this command appropriate for the provided command
-	 * source.
-	 *
-	 * @param source The source
-	 * @return the usage for the source
-	 */
-	@Override
-	public Text getUsage(PermissibleCommandSource source) {
-		Preconditions.checkNotNull(source, "source");
-		return this.args.getUsage(source);
-	}
-
-	/**
-	 * Return a longer description for this command. This description is
-	 * composed of at least all present of the short description, the usage
-	 * statement, and the extended description
-	 *
-	 * @param source The source to get the extended description for
-	 * @return the extended description
-	 */
-	@Override
-	public Optional<Text> getHelp(PermissibleCommandSource source) {
-		Preconditions.checkNotNull(source, "source");
-		StringBuilder builder = new StringBuilder();
-		this.getShortDescription(source).ifPresent((a) -> builder.append(a.getString()).append("\n"));
-		builder.append(this.getUsage(source));
-		this.getExtendedDescription(source).ifPresent((a) -> builder.append(a.getString()).append("\n"));
-		return Optional.of(new LiteralText(builder.toString()));
-	}
-
-	@Override
-	public boolean equals(@Nullable Object o) {
-		if (this == o) {
-			return true;
-		}
-
-		if (o == null || this.getClass() != o.getClass()) {
-			return false;
-		}
-
-		CommandSpec that = (CommandSpec) o;
-		return Objects.equal(this.args, that.args)
-				&& Objects.equal(this.executor, that.executor)
-				&& Objects.equal(this.description, that.description)
-				&& Objects.equal(this.extendedDescription, that.extendedDescription)
-				&& Objects.equal(this.permission, that.permission)
-				&& Objects.equal(this.argumentParser, that.argumentParser);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(this.args, this.executor, this.description, this.extendedDescription, this.permission, this.argumentParser);
-	}
-
-	@Override
-	public String toString() {
-		return Objects.toStringHelper(this)
-				.add("args", this.args)
-				.add("executor", this.executor)
-				.add("description", this.description)
-				.add("extendedDescription", this.extendedDescription)
-				.add("permission", this.permission)
-				.add("argumentParser", this.argumentParser)
-				.toString();
-	}
-
-	/**
 	 * Builder for command specs.
 	 */
 	public static final class Builder {
@@ -496,5 +313,188 @@ public final class CommandSpec implements CommandCallable {
 			this.executor(childDispatcher);
 			return childDispatcher;
 		}
+	}
+
+	/**
+	 * Check the relevant permission for this command with the provided source,
+	 * throwing an exception if the source does not have permission to use
+	 * the command.
+	 *
+	 * @param source The source to check
+	 * @throws CommandException if the source does not have permission
+	 */
+	public void checkPermission(PermissibleCommandSource source) throws CommandException {
+		Preconditions.checkNotNull(source, "source");
+
+		if (!this.testPermission(source)) {
+			throw new CommandPermissionException();
+		}
+	}
+
+	/**
+	 * Process this command with existing arguments and context objects.
+	 *
+	 * @param source  The source to populate the context with
+	 * @param args    The arguments to process with
+	 * @param context The context to put data in
+	 * @throws ArgumentParseException if an invalid argument is provided
+	 */
+	public void populateContext(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
+		this.args.parse(source, args, context);
+
+		if (args.hasNext()) {
+			args.next();
+			throw args.createError(new LiteralText("Too many arguments!"));
+		}
+	}
+
+	/**
+	 * Return tab completion results using the existing parsed arguments and
+	 * context. Primarily useful when including a subcommand in an existing
+	 * specification.
+	 *
+	 * @param source  The source to parse arguments for
+	 * @param args    The arguments object
+	 * @param context The context object
+	 * @return possible completions, or an empty list if none
+	 */
+	public List<String> complete(PermissibleCommandSource source, CommandArgs args, CommandContext context) {
+		Preconditions.checkNotNull(source, "source");
+		List<String> ret = this.args.complete(source, args, context);
+		return ret == null ? ImmutableList.of() : ImmutableList.copyOf(ret);
+	}
+
+	/**
+	 * Gets the active executor for this command. Generally not a good idea to
+	 * call this directly, unless you are handling arg parsing specially
+	 *
+	 * @return The active executor for this command
+	 */
+	public CommandExecutor getExecutor() {
+		return this.executor;
+	}
+
+	/**
+	 * Gets the active input tokenizer used for this command.
+	 *
+	 * @return This command's input tokenizer
+	 */
+	public InputTokenizer getInputTokenizer() {
+		return this.argumentParser;
+	}
+
+	@Override
+	public CommandResult process(PermissibleCommandSource source, String arguments) throws CommandException {
+		this.checkPermission(source);
+		final CommandArgs args = new CommandArgs(arguments, this.getInputTokenizer().tokenize(arguments, false));
+		final CommandContext context = new CommandContext();
+		this.populateContext(source, args, context);
+		return this.getExecutor().execute(source, context);
+	}
+
+	@Override
+	public List<String> getSuggestions(PermissibleCommandSource source, String arguments, @Nullable Location<World> targetPos) throws CommandException {
+		CommandArgs args = new CommandArgs(arguments, this.getInputTokenizer().tokenize(arguments, true));
+		CommandContext ctx = new CommandContext();
+
+		if (targetPos != null) {
+			ctx.putArg(CommandContext.TARGET_BLOCK_ARG, targetPos);
+		}
+
+		ctx.putArg(CommandContext.TAB_COMPLETION, true);
+		return this.complete(source, args, ctx);
+	}
+
+	@Override
+	public boolean testPermission(PermissibleCommandSource source) {
+		return source.hasPermission(this.permission);
+	}
+
+	/**
+	 * Gets a short, one-line description used with this command if any is
+	 * present.
+	 *
+	 * @return the short description.
+	 */
+	@Override
+	public Optional<Text> getShortDescription(PermissibleCommandSource source) {
+		return this.description;
+	}
+
+	/**
+	 * Gets the extended description used with this command if any is present.
+	 *
+	 * @param source The source to get the description for
+	 * @return the extended description.
+	 */
+	public Optional<Text> getExtendedDescription(PermissibleCommandSource source) {
+		return this.extendedDescription;
+	}
+
+	/**
+	 * Gets the usage for this command appropriate for the provided command
+	 * source.
+	 *
+	 * @param source The source
+	 * @return the usage for the source
+	 */
+	@Override
+	public Text getUsage(PermissibleCommandSource source) {
+		Preconditions.checkNotNull(source, "source");
+		return this.args.getUsage(source);
+	}
+
+	/**
+	 * Return a longer description for this command. This description is
+	 * composed of at least all present of the short description, the usage
+	 * statement, and the extended description
+	 *
+	 * @param source The source to get the extended description for
+	 * @return the extended description
+	 */
+	@Override
+	public Optional<Text> getHelp(PermissibleCommandSource source) {
+		Preconditions.checkNotNull(source, "source");
+		StringBuilder builder = new StringBuilder();
+		this.getShortDescription(source).ifPresent((a) -> builder.append(a.getString()).append("\n"));
+		builder.append(this.getUsage(source));
+		this.getExtendedDescription(source).ifPresent((a) -> builder.append(a.getString()).append("\n"));
+		return Optional.of(new LiteralText(builder.toString()));
+	}
+
+	@Override
+	public boolean equals(@Nullable Object o) {
+		if (this == o) {
+			return true;
+		}
+
+		if (o == null || this.getClass() != o.getClass()) {
+			return false;
+		}
+
+		CommandSpec that = (CommandSpec) o;
+		return Objects.equal(this.args, that.args)
+				&& Objects.equal(this.executor, that.executor)
+				&& Objects.equal(this.description, that.description)
+				&& Objects.equal(this.extendedDescription, that.extendedDescription)
+				&& Objects.equal(this.permission, that.permission)
+				&& Objects.equal(this.argumentParser, that.argumentParser);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(this.args, this.executor, this.description, this.extendedDescription, this.permission, this.argumentParser);
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this)
+				.add("args", this.args)
+				.add("executor", this.executor)
+				.add("description", this.description)
+				.add("extendedDescription", this.extendedDescription)
+				.add("permission", this.permission)
+				.add("argumentParser", this.argumentParser)
+				.toString();
 	}
 }
