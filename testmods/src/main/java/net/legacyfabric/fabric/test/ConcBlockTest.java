@@ -17,7 +17,10 @@
 
 package net.legacyfabric.fabric.test;
 
+import java.util.Iterator;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.BlockItem;
@@ -35,5 +38,10 @@ public class ConcBlockTest implements ModInitializer {
 
 		Block.REGISTRY.add(500, new Identifier("legacy-fabric", "conc_block"), concBlock);
 		Item.REGISTRY.add(1000, new Identifier("legacy-fabric", "conc_block"), concItem);
+
+		for (BlockState blockState : concBlock.getStateManager().getBlockStates()) {
+			int blockStateId = Block.REGISTRY.getIndex(concBlock) << 4 | concBlock.getData(blockState);
+			Block.BLOCK_STATES.set(blockState, blockStateId);
+		}
 	}
 }

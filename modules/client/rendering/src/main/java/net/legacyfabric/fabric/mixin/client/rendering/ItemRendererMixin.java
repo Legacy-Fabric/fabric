@@ -20,8 +20,10 @@ package net.legacyfabric.fabric.mixin.client.rendering;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.client.render.block.entity.BlockEntityItemStackRenderHelper;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.item.ItemStack;
@@ -31,12 +33,14 @@ import net.legacyfabric.fabric.impl.client.rendering.BuiltinItemRendererRegistry
 
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
-	@Inject(method = "method_10243", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityItemStackRenderHelper;method_9772(Lnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER))
-	public void onRender(ItemStack stack, BakedModel bakedModel, CallbackInfo ci) {
+	@Redirect(method = "method_10243", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityItemStackRenderHelper;renderItem(Lnet/minecraft/item/ItemStack;)V"))
+	public void onRender(BlockEntityItemStackRenderHelper instance, ItemStack stack, ItemStack itemStack, BakedModel bakedModel) {
 		BuiltinItemRendererRegistry.DynamicItemRenderer renderer = BuiltinItemRendererRegistryImpl.getRenderer(stack.getItem());
 
 		if (renderer != null) {
 			renderer.render(stack, bakedModel.getTransformation());
+		} else {
+			instance.renderItem(stack);
 		}
 	}
 }

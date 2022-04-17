@@ -6,8 +6,8 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "BlockAccessor",
     "IdListAccessor",
-    "LevelPropertiesMixin",
     "MinecraftServerMixin",
     "PlayerManagerMixin",
     "SimpleRegistryAccessor",

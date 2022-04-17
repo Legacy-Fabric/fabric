@@ -37,9 +37,9 @@ import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
 public class RegistryRemapper {
-	private static final Logger LOGGER = LogManager.getLogger();
-	private final SimpleRegistry<Identifier, ?> registry;
-	private BiMap<Identifier, Integer> entryDump;
+	protected static final Logger LOGGER = LogManager.getLogger();
+	protected final SimpleRegistry<Identifier, ?> registry;
+	protected BiMap<Identifier, Integer> entryDump;
 
 	public RegistryRemapper(SimpleRegistry<Identifier, ?> registry) {
 		this.registry = registry;
@@ -141,11 +141,5 @@ public class RegistryRemapper {
 
 	public static IdentityHashMap<?, Integer> getIdMap(SimpleRegistry<Identifier, ?> registry) {
 		return getIdMap(getIdList(registry));
-	}
-
-	public RegistryRemapper copy() {
-		RegistryRemapper remapper = new RegistryRemapper(this.registry);
-		remapper.entryDump = HashBiMap.create(this.entryDump);
-		return remapper;
 	}
 }

@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync.client;
 
+import net.legacyfabric.fabric.impl.registry.sync.BlockRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +36,7 @@ public class MinecraftClientMixin implements RegistryRemapperAccess {
 	@Unique
 	private final RegistryRemapper itemRemapper = new RegistryRemapper(Item.REGISTRY);
 	@Unique
-	private final RegistryRemapper blockRemapper = new RegistryRemapper(Block.REGISTRY);
+	private final RegistryRemapper blockRemapper = new BlockRegistryRemapper();
 
 	@Override
 	public RegistryRemapper getItemRemapper() {
