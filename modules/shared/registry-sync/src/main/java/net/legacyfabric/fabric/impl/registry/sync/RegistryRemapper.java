@@ -112,7 +112,7 @@ public class RegistryRemapper {
 
 	public int nextId() {
 		int id = 0;
-		while (this.registry.byIndex(id) != null) {
+		while (getIdList(this.registry).fromId(id) != null) {
 			id++;
 		}
 		return id;

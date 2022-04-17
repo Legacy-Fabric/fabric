@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.test;
 
-import java.util.Iterator;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
@@ -33,14 +31,22 @@ import net.fabricmc.api.ModInitializer;
 public class ConcBlockTest implements ModInitializer {
 	@Override
 	public void onInitialize() {
+		if (true) {
+			return;
+		}
 		Block concBlock = new Block(Material.STONE, MaterialColor.BLUE).setItemGroup(ItemGroup.FOOD).setTranslationKey("conc_block");
-		Item concItem = new BlockItem(concBlock);
-
 		Block.REGISTRY.add(500, new Identifier("legacy-fabric", "conc_block"), concBlock);
-		Item.REGISTRY.add(1000, new Identifier("legacy-fabric", "conc_block"), concItem);
+		Item.REGISTRY.add(1000, new Identifier("legacy-fabric", "conc_block"), new BlockItem(concBlock));
+		Block concBlock2 = new Block(Material.STONE, MaterialColor.BLUE).setItemGroup(ItemGroup.FOOD).setTranslationKey("conc_block_2");
+		Block.REGISTRY.add(600, new Identifier("legacy-fabric", "conc_block_2"), concBlock2);
+		Item.REGISTRY.add(1200, new Identifier("legacy-fabric", "conc_block_2"), new BlockItem(concBlock2));
 
 		for (BlockState blockState : concBlock.getStateManager().getBlockStates()) {
 			int blockStateId = Block.REGISTRY.getIndex(concBlock) << 4 | concBlock.getData(blockState);
+			Block.BLOCK_STATES.set(blockState, blockStateId);
+		}
+		for (BlockState blockState : concBlock2.getStateManager().getBlockStates()) {
+			int blockStateId = Block.REGISTRY.getIndex(concBlock2) << 4 | concBlock2.getData(blockState);
 			Block.BLOCK_STATES.set(blockState, blockStateId);
 		}
 	}
