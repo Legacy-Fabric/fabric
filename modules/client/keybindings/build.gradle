@@ -1,1 +1,5 @@
 version = getSubprojectVersion(project, "1.0.0")
+
+dependencies {
+	testmodImplementation project(path: ":legacy-fabric-lifecycle-events-v1", configuration: "dev")
+}

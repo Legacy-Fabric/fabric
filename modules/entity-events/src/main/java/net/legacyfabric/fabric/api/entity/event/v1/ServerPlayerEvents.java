@@ -41,7 +41,7 @@ public final class ServerPlayerEvents {
 	 *
 	 * <p>Mods may use this event for reference clean up on the old player.
 	 */
-	public static final Event<ServerPlayerEvents.AfterRespawn> AFTER_RESPAWN = EventFactory.createArrayBacked(ServerPlayerEvents.AfterRespawn.class, callbacks -> (oldPlayer, newPlayer, world, alive) -> {
+	public static final Event<AfterRespawn> AFTER_RESPAWN = EventFactory.createArrayBacked(ServerPlayerEvents.AfterRespawn.class, callbacks -> (oldPlayer, newPlayer, world, alive) -> {
 		for (AfterRespawn callback : callbacks) {
 			callback.afterRespawn(oldPlayer, newPlayer, world, alive);
 		}

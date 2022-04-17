@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-sponge-command-api-v2-testmod",
+  "description": "Tests for api features",
+  "version": "1.0.0",
+  "entrypoints": {
+    "main": [
+      "net.legacyfabric.fabric.test.command.SpongeCommandTest"
+    ]
+  }
+}

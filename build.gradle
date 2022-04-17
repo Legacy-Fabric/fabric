@@ -73,6 +73,13 @@ allprojects {
 
 	group = "net.legacyfabric.legacy-fabric-api"
 
+	sourceSets {
+		testmod {
+			compileClasspath += main.compileClasspath
+			runtimeClasspath += main.runtimeClasspath
+		}
+	}
+
 	repositories {
 		maven { url "https://maven.legacyfabric.net/" }
 	}
@@ -191,35 +198,49 @@ task javadocJar(type: Jar) {
 }
 build.dependsOn javadocJar
 
+sourceSets {
+	testmod
+}
+
 subprojects {
-	if (project.name != project.testmods_project) {
-		task remapMavenJar(type: Copy, dependsOn: remapJar) {
-			afterEvaluate {
-				from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
-				into("${project.buildDir}/libs/")
-				rename { String fn -> "$archivesBaseName-${version}-maven.jar" }
-			}
+	dependencies {
+		testmodImplementation sourceSets.main.output
+
+		if (project.name != "legacy-fabric-resource-loader-v1") {
+			testmodImplementation project(path: ':legacy-fabric-resource-loader-v1', configuration: 'dev')
 		}
 
-		publishing {
-			publications {
-				mavenJava(MavenPublication) {
-					afterEvaluate {
-						artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
-							builtBy remapMavenJar
-						}
+		if (project.name != "legacy-fabric-registry-sync-api-v1") {
+			testmodRuntimeOnly project(path: ':legacy-fabric-registry-sync-api-v1', configuration: 'dev')
+		}
+	}
 
-						artifact(sourcesJar) {
-							builtBy remapSourcesJar
-						}
+	task remapMavenJar(type: Copy, dependsOn: remapJar) {
+		afterEvaluate {
+			from("${project.buildDir}/libs/$archivesBaseName-${version}.jar")
+			into("${project.buildDir}/libs/")
+			rename { String fn -> "$archivesBaseName-${version}-maven.jar" }
+		}
+	}
+
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				afterEvaluate {
+					artifact(file("${project.buildDir}/libs/$archivesBaseName-${version}-maven.jar")) {
+						builtBy remapMavenJar
+					}
+
+					artifact(sourcesJar) {
+						builtBy remapSourcesJar
 					}
 				}
 			}
-
-			setupRepositories(repositories)
 		}
-		javadoc.enabled = false
+
+		setupRepositories(repositories)
 	}
+	javadoc.enabled = false
 }
 
 task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
@@ -231,9 +252,7 @@ task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
 }
 
 subprojects.each {
-	if (it.name != project.testmods_project) {
-		publish.dependsOn("${it.path}:publish")
-	}
+	publish.dependsOn("${it.path}:publish")
 }
 
 
@@ -251,13 +270,11 @@ publishing {
 			pom.withXml {
 				def depsNode = asNode().appendNode("dependencies")
 				subprojects.each {
-					if (it.name != project.testmods_project) {
-						def depNode = depsNode.appendNode("dependency")
-						depNode.appendNode("groupId", it.group)
-						depNode.appendNode("artifactId", it.name)
-						depNode.appendNode("version", it.version)
-						depNode.appendNode("scope", "compile")
-					}
+					def depNode = depsNode.appendNode("dependency")
+					depNode.appendNode("groupId", it.group)
+					depNode.appendNode("artifactId", it.name)
+					depNode.appendNode("version", it.version)
+					depNode.appendNode("scope", "compile")
 				}
 			}
 		}
@@ -285,10 +302,9 @@ subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
 dependencies {
 	afterEvaluate {
 		subprojects.each {
-			if (it.name != project.testmods_project) {
-				implementation project(path: ":${it.name}", configuration: "dev")
-				include project("${it.name}:")
-			}
+			implementation project(path: ":${it.name}", configuration: "dev")
+			include project("${it.name}:")
+			testmodImplementation project("${it.name}:").sourceSets.testmod.output
 		}
 	}
 }
