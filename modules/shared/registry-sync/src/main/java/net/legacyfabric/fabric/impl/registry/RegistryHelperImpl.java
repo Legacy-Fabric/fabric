@@ -24,12 +24,14 @@ import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.mixin.registry.sync.IdListAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.ItemAccessor;
 import net.legacyfabric.fabric.mixin.registry.sync.SimpleRegistryAccessor;
 
 @ApiStatus.Internal
@@ -51,6 +53,11 @@ public class RegistryHelperImpl {
 		item.setTranslationKey(formatTranslationKey(id));
 		int rawId = nextId(Item.REGISTRY);
 		Item.REGISTRY.add(rawId, id, item);
+
+		if (item instanceof BlockItem) {
+			ItemAccessor.getBLOCK_ITEMS().put(((BlockItem) item).getBlock(), item);
+		}
+
 		return item;
 	}
 
