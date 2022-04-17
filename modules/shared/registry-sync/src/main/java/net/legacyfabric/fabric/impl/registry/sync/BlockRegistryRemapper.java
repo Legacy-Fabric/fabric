@@ -24,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.collection.IdList;
 
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.mixin.registry.sync.BlockAccessor;
 
 public class BlockRegistryRemapper extends RegistryRemapper {
@@ -33,9 +34,9 @@ public class BlockRegistryRemapper extends RegistryRemapper {
 
 	@Override
 	public void remap() {
-		IdList oldList = getIdList(this.registry);
+		IdList oldList = RegistryHelperImpl.getIdList(this.registry);
 		super.remap();
-		IdList newList = getIdList(this.registry);
+		IdList newList = RegistryHelperImpl.getIdList(this.registry);
 		Map<Integer, Integer> old2new = new HashMap<>();
 
 		for (Object value : oldList) {
