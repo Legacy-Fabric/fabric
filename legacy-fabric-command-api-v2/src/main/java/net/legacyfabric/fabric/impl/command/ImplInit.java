@@ -22,7 +22,7 @@ import net.fabricmc.api.DedicatedServerModInitializer;
 
 import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
-import net.legacyfabric.fabric.api.registry.CommandRegistry;
+import net.legacyfabric.fabric.api.command.v1.CommandRegistry;
 
 public class ImplInit implements DedicatedServerModInitializer, ClientModInitializer, CommandRegistrar {
 	@Override
