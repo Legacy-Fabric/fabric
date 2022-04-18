@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.function.IntSupplier;
 
@@ -29,7 +27,6 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
@@ -101,15 +98,5 @@ public class RegistryRemapper {
 		((SimpleRegistryAccessor) this.registry).setIds(newList);
 		this.dump();
 		LOGGER.info("Remapped " + previousSize.getAsInt() + " entries");
-	}
-
-	public int nextId() {
-		int id = 0;
-
-		while (RegistryHelperImpl.getIdList(this.registry).fromId(id) != null) {
-			id++;
-		}
-
-		return id;
 	}
 }
