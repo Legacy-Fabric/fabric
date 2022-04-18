@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-networking-api-v1-testmod",
+  "description": "Tests for networking",
+  "version": "1.0.0",
+  "entrypoints": {
+    "main": [
+      "net.legacyfabric.fabric.test.network.ServerNetworkingTest"
+    ],
+    "client": [
+      "net.legacyfabric.fabric.test.network.client.ClientNetworkingTest"
+    ]
+  }
+}
