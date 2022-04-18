@@ -16,11 +16,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: FabricMC/fabric-action-scripts@v1
-        id: changelog
-        with:
-          context: changelog
-          workflow_id: release.yml
       - uses: gradle/wrapper-validation-action@v1
       - run: ./gradlew checkVersion build publish --stacktrace #curseforge github
         env:
