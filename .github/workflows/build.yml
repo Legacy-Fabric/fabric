@@ -1,12 +1,29 @@
-name: test build
+name: Build
 on: [push, pull_request]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [17-jdk]
+    runs-on: ubuntu-20.04
     container:
-      image: openjdk:11-jdk
+      image: eclipse-temurin:${{ matrix.java }}
       options: --user root
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew build --stacktrace
+      - run: ./gradlew check build publishToMavenLocal --stacktrace --parallel --warning-mode=fail
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Artifacts
+          path: build/libs/
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Artifacts
+          path: ./*/build/libs/
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Maven Local
+          path: /root/.m2/repository
