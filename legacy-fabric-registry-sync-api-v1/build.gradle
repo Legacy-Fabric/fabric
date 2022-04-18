@@ -1,6 +1,7 @@
 version = getSubprojectVersion(project, "1.0.0")
 
 dependencies {
+	implementation project(path: ':legacy-fabric-networking-api-v1', configuration: 'dev')
 	implementation project(path: ':legacy-fabric-api-base', configuration: 'dev')
 	implementation project(path: ':legacy-fabric-networking-api-v1', configuration: 'dev')
 }
