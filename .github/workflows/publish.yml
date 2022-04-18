@@ -1,14 +1,31 @@
-name: publish
+name: Release
 on: [workflow_dispatch] # Manual trigger
+
+permissions:
+  contents: write
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
-      image: openjdk:11-jdk
+      image: eclipse-temurin:17-jdk
       options: --user root
     steps:
-      - uses: actions/checkout@v1
+      - run: apt update && apt install git -y && git --version
+      - run: git config --global --add safe.directory /__w/fabric/fabric
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: FabricMC/fabric-action-scripts@v1
+        id: changelog
+        with:
+          context: changelog
+          workflow_id: release.yml
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew publish --stacktrace
+      - run: ./gradlew checkVersion build publish --stacktrace #curseforge github
         env:
           MAVEN_PUBLISH_TOKEN: ${{ secrets.MAVEN_PUBLISH_TOKEN }}
+          CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHANGELOG: ${{ steps.changelog.outputs.changelog }}
+          
