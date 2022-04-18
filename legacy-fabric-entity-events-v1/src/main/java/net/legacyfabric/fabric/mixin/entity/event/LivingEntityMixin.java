@@ -28,9 +28,9 @@ import net.minecraft.entity.damage.DamageSource;
 import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 
 @Mixin(LivingEntity.class)
-abstract class LivingEntityMixin extends EntityMixin {
-	@Inject(method = "onKilled", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/Entity;onKilledOther(Lnet/minecraft/entity/LivingEntity;)V"))
-	private void onEntityKilledOther(DamageSource source, CallbackInfo ci) {
+abstract class LivingEntityMixin {
+	@Inject(method = "onKilled", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;onKilledOther(Lnet/minecraft/entity/LivingEntity;)V", shift = At.Shift.AFTER))
+	public void onEntityKilledOther(DamageSource source, CallbackInfo ci) {
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(source.getAttacker(), (LivingEntity) (Object) this);
 	}
 }
