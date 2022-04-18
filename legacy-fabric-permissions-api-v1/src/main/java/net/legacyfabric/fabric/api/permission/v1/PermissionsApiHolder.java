@@ -26,7 +26,7 @@ import net.minecraft.server.MinecraftServer;
 
 /**
  * @deprecated Unstable API, may change in the future.
-*/
+ */
 @Deprecated
 @ApiStatus.Experimental
 public class PermissionsApiHolder {

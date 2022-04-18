@@ -35,7 +35,7 @@ public class RegistryTest implements ModInitializer {
 	public void onInitialize() {
 		Block concBlock = new Block(Material.STONE, MaterialColor.BLACK).setItemGroup(ItemGroup.FOOD);
 		Block concBlock2 = new Block(Material.STONE, MaterialColor.BLUE).setItemGroup(ItemGroup.FOOD);
-		Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[] { concBlock, concBlock2 } : new Block[] { concBlock2, concBlock };
+		Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[] {concBlock, concBlock2} : new Block[] {concBlock2, concBlock};
 
 		for (Block block : blocks) {
 			RegistryHelper.registerBlock(block, new Identifier("legacy-fabric-api", "conc_block_" + block.getMaterialColor(block.getDefaultState()).color));

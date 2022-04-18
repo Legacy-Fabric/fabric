@@ -319,6 +319,7 @@ public final class CommandContext {
 
 	/**
 	 * Converts a {@link Text} into a String key.
+	 *
 	 * @param key the text to be converted into a string key
 	 * @return the string key. if {@code key} is a {@link TranslatableText}, the translation key.
 	 */

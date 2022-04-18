@@ -33,7 +33,7 @@ public final class RegistryHelper {
 	 * <p>The Block's translation key is automatically set.</p>
 	 *
 	 * @param block The block to register
-	 * @param id The ID of the block
+	 * @param id    The ID of the block
 	 * @return The block registered
 	 */
 	public static Block registerBlock(Block block, Identifier id) {
@@ -46,7 +46,7 @@ public final class RegistryHelper {
 	 * <p>The Item's translation key is automatically set.</p>
 	 *
 	 * @param item The item to register
-	 * @param id The ID of the item
+	 * @param id   The ID of the item
 	 * @return The item registered
 	 */
 	public static Item registerItem(Item item, Identifier id) {

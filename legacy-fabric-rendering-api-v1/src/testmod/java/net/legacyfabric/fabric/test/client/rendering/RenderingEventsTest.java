@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.test.client.rendering;
 
-import java.awt.*;
+import java.awt.Color;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
