@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-logger-api",
-  "name": "Legacy Fabric Logger API",
+  "id": "legacy-fabric-logger-api-v1",
+  "name": "Legacy Fabric Logger API (v1)",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
