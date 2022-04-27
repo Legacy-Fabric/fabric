@@ -36,7 +36,7 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.ModResourcePack;
-import net.legacyfabric.fabric.impl.logger.v1.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ModNioResourcePack extends AbstractFileResourcePack implements ModResourcePack, Closeable {
 	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "ModNioResourcePack");

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.logger.v1;
+package net.legacyfabric.fabric.impl.logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -28,8 +28,8 @@ import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 
 public class LoggerImpl implements Logger {
-	private LogCategory category;
 	public static final String API = "FabricAPI";
+	private LogCategory category;
 
 	public LoggerImpl(String context, String... subs) {
 		try { // Loader 0.14.3+
@@ -38,10 +38,10 @@ public class LoggerImpl implements Logger {
 			List<String> parts = new ArrayList<>();
 			parts.add(context);
 			Collections.addAll(parts, subs);
+
 			try {
 				this.category = LogCategory.class.getDeclaredConstructor(String[].class).newInstance(parts);
-			} catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-					 IllegalAccessException ex) {
+			} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
 				throw new RuntimeException(ex);
 			}
 		}
@@ -59,7 +59,6 @@ public class LoggerImpl implements Logger {
 		Log.info(this.category, format, exc);
 	}
 
-
 	public void error(String format) {
 		Log.error(this.category, format);
 	}
@@ -71,7 +70,6 @@ public class LoggerImpl implements Logger {
 	public void error(String format, Throwable exc) {
 		Log.error(this.category, format, exc);
 	}
-
 
 	public void warn(String format) {
 		Log.warn(this.category, format);
@@ -85,7 +83,6 @@ public class LoggerImpl implements Logger {
 		Log.warn(this.category, format, exc);
 	}
 
-
 	public void debug(String format) {
 		Log.debug(this.category, format);
 	}
@@ -97,7 +94,6 @@ public class LoggerImpl implements Logger {
 	public void debug(String format, Throwable exc) {
 		Log.debug(this.category, format, exc);
 	}
-
 
 	public void trace(String format) {
 		Log.trace(this.category, format);

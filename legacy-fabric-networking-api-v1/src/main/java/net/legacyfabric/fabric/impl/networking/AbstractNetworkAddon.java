@@ -27,7 +27,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.impl.logger.v1.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 /**
  * A network addon is a simple abstraction to hold information about a player's registered channels.

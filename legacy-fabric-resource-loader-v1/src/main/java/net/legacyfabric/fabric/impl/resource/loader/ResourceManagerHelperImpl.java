@@ -31,7 +31,7 @@ import net.minecraft.util.Identifier;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
-import net.legacyfabric.fabric.impl.logger.v1.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 	private static final ResourceManagerHelperImpl INSTANCE = new ResourceManagerHelperImpl();

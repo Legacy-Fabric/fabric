@@ -48,7 +48,7 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispat
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.util.Location;
-import net.legacyfabric.fabric.impl.logger.v1.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class CommandManagerImpl implements CommandManager {
 	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Command Manager");
