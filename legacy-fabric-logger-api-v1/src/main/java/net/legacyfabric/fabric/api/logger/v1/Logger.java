@@ -1,6 +1,6 @@
-package net.legacyfabric.fabric.api.logger;
+package net.legacyfabric.fabric.api.logger.v1;
 
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.v1.LoggerImpl;
 
 public interface Logger {
 	static Logger get(String context, String... args) {

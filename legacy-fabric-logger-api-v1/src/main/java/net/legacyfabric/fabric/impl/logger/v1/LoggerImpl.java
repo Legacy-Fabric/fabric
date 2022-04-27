@@ -1,4 +1,4 @@
-package net.legacyfabric.fabric.impl.logger;
+package net.legacyfabric.fabric.impl.logger.v1;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
 import net.fabricmc.loader.impl.util.log.Log;
 import net.fabricmc.loader.impl.util.log.LogCategory;
 
-import net.legacyfabric.fabric.api.logger.Logger;
+import net.legacyfabric.fabric.api.logger.v1.Logger;
 
 public class LoggerImpl implements Logger {
 	private LogCategory category;
