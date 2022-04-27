@@ -17,12 +17,13 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+
+import net.legacyfabric.fabric.api.logger.Logger;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 /**
  * @deprecated Unstable API, may change in the future.
@@ -30,7 +31,7 @@ import net.minecraft.server.MinecraftServer;
 @Deprecated
 @ApiStatus.Experimental
 public class PermissionsApiHolder {
-	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "PermissionApiHolder");
 	private static PlayerPermissionsApi PLAYER_PERMISSIONS_API = null;
 
 	public static boolean setPlayerPermissionsApi(PlayerPermissionsApi api) {
