@@ -19,16 +19,15 @@ package net.legacyfabric.fabric.test.network.client;
 
 import java.util.Arrays;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.fabricmc.api.ClientModInitializer;
 
 import net.legacyfabric.fabric.api.client.networking.v1.C2SPlayChannelEvents;
 import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ClientNetworkingTest implements ClientModInitializer {
-	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "ClientNetworking");
 
 	@Override
 	public void onInitializeClient() {

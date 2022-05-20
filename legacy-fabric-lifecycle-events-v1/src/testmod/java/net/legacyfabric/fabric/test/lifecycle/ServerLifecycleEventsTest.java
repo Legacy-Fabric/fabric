@@ -17,9 +17,6 @@
 
 package net.legacyfabric.fabric.test.lifecycle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.entity.EntityType;
 
 import net.fabricmc.api.ModInitializer;
@@ -27,9 +24,11 @@ import net.fabricmc.api.ModInitializer;
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ServerLifecycleEventsTest implements ModInitializer {
-	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "ServerLifecycleEvents");
 
 	@Override
 	public void onInitialize() {

@@ -19,16 +19,15 @@ package net.legacyfabric.fabric.test.network;
 
 import java.util.Arrays;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.fabricmc.api.ModInitializer;
 
+import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.networking.v1.S2CPlayChannelEvents;
 import net.legacyfabric.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ServerNetworkingTest implements ModInitializer {
-	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "ServerNetworking");
 
 	@Override
 	public void onInitialize() {
