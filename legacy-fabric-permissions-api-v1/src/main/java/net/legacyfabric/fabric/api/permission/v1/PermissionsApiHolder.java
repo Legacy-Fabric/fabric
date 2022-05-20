@@ -40,7 +40,7 @@ public class PermissionsApiHolder {
 			return true;
 		}
 
-		LOGGER.error("Cannot register player permissions api with id {}. There is already a permissions api implementor!", api.getId());
+		LOGGER.error("Cannot register player permissions api with id %s. There is already a permissions api implementor!", api.getId());
 		return false;
 	}
 

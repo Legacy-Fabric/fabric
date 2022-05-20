@@ -72,7 +72,7 @@ public abstract class AbstractChanneledNetworkAddon<H> extends AbstractNetworkAd
 
 	// always supposed to handle async!
 	protected boolean handle(String channelName, PacketByteBuf originalBuf) {
-		this.logger.debug("Handling inbound packet from channel with name \"{}\"", channelName);
+		this.logger.debug("Handling inbound packet from channel with name \"%s\"", channelName);
 
 		// Handle reserved packets
 		if (NetworkingImpl.REGISTER_CHANNEL.equals(channelName)) {
@@ -96,7 +96,7 @@ public abstract class AbstractChanneledNetworkAddon<H> extends AbstractNetworkAd
 		try {
 			this.receive(handler, buf);
 		} catch (Throwable ex) {
-			this.logger.error("Encountered exception while handling in channel with name \"{}\"", channelName, ex);
+			this.logger.error("Encountered exception while handling in channel with name \"%s\"", channelName, ex);
 			throw ex;
 		}
 

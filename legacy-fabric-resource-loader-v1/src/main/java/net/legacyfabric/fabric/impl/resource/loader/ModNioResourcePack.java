@@ -158,7 +158,7 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	private Set<String> namespaceCache;
 
 	protected void warnInvalidNamespace(String s) {
-		LOGGER.warn("Fabric NioResourcePack: ignored invalid namespace: {} in mod ID {}", s, this.getFabricModMetadata().getId());
+		LOGGER.warn("Fabric NioResourcePack: ignored invalid namespace: %s in mod ID %s", s, this.getFabricModMetadata().getId());
 	}
 
 	@Override

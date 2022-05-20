@@ -20,8 +20,19 @@ package net.legacyfabric.fabric.api.logger.v1;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public interface Logger {
-	static Logger get(String context, String... args) {
-		return new LoggerImpl(context, args);
+	/**
+	 * Create a Logger implementation with provided context and subs.
+	 *
+	 * <p>Example with info: [01:06:31] [main/INFO] (FabricAPI/Test/ClientLifecycleEvents) Client started
+	 * <br>context = "FabricAPI"
+	 * <br>subs = ["Test", "ClientLifecycleEvents"]
+	 *
+	 * @param context Main logger name
+	 * @param subs Sub logger name, optional
+	 * @return a Logger implementation
+	 */
+	static Logger get(String context, String... subs) {
+		return new LoggerImpl(context, subs);
 	}
 
 	void info(String format);
