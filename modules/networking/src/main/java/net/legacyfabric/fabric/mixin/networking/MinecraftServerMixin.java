@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.class_739;
+import net.minecraft.server.class_739;
 import net.minecraft.server.MinecraftServer;
 
 import net.fabricmc.api.EnvType;
@@ -46,7 +46,7 @@ public class MinecraftServerMixin implements MinecraftServerExtensions {
 	private final Queue<FutureTask<?>> queue = Queues.newArrayDeque();
 	@Unique private Thread serverThread;
 
-	@Redirect(method = "startServerThread", at = @At(value = "INVOKE", target = "Lnet/minecraft/class_739;start()V"))
+	@Redirect(method = "startServerThread", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/class_739;start()V"))
 	public void startServerThread(class_739 class_739) {
 		this.serverThread = new class_739((MinecraftServer) (Object) this, "Server thread");
 		this.serverThread.start();
