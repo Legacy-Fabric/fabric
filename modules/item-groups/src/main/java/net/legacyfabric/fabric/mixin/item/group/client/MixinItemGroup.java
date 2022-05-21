@@ -36,18 +36,18 @@ public abstract class MixinItemGroup {
 
 	@Inject(method = "isTopRow", cancellable = true, at = @At("HEAD"))
 	private void isTopRow(CallbackInfoReturnable<Boolean> info) {
-		if (getIndex() > 10) {
-			info.setReturnValue((getIndex() - 11) % (11 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) < 3);
+		if (getIndex() > 11) {
+			info.setReturnValue((getIndex() - 11) % (11 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) < 5);
 		}
 	}
 
 	@Inject(method = "getColumn", cancellable = true, at = @At("HEAD"))
 	private void getColumn(CallbackInfoReturnable<Integer> info) {
-		if (getIndex() > 10) {
+		if (getIndex() > 15) {
 			if (isTopRow()) {
 				info.setReturnValue((getIndex() - 11) % (11 - FabricCreativeGuiComponents.COMMON_GROUPS.size()));
 			} else {
-				info.setReturnValue((getIndex() - 11) % (11 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) - 3);
+				info.setReturnValue((getIndex() - 11) % (11 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) - 5);
 			}
 		}
 	}

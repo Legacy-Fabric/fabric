@@ -27,6 +27,16 @@ public class FabricItemGroupBuilder {
 	private Identifier identifier;
 	private Item icon;
 
+	public FabricItemGroupBuilder identifier(Identifier identifier) {
+		this.identifier = identifier;
+		return this;
+	}
+
+	public FabricItemGroupBuilder icon(Item icon) {
+		this.icon = icon;
+		return this;
+	}
+
 	public ItemGroup build() {
 		((ItemGroupExtensions) ItemGroup.BUILDING_BLOCKS).fabric_expandArray();
 		int index = ItemGroup.itemGroups.length - 1;
