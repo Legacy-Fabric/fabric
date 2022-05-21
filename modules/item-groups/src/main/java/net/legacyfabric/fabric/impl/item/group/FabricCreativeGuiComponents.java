@@ -38,9 +38,9 @@ public class FabricCreativeGuiComponents {
 	}
 
 	public static class ItemGroupButtonWidget extends ButtonWidget {
-		CreativeGuiExtensions extensions;
-		CreativeInventoryScreen gui;
-		Type type;
+		public CreativeGuiExtensions extensions;
+		public CreativeInventoryScreen gui;
+		public Type type;
 
 		public ItemGroupButtonWidget(int id, int x, int y, Type type, CreativeGuiExtensions extensions) {
 			super(id, x, y, 11, 10, type.text);
@@ -53,11 +53,6 @@ public class FabricCreativeGuiComponents {
 		public void render(MinecraftClient client, int mouseX, int mouseY) {
 			super.render(client, mouseX, mouseY);
 			fill(x, y, x + 11, y + 10, (type == Type.PREVIOUS ? Color.RED : Color.GREEN).getRGB());
-		}
-
-		@Override
-		public void mouseReleased(int mouseX, int mouseY) {
-			super.mouseReleased(mouseX, mouseY);
 		}
 	}
 

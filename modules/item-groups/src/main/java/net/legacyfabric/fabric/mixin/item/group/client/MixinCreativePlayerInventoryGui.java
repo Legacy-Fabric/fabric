@@ -19,6 +19,7 @@ package net.legacyfabric.fabric.mixin.item.group.client;
 
 import net.legacyfabric.fabric.impl.item.group.CreativeGuiExtensions;
 import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -114,15 +115,27 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 
 	@Inject(method = "init", at = @At("RETURN"), remap = false)
 	private void init(CallbackInfo info) {
-		System.out.println("DEBUG!");
-
 		fabric_updateSelection();
 
-		int xpos = x + 116;
+		int xpos = x + 145;
 		int ypos = y - 10;
 
-		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(0, xpos + 11, ypos, FabricCreativeGuiComponents.Type.NEXT, this));
-		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(1, xpos, ypos, FabricCreativeGuiComponents.Type.PREVIOUS, this));
+		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(202, xpos + 10, ypos, FabricCreativeGuiComponents.Type.NEXT, this));
+		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(203, xpos, ypos, FabricCreativeGuiComponents.Type.PREVIOUS, this));
+	}
+
+	@Override
+	public void buttonClicked(ButtonWidget ibutton) {
+		if (ibutton instanceof FabricCreativeGuiComponents.ItemGroupButtonWidget) {
+			FabricCreativeGuiComponents.ItemGroupButtonWidget button = (FabricCreativeGuiComponents.ItemGroupButtonWidget) ibutton;
+			if (button.type == FabricCreativeGuiComponents.Type.PREVIOUS) {
+				fabric_previousPage();
+			} else {
+				fabric_nextPage();
+			}
+		} else {
+			super.buttonClicked(ibutton);
+		}
 	}
 
 	@Inject(method = "setSelectedTab", at = @At("HEAD"), cancellable = true)
