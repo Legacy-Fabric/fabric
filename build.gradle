@@ -73,6 +73,9 @@ def moduleDependencies(project, List<String> depNames) {
 			api it
 		}
 	}
+	if (project.name != "legacy-fabric-logger-api-v1") {
+		deps.add(project.dependencies.project(path: ":legacy-fabric-logger-api-v1", configuration: 'namedElements'));
+	}
 
 	// As we manually handle the maven artifacts, we need to also manually specify the deps.
 	project.publishing {
@@ -254,6 +257,10 @@ subprojects {
 		if (project.name != "legacy-fabric-registry-sync-api-v1") {
 			testmodRuntimeOnly project(path: ':legacy-fabric-registry-sync-api-v1', configuration: 'namedElements')
 		}
+
+		if (project.name != "legacy-fabric-logger-api-v1") {
+			api project(path: ":legacy-fabric-logger-api-v1", configuration: 'namedElements')
+		}
 	}
 
 	publishing {
@@ -279,10 +286,6 @@ subprojects {
 		// Disable the gen sources task on sub projects
 		genSourcesWithFernFlower.enabled = false
 		genSourcesWithCfr.enabled = false
-	}
-
-	if (project.name != "legacy-fabric-logger-api-v1") {
-		moduleDependencies(project, ["legacy-fabric-logger-api-v1"])
 	}
 }
 
