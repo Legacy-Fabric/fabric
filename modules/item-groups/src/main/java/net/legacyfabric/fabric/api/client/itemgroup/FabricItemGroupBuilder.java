@@ -23,9 +23,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.util.Identifier;
 
+import java.util.function.Supplier;
+
 public class FabricItemGroupBuilder {
 	private Identifier identifier;
-	private Item icon;
+	private Supplier<Item> icon;
 
 	private FabricItemGroupBuilder(Identifier identifier) {
 		this.identifier = identifier;
@@ -40,7 +42,7 @@ public class FabricItemGroupBuilder {
 		return this;
 	}
 
-	public FabricItemGroupBuilder icon(Item icon) {
+	public FabricItemGroupBuilder icon(Supplier<Item> icon) {
 		this.icon = icon;
 		return this;
 	}
@@ -51,7 +53,7 @@ public class FabricItemGroupBuilder {
 		return ItemGroup.itemGroups[index] = new ItemGroup(index, String.format("%s.%s", identifier.getNamespace(), identifier.getPath())) {
 			@Override
 			public Item getIconItem() {
-				return icon;
+				return icon.get();
 			}
 		};
 	}
