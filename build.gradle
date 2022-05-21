@@ -9,7 +9,7 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version "0.11.32" apply false
+	id 'fabric-loom' version "0.12.27" apply false
 	id 'org.cadixdev.licenser' version "0.6.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
@@ -113,11 +113,17 @@ allprojects {
 		}
 	}
 
+	publishing {
+		setupRepositories(repositories)
+	}
+
 	repositories {
 		maven { url "https://maven.legacyfabric.net/" }
 	}
 
 	loom {
+		runtimeOnlyLog4j = true
+
 		runs {
 			testmodClient {
 				client()
@@ -260,8 +266,6 @@ subprojects {
 				}
 			}
 		}
-
-		setupRepositories(repositories)
 	}
 
 	// We manually handle the pom generation
@@ -273,6 +277,10 @@ subprojects {
 		// Disable the gen sources task on sub projects
 		genSourcesWithFernFlower.enabled = false
 		genSourcesWithCfr.enabled = false
+	}
+
+	if (project.name != "legacy-fabric-logger-api-v1") {
+		moduleDependencies(project, ["legacy-fabric-logger-api-v1"])
 	}
 }
 
@@ -307,8 +315,6 @@ publishing {
 			}
 		}
 	}
-
-	setupRepositories(repositories)
 }
 
 // Required until the deprecation is removed. Fabric API's main jar that is published to maven does not contain sub modules.
@@ -402,5 +408,6 @@ task checkVersion {
 	}
 }
 
+github.mustRunAfter checkVersion
 publish.mustRunAfter checkVersion
 project.tasks.curseforge.mustRunAfter checkVersion
