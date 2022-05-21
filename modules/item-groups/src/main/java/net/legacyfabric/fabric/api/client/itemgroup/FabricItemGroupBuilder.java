@@ -27,6 +27,14 @@ public class FabricItemGroupBuilder {
 	private Identifier identifier;
 	private Item icon;
 
+	private FabricItemGroupBuilder(Identifier identifier) {
+		this.identifier = identifier;
+	}
+
+	public static FabricItemGroupBuilder create(Identifier identifier) {
+		return new FabricItemGroupBuilder(identifier);
+	}
+
 	public FabricItemGroupBuilder identifier(Identifier identifier) {
 		this.identifier = identifier;
 		return this;
