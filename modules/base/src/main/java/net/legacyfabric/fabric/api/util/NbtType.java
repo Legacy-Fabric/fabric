@@ -29,12 +29,12 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtLong;
 import net.minecraft.nbt.NbtShort;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.nbt.AbstractNumberTag;
+import net.minecraft.nbt.AbstractNbtNumber;
 
 /**
  * NBT type ID constants. Useful for filtering by value type in a few cases.
  *
- * <p>For the current list of types, check with {@link AbstractNumberTag#TYPES}.
+ * <p>For the current list of types, check with {@link AbstractNbtNumber#TYPES}.
  *
  * @see NbtCompound#contains(String, int)
  */
