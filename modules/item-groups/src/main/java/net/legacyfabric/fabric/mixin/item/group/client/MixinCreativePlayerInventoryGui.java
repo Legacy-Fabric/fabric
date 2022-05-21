@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.mixin.item.group.client;
 
 import net.legacyfabric.fabric.impl.item.group.CreativeGuiExtensions;
 import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,6 +26,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.item.itemgroup.ItemGroup;
@@ -125,16 +125,15 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 	}
 
 	@Override
-	public void buttonClicked(ButtonWidget ibutton) {
-		if (ibutton instanceof FabricCreativeGuiComponents.ItemGroupButtonWidget) {
-			FabricCreativeGuiComponents.ItemGroupButtonWidget button = (FabricCreativeGuiComponents.ItemGroupButtonWidget) ibutton;
-			if (button.type == FabricCreativeGuiComponents.Type.PREVIOUS) {
+	public void buttonClicked(ButtonWidget button) {
+		if (button instanceof FabricCreativeGuiComponents.ItemGroupButtonWidget) {
+			if (((FabricCreativeGuiComponents.ItemGroupButtonWidget) button).type == FabricCreativeGuiComponents.Type.PREVIOUS) {
 				fabric_previousPage();
 			} else {
 				fabric_nextPage();
 			}
 		} else {
-			super.buttonClicked(ibutton);
+			super.buttonClicked(button);
 		}
 	}
 

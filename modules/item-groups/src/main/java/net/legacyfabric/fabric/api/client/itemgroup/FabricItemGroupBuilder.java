@@ -17,13 +17,13 @@
 
 package net.legacyfabric.fabric.api.client.itemgroup;
 
+import java.util.function.Supplier;
+
 import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.util.Identifier;
-
-import java.util.function.Supplier;
 
 public class FabricItemGroupBuilder {
 	private Identifier identifier;
