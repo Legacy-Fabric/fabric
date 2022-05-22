@@ -17,14 +17,17 @@
 
 package net.legacyfabric.fabric.impl.item.group;
 
-import java.awt.Color; // TODO: for test
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.lwjgl.opengl.GL11;
+import net.legacyfabric.fabric.mixin.item.group.client.ScreenAccessor;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.util.Identifier;
 
@@ -51,8 +54,23 @@ public class FabricCreativeGuiComponents {
 
 		@Override
 		public void render(MinecraftClient client, int mouseX, int mouseY) {
-			super.render(client, mouseX, mouseY);
-			fill(x, y, x + 11, y + 10, (type == Type.PREVIOUS ? Color.RED : Color.GREEN).getRGB());
+			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+			this.visible = extensions.fabric_isButtonVisible(type);
+			this.active = extensions.fabric_isButtonEnabled(type);
+
+			if (this.visible) {
+				int u = active && this.isHovered() ? 22 : 0;
+				int v = active ? 0 : 10;
+
+				client.getTextureManager().bindTexture(BUTTON_TEX);
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				this.drawTexture(this.x, this.y, u + (type == Type.NEXT ? 11 : 0), v, 11, 10);
+
+				if (this.hovered) {
+					int pageCount = (int) Math.ceil((ItemGroup.itemGroups.length - COMMON_GROUPS.size()) / 9D);
+					((ScreenAccessor) gui).callRenderTooltip(I18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, pageCount), mouseX, mouseY);
+				}
+			}
 		}
 	}
 

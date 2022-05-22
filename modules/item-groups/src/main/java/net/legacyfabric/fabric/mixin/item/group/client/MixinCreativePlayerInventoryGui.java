@@ -87,7 +87,7 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 
 	@Override
 	public boolean fabric_isButtonVisible(FabricCreativeGuiComponents.Type type) {
-		return ItemGroup.itemGroups.length > 11;
+		return ItemGroup.itemGroups.length > 12;
 	}
 
 	@Override
