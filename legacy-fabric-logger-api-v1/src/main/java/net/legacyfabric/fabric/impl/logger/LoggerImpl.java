@@ -28,7 +28,7 @@ import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 
 public class LoggerImpl implements Logger {
-	public static final String API = "FabricAPI";
+	public static final String API = "LegacyFabricAPI";
 	private LogCategory category;
 
 	public LoggerImpl(String context, String... subs) {
