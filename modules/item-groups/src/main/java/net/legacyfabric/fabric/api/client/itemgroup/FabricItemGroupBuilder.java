@@ -48,7 +48,7 @@ public class FabricItemGroupBuilder {
 	}
 
 	/**
-	 * Set item stacks for display
+	 * Set item stacks for display.
 	 *
 	 * @param stacks the items to display
 	 * @return a FabricItemGroupBuilder

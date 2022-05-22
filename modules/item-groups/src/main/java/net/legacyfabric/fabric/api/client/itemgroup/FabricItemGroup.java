@@ -17,10 +17,10 @@
 
 package net.legacyfabric.fabric.api.client.itemgroup;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.itemgroup.ItemGroup;
-
-import java.util.List;
 
 public abstract class FabricItemGroup extends ItemGroup {
 	protected final List<ItemStack> stacks;
@@ -31,7 +31,7 @@ public abstract class FabricItemGroup extends ItemGroup {
 	}
 
 	/**
-	 * Add item stack for display
+	 * Add item stack for display.
 	 *
 	 * @param stack the item stack for display
 	 */
@@ -40,7 +40,8 @@ public abstract class FabricItemGroup extends ItemGroup {
 	}
 
 	/**
-	 * Remove displayed item stack
+	 * Remove displayed item stack.
+	 *
 	 * @param stack the displayed item stack
 	 * @return true if removed else false
 	 */
