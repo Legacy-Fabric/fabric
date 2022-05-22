@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "normal": { "model": "legacy-fabric-api:conc_block_11" }
+    }
+}

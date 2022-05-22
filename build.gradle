@@ -128,12 +128,16 @@ allprojects {
 		runtimeOnlyLog4j = true
 
 		runs {
+			client {
+				programArgs "--userProperties", "{}"
+			}
 			testmodClient {
 				client()
 				ideConfigGenerated project.rootProject == project
 				name = "Testmod Client"
 				source sourceSets.testmod
 				vmArgs "-Dmixin.debug.export=true"
+				programArgs "--userProperties", "{}"
 			}
 			testmodServer {
 				server()
