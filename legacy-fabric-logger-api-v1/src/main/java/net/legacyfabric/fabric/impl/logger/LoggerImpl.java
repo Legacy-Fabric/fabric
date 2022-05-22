@@ -40,8 +40,8 @@ public class LoggerImpl implements Logger {
 			Collections.addAll(parts, subs);
 
 			try {
-				this.category = LogCategory.class.getDeclaredConstructor(String[].class).newInstance(parts);
-			} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
+				this.category = (LogCategory) LogCategory.class.getConstructors()[0].newInstance(parts);
+			} catch (InvocationTargetException | InstantiationException | IllegalAccessException ex) {
 				throw new RuntimeException(ex);
 			}
 		}
