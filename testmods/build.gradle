@@ -1,9 +1,0 @@
-version = "1.0.0" // Dont change
-
-dependencies {
-	rootProject.subprojects.each {
-		if (it.name != this.name) {
-			api project(path: ":${it.name}", configuration: "namedElements")
-		}
-	}
-}

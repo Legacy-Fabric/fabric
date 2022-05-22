@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-vanilla-command-api-v1",
-  "name": "Legacy Fabric Vanilla Command API (V0)",
+  "id": "legacy-fabric-command-api-v1",
+  "name": "Legacy Fabric Command API (V1)",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
-  "icon": "assets/legacy-fabric-api/icon.png",
+  "icon": "assets/legacy-fabric/icon.png",
   "contact": {
     "homepage": "https://legacyfabric.net/",
     "issues": "https://github.com/Legacy-Fabric/fabric/issues",
@@ -17,8 +17,8 @@
     ]
   },
   "authors": [
-    "FabricMC",
-    "Legacy Fabric"
+    "Legacy-Fabric",
+    "FabricMC"
   ],
   "description": "Adds command-related hooks."
 }
