@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.mixin.client.rendering;
 
 import java.util.Map;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,8 +34,7 @@ import net.legacyfabric.fabric.impl.client.rendering.BlockEntityRendererRegistry
 @Mixin(BlockEntityRenderDispatcher.class)
 public abstract class BlockEntityRenderDispatcherMixin {
 	@Shadow
-	@Final
-	private Map<Class<? extends BlockEntity>, BlockEntityRenderer<?>> renderers;
+	private Map<Class<? extends BlockEntity>, BlockEntityRenderer> renderers;
 
 	@Inject(at = @At("RETURN"), method = "<init>")
 	private void init(CallbackInfo ci) {

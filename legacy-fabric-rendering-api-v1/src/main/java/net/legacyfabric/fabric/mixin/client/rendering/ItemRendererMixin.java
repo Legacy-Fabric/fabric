@@ -36,7 +36,7 @@ public class ItemRendererMixin {
 		BuiltinItemRendererRegistry.DynamicItemRenderer renderer = BuiltinItemRendererRegistryImpl.getRenderer(stack.getItem());
 
 		if (renderer != null) {
-			renderer.render(stack, bakedModel.getTransformation());
+			renderer.render(stack, bakedModel.method_10377());
 		} else {
 			instance.renderItem(stack);
 		}

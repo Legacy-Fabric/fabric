@@ -35,10 +35,10 @@ import net.legacyfabric.fabric.mixin.registry.sync.SimpleRegistryAccessor;
 
 public class RegistryRemapper {
 	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
-	protected final SimpleRegistry<Identifier, ?> registry;
+	protected final SimpleRegistry registry;
 	protected BiMap<Identifier, Integer> entryDump;
 
-	public RegistryRemapper(SimpleRegistry<Identifier, ?> registry) {
+	public RegistryRemapper(SimpleRegistry registry) {
 		this.registry = registry;
 	}
 
@@ -63,7 +63,8 @@ public class RegistryRemapper {
 	public void readNbt(NbtCompound tag) {
 		this.entryDump = HashBiMap.create();
 
-		for (String key : tag.getKeys()) {
+		for (Object keyObject : tag.getKeys()) {
+			String key = (String) keyObject;
 			Identifier identifier = new Identifier(key);
 			int id = tag.getInt(key);
 			this.entryDump.put(identifier, id);
@@ -73,7 +74,7 @@ public class RegistryRemapper {
 	// Type erasure, ily
 	public void remap() {
 		LOGGER.info("Remapping registry");
-		IdList newList = new IdList<>();
+		IdList newList = new IdList();
 		this.entryDump.forEach((id, rawId) -> {
 			Object value = Objects.requireNonNull(RegistryHelperImpl.getObjects(this.registry).inverse().get(id));
 			newList.set(value, rawId);

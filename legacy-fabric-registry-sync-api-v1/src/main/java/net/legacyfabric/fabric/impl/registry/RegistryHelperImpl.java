@@ -41,7 +41,8 @@ public class RegistryHelperImpl {
 		int rawId = nextId(Block.REGISTRY);
 		Block.REGISTRY.add(rawId, id, block);
 
-		for (BlockState blockState : block.getStateManager().getBlockStates()) {
+		for (Object blockStateObject : block.getStateManager().getBlockStates()) {
+			BlockState blockState = (BlockState) blockStateObject;
 			int i = rawId << 4 | block.getData(blockState);
 			Block.BLOCK_STATES.set(blockState, i);
 		}
@@ -65,7 +66,7 @@ public class RegistryHelperImpl {
 		return key.getNamespace() + "." + key.getPath();
 	}
 
-	public static int nextId(SimpleRegistry<Identifier, ?> registry) {
+	public static int nextId(SimpleRegistry registry) {
 		int id = 0;
 
 		while (getIdList(registry).fromId(id) != null) {
@@ -75,20 +76,20 @@ public class RegistryHelperImpl {
 		return id;
 	}
 
-	public static IdList<?> getIdList(SimpleRegistry<Identifier, ?> registry) {
+	public static IdList getIdList(SimpleRegistry registry) {
 		return ((SimpleRegistryAccessor) registry).getIds();
 	}
 
-	public static BiMap<?, Identifier> getObjects(SimpleRegistry<Identifier, ?> registry) {
+	public static BiMap<?, Identifier> getObjects(SimpleRegistry registry) {
 		//noinspection unchecked
 		return (BiMap<?, Identifier>) ((SimpleRegistryAccessor) registry).getObjects();
 	}
 
-	public static IdentityHashMap<?, Integer> getIdMap(IdList<?> idList) {
+	public static IdentityHashMap<?, Integer> getIdMap(IdList idList) {
 		return ((IdListAccessor) idList).getIdMap();
 	}
 
-	public static IdentityHashMap<?, Integer> getIdMap(SimpleRegistry<Identifier, ?> registry) {
+	public static IdentityHashMap<?, Integer> getIdMap(SimpleRegistry registry) {
 		return getIdMap(getIdList(registry));
 	}
 }

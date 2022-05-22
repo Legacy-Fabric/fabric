@@ -252,7 +252,7 @@ public final class ClientPlayNetworking {
 	 * @param buf         the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	public static Packet<?> createC2SPacket(String channelName, PacketByteBuf buf) {
+	public static Packet createC2SPacket(String channelName, PacketByteBuf buf) {
 		Objects.requireNonNull(channelName, "Channel name cannot be null");
 		Objects.requireNonNull(buf, "Buf cannot be null");
 
@@ -266,7 +266,7 @@ public final class ClientPlayNetworking {
 	 * @param buf       the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	public static Packet<?> createC2SPacket(Identifier channelId, PacketByteBuf buf) {
+	public static Packet createC2SPacket(Identifier channelId, PacketByteBuf buf) {
 		return createC2SPacket(channelId.toString(), buf);
 	}
 

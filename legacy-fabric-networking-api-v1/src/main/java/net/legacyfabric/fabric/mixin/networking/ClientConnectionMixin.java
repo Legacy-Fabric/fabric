@@ -51,7 +51,7 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	public abstract void disconnect(Text disconnectReason);
 
 	@Shadow
-	public abstract void send(Packet<?> arg);
+	public abstract void send(Packet arg);
 
 	@Unique
 	private Collection<String> playChannels;
@@ -74,7 +74,7 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	}
 
 	@Inject(method = "method_7401", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false))
-	private void checkPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>>[] genericFutureListeners, CallbackInfo ci) {
+	private void checkPacket(Packet packet, GenericFutureListener<? extends Future<? super Void>>[] genericFutureListeners, CallbackInfo ci) {
 		if (this.field_8432 instanceof PacketCallbackListener) {
 			((PacketCallbackListener) this.field_8432).sent(packet);
 		}

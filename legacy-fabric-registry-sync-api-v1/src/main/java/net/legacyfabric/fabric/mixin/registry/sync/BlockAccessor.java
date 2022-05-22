@@ -22,14 +22,13 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.util.collection.IdList;
 
 @Mixin(Block.class)
 public interface BlockAccessor {
 	@Mutable
 	@Accessor
-	static void setBLOCK_STATES(IdList<BlockState> BLOCK_STATES) {
+	static void setBLOCK_STATES(IdList BLOCK_STATES) {
 		throw new UnsupportedOperationException();
 	}
 }

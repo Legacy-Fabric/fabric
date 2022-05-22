@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.mixin.client.rendering;
 
 import java.util.Map;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -44,11 +43,9 @@ import net.legacyfabric.fabric.impl.client.rendering.RegistrationHelperImpl;
 @Mixin(EntityRenderDispatcher.class)
 public abstract class EntityRenderDispatcherMixin {
 	@Shadow
-	@Final
-	private Map<Class<? extends Entity>, EntityRenderer<?>> renderers;
+	private Map<Class<? extends Entity>, EntityRenderer> renderers;
 
 	@Shadow
-	@Final
 	private Map<String, PlayerEntityRenderer> modelRenderers;
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
@@ -58,7 +55,7 @@ public abstract class EntityRenderDispatcherMixin {
 		EntityRendererRegistry.INSTANCE.initialize(me, textureManager, MinecraftClient.getInstance().getResourceManager(), itemRenderer, renderers);
 
 		// Dispatch events to register feature renderers.
-		for (Map.Entry<Class<? extends Entity>, EntityRenderer<?>> entry : this.renderers.entrySet()) {
+		for (Map.Entry<Class<? extends Entity>, EntityRenderer> entry : this.renderers.entrySet()) {
 			if (entry.getValue() instanceof LivingEntityRenderer) { // Must be living for features
 				LivingEntityRendererAccessor accessor = (LivingEntityRendererAccessor) entry.getValue();
 

@@ -26,5 +26,6 @@
   },
   "mixins": [
     "legacy-fabric-registry-sync-api-v1.mixins.json"
-  ]
+  ],
+  "accessWidener": "legacy-fabric-registry-sync-api-v1.accesswidener"
 }

@@ -43,10 +43,11 @@ public class BlockRegistryRemapper extends RegistryRemapper {
 			old2new.put(oldList.getId(value), newList.getId(value));
 		}
 
-		IdList<BlockState> oldStates = Block.BLOCK_STATES;
-		IdList<BlockState> newStates = new IdList<>();
+		IdList oldStates = Block.BLOCK_STATES;
+		IdList newStates = new IdList();
 
-		for (BlockState blockState : oldStates) {
+		for (Object blockStateObject : oldStates) {
+			BlockState blockState = (BlockState) blockStateObject;
 			int id = oldStates.getId(blockState);
 			int blockId = id >> 4;
 			int stateId = id & 0xF;

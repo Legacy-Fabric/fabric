@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.api.client.rendering.v1;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.class_4801;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -69,6 +69,6 @@ public interface BuiltinItemRendererRegistry {
 		 * @param stack               the rendered item stack
 		 * @param modelTransformation the builtin item model's transformation
 		 */
-		void render(ItemStack stack, ModelTransformation modelTransformation);
+		void render(ItemStack stack, class_4801 modelTransformation);
 	}
 }

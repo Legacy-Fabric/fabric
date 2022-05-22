@@ -23,7 +23,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.command.AbstractCommand;
+import net.minecraft.command.Command;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -113,5 +116,14 @@ public class CommandWrapper extends AbstractCommand {
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Error occurred while providing auto complete hints for '%s'", String.join(" ", args)), e);
 		}
+	}
+
+	@Override
+	public int compareTo(@NotNull Object o) {
+		if (o instanceof Command) {
+			return this.compareTo((Command) o);
+		}
+
+		return o.toString().compareTo(this.getCommandName());
 	}
 }

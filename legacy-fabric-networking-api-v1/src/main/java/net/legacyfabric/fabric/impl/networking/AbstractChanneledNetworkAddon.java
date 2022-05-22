@@ -165,14 +165,14 @@ public abstract class AbstractChanneledNetworkAddon<H> extends AbstractNetworkAd
 	}
 
 	@Override
-	public void sendPacket(Packet<?> packet) {
+	public void sendPacket(Packet packet) {
 		Objects.requireNonNull(packet, "Packet cannot be null");
 
 		this.connection.send(packet);
 	}
 
 	@Override
-	public void sendPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> callback) {
+	public void sendPacket(Packet packet, GenericFutureListener<? extends Future<? super Void>> callback) {
 		Objects.requireNonNull(packet, "Packet cannot be null");
 
 		this.connection.send(packet, callback);

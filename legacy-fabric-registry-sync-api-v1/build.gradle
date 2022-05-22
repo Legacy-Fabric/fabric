@@ -4,3 +4,7 @@ moduleDependencies(project, [
 		'legacy-fabric-api-base',
 		'legacy-fabric-networking-api-v1'
 ])
+
+loom {
+	accessWidenerPath = file("src/main/resources/legacy-fabric-registry-sync-api-v1.accesswidener");
+}

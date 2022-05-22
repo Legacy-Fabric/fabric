@@ -28,7 +28,7 @@ public interface Logger {
 	 * <br>subs = ["Test", "ClientLifecycleEvents"]
 	 *
 	 * @param context Main logger name
-	 * @param subs Sub logger name, optional
+	 * @param subs    Sub logger name, optional
 	 * @return a Logger implementation
 	 */
 	static Logger get(String context, String... subs) {

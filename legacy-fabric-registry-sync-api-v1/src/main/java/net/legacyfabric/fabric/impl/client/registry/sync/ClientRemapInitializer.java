@@ -17,9 +17,6 @@
 
 package net.legacyfabric.fabric.impl.client.registry.sync;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-
 import net.minecraft.nbt.NbtCompound;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -34,13 +31,7 @@ public class ClientRemapInitializer implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ClientPlayNetworking.registerGlobalReceiver(RegistryRemapperAccess.PACKET_ID, (client, handler, buf, responseSender) -> {
-			NbtCompound nbt;
-
-			try {
-				nbt = buf.readNbtCompound();
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
-			}
+			NbtCompound nbt = buf.readNbtCompound();
 
 			client.execute(() -> {
 				((RegistryRemapperAccess) client.world).readAndRemap(nbt);

@@ -26,14 +26,14 @@ import net.minecraft.entity.LivingEntity;
 import net.legacyfabric.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 
 public final class RegistrationHelperImpl implements LivingEntityFeatureRendererRegistrationCallback.RegistrationHelper {
-	private final Function<FeatureRenderer<?>, Boolean> delegate;
+	private final Function<FeatureRenderer, Boolean> delegate;
 
-	public RegistrationHelperImpl(Function<FeatureRenderer<?>, Boolean> delegate) {
+	public RegistrationHelperImpl(Function<FeatureRenderer, Boolean> delegate) {
 		this.delegate = delegate;
 	}
 
 	@Override
-	public <T extends LivingEntity> void register(FeatureRenderer<T> featureRenderer) {
+	public <T extends LivingEntity> void register(FeatureRenderer featureRenderer) {
 		Objects.requireNonNull(featureRenderer, "Feature renderer cannot be null");
 		this.delegate.apply(featureRenderer);
 	}

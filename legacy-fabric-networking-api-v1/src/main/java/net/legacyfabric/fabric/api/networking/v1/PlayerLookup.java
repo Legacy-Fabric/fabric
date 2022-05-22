@@ -54,7 +54,7 @@ public final class PlayerLookup {
 
 		// return an immutable collection to guard against accidental removals.
 		if (server.getPlayerManager() != null) {
-			return Collections.unmodifiableCollection(server.getPlayerManager().getPlayers());
+			return Collections.unmodifiableCollection(server.getPlayerManager().players);
 		}
 
 		return Collections.emptyList();
@@ -72,7 +72,7 @@ public final class PlayerLookup {
 		Objects.requireNonNull(world, "The world cannot be null");
 
 		// return an immutable collection to guard against accidental removals.
-		return Collections.unmodifiableCollection(world.getServer().getPlayerManager().getPlayers());
+		return Collections.unmodifiableCollection(world.getServer().getPlayerManager().players);
 	}
 
 	/**

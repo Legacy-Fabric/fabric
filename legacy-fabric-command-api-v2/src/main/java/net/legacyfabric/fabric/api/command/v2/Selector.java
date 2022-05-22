@@ -41,7 +41,7 @@ public enum Selector {
 	ALL_PLAYERS('a') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return sender.getWorld().playerEntities.stream().map(e -> (Entity) e).collect(Collectors.toSet());
+			return (Set<Entity>) sender.getWorld().playerEntities.stream().map(e -> (Entity) e).collect(Collectors.toSet());
 		}
 	},
 	NEAREST_PLAYER('p') {
@@ -53,7 +53,11 @@ public enum Selector {
 	RANDOM_PLAYER('r') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers().stream().findAny().orElseThrow(NullPointerException::new));
+			try {
+				return Sets.newHashSet((Entity) MinecraftServer.getServer().getPlayerManager().players.stream().findAny().orElseThrow(NullPointerException::new));
+			} catch (Throwable e) {
+				throw new RuntimeException(e);
+			}
 		}
 	},
 	EXECUTING_ENTITY('s') {

@@ -27,5 +27,5 @@ import net.minecraft.entity.LivingEntity;
 @Mixin(LivingEntityRenderer.class)
 public interface LivingEntityRendererAccessor<T extends LivingEntity> {
 	@Invoker("addFeature")
-	boolean callAddFeature(FeatureRenderer<T> featureRenderer);
+	boolean callAddFeature(FeatureRenderer featureRenderer);
 }

@@ -35,7 +35,7 @@ public class ModelFeatureTest implements ClientModInitializer {
 	public void onInitializeClient() {
 		LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityClass, entityRenderer, registrationHelper) -> {
 			if (entityRenderer instanceof PlayerEntityRenderer) {
-				registrationHelper.register(new FeatureRenderer<LivingEntity>() {
+				registrationHelper.register(new FeatureRenderer() {
 					private final BlockState state = Blocks.DIRT.getDefaultState();
 
 					@Override

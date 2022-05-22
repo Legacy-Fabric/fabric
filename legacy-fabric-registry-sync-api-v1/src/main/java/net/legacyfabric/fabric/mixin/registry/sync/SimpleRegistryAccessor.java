@@ -30,12 +30,12 @@ import net.minecraft.util.registry.SimpleRegistry;
 @Mixin(SimpleRegistry.class)
 public interface SimpleRegistryAccessor {
 	@Accessor
-	IdList<?> getIds();
+	IdList getIds();
 
 	@Accessor
 	Map<?, Identifier> getObjects();
 
 	@Mutable
 	@Accessor
-	void setIds(IdList<?> ids);
+	void setIds(IdList ids);
 }
