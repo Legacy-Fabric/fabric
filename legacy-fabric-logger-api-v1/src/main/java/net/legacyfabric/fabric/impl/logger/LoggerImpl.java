@@ -34,7 +34,7 @@ public class LoggerImpl implements Logger {
 	public LoggerImpl(String context, String... subs) {
 		try { // Loader 0.14.3+
 			tryCreatingLogger(context, subs);
-		} catch (NoSuchMethodException e) { // Loader 0.13+
+		} catch (NoSuchMethodError e) { // Loader 0.13+
 			List<String> parts = new ArrayList<>();
 			parts.add(context);
 			Collections.addAll(parts, subs);
@@ -47,7 +47,7 @@ public class LoggerImpl implements Logger {
 		}
 	}
 
-	private void tryCreatingLogger(String context, String... subs) throws NoSuchMethodException {
+	private void tryCreatingLogger(String context, String... subs) throws NoSuchMethodError {
 		this.category = LogCategory.createCustom(context, subs);
 	}
 
