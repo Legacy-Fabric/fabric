@@ -33,20 +33,32 @@ public class FabricItemGroupBuilder {
 		this.identifier = identifier;
 	}
 
+	/**
+	 * Create a new Item Group Builder.
+	 *
+	 * @param identifier the id will become the name of the ItemGroup and will be used for the translation key
+	 * @return a FabricItemGroupBuilder
+	 */
 	public static FabricItemGroupBuilder create(Identifier identifier) {
 		return new FabricItemGroupBuilder(identifier);
 	}
 
-	public FabricItemGroupBuilder identifier(Identifier identifier) {
-		this.identifier = identifier;
+	/**
+	 * This is used to add an icon to to the item group.
+	 *
+	 * @param itemSupplier the supplier should return the item that you wish to show on the tab
+	 * @return a reference to the FabricItemGroupBuilder
+	 */
+	public FabricItemGroupBuilder icon(Supplier<Item> itemSupplier) {
+		this.icon = itemSupplier;
 		return this;
 	}
 
-	public FabricItemGroupBuilder icon(Supplier<Item> icon) {
-		this.icon = icon;
-		return this;
-	}
-
+	/**
+	 * Create an instance of the ItemGroup.
+	 *
+	 * @return An instance of the built ItemGroup
+	 */
 	public ItemGroup build() {
 		((ItemGroupExtensions) ItemGroup.BUILDING_BLOCKS).fabric_expandArray();
 		int index = ItemGroup.itemGroups.length - 1;
@@ -56,5 +68,16 @@ public class FabricItemGroupBuilder {
 				return icon.get();
 			}
 		};
+	}
+
+	/**
+	 * This is a single method that makes creating an ItemGroup with an icon one call.
+	 *
+	 * @param identifier    the id will become the name of the ItemGroup and will be used for the translation key
+	 * @param itemSupplier the supplier should return the item that you wish to show on the tab
+	 * @return An instance of the built ItemGroup
+	 */
+	public static ItemGroup build(Identifier identifier, Supplier<Item> itemSupplier) {
+		return new FabricItemGroupBuilder(identifier).icon(itemSupplier).build();
 	}
 }
