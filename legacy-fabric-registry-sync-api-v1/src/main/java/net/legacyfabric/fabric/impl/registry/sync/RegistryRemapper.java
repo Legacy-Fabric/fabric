@@ -22,19 +22,19 @@ import java.util.function.IntSupplier;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
+import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.mixin.registry.sync.SimpleRegistryAccessor;
 
 public class RegistryRemapper {
-	protected static final Logger LOGGER = LogManager.getLogger();
+	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
 	protected final SimpleRegistry<Identifier, ?> registry;
 	protected BiMap<Identifier, Integer> entryDump;
 

@@ -12,6 +12,7 @@ pluginManagement {
 rootProject.name = "legacy-fabric-api"
 
 include("legacy-fabric-api-base")
+include("legacy-fabric-logger-api-v1")
 include("legacy-fabric-command-api-v1")
 include("legacy-fabric-command-api-v2")
 include("legacy-fabric-crash-report-info-v1")

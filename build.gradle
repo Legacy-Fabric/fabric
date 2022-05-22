@@ -9,7 +9,7 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version "0.11.32" apply false
+	id 'fabric-loom' version "0.12.27" apply false
 	id 'org.cadixdev.licenser' version "0.6.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
@@ -73,6 +73,9 @@ def moduleDependencies(project, List<String> depNames) {
 			api it
 		}
 	}
+	if (project.name != "legacy-fabric-logger-api-v1") {
+		deps.add(project.dependencies.project(path: ":legacy-fabric-logger-api-v1", configuration: 'namedElements'));
+	}
 
 	// As we manually handle the maven artifacts, we need to also manually specify the deps.
 	project.publishing {
@@ -113,23 +116,31 @@ allprojects {
 		}
 	}
 
+	publishing {
+		setupRepositories(repositories)
+	}
+
 	repositories {
 		maven { url "https://maven.legacyfabric.net/" }
 	}
 
 	loom {
+		runtimeOnlyLog4j = true
+
 		runs {
 			testmodClient {
 				client()
 				ideConfigGenerated project.rootProject == project
 				name = "Testmod Client"
 				source sourceSets.testmod
+				vmArgs "-Dmixin.debug.export=true"
 			}
 			testmodServer {
 				server()
 				ideConfigGenerated project.rootProject == project
 				name = "Testmod Server"
 				source sourceSets.testmod
+				vmArgs "-Dmixin.debug.export=true"
 			}
 		}
 
@@ -246,6 +257,10 @@ subprojects {
 		if (project.name != "legacy-fabric-registry-sync-api-v1") {
 			testmodRuntimeOnly project(path: ':legacy-fabric-registry-sync-api-v1', configuration: 'namedElements')
 		}
+
+		if (project.name != "legacy-fabric-logger-api-v1") {
+			api project(path: ":legacy-fabric-logger-api-v1", configuration: 'namedElements')
+		}
 	}
 
 	publishing {
@@ -260,8 +275,6 @@ subprojects {
 				}
 			}
 		}
-
-		setupRepositories(repositories)
 	}
 
 	// We manually handle the pom generation
@@ -307,8 +320,6 @@ publishing {
 			}
 		}
 	}
-
-	setupRepositories(repositories)
 }
 
 // Required until the deprecation is removed. Fabric API's main jar that is published to maven does not contain sub modules.
@@ -402,5 +413,6 @@ task checkVersion {
 	}
 }
 
+github.mustRunAfter checkVersion
 publish.mustRunAfter checkVersion
 project.tasks.curseforge.mustRunAfter checkVersion
