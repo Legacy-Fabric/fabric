@@ -17,14 +17,13 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.ServerPlayerEntity;
 
 public class PermissionsApiHolder {
-	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "PermissionApiHolder");
 	private static PlayerPermissionsApi PLAYER_PERMISSIONS_API = null;
 
 	public static boolean setPlayerPermissionsApi(PlayerPermissionsApi api) {
