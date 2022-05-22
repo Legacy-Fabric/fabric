@@ -19,10 +19,10 @@ package net.legacyfabric.fabric.test.network.client;
 
 import java.util.Arrays;
 
+import net.fabricmc.api.ClientModInitializer;
+
 import net.legacyfabric.fabric.api.client.networking.v1.C2SPlayChannelEvents;
 import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-
-import net.fabricmc.api.ClientModInitializer;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 

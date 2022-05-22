@@ -17,10 +17,11 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
-import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.ServerPlayerEntity;
+
+import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class PermissionsApiHolder {
 	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "PermissionApiHolder");

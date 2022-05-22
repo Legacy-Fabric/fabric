@@ -19,15 +19,15 @@ package net.legacyfabric.fabric.test.resource.loader.client;
 
 import java.util.Arrays;
 
-import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
-
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.ClientModInitializer;
+
+import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
+import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ResourceReloadTest implements ClientModInitializer {
 	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "ResourceReload");
