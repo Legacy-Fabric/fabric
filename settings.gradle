@@ -35,5 +35,6 @@ addModule("server", "vanilla-commands", "legacy-fabric-vanilla-command-api-v1")
 addModule("server", "sponge-commands", "legacy-fabric-sponge-command-api-v2")
 addModule("server", "permissions", "legacy-fabric-permissions-api-v1")
 addModule("server", "gamerules", "legacy-fabric-gamerule-api-v1")
+addModule("item-groups", "legacy-fabric-item-groups-v0");
 
 include("testmods")
