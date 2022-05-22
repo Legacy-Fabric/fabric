@@ -28,7 +28,6 @@ import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ServerNetworkingTest implements ModInitializer {
 	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "ServerNetworking");
-	;
 
 	@Override
 	public void onInitialize() {
