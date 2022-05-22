@@ -8,7 +8,8 @@
       "net.legacyfabric.fabric.test.ServerLifecycleEventsTest",
       "net.legacyfabric.fabric.test.ServerNetworkingTest",
       "net.legacyfabric.fabric.test.EntityEventsTest",
-      "net.legacyfabric.fabric.test.command.SpongeCommandTest"
+      "net.legacyfabric.fabric.test.command.SpongeCommandTest",
+      "net.legacyfabric.fabric.test.ItemGroupTest"
     ],
     "client": [
       "net.legacyfabric.fabric.test.client.KeybindingTest",

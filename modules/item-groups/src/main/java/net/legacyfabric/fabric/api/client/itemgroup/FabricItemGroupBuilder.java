@@ -17,17 +17,21 @@
 
 package net.legacyfabric.fabric.api.client.itemgroup;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.util.Identifier;
 
 public class FabricItemGroupBuilder {
-	private Identifier identifier;
+	private final Identifier identifier;
 	private Supplier<Item> icon;
+	public List<ItemStack> stacks = new ArrayList<>();
 
 	private FabricItemGroupBuilder(Identifier identifier) {
 		this.identifier = identifier;
@@ -41,6 +45,17 @@ public class FabricItemGroupBuilder {
 	 */
 	public static FabricItemGroupBuilder create(Identifier identifier) {
 		return new FabricItemGroupBuilder(identifier);
+	}
+
+	/**
+	 * Set item stacks for display
+	 *
+	 * @param stacks the items to display
+	 * @return a FabricItemGroupBuilder
+	 */
+	public FabricItemGroupBuilder stacks(List<ItemStack> stacks) {
+		this.stacks = stacks;
+		return this;
 	}
 
 	/**
@@ -59,15 +74,15 @@ public class FabricItemGroupBuilder {
 	 *
 	 * @return An instance of the built ItemGroup
 	 */
-	public ItemGroup build() {
+	public FabricItemGroup build() {
 		((ItemGroupExtensions) ItemGroup.BUILDING_BLOCKS).fabric_expandArray();
 		int index = ItemGroup.itemGroups.length - 1;
-		return ItemGroup.itemGroups[index] = new ItemGroup(index, String.format("%s.%s", identifier.getNamespace(), identifier.getPath())) {
+		return (FabricItemGroup) (ItemGroup.itemGroups[index] = new FabricItemGroup(index, String.format("%s.%s", identifier.getNamespace(), identifier.getPath()), stacks) {
 			@Override
 			public Item getIconItem() {
 				return icon.get();
 			}
-		};
+		});
 	}
 
 	/**
@@ -77,7 +92,7 @@ public class FabricItemGroupBuilder {
 	 * @param itemSupplier the supplier should return the item that you wish to show on the tab
 	 * @return An instance of the built ItemGroup
 	 */
-	public static ItemGroup build(Identifier identifier, Supplier<Item> itemSupplier) {
+	public static FabricItemGroup build(Identifier identifier, Supplier<Item> itemSupplier) {
 		return new FabricItemGroupBuilder(identifier).icon(itemSupplier).build();
 	}
 }
