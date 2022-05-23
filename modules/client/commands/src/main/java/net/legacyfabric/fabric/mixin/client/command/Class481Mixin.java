@@ -1,7 +1,29 @@
-package net.legacyfabric.fabric.mixin.client.commands;
+/*
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import net.legacyfabric.fabric.api.client.commands.FabricClientCommandManager;
-import net.legacyfabric.fabric.api.client.commands.FabricClientCommandSource;
+package net.legacyfabric.fabric.mixin.client.command;
+
+import net.legacyfabric.fabric.api.client.command.FabricClientCommandManager;
+import net.legacyfabric.fabric.api.client.command.FabricClientCommandSource;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Session;
 import net.minecraft.client.world.ClientWorld;
@@ -12,10 +34,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(class_481.class)
 public class Class481Mixin extends ClientPlayerEntity {
@@ -27,6 +45,7 @@ public class Class481Mixin extends ClientPlayerEntity {
 	private void method_1262(String str, CallbackInfo ci) {
 		if (str.startsWith(FabricClientCommandManager.INSTANCE.PREFIX)) {
 			String cmd = str.substring(FabricClientCommandManager.INSTANCE.PREFIX.length()).split(" ")[0];
+
 			if (FabricClientCommandManager.INSTANCE.getCommandMap().containsKey(cmd)) {
 				Command command = ((Command) FabricClientCommandManager.INSTANCE.getCommandMap().get(cmd));
 				FabricClientCommandManager.INSTANCE.execute(new FabricClientCommandSource() {

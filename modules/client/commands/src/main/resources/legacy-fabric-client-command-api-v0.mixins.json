@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "net.legacyfabric.fabric.mixin.client.commands",
+  "package": "net.legacyfabric.fabric.mixin.client.command",
   "compatibilityLevel": "JAVA_8",
   "client": [
     "Class481Mixin"

@@ -1,15 +1,38 @@
-package net.legacyfabric.fabric.api.client.commands;
+/*
+ * Copyright (c) 2020 - 2021 Legacy Fabric
+ * Copyright (c) 2016 - 2021 FabricMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import net.legacyfabric.fabric.impl.client.commands.ClientHelpCommand;
-import net.legacyfabric.fabric.impl.client.commands.ClientSetPrefixCommand;
-import net.minecraft.command.*;
+package net.legacyfabric.fabric.api.client.command;
+
+import net.legacyfabric.fabric.impl.client.command.ClientHelpCommand;
+import net.legacyfabric.fabric.impl.client.command.ClientSetPrefixCommand;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.minecraft.command.Command;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.CommandProvider;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.NotFoundException;
+import net.minecraft.command.IncorrectUsageException;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.command.CommandRegistry;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.PlayerSelector;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class FabricClientCommandManager extends CommandRegistry implements CommandProvider {
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -23,18 +46,20 @@ public class FabricClientCommandManager extends CommandRegistry implements Comma
 
 	@Override
 	public void run(CommandSource sender, Command command, int permissionLevel, String label, Object... args) {
-		TranslatableText var7 = new TranslatableText("chat.type.admin", sender.getTranslationKey(), new TranslatableText(label, args));
-		var7.getStyle().setFormatting(Formatting.GRAY);
-		var7.getStyle().setItalic(true);
+		TranslatableText text = new TranslatableText("chat.type.admin", sender.getTranslationKey(), new TranslatableText(label, args));
+		text.getStyle().setFormatting(Formatting.GRAY);
+		text.getStyle().setItalic(true);
+
 		if (sender instanceof FabricClientCommandSource) {
-			sender.sendMessage(var7);
+			sender.sendMessage(text);
 		} else {
-			LOGGER.error("Warning! Client command manager detect invalid run function call! Text: {}", var7.asString());
+			LOGGER.error("Warning! Client command manager detect invalid run function call! Text: {}", text.asString());
 		}
 	}
 
 	public int execute(FabricClientCommandSource source, String name) {
 		name = name.trim();
+
 		if (name.startsWith(INSTANCE.PREFIX)) {
 			name = name.substring(INSTANCE.PREFIX.length());
 		}
@@ -46,7 +71,6 @@ public class FabricClientCommandManager extends CommandRegistry implements Comma
 		int var6 = this.method_4642(var5, var3);
 		int var7 = 0;
 
-		TranslatableText var9;
 		try {
 			if (var5 == null) {
 				throw new NotFoundException();
@@ -59,7 +83,7 @@ public class FabricClientCommandManager extends CommandRegistry implements Comma
 					ServerPlayerEntity[] var10 = var8;
 					int var11 = var8.length;
 
-					for(int var12 = 0; var12 < var11; ++var12) {
+					for (int var12 = 0; var12 < var11; ++var12) {
 						ServerPlayerEntity var13 = var10[var12];
 						var3[var6] = var13.getTranslationKey();
 
@@ -79,9 +103,9 @@ public class FabricClientCommandManager extends CommandRegistry implements Comma
 						var5.execute(source, var3);
 						++var7;
 					} catch (CommandException var16) {
-						var9 = new TranslatableText(var16.getMessage(), var16.getArgs());
-						var9.getStyle().setFormatting(Formatting.RED);
-						source.sendMessage(var9);
+						TranslatableText err = new TranslatableText(var16.getMessage(), var16.getArgs());
+						err.getStyle().setFormatting(Formatting.RED);
+						source.sendMessage(err);
 					}
 				}
 			} else {
@@ -90,17 +114,17 @@ public class FabricClientCommandManager extends CommandRegistry implements Comma
 				source.sendMessage(var21);
 			}
 		} catch (IncorrectUsageException var18) {
-			var9 = new TranslatableText("commands.generic.usage", new Object[]{new TranslatableText(var18.getMessage(), var18.getArgs())});
-			var9.getStyle().setFormatting(Formatting.RED);
-			source.sendMessage(var9);
+			TranslatableText err = new TranslatableText("commands.generic.usage", new Object[]{new TranslatableText(var18.getMessage(), var18.getArgs())});
+			err.getStyle().setFormatting(Formatting.RED);
+			source.sendMessage(err);
 		} catch (CommandException var19) {
-			var9 = new TranslatableText(var19.getMessage(), var19.getArgs());
-			var9.getStyle().setFormatting(Formatting.RED);
-			source.sendMessage(var9);
+			TranslatableText err = new TranslatableText(var19.getMessage(), var19.getArgs());
+			err.getStyle().setFormatting(Formatting.RED);
+			source.sendMessage(err);
 		} catch (Throwable var20) {
-			var9 = new TranslatableText("commands.generic.exception", new Object[0]);
-			var9.getStyle().setFormatting(Formatting.RED);
-			source.sendMessage(var9);
+			TranslatableText err = new TranslatableText("commands.generic.exception", new Object[0]);
+			err.getStyle().setFormatting(Formatting.RED);
+			source.sendMessage(err);
 			LOGGER.error("Couldn't process command: '" + name + "'", var20);
 		}
 
@@ -110,7 +134,7 @@ public class FabricClientCommandManager extends CommandRegistry implements Comma
 	private static String[] method_3104(String[] strings) {
 		String[] var1 = new String[strings.length - 1];
 
-		for(int var2 = 1; var2 < strings.length; ++var2) {
+		for (int var2 = 1; var2 < strings.length; ++var2) {
 			var1[var2 - 1] = strings[var2];
 		}
 
@@ -121,9 +145,9 @@ public class FabricClientCommandManager extends CommandRegistry implements Comma
 		if (command == null) {
 			return -1;
 		} else {
-			for(int var3 = 0; var3 < args.length; ++var3) {
-				if (command.isUsernameAtIndex(args, var3) && PlayerSelector.method_4088(args[var3])) {
-					return var3;
+			for (int i = 0; i < args.length; ++i) {
+				if (command.isUsernameAtIndex(args, i) && PlayerSelector.method_4088(args[i])) {
+					return i;
 				}
 			}
 
