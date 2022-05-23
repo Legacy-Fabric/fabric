@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.client.commands",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "Class481Mixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
