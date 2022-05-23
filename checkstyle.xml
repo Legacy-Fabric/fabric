@@ -42,7 +42,6 @@
         if <something> is a space, indicating a formatting error or ' */', it'll ignore the instance
         if <something> is a tab, indicating a continued line, it'll ignore the instance
         <control statement> is 'if', 'do', 'while', 'for', 'try' or nothing (instance initializer block)
-
         - first \n: with positive lookbehind (?<=\n) to move the error marker to a more reasonable place
         - capture tabs for <indentation>, later referenced via \1
         - remaining preceding line as a non-comment (doesn't start with '/', '//', ' ' or '\t') or multiple lines where all but the first are a single line comment with the same indentation
@@ -163,7 +162,6 @@
             + module name subpackage, singular, may contain multiple .-separated parts
             + api only: module major version with v prefix (e.g. v1)
             + other subpackages as needed, all singular
-
             The regex works as follows:
             It matches (=succeeds) for one of these cases:
             - net.fabricmc.fabric.api.client.<module-name>.v<version>[.<extra packages...>]
@@ -177,7 +175,6 @@
             and <version> is a positive integer (1, 2, 3, ...)
             and <extra packages...> is a set of '.'-separated words with all the first potentially containing digits.
             Negative lookahead ensures that client/server can't be replaced with common disguised as the module name.
-
             The regex is implemented in 3 parts:
             - the net.fabricmc.fabric. prefix
             - patterns for

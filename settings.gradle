@@ -11,29 +11,15 @@ pluginManagement {
 
 rootProject.name = "legacy-fabric-api"
 
-def addModule(String dir, String name) {
-	include(dir)
-	project(":$dir").projectDir = new File("${rootDir.path}/modules/$dir")
-	project(":$dir").name = name
-}
-
-def addModule(String dir, String subdir, String name) {
-	include(dir)
-	project(":$dir").projectDir = new File("${rootDir.path}/modules/$dir/$subdir")
-	project(":$dir").name = name
-}
-
-addModule("base", "legacy-fabric-api-base")
-addModule("resources", "legacy-fabric-resource-loader-v1")
-addModule("client", "rendering", "legacy-fabric-rendering-api-v1")
-addModule("client", "keybindings", "legacy-fabric-keybinding-api-v1")
-addModule("networking", "legacy-fabric-networking-api-v1")
-addModule("crash-report-info", "legacy-fabric-crash-report-info-v1")
-addModule("lifecycle-events", "legacy-fabric-lifecycle-events-v1")
-addModule("entity-events", "legacy-fabric-entity-events-v1")
-addModule("server", "vanilla-commands", "legacy-fabric-vanilla-command-api-v1")
-addModule("server", "sponge-commands", "legacy-fabric-sponge-command-api-v2")
-addModule("server", "permissions", "legacy-fabric-permissions-api-v1")
-addModule("server", "gamerules", "legacy-fabric-gamerule-api-v1")
-
-include("testmods")
+include("legacy-fabric-api-base")
+include("legacy-fabric-command-api-v1")
+include("legacy-fabric-command-api-v2")
+include("legacy-fabric-crash-report-info-v1")
+include("legacy-fabric-entity-events-v1")
+include("legacy-fabric-gamerule-api-v1")
+include("legacy-fabric-keybindings-api-v1")
+include("legacy-fabric-lifecycle-events-v1")
+include("legacy-fabric-networking-api-v1")
+include("legacy-fabric-permissions-api-v1")
+include("legacy-fabric-rendering-api-v1")
+include("legacy-fabric-resource-loader-v1")

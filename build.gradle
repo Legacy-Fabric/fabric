@@ -1,43 +1,51 @@
+buildscript {
+	dependencies {
+		classpath 'org.kohsuke:github-api:1.135'
+	}
+}
+
 plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version '0.12-SNAPSHOT' apply false
+	id 'fabric-loom' version "0.12.27" apply false
 	id 'org.cadixdev.licenser' version "0.6.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
 	id 'signing'
 }
+
 def ENV = System.getenv()
 
 setVersion("${project.base_version}+${project.mc_version}")
 logger.lifecycle("Building Fabric: " + version)
 
+
 import org.apache.commons.codec.digest.DigestUtils
+
 
 def getSubprojectVersion(project, version) {
 	if (grgit == null) {
 		return version + "+nogit"
 	}
-	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath() as java.nio.file.Path).toString()], maxCommits: 1)
+	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath()).toString()], maxCommits: 1)
 	if (latestCommits.isEmpty()) {
 		return version + "+uncommited"
 	} else {
-		return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex("${project.mc_version}").substring(0, 2)
+		return version + "+" + latestCommits.get(0).id.substring(0, 8) +
+				DigestUtils.sha256Hex("${project.mc_version}").substring(0, 2)
 	}
 }
 
 def getBranch() {
 	if (System.getenv().GIT_BRANCH) {
-		def branch = System.getenv().GITHUB_REF
+		def branch = System.getenv().GIT_BRANCH
 		return branch.substring(branch.lastIndexOf("/") + 1)
 	}
-
 	if (grgit == null) {
 		return "unknown"
 	}
-
 	def branch = grgit.branch.current().name
 	return branch.substring(branch.lastIndexOf("/") + 1)
 }
@@ -98,25 +106,53 @@ allprojects {
 
 	group = "net.legacyfabric.legacy-fabric-api"
 
-	repositories {
-		maven {
-			name = "Legacy Fabric"
-			url = "https://maven.legacyfabric.net"
+	sourceSets {
+		testmod {
+			compileClasspath += main.compileClasspath
+			runtimeClasspath += main.runtimeClasspath
 		}
 	}
 
+	publishing {
+		setupRepositories(repositories)
+	}
+
+	repositories {
+		maven { url "https://maven.legacyfabric.net/" }
+	}
+
 	loom {
+		runtimeOnlyLog4j = true
+
+		runs {
+			testmodClient {
+				client()
+				ideConfigGenerated project.rootProject == project
+				name = "Testmod Client"
+				source sourceSets.testmod
+				vmArgs "-Dmixin.debug.export=true"
+			}
+			testmodServer {
+				server()
+				ideConfigGenerated project.rootProject == project
+				name = "Testmod Server"
+				source sourceSets.testmod
+				vmArgs "-Dmixin.debug.export=true"
+			}
+		}
+
 		shareRemapCaches = true
 
 		setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar');
-		customMinecraftManifest.set("https://meta.legacyfabric.net/v2/manifest/${mc_version}")
 	}
 
 	dependencies {
-		minecraft "com.mojang:minecraft:${project.mc_version}"
+		minecraft("com.mojang:minecraft:${project.mc_version}")
+		mappings("net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2")
+		modApi("net.fabricmc:fabric-loader:${project.loader_version}")
+		modApi("net.legacyfabric.legacy-fabric-api:legacy-fabric-logger-api-v1:1.0.3+509c77a039")
 
-		mappings "net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2"
-		modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
+		implementation 'com.mojang:brigadier:1.0.17'
 
 		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
 			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
@@ -138,10 +174,10 @@ allprojects {
 	}
 
 	processResources {
-		inputs.property "version", project.base_version
+		inputs.property "version", project.version
 
 		filesMatching("fabric.mod.json") {
-			expand "version": project.base_version
+			expand "version": project.version
 		}
 	}
 
@@ -158,16 +194,16 @@ allprojects {
 
 	checkstyle {
 		configFile = rootProject.file("checkstyle.xml")
-		toolVersion = '9.1'
-	}
-
-	tasks.withType(Checkstyle) {
-		exclude '**/net/legacyfabric/fabric/test/**'
+		toolVersion = "9.1"
 	}
 
 	tasks.withType(AbstractArchiveTask) {
 		preserveFileTimestamps = false
 		reproducibleFileOrder = true
+	}
+
+	tasks.withType(GenerateModuleMetadata) {
+		enabled = false
 	}
 }
 
@@ -208,32 +244,37 @@ task javadocJar(type: Jar) {
 build.dependsOn javadocJar
 
 subprojects {
-	if (project.name != project.testmods_project) {
-		publishing {
-			publications {
-				mavenJava(MavenPublication) {
-					afterEvaluate {
-						artifact(remapJar) {
-							builtBy remapJar
-						}
+	dependencies {
+		testmodImplementation sourceSets.main.output
 
-						artifact(remapSourcesJar) {
-							builtBy remapSourcesJar
-						}
-					}
+		if (project.name != "legacy-fabric-resource-loader-v1") {
+			testmodImplementation project(path: ':legacy-fabric-resource-loader-v1', configuration: 'namedElements')
+		}
+	}
+
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				artifact(remapJar) {
+					builtBy(remapJar)
+				}
+
+				artifact(remapSourcesJar) {
+					builtBy remapSourcesJar
 				}
 			}
-
-			setupRepositories(repositories)
 		}
+	}
 
-		javadoc.enabled = false
+	// We manually handle the pom generation
+	loom.disableDeprecatedPomGeneration(publishing.publications.mavenJava)
 
-		afterEvaluate {
-			// Disable the gen sources task on sub projects
-			genSourcesWithFernFlower.enabled = false
-			genSourcesWithCfr.enabled = false
-		}
+	javadoc.enabled = false
+
+	afterEvaluate {
+		// Disable the gen sources task on sub projects
+		genSourcesWithFernFlower.enabled = false
+		genSourcesWithCfr.enabled = false
 	}
 }
 
@@ -250,7 +291,6 @@ publishing {
 			artifact(remapMavenJar) {
 				builtBy remapMavenJar
 			}
-
 			artifact(sourcesJar) {
 				builtBy remapSourcesJar
 			}
@@ -260,40 +300,43 @@ publishing {
 			pom.withXml {
 				def depsNode = asNode().appendNode("dependencies")
 				subprojects.each {
-					if (it.name != project.testmods_project) {
-						def depNode = depsNode.appendNode("dependency")
-						depNode.appendNode("groupId", it.group)
-						depNode.appendNode("artifactId", it.name)
-						depNode.appendNode("version", it.version)
-						depNode.appendNode("scope", "compile")
-					}
+					def depNode = depsNode.appendNode("dependency")
+					depNode.appendNode("groupId", it.group)
+					depNode.appendNode("artifactId", it.name)
+					depNode.appendNode("version", it.version)
+					depNode.appendNode("scope", "compile")
 				}
 			}
 		}
 	}
-
-	setupRepositories(repositories)
 }
+
+// Required until the deprecation is removed. Fabric API's main jar that is published to maven does not contain sub modules.
+loom.disableDeprecatedPomGeneration(publishing.publications.mavenJava)
 
 task licenseFormatAll
 subprojects { p -> licenseFormatAll.dependsOn("${p.path}:licenseFormat") }
 subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
 
+sourceSets {
+	testmod
+}
+
 dependencies {
 	afterEvaluate {
 		subprojects.each {
-			if (it.name != project.testmods_project) {
-				api project(path: ":${it.name}", configuration: "namedElements")
-			}
+			api project(path: ":${it.name}", configuration: "namedElements")
+
+			testmodImplementation project("${it.name}:").sourceSets.testmod.output
 		}
 	}
+
+	include("net.legacyfabric.legacy-fabric-api:legacy-fabric-logger-api-v1:1.0.3+509c77a039");
 }
 
 remapJar {
 	afterEvaluate {
 		subprojects.each {
-			if (it.name == project.testmods_project) return
-
 			// Include the signed or none signed jar from the sub project.
 			nestedJars.from project("${it.name}:").tasks.getByName("remapJar")
 		}
@@ -308,13 +351,15 @@ curseforge {
 	}
 	project {
 		id = '400281'
-		changelog = 'https://github.com/Legacy-Fabric/fabric/commits/'
+		changelog = 'A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits'
 		releaseType = 'beta'
 		addGameVersion '1.12.2'
 		addGameVersion 'Fabric'
-		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${project.version}.jar")) {
+
+		mainArtifact(remapJar) {
 			displayName = "[${project.mc_version}] Legacy Fabric API ${project.base_version}"
 		}
+
 		afterEvaluate {
 			uploadTask.dependsOn("remapJar")
 		}
@@ -323,3 +368,42 @@ curseforge {
 		forgeGradleIntegration = false
 	}
 }
+
+import org.kohsuke.github.GHReleaseBuilder
+import org.kohsuke.github.GitHub
+
+task github(dependsOn: remapJar) {
+	onlyIf {
+		ENV.GITHUB_TOKEN
+	}
+
+	doLast {
+		def github = GitHub.connectUsingOAuth(ENV.GITHUB_TOKEN as String)
+		def repository = github.getRepository(ENV.GITHUB_REPOSITORY)
+
+		def releaseBuilder = new GHReleaseBuilder(repository, version as String)
+		releaseBuilder.name("[$project.minecraft_version] Legacy Fabric API $project.version")
+		releaseBuilder.body(ENV.CHANGELOG ?: "No changelog provided")
+		releaseBuilder.commitish(getBranch())
+		releaseBuilder.prerelease(false)
+
+		def ghRelease = releaseBuilder.create()
+		ghRelease.uploadAsset(remapJar.archiveFile.get().getAsFile(), "application/java-archive");
+	}
+}
+
+// A task to ensure that the version being released has not already been released.
+task checkVersion {
+	doFirst {
+		def xml = new URL("https://maven.legacyfabric.net/net/legacyfabric/legacy-fabric-api/legacy-fabric-api/maven-metadata.xml").text
+		def metadata = new XmlSlurper().parseText(xml)
+		def versions = metadata.versioning.versions.version*.text();
+		if (versions.contains(version)) {
+			throw new RuntimeException("${version} has already been released!")
+		}
+	}
+}
+
+github.mustRunAfter checkVersion
+publish.mustRunAfter checkVersion
+project.tasks.curseforge.mustRunAfter checkVersion
