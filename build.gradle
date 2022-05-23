@@ -151,7 +151,6 @@ allprojects {
 		shareRemapCaches = true
 
 		setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar');
-		customMinecraftManifest.set("https://meta.legacyfabric.net/v2/manifest/${project.mc_version}")
 	}
 
 	dependencies {
