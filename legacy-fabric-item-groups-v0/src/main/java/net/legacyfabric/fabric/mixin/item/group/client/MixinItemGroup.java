@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.item.group.client;
 
-import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,6 +24,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.item.itemgroup.ItemGroup;
+
+import net.legacyfabric.fabric.impl.itemgroup.FabricCreativeGuiComponents;
 
 @Mixin(ItemGroup.class)
 public abstract class MixinItemGroup {

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.item.group;
+package net.legacyfabric.fabric.impl.itemgroup;
 
 import java.util.HashSet;
 import java.util.Set;

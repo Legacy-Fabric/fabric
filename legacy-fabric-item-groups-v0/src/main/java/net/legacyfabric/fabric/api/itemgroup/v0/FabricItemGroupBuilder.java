@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.item.group.v0;
+package net.legacyfabric.fabric.api.itemgroup.v0;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.util.Identifier;
 
-import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
+import net.legacyfabric.fabric.impl.itemgroup.ItemGroupExtensions;
 
 public class FabricItemGroupBuilder {
 	private final Identifier identifier;
@@ -88,7 +88,7 @@ public class FabricItemGroupBuilder {
 	/**
 	 * This is a single method that makes creating an ItemGroup with an icon one call.
 	 *
-	 * @param identifier    the id will become the name of the ItemGroup and will be used for the translation key
+	 * @param identifier   the id will become the name of the ItemGroup and will be used for the translation key
 	 * @param itemSupplier the supplier should return the item that you wish to show on the tab
 	 * @return An instance of the built ItemGroup
 	 */

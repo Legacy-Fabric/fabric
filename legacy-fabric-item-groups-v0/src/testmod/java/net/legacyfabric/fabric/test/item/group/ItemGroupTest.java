@@ -17,18 +17,19 @@
 
 package net.legacyfabric.fabric.test.item.group;
 
-import net.fabricmc.api.ModInitializer;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
-import net.legacyfabric.fabric.api.item.group.v0.FabricItemGroup;
-import net.legacyfabric.fabric.api.item.group.v0.FabricItemGroupBuilder;
+import net.fabricmc.api.ModInitializer;
+
+import net.legacyfabric.fabric.api.itemgroup.v0.FabricItemGroup;
+import net.legacyfabric.fabric.api.itemgroup.v0.FabricItemGroupBuilder;
 
 public class ItemGroupTest implements ModInitializer {
-	public static final FabricItemGroup GROUP = FabricItemGroupBuilder.build(new Identifier("dmn", "testgroup"), () -> Items.POTATO);;
+	public static final FabricItemGroup GROUP = FabricItemGroupBuilder.build(new Identifier("dmn", "testgroup"), () -> Items.POTATO);
 
 	@Override
 	public void onInitialize() {
