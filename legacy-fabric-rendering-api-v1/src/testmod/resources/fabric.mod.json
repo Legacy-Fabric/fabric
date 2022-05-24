@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-rendering-api-v1-testmod",
+  "description": "Testmod for rendering api",
+  "version": "1.0.0",
+  "entrypoints": {
+    "client": [
+      "net.legacyfabric.fabric.test.rendering.client.RenderingEventsTest"
+    ]
+  }
+}
