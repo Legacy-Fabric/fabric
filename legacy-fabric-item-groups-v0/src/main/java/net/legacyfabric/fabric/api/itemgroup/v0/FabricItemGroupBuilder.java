@@ -59,7 +59,7 @@ public class FabricItemGroupBuilder {
 	}
 
 	/**
-	 * This is used to add an icon to to the item group.
+	 * This is used to add an icon to the item group.
 	 *
 	 * @param itemSupplier the supplier should return the item that you wish to show on the tab
 	 * @return a reference to the FabricItemGroupBuilder
