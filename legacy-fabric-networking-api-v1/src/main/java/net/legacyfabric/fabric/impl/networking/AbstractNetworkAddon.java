@@ -26,8 +26,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.legacyfabric.fabric.api.logger.v1.Logger;
 
 /**
  * A network addon is a simple abstraction to hold information about a player's registered channels.
@@ -45,7 +44,7 @@ public abstract class AbstractNetworkAddon<H> {
 
 	protected AbstractNetworkAddon(GlobalReceiverRegistry<H> receiver, String description) {
 		this.receiver = receiver;
-		this.logger = LogManager.getLogger(description);
+		this.logger = Logger.get(description);
 	}
 
 	public H getHandler(String channel) {

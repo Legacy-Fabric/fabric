@@ -17,17 +17,15 @@
 
 package net.legacyfabric.fabric.test.lifecycle.client;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.fabricmc.api.ClientModInitializer;
 
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.legacyfabric.fabric.api.logger.v1.Logger;
 
 public class ClientLifecycleEventsTest implements ClientModInitializer {
-	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Logger LOGGER = Logger.get("Fabric", "Test", "ClientLifecycleEventsTest");
 
 	@Override
 	public void onInitializeClient() {
