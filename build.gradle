@@ -73,9 +73,6 @@ def moduleDependencies(project, List<String> depNames) {
 			api it
 		}
 	}
-	if (project.name != "legacy-fabric-logger-api-v1") {
-		deps.add(project.dependencies.project(path: ":legacy-fabric-logger-api-v1", configuration: 'namedElements'));
-	}
 
 	// As we manually handle the maven artifacts, we need to also manually specify the deps.
 	project.publishing {
@@ -157,6 +154,7 @@ allprojects {
 		minecraft("com.mojang:minecraft:${project.mc_version}")
 		mappings("net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2")
 		modApi("net.fabricmc:fabric-loader:${project.loader_version}")
+		modApi("net.legacyfabric.legacy-fabric-api:legacy-fabric-logger-api-v1:1.0.3+509c77a039")
 
 		implementation 'com.mojang:brigadier:1.0.17'
 
@@ -260,10 +258,6 @@ subprojects {
 		if (project.name != "legacy-fabric-registry-sync-api-v1") {
 			testmodRuntimeOnly project(path: ':legacy-fabric-registry-sync-api-v1', configuration: 'namedElements')
 		}
-
-		if (project.name != "legacy-fabric-logger-api-v1") {
-			api project(path: ":legacy-fabric-logger-api-v1", configuration: 'namedElements')
-		}
 	}
 
 	publishing {
@@ -344,6 +338,8 @@ dependencies {
 			testmodImplementation project("${it.name}:").sourceSets.testmod.output
 		}
 	}
+
+	include("net.legacyfabric.legacy-fabric-api:legacy-fabric-logger-api-v1:1.0.3+509c77a039");
 }
 
 remapJar {
