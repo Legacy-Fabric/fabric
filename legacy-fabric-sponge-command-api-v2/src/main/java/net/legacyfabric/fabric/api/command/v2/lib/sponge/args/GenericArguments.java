@@ -25,8 +25,34 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.args;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.URL;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Collection;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
+
+import net.fabricmc.loader.api.ModContainer;
+
 import net.legacyfabric.fabric.api.command.v2.StringType;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.util.TriState;
@@ -58,31 +84,6 @@ import net.legacyfabric.fabric.impl.command.lib.sponge.args.UrlElement;
 import net.legacyfabric.fabric.impl.command.lib.sponge.args.UuidElement;
 import net.legacyfabric.fabric.impl.command.lib.sponge.args.Vec3dCommandElement;
 import net.legacyfabric.fabric.impl.command.lib.sponge.args.WithSuggestionsElement;
-import org.jetbrains.annotations.Nullable;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.URL;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
-
-import net.fabricmc.loader.api.ModContainer;
 
 /**
  * Class containing factory methods for common command elements.

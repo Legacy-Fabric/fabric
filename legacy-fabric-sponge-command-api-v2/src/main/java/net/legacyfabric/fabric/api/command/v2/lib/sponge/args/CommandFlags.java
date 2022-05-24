@@ -25,10 +25,6 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.args;
 
-import com.google.common.collect.ImmutableList;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,8 +35,13 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public final class CommandFlags extends CommandElement {
 	@Nullable

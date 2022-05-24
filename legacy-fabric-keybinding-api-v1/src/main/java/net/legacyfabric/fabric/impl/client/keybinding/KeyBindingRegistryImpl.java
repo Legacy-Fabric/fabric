@@ -17,9 +17,9 @@
 
 package net.legacyfabric.fabric.impl.client.keybinding;
 
-import com.google.common.collect.Lists;
-
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 import net.minecraft.client.options.KeyBinding;
 

@@ -17,11 +17,15 @@
 
 package net.legacyfabric.fabric.mixin.networking;
 
+import java.util.Queue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
-import net.legacyfabric.fabric.impl.networking.server.MinecraftServerExtensions;
 import org.apache.commons.lang3.Validate;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,16 +33,13 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.Queue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
-
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.class_739;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import net.legacyfabric.fabric.impl.networking.server.MinecraftServerExtensions;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin implements MinecraftServerExtensions {

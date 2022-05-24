@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.api.client.itemgroup;
 
-import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -27,6 +25,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.util.Identifier;
+
+import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 
 public class FabricItemGroupBuilder {
 	private final Identifier identifier;

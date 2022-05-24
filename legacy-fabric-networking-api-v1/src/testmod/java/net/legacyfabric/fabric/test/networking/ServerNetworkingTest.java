@@ -17,14 +17,15 @@
 
 package net.legacyfabric.fabric.test.networking;
 
-import net.legacyfabric.fabric.api.networking.v1.S2CPlayChannelEvents;
-import net.legacyfabric.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import java.util.Arrays;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
-
 import net.fabricmc.api.ModInitializer;
+
+import net.legacyfabric.fabric.api.networking.v1.S2CPlayChannelEvents;
+import net.legacyfabric.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 public class ServerNetworkingTest implements ModInitializer {
 	private static final Logger LOGGER = LogManager.getLogger();

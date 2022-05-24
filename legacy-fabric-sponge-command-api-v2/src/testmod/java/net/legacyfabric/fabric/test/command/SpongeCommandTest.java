@@ -17,9 +17,9 @@
 
 package net.legacyfabric.fabric.test.command;
 
-import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
-
 import net.fabricmc.api.ModInitializer;
+
+import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
 
 public class SpongeCommandTest implements ModInitializer {
 	@Override

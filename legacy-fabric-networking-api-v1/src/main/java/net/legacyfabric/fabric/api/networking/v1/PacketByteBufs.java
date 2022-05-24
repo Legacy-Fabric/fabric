@@ -17,10 +17,10 @@
 
 package net.legacyfabric.fabric.api.networking.v1;
 
+import java.util.Objects;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-
-import java.util.Objects;
 
 import net.minecraft.util.PacketByteBuf;
 

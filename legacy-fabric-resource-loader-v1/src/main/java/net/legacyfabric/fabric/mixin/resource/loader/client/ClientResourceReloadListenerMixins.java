@@ -17,13 +17,11 @@
 
 package net.legacyfabric.fabric.mixin.resource.loader.client;
 
-import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.legacyfabric.fabric.api.resource.ResourceReloadListenerKeys;
-import org.spongepowered.asm.mixin.Mixin;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
+
+import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.GameRenderer;
@@ -40,6 +38,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.MappingResolver;
+
+import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.legacyfabric.fabric.api.resource.ResourceReloadListenerKeys;
 
 @Mixin({
 		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorResourceReloadListener.class, FoliageColorResourceReloadListener.class, TextureManager.class,

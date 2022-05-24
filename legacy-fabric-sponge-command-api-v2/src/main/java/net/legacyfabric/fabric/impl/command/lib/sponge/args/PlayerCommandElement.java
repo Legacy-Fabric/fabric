@@ -25,11 +25,6 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.SelectorCommandElement;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -41,6 +36,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.SelectorCommandElement;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class PlayerCommandElement extends SelectorCommandElement {
 	private final boolean returnSource;

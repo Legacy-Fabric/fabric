@@ -25,16 +25,17 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.legacyfabric.fabric.api.util.Location;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.Optional;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.Location;
 
 /**
  * A low-level interface for commands that can be executed. For almost all use

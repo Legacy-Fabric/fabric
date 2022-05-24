@@ -17,10 +17,6 @@
 
 package net.legacyfabric.fabric.api.client.networking.v1;
 
-import net.legacyfabric.fabric.api.networking.v1.PacketSender;
-import net.legacyfabric.fabric.impl.networking.client.ClientNetworkingImpl;
-import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkAddon;
-
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,6 +28,10 @@ import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import net.legacyfabric.fabric.api.networking.v1.PacketSender;
+import net.legacyfabric.fabric.impl.networking.client.ClientNetworkingImpl;
+import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkAddon;
 
 /**
  * Offers access to play stage client-side networking functionalities.

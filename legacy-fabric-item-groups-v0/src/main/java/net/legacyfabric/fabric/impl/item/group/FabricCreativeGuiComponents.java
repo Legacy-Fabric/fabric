@@ -17,12 +17,11 @@
 
 package net.legacyfabric.fabric.impl.item.group;
 
-import net.legacyfabric.fabric.mixin.item.group.client.ScreenAccessor;
-import org.lwjgl.opengl.GL11;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
+
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
@@ -30,6 +29,8 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.util.Identifier;
+
+import net.legacyfabric.fabric.mixin.item.group.client.ScreenAccessor;
 
 public class FabricCreativeGuiComponents {
 	private static final Identifier BUTTON_TEX = new Identifier("fabric", "textures/gui/creative_buttons.png");

@@ -25,17 +25,18 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.PatternMatchingCommandElement;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.Text;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.PatternMatchingCommandElement;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class ModCommandElement extends PatternMatchingCommandElement {
 	public ModCommandElement(@Nullable Text key) {

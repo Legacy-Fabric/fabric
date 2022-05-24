@@ -17,9 +17,6 @@
 
 package net.legacyfabric.fabric.api.client.event.lifecycle.v1;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.world.GameMode;
@@ -27,6 +24,9 @@ import net.minecraft.world.level.LevelInfo;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
 
 @Environment(EnvType.CLIENT)
 public final class ClientLifecycleEvents {

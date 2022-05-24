@@ -25,9 +25,9 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Optional;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents the result of a command in Sponge.

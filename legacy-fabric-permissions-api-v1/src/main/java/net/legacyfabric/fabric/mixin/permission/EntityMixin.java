@@ -17,10 +17,11 @@
 
 package net.legacyfabric.fabric.mixin.permission;
 
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.entity.Entity;
+
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements PermissibleCommandSource {

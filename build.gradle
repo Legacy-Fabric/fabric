@@ -24,6 +24,7 @@ logger.lifecycle("Building Fabric: " + version)
 
 import org.apache.commons.codec.digest.DigestUtils
 import org.kohsuke.github.GHReleaseBuilder
+import org.kohsuke.github.GitHub
 
 def getSubprojectVersion(project, version) {
 	if (grgit == null) {
@@ -371,9 +372,6 @@ curseforge {
 		forgeGradleIntegration = false
 	}
 }
-
-
-import org.kohsuke.github.GitHub
 
 task github(dependsOn: remapJar) {
 	onlyIf {

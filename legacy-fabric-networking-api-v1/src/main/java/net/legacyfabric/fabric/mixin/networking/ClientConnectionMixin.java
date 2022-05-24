@@ -17,11 +17,12 @@
 
 package net.legacyfabric.fabric.mixin.networking;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
+
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import net.legacyfabric.fabric.impl.networking.ChannelInfoHolder;
-import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
-import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -30,15 +31,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
-
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+
+import net.legacyfabric.fabric.impl.networking.ChannelInfoHolder;
+import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
+import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
 
 @Mixin(ClientConnection.class)
 abstract class ClientConnectionMixin implements ChannelInfoHolder {

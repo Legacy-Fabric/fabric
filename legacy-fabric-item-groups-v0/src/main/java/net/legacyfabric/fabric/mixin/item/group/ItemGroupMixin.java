@@ -17,13 +17,14 @@
 
 package net.legacyfabric.fabric.mixin.item.group;
 
-import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.item.itemgroup.ItemGroup;
+
+import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 
 @Mixin(ItemGroup.class)
 public class ItemGroupMixin implements ItemGroupExtensions {

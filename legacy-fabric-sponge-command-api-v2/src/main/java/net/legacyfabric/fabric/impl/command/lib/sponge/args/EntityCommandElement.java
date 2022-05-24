@@ -25,13 +25,6 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
-import com.google.common.collect.Sets;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.SelectorCommandElement;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -40,12 +33,20 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Sets;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.SelectorCommandElement;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class EntityCommandElement extends SelectorCommandElement {
 	private final boolean returnTarget;

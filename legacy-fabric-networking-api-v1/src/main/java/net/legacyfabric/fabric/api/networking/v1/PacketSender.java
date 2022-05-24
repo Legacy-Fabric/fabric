@@ -17,11 +17,11 @@
 
 package net.legacyfabric.fabric.api.networking.v1;
 
+import java.util.Objects;
+
 import io.netty.channel.ChannelFutureListener;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-
-import java.util.Objects;
 
 import net.minecraft.network.Packet;
 import net.minecraft.util.Identifier;

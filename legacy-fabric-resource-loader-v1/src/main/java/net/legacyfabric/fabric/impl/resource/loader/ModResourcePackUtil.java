@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.impl.resource.loader;
 
-import com.google.common.base.Charsets;
-import org.apache.commons.io.IOUtils;
-
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
+
+import com.google.common.base.Charsets;
+import org.apache.commons.io.IOUtils;
 
 import net.minecraft.resource.ResourcePack;
 

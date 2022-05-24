@@ -17,9 +17,9 @@
 
 package net.legacyfabric.fabric.api.event;
 
-import net.legacyfabric.fabric.impl.base.event.EventFactoryImpl;
-
 import java.util.function.Function;
+
+import net.legacyfabric.fabric.impl.base.event.EventFactoryImpl;
 
 /**
  * Helper for creating {@link Event} classes.

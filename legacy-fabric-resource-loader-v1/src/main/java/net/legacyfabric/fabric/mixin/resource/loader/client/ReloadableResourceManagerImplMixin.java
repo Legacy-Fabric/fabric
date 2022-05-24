@@ -17,7 +17,8 @@
 
 package net.legacyfabric.fabric.mixin.resource.loader.client;
 
-import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,11 +26,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
-
 import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceReloadListener;
+
+import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
 @Mixin(ReloadableResourceManagerImpl.class)
 public class ReloadableResourceManagerImplMixin {

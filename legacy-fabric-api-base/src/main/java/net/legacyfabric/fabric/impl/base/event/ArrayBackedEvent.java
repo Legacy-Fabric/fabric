@@ -17,13 +17,13 @@
 
 package net.legacyfabric.fabric.impl.base.event;
 
-import net.legacyfabric.fabric.api.event.Event;
-
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
+
+import net.legacyfabric.fabric.api.event.Event;
 
 class ArrayBackedEvent<T> extends Event<T> {
 	private final Class<? super T> type;

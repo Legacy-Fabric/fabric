@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.item.group.client;
 
-import net.legacyfabric.fabric.impl.item.group.CreativeGuiExtensions;
-import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,6 +29,9 @@ import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.screen.ScreenHandler;
+
+import net.legacyfabric.fabric.impl.item.group.CreativeGuiExtensions;
+import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
 
 @Mixin(CreativeInventoryScreen.class)
 public abstract class CreativePlayerInventoryGuiMixin extends InventoryScreen implements CreativeGuiExtensions {

@@ -18,16 +18,16 @@
 package net.legacyfabric.fabric.test.itemgroup;
 
 import com.google.common.collect.ImmutableList;
-import net.legacyfabric.fabric.api.client.itemgroup.FabricItemGroup;
-import net.legacyfabric.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.ModInitializer;
+
+import net.legacyfabric.fabric.api.client.itemgroup.FabricItemGroup;
+import net.legacyfabric.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 
 public class ItemGroupTest implements ModInitializer {
 	public static final FabricItemGroup GROUP = FabricItemGroupBuilder.create(new Identifier("legacy-fabric-api", "test_group"))

@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.entity.event;
 
-import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,6 +26,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+
+import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 
 @Mixin(LivingEntity.class)
 abstract class LivingEntityMixin extends EntityMixin {

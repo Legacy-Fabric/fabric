@@ -17,9 +17,6 @@
 
 package net.legacyfabric.fabric.impl.networking;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -28,6 +25,9 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A network addon is a simple abstraction to hold information about a player's registered channels.

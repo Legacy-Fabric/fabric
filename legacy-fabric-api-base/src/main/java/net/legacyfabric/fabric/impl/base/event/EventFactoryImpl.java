@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.impl.base.event;
 
-import net.legacyfabric.fabric.api.event.Event;
-
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -29,6 +27,8 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
+import net.legacyfabric.fabric.api.event.Event;
 
 public final class EventFactoryImpl {
 	private static final List<ArrayBackedEvent<?>> ARRAY_BACKED_EVENTS = new ArrayList<>();

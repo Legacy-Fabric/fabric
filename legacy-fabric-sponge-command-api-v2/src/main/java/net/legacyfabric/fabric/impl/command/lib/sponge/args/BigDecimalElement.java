@@ -25,16 +25,17 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
+import java.math.BigDecimal;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import org.jetbrains.annotations.Nullable;
-
-import java.math.BigDecimal;
-
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
 
 public class BigDecimalElement extends KeyElement {
 	public BigDecimalElement(Text key) {

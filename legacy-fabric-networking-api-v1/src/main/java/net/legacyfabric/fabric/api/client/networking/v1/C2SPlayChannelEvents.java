@@ -17,10 +17,6 @@
 
 package net.legacyfabric.fabric.api.client.networking.v1;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
-import net.legacyfabric.fabric.api.networking.v1.PacketSender;
-
 import java.util.List;
 
 import net.minecraft.client.MinecraftClient;
@@ -28,6 +24,10 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
+import net.legacyfabric.fabric.api.networking.v1.PacketSender;
 
 /**
  * Offers access to events related to the indication of a connected server's ability to receive packets in certain channels.

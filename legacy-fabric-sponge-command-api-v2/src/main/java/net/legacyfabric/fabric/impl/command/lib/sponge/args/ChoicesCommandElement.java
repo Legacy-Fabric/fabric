@@ -25,14 +25,6 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandElement;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-import net.legacyfabric.fabric.api.util.TriState;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -43,6 +35,14 @@ import java.util.stream.Collectors;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
+import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandElement;
+import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.TriState;
 
 public class ChoicesCommandElement extends CommandElement {
 	public static final int CUTOFF = 5;
