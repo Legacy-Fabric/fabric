@@ -25,8 +25,8 @@ import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.legacyfabric.fabric.api.itemgroup.v0.FabricItemGroup;
-import net.legacyfabric.fabric.api.itemgroup.v0.FabricItemGroupBuilder;
+import net.legacyfabric.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.legacyfabric.fabric.api.itemgroup.v1.FabricItemGroupBuilder;
 
 public class ItemGroupTest implements ModInitializer {
 	public static final FabricItemGroup GROUP = FabricItemGroupBuilder.build(new Identifier("dmn", "testgroup"), () -> Items.POTATO);

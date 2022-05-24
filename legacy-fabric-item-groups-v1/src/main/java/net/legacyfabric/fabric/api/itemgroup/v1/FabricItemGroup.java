@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.itemgroup.v0;
+package net.legacyfabric.fabric.api.itemgroup.v1;
 
 import java.util.List;
 

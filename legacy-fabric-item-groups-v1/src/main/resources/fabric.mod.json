@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-item-groups-v0",
-  "name": "Legacy Fabric Item Groups (V0)",
+  "id": "legacy-fabric-item-groups-v1",
+  "name": "Legacy Fabric Item Groups (V1)",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
@@ -16,7 +16,7 @@
     "Legacy Fabric"
   ],
   "mixins": [
-    "legacy-fabric-item-groups-v0.mixins.json"
+    "legacy-fabric-item-groups-v1.mixins.json"
   ],
   "description": "Advanced item groups."
 }
