@@ -27,8 +27,6 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.class_1985;
@@ -48,11 +46,12 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.InvocationCommandExcept
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.Disambiguator;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispatcher;
+import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.util.Location;
 
 public class CommandManagerImpl implements CommandManager {
-	private static final Logger LOGGER = LogManager.getLogger("Fabric Command Manager");
+	private static final Logger LOGGER = Logger.get("Fabric", "Command Manager");
 	private final Object lock = new Object();
 	private final SimpleDispatcher dispatcher;
 	private final List<CommandMapping> mappings = Lists.newArrayList();
