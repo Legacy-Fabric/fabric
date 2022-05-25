@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-client-command-api-v0",
+  "name": "Legacy Fabric Client Command API (V0)",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-fabric-api/icon.png",
+  "contact": {
+    "homepage": "https://legacy-fabric.github.io/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "FabricMC",
+    "Legacy Fabric"
+  ],
+  "depends": {
+    "minecraft": "1.7.x"
+  },
+  "mixins": [
+    "legacy-fabric-client-command-api-v0.mixins.json"
+  ],
+  "description": "Client commands"
+}
