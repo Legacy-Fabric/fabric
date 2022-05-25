@@ -1,0 +1,6 @@
+# Keybindings
+api.keybinding.testTranslationKey=Test Keybinding
+
+# This stays in 1.7.10 test mod or the wrath of the Chaos Gatos will befall whomstever removesmst itmst >:(
+# Boogie (May 24 2021) - PseudoDistant insists on keeping this line so I'm keeping it. Ideally this shouldn't exist but eh
+legacyrewoven.api.youreTesting=You're Testing Legacy Rewoven API!

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-itemgroups-v0-testmod",
+  "description": "Testmod for itemgroups",
+  "version": "1.0.0",
+  "entrypoints": {
+    "main": [
+      "net.legacyfabric.fabric.test.itemgroup.ItemGroupTest"
+    ]
+  }
+}

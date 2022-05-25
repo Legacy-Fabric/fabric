@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.item.group",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ItemGroupMixin"
+  ],
+  "client": [
+    "client.CreativePlayerInventoryGuiMixin",
+    "client.ItemGroupMixin",
+    "client.ScreenAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
