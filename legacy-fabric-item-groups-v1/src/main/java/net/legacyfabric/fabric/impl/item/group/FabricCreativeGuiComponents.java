@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.itemgroup;
+package net.legacyfabric.fabric.impl.item.group;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import org.lwjgl.opengl.GL11;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
@@ -42,19 +42,30 @@ public class FabricCreativeGuiComponents {
 	}
 
 	public static class ItemGroupButtonWidget extends ButtonWidget {
-		public CreativeGuiExtensions extensions;
-		public CreativeInventoryScreen gui;
-		public Type type;
+		CreativeGuiExtensions extensions;
+		CreativeInventoryScreen gui;
+		Type type;
 
-		public ItemGroupButtonWidget(int id, int x, int y, Type type, CreativeGuiExtensions extensions) {
-			super(id, x, y, 11, 10, type.text);
+		public ItemGroupButtonWidget(int x, int y, Type type, CreativeGuiExtensions extensions) {
+			super(1000 + type.ordinal(), x, y, 11, 10, "");
 			this.extensions = extensions;
 			this.type = type;
 			this.gui = (CreativeInventoryScreen) extensions;
 		}
 
+		public void click() {
+			if (this.active) {
+				this.type.clickConsumer.accept(this.extensions);
+			}
+		}
+
 		@Override
-		public void render(MinecraftClient client, int mouseX, int mouseY) {
+		public boolean isMouseOver(MinecraftClient client, int mouseX, int mouseY) {
+			return super.isMouseOver(client, mouseX, mouseY);
+		}
+
+		@Override
+		public void renderBg(MinecraftClient client, int mouseX, int mouseY) {
 			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 			this.visible = extensions.fabric_isButtonVisible(type);
 			this.active = extensions.fabric_isButtonEnabled(type);
@@ -63,13 +74,14 @@ public class FabricCreativeGuiComponents {
 				int u = active && this.isHovered() ? 22 : 0;
 				int v = active ? 0 : 10;
 
-				client.getTextureManager().bindTexture(BUTTON_TEX);
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				MinecraftClient minecraftClient = MinecraftClient.getInstance();
+				minecraftClient.getTextureManager().bindTexture(BUTTON_TEX);
+				GlStateManager.disableLighting();
+				GlStateManager.color4f(1F, 1F, 1F, 1F);
 				this.drawTexture(this.x, this.y, u + (type == Type.NEXT ? 11 : 0), v, 11, 10);
 
 				if (this.hovered) {
-					int pageCount = (int) Math.ceil((ItemGroup.itemGroups.length - COMMON_GROUPS.size()) / 9D);
-					((ScreenAccessor) gui).callRenderTooltip(I18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, pageCount), mouseX, mouseY);
+					((ScreenAccessor) gui).callRenderTooltip(I18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, ((ItemGroup.itemGroups.length - 12) / 9) + 2), mouseX, mouseY);
 				}
 			}
 		}

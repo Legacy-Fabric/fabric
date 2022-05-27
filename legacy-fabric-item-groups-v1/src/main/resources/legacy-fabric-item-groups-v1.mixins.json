@@ -6,9 +6,9 @@
     "MixinItemGroup"
   ],
   "client": [
+    "client.ScreenAccessor",
     "client.MixinCreativePlayerInventoryGui",
-    "client.MixinItemGroup",
-    "client.ScreenAccessor"
+    "client.MixinItemGroup"
   ],
   "injectors": {
     "defaultRequire": 1
