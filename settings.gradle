@@ -14,9 +14,11 @@ rootProject.name = "legacy-fabric-api"
 include("common")
 include("common:legacy-fabric-logger-api-v1")
 include("common:legacy-fabric-api-base-common")
+include("common:legacy-fabric-lifecycle-events-v1-common")
 
 include("1.8.9")
 include("1.8.9:legacy-fabric-api-base")
+include("1.8.9:legacy-fabric-lifecycle-events-v1")
 
 //include("legacy-fabric-command-api-v1")
 //include("legacy-fabric-command-api-v2")
