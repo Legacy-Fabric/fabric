@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-item-groups-v1-common",
+  "name": "Legacy Fabric Item Groups (V1)",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-fabric/icon.png",
+  "contact": {
+    "homepage": "https://legacy-fabric.github.io/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "FabricMC",
+    "Legacy Fabric"
+  ],
+  "mixins": [],
+  "description": "Advanced item groups."
+}
