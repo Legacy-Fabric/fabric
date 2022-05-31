@@ -17,12 +17,12 @@ include("common:legacy-fabric-api-base-common")
 include("common:legacy-fabric-lifecycle-events-v1-common")
 
 include("1.8.9")
+include("1.8.9:legacy-fabric-crash-report-info-v1")
 include("1.8.9:legacy-fabric-api-base")
 include("1.8.9:legacy-fabric-lifecycle-events-v1")
 
 //include("legacy-fabric-command-api-v1")
 //include("legacy-fabric-command-api-v2")
-//include("legacy-fabric-crash-report-info-v1")
 //include("legacy-fabric-entity-events-v1")
 //include("legacy-fabric-gamerule-api-v1")
 //include("legacy-fabric-item-groups-v1")
