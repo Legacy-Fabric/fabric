@@ -9,10 +9,11 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version "0.12.27" apply false
-	id 'org.cadixdev.licenser' version "0.6.1"
+	id 'fabric-loom' version "0.12.38" apply false
+	id 'com.diffplug.spotless' version "6.5.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
+//	id "com.modrinth.minotaur" version "1.1.0"
 	id 'signing'
 }
 
@@ -22,6 +23,7 @@ setVersion("${project.base_version}+${project.mc_version}")
 logger.lifecycle("Building Fabric: " + version)
 
 
+import net.fabricmc.loom.task.RemapJarTask
 import org.apache.commons.codec.digest.DigestUtils
 
 
@@ -73,6 +75,7 @@ def moduleDependencies(project, List<String> depNames) {
 			api it
 		}
 	}
+
 	if (project.name != "legacy-fabric-logger-api-v1") {
 		deps.add(project.dependencies.project(path: ":legacy-fabric-logger-api-v1", configuration: 'namedElements'));
 	}
@@ -97,27 +100,40 @@ def moduleDependencies(project, List<String> depNames) {
 }
 
 allprojects {
+	group = "net.legacyfabric.legacy-fabric-api"
+
 	apply plugin: "java-library"
 	apply plugin: 'checkstyle'
 	apply plugin: 'maven-publish'
 	apply plugin: 'signing'
 	apply plugin: 'fabric-loom'
-	apply plugin: 'org.cadixdev.licenser'
+	apply plugin: "com.diffplug.spotless"
+
+	tasks.withType(GenerateModuleMetadata) {
+		enabled = false
+	}
+
+	publishing {
+		setupRepositories(repositories)
+	}
 
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 
-	group = "net.legacyfabric.legacy-fabric-api"
+	tasks.withType(JavaCompile).configureEach {
+		it.options.release = 8
+	}
+
+	java {
+		// Must be added before the split source sets are setup.
+		withSourcesJar()
+	}
 
 	sourceSets {
 		testmod {
 			compileClasspath += main.compileClasspath
 			runtimeClasspath += main.runtimeClasspath
 		}
-	}
-
-	publishing {
-		setupRepositories(repositories)
 	}
 
 	repositories {
@@ -149,6 +165,19 @@ allprojects {
 		setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar');
 	}
 
+	allprojects.each { p ->
+		loom.mods.register(p.name) {
+			sourceSet p.sourceSets.main
+//			sourceSet p.sourceSets.client
+		}
+
+		if (!p.file("src/testmod").exists()) return;
+
+		loom.mods.register(p.name + "-testmod") {
+			sourceSet p.sourceSets.testmod
+		}
+	}
+
 	dependencies {
 		minecraft("com.mojang:minecraft:${project.mc_version}")
 		mappings("net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2")
@@ -161,6 +190,8 @@ allprojects {
 			implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209'
 			implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
 		}
+
+		testmodImplementation sourceSets.main.output
 	}
 
 	if (System.getProperty("os.name").toLowerCase().contains("mac")) {
@@ -175,7 +206,7 @@ allprojects {
 		}
 	}
 
-	processResources {
+	tasks.withType(ProcessResources).configureEach {
 		inputs.property "version", project.version
 
 		filesMatching("fabric.mod.json") {
@@ -183,15 +214,10 @@ allprojects {
 		}
 	}
 
-	license {
-		header rootProject.file('HEADER')
-		include '**/*.java'
-		exclude '**/lib/sponge/*.java'
-		exclude '**/lib/sponge/**/*.java'
-	}
-
-	java {
-		withSourcesJar()
+	spotless {
+		java {
+			licenseHeaderFile(rootProject.file("HEADER"))
+		}
 	}
 
 	checkstyle {
@@ -204,9 +230,31 @@ allprojects {
 		reproducibleFileOrder = true
 	}
 
-	tasks.withType(GenerateModuleMetadata) {
-		enabled = false
+	task testmodJar(type: Jar) {
+		from sourceSets.testmod.output
+		destinationDirectory = new File(project.buildDir, "devlibs")
+		archiveClassifier = "testmod"
 	}
+
+	task remapTestmodJar(type: RemapJarTask, dependsOn: testmodJar) {
+		input = testmodJar.archiveFile
+		archiveClassifier = "testmod"
+		addNestedDependencies = false
+	}
+	build.dependsOn remapTestmodJar
+}
+
+remapTestmodJar {
+	def testModJarTasks = []
+
+	subprojects {
+		if (!it.file("src/testmod").exists()) return
+
+		testModJarTasks += it.tasks.remapTestmodJar
+	}
+
+	nestedJars.setFrom(testModJarTasks)
+	addNestedDependencies = true
 }
 
 javadoc {
@@ -285,6 +333,11 @@ subprojects {
 		// Disable the gen sources task on sub projects
 		genSourcesWithFernFlower.enabled = false
 		genSourcesWithCfr.enabled = false
+
+//		genClientOnlySourcesWithFernFlower.enabled = false
+//		genClientOnlySourcesWithCfr.enabled = false
+//		genCommonSourcesWithCfr.enabled = false
+//		genCommonSourcesWithFernFlower.enabled = false
 	}
 }
 
@@ -324,8 +377,6 @@ publishing {
 // Required until the deprecation is removed. Fabric API's main jar that is published to maven does not contain sub modules.
 loom.disableDeprecatedPomGeneration(publishing.publications.mavenJava)
 
-task licenseFormatAll
-subprojects { p -> licenseFormatAll.dependsOn("${p.path}:licenseFormat") }
 subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
 
 sourceSets {
@@ -400,6 +451,24 @@ task github(dependsOn: remapJar) {
 	}
 }
 
+//task modrinth(type: com.modrinth.minotaur.TaskModrinthUpload, dependsOn: (signingEnabled ? signRemapJar : remapJar)) {
+//	onlyIf {
+//		ENV.MODRINTH_TOKEN
+//	}
+//
+//	token = ENV.MODRINTH_TOKEN
+//	projectId = "P7dR8mSH"
+//	versionNumber = version
+//	versionName = "[$project.minecraft_version] Fabric API $project.version"
+//	releaseType = project.prerelease == "true" ? "beta" : "release"
+//	changelog = ENV.CHANGELOG ?: "No changelog provided"
+//
+//	uploadFile = signingEnabled ? signRemapJar.output : remapJar
+//
+//	addGameVersion(project.minecraft_version)
+//	addLoader('fabric')
+//}
+
 // A task to ensure that the version being released has not already been released.
 task checkVersion {
 	doFirst {
@@ -413,5 +482,6 @@ task checkVersion {
 }
 
 github.mustRunAfter checkVersion
+//modrinth.mustRunAfter checkVersion
 publish.mustRunAfter checkVersion
 project.tasks.curseforge.mustRunAfter checkVersion
