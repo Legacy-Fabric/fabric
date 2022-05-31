@@ -297,14 +297,14 @@ subprojects {
 	dependencies {
 		testmodImplementation sourceSets.main.output
 
-//		if (project.name != "legacy-fabric-resource-loader-v1") {
-//			testmodImplementation project(path: ':legacy-fabric-resource-loader-v1', configuration: 'namedElements')
-//		}
-//
-//		if (project.name != "legacy-fabric-registry-sync-api-v1") {
-//			testmodRuntimeOnly project(path: ':legacy-fabric-registry-sync-api-v1', configuration: 'namedElements')
-//		}
-//
+		if (project.name != "legacy-fabric-resource-loader-v1") {
+			testmodImplementation project(path: ':common:legacy-fabric-resource-loader-v1', configuration: 'namedElements')
+		}
+
+		if (project.name != "legacy-fabric-registry-sync-api-v1") {
+			testmodRuntimeOnly project(path: ':common:legacy-fabric-registry-sync-api-v1', configuration: 'namedElements')
+		}
+
 		if (project.name != "legacy-fabric-logger-api-v1") {
 			api project(path: ":common:legacy-fabric-logger-api-v1", configuration: 'namedElements')
 		}
@@ -341,7 +341,7 @@ subprojects {
 	}
 }
 
-task remapMavenJar(type: net.fabricmc.loom.task.RemapJarTask, dependsOn: jar) {
+task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
 	input = jar.archiveFile
 	archiveFileName = "${archivesBaseName}-${project.version}-maven.jar"
 	addNestedDependencies = false
