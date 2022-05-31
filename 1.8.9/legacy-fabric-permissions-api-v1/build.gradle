@@ -1,0 +1,6 @@
+version = getSubprojectVersion(project, "1.0.0")
+
+moduleDependencies(project, [
+		"common:legacy-fabric-api-base-common",
+		"common:legacy-fabric-permissions-api-v1-common"
+])
