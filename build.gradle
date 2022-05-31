@@ -110,7 +110,9 @@ class MinecraftVersion {
 
 	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[] {
 			new MinecraftVersion("1.8.9", "202205311627"),
-			new MinecraftVersion("1.8", "202205311627")
+			new MinecraftVersion("1.8", "202205311627"),
+			new MinecraftVersion("1.7.10", "202205311627"),
+			new MinecraftVersion("1.12.2", "202205311627")
 	};
 }
 
