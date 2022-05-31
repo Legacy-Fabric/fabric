@@ -19,7 +19,7 @@ plugins {
 
 def ENV = System.getenv()
 
-setVersion("${project.base_version}+${project.mc_version}")
+setVersion("${project.base_version}")
 logger.lifecycle("Building Fabric: " + version)
 
 
@@ -97,6 +97,41 @@ def moduleDependencies(project, List<String> depNames) {
 			}
 		}
 	}
+}
+
+class MinecraftVersion {
+	public String mc_version;
+	public String yarn_version;
+
+	private MinecraftVersion(String mc_version, String yarn_version) {
+		this.mc_version = mc_version;
+		this.yarn_version = yarn_version;
+	}
+
+	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[] {
+			new MinecraftVersion("1.8.9", "202205311627"),
+			new MinecraftVersion("1.8", "202205311627")
+	};
+}
+
+static def getVersionInfo(Project project) {
+	MinecraftVersion version = MinecraftVersion.VERSIONS[0];
+
+	Project parent = project.getParent();
+	String projectMCVersion = project.name;
+
+	if (parent != null && parent.name != "legacy-fabric-api") {
+		projectMCVersion = parent.name;
+	}
+
+	for (MinecraftVersion mcVersion : MinecraftVersion.VERSIONS) {
+		if (mcVersion.mc_version == projectMCVersion) {
+			version = mcVersion;
+			break;
+		}
+	}
+
+	return version;
 }
 
 allprojects {
@@ -178,9 +213,11 @@ allprojects {
 		}
 	}
 
+	MinecraftVersion versionInfo = getVersionInfo(it);
+
 	dependencies {
-		minecraft("com.mojang:minecraft:${project.mc_version}")
-		mappings("net.fabricmc:yarn:${project.mc_version}+build.${project.yarn_version}:v2")
+		minecraft("com.mojang:minecraft:${versionInfo.mc_version}")
+		mappings("net.fabricmc:yarn:${versionInfo.mc_version}+build.${versionInfo.yarn_version}:v2")
 		modApi("net.fabricmc:fabric-loader:${project.loader_version}")
 
 		implementation 'com.mojang:brigadier:1.0.17'
@@ -190,8 +227,6 @@ allprojects {
 			implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209'
 			implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
 		}
-
-		testmodImplementation sourceSets.main.output
 	}
 
 	if (System.getProperty("os.name").toLowerCase().contains("mac")) {
@@ -445,7 +480,7 @@ task github(dependsOn: remapJar) {
 		def repository = github.getRepository(ENV.GITHUB_REPOSITORY)
 
 		def releaseBuilder = new GHReleaseBuilder(repository, version as String)
-		releaseBuilder.name("[$project.minecraft_version] Legacy Fabric API $project.version")
+		releaseBuilder.name("[$project.mc_version] Legacy Fabric API $project.version")
 		releaseBuilder.body(ENV.CHANGELOG ?: "No changelog provided")
 		releaseBuilder.commitish(getBranch())
 		releaseBuilder.prerelease(false)
@@ -463,13 +498,13 @@ task github(dependsOn: remapJar) {
 //	token = ENV.MODRINTH_TOKEN
 //	projectId = "P7dR8mSH"
 //	versionNumber = version
-//	versionName = "[$project.minecraft_version] Fabric API $project.version"
+//	versionName = "[$project.mc_version] Fabric API $project.version"
 //	releaseType = project.prerelease == "true" ? "beta" : "release"
 //	changelog = ENV.CHANGELOG ?: "No changelog provided"
 //
 //	uploadFile = signingEnabled ? signRemapJar.output : remapJar
 //
-//	addGameVersion(project.minecraft_version)
+//	addGameVersion(project.mc_version)
 //	addLoader('fabric')
 //}
 
