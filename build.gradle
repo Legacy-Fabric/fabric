@@ -77,7 +77,7 @@ def moduleDependencies(project, List<String> depNames) {
 	}
 
 	if (project.name != "legacy-fabric-logger-api-v1") {
-		deps.add(project.dependencies.project(path: ":legacy-fabric-logger-api-v1", configuration: 'namedElements'));
+		deps.add(project.dependencies.project(path: ":common:legacy-fabric-logger-api-v1", configuration: 'namedElements'));
 	}
 
 	// As we manually handle the maven artifacts, we need to also manually specify the deps.
@@ -297,16 +297,16 @@ subprojects {
 	dependencies {
 		testmodImplementation sourceSets.main.output
 
-		if (project.name != "legacy-fabric-resource-loader-v1") {
-			testmodImplementation project(path: ':legacy-fabric-resource-loader-v1', configuration: 'namedElements')
-		}
-
-		if (project.name != "legacy-fabric-registry-sync-api-v1") {
-			testmodRuntimeOnly project(path: ':legacy-fabric-registry-sync-api-v1', configuration: 'namedElements')
-		}
-
+//		if (project.name != "legacy-fabric-resource-loader-v1") {
+//			testmodImplementation project(path: ':legacy-fabric-resource-loader-v1', configuration: 'namedElements')
+//		}
+//
+//		if (project.name != "legacy-fabric-registry-sync-api-v1") {
+//			testmodRuntimeOnly project(path: ':legacy-fabric-registry-sync-api-v1', configuration: 'namedElements')
+//		}
+//
 		if (project.name != "legacy-fabric-logger-api-v1") {
-			api project(path: ":legacy-fabric-logger-api-v1", configuration: 'namedElements')
+			api project(path: ":common:legacy-fabric-logger-api-v1", configuration: 'namedElements')
 		}
 	}
 
@@ -386,9 +386,11 @@ sourceSets {
 dependencies {
 	afterEvaluate {
 		subprojects.each {
-			api project(path: ":${it.name}", configuration: "namedElements")
+			String par = it.getParent() != null ? it.getParent().name + ":" : "";
+			if (par == "legacy-fabric-api:") return
+			api project(path: ":$par${it.name}", configuration: "namedElements")
 
-			testmodImplementation project("${it.name}:").sourceSets.testmod.output
+			testmodImplementation project("$par${it.name}:").sourceSets.testmod.output
 		}
 	}
 }
@@ -396,8 +398,10 @@ dependencies {
 remapJar {
 	afterEvaluate {
 		subprojects.each {
+			String par = it.getParent() != null ? it.getParent().name + ":" : "";
+			if (par == "legacy-fabric-api:") return
 			// Include the signed or none signed jar from the sub project.
-			nestedJars.from project("${it.name}:").tasks.getByName("remapJar")
+			nestedJars.from project("$par${it.name}:").tasks.getByName("remapJar")
 		}
 	}
 }
