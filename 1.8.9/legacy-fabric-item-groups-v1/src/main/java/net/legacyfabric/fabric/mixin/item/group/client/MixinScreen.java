@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.mixin.item.group.client;
 
-import net.legacyfabric.fabric.impl.itemgroup.ScreenAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
 import net.minecraft.client.gui.screen.Screen;
+
+import net.legacyfabric.fabric.impl.itemgroup.ScreenAccessor;
 
 @Mixin(Screen.class)
 public abstract class MixinScreen implements ScreenAccessor {
