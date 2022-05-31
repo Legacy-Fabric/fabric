@@ -15,6 +15,9 @@
     "Legacy Fabric",
     "FabricMC"
   ],
+  "depends": {
+    "minecraft": ">1.6.4"
+  },
   "description": "Low-level, vanilla protocol oriented networking hooks.",
   "mixins": [
     "legacy-fabric-networking-api-v1.mixins.json"
