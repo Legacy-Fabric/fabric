@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-api-base-common",
-  "name": "Legacy Fabric API Base Common",
+  "id": "legacy-fabric-api-base",
+  "name": "Legacy Fabric API Base",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",

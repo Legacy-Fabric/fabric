@@ -1,3 +1,1 @@
 version = project.getParent().version
-
-// TODO write some code to bundle required common module + 1.8.9 only module.

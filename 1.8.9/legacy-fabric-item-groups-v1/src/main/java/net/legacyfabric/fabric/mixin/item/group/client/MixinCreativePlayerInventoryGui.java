@@ -114,15 +114,17 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 		}
 	}
 
-	@Inject(method = "init", at = @At("RETURN"), remap = false)
-	private void init(CallbackInfo info) {
-		fabric_updateSelection();
+	@Inject(method = "init", at = @At("RETURN"))
+	private void fabric_init(CallbackInfo info) {
+		if (this.client.interactionManager.hasCreativeInventory()) {
+			fabric_updateSelection();
 
-		int xpos = x + 145;
-		int ypos = y - 10;
+			int xpos = x + 145;
+			int ypos = y - 10;
 
-		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(202, xpos + 10, ypos, FabricCreativeGuiComponents.Type.NEXT, this));
-		this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(203, xpos, ypos, FabricCreativeGuiComponents.Type.PREVIOUS, this));
+			this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(202, xpos + 10, ypos, FabricCreativeGuiComponents.Type.NEXT, this));
+			this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(203, xpos, ypos, FabricCreativeGuiComponents.Type.PREVIOUS, this));
+		}
 	}
 
 	@Override
@@ -139,28 +141,28 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 	}
 
 	@Inject(method = "setSelectedTab", at = @At("HEAD"), cancellable = true)
-	private void setSelectedTab(ItemGroup itemGroup, CallbackInfo info) {
+	private void fabric_setSelectedTab(ItemGroup itemGroup, CallbackInfo info) {
 		if (!fabric_isGroupVisible(itemGroup)) {
 			info.cancel();
 		}
 	}
 
 	@Inject(method = "renderTabTooltipIfHovered", at = @At("HEAD"), cancellable = true)
-	private void renderTabTooltipIfHovered(ItemGroup itemGroup, int mx, int my, CallbackInfoReturnable<Boolean> info) {
+	private void fabric_renderTabTooltipIfHovered(ItemGroup itemGroup, int mx, int my, CallbackInfoReturnable<Boolean> info) {
 		if (!fabric_isGroupVisible(itemGroup)) {
 			info.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "isClickInTab", at = @At("HEAD"), cancellable = true)
-	private void isClickInTab(ItemGroup group, int mouseX, int mouseY, CallbackInfoReturnable<Boolean> info) {
+	private void fabric_isClickInTab(ItemGroup group, int mouseX, int mouseY, CallbackInfoReturnable<Boolean> info) {
 		if (!fabric_isGroupVisible(group)) {
 			info.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "renderTabIcon", at = @At("HEAD"), cancellable = true)
-	private void renderTabIcon(ItemGroup itemGroup, CallbackInfo info) {
+	private void fabric_renderTabIcon(ItemGroup itemGroup, CallbackInfo info) {
 		if (!fabric_isGroupVisible(itemGroup)) {
 			info.cancel();
 		}

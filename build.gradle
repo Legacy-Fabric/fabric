@@ -28,6 +28,8 @@ import org.apache.commons.codec.digest.DigestUtils
 
 
 def getSubprojectVersion(project, version) {
+	version = version + "+" + project.getParent().name;
+
 	if (grgit == null) {
 		return version + "+nogit"
 	}
@@ -125,6 +127,7 @@ static def getVersionInfo(Project project) {
 	if (parent != null && parent.name != "legacy-fabric-api") {
 		projectMCVersion = parent.name;
 	}
+	System.out.println("Preparing project ${parent != null ? parent.name : ""}:$project.name")
 
 	for (MinecraftVersion mcVersion : MinecraftVersion.VERSIONS) {
 		if (mcVersion.mc_version == projectMCVersion) {
@@ -177,21 +180,26 @@ allprojects {
 		maven { url "https://maven.legacyfabric.net/" }
 	}
 
+	MinecraftVersion versionInfo = getVersionInfo(it);
+
+	String projectName = it.name;
+
 	loom {
 		runtimeOnlyLog4j = true
 
 		runs {
-			testmodClient {
+			"testModClient$versionInfo.mc_version" {
 				client()
-				ideConfigGenerated project.rootProject == project
-				name = "Testmod Client"
+				ideConfigGenerated projectName == "legacyfabric-api"
+				name = "$versionInfo.mc_version Testmod Client"
 				source sourceSets.testmod
 				vmArgs "-Dmixin.debug.export=true"
 			}
-			testmodServer {
+
+			"testModServer$versionInfo.mc_version" {
 				server()
-				ideConfigGenerated project.rootProject == project
-				name = "Testmod Server"
+				ideConfigGenerated projectName == "legacyfabric-api"
+				name = "$versionInfo.mc_version Testmod Server"
 				source sourceSets.testmod
 				vmArgs "-Dmixin.debug.export=true"
 			}
@@ -214,8 +222,6 @@ allprojects {
 			sourceSet p.sourceSets.testmod
 		}
 	}
-
-	MinecraftVersion versionInfo = getVersionInfo(it);
 
 	dependencies {
 		minecraft("com.mojang:minecraft:${versionInfo.mc_version}")
@@ -424,7 +430,7 @@ dependencies {
 	afterEvaluate {
 		subprojects.each {
 			String par = it.getParent() != null ? it.getParent().name + ":" : "";
-			if (par == "legacy-fabric-api:") return
+			if (par == "legacy-fabric-api:" || (par.startsWith("1.") && it.name == "legacyfabric-api")) return
 			api project(path: ":$par${it.name}", configuration: "namedElements")
 
 			testmodImplementation project("$par${it.name}:").sourceSets.testmod.output
@@ -436,7 +442,7 @@ remapJar {
 	afterEvaluate {
 		subprojects.each {
 			String par = it.getParent() != null ? it.getParent().name + ":" : "";
-			if (par == "legacy-fabric-api:") return
+			if (par == "legacy-fabric-api:" || (par.startsWith("1.") && it.name == "legacyfabric-api")) return
 			// Include the signed or none signed jar from the sub project.
 			nestedJars.from project("$par${it.name}:").tasks.getByName("remapJar")
 		}

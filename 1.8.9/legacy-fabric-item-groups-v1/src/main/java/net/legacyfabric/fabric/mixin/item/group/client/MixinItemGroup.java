@@ -36,14 +36,14 @@ public abstract class MixinItemGroup {
 	public abstract boolean isTopRow();
 
 	@Inject(method = "isTopRow", cancellable = true, at = @At("HEAD"))
-	private void isTopRow(CallbackInfoReturnable<Boolean> info) {
+	private void fabric_isTopRow(CallbackInfoReturnable<Boolean> info) {
 		if (getIndex() > 11) {
 			info.setReturnValue((getIndex() - 11) % (11 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) < 5);
 		}
 	}
 
 	@Inject(method = "getColumn", cancellable = true, at = @At("HEAD"))
-	private void getColumn(CallbackInfoReturnable<Integer> info) {
+	private void fabric_getColumn(CallbackInfoReturnable<Integer> info) {
 		if (getIndex() > 15) {
 			if (isTopRow()) {
 				info.setReturnValue((getIndex() - 11) % (11 - FabricCreativeGuiComponents.COMMON_GROUPS.size()));
