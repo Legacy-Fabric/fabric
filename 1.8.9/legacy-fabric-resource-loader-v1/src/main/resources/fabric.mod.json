@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-resource-loader-v1",
+  "name": "Legacy Fabric Resource Loader (V1)",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-fabric/icon.png",
+  "contact": {
+    "homepage": "https://legacy-fabric.github.io/",
+    "irc": "irc://irc.esper.net:6667/legacyfabric",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "FabricMC"
+  ],
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "minecraft": "1.8.9"
+  },
+  "description": "Asset loading",
+  "mixins": [
+    "legacy-fabric-resource-loader-v1.mixins.json"
+  ]
+}

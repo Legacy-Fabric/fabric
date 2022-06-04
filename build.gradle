@@ -104,16 +104,24 @@ def moduleDependencies(project, List<String> depNames) {
 class MinecraftVersion {
 	public String mc_version;
 	public String yarn_version;
+	public boolean userProperties;
 
 	private MinecraftVersion(String mc_version, String yarn_version) {
 		this.mc_version = mc_version;
 		this.yarn_version = yarn_version;
+		this.userProperties = false;
+	}
+
+	private MinecraftVersion(String mc_version, String yarn_version, boolean userProperties) {
+		this.mc_version = mc_version;
+		this.yarn_version = yarn_version;
+		this.userProperties = userProperties;
 	}
 
 	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[] {
 			new MinecraftVersion("1.8.9", "202205311627"),
-			new MinecraftVersion("1.8", "202205311627"),
-			new MinecraftVersion("1.7.10", "202205311627"),
+			new MinecraftVersion("1.8", "202205311627", true),
+			new MinecraftVersion("1.7.10", "202205311627", true),
 			new MinecraftVersion("1.12.2", "202205311627")
 	};
 }
@@ -194,6 +202,10 @@ allprojects {
 				name = "$versionInfo.mc_version Testmod Client"
 				source sourceSets.testmod
 				vmArgs "-Dmixin.debug.export=true"
+
+				if (versionInfo.userProperties) {
+					programArgs "--userProperties", "{}"
+				}
 			}
 
 			"testModServer$versionInfo.mc_version" {
@@ -211,14 +223,15 @@ allprojects {
 	}
 
 	allprojects.each { p ->
-		loom.mods.register(p.name) {
+		String parentName = p.getParent() != null ? "-" + p.getParent().name : ""
+		loom.mods.register(p.name + parentName) {
 			sourceSet p.sourceSets.main
 //			sourceSet p.sourceSets.client
 		}
 
 		if (!p.file("src/testmod").exists()) return;
 
-		loom.mods.register(p.name + "-testmod") {
+		loom.mods.register(p.name + parentName + "-testmod") {
 			sourceSet p.sourceSets.testmod
 		}
 	}
@@ -226,7 +239,12 @@ allprojects {
 	dependencies {
 		minecraft("com.mojang:minecraft:${versionInfo.mc_version}")
 		mappings("net.fabricmc:yarn:${versionInfo.mc_version}+build.${versionInfo.yarn_version}:v2")
-		modApi("net.fabricmc:fabric-loader:${project.loader_version}")
+
+		if (projectName == "legacyfabric-api") {
+			modApi("net.fabricmc:fabric-loader:${project.loader_version}")
+		} else {
+			modCompileOnly("net.fabricmc:fabric-loader:${project.loader_version}")
+		}
 
 		implementation 'com.mojang:brigadier:1.0.17'
 
@@ -341,7 +359,7 @@ subprojects {
 		testmodImplementation sourceSets.main.output
 
 		if (project.name != "legacy-fabric-resource-loader-v1") {
-			testmodImplementation project(path: ':common:legacy-fabric-resource-loader-v1', configuration: 'namedElements')
+			testmodImplementation project(path: ':common:legacy-fabric-resource-loader-v1-common', configuration: 'namedElements')
 		}
 
 		if (project.name != "legacy-fabric-registry-sync-api-v1") {

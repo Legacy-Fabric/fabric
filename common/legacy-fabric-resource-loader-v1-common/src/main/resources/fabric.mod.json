@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-resource-loader-v1",
-  "name": "Legacy Fabric Resource Loader (V1)",
+  "id": "legacy-fabric-resource-loader-v1-common",
+  "name": "Legacy Fabric Resource Loader (V1) Common",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
@@ -19,7 +19,5 @@
     "fabricloader": ">=0.4.0"
   },
   "description": "Asset loading",
-  "mixins": [
-    "legacy-fabric-resource-loader-v1.mixins.json"
-  ]
+  "mixins": []
 }
