@@ -17,9 +17,12 @@
 
 package net.legacyfabric.fabric.test.command;
 
+import java.util.Objects;
+
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ContactInformation;
 
@@ -42,6 +45,8 @@ public class ModMetadataCommand {
 		);
 	}
 
+	private static final boolean useStyle = !Objects.equals(FabricLoader.getInstance().getModContainer("minecraft").get().getMetadata().getVersion().getFriendlyString(), "1.8");
+
 	private static CommandResult execute(PermissibleCommandSource source, CommandContext ctx) throws CommandException {
 		ModContainer container = ctx.<ModContainer>getOne("modid").orElseThrow(() -> new CommandException(new LiteralText("mod not found")));
 		LiteralText builder = new LiteralText("");
@@ -53,7 +58,7 @@ public class ModMetadataCommand {
 			LiteralText issueText = new LiteralText("");
 			issueText.append("Issues: ");
 			LiteralText issueUrl = new LiteralText(contact.get("issues").get());
-			issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, issueUrl.asString())));
+			if (useStyle) issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, issueUrl.asString())));
 			issueText.append(issueUrl);
 			issueText.append("\n");
 			builder.append(issueText);
@@ -63,7 +68,7 @@ public class ModMetadataCommand {
 			LiteralText sourcesText = new LiteralText("");
 			sourcesText.append("Sources: ");
 			LiteralText sourcesUrl = new LiteralText(contact.get("sources").get());
-			sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, sourcesUrl.asString())));
+			if (useStyle) sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, sourcesUrl.asString())));
 			sourcesText.append(sourcesUrl);
 			sourcesText.append("\n");
 			builder.append(sourcesText);

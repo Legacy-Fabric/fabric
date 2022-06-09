@@ -1,20 +1,26 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-item-groups-v1-common",
-  "name": "Legacy Fabric Item Groups (V1)",
+  "id": "legacy-fabric-registry-sync-api-v1",
+  "name": "Legacy Fabric Registry Sync API (V1)",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
   "icon": "assets/legacy-fabric/icon.png",
   "contact": {
     "homepage": "https://legacyfabric.net/",
+    "irc": "irc://irc.esper.net:6667/legacyfabric",
     "issues": "https://github.com/Legacy-Fabric/fabric/issues",
     "sources": "https://github.com/Legacy-Fabric/fabric"
   },
   "authors": [
-    "FabricMC",
-    "Legacy Fabric"
+    "Legacy-Fabric"
   ],
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "minecraft": "1.8"
+  },
+  "description": "Registry hooks",
+  "entrypoints": {},
   "mixins": [],
-  "description": "Advanced item groups."
+  "accessWidener": "registrysync.accesswidener"
 }

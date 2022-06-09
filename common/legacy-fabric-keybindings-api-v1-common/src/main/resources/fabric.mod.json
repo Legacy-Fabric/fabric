@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-entity-events-v1",
-  "name": "Legacy Fabric Entity Events (V1)",
+  "id": "legacy-fabric-keybinding-api-v1-common",
+  "name": "Legacy Fabric Keybinding API (V1)",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
-  "icon": "assets/legacy-fabric/icon.png",
+  "icon": "assets/legacy-fabric-api/icon.png",
   "contact": {
     "homepage": "https://legacyfabric.net/",
     "issues": "https://github.com/Legacy-Fabric/fabric/issues",
@@ -15,8 +15,9 @@
     "Legacy Fabric",
     "FabricMC"
   ],
-  "description": "Events to hook into entities.",
+  "depends": {},
   "mixins": [
-    "legacy-fabric-entity-events-v1.mixins.json"
-  ]
+    "legacy-fabric-keybinding-api-v1.mixins.json"
+  ],
+  "description": "Hooks that help adding keybindings"
 }
