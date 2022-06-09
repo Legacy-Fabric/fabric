@@ -40,7 +40,7 @@ public class LoggerImpl implements Logger {
 			Collections.addAll(parts, subs);
 
 			try {
-				this.category = LogCategory.class.getDeclaredConstructor(String[].class).newInstance(parts.toArray());
+				this.category = LogCategory.class.getDeclaredConstructor(String[].class).newInstance(parts.toArray(new String[0]));
 			} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
 				throw new RuntimeException(ex);
 			}
