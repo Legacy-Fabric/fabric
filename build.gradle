@@ -9,7 +9,7 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version "0.12.38" apply false
+	id 'fabric-loom' version "0.12.48" apply false
 	id 'com.diffplug.spotless' version "6.5.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
@@ -241,7 +241,7 @@ allprojects {
 		mappings("net.fabricmc:yarn:${versionInfo.mc_version}+build.${versionInfo.yarn_version}:v2")
 
 		if (projectName == "legacyfabric-api") {
-			modApi("net.fabricmc:fabric-loader:${project.loader_version}")
+			modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 		} else {
 			modCompileOnly("net.fabricmc:fabric-loader:${project.loader_version}")
 		}
