@@ -30,8 +30,8 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.screen.ScreenHandler;
 
-import net.legacyfabric.fabric.impl.itemgroup.CreativeGuiExtensions;
-import net.legacyfabric.fabric.impl.itemgroup.FabricCreativeGuiComponents;
+import net.legacyfabric.fabric.impl.item.group.CreativeGuiExtensions;
+import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
 
 @Mixin(CreativeInventoryScreen.class)
 public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen implements CreativeGuiExtensions {
@@ -43,26 +43,27 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 	protected abstract void setSelectedTab(ItemGroup itemGroup_1);
 
 	@Shadow
-	public abstract int getSelectedTab();
+	public abstract int getSelectedTab(); /* XXX getSelectedTab XXX */
 
 	// "static" matches selectedTab
 	private static int fabric_currentPage = 0;
 
 	private int fabric_getPageOffset(int page) {
-		if (page == 0) {
+		switch (page) {
+		case 0:
 			return 0;
-		} else if (page == 1) {
-			return 11;
-		} else {
-			return 11 + ((11 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) * (page - 1));
+		case 1:
+			return 12;
+		default:
+			return 12 + ((12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) * (page - 1));
 		}
 	}
 
 	private int fabric_getOffsetPage(int offset) {
-		if (offset < 11) {
+		if (offset < 12) {
 			return 0;
 		} else {
-			return 1 + ((offset - 11) / (11 - FabricCreativeGuiComponents.COMMON_GROUPS.size()));
+			return 1 + ((offset - 12) / (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()));
 		}
 	}
 
@@ -104,6 +105,13 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 		return false;
 	}
 
+	@Inject(at = @At("TAIL"), method = "buttonClicked")
+	private void interceptClick(ButtonWidget button, CallbackInfo ci) {
+		if (button instanceof FabricCreativeGuiComponents.ItemGroupButtonWidget) {
+			((FabricCreativeGuiComponents.ItemGroupButtonWidget) button).click();
+		}
+	}
+
 	private void fabric_updateSelection() {
 		int minPos = fabric_getPageOffset(fabric_currentPage);
 		int maxPos = fabric_getPageOffset(fabric_currentPage + 1) - 1;
@@ -115,54 +123,39 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 	}
 
 	@Inject(method = "init", at = @At("RETURN"))
-	private void fabric_init(CallbackInfo info) {
-		if (this.client.interactionManager.hasCreativeInventory()) {
-			fabric_updateSelection();
+	private void init(CallbackInfo info) {
+		fabric_updateSelection();
 
-			int xpos = x + 145;
-			int ypos = y - 10;
+		int xpos = x + 145;
+		int ypos = y - 10;
 
-			this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(202, xpos + 10, ypos, FabricCreativeGuiComponents.Type.NEXT, this));
-			this.buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(203, xpos, ypos, FabricCreativeGuiComponents.Type.PREVIOUS, this));
-		}
-	}
-
-	@Override
-	public void buttonClicked(ButtonWidget button) {
-		if (button instanceof FabricCreativeGuiComponents.ItemGroupButtonWidget) {
-			if (((FabricCreativeGuiComponents.ItemGroupButtonWidget) button).type == FabricCreativeGuiComponents.Type.PREVIOUS) {
-				fabric_previousPage();
-			} else {
-				fabric_nextPage();
-			}
-		} else {
-			super.buttonClicked(button);
-		}
+		buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(xpos + 11, ypos, FabricCreativeGuiComponents.Type.NEXT, this));
+		buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(xpos, ypos, FabricCreativeGuiComponents.Type.PREVIOUS, this));
 	}
 
 	@Inject(method = "setSelectedTab", at = @At("HEAD"), cancellable = true)
-	private void fabric_setSelectedTab(ItemGroup itemGroup, CallbackInfo info) {
+	private void setSelectedTab(ItemGroup itemGroup, CallbackInfo info) {
 		if (!fabric_isGroupVisible(itemGroup)) {
 			info.cancel();
 		}
 	}
 
 	@Inject(method = "renderTabTooltipIfHovered", at = @At("HEAD"), cancellable = true)
-	private void fabric_renderTabTooltipIfHovered(ItemGroup itemGroup, int mx, int my, CallbackInfoReturnable<Boolean> info) {
+	private void renderTabTooltipIfHovered(ItemGroup itemGroup, int mx, int my, CallbackInfoReturnable<Boolean> info) {
 		if (!fabric_isGroupVisible(itemGroup)) {
 			info.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "isClickInTab", at = @At("HEAD"), cancellable = true)
-	private void fabric_isClickInTab(ItemGroup group, int mouseX, int mouseY, CallbackInfoReturnable<Boolean> info) {
-		if (!fabric_isGroupVisible(group)) {
+	private void isClickInTab(ItemGroup itemGroup, int mx, int my, CallbackInfoReturnable<Boolean> info) {
+		if (!fabric_isGroupVisible(itemGroup)) {
 			info.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "renderTabIcon", at = @At("HEAD"), cancellable = true)
-	private void fabric_renderTabIcon(ItemGroup itemGroup, CallbackInfo info) {
+	private void renderTabIcon(ItemGroup itemGroup, CallbackInfo info) {
 		if (!fabric_isGroupVisible(itemGroup)) {
 			info.cancel();
 		}

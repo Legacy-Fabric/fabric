@@ -24,10 +24,10 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.item.itemgroup.ItemGroup;
 
-import net.legacyfabric.fabric.impl.itemgroup.ItemGroupExtensions;
+import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 
 @Mixin(ItemGroup.class)
-public class MixinItemGroup implements ItemGroupExtensions {
+public abstract class MixinItemGroup implements ItemGroupExtensions {
 	@Shadow
 	@Final
 	@Mutable

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.itemgroup;
+package net.legacyfabric.fabric.impl.item.group;
 
 public interface ScreenAccessor {
 	void callRenderTooltip(String text, int x, int y);

@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.client.gui.screen.Screen;
 
-import net.legacyfabric.fabric.impl.itemgroup.ScreenAccessor;
+import net.legacyfabric.fabric.impl.item.group.ScreenAccessor;
 
 @Mixin(Screen.class)
 public abstract class MixinScreen implements ScreenAccessor {
