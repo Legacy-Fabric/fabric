@@ -361,13 +361,13 @@ subprojects {
 	dependencies {
 		testmodImplementation sourceSets.main.output
 
-		if (project.name != "legacy-fabric-resource-loader-v1") {
-			testmodImplementation project(path: ':common:legacy-fabric-resource-loader-v1-common', configuration: 'namedElements')
-		}
-
-		if (project.name != "legacy-fabric-registry-sync-api-v1" && project.name != "legacy-fabric-registry-sync-api-v1-common") {
-			testmodRuntimeOnly project(path: ':common:legacy-fabric-registry-sync-api-v1-common', configuration: 'namedElements')
-		}
+//		if (project.name != "legacy-fabric-resource-loader-v1") {
+//			testmodImplementation project(path: ':common:legacy-fabric-resource-loader-v1-common', configuration: 'namedElements')
+//		}
+//
+//		if (project.name != "legacy-fabric-registry-sync-api-v1" && project.name != "legacy-fabric-registry-sync-api-v1-common") {
+//			testmodRuntimeOnly project(path: ':common:legacy-fabric-registry-sync-api-v1-common', configuration: 'namedElements')
+//		}
 
 		if (project.name != "legacy-fabric-logger-api-v1") {
 			api project(path: ":common:legacy-fabric-logger-api-v1", configuration: 'namedElements')

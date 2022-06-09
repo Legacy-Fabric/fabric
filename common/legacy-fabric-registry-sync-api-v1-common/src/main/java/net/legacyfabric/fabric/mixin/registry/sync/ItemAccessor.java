@@ -27,7 +27,7 @@ import net.minecraft.item.Item;
 
 @Mixin(Item.class)
 public interface ItemAccessor {
-	@Accessor
+	@Accessor("BLOCK_ITEMS")
 	static Map<Block, Item> getBLOCK_ITEMS() {
 		throw new UnsupportedOperationException();
 	}
