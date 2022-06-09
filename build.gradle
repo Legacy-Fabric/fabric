@@ -72,9 +72,14 @@ def static setupRepositories(RepositoryHandler repositories) {
 
 def moduleDependencies(project, List<String> depNames) {
 	def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: 'namedElements') }
+	def testOutputs = depNames.iterator().collect { findProject(":$it").sourceSets.testmod.output }
 	project.dependencies {
 		deps.each {
 			api it
+		}
+
+		testOutputs.each {
+			testmodImplementation it
 		}
 	}
 
@@ -240,11 +245,7 @@ allprojects {
 		minecraft("com.mojang:minecraft:${versionInfo.mc_version}")
 		mappings("net.fabricmc:yarn:${versionInfo.mc_version}+build.${versionInfo.yarn_version}:v2")
 
-		if (projectName == "legacyfabric-api") {
-			modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
-		} else {
-			modCompileOnly("net.fabricmc:fabric-loader:${project.loader_version}")
-		}
+		modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 
 		implementation 'com.mojang:brigadier:1.0.17'
 
@@ -253,6 +254,8 @@ allprojects {
 			implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209'
 			implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
 		}
+
+		testmodImplementation sourceSets.main.output
 	}
 
 	if (System.getProperty("os.name").toLowerCase().contains("mac")) {

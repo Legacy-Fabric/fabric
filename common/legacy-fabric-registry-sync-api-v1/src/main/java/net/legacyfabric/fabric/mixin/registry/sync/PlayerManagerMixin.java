@@ -32,6 +32,7 @@ import net.minecraft.server.PlayerManager;
 import net.minecraft.server.integrated.IntegratedServer;
 
 import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.legacyfabric.fabric.api.networking.v1.ServerPlayNetworking;
@@ -61,6 +62,7 @@ public class PlayerManagerMixin {
 		return this.server.isDedicated() || published;
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Unique
 	private boolean fabric_isPublished() {
 		return ((IntegratedServer) this.server).isPublished();
