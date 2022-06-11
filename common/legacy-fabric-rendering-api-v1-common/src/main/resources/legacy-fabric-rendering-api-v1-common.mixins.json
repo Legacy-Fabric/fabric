@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.client.rendering",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "BlockEntityRenderDispatcherMixin",
+    "WorldRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

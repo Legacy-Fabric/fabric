@@ -222,7 +222,7 @@ allprojects {
 			}
 		}
 
-		shareRemapCaches = true
+//		shareRemapCaches = true
 
 		setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar');
 	}

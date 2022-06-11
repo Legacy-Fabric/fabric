@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.client.rendering",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "EntityRenderDispatcherMixin",
+    "LivingEntityRendererAccessor",
+    "ItemRendererMixin",
+    "InGameHudMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
