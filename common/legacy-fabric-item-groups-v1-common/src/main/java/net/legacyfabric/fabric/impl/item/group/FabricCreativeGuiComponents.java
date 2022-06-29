@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
@@ -74,8 +75,14 @@ public class FabricCreativeGuiComponents {
 
 				MinecraftClient minecraftClient = MinecraftClient.getInstance();
 				minecraftClient.getTextureManager().bindTexture(BUTTON_TEX);
-				GlStateManager.disableLighting();
-				GlStateManager.color4f(1F, 1F, 1F, 1F);
+
+				try { // 1.8+
+					GlStateManager.disableLighting();
+					GlStateManager.color4f(1F, 1F, 1F, 1F);
+				} catch (NoClassDefFoundError e) { // 1.7.10-
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				}
+
 				this.drawTexture(this.x, this.y, u + (type == Type.NEXT ? 11 : 0), v, 11, 10);
 
 				if (this.hovered) {

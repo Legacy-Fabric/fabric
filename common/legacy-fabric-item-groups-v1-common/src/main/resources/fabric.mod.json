@@ -16,5 +16,8 @@
     "Legacy Fabric"
   ],
   "mixins": [],
-  "description": "Advanced item groups."
+  "description": "Advanced item groups.",
+  "depends": {
+    "minecraft": ">=1.3"
+  }
 }

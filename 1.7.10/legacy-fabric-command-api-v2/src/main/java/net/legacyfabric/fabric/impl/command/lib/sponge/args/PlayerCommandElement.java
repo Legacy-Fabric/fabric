@@ -64,7 +64,7 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		return (Iterable<String>) MinecraftServer.getServer().getPlayerManager().players.stream().map(player -> ((PlayerEntity)player).getGameProfile().getName()).collect(Collectors.toSet());
+		return (Iterable<String>) MinecraftServer.getServer().getPlayerManager().players.stream().map(player -> ((PlayerEntity) player).getGameProfile().getName()).collect(Collectors.toSet());
 	}
 
 	@Override

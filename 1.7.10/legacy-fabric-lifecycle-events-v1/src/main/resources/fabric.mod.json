@@ -20,6 +20,6 @@
   ],
   "description": "Events for the game's lifecycle.",
   "depends": {
-    "minecraft": ">=1.8"
+    "minecraft": "<=1.7.10"
   }
 }

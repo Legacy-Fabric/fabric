@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.event.lifecycle",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MinecraftServerMixin",
+    "ServerChunkProviderMixin",
+    "ServerWorldMixin"
+  ],
+  "client": [
+    "client.ClientChunkProviderMixin",
+    "client.ClientWorldMixin",
+    "client.MinecraftClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

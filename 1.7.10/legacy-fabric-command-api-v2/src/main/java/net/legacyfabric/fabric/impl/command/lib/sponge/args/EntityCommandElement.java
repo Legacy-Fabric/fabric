@@ -91,7 +91,7 @@ public class EntityCommandElement extends SelectorCommandElement {
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
 		Set<String> worldEntities = (Set<String>) Arrays.stream(MinecraftServer.getServer().worlds).flatMap(world -> world.entities.stream())
 				.filter(o -> this.checkEntity((Entity) o))
-				.map(entity -> ((Entity)entity).getUuid().toString()).collect(Collectors.toSet());
+				.map(entity -> ((Entity) entity).getUuid().toString()).collect(Collectors.toSet());
 		Collection<PlayerEntity> players = Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().players);
 
 		if (!players.isEmpty() && this.checkEntity(players.iterator().next())) {
@@ -116,7 +116,7 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 		boolean found = false;
 		Optional<Entity> ret = Optional.ofNullable((Entity) MinecraftServer.getServer().getWorld().entities.stream()
-				.filter(o -> ((Entity)o).getUuid().equals(uuid)).findFirst().orElse(null));
+				.filter(o -> ((Entity) o).getUuid().equals(uuid)).findFirst().orElse(null));
 
 		if (ret.isPresent()) {
 			Entity entity = ret.get();

@@ -16,7 +16,8 @@
     "Legacy-Fabric"
   ],
   "depends": {
-    "fabricloader": ">=0.4.0"
+    "fabricloader": ">=0.4.0",
+    "minecraft": ">=1.8"
   },
   "description": "Registry hooks",
   "entrypoints": {
