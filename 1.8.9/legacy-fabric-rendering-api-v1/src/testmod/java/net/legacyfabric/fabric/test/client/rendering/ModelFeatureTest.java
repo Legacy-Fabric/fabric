@@ -44,7 +44,7 @@ public class ModelFeatureTest implements ClientModInitializer {
 						GlStateManager.enableTexture();
 						GlStateManager.translatef(0.0F, 1.0F, 0.0F);
 						GlStateManager.scalef(2, 2, 2);
-						MinecraftClient.getInstance().getBlockRenderManager().renderBlockEntity(state, state.getBlock().getColor(state));
+						MinecraftClient.getInstance().getBlockRenderManager().renderBlockEntity(state, 9923917);
 						GlStateManager.disableTexture();
 						GlStateManager.popMatrix();
 					}
