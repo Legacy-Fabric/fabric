@@ -20,6 +20,6 @@
   ],
   "description": "Advanced item groups.",
   "depends": {
-    "minecraft": "<1.12"
+    "minecraft": ">=1.12"
   }
 }

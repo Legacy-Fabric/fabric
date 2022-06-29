@@ -18,7 +18,7 @@ moduleDependencies(project, [
 		'1.8.9:legacy-fabric-command-api-v2',
 		'1.8.9:legacy-fabric-crash-report-info-v1',
 //		'1.8.9:legacy-fabric-entity-events-v1',
-		'1.8.9:legacy-fabric-item-groups-v1',
+		'1.12.2:legacy-fabric-item-groups-v1',
 //		'1.8.9:legacy-fabric-lifecycle-events-v1',
 		'1.8.9:legacy-fabric-permissions-api-v1',
 		'1.12.2:legacy-fabric-resource-loader-v1',

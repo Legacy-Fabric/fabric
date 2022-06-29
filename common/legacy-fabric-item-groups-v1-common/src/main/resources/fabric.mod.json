@@ -15,7 +15,9 @@
     "FabricMC",
     "Legacy Fabric"
   ],
-  "mixins": [],
+  "mixins": [
+    "legacy-fabric-item-groups-v1-common.mixins.json"
+  ],
   "description": "Advanced item groups.",
   "depends": {
     "minecraft": ">=1.3"

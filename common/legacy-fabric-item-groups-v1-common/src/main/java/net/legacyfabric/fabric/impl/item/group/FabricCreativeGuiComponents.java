@@ -18,8 +18,12 @@
 package net.legacyfabric.fabric.impl.item.group;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import org.lwjgl.opengl.GL11;
@@ -28,16 +32,42 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.util.Identifier;
+
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.VersionParsingException;
+import net.fabricmc.loader.api.metadata.version.VersionPredicate;
 
 public class FabricCreativeGuiComponents {
 	private static final Identifier BUTTON_TEX = new Identifier("legacy-fabric", "textures/gui/creative_buttons.png");
 	public static final Set<ItemGroup> COMMON_GROUPS = new HashSet<>();
 
+	public static final boolean hasHotBar;
+
+	public static ItemGroupCreator ITEM_GROUP_CREATOR;
+
 	static {
+		try {
+			VersionPredicate predicate = VersionPredicate.parse(">=1.12-alpha.17.06.a <=1.13.2");
+
+			hasHotBar = predicate.test(FabricLoader.getInstance().getModContainer("minecraft").get().getMetadata().getVersion());
+		} catch (VersionParsingException e) {
+			throw new RuntimeException(e);
+		}
+
 		COMMON_GROUPS.add(ItemGroup.SEARCH);
 		COMMON_GROUPS.add(ItemGroup.INVENTORY);
+
+		if (hasHotBar) {
+			for (ItemGroup itemGroup : ItemGroup.itemGroups) {
+				if (Objects.equals(itemGroup.getId(), "hotbar")) {
+					COMMON_GROUPS.add(itemGroup);
+					break;
+				}
+			}
+		}
 	}
 
 	public static class ItemGroupButtonWidget extends ButtonWidget {
@@ -86,7 +116,8 @@ public class FabricCreativeGuiComponents {
 				this.drawTexture(this.x, this.y, u + (type == Type.NEXT ? 11 : 0), v, 11, 10);
 
 				if (this.hovered) {
-					((ScreenAccessor) gui).callRenderTooltip(I18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, ((ItemGroup.itemGroups.length - 12) / 9) + 2), mouseX, mouseY);
+					int pageCount = (int) Math.ceil((ItemGroup.itemGroups.length - COMMON_GROUPS.size()) / 9D);
+					((ScreenAccessor) gui).callRenderTooltip(I18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, pageCount), mouseX, mouseY);
 				}
 			}
 		}
@@ -103,5 +134,9 @@ public class FabricCreativeGuiComponents {
 			this.text = text;
 			this.clickConsumer = clickConsumer;
 		}
+	}
+
+	public interface ItemGroupCreator {
+		ItemGroup create(int index, String id, Supplier<ItemStack> itemSupplier, BiConsumer<List<ItemStack>, ItemGroup> stacksForDisplay);
 	}
 }

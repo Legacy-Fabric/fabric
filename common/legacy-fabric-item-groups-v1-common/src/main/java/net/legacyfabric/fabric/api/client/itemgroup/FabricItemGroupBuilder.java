@@ -24,15 +24,15 @@ import java.util.function.Supplier;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.util.Identifier;
 
+import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
 import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 
 public final class FabricItemGroupBuilder {
 	private final Identifier identifier;
-	private Supplier<Item> itemSupplier = () -> Items.APPLE;
+	private Supplier<ItemStack> itemSupplier = () -> new ItemStack((Item) null);;
 	private BiConsumer<List<ItemStack>, ItemGroup> stacksForDisplay;
 
 	private FabricItemGroupBuilder(Identifier identifier) {
@@ -50,12 +50,35 @@ public final class FabricItemGroupBuilder {
 	}
 
 	/**
-	 * This is used to add an icon to to the item group.
+	 * This is used to add an icon to the item group.
+	 *
+	 * @param itemSupplier the supplier should return the item that you wish to show on the tab
+	 * @return a reference to the FabricItemGroupBuilder
+	 * @deprecated Use iconWithItem or iconWithItemStack instead
+	 */
+	@Deprecated
+	public FabricItemGroupBuilder icon(Supplier<Item> itemSupplier) {
+		return this.iconWithItem(itemSupplier);
+	}
+
+	/**
+	 * This is used to add an icon to the item group.
 	 *
 	 * @param itemSupplier the supplier should return the item that you wish to show on the tab
 	 * @return a reference to the FabricItemGroupBuilder
 	 */
-	public FabricItemGroupBuilder icon(Supplier<Item> itemSupplier) {
+	public FabricItemGroupBuilder iconWithItem(Supplier<Item> itemSupplier) {
+		this.itemSupplier = () -> new ItemStack(itemSupplier.get());
+		return this;
+	}
+
+	/**
+	 * This is used to add an icon to the item group.
+	 *
+	 * @param itemSupplier the supplier should return the item that you wish to show on the tab
+	 * @return a reference to the FabricItemGroupBuilder
+	 */
+	public FabricItemGroupBuilder iconWithItemStack(Supplier<ItemStack> itemSupplier) {
 		this.itemSupplier = itemSupplier;
 		return this;
 	}
@@ -103,8 +126,32 @@ public final class FabricItemGroupBuilder {
 	 * @param stackSupplier the supplier should return the item that you wish to show on the tab
 	 * @return An instance of the built ItemGroup
 	 */
+	public static ItemGroup buildWithItemStack(Identifier identifier, Supplier<ItemStack> stackSupplier) {
+		return new FabricItemGroupBuilder(identifier).iconWithItemStack(stackSupplier).build();
+	}
+
+	/**
+	 * This is a single method that makes creating an ItemGroup with an icon one call.
+	 *
+	 * @param identifier    the id will become the name of the ItemGroup and will be used for the translation key
+	 * @param stackSupplier the supplier should return the item that you wish to show on the tab
+	 * @return An instance of the built ItemGroup
+	 */
+	public static ItemGroup buildWithItem(Identifier identifier, Supplier<Item> stackSupplier) {
+		return new FabricItemGroupBuilder(identifier).iconWithItem(stackSupplier).build();
+	}
+
+	/**
+	 * This is a single method that makes creating an ItemGroup with an icon one call.
+	 *
+	 * @param identifier    the id will become the name of the ItemGroup and will be used for the translation key
+	 * @param stackSupplier the supplier should return the item that you wish to show on the tab
+	 * @return An instance of the built ItemGroup
+	 * @deprecated Use buildWithItem or buildWithItemStack instead.
+	 */
+	@Deprecated
 	public static ItemGroup build(Identifier identifier, Supplier<Item> stackSupplier) {
-		return new FabricItemGroupBuilder(identifier).icon(stackSupplier).build();
+		return buildWithItem(identifier, stackSupplier);
 	}
 
 	/**
@@ -114,21 +161,8 @@ public final class FabricItemGroupBuilder {
 	 */
 	public ItemGroup build() {
 		((ItemGroupExtensions) ItemGroup.BUILDING_BLOCKS).fabric_expandArray();
-		return new ItemGroup(ItemGroup.itemGroups.length - 1, String.format("%s.%s", identifier.getNamespace(), identifier.getPath())) {
-			@Override
-			public Item getIconItem() {
-				return itemSupplier.get();
-			}
-
-			@Override
-			public void showItems(List<ItemStack> stacks) {
-				if (stacksForDisplay != null) {
-					stacksForDisplay.accept(stacks, this);
-					return;
-				}
-
-				super.showItems(stacks);
-			}
-		};
+		return FabricCreativeGuiComponents.ITEM_GROUP_CREATOR.create(
+				ItemGroup.itemGroups.length - 1, String.format("%s.%s", identifier.getNamespace(), identifier.getPath()),
+				itemSupplier, stacksForDisplay);
 	}
 }

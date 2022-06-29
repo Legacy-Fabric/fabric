@@ -126,7 +126,7 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 	private void init(CallbackInfo info) {
 		fabric_updateSelection();
 
-		int xpos = x + 145;
+		int xpos = x + (FabricCreativeGuiComponents.hasHotBar ? 116 : 145);
 		int ypos = y - 10;
 
 		buttons.add(new FabricCreativeGuiComponents.ItemGroupButtonWidget(xpos + 11, ypos, FabricCreativeGuiComponents.Type.NEXT, this));
