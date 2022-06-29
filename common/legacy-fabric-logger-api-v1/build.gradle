@@ -1,1 +1,1 @@
-version = getSubprojectVersion(project, "1.0.3")
+version = getSubprojectVersion(project)

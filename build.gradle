@@ -27,7 +27,11 @@ import net.fabricmc.loom.task.RemapJarTask
 import org.apache.commons.codec.digest.DigestUtils
 
 
-def getSubprojectVersion(project, version) {
+def getSubprojectVersion(project) {
+	def version
+	if (project.name == "legacyfabric-api") version = project.base_version;
+	else version = project[project.name.replace("-common", "") + ".version"]
+
 	version = version + "+" + project.getParent().name;
 
 	if (grgit == null) {
