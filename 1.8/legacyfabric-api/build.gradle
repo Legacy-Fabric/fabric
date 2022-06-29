@@ -9,7 +9,7 @@ moduleDependencies(project, [
 		'common:legacy-fabric-keybindings-api-v1-common',
 		'common:legacy-fabric-lifecycle-events-v1-common',
 		'common:legacy-fabric-logger-api-v1',
-		'common:legacy-fabric-networking-api-v1',
+		'common:legacy-fabric-networking-api-v1-common',
 		'common:legacy-fabric-permissions-api-v1-common',
 		'common:legacy-fabric-registry-sync-api-v1-common',
 		'common:legacy-fabric-rendering-api-v1-common',
@@ -24,5 +24,6 @@ moduleDependencies(project, [
 		'1.8.9:legacy-fabric-keybindings-api-v1',
 		'1.8.9:legacy-fabric-rendering-api-v1',
 		'1.8:legacy-fabric-resource-loader-v1',
+		'1.8.9:legacy-fabric-networking-api-v1',
 		'1.8:legacy-fabric-registry-sync-api-v1'
 ])

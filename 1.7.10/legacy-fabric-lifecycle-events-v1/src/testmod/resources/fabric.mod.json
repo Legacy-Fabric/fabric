@@ -10,5 +10,8 @@
     "client": [
       "net.legacyfabric.fabric.test.lifecycle.client.ClientLifecycleEventsTest"
     ]
+  },
+  "depends": {
+    "minecraft": "<=1.7.10"
   }
 }

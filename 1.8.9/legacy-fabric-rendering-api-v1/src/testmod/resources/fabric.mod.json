@@ -8,5 +8,8 @@
       "net.legacyfabric.fabric.test.client.rendering.ModelFeatureTest",
       "net.legacyfabric.fabric.test.client.rendering.RenderingEventsTest"
     ]
+  },
+  "depends": {
+    "minecraft": ">=1.8"
   }
 }

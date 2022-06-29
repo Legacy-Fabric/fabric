@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.networking",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "EntityTrackerAccessor",
+    "EntityTrackerEntryAccessor",
+    "EntityTrackerEntryMixin",
+    "ServerPlayNetworkHandlerMixin"
+  ],
+  "client": [
+    "client.ClientPlayNetworkHandlerMixin",
+    "client.ConnectScreenAccessor",
+    "client.MinecraftClientAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
