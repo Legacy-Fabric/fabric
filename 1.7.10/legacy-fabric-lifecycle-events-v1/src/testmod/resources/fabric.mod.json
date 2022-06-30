@@ -4,9 +4,6 @@
   "description": "Tests for lifecycle events",
   "version": "1.0.0",
   "entrypoints": {
-    "main": [
-      "net.legacyfabric.fabric.test.lifecycle.ServerLifecycleEventsTest"
-    ],
     "client": [
       "net.legacyfabric.fabric.test.lifecycle.client.ClientLifecycleEventsTest"
     ]

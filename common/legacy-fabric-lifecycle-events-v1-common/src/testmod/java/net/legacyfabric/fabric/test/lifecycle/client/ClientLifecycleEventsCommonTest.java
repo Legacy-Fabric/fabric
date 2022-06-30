@@ -26,7 +26,7 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
-public class ClientLifecycleEventsTest implements ClientModInitializer {
+public class ClientLifecycleEventsCommonTest implements ClientModInitializer {
 	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "ClientLifecycleEvents");
 
 	@Override

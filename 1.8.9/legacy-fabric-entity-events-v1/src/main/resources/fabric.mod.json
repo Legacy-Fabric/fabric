@@ -18,5 +18,8 @@
   "description": "Events to hook into entities.",
   "mixins": [
     "legacy-fabric-entity-events-v1.mixins.json"
-  ]
+  ],
+  "depends": {
+    "minecraft": "<1.12"
+  }
 }

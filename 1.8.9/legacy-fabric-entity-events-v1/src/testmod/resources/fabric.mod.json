@@ -7,5 +7,8 @@
     "main": [
       "net.legacyfabric.fabric.test.entity.EntityEventsTest"
     ]
+  },
+  "depends": {
+    "minecraft": "<1.12"
   }
 }
