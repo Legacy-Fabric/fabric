@@ -76,5 +76,5 @@ include("1.10.2:legacyfabric-api")
 include("1.11.2")
 include("1.11.2:legacyfabric-api")
 
-include("1.13.2")
-include("1.13.2:legacyfabric-api")
+//include("1.13.2")
+//include("1.13.2:legacyfabric-api")
