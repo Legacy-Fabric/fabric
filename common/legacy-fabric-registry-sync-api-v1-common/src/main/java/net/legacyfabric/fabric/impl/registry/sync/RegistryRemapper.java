@@ -79,10 +79,12 @@ public class RegistryRemapper<T> {
 	public void remap() {
 		LOGGER.info("Remapping registry %s", this.registryId.toString());
 		IdList<T> newList = new IdList<>();
+
 		this.entryDump.forEach((id, rawId) -> {
 			T value = Objects.requireNonNull(RegistryHelperImpl.getObjects(this.registry).inverse().get(id));
 			newList.set(value, rawId);
 		});
+
 		IntSupplier currentSize = () -> RegistryHelperImpl.getIdMap(newList).size();
 		IntSupplier previousSize = () -> RegistryHelperImpl.getObjects(this.registry).size();
 

@@ -17,44 +17,65 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.collection.IdList;
 
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.mixin.registry.sync.BlockAccessor;
 
 public class BlockRegistryRemapper extends RegistryRemapper<Block> {
+	public static final IdList<BlockState> OLD_BLOCK_STATES = new IdList<>();
+	public static final IdList<BlockState> REMAPPED_BLOCK_STATES = new IdList<>();
 	public BlockRegistryRemapper() {
 		super(Block.REGISTRY, BLOCKS);
 	}
 
 	@Override
 	public void remap() {
-		IdList<Block> oldList = RegistryHelperImpl.getIdList(this.registry);
+		for (Block block14 : this.registry) {
+			for (BlockState blockState : block14.getStateManager().getBlockStates()) {
+				int i = this.registry.getIndex(block14) << 4 | block14.getData(blockState);
+				OLD_BLOCK_STATES.set(blockState, i);
+			}
+		}
+
+		//		IdList<Block> oldList = RegistryHelperImpl.getIdList(this.registry);
 		super.remap();
-		IdList<Block> newList = RegistryHelperImpl.getIdList(this.registry);
-		Map<Integer, Integer> old2new = new HashMap<>();
 
-		for (Block value : oldList) {
-			old2new.put(oldList.getId(value), newList.getId(value));
+		for (Block block14 : this.registry) {
+			for (BlockState blockState : block14.getStateManager().getBlockStates()) {
+				int i = this.registry.getIndex(block14) << 4 | block14.getData(blockState);
+				REMAPPED_BLOCK_STATES.set(blockState, i);
+			}
 		}
 
-		IdList<BlockState> oldStates = Block.BLOCK_STATES;
-		IdList<BlockState> newStates = new IdList<>();
+		//		IdList<Block> newList = RegistryHelperImpl.getIdList(this.registry);
+		//		Map<Integer, Integer> old2new = new HashMap<>();
+		//
+		//		for (Block value : oldList) {
+		//			old2new.put(oldList.getId(value), newList.getId(value));
+		//		}
 
-		for (BlockState blockState : oldStates) {
-			int id = oldStates.getId(blockState);
-			int blockId = id >> 4;
-			int stateId = id & 0xF;
-			int newBlockId = old2new.get(blockId);
-			int newBlockStateId = newBlockId << 4 | stateId;
-			newStates.set(blockState, newBlockStateId);
-		}
-
-		BlockAccessor.setBLOCK_STATES(newStates);
+		//		for (BlockState blockState : oldStates) {
+		//			if (blockState == null) {
+		//				LOGGER.warn("Found null block state!");
+		//				continue;
+		//			}
+		//
+		//			int id = oldStates.getId(blockState);
+		//			int blockId = id >> 4;
+		//			int stateId = id & 0xF;
+		//			int newBlockId = old2new.get(blockId);
+		//			int newBlockStateId = newBlockId << 4 | stateId;
+		//
+		//			if (id != newBlockStateId) {
+		//				LOGGER.info("Remapping block state id from %s to %s", id, newBlockStateId);
+		//			}
+		//
+		//			newStates.set(blockState, newBlockStateId);
+		//		}
+		//
+		//		BlockAccessor.setBLOCK_STATES(newStates);
+		BlockAccessor.setBLOCK_STATES(REMAPPED_BLOCK_STATES);
 	}
 }
