@@ -28,8 +28,8 @@ import net.minecraft.util.collection.IdList;
 @Mixin(IdList.class)
 public interface IdListAccessor {
 	@Accessor
-	IdentityHashMap<?, Integer> getIdMap();
+	<T> IdentityHashMap<T, Integer> getIdMap();
 
 	@Accessor
-	List<?> getList();
+	<T> List<T> getList();
 }

@@ -15,27 +15,12 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.impl.registry.sync;
 
-import java.util.Map;
+import net.minecraft.item.Item;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.gen.Accessor;
-
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.IdList;
-import net.minecraft.util.registry.SimpleRegistry;
-
-@Mixin(SimpleRegistry.class)
-public interface SimpleRegistryAccessor {
-	@Accessor
-	<T> IdList<T> getIds();
-
-	@Accessor
-	<T> Map<T, Identifier> getObjects();
-
-	@Mutable
-	@Accessor
-	<T> void setIds(IdList<T> ids);
+public class ItemRegistryRemapper extends RegistryRemapper<Item> {
+	public ItemRegistryRemapper() {
+		super(Item.REGISTRY, ITEMS);
+	}
 }

@@ -75,20 +75,19 @@ public class RegistryHelperImpl {
 		return id;
 	}
 
-	public static IdList<?> getIdList(SimpleRegistry<Identifier, ?> registry) {
+	public static <T> IdList<T> getIdList(SimpleRegistry<Identifier, T> registry) {
 		return ((SimpleRegistryAccessor) registry).getIds();
 	}
 
-	public static BiMap<?, Identifier> getObjects(SimpleRegistry<Identifier, ?> registry) {
-		//noinspection unchecked
-		return (BiMap<?, Identifier>) ((SimpleRegistryAccessor) registry).getObjects();
+	public static <T> BiMap<T, Identifier> getObjects(SimpleRegistry<Identifier, T> registry) {
+		return (BiMap<T, Identifier>) ((SimpleRegistryAccessor) registry).getObjects();
 	}
 
-	public static IdentityHashMap<?, Integer> getIdMap(IdList<?> idList) {
+	public static <T> IdentityHashMap<T, Integer> getIdMap(IdList<T> idList) {
 		return ((IdListAccessor) idList).getIdMap();
 	}
 
-	public static IdentityHashMap<?, Integer> getIdMap(SimpleRegistry<Identifier, ?> registry) {
+	public static <T> IdentityHashMap<T, Integer> getIdMap(SimpleRegistry<Identifier, T> registry) {
 		return getIdMap(getIdList(registry));
 	}
 }

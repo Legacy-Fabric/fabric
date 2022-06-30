@@ -20,27 +20,29 @@ package net.legacyfabric.fabric.mixin.registry.sync;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 
 import net.legacyfabric.fabric.impl.registry.sync.BlockRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.ItemRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin implements RegistryRemapperAccess {
 	@Unique
-	private final RegistryRemapper itemRemapper = new RegistryRemapper(Item.REGISTRY);
+	private final RegistryRemapper<Item> itemRemapper = new ItemRegistryRemapper();
 	@Unique
-	private final RegistryRemapper blockRemapper = new BlockRegistryRemapper();
+	private final RegistryRemapper<Block> blockRemapper = new BlockRegistryRemapper();
 
 	@Override
-	public RegistryRemapper getItemRemapper() {
+	public RegistryRemapper<Item> getItemRemapper() {
 		return this.itemRemapper;
 	}
 
 	@Override
-	public RegistryRemapper getBlockRemapper() {
+	public RegistryRemapper<Block> getBlockRemapper() {
 		return this.blockRemapper;
 	}
 }

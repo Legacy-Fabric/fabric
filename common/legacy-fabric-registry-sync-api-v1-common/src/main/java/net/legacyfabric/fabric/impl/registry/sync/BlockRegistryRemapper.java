@@ -27,19 +27,19 @@ import net.minecraft.util.collection.IdList;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.mixin.registry.sync.BlockAccessor;
 
-public class BlockRegistryRemapper extends RegistryRemapper {
+public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 	public BlockRegistryRemapper() {
-		super(Block.REGISTRY);
+		super(Block.REGISTRY, BLOCKS);
 	}
 
 	@Override
 	public void remap() {
-		IdList oldList = RegistryHelperImpl.getIdList(this.registry);
+		IdList<Block> oldList = RegistryHelperImpl.getIdList(this.registry);
 		super.remap();
-		IdList newList = RegistryHelperImpl.getIdList(this.registry);
+		IdList<Block> newList = RegistryHelperImpl.getIdList(this.registry);
 		Map<Integer, Integer> old2new = new HashMap<>();
 
-		for (Object value : oldList) {
+		for (Block value : oldList) {
 			old2new.put(oldList.getId(value), newList.getId(value));
 		}
 
