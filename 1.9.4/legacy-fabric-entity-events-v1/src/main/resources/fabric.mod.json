@@ -20,6 +20,6 @@
     "legacy-fabric-entity-events-v1.mixins.json"
   ],
   "depends": {
-    "minecraft": ">1.9.4"
+    "minecraft": ">1.8.9 <=1.9.4"
   }
 }

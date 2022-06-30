@@ -16,7 +16,7 @@
     "FabricMC"
   ],
   "depends": {
-    "minecraft": ">=1.8 <1.12"
+    "minecraft": ">=1.8 <=1.8.9"
   },
   "description": "Low-level, vanilla protocol oriented networking hooks.",
   "mixins": [
