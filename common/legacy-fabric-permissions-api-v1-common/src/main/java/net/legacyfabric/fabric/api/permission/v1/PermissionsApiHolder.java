@@ -19,8 +19,12 @@ package net.legacyfabric.fabric.api.permission.v1;
 
 import org.jetbrains.annotations.ApiStatus;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
@@ -58,7 +62,19 @@ public class PermissionsApiHolder {
 
 		@Override
 		public boolean hasPermission(ServerPlayerEntity player, String perm) {
-			return MinecraftServer.getServer().getPlayerManager().isOperator(player.getGameProfile());
+			return getServer().getPlayerManager().isOperator(player.getGameProfile());
+		}
+	}
+
+	protected static MinecraftServer getServer() {
+		try {
+			return MinecraftServer.getServer();
+		} catch (NoSuchMethodError e) {
+			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+				return MinecraftClient.getInstance().getServer();
+			} else {
+				return (MinecraftServer) FabricLoader.getInstance().getGameInstance();
+			}
 		}
 	}
 }
