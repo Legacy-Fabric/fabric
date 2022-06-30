@@ -73,3 +73,6 @@ include("1.9.4:legacyfabric-api")
 include("1.10.2")
 include("1.10.2:legacy-fabric-resource-loader-v1")
 include("1.10.2:legacyfabric-api")
+
+include("1.11.2")
+include("1.11.2:legacyfabric-api")

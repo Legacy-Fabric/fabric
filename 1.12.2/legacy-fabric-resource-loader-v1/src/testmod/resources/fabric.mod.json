@@ -9,6 +9,6 @@
     ]
   },
   "depends": {
-    "minecraft": ">1.10.2"
+    "minecraft": ">1.11.2"
   }
 }
