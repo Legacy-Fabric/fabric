@@ -20,5 +20,8 @@
     "Legacy-Fabric",
     "FabricMC"
   ],
-  "description": "Adds command-related hooks."
+  "description": "Adds command-related hooks.",
+  "depends": {
+    "minecraft": "<=1.12.2"
+  }
 }

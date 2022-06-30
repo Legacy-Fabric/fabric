@@ -9,6 +9,6 @@
     ]
   },
   "depends": {
-    "minecraft": ">=1.8"
+    "minecraft": ">1.8.9 <=1.12.2"
   }
 }
