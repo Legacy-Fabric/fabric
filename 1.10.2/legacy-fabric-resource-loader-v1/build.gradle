@@ -1,0 +1,5 @@
+version = getSubprojectVersion(project)
+
+moduleDependencies(project, [
+        "common:legacy-fabric-resource-loader-v1-common"
+])
