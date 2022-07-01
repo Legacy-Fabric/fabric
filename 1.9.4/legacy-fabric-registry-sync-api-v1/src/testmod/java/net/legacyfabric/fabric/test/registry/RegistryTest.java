@@ -38,7 +38,13 @@ public class RegistryTest implements ModInitializer {
 		Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[] {concBlock, concBlock2} : new Block[] {concBlock2, concBlock};
 
 		for (Block block : blocks) {
-			RegistryHelper.registerBlock(block, new Identifier("legacy-fabric-api", "conc_block_" + block.getMaterialColor(block.getDefaultState()).color));
+			int color = 1644825;
+
+			if (block == concBlock2) {
+				color = 3361970;
+			}
+
+			RegistryHelper.registerBlock(block, new Identifier("legacy-fabric-api", "conc_block_" + color));
 			RegistryHelper.registerItem(new BlockItem(block), Block.REGISTRY.getIdentifier(block));
 		}
 	}
