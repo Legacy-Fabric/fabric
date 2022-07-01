@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
-import java.util.Objects;
 import java.util.function.IntSupplier;
 
 import com.google.common.collect.BiMap;
@@ -37,6 +36,7 @@ public class RegistryRemapper<T> {
 	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
 	protected final SimpleRegistry<Identifier, T> registry;
 	protected BiMap<Identifier, Integer> entryDump;
+	protected BiMap<Identifier, Integer> missingMap = HashBiMap.create();
 	protected final Identifier registryId;
 
 	public static final Identifier ITEMS = new Identifier("items");
@@ -51,8 +51,10 @@ public class RegistryRemapper<T> {
 		this.entryDump = HashBiMap.create();
 		RegistryHelperImpl.getIdMap(this.registry).forEach((value, id) -> {
 			Identifier key = RegistryHelperImpl.getObjects(this.registry).get(value);
-			this.entryDump.put(key, id);
+			if (key != null) this.entryDump.put(key, id);
 		});
+
+		this.entryDump.putAll(this.missingMap);
 	}
 
 	public NbtCompound toNbt() {
@@ -81,24 +83,51 @@ public class RegistryRemapper<T> {
 		IdList<T> newList = new IdList<>();
 
 		this.entryDump.forEach((id, rawId) -> {
-			T value = Objects.requireNonNull(RegistryHelperImpl.getObjects(this.registry).inverse().get(id));
-			newList.set(value, rawId);
+			T value = RegistryHelperImpl.getObjects(this.registry).inverse().get(id);
+
+			if (value == null) {
+				newList.set(null, rawId);
+				LOGGER.warn("Object with id %s is missing!", id.toString());
+				this.missingMap.put(id, rawId);
+			} else {
+				newList.set(value, rawId);
+			}
 		});
 
 		IntSupplier currentSize = () -> RegistryHelperImpl.getIdMap(newList).size();
 		IntSupplier previousSize = () -> RegistryHelperImpl.getObjects(this.registry).size();
 
 		if (currentSize.getAsInt() > previousSize.getAsInt()) {
-			throw new IllegalStateException("Registry size increased from " + previousSize + " to " + currentSize + " after remapping! This is not possible!");
+			if (this.missingMap.size() == 0) {
+				throw new IllegalStateException("Registry size increased from " + previousSize.getAsInt() + " to " + currentSize.getAsInt() + " after remapping! This is not possible!");
+			}
 		} else if (currentSize.getAsInt() < previousSize.getAsInt()) {
 			LOGGER.info("Adding " + (previousSize.getAsInt() - currentSize.getAsInt()) + " missing entries to registry");
+
 			RegistryHelperImpl.getObjects(this.registry).keySet().stream().filter(obj -> newList.getId(obj) == -1).forEach(missing -> {
 				int id = RegistryHelperImpl.nextId(this.registry);
-				newList.set(missing, id);
+
+				while (newList.fromId(id) != null) {
+					id = RegistryHelperImpl.nextId(newList);
+
+					T currentBlock = RegistryHelperImpl.getIdList(this.registry).fromId(id);
+
+					if (currentBlock != null && newList.getId(currentBlock) == -1) {
+						newList.set(currentBlock, id);
+					}
+				}
+
+				if (newList.getId(missing) == -1) {
+					newList.set(missing, id);
+				} else {
+					id = newList.getId(missing);
+				}
+
+				LOGGER.info("Adding object %s with numerical id %d to registry", this.registry.getIdentifier(missing), id);
 			});
 		}
 
-		if (currentSize.getAsInt() != previousSize.getAsInt()) {
+		if (currentSize.getAsInt() != previousSize.getAsInt() && this.missingMap.size() == 0) {
 			throw new IllegalStateException("An error occured during remapping");
 		}
 

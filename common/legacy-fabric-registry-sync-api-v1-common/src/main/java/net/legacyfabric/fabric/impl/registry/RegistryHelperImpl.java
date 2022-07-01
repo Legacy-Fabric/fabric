@@ -75,6 +75,16 @@ public class RegistryHelperImpl {
 		return id;
 	}
 
+	public static int nextId(IdList<?> idList) {
+		int id = 0;
+
+		while (idList.fromId(id) != null) {
+			id++;
+		}
+
+		return id;
+	}
+
 	public static <T> IdList<T> getIdList(SimpleRegistry<Identifier, T> registry) {
 		return ((SimpleRegistryAccessor) registry).getIds();
 	}
