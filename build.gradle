@@ -34,6 +34,8 @@ def getSubprojectVersion(project) {
 
 	version = version + "+" + project.getParent().name;
 
+	if (project.name == "legacyfabric-api") return version;
+
 	if (grgit == null) {
 		return version + "+nogit"
 	}
@@ -386,35 +388,31 @@ subprojects {
 	dependencies {
 		testmodImplementation sourceSets.main.output
 
-//		if (project.name != "legacy-fabric-resource-loader-v1") {
-//			testmodImplementation project(path: ':common:legacy-fabric-resource-loader-v1-common', configuration: 'namedElements')
-//		}
-//
-//		if (project.name != "legacy-fabric-registry-sync-api-v1" && project.name != "legacy-fabric-registry-sync-api-v1-common") {
-//			testmodRuntimeOnly project(path: ':common:legacy-fabric-registry-sync-api-v1-common', configuration: 'namedElements')
-//		}
-
 		if (project.name != "legacy-fabric-logger-api-v1") {
 			api project(path: ":common:legacy-fabric-logger-api-v1", configuration: 'namedElements')
 		}
 	}
 
-	publishing {
-		publications {
-			mavenJava(MavenPublication) {
-				artifact(remapJar) {
-					builtBy(remapJar)
-				}
+	def parent = project.getParent()
 
-				artifact(remapSourcesJar) {
-					builtBy remapSourcesJar
+	if (parent == null || parent.name != "legacy-fabric-api") {
+		publishing {
+			publications {
+				mavenJava(MavenPublication) {
+					artifact(remapJar) {
+						builtBy(remapJar)
+					}
+
+					artifact(remapSourcesJar) {
+						builtBy remapSourcesJar
+					}
 				}
 			}
 		}
-	}
 
-	// We manually handle the pom generation
-	loom.disableDeprecatedPomGeneration(publishing.publications.mavenJava)
+		// We manually handle the pom generation
+		loom.disableDeprecatedPomGeneration(publishing.publications.mavenJava)
+	}
 
 	javadoc.enabled = false
 
@@ -452,11 +450,13 @@ publishing {
 			pom.withXml {
 				def depsNode = asNode().appendNode("dependencies")
 				subprojects.each {
-					def depNode = depsNode.appendNode("dependency")
-					depNode.appendNode("groupId", it.group)
-					depNode.appendNode("artifactId", it.name)
-					depNode.appendNode("version", it.version)
-					depNode.appendNode("scope", "compile")
+					if (it.parent.name != "legacy-fabric-api" && it.name != "legacyfabric-api") {
+						def depNode = depsNode.appendNode("dependency")
+						depNode.appendNode("groupId", it.group)
+						depNode.appendNode("artifactId", it.name)
+						depNode.appendNode("version", it.version)
+						depNode.appendNode("scope", "compile")
+					}
 				}
 			}
 		}
@@ -509,7 +509,7 @@ curseforge {
 		addGameVersion 'Fabric'
 
 		mainArtifact(remapJar) {
-			displayName = "[${project.mc_version}] Legacy Fabric API ${project.base_version}"
+			displayName = "Legacy Fabric API ${project.base_version}"
 		}
 
 		afterEvaluate {
@@ -534,7 +534,7 @@ task github(dependsOn: remapJar) {
 		def repository = github.getRepository(ENV.GITHUB_REPOSITORY)
 
 		def releaseBuilder = new GHReleaseBuilder(repository, version as String)
-		releaseBuilder.name("[$project.mc_version] Legacy Fabric API $project.version")
+		releaseBuilder.name("Legacy Fabric API $project.version")
 		releaseBuilder.body(ENV.CHANGELOG ?: "No changelog provided")
 		releaseBuilder.commitish(getBranch())
 		releaseBuilder.prerelease(false)

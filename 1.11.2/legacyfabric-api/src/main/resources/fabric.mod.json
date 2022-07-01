@@ -31,5 +31,8 @@
       }
     }
   ],
-  "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2."
+  "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2.",
+  "depends": {
+    "minecraft": "1.11.2"
+  }
 }
