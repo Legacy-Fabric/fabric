@@ -31,6 +31,7 @@ import net.fabricmc.loader.api.metadata.version.VersionPredicate;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
+import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 	public BlockRegistryRemapper() {
@@ -70,9 +71,11 @@ public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 
 		Identifier specialCase = new Identifier("tripwire");
 
+		SimpleRegistryCompat<Identifier, Block> simpleRegistry = (SimpleRegistryCompat<Identifier, Block>) this.registry;
+
 		for (Block block : this.registry) {
 			if (this.registry.getIdentifier(block).equals(specialCase) && hasSpecialCase) {
-				int newBlockId = this.registry.getIndex(block);
+				int newBlockId = simpleRegistry.getRawID(block);
 
 				for (int i = 0; i < 15; ++i) {
 					int newId = newBlockId << 4 | i;
@@ -90,7 +93,7 @@ public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 				}
 			} else {
 				for (BlockState blockState : block.getStateManager().getBlockStates()) {
-					int newBlockId = this.registry.getIndex(block);
+					int newBlockId = simpleRegistry.getRawID(block);
 					int newId = newBlockId << 4 | block.getData(blockState);
 					int oldId = oldStates.getInt(blockState);
 

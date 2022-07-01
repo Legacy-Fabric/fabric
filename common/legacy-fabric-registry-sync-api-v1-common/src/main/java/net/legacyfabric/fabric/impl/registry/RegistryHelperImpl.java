@@ -92,11 +92,11 @@ public class RegistryHelperImpl {
 		return (BiMap<T, Identifier>) ((SimpleRegistryCompat<Identifier, T>) registry).getObjects();
 	}
 
-	public static <T> IdentityHashMap<T, Integer> getIdMap(IdListCompat<T> idList) {
-		return idList.getIdMap();
+	public static <T> IdentityHashMap<T, Integer> getIdMap(IdListCompat<T> idList, SimpleRegistry<Identifier, T> registry) {
+		return idList.getIdMap(registry);
 	}
 
 	public static <T> IdentityHashMap<T, Integer> getIdMap(SimpleRegistry<Identifier, T> registry) {
-		return getIdMap(getIdList(registry));
+		return getIdMap(getIdList(registry), registry);
 	}
 }

@@ -20,10 +20,12 @@ package net.legacyfabric.fabric.impl.registry.sync.compat;
 import java.util.IdentityHashMap;
 import java.util.List;
 
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.ObjectIdIterable;
+import net.minecraft.util.registry.SimpleRegistry;
 
 public interface IdListCompat<T> extends ObjectIdIterable<T> {
-	IdentityHashMap<T, Integer> getIdMap();
+	IdentityHashMap<T, Integer> getIdMap(SimpleRegistry<Identifier, T> simpleRegistry);
 
 	List<T> getList();
 

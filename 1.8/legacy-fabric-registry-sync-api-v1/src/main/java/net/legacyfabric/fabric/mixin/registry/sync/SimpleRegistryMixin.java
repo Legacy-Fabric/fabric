@@ -35,7 +35,7 @@ public abstract class SimpleRegistryMixin<T, I> implements SimpleRegistryCompat<
 	@Mutable
 	@Shadow
 	@Final
-	protected IdList<I> ids;
+	protected IdList ids;
 
 	@Shadow
 	@Final
@@ -56,12 +56,12 @@ public abstract class SimpleRegistryMixin<T, I> implements SimpleRegistryCompat<
 
 	@Override
 	public void setIds(IdListCompat<I> idList) {
-		this.ids = (IdList<I>) idList;
+		this.ids = (IdList) idList;
 	}
 
 	@Override
 	public IdListCompat<I> createIdList() {
-		return (IdListCompat<I>) new IdList<I>();
+		return (IdListCompat<I>) new IdList();
 	}
 
 	@Override

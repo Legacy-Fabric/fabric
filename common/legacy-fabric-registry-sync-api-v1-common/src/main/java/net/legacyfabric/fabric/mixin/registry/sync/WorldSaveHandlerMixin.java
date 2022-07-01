@@ -34,13 +34,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldSaveHandler;
 import net.minecraft.world.level.LevelProperties;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
-import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
+import net.legacyfabric.fabric.impl.registry.sync.ServerRegistryRemapper;
 
 @Mixin(WorldSaveHandler.class)
 public class WorldSaveHandlerMixin {
@@ -64,7 +63,7 @@ public class WorldSaveHandlerMixin {
 			}
 
 			if (nbt != null) {
-				((RegistryRemapperAccess) MinecraftServer.getServer()).readAndRemap(nbt);
+				ServerRegistryRemapper.getInstance().readAndRemap(nbt);
 				return true;
 			}
 		}
@@ -79,7 +78,7 @@ public class WorldSaveHandlerMixin {
 
 	@Unique
 	private void fabric_saveRegistryData() {
-		NbtCompound newIdMap = ((RegistryRemapperAccess) MinecraftServer.getServer()).toNbtCompound();
+		NbtCompound newIdMap = ServerRegistryRemapper.getInstance().toNbtCompound();
 
 		if (!newIdMap.equals(this.fabric_lastSavedIdMap)) {
 			for (int i = FABRIC_ID_REGISTRY_BACKUPS - 1; i >= 0; i--) {

@@ -17,55 +17,65 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync;
 
-import java.util.Map;
+import java.util.IdentityHashMap;
+import java.util.List;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
-import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
-@Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixin<T, I> implements SimpleRegistryCompat<T, I> {
-	@Mutable
+@Mixin(IdList.class)
+public abstract class IdListMixin<T> implements IdListCompat<T> {
 	@Shadow
 	@Final
-	protected IdList<I> ids;
+	private IdentityHashMap<T, Integer> idMap;
 
 	@Shadow
 	@Final
-	protected Map<I, T> objects;
+	private List<T> list;
 
 	@Shadow
-	public abstract int getIndex(I object);
+	public abstract T fromId(int index);
+
+	@Shadow
+	public abstract void set(T value, int index);
+
+	@Shadow
+	public abstract int getId(T value);
 
 	@Override
-	public IdListCompat<I> getIds() {
-		return (IdListCompat<I>) this.ids;
+	public IdentityHashMap<T, Integer> getIdMap(SimpleRegistry<Identifier, T> simpleRegistry) {
+		return this.idMap;
 	}
 
 	@Override
-	public Map<I, T> getObjects() {
-		return this.objects;
+	public List<T> getList() {
+		return this.list;
 	}
 
 	@Override
-	public void setIds(IdListCompat<I> idList) {
-		this.ids = (IdList<I>) idList;
+	public T fromInt(int index) {
+		return this.fromId(index);
 	}
 
 	@Override
-	public IdListCompat<I> createIdList() {
-		return (IdListCompat<I>) new IdList<I>();
+	public void setValue(T value, int index) {
+		this.set(value, index);
 	}
 
 	@Override
-	public int getRawID(I object) {
-		return this.getIndex(object);
+	public int getInt(T value) {
+		return this.getId(value);
+	}
+
+	@Override
+	public IdListCompat<T> createIdList() {
+		return (IdListCompat<T>) new IdList<T>();
 	}
 }

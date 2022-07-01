@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.IntSupplier;
 
 import com.google.common.collect.BiMap;
@@ -40,6 +42,8 @@ public class RegistryRemapper<T> {
 	public final Identifier registryId;
 	public final String type;
 
+	private static final Map<SimpleRegistryCompat<Identifier, ?>, RegistryRemapper<?>> REGISTRY_REMAPPER_MAP = new HashMap<>();
+
 	public static final Identifier ITEMS = new Identifier("items");
 	public static final Identifier BLOCKS = new Identifier("blocks");
 
@@ -47,6 +51,7 @@ public class RegistryRemapper<T> {
 		this.registry = registry;
 		this.registryId = registryId;
 		this.type = type;
+		REGISTRY_REMAPPER_MAP.put((SimpleRegistryCompat<Identifier, ?>) this.registry, this);
 	}
 
 	public void dump() {
@@ -96,7 +101,7 @@ public class RegistryRemapper<T> {
 			}
 		});
 
-		IntSupplier currentSize = () -> RegistryHelperImpl.getIdMap(newList).size();
+		IntSupplier currentSize = () -> RegistryHelperImpl.getIdMap(newList, this.registry).size();
 		IntSupplier previousSize = () -> RegistryHelperImpl.getObjects(this.registry).size();
 
 		if (currentSize.getAsInt() > previousSize.getAsInt()) {
@@ -136,5 +141,13 @@ public class RegistryRemapper<T> {
 		((SimpleRegistryCompat<Identifier, T>) this.registry).setIds(newList);
 		this.dump();
 		LOGGER.info("Remapped " + previousSize.getAsInt() + " entries");
+	}
+
+	public static <R> RegistryRemapper<R> getRegistryRemapper(SimpleRegistry<Identifier, R> simpleRegistry) {
+		return (RegistryRemapper<R>) REGISTRY_REMAPPER_MAP.getOrDefault(simpleRegistry, null);
+	}
+
+	public void addMissing(Identifier key, int id) {
+		this.missingMap.put(key, id);
 	}
 }

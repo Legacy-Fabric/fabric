@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.util.collection.IdList;
+import net.minecraft.class_2929;
 import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
@@ -32,21 +32,21 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixin<T, I> implements SimpleRegistryCompat<T, I> {
-	@Mutable
-	@Shadow
-	@Final
-	protected IdList<I> ids;
-
 	@Shadow
 	@Final
 	protected Map<I, T> objects;
 
+	@Mutable
 	@Shadow
-	public abstract int getIndex(I object);
+	@Final
+	protected class_2929<I> field_13718;
+
+	@Shadow
+	public abstract int getRawId(Object par1);
 
 	@Override
 	public IdListCompat<I> getIds() {
-		return (IdListCompat<I>) this.ids;
+		return (IdListCompat<I>) this.field_13718;
 	}
 
 	@Override
@@ -56,16 +56,16 @@ public abstract class SimpleRegistryMixin<T, I> implements SimpleRegistryCompat<
 
 	@Override
 	public void setIds(IdListCompat<I> idList) {
-		this.ids = (IdList<I>) idList;
+		this.field_13718 = (class_2929<I>) idList;
 	}
 
 	@Override
 	public IdListCompat<I> createIdList() {
-		return (IdListCompat<I>) new IdList<I>();
+		return (IdListCompat<I>) new class_2929<I>(256);
 	}
 
 	@Override
 	public int getRawID(I object) {
-		return this.getIndex(object);
+		return this.getRawId(object);
 	}
 }

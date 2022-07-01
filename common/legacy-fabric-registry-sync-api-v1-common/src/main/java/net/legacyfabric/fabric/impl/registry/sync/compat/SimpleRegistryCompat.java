@@ -27,4 +27,6 @@ public interface SimpleRegistryCompat<T, I> {
 	void setIds(IdListCompat<I> idList);
 
 	IdListCompat<I> createIdList();
+
+	int getRawID(I object);
 }

@@ -20,60 +20,70 @@ package net.legacyfabric.fabric.mixin.registry.sync;
 import java.util.IdentityHashMap;
 import java.util.List;
 
-import org.spongepowered.asm.mixin.Final;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.util.collection.IdList;
+import net.minecraft.class_2929;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 
-@Mixin(IdList.class)
-public abstract class IdListMixin<T> implements IdListCompat<T> {
+@Mixin(class_2929.class)
+public abstract class class_2929Mixin<T> implements IdListCompat<T> {
 	@Shadow
-	@Final
-	private IdentityHashMap<T, Integer> idMap;
+	public abstract void method_12859(T object, int i);
 
 	@Shadow
-	@Final
-	private List<T> list;
+	@Nullable
+	public abstract T method_12857(int i);
 
 	@Shadow
-	public abstract T fromId(int index);
+	public abstract int method_12858(T object);
 
 	@Shadow
-	public abstract void set(T value, int index);
-
-	@Shadow
-	public abstract int getId(T value);
+	private T[] field_14375;
 
 	@Override
-	public IdentityHashMap<T, Integer> getIdMap() {
-		return this.idMap;
+	public IdentityHashMap<T, Integer> getIdMap(SimpleRegistry<Identifier, T> simpleRegistry) {
+		IdentityHashMap<T, Integer> idMap = new IdentityHashMap<>(512);
+
+		for (int i = 0; i < this.field_14375.length; i++) {
+			T value = this.field_14375[i];
+
+			if (value == null) {
+				continue;
+			}
+
+			idMap.put(value, i);
+		}
+
+		return idMap;
 	}
 
 	@Override
 	public List<T> getList() {
-		return this.list;
+		return null;
 	}
 
 	@Override
 	public T fromInt(int index) {
-		return this.fromId(index);
+		return this.method_12857(index);
 	}
 
 	@Override
 	public void setValue(T value, int index) {
-		this.set(value, index);
+		this.method_12859(value, index);
 	}
 
 	@Override
 	public int getInt(T value) {
-		return this.getId(value);
+		return this.method_12858(value);
 	}
 
 	@Override
 	public IdListCompat<T> createIdList() {
-		return (IdListCompat<T>) new IdList<T>();
+		return (IdListCompat<T>) new class_2929<T>(256);
 	}
 }
