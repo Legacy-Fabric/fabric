@@ -22,18 +22,17 @@ import java.util.List;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.ObjectIdIterable;
-import net.minecraft.util.registry.SimpleRegistry;
 
-public interface IdListCompat<T> extends ObjectIdIterable<T> {
-	IdentityHashMap<T, Integer> getIdMap(SimpleRegistry<Identifier, T> simpleRegistry);
+public interface IdListCompat<V> extends ObjectIdIterable<V> {
+	IdentityHashMap<V, Integer> getIdMap(SimpleRegistryCompat<Identifier, V> simpleRegistry);
 
-	List<T> getList();
+	List<V> getList();
 
-	T fromInt(int index);
+	V fromInt(int index);
 
-	void setValue(T value, int index);
+	void setValue(V value, int index);
 
-	int getInt(T value);
+	int getInt(V value);
 
-	IdListCompat<T> createIdList();
+	IdListCompat<V> createIdList();
 }

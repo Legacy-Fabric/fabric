@@ -37,7 +37,7 @@ import net.legacyfabric.fabric.mixin.registry.sync.ItemAccessor;
 public class RegistryHelperImpl {
 	public static Block registerBlock(Block block, Identifier id) {
 		block.setTranslationKey(formatTranslationKey(id));
-		int rawId = nextId(Block.REGISTRY);
+		int rawId = nextId((SimpleRegistryCompat<Identifier, ?>) Block.REGISTRY);
 		Block.REGISTRY.add(rawId, id, block);
 
 		for (BlockState blockState : block.getStateManager().getBlockStates()) {
@@ -50,7 +50,7 @@ public class RegistryHelperImpl {
 
 	public static Item registerItem(Item item, Identifier id) {
 		item.setTranslationKey(formatTranslationKey(id));
-		int rawId = nextId(Item.REGISTRY);
+		int rawId = nextId((SimpleRegistryCompat<Identifier, ?>) Item.REGISTRY);
 		Item.REGISTRY.add(rawId, id, item);
 
 		if (item instanceof BlockItem) {
@@ -64,7 +64,7 @@ public class RegistryHelperImpl {
 		return key.getNamespace() + "." + key.getPath();
 	}
 
-	public static int nextId(SimpleRegistry<Identifier, ?> registry) {
+	public static int nextId(SimpleRegistryCompat<Identifier, ?> registry) {
 		int id = 0;
 
 		while (getIdList(registry).fromInt(id) != null) {
@@ -84,19 +84,19 @@ public class RegistryHelperImpl {
 		return id;
 	}
 
-	public static <T> IdListCompat<T> getIdList(SimpleRegistry<Identifier, T> registry) {
-		return ((SimpleRegistryCompat<Identifier, T>) registry).getIds();
+	public static <T> IdListCompat<T> getIdList(SimpleRegistryCompat<Identifier, T> registry) {
+		return registry.getIds();
 	}
 
-	public static <T> BiMap<T, Identifier> getObjects(SimpleRegistry<Identifier, T> registry) {
-		return (BiMap<T, Identifier>) ((SimpleRegistryCompat<Identifier, T>) registry).getObjects();
+	public static <T> BiMap<T, Identifier> getObjects(SimpleRegistryCompat<Identifier, T> registry) {
+		return (BiMap<T, Identifier>) registry.getObjects();
 	}
 
-	public static <T> IdentityHashMap<T, Integer> getIdMap(IdListCompat<T> idList, SimpleRegistry<Identifier, T> registry) {
+	public static <T> IdentityHashMap<T, Integer> getIdMap(IdListCompat<T> idList, SimpleRegistryCompat<Identifier, T> registry) {
 		return idList.getIdMap(registry);
 	}
 
-	public static <T> IdentityHashMap<T, Integer> getIdMap(SimpleRegistry<Identifier, T> registry) {
+	public static <T> IdentityHashMap<T, Integer> getIdMap(SimpleRegistryCompat<Identifier, T> registry) {
 		return getIdMap(getIdList(registry), registry);
 	}
 }

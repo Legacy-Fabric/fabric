@@ -19,14 +19,18 @@ package net.legacyfabric.fabric.impl.registry.sync.compat;
 
 import java.util.Map;
 
-public interface SimpleRegistryCompat<T, I> {
-	IdListCompat<I> getIds();
+public interface SimpleRegistryCompat<K, V> extends Iterable<V> {
+	IdListCompat<V> getIds();
 
-	Map<I, T> getObjects();
+	Map<V, K> getObjects();
 
-	void setIds(IdListCompat<I> idList);
+	void setIds(IdListCompat<V> idList);
 
-	IdListCompat<I> createIdList();
+	IdListCompat<V> createIdList();
 
-	int getRawID(I object);
+	int getRawID(V object);
+
+	K getKey(V object);
+
+	V getValue(K key);
 }

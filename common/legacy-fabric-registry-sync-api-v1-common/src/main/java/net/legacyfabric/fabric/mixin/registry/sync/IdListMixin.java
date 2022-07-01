@@ -29,53 +29,54 @@ import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
+import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 @Mixin(IdList.class)
-public abstract class IdListMixin<T> implements IdListCompat<T> {
+public abstract class IdListMixin<V> implements IdListCompat<V> {
 	@Shadow
 	@Final
-	private IdentityHashMap<T, Integer> idMap;
+	private IdentityHashMap<V, Integer> idMap;
 
 	@Shadow
 	@Final
-	private List<T> list;
+	private List<V> list;
 
 	@Shadow
-	public abstract T fromId(int index);
+	public abstract V fromId(int index);
 
 	@Shadow
-	public abstract void set(T value, int index);
+	public abstract void set(V value, int index);
 
 	@Shadow
-	public abstract int getId(T value);
+	public abstract int getId(V value);
 
 	@Override
-	public IdentityHashMap<T, Integer> getIdMap(SimpleRegistry<Identifier, T> simpleRegistry) {
+	public IdentityHashMap<V, Integer> getIdMap(SimpleRegistryCompat<Identifier, V> simpleRegistry) {
 		return this.idMap;
 	}
 
 	@Override
-	public List<T> getList() {
+	public List<V> getList() {
 		return this.list;
 	}
 
 	@Override
-	public T fromInt(int index) {
+	public V fromInt(int index) {
 		return this.fromId(index);
 	}
 
 	@Override
-	public void setValue(T value, int index) {
+	public void setValue(V value, int index) {
 		this.set(value, index);
 	}
 
 	@Override
-	public int getInt(T value) {
+	public int getInt(V value) {
 		return this.getId(value);
 	}
 
 	@Override
-	public IdListCompat<T> createIdList() {
-		return (IdListCompat<T>) new IdList<T>();
+	public IdListCompat<V> createIdList() {
+		return (IdListCompat<V>) new IdList<V>();
 	}
 }

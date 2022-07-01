@@ -35,7 +35,7 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 	public BlockRegistryRemapper() {
-		super(Block.REGISTRY, BLOCKS, "Block");
+		super((SimpleRegistryCompat<Identifier, Block>) Block.REGISTRY, BLOCKS, "Block");
 	}
 
 	private static final boolean hasSpecialCase;
@@ -71,11 +71,9 @@ public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 
 		Identifier specialCase = new Identifier("tripwire");
 
-		SimpleRegistryCompat<Identifier, Block> simpleRegistry = (SimpleRegistryCompat<Identifier, Block>) this.registry;
-
 		for (Block block : this.registry) {
-			if (this.registry.getIdentifier(block).equals(specialCase) && hasSpecialCase) {
-				int newBlockId = simpleRegistry.getRawID(block);
+			if (this.registry.getKey(block).equals(specialCase) && hasSpecialCase) {
+				int newBlockId = this.registry.getRawID(block);
 
 				for (int i = 0; i < 15; ++i) {
 					int newId = newBlockId << 4 | i;
@@ -83,25 +81,25 @@ public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 					int oldId = oldStates.getInt(state);
 
 					if (oldId == -1) {
-						LOGGER.info("New block state id %d for block %s", newId, this.registry.getIdentifier(block).toString());
+						LOGGER.info("New block state id %d for block %s", newId, this.registry.getKey(block).toString());
 					} else if (oldId != newId) {
 						LOGGER.info("Migrating block state id %d of block %s to %d",
-								oldId, this.registry.getIdentifier(block).toString(), newId);
+								oldId, this.registry.getKey(block).toString(), newId);
 					}
 
 					newStates.setValue(state, newId);
 				}
 			} else {
 				for (BlockState blockState : block.getStateManager().getBlockStates()) {
-					int newBlockId = simpleRegistry.getRawID(block);
+					int newBlockId = this.registry.getRawID(block);
 					int newId = newBlockId << 4 | block.getData(blockState);
 					int oldId = oldStates.getInt(blockState);
 
 					if (oldId == -1) {
-						LOGGER.info("New block state id %d for block %s", newId, this.registry.getIdentifier(block).toString());
+						LOGGER.info("New block state id %d for block %s", newId, this.registry.getKey(block).toString());
 					} else if (oldId != newId) {
 						LOGGER.info("Migrating block state id %d of block %s to %d",
-								oldId, this.registry.getIdentifier(block).toString(), newId);
+								oldId, this.registry.getKey(block).toString(), newId);
 					}
 
 					newStates.setValue(blockState, newId);
@@ -109,6 +107,6 @@ public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 			}
 		}
 
-		((BlockCompat) this.registry.get(new Identifier("air"))).setBLOCK_STATES(newStates);
+		((BlockCompat) this.registry.getValue(new Identifier("air"))).setBLOCK_STATES(newStates);
 	}
 }

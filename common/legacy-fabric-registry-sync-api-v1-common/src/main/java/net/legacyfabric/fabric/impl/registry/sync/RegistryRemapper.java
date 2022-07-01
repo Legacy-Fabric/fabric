@@ -26,7 +26,6 @@ import com.google.common.collect.HashBiMap;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
@@ -36,7 +35,7 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 public class RegistryRemapper<T> {
 	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
-	protected final SimpleRegistry<Identifier, T> registry;
+	protected final SimpleRegistryCompat<Identifier, T> registry;
 	protected BiMap<Identifier, Integer> entryDump;
 	protected BiMap<Identifier, Integer> missingMap = HashBiMap.create();
 	public final Identifier registryId;
@@ -47,11 +46,11 @@ public class RegistryRemapper<T> {
 	public static final Identifier ITEMS = new Identifier("items");
 	public static final Identifier BLOCKS = new Identifier("blocks");
 
-	public RegistryRemapper(SimpleRegistry<Identifier, T> registry, Identifier registryId, String type) {
+	public RegistryRemapper(SimpleRegistryCompat<Identifier, T> registry, Identifier registryId, String type) {
 		this.registry = registry;
 		this.registryId = registryId;
 		this.type = type;
-		REGISTRY_REMAPPER_MAP.put((SimpleRegistryCompat<Identifier, ?>) this.registry, this);
+		REGISTRY_REMAPPER_MAP.put(this.registry, this);
 	}
 
 	public void dump() {
@@ -87,7 +86,7 @@ public class RegistryRemapper<T> {
 	// Type erasure, ily
 	public void remap() {
 		LOGGER.info("Remapping registry %s", this.registryId.toString());
-		IdListCompat<T> newList = ((SimpleRegistryCompat<Identifier, T>) this.registry).createIdList();
+		IdListCompat<T> newList = this.registry.createIdList();
 
 		this.entryDump.forEach((id, rawId) -> {
 			T value = RegistryHelperImpl.getObjects(this.registry).inverse().get(id);
@@ -130,7 +129,7 @@ public class RegistryRemapper<T> {
 					id = newList.getInt(missing);
 				}
 
-				LOGGER.info("Adding %s %s with numerical id %d to registry", this.type, this.registry.getIdentifier(missing), id);
+				LOGGER.info("Adding %s %s with numerical id %d to registry", this.type, this.registry.getKey(missing), id);
 			});
 		}
 
@@ -138,12 +137,12 @@ public class RegistryRemapper<T> {
 			throw new IllegalStateException("An error occured during remapping");
 		}
 
-		((SimpleRegistryCompat<Identifier, T>) this.registry).setIds(newList);
+		this.registry.setIds(newList);
 		this.dump();
 		LOGGER.info("Remapped " + previousSize.getAsInt() + " entries");
 	}
 
-	public static <R> RegistryRemapper<R> getRegistryRemapper(SimpleRegistry<Identifier, R> simpleRegistry) {
+	public static <R> RegistryRemapper<R> getRegistryRemapper(SimpleRegistryCompat<Identifier, R> simpleRegistry) {
 		return (RegistryRemapper<R>) REGISTRY_REMAPPER_MAP.getOrDefault(simpleRegistry, null);
 	}
 

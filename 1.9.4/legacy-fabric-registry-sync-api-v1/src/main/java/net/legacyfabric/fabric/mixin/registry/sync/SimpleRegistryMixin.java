@@ -31,41 +31,57 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 @Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixin<T, I> implements SimpleRegistryCompat<T, I> {
+public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<K, V> {
 	@Shadow
 	@Final
-	protected Map<I, T> objects;
+	protected Map<V, K> objects;
 
 	@Mutable
 	@Shadow
 	@Final
-	protected class_2929<I> field_13718;
+	protected class_2929<V> field_13718;
 
 	@Shadow
 	public abstract int getRawId(Object par1);
 
+	@Shadow
+	public abstract K getIdentifier(V id);
+
+	@Shadow
+	public abstract V get(K key);
+
 	@Override
-	public IdListCompat<I> getIds() {
-		return (IdListCompat<I>) this.field_13718;
+	public IdListCompat<V> getIds() {
+		return (IdListCompat<V>) this.field_13718;
 	}
 
 	@Override
-	public Map<I, T> getObjects() {
+	public Map<V, K> getObjects() {
 		return this.objects;
 	}
 
 	@Override
-	public void setIds(IdListCompat<I> idList) {
-		this.field_13718 = (class_2929<I>) idList;
+	public void setIds(IdListCompat<V> idList) {
+		this.field_13718 = (class_2929<V>) idList;
 	}
 
 	@Override
-	public IdListCompat<I> createIdList() {
-		return (IdListCompat<I>) new class_2929<I>(256);
+	public IdListCompat<V> createIdList() {
+		return (IdListCompat<V>) new class_2929<V>(256);
 	}
 
 	@Override
-	public int getRawID(I object) {
+	public int getRawID(V object) {
 		return this.getRawId(object);
+	}
+
+	@Override
+	public K getKey(V object) {
+		return this.getIdentifier(object);
+	}
+
+	@Override
+	public V getValue(K key) {
+		return this.get(key);
 	}
 }
