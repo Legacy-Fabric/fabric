@@ -19,23 +19,45 @@ package net.legacyfabric.fabric.mixin.registry.sync;
 
 import java.util.Map;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
+import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
+import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+
 @Mixin(SimpleRegistry.class)
-public interface SimpleRegistryAccessor {
-	@Accessor
-	<T> IdList<T> getIds();
-
-	@Accessor
-	<T> Map<T, Identifier> getObjects();
-
+public class SimpleRegistryMixin<T, I> implements SimpleRegistryCompat<T, I> {
 	@Mutable
-	@Accessor
-	<T> void setIds(IdList<T> ids);
+	@Shadow
+	@Final
+	protected IdList<I> ids;
+
+	@Shadow
+	@Final
+	protected Map<I, T> objects;
+
+	@Override
+	public IdListCompat<I> getIds() {
+		return (IdListCompat<I>) this.ids;
+	}
+
+	@Override
+	public Map<I, T> getObjects() {
+		return this.objects;
+	}
+
+	@Override
+	public void setIds(IdListCompat<I> idList) {
+		this.ids = (IdList<I>) idList;
+	}
+
+	@Override
+	public IdListCompat<I> createIdList() {
+		return (IdListCompat<I>) new IdList<I>();
+	}
 }

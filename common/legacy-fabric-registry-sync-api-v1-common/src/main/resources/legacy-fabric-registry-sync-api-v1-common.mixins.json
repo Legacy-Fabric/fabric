@@ -6,12 +6,9 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "BlockAccessor",
-    "IdListAccessor",
     "ItemAccessor",
     "MinecraftServerMixin",
     "PlayerManagerMixin",
-    "SimpleRegistryAccessor",
     "WorldSaveHandlerMixin"
   ],
   "client": [

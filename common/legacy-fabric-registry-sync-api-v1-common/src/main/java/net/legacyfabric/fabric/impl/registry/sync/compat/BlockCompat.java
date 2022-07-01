@@ -15,21 +15,10 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.impl.registry.sync.compat;
 
-import java.util.IdentityHashMap;
-import java.util.List;
+import net.minecraft.block.BlockState;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
-
-import net.minecraft.util.collection.IdList;
-
-@Mixin(IdList.class)
-public interface IdListAccessor {
-	@Accessor
-	<T> IdentityHashMap<T, Integer> getIdMap();
-
-	@Accessor
-	<T> List<T> getList();
+public interface BlockCompat {
+	void setBLOCK_STATES(IdListCompat<BlockState> BLOCK_STATES);
 }

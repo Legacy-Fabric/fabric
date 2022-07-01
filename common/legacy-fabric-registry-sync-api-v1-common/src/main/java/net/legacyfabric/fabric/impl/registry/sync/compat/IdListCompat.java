@@ -15,21 +15,23 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.impl.registry.sync.compat;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import java.util.IdentityHashMap;
+import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.collection.IdList;
+import net.minecraft.util.collection.ObjectIdIterable;
 
-@Mixin(Block.class)
-public interface BlockAccessor {
-	@Mutable
-	@Accessor
-	static void setBLOCK_STATES(IdList<BlockState> BLOCK_STATES) {
-		throw new UnsupportedOperationException();
-	}
+public interface IdListCompat<T> extends ObjectIdIterable<T> {
+	IdentityHashMap<T, Integer> getIdMap();
+
+	List<T> getList();
+
+	T fromInt(int index);
+
+	void setValue(T value, int index);
+
+	int getInt(T value);
+
+	IdListCompat<T> createIdList();
 }

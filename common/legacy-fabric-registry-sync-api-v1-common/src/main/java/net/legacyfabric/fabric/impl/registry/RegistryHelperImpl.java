@@ -27,12 +27,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
-import net.legacyfabric.fabric.mixin.registry.sync.IdListAccessor;
+import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
+import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 import net.legacyfabric.fabric.mixin.registry.sync.ItemAccessor;
-import net.legacyfabric.fabric.mixin.registry.sync.SimpleRegistryAccessor;
 
 @ApiStatus.Internal
 public class RegistryHelperImpl {
@@ -68,33 +67,33 @@ public class RegistryHelperImpl {
 	public static int nextId(SimpleRegistry<Identifier, ?> registry) {
 		int id = 0;
 
-		while (getIdList(registry).fromId(id) != null) {
+		while (getIdList(registry).fromInt(id) != null) {
 			id++;
 		}
 
 		return id;
 	}
 
-	public static int nextId(IdList<?> idList) {
+	public static int nextId(IdListCompat<?> idList) {
 		int id = 0;
 
-		while (idList.fromId(id) != null) {
+		while (idList.fromInt(id) != null) {
 			id++;
 		}
 
 		return id;
 	}
 
-	public static <T> IdList<T> getIdList(SimpleRegistry<Identifier, T> registry) {
-		return ((SimpleRegistryAccessor) registry).getIds();
+	public static <T> IdListCompat<T> getIdList(SimpleRegistry<Identifier, T> registry) {
+		return ((SimpleRegistryCompat<Identifier, T>) registry).getIds();
 	}
 
 	public static <T> BiMap<T, Identifier> getObjects(SimpleRegistry<Identifier, T> registry) {
-		return (BiMap<T, Identifier>) ((SimpleRegistryAccessor) registry).getObjects();
+		return (BiMap<T, Identifier>) ((SimpleRegistryCompat<Identifier, T>) registry).getObjects();
 	}
 
-	public static <T> IdentityHashMap<T, Integer> getIdMap(IdList<T> idList) {
-		return ((IdListAccessor) idList).getIdMap();
+	public static <T> IdentityHashMap<T, Integer> getIdMap(IdListCompat<T> idList) {
+		return idList.getIdMap();
 	}
 
 	public static <T> IdentityHashMap<T, Integer> getIdMap(SimpleRegistry<Identifier, T> registry) {

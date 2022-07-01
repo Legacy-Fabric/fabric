@@ -24,27 +24,29 @@ import com.google.common.collect.HashBiMap;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-import net.legacyfabric.fabric.mixin.registry.sync.SimpleRegistryAccessor;
+import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
+import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 public class RegistryRemapper<T> {
 	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
 	protected final SimpleRegistry<Identifier, T> registry;
 	protected BiMap<Identifier, Integer> entryDump;
 	protected BiMap<Identifier, Integer> missingMap = HashBiMap.create();
-	protected final Identifier registryId;
+	public final Identifier registryId;
+	public final String type;
 
 	public static final Identifier ITEMS = new Identifier("items");
 	public static final Identifier BLOCKS = new Identifier("blocks");
 
-	public RegistryRemapper(SimpleRegistry<Identifier, T> registry, Identifier registryId) {
+	public RegistryRemapper(SimpleRegistry<Identifier, T> registry, Identifier registryId, String type) {
 		this.registry = registry;
 		this.registryId = registryId;
+		this.type = type;
 	}
 
 	public void dump() {
@@ -80,17 +82,17 @@ public class RegistryRemapper<T> {
 	// Type erasure, ily
 	public void remap() {
 		LOGGER.info("Remapping registry %s", this.registryId.toString());
-		IdList<T> newList = new IdList<>();
+		IdListCompat<T> newList = ((SimpleRegistryCompat<Identifier, T>) this.registry).createIdList();
 
 		this.entryDump.forEach((id, rawId) -> {
 			T value = RegistryHelperImpl.getObjects(this.registry).inverse().get(id);
 
 			if (value == null) {
-				newList.set(null, rawId);
-				LOGGER.warn("Object with id %s is missing!", id.toString());
+				newList.setValue(null, rawId);
+				LOGGER.warn("%s with id %s is missing!", this.type, id.toString());
 				this.missingMap.put(id, rawId);
 			} else {
-				newList.set(value, rawId);
+				newList.setValue(value, rawId);
 			}
 		});
 
@@ -104,26 +106,26 @@ public class RegistryRemapper<T> {
 		} else if (currentSize.getAsInt() < previousSize.getAsInt()) {
 			LOGGER.info("Adding " + (previousSize.getAsInt() - currentSize.getAsInt()) + " missing entries to registry");
 
-			RegistryHelperImpl.getObjects(this.registry).keySet().stream().filter(obj -> newList.getId(obj) == -1).forEach(missing -> {
+			RegistryHelperImpl.getObjects(this.registry).keySet().stream().filter(obj -> newList.getInt(obj) == -1).forEach(missing -> {
 				int id = RegistryHelperImpl.nextId(this.registry);
 
-				while (newList.fromId(id) != null) {
+				while (newList.fromInt(id) != null) {
 					id = RegistryHelperImpl.nextId(newList);
 
-					T currentBlock = RegistryHelperImpl.getIdList(this.registry).fromId(id);
+					T currentBlock = RegistryHelperImpl.getIdList(this.registry).fromInt(id);
 
-					if (currentBlock != null && newList.getId(currentBlock) == -1) {
-						newList.set(currentBlock, id);
+					if (currentBlock != null && newList.getInt(currentBlock) == -1) {
+						newList.setValue(currentBlock, id);
 					}
 				}
 
-				if (newList.getId(missing) == -1) {
-					newList.set(missing, id);
+				if (newList.getInt(missing) == -1) {
+					newList.setValue(missing, id);
 				} else {
-					id = newList.getId(missing);
+					id = newList.getInt(missing);
 				}
 
-				LOGGER.info("Adding object %s with numerical id %d to registry", this.registry.getIdentifier(missing), id);
+				LOGGER.info("Adding %s %s with numerical id %d to registry", this.type, this.registry.getIdentifier(missing), id);
 			});
 		}
 
@@ -131,7 +133,7 @@ public class RegistryRemapper<T> {
 			throw new IllegalStateException("An error occured during remapping");
 		}
 
-		((SimpleRegistryAccessor) this.registry).setIds(newList);
+		((SimpleRegistryCompat<Identifier, T>) this.registry).setIds(newList);
 		this.dump();
 		LOGGER.info("Remapped " + previousSize.getAsInt() + " entries");
 	}

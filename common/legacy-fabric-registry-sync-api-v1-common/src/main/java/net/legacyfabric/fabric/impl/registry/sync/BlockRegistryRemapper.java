@@ -22,47 +22,90 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.collection.IdList;
+import net.minecraft.util.Identifier;
+
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.VersionParsingException;
+import net.fabricmc.loader.api.metadata.version.VersionPredicate;
 
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-import net.legacyfabric.fabric.mixin.registry.sync.BlockAccessor;
+import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
+import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 
 public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 	public BlockRegistryRemapper() {
-		super(Block.REGISTRY, BLOCKS);
+		super(Block.REGISTRY, BLOCKS, "Block");
+	}
+
+	private static final boolean hasSpecialCase;
+
+	static {
+		boolean hasSpecialCase1;
+
+		try {
+			VersionPredicate predicate = VersionPredicate.parse(">1.8.9");
+
+			hasSpecialCase1 = predicate.test(FabricLoader.getInstance().getModContainer("minecraft").get().getMetadata().getVersion());
+		} catch (VersionParsingException e) {
+			e.printStackTrace();
+			hasSpecialCase1 = false;
+		}
+
+		hasSpecialCase = hasSpecialCase1;
 	}
 
 	@Override
 	public void remap() {
-		IdList<Block> oldList = RegistryHelperImpl.getIdList(this.registry);
+		IdListCompat<Block> oldList = RegistryHelperImpl.getIdList(this.registry);
 		super.remap();
-		IdList<Block> newList = RegistryHelperImpl.getIdList(this.registry);
+		IdListCompat<Block> newList = RegistryHelperImpl.getIdList(this.registry);
 		Map<Integer, Integer> old2new = new HashMap<>();
 
 		for (Block value : oldList) {
-			old2new.put(oldList.getId(value), newList.getId(value));
+			old2new.put(oldList.getInt(value), newList.getInt(value));
 		}
 
-		IdList<BlockState> oldStates = Block.BLOCK_STATES;
-		IdList<BlockState> newStates = new IdList<>();
+		IdListCompat<BlockState> oldStates = (IdListCompat<BlockState>) Block.BLOCK_STATES;
+		IdListCompat<BlockState> newStates = oldStates.createIdList();
+
+		Identifier specialCase = new Identifier("tripwire");
 
 		for (Block block : this.registry) {
-			for (BlockState blockState : block.getStateManager().getBlockStates()) {
+			if (this.registry.getIdentifier(block).equals(specialCase) && hasSpecialCase) {
 				int newBlockId = this.registry.getIndex(block);
-				int newId = newBlockId << 4 | block.getData(blockState);
-				int oldId = oldStates.getId(blockState);
 
-				if (oldId == -1) {
-					LOGGER.info("New block state id %d for block %s", newId, this.registry.getIdentifier(block).toString());
-				} else if (oldId != newId) {
-					LOGGER.info("Migrating block state id %d of block %s to %d",
-							oldId, this.registry.getIdentifier(block).toString(), newId);
+				for (int i = 0; i < 15; ++i) {
+					int newId = newBlockId << 4 | i;
+					BlockState state = block.stateFromData(i);
+					int oldId = oldStates.getInt(state);
+
+					if (oldId == -1) {
+						LOGGER.info("New block state id %d for block %s", newId, this.registry.getIdentifier(block).toString());
+					} else if (oldId != newId) {
+						LOGGER.info("Migrating block state id %d of block %s to %d",
+								oldId, this.registry.getIdentifier(block).toString(), newId);
+					}
+
+					newStates.setValue(state, newId);
 				}
+			} else {
+				for (BlockState blockState : block.getStateManager().getBlockStates()) {
+					int newBlockId = this.registry.getIndex(block);
+					int newId = newBlockId << 4 | block.getData(blockState);
+					int oldId = oldStates.getInt(blockState);
 
-				newStates.set(blockState, newId);
+					if (oldId == -1) {
+						LOGGER.info("New block state id %d for block %s", newId, this.registry.getIdentifier(block).toString());
+					} else if (oldId != newId) {
+						LOGGER.info("Migrating block state id %d of block %s to %d",
+								oldId, this.registry.getIdentifier(block).toString(), newId);
+					}
+
+					newStates.setValue(blockState, newId);
+				}
 			}
 		}
 
-		BlockAccessor.setBLOCK_STATES(newStates);
+		((BlockCompat) this.registry.get(new Identifier("air"))).setBLOCK_STATES(newStates);
 	}
 }

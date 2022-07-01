@@ -15,12 +15,16 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync;
+package net.legacyfabric.fabric.impl.registry.sync.compat;
 
-import net.minecraft.item.Item;
+import java.util.Map;
 
-public class ItemRegistryRemapper extends RegistryRemapper<Item> {
-	public ItemRegistryRemapper() {
-		super(Item.REGISTRY, ITEMS, "Item");
-	}
+public interface SimpleRegistryCompat<T, I> {
+	IdListCompat<I> getIds();
+
+	Map<I, T> getObjects();
+
+	void setIds(IdListCompat<I> idList);
+
+	IdListCompat<I> createIdList();
 }

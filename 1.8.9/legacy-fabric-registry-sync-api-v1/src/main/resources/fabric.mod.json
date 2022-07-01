@@ -17,9 +17,11 @@
   ],
   "depends": {
     "fabricloader": ">=0.4.0",
-    "minecraft": ">=1.8.9 <1.12"
+    "minecraft": ">=1.8.9"
   },
   "description": "Registry hooks",
   "entrypoints": {},
-  "mixins": []
+  "mixins": [
+    "legacy-fabric-registry-sync-api-v1.mixins.json"
+  ]
 }
