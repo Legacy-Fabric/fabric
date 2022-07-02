@@ -21,7 +21,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import net.minecraft.resource.ResourceReloadListener;
-import net.minecraft.util.Identifier;
+
+import net.legacyfabric.fabric.api.util.Identifier;
 
 /**
  * Interface for "identifiable" resource reload listeners.

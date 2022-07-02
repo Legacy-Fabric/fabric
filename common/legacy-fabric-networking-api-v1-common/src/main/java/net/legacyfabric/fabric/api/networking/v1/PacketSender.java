@@ -24,8 +24,9 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import net.minecraft.network.Packet;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
+
+import net.legacyfabric.fabric.api.util.Identifier;
 
 /**
  * Represents something that supports sending packets to channels.

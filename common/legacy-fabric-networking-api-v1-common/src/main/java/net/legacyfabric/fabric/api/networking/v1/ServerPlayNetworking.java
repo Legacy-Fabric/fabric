@@ -24,9 +24,9 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 
+import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.networking.server.ServerNetworkingImpl;
 import net.legacyfabric.fabric.impl.networking.server.ServerPlayNetworkHandlerExtensions;
 

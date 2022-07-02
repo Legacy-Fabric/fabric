@@ -19,8 +19,8 @@ package net.legacyfabric.fabric.api.registry.v1;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
 
+import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 
 /**
@@ -40,6 +40,10 @@ public final class RegistryHelper {
 		return RegistryHelperImpl.registerBlock(block, id);
 	}
 
+	public static Block registerBlock(Block block, Object id) {
+		return registerBlock(block, new Identifier(id.toString()));
+	}
+
 	/**
 	 * Registers an item with the given ID.
 	 *
@@ -51,5 +55,9 @@ public final class RegistryHelper {
 	 */
 	public static Item registerItem(Item item, Identifier id) {
 		return RegistryHelperImpl.registerItem(item, id);
+	}
+
+	public static Item registerItem(Item item, Object id) {
+		return registerItem(item, new Identifier(id.toString()));
 	}
 }

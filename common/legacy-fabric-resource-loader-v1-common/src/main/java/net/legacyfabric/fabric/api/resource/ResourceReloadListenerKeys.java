@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.resource;
 
-import net.minecraft.util.Identifier;
+import net.legacyfabric.fabric.api.util.Identifier;
 
 /**
  * This class contains default keys for various Minecraft resource reload listeners.

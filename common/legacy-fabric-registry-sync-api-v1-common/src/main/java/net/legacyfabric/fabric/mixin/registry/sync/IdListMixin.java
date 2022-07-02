@@ -24,7 +24,6 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IdList;
 
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
@@ -49,8 +48,7 @@ public abstract class IdListMixin<V> implements IdListCompat<V> {
 	@Shadow
 	public abstract int getId(V value);
 
-	@Override
-	public IdentityHashMap<V, Integer> getIdMap(SimpleRegistryCompat<Identifier, V> simpleRegistry) {
+	public <K> IdentityHashMap<V, Integer> getIdMap(SimpleRegistryCompat<K, V> simpleRegistry) {
 		return this.idMap;
 	}
 

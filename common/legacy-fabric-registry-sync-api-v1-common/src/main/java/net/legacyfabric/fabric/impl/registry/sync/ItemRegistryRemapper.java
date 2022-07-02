@@ -18,12 +18,11 @@
 package net.legacyfabric.fabric.impl.registry.sync;
 
 import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
 
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 public class ItemRegistryRemapper extends RegistryRemapper<Item> {
 	public ItemRegistryRemapper() {
-		super((SimpleRegistryCompat<Identifier, Item>) Item.REGISTRY, ITEMS, "Item");
+		super((SimpleRegistryCompat<?, Item>) Item.REGISTRY, ITEMS, "Item");
 	}
 }

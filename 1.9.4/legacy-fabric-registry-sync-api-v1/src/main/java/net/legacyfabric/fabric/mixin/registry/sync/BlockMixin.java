@@ -17,71 +17,38 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync;
 
-import java.util.Map;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.collection.IdList;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.util.registry.BiDefaultedRegistry;
 
+import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
-import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
-@Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<K, V> {
+@Mixin(Block.class)
+public class BlockMixin implements BlockCompat {
 	@Mutable
 	@Shadow
 	@Final
-	protected IdList<V> ids;
+	public static IdList<BlockState> BLOCK_STATES;
 
 	@Shadow
 	@Final
-	protected Map<V, K> objects;
-
-	@Shadow
-	public abstract int getIndex(V object);
-
-	@Shadow
-	public abstract K getIdentifier(V id);
-
-	@Shadow
-	public abstract V get(K key);
+	public static BiDefaultedRegistry<net.minecraft.util.Identifier, Block> REGISTRY;
 
 	@Override
-	public IdListCompat<V> getIds() {
-		return (IdListCompat<V>) this.ids;
+	public void setBLOCK_STATES(IdListCompat<BlockState> block_states) {
+		BLOCK_STATES = (IdList<BlockState>) block_states;
 	}
 
 	@Override
-	public Map<V, K> getObjects() {
-		return this.objects;
-	}
-
-	@Override
-	public void setIds(IdListCompat<V> idList) {
-		this.ids = (IdList<V>) idList;
-	}
-
-	@Override
-	public IdListCompat<V> createIdList() {
-		return (IdListCompat<V>) new IdList<V>();
-	}
-
-	@Override
-	public int getRawID(V object) {
-		return this.getIndex(object);
-	}
-
-	@Override
-	public K getKey(V object) {
-		return this.getIdentifier(object);
-	}
-
-	@Override
-	public V getValue(Object key) {
-		return this.get((K) key);
+	public void addToRegistry(int id, Identifier identifier, Block block) {
+		REGISTRY.add(id, new net.minecraft.util.Identifier(identifier.toString()), block);
 	}
 }

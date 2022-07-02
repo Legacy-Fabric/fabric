@@ -26,12 +26,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
 
+import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
+import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
+import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
-import net.legacyfabric.fabric.mixin.registry.sync.ItemAccessor;
 
 @ApiStatus.Internal
 public class RegistryHelperImpl {
@@ -39,8 +40,8 @@ public class RegistryHelperImpl {
 
 	public static Block registerBlock(Block block, Identifier id) {
 		block.setTranslationKey(formatTranslationKey(id));
-		int rawId = nextId((SimpleRegistryCompat<Identifier, ?>) Block.REGISTRY);
-		Block.REGISTRY.add(rawId, id, block);
+		int rawId = nextId((SimpleRegistryCompat<?, ?>) Block.REGISTRY);
+		((BlockCompat) block).addToRegistry(rawId, id, block);
 
 		if (hasFlatteningBegun) {
 			for (BlockState blockState : block.getStateManager().getBlockStates()) {
@@ -54,12 +55,12 @@ public class RegistryHelperImpl {
 
 	public static Item registerItem(Item item, Identifier id) {
 		item.setTranslationKey(formatTranslationKey(id));
-		int rawId = nextId((SimpleRegistryCompat<Identifier, ?>) Item.REGISTRY);
-		Item.REGISTRY.add(rawId, id, item);
+		int rawId = nextId((SimpleRegistryCompat<?, ?>) Item.REGISTRY);
+		((ItemCompat) item).addToRegistry(rawId, id, item);
 
 		if (hasFlatteningBegun) {
 			if (item instanceof BlockItem) {
-				ItemAccessor.getBLOCK_ITEMS().put(((BlockItem) item).getBlock(), item);
+				((ItemCompat) item).getBLOCK_ITEMS().put(((BlockItem) item).getBlock(), item);
 			}
 		}
 
@@ -70,7 +71,7 @@ public class RegistryHelperImpl {
 		return key.getNamespace() + "." + key.getPath();
 	}
 
-	public static int nextId(SimpleRegistryCompat<Identifier, ?> registry) {
+	public static int nextId(SimpleRegistryCompat<?, ?> registry) {
 		int id = 0;
 
 		while (getIdList(registry).fromInt(id) != null) {
@@ -90,19 +91,19 @@ public class RegistryHelperImpl {
 		return id;
 	}
 
-	public static <T> IdListCompat<T> getIdList(SimpleRegistryCompat<Identifier, T> registry) {
+	public static <K, V> IdListCompat<V> getIdList(SimpleRegistryCompat<K, V> registry) {
 		return registry.getIds();
 	}
 
-	public static <T> BiMap<T, Identifier> getObjects(SimpleRegistryCompat<Identifier, T> registry) {
-		return (BiMap<T, Identifier>) registry.getObjects();
+	public static <K, V> BiMap<V, K> getObjects(SimpleRegistryCompat<K, V> registry) {
+		return (BiMap<V, K>) registry.getObjects();
 	}
 
-	public static <T> IdentityHashMap<T, Integer> getIdMap(IdListCompat<T> idList, SimpleRegistryCompat<Identifier, T> registry) {
+	public static <K, V> IdentityHashMap<V, Integer> getIdMap(IdListCompat<V> idList, SimpleRegistryCompat<K, V> registry) {
 		return idList.getIdMap(registry);
 	}
 
-	public static <T> IdentityHashMap<T, Integer> getIdMap(SimpleRegistryCompat<Identifier, T> registry) {
+	public static <K, V> IdentityHashMap<V, Integer> getIdMap(SimpleRegistryCompat<K, V> registry) {
 		return getIdMap(getIdList(registry), registry);
 	}
 }

@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.impl.registry.sync;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.Identifier;
 
 import net.legacyfabric.fabric.api.util.VersionUtils;
 import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
@@ -28,7 +27,7 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 	public BlockRegistryRemapper() {
-		super((SimpleRegistryCompat<Identifier, Block>) Block.REGISTRY, BLOCKS, "Block");
+		super((SimpleRegistryCompat<?, Block>) Block.REGISTRY, BLOCKS, "Block");
 	}
 
 	private static final boolean hasBlockStateList = VersionUtils.matches(">=1.8");
@@ -49,10 +48,8 @@ public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 			IdListCompat<BlockState> oldStates = (IdListCompat<BlockState>) Block.BLOCK_STATES;
 			IdListCompat<BlockState> newStates = oldStates.createIdList();
 
-			Identifier specialCase = new Identifier("tripwire");
-
 			for (Block block : this.registry) {
-				if (this.registry.getKey(block).equals(specialCase) && hasSpecialCase) {
+				if (this.registry.getKey(block).equals(this.toKeyType("tripwire")) && hasSpecialCase) {
 					int newBlockId = this.registry.getRawID(block);
 
 					for (int i = 0; i < 15; ++i) {
@@ -87,7 +84,7 @@ public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 				}
 			}
 
-			((BlockCompat) this.registry.getValue(new Identifier("air"))).setBLOCK_STATES(newStates);
+			((BlockCompat) this.registry.getValue(this.toKeyType("air"))).setBLOCK_STATES(newStates);
 		}
 	}
 }

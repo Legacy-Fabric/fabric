@@ -8,7 +8,9 @@
   "mixins": [
     "SimpleRegistryMixin",
     "class_2929Mixin",
-    "PlayerManagerMixin"
+    "PlayerManagerMixin",
+    "BlockMixin",
+    "ItemMixin"
   ],
   "client": [
   ]

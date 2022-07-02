@@ -25,28 +25,30 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.api.util.VersionUtils;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
-public class RegistryRemapper<T> {
+public class RegistryRemapper<V> {
+	private static final boolean hasFlatteningBegun = VersionUtils.matches(">=1.8 <=1.12.2");
 	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
-	protected final SimpleRegistryCompat<Identifier, T> registry;
+	protected final SimpleRegistryCompat<?, V> registry;
 	protected BiMap<Identifier, Integer> entryDump;
 	protected BiMap<Identifier, Integer> missingMap = HashBiMap.create();
 	public final Identifier registryId;
 	public final String type;
 
-	private static final Map<SimpleRegistryCompat<Identifier, ?>, RegistryRemapper<?>> REGISTRY_REMAPPER_MAP = new HashMap<>();
+	private static final Map<SimpleRegistryCompat<?, ?>, RegistryRemapper<?>> REGISTRY_REMAPPER_MAP = new HashMap<>();
 
 	public static final Identifier ITEMS = new Identifier("items");
 	public static final Identifier BLOCKS = new Identifier("blocks");
 
-	public RegistryRemapper(SimpleRegistryCompat<Identifier, T> registry, Identifier registryId, String type) {
+	public RegistryRemapper(SimpleRegistryCompat<?, V> registry, Identifier registryId, String type) {
 		this.registry = registry;
 		this.registryId = registryId;
 		this.type = type;
@@ -56,8 +58,8 @@ public class RegistryRemapper<T> {
 	public void dump() {
 		this.entryDump = HashBiMap.create();
 		RegistryHelperImpl.getIdMap(this.registry).forEach((value, id) -> {
-			Identifier key = RegistryHelperImpl.getObjects(this.registry).get(value);
-			if (key != null) this.entryDump.put(key, id);
+			Object key = RegistryHelperImpl.getObjects(this.registry).get(value);
+			if (key != null) this.entryDump.put(new Identifier(key), id);
 		});
 
 		this.entryDump.putAll(this.missingMap);
@@ -86,10 +88,10 @@ public class RegistryRemapper<T> {
 	// Type erasure, ily
 	public void remap() {
 		LOGGER.info("Remapping registry %s", this.registryId.toString());
-		IdListCompat<T> newList = this.registry.createIdList();
+		IdListCompat<V> newList = this.registry.createIdList();
 
 		this.entryDump.forEach((id, rawId) -> {
-			T value = RegistryHelperImpl.getObjects(this.registry).inverse().get(id);
+			V value = RegistryHelperImpl.getObjects(this.registry).inverse().get(this.toKeyType(id));
 
 			if (value == null) {
 				newList.setValue(null, rawId);
@@ -116,7 +118,7 @@ public class RegistryRemapper<T> {
 				while (newList.fromInt(id) != null) {
 					id = RegistryHelperImpl.nextId(newList);
 
-					T currentBlock = RegistryHelperImpl.getIdList(this.registry).fromInt(id);
+					V currentBlock = RegistryHelperImpl.getIdList(this.registry).fromInt(id);
 
 					if (currentBlock != null && newList.getInt(currentBlock) == -1) {
 						newList.setValue(currentBlock, id);
@@ -142,11 +144,23 @@ public class RegistryRemapper<T> {
 		LOGGER.info("Remapped " + previousSize.getAsInt() + " entries");
 	}
 
-	public static <R> RegistryRemapper<R> getRegistryRemapper(SimpleRegistryCompat<Identifier, R> simpleRegistry) {
-		return (RegistryRemapper<R>) REGISTRY_REMAPPER_MAP.getOrDefault(simpleRegistry, null);
+	public static <K, V> RegistryRemapper<V> getRegistryRemapper(SimpleRegistryCompat<K, V> simpleRegistry) {
+		return (RegistryRemapper<V>) REGISTRY_REMAPPER_MAP.getOrDefault(simpleRegistry, null);
 	}
 
 	public void addMissing(Identifier key, int id) {
 		this.missingMap.put(key, id);
+	}
+
+	public Object toKeyType(Identifier id) {
+		if (hasFlatteningBegun) {
+			return new net.minecraft.util.Identifier(id.toString());
+		}
+
+		return id.toString();
+	}
+
+	public Object toKeyType(String id) {
+		return this.toKeyType(new Identifier(id));
 	}
 }

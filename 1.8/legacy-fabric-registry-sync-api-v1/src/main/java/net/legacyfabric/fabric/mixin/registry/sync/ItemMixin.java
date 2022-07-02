@@ -19,16 +19,34 @@ package net.legacyfabric.fabric.mixin.registry.sync;
 
 import java.util.Map;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.util.registry.SimpleRegistry;
+
+import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
 
 @Mixin(Item.class)
-public interface ItemAccessor {
-	@Accessor("BLOCK_ITEMS")
-	static Map<Block, Item> getBLOCK_ITEMS() {
-		throw new UnsupportedOperationException();
+public class ItemMixin implements ItemCompat {
+	@Shadow
+	@Final
+	private static Map<Block, Item> BLOCK_ITEMS;
+
+	@Shadow
+	@Final
+	public static SimpleRegistry REGISTRY;
+
+	@Override
+	public Map<Block, Item> getBLOCK_ITEMS() {
+		return BLOCK_ITEMS;
+	}
+
+	@Override
+	public void addToRegistry(int id, Identifier identifier, Item item) {
+		REGISTRY.add(id, new net.minecraft.util.Identifier(identifier.toString()), item);
 	}
 }

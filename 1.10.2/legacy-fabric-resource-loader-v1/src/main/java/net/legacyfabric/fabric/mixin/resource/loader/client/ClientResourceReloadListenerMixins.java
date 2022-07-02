@@ -34,7 +34,6 @@ import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.resource.FoliageColorResourceReloadListener;
 import net.minecraft.resource.GrassColorResourceReloadListener;
-import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -43,6 +42,7 @@ import net.fabricmc.loader.api.MappingResolver;
 
 import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.api.resource.ResourceReloadListenerKeys;
+import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin({
 		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorResourceReloadListener.class, FoliageColorResourceReloadListener.class, TextureManager.class,

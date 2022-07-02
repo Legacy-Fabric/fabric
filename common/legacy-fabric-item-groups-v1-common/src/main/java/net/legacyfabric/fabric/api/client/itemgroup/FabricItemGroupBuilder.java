@@ -25,8 +25,8 @@ import java.util.function.Supplier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.itemgroup.ItemGroup;
-import net.minecraft.util.Identifier;
 
+import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
 import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 

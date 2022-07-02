@@ -23,7 +23,6 @@ import java.util.Set;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.Packet;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.ThreadExecutor;
 
@@ -31,6 +30,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.legacyfabric.fabric.api.networking.v1.PacketSender;
+import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.networking.client.ClientNetworkingImpl;
 import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkAddon;
 

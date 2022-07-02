@@ -81,7 +81,7 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	}
 
 	@Override
-	public V getValue(K key) {
-		return this.get(key);
+	public V getValue(Object key) {
+		return this.get((K) key);
 	}
 }

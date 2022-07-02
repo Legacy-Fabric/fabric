@@ -23,11 +23,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.itemgroup.ItemGroup;
-import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
+import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryTest implements ModInitializer {
 	@Override
@@ -38,7 +38,7 @@ public class RegistryTest implements ModInitializer {
 
 		for (Block block : blocks) {
 			RegistryHelper.registerBlock(block, new Identifier("legacy-fabric-api:conc_block_" + block.getMaterial().getColor().color));
-			RegistryHelper.registerItem(new BlockItem(block), (Identifier) Block.REGISTRY.getIdentifier(block));
+			RegistryHelper.registerItem(new BlockItem(block), Block.REGISTRY.getIdentifier(block));
 		}
 	}
 }

@@ -26,11 +26,11 @@ import java.util.Set;
 import com.google.common.collect.Lists;
 
 import net.minecraft.resource.ResourceReloadListener;
-import net.minecraft.util.Identifier;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
+import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ResourceManagerHelperImpl implements ResourceManagerHelper {

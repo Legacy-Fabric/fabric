@@ -25,7 +25,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.class_2929;
-import net.minecraft.util.Identifier;
 
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
@@ -46,7 +45,7 @@ public abstract class class_2929Mixin<V> implements IdListCompat<V> {
 	private V[] field_14375;
 
 	@Override
-	public IdentityHashMap<V, Integer> getIdMap(SimpleRegistryCompat<Identifier, V> simpleRegistry) {
+	public <K> IdentityHashMap<V, Integer> getIdMap(SimpleRegistryCompat<K, V> simpleRegistry) {
 		IdentityHashMap<V, Integer> idMap = new IdentityHashMap<>(512);
 
 		for (int i = 0; i < this.field_14375.length; i++) {

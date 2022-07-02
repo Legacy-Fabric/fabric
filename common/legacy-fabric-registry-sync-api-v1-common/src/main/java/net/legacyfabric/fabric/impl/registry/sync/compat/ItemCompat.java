@@ -19,18 +19,13 @@ package net.legacyfabric.fabric.impl.registry.sync.compat;
 
 import java.util.Map;
 
-public interface SimpleRegistryCompat<K, V> extends Iterable<V> {
-	IdListCompat<V> getIds();
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 
-	Map<V, K> getObjects();
+import net.legacyfabric.fabric.api.util.Identifier;
 
-	void setIds(IdListCompat<V> idList);
+public interface ItemCompat {
+	Map<Block, Item> getBLOCK_ITEMS();
 
-	IdListCompat<V> createIdList();
-
-	int getRawID(V object);
-
-	K getKey(V object);
-
-	V getValue(Object key);
+	void addToRegistry(int id, Identifier identifier, Item item);
 }
