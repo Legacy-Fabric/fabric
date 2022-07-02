@@ -27,22 +27,26 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.SimpleRegistry;
 
+import net.legacyfabric.fabric.api.util.VersionUtils;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 import net.legacyfabric.fabric.mixin.registry.sync.ItemAccessor;
 
 @ApiStatus.Internal
 public class RegistryHelperImpl {
+	private static final boolean hasFlatteningBegun = VersionUtils.matches(">=1.8 <=1.12.2");
+
 	public static Block registerBlock(Block block, Identifier id) {
 		block.setTranslationKey(formatTranslationKey(id));
 		int rawId = nextId((SimpleRegistryCompat<Identifier, ?>) Block.REGISTRY);
 		Block.REGISTRY.add(rawId, id, block);
 
-		for (BlockState blockState : block.getStateManager().getBlockStates()) {
-			int i = rawId << 4 | block.getData(blockState);
-			Block.BLOCK_STATES.set(blockState, i);
+		if (hasFlatteningBegun) {
+			for (BlockState blockState : block.getStateManager().getBlockStates()) {
+				int i = rawId << 4 | block.getData(blockState);
+				Block.BLOCK_STATES.set(blockState, i);
+			}
 		}
 
 		return block;
@@ -53,8 +57,10 @@ public class RegistryHelperImpl {
 		int rawId = nextId((SimpleRegistryCompat<Identifier, ?>) Item.REGISTRY);
 		Item.REGISTRY.add(rawId, id, item);
 
-		if (item instanceof BlockItem) {
-			ItemAccessor.getBLOCK_ITEMS().put(((BlockItem) item).getBlock(), item);
+		if (hasFlatteningBegun) {
+			if (item instanceof BlockItem) {
+				ItemAccessor.getBLOCK_ITEMS().put(((BlockItem) item).getBlock(), item);
+			}
 		}
 
 		return item;

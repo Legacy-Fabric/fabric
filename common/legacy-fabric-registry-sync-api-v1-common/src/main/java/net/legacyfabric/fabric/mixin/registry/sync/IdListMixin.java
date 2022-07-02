@@ -26,7 +26,6 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.IdList;
-import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;

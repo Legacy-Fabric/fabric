@@ -36,27 +36,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.util.Identifier;
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.VersionParsingException;
-import net.fabricmc.loader.api.metadata.version.VersionPredicate;
+import net.legacyfabric.fabric.api.util.VersionUtils;
 
 public class FabricCreativeGuiComponents {
 	private static final Identifier BUTTON_TEX = new Identifier("legacy-fabric", "textures/gui/creative_buttons.png");
 	public static final Set<ItemGroup> COMMON_GROUPS = new HashSet<>();
 
-	public static final boolean hasHotBar;
+	public static final boolean hasHotBar = VersionUtils.matches(">=1.12-alpha.17.06.a <=1.13.2");
 
 	public static ItemGroupCreator ITEM_GROUP_CREATOR;
 
 	static {
-		try {
-			VersionPredicate predicate = VersionPredicate.parse(">=1.12-alpha.17.06.a <=1.13.2");
-
-			hasHotBar = predicate.test(FabricLoader.getInstance().getModContainer("minecraft").get().getMetadata().getVersion());
-		} catch (VersionParsingException e) {
-			throw new RuntimeException(e);
-		}
-
 		COMMON_GROUPS.add(ItemGroup.SEARCH);
 		COMMON_GROUPS.add(ItemGroup.INVENTORY);
 

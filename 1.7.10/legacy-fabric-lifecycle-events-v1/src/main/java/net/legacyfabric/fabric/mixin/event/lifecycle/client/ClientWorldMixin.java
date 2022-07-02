@@ -35,22 +35,22 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 @Mixin(ClientWorld.class)
 public class ClientWorldMixin {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;tick()V", shift = At.Shift.AFTER), method = "tick")
-	public void startWorldTick(CallbackInfo ci) {
+	public void api$startWorldTick(CallbackInfo ci) {
 		ClientTickEvents.START_WORLD_TICK.invoker().onStartTick((ClientWorld) (Object) this);
 	}
 
 	@Inject(at = @At("RETURN"), method = "tick")
-	public void endWorldTick(CallbackInfo ci) {
+	public void api$endWorldTick(CallbackInfo ci) {
 		ClientTickEvents.END_WORLD_TICK.invoker().onEndTick((ClientWorld) (Object) this);
 	}
 
 	@Inject(at = @At("TAIL"), method = "onEntitySpawned")
-	public void unloadEntity(Entity entity, CallbackInfo ci) {
+	public void api$unloadEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ClientWorld) (Object) this);
 	}
 
 	@Inject(at = @At("TAIL"), method = "onEntityRemoved")
-	public void loadEntity(Entity entity, CallbackInfo ci) {
+	public void api$loadEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ClientWorld) (Object) this);
 	}
 }

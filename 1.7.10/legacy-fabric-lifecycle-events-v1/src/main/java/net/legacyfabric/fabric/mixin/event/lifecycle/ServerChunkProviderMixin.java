@@ -37,12 +37,12 @@ public class ServerChunkProviderMixin {
 	private ServerWorld world;
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/ChunkStorage;writeChunk(Lnet/minecraft/world/World;Lnet/minecraft/world/chunk/Chunk;)V"), method = "saveChunk")
-	public void chunkUnload(Chunk chunk, CallbackInfo ci) {
+	public void api$chunkUnload(Chunk chunk, CallbackInfo ci) {
 		ServerChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, chunk);
 	}
 
 	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/chunk/ChunkStorage;loadChunk(Lnet/minecraft/world/World;II)Lnet/minecraft/world/chunk/Chunk;"), method = "loadChunk", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	public void chunkLoad(int x, int z, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
+	public void api$chunkLoad(int x, int z, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
 		ServerChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, chunk);
 	}
 }

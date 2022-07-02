@@ -31,22 +31,22 @@ import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerTickEvents;
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;tick()V", shift = At.Shift.AFTER), method = "tick")
-	public void startWorldTick(CallbackInfo ci) {
+	public void api$startWorldTick(CallbackInfo ci) {
 		ServerTickEvents.START_WORLD_TICK.invoker().onStartTick((ServerWorld) (Object) this);
 	}
 
 	@Inject(at = @At("TAIL"), method = "tick")
-	public void endWorldTick(CallbackInfo ci) {
+	public void api$endWorldTick(CallbackInfo ci) {
 		ServerTickEvents.END_WORLD_TICK.invoker().onEndTick((ServerWorld) (Object) this);
 	}
 
 	@Inject(at = @At("TAIL"), method = "onEntitySpawned")
-	public void loadEntity(Entity entity, CallbackInfo ci) {
+	public void api$loadEntity(Entity entity, CallbackInfo ci) {
 		ServerEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ServerWorld) (Object) this);
 	}
 
 	@Inject(at = @At("TAIL"), method = "onEntityRemoved")
-	public void unloadEntity(Entity entity, CallbackInfo ci) {
+	public void api$unloadEntity(Entity entity, CallbackInfo ci) {
 		ServerEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ServerWorld) (Object) this);
 	}
 }

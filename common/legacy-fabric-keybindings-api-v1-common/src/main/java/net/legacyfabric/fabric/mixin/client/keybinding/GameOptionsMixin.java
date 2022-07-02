@@ -34,7 +34,7 @@ public class GameOptionsMixin {
 	public KeyBinding[] keysAll;
 
 	@Inject(at = @At("HEAD"), method = "load()V")
-	public void loadHook(CallbackInfo info) {
+	public void api$loadHook(CallbackInfo info) {
 		keysAll = KeyBindingRegistryImpl.process(keysAll);
 	}
 }

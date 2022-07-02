@@ -45,12 +45,12 @@ public abstract class ClientChunkProviderMixin {
 	public abstract Chunk getChunk(int i, int j);
 
 	@Inject(at = @At("RETURN"), method = "unloadChunk")
-	public void chunkUnload(int i, int j, CallbackInfo ci) {
+	public void api$chunkUnload(int i, int j, CallbackInfo ci) {
 		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getChunk(i, j));
 	}
 
 	@Inject(at = @At("RETURN"), method = "method_3871", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
+	public void api$chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
 		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, chunk);
 	}
 }
