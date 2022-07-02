@@ -19,5 +19,7 @@
     "fabricloader": ">=0.4.0"
   },
   "description": "Asset loading",
-  "mixins": []
+  "mixins": [
+    "legacy-fabric-resource-loader-v1-common.mixins.json"
+  ]
 }
