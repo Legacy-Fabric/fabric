@@ -22,13 +22,13 @@ For support, consider joining the [Legacy Fabric discord server](https://legacyf
 | command-api-v2       | ✅      | ✅   | ✅     | ⚠     | ⚠      | ⚠      | ⚠      | ❌      |
 | crash-report-info-v1 | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ✅      |
 | entity-events-v1     | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
-| gamerule-api-v1      | ?      | ?   | ?     | ?     | ?      | ?      | ?      | ?      |
+| gamerule-api-v1      | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ?      |
 | item-groups-v1       | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
 | keybindings-api-v1   | ⚠ #132 | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ?      |
 | lifecycle-events-v1  | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
 | logger-api-v1        | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ✅      |
-| networking-api-v1    | ?      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
+| networking-api-v1    | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
 | permissions-api-v1   | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
-| registry-sync-api-v1 | ❌      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
+| registry-sync-api-v1 | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
 | rendering-api-v1     | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
 | resource-loader-v1   | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
