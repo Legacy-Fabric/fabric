@@ -15,22 +15,10 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync.compat;
+package net.legacyfabric.fabric.impl.networking;
 
-import java.util.HashMap;
-import java.util.Map;
+import net.minecraft.network.Packet;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-
-import net.legacyfabric.fabric.api.util.Identifier;
-
-public interface ItemCompat {
-	default Map<Block, Item> getBLOCK_ITEMS() {
-		return new HashMap<>();
-	}
-
-	void addToRegistry(int id, Identifier identifier, Item item);
-
-	<K> SimpleRegistryCompat<K, Item> getRegistry();
+public interface ClientConnectionExtension {
+	void sendPacket(Packet packet);
 }

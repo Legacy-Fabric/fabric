@@ -168,7 +168,11 @@ public abstract class AbstractChanneledNetworkAddon<H> extends AbstractNetworkAd
 	public void sendPacket(Packet<?> packet) {
 		Objects.requireNonNull(packet, "Packet cannot be null");
 
-		this.connection.send(packet);
+		try {
+			this.connection.send(packet);
+		} catch (NoSuchMethodError e) {
+			((ClientConnectionExtension) this.connection).sendPacket(packet);
+		}
 	}
 
 	@Override

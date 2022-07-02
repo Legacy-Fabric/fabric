@@ -5,7 +5,8 @@
   "mixins": [
     "PlayerManagerMixin",
     "ClientConnectionMixin",
-    "MinecraftServerMixin"
+    "MinecraftServerMixin",
+    "PacketByteBufMixin"
   ],
   "client": [
     "client.MinecraftClientMixin"

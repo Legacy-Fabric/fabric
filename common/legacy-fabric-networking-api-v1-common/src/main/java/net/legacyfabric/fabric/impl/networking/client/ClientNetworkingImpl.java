@@ -31,6 +31,7 @@ import net.fabricmc.api.Environment;
 import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.legacyfabric.fabric.impl.networking.GlobalReceiverRegistry;
+import net.legacyfabric.fabric.impl.networking.PacketByteBufExtension;
 import net.legacyfabric.fabric.mixin.networking.client.ConnectScreenAccessor;
 import net.legacyfabric.fabric.mixin.networking.client.MinecraftClientAccessor;
 
@@ -44,7 +45,11 @@ public final class ClientNetworkingImpl {
 	}
 
 	public static Packet<?> createPlayC2SPacket(String channelName, PacketByteBuf buf) {
-		return new CustomPayloadC2SPacket(channelName, buf);
+		try {
+			return new CustomPayloadC2SPacket(channelName, buf);
+		} catch (NoSuchMethodError e) {
+			return ((PacketByteBufExtension) buf).createCustomPayloadC2SPacket(channelName);
+		}
 	}
 
 	/**

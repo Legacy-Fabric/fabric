@@ -24,6 +24,7 @@ import net.minecraft.util.PacketByteBuf;
 
 import net.legacyfabric.fabric.api.networking.v1.ServerPlayNetworking;
 import net.legacyfabric.fabric.impl.networking.GlobalReceiverRegistry;
+import net.legacyfabric.fabric.impl.networking.PacketByteBufExtension;
 
 public final class ServerNetworkingImpl {
 	public static final GlobalReceiverRegistry<ServerPlayNetworking.PlayChannelHandler> PLAY = new GlobalReceiverRegistry<>();
@@ -32,7 +33,11 @@ public final class ServerNetworkingImpl {
 		return ((ServerPlayNetworkHandlerExtensions) handler).getAddon();
 	}
 
-	public static Packet<?> createPlayC2SPacket(String channel, PacketByteBuf buf) {
-		return new CustomPayloadS2CPacket(channel, buf);
+	public static Packet<?> createPlayS2CPacket(String channel, PacketByteBuf buf) {
+		try {
+			return new CustomPayloadS2CPacket(channel, buf);
+		} catch (NoSuchMethodError e) {
+			return ((PacketByteBufExtension) buf).createCustomPayloadS2CPacket(channel);
+		}
 	}
 }

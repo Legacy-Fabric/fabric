@@ -37,11 +37,12 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
 import net.legacyfabric.fabric.impl.networking.ChannelInfoHolder;
+import net.legacyfabric.fabric.impl.networking.ClientConnectionExtension;
 import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
 import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
 
 @Mixin(ClientConnection.class)
-abstract class ClientConnectionMixin implements ChannelInfoHolder {
+abstract class ClientConnectionMixin implements ChannelInfoHolder, ClientConnectionExtension {
 	@Shadow
 	private PacketListener field_8432;
 
@@ -81,5 +82,10 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	@Override
 	public Collection<String> getPendingChannelsNames() {
 		return this.playChannels;
+	}
+
+	@Override
+	public void sendPacket(Packet packet) {
+		this.method_7395(packet);
 	}
 }

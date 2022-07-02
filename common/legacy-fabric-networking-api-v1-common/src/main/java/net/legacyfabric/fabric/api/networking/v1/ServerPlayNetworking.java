@@ -262,7 +262,7 @@ public final class ServerPlayNetworking {
 		Objects.requireNonNull(channelName, "Channel cannot be null");
 		Objects.requireNonNull(buf, "Buf cannot be null");
 
-		return ServerNetworkingImpl.createPlayC2SPacket(channelName, buf);
+		return ServerNetworkingImpl.createPlayS2CPacket(channelName, buf);
 	}
 
 	/**

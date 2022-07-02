@@ -23,7 +23,8 @@ import net.minecraft.block.BlockState;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public interface BlockCompat {
-	void setBLOCK_STATES(IdListCompat<BlockState> BLOCK_STATES);
+	default void setBLOCK_STATES(IdListCompat<BlockState> BLOCK_STATES) {
+	};
 
 	void addToRegistry(int id, Identifier identifier, Block block);
 
