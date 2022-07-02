@@ -29,6 +29,7 @@ import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
+import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 @Mixin(Item.class)
 public class ItemMixin implements ItemCompat {
@@ -48,5 +49,10 @@ public class ItemMixin implements ItemCompat {
 	@Override
 	public void addToRegistry(int id, Identifier identifier, Item item) {
 		REGISTRY.add(id, new net.minecraft.util.Identifier(identifier.toString()), item);
+	}
+
+	@Override
+	public <K> SimpleRegistryCompat<K, Item> getRegistry() {
+		return (SimpleRegistryCompat<K, Item>) REGISTRY;
 	}
 }

@@ -32,15 +32,17 @@ import net.legacyfabric.fabric.api.util.VersionUtils;
 import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
+import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 @ApiStatus.Internal
 public class RegistryHelperImpl {
 	private static final boolean hasFlatteningBegun = VersionUtils.matches(">=1.8 <=1.12.2");
+	public static RegistriesGetter registriesGetter = null;
 
 	public static Block registerBlock(Block block, Identifier id) {
 		block.setTranslationKey(formatTranslationKey(id));
-		int rawId = nextId((SimpleRegistryCompat<?, ?>) Block.REGISTRY);
+		int rawId = nextId(((BlockCompat) block).getRegistry());
 		((BlockCompat) block).addToRegistry(rawId, id, block);
 
 		if (hasFlatteningBegun) {
@@ -55,7 +57,7 @@ public class RegistryHelperImpl {
 
 	public static Item registerItem(Item item, Identifier id) {
 		item.setTranslationKey(formatTranslationKey(id));
-		int rawId = nextId((SimpleRegistryCompat<?, ?>) Item.REGISTRY);
+		int rawId = nextId(((ItemCompat) item).getRegistry());
 		((ItemCompat) item).addToRegistry(rawId, id, item);
 
 		if (hasFlatteningBegun) {

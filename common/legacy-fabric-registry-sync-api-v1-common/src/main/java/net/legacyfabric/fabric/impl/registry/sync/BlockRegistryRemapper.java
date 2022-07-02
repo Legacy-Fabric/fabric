@@ -21,13 +21,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 
 import net.legacyfabric.fabric.api.util.VersionUtils;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
-import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 	public BlockRegistryRemapper() {
-		super((SimpleRegistryCompat<?, Block>) Block.REGISTRY, BLOCKS, "Block");
+		super(RegistryHelperImpl.registriesGetter.getBlockRegistry(), BLOCKS, "Block");
 	}
 
 	private static final boolean hasBlockStateList = VersionUtils.matches(">=1.8");

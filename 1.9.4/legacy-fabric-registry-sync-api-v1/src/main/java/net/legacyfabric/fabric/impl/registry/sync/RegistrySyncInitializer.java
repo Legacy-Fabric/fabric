@@ -17,12 +17,28 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
-public class ItemRegistryRemapper extends RegistryRemapper<Item> {
-	public ItemRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getItemRegistry(), ITEMS, "Item");
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
+import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+
+public class RegistrySyncInitializer implements PreLaunchEntrypoint {
+	@Override
+	public void onPreLaunch() {
+		RegistryHelperImpl.registriesGetter = new RegistriesGetter() {
+			@Override
+			public <K> SimpleRegistryCompat<K, Block> getBlockRegistry() {
+				return (SimpleRegistryCompat<K, Block>) Block.REGISTRY;
+			}
+
+			@Override
+			public <K> SimpleRegistryCompat<K, Item> getItemRegistry() {
+				return (SimpleRegistryCompat<K, Item>) Item.REGISTRY;
+			}
+		};
 	}
 }

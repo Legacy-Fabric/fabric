@@ -49,6 +49,10 @@ public final class FabricItemGroupBuilder {
 		return new FabricItemGroupBuilder(identifier);
 	}
 
+	public static FabricItemGroupBuilder create(Object identifier) {
+		return create(new Identifier(identifier));
+	}
+
 	/**
 	 * This is used to add an icon to the item group.
 	 *
@@ -130,6 +134,10 @@ public final class FabricItemGroupBuilder {
 		return new FabricItemGroupBuilder(identifier).iconWithItemStack(stackSupplier).build();
 	}
 
+	public static ItemGroup buildWithItemStack(Object identifier, Supplier<ItemStack> stackSupplier) {
+		return buildWithItemStack(new Identifier(identifier), stackSupplier);
+	}
+
 	/**
 	 * This is a single method that makes creating an ItemGroup with an icon one call.
 	 *
@@ -139,6 +147,10 @@ public final class FabricItemGroupBuilder {
 	 */
 	public static ItemGroup buildWithItem(Identifier identifier, Supplier<Item> stackSupplier) {
 		return new FabricItemGroupBuilder(identifier).iconWithItem(stackSupplier).build();
+	}
+
+	public static ItemGroup buildWithItem(Object identifier, Supplier<Item> stackSupplier) {
+		return buildWithItem(new Identifier(identifier), stackSupplier);
 	}
 
 	/**

@@ -18,14 +18,9 @@
 package net.legacyfabric.fabric.impl.registry.sync.compat;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.item.Item;
 
-import net.legacyfabric.fabric.api.util.Identifier;
-
-public interface BlockCompat {
-	void setBLOCK_STATES(IdListCompat<BlockState> BLOCK_STATES);
-
-	void addToRegistry(int id, Identifier identifier, Block block);
-
-	<K> SimpleRegistryCompat<K, Block> getRegistry();
+public interface RegistriesGetter {
+	<K> SimpleRegistryCompat<K, Block> getBlockRegistry();
+	<K> SimpleRegistryCompat<K, Item> getItemRegistry();
 }

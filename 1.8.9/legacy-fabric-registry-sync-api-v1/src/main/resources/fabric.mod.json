@@ -20,7 +20,11 @@
     "minecraft": "1.8.9"
   },
   "description": "Registry hooks",
-  "entrypoints": {},
+  "entrypoints": {
+    "preLaunch": [
+      "net.legacyfabric.fabric.impl.registry.sync.RegistrySyncInitializer"
+    ]
+  },
   "mixins": [
     "legacy-fabric-registry-sync-api-v1.mixins.json"
   ]

@@ -30,6 +30,7 @@ import net.minecraft.util.registry.BiDefaultedRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
+import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 @Mixin(Block.class)
 public class BlockMixin implements BlockCompat {
@@ -50,5 +51,10 @@ public class BlockMixin implements BlockCompat {
 	@Override
 	public void addToRegistry(int id, Identifier identifier, Block block) {
 		REGISTRY.add(id, new net.minecraft.util.Identifier(identifier.toString()), block);
+	}
+
+	@Override
+	public <K> SimpleRegistryCompat<K, Block> getRegistry() {
+		return (SimpleRegistryCompat<K, Block>) REGISTRY;
 	}
 }

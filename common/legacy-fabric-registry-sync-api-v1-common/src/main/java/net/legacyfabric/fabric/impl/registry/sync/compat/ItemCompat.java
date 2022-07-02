@@ -28,4 +28,6 @@ public interface ItemCompat {
 	Map<Block, Item> getBLOCK_ITEMS();
 
 	void addToRegistry(int id, Identifier identifier, Item item);
+
+	<K> SimpleRegistryCompat<K, Item> getRegistry();
 }
