@@ -25,5 +25,6 @@ moduleDependencies(project, [
 		'1.8.9:legacy-fabric-rendering-api-v1',
 		'1.8:legacy-fabric-resource-loader-v1',
 		'1.8.9:legacy-fabric-networking-api-v1',
-		'1.8:legacy-fabric-registry-sync-api-v1'
+		'1.8:legacy-fabric-registry-sync-api-v1',
+		'1.8.9:legacy-fabric-fixes'
 ])

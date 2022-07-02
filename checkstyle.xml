@@ -157,7 +157,7 @@
 		<module name="PackageDeclaration"/>
 		<module name="PackageName">
 			<!-- require a package following the following structure:
-			base package name: net.fabricmc.fabric
+			base package name: net.legacyfabric.fabric
 			+ api/implementation/mixin subpackage: api/impl/mixin
 			+ client/dedicated server/common env subpackage: client/server/<nothing>
 			+ module name subpackage, singular, may contain multiple .-separated parts
@@ -166,12 +166,12 @@
 
 			The regex works as follows:
 			It matches (=succeeds) for one of these cases:
-			- net.fabricmc.fabric.api.client.<module-name>.v<version>[.<extra packages...>]
-			- net.fabricmc.fabric.api.server.<module-name>.v<version>[.<extra packages...>]
-			- net.fabricmc.fabric.api.<module-name>.v<version>[.<extra packages...>]
-			- net.fabricmc.fabric.(impl|mixin).client.<module-name>[.<extra packages...>]
-			- net.fabricmc.fabric.(impl|mixin).server.<module-name>[.<extra packages...>]
-			- net.fabricmc.fabric.(impl|mixin).<module-name>[.<extra packages...>]
+			- net.legacyfabric.fabric.api.client.<module-name>.v<version>[.<extra packages...>]
+			- net.legacyfabric.fabric.api.server.<module-name>.v<version>[.<extra packages...>]
+			- net.legacyfabric.fabric.api.<module-name>.v<version>[.<extra packages...>]
+			- net.legacyfabric.fabric.(impl|mixin).client.<module-name>[.<extra packages...>]
+			- net.legacyfabric.fabric.(impl|mixin).server.<module-name>[.<extra packages...>]
+			- net.legacyfabric.fabric.(impl|mixin).<module-name>[.<extra packages...>]
 			- <any legacy package>
 			where <module-name> is a set of '.'-separated words, all in singular (not ending with s) and not starting with client. or server.
 			and <version> is a positive integer (1, 2, 3, ...)
