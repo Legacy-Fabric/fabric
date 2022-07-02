@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.args.parsing;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 /**
@@ -89,12 +90,12 @@ public class SingleArg {
 		return Objects.hashCode(this.value, this.startIdx, this.endIdx);
 	}
 
-	//	@Override
-	//	public String toString() {
-	//		return Objects.toStringHelper(this)
-	//				.add("value", this.value)
-	//				.add("startIdx", this.startIdx)
-	//				.add("endIdx", this.endIdx)
-	//				.toString();
-	//	}
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("value", this.value)
+				.add("startIdx", this.startIdx)
+				.add("endIdx", this.endIdx)
+				.toString();
+	}
 }

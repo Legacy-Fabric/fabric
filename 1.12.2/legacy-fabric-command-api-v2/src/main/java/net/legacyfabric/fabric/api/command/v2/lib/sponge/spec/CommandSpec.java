@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -478,15 +479,15 @@ public final class CommandSpec implements CommandCallable {
 		return Objects.hashCode(this.args, this.executor, this.description, this.extendedDescription, this.permission, this.argumentParser);
 	}
 
-	//	@Override
-	//	public String toString() {
-	//		return Objects.toStringHelper(this)
-	//				.add("args", this.args)
-	//				.add("executor", this.executor)
-	//				.add("description", this.description)
-	//				.add("extendedDescription", this.extendedDescription)
-	//				.add("permission", this.permission)
-	//				.add("argumentParser", this.argumentParser)
-	//				.toString();
-	//	}
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("args", this.args)
+				.add("executor", this.executor)
+				.add("description", this.description)
+				.add("extendedDescription", this.extendedDescription)
+				.add("permission", this.permission)
+				.add("argumentParser", this.argumentParser)
+				.toString();
+	}
 }
