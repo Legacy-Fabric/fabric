@@ -116,7 +116,7 @@ public class RegistryRemapper<V> {
 				int id = RegistryHelperImpl.nextId(this.registry);
 
 				while (newList.fromInt(id) != null) {
-					id = RegistryHelperImpl.nextId(newList);
+					id = RegistryHelperImpl.nextId(newList, this.registry);
 
 					V currentBlock = RegistryHelperImpl.getIdList(this.registry).fromInt(id);
 

@@ -29,6 +29,7 @@ import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
+import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
@@ -76,17 +77,25 @@ public class RegistryHelperImpl {
 	public static int nextId(SimpleRegistryCompat<?, ?> registry) {
 		int id = 0;
 
-		while (getIdList(registry).fromInt(id) != null) {
+		Identifier registryId = RegistryRemapper.getRegistryRemapper(registry).registryId;
+
+		while (getIdList(registry).fromInt(id) != null
+				|| (id < 256
+				&& (registryId.equals(RegistryRemapper.BLOCKS) || registryId.equals(RegistryRemapper.ITEMS)))) {
 			id++;
 		}
 
 		return id;
 	}
 
-	public static int nextId(IdListCompat<?> idList) {
+	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry) {
 		int id = 0;
 
-		while (idList.fromInt(id) != null) {
+		Identifier registryId = RegistryRemapper.getRegistryRemapper(registry).registryId;
+
+		while (idList.fromInt(id) != null
+				|| (id < 256
+				&& (registryId.equals(RegistryRemapper.BLOCKS) || registryId.equals(RegistryRemapper.ITEMS)))) {
 			id++;
 		}
 
