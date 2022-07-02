@@ -23,11 +23,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.itemgroup.ItemGroup;
-import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.legacyfabric.fabric.api.util.Identifier;
 
 public class ItemGroupTest implements ModInitializer {
 	//Adds an item group with all items in it
