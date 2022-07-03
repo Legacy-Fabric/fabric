@@ -5,10 +5,12 @@
   "mixins": [
     "PlayerManagerMixin",
     "ClientConnectionMixin",
-    "MinecraftServerMixin"
+    "MinecraftServerMixin",
+    "CustomPayloadC2SPacketMixin"
   ],
   "client": [
-    "client.MinecraftClientMixin"
+    "client.MinecraftClientMixin",
+    "client.CustomPayloadS2CPacketMixin"
   ],
   "injectors": {
     "defaultRequire": 1

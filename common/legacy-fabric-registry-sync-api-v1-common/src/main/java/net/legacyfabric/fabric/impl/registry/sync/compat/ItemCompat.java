@@ -17,20 +17,11 @@
 
 package net.legacyfabric.fabric.impl.registry.sync.compat;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-import net.legacyfabric.fabric.api.util.Identifier;
-
 public interface ItemCompat {
-	default Map<Block, Item> getBLOCK_ITEMS() {
-		return new HashMap<>();
-	}
-
-	void addToRegistry(int id, Identifier identifier, Item item);
-
-	<K> SimpleRegistryCompat<K, Item> getRegistry();
+	Map<Block, Item> getBLOCK_ITEMS();
 }

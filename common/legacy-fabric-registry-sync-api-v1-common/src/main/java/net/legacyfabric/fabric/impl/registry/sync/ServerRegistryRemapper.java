@@ -26,6 +26,8 @@ public class ServerRegistryRemapper implements RegistryRemapperAccess {
 	private final RegistryRemapper<Item> itemRemapper = new ItemRegistryRemapper();
 	private final RegistryRemapper<Block> blockRemapper = new BlockRegistryRemapper();
 
+	private final RegistryRemapper<?>[] REMAPPERS = new RegistryRemapper[] {itemRemapper, blockRemapper};
+
 	@Override
 	public RegistryRemapper<Item> getItemRemapper() {
 		return this.itemRemapper;
@@ -38,5 +40,12 @@ public class ServerRegistryRemapper implements RegistryRemapperAccess {
 
 	public static RegistryRemapperAccess getInstance() {
 		return INSTANCE;
+	}
+
+	private ServerRegistryRemapper() {
+		for (RegistryRemapper<?> remapper : REMAPPERS) {
+			RegistryRemapper.REMAPPER_MAP.put(remapper.registryId, remapper);
+			RegistryRemapper.REGISTRY_REMAPPER_MAP.put(remapper.registry, remapper);
+		}
 	}
 }

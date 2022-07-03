@@ -28,14 +28,13 @@ import net.minecraft.nbt.NbtCompound;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.api.util.VersionUtils;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+import net.legacyfabric.fabric.impl.registry.util.ArrayBasedRegistry;
 
 public class RegistryRemapper<V> {
-	private static final boolean hasFlatteningBegun = VersionUtils.matches(">=1.8 <=1.12.2");
 	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
 	protected final SimpleRegistryCompat<?, V> registry;
 	protected BiMap<Identifier, Integer> entryDump;
@@ -43,7 +42,8 @@ public class RegistryRemapper<V> {
 	public final Identifier registryId;
 	public final String type;
 
-	private static final Map<SimpleRegistryCompat<?, ?>, RegistryRemapper<?>> REGISTRY_REMAPPER_MAP = new HashMap<>();
+	public static final Map<SimpleRegistryCompat<?, ?>, RegistryRemapper<?>> REGISTRY_REMAPPER_MAP = new HashMap<>();
+	public static final Map<Identifier, RegistryRemapper<?>> REMAPPER_MAP = new HashMap<>();
 
 	public static final Identifier ITEMS = new Identifier("items");
 	public static final Identifier BLOCKS = new Identifier("blocks");
@@ -52,7 +52,6 @@ public class RegistryRemapper<V> {
 		this.registry = registry;
 		this.registryId = registryId;
 		this.type = type;
-		REGISTRY_REMAPPER_MAP.put(this.registry, this);
 	}
 
 	public void dump() {
@@ -140,6 +139,11 @@ public class RegistryRemapper<V> {
 		}
 
 		this.registry.setIds(newList);
+
+		if (this.registry instanceof ArrayBasedRegistry) {
+			((ArrayBasedRegistry) this.registry).syncArrayWithIdList();
+		}
+
 		this.dump();
 		LOGGER.info("Remapped " + previousSize.getAsInt() + " entries");
 	}
@@ -148,16 +152,33 @@ public class RegistryRemapper<V> {
 		return (RegistryRemapper<V>) REGISTRY_REMAPPER_MAP.getOrDefault(simpleRegistry, null);
 	}
 
+	public static <V> RegistryRemapper<V> getRegistryRemapper(Identifier identifier) {
+		return (RegistryRemapper<V>) REMAPPER_MAP.getOrDefault(identifier, null);
+	}
+
 	public void addMissing(Identifier key, int id) {
 		this.missingMap.put(key, id);
 	}
 
+	public V register(int i, Object key, V value) {
+		return this.registry.register(i, key, value);
+	}
+
+	public SimpleRegistryCompat<?, V> getRegistry() {
+		return this.registry;
+	}
+
 	public Object toKeyType(Identifier id) {
-		if (hasFlatteningBegun) {
+		switch (this.registry.getKeyType()) {
+		case FABRIC:
+			return id;
+		case JAVA:
+			return id.toString();
+		case VANILLA:
 			return new net.minecraft.util.Identifier(id.toString());
 		}
 
-		return id.toString();
+		return id;
 	}
 
 	public Object toKeyType(String id) {

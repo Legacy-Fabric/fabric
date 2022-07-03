@@ -15,32 +15,24 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.mixin.networking.client;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
+import net.minecraft.util.PacketByteBuf;
 
-import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
-import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
+import net.legacyfabric.fabric.impl.networking.client.CustomPayloadS2CPacketExtension;
 
-@Mixin(Block.class)
-public class BlockMixin implements BlockCompat {
+@Mixin(CustomPayloadS2CPacket.class)
+public abstract class CustomPayloadS2CPacketMixin implements CustomPayloadS2CPacketExtension {
 	@Shadow
-	@Final
-	public static SimpleRegistry field_7260;
+	public abstract byte[] method_7734();
 
 	@Override
-	public void addToRegistry(int id, Identifier identifier, Block block) {
-		field_7260.method_7327(id, identifier.toString(), block);
-	}
-
-	@Override
-	public <K> SimpleRegistryCompat<K, Block> getRegistry() {
-		return (SimpleRegistryCompat<K, Block>) field_7260;
+	public PacketByteBuf getData() {
+		return new PacketByteBuf(PacketByteBufs.empty().writeBytes(this.method_7734()));
 	}
 }

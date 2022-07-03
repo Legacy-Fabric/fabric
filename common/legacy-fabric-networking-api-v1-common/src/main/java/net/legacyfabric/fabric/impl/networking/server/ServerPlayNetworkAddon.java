@@ -79,7 +79,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 			return false;
 		}
 
-		return this.handle(packet.getChannel(), packet.getPayload());
+		return this.handle(packet.getChannel(), ((CustomPayloadC2SPacketExtension) packet).getData());
 	}
 
 	@Override

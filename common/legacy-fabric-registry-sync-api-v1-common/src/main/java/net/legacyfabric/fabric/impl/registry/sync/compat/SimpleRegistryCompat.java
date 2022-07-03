@@ -33,4 +33,16 @@ public interface SimpleRegistryCompat<K, V> extends Iterable<V> {
 	K getKey(V object);
 
 	V getValue(Object key);
+
+	V register(int i, Object key, V value);
+
+	default KeyType getKeyType() {
+		return KeyType.VANILLA;
+	}
+
+	enum KeyType {
+		FABRIC,
+		VANILLA,
+		JAVA
+	}
 }

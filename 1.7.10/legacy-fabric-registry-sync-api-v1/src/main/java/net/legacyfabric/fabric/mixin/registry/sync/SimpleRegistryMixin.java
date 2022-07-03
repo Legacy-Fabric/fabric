@@ -50,6 +50,9 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	@Shadow
 	public abstract Object get(String par1);
 
+	@Shadow
+	public abstract void method_7327(int par1, String par2, Object par3);
+
 	@Override
 	public IdListCompat<V> getIds() {
 		return (IdListCompat<V>) this.ids;
@@ -83,5 +86,16 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	@Override
 	public V getValue(Object key) {
 		return (V) this.get((String) key);
+	}
+
+	@Override
+	public V register(int i, Object key, V value) {
+		this.method_7327(i, key.toString(), value);
+		return value;
+	}
+
+	@Override
+	public KeyType getKeyType() {
+		return KeyType.JAVA;
 	}
 }

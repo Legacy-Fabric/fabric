@@ -15,32 +15,23 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.mixin.networking.client;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.item.Item;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
+import net.minecraft.util.PacketByteBuf;
 
-import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
-import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+import net.legacyfabric.fabric.impl.networking.client.CustomPayloadS2CPacketExtension;
 
-@Mixin(Item.class)
-public class ItemMixin implements ItemCompat {
+@Mixin(CustomPayloadS2CPacket.class)
+public abstract class CustomPayloadS2CPacketMixin implements CustomPayloadS2CPacketExtension {
 	@Shadow
-	@Final
-	public static SimpleRegistry REGISTRY;
+	public abstract PacketByteBuf getPayload();
 
 	@Override
-	public void addToRegistry(int id, Identifier identifier, Item item) {
-		REGISTRY.method_7327(id, identifier.toString(), item);
-	}
-
-	@Override
-	public <K> SimpleRegistryCompat<K, Item> getRegistry() {
-		return (SimpleRegistryCompat<K, Item>) REGISTRY;
+	public PacketByteBuf getData() {
+		return this.getPayload();
 	}
 }

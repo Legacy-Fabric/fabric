@@ -35,14 +35,7 @@ public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 
 	@Override
 	public void remap() {
-		//		IdListCompat<Block> oldList = RegistryHelperImpl.getIdList(this.registry);
 		super.remap();
-		//		IdListCompat<Block> newList = RegistryHelperImpl.getIdList(this.registry);
-		//		Map<Integer, Integer> old2new = new HashMap<>();
-		//
-		//		for (Block value : oldList) {
-		//			old2new.put(oldList.getInt(value), newList.getInt(value));
-		//		}
 
 		if (hasBlockStateList) {
 			IdListCompat<BlockState> oldStates = (IdListCompat<BlockState>) Block.BLOCK_STATES;

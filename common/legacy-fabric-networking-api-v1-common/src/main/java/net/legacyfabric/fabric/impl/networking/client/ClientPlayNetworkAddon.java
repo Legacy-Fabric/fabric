@@ -92,7 +92,7 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 			return false;
 		}
 
-		PacketByteBuf buf = new PacketByteBuf(packet.getPayload().copy());
+		PacketByteBuf buf = new PacketByteBuf(((CustomPayloadS2CPacketExtension) packet).getData().copy());
 
 		try {
 			return this.handle(packet.getChannel(), buf);

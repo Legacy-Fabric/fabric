@@ -8,8 +8,6 @@
   "mixins": [
     "SimpleRegistryMixin",
     "PlayerManagerMixin",
-    "BlockMixin",
-    "ItemMixin",
     "PacketByteBufMixin"
   ],
   "client": [

@@ -25,12 +25,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.collection.IdList;
-import net.minecraft.util.registry.BiDefaultedRegistry;
 
-import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
-import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 @Mixin(Block.class)
 public class BlockMixin implements BlockCompat {
@@ -39,22 +36,8 @@ public class BlockMixin implements BlockCompat {
 	@Final
 	public static IdList BLOCK_STATES;
 
-	@Shadow
-	@Final
-	public static BiDefaultedRegistry REGISTRY;
-
 	@Override
 	public void setBLOCK_STATES(IdListCompat<BlockState> block_states) {
 		BLOCK_STATES = (IdList) block_states;
-	}
-
-	@Override
-	public void addToRegistry(int id, Identifier identifier, Block block) {
-		REGISTRY.add(id, new net.minecraft.util.Identifier(identifier.toString()), block);
-	}
-
-	@Override
-	public <K> SimpleRegistryCompat<K, Block> getRegistry() {
-		return (SimpleRegistryCompat<K, Block>) REGISTRY;
 	}
 }

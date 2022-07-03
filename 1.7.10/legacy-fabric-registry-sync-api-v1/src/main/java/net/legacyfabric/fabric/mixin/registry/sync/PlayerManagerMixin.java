@@ -48,7 +48,7 @@ public class PlayerManagerMixin {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V", ordinal = 2), method = "onPlayerConnect")
 	public void playerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
 		if (fabric_shouldSend()) {
-			player.networkHandler.sendPacket(ServerPlayNetworking.createS2CPacket(RegistryRemapperAccess.PACKET_ID, ServerRegistryRemapper.getInstance().createBuf()));
+			ServerPlayNetworking.send(player, RegistryRemapperAccess.PACKET_ID, ServerRegistryRemapper.getInstance().createBuf());
 		}
 	}
 

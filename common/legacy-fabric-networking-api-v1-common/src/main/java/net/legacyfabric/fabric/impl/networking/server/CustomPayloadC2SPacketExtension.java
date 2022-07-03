@@ -15,27 +15,10 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.impl.networking.server;
 
-import java.util.Map;
+import net.minecraft.util.PacketByteBuf;
 
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-
-import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
-
-@Mixin(Item.class)
-public class ItemMixin implements ItemCompat {
-	@Shadow
-	@Final
-	private static Map<Block, Item> BLOCK_ITEMS;
-
-	@Override
-	public Map<Block, Item> getBLOCK_ITEMS() {
-		return BLOCK_ITEMS;
-	}
+public interface CustomPayloadC2SPacketExtension {
+	PacketByteBuf getData();
 }
