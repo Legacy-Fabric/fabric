@@ -8,8 +8,7 @@
   "mixins": [
     "MinecraftServerMixin",
     "WorldSaveHandlerMixin",
-    "IdListMixin",
-    "CustomPayloadS2CPacketMixin"
+    "IdListMixin"
   ],
   "client": [
     "client.MinecraftClientMixin"
