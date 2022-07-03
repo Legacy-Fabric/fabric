@@ -15,31 +15,26 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.networking;
+package net.legacyfabric.fabric.mixin.registry.sync;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import java.util.Map;
+
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.registry.MutableRegistry;
 
-import net.legacyfabric.fabric.impl.networking.server.MinecraftServerExtensions;
+import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
-@Mixin(MinecraftServer.class)
-public abstract class MinecraftServerMixin implements MinecraftServerExtensions {
+@Mixin(MutableRegistry.class)
+public abstract class MutableRegistryMixin<K, V> implements SimpleRegistryCompat<K, V> {
 	@Shadow
-	public abstract boolean isOnThread();
-
-	@Shadow
-	public abstract ListenableFuture<Object> execute(Runnable task);
+	@Final
+	protected Map<K, V> map;
 
 	@Override
-	public boolean isOnGameThread() {
-		return this.isOnThread();
-	}
-
-	@Override
-	public ListenableFuture<Object> executeTask(Runnable task) {
-		return this.execute(task);
+	public V getValue(Object key) {
+		return this.map.get((K) key);
 	}
 }

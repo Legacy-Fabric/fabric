@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.networking;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -29,8 +30,16 @@ public abstract class MinecraftServerMixin implements MinecraftServerExtensions 
 	@Shadow
 	public abstract boolean isOnThread();
 
+	@Shadow
+	public abstract ListenableFuture<Object> execute(Runnable task);
+
 	@Override
 	public boolean isOnGameThread() {
 		return this.isOnThread();
+	}
+
+	@Override
+	public ListenableFuture<Object> executeTask(Runnable task) {
+		return this.execute(task);
 	}
 }

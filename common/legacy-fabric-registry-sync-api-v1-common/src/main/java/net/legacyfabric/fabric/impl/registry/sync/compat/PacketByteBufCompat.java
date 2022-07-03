@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.networking.server;
+package net.legacyfabric.fabric.impl.registry.sync.compat;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.PacketByteBuf;
 
-public interface MinecraftServerExtensions {
-	ListenableFuture<Object> executeTask(Runnable task);
-	boolean isOnGameThread();
+public interface PacketByteBufCompat {
+	PacketByteBuf writeCompound(NbtCompound compound);
 }

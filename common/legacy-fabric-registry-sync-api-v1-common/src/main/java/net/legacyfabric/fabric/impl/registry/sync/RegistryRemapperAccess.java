@@ -24,6 +24,7 @@ import net.minecraft.util.PacketByteBuf;
 
 import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
 import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.impl.registry.sync.compat.PacketByteBufCompat;
 
 public interface RegistryRemapperAccess {
 	Identifier PACKET_ID = new Identifier("legacy-fabric-api:registry_remap");
@@ -52,7 +53,6 @@ public interface RegistryRemapperAccess {
 
 	default PacketByteBuf createBuf() {
 		PacketByteBuf buf = PacketByteBufs.create();
-		buf.writeNbtCompound(this.toNbtCompound());
-		return buf;
+		return ((PacketByteBufCompat) buf).writeCompound(this.toNbtCompound());
 	}
 }

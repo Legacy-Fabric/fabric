@@ -15,11 +15,18 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.networking.server;
+package net.legacyfabric.fabric.mixin.registry.sync;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-public interface MinecraftServerExtensions {
-	ListenableFuture<Object> executeTask(Runnable task);
-	boolean isOnGameThread();
+import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
+
+@Mixin(CustomPayloadS2CPacket.class)
+public class CustomPayloadS2CPacketMixin {
+	@ModifyArg(method = "read", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/PacketByteBuf;readString(I)Ljava/lang/String;"))
+	private int increaseMaxChannelLength(int max) {
+		return 100;
+	}
 }

@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.networking.server;
+package net.legacyfabric.fabric.impl.command;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import net.minecraft.server.MinecraftServer;
 
-public interface MinecraftServerExtensions {
-	ListenableFuture<Object> executeTask(Runnable task);
-	boolean isOnGameThread();
+public interface MinecraftClientAccessor {
+	MinecraftServer getMinecraftServer();
 }

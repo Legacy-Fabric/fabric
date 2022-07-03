@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -31,6 +30,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.impl.command.MinecraftClientAccessor;
 
 /**
  * Represents a command argument element.
@@ -129,12 +129,16 @@ public abstract class CommandElement {
 	}
 
 	public MinecraftServer getServer() {
-		MinecraftServer minecraftServer;
+		MinecraftServer minecraftServer = null;
 
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-			minecraftServer = MinecraftClient.getInstance().getServer();
-		} else {
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
 			minecraftServer = (MinecraftServer) FabricLoader.getInstance().getGameInstance();
+		} else {
+			try {
+				minecraftServer = ((MinecraftClientAccessor) net.minecraft.client.MinecraftClient.getInstance()).getMinecraftServer();
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return minecraftServer;

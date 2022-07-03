@@ -33,10 +33,19 @@ public abstract class MixinItemGroup implements ItemGroupExtensions {
 	@Mutable
 	public static ItemGroup[] itemGroups;
 
+	@Shadow
+	@Final
+	private String id;
+
 	@Override
 	public void fabric_expandArray() {
 		ItemGroup[] tempGroups = itemGroups;
 		itemGroups = new ItemGroup[itemGroups.length + 1];
 		System.arraycopy(tempGroups, 0, itemGroups, 0, tempGroups.length);
+	}
+
+	@Override
+	public String getIdentifier() {
+		return this.id;
 	}
 }

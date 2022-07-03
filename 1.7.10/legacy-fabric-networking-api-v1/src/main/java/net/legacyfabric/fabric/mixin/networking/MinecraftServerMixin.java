@@ -17,7 +17,18 @@
 
 package net.legacyfabric.fabric.mixin.networking;
 
+import java.util.Queue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+
+import com.google.common.collect.Queues;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListenableFutureTask;
+import org.apache.commons.lang3.Validate;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -25,10 +36,15 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.class_739;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import net.legacyfabric.fabric.impl.networking.server.MinecraftServerExtensions;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin implements MinecraftServerExtensions {
+	@Unique
+	private final Queue<FutureTask<?>> queue = Queues.newArrayDeque();
 	@Unique
 	private Thread serverThread;
 
@@ -41,5 +57,36 @@ public abstract class MinecraftServerMixin implements MinecraftServerExtensions 
 	@Override
 	public boolean isOnGameThread() {
 		return Thread.currentThread() == this.serverThread;
+	}
+
+	@Shadow
+	@Environment(EnvType.SERVER)
+	public boolean isStopped() {
+		return false;
+	}
+
+	@Unique
+	private <V> ListenableFuture<V> runCallable(Callable<V> callable) {
+		Validate.notNull(callable);
+
+		if (!this.isOnGameThread() && !this.isStopped()) {
+			ListenableFutureTask<V> listenableFutureTask = ListenableFutureTask.create(callable);
+			synchronized (this.queue) {
+				this.queue.add(listenableFutureTask);
+				return listenableFutureTask;
+			}
+		} else {
+			try {
+				return Futures.immediateFuture(callable.call());
+			} catch (Exception e) {
+				return Futures.immediateFailedFuture(e);
+			}
+		}
+	}
+
+	@Override
+	public ListenableFuture<Object> executeTask(Runnable task) {
+		Validate.notNull(task);
+		return this.runCallable(Executors.callable(task));
 	}
 }

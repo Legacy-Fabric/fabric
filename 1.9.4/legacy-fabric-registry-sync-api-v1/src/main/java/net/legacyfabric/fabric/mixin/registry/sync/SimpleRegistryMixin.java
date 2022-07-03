@@ -47,9 +47,6 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	@Shadow
 	public abstract K getIdentifier(V id);
 
-	@Shadow
-	public abstract V get(K key);
-
 	@Override
 	public IdListCompat<V> getIds() {
 		return (IdListCompat<V>) this.field_13718;
@@ -78,10 +75,5 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	@Override
 	public K getKey(V object) {
 		return this.getIdentifier(object);
-	}
-
-	@Override
-	public V getValue(Object key) {
-		return this.get((K) key);
 	}
 }

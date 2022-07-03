@@ -9,7 +9,8 @@
     "SimpleRegistryMixin",
     "PlayerManagerMixin",
     "BlockMixin",
-    "ItemMixin"
+    "ItemMixin",
+    "PacketByteBufMixin"
   ],
   "client": [
   ]

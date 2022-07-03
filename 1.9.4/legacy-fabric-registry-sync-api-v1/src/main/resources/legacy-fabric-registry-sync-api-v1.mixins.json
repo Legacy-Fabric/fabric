@@ -10,7 +10,9 @@
     "class_2929Mixin",
     "PlayerManagerMixin",
     "BlockMixin",
-    "ItemMixin"
+    "ItemMixin",
+    "PacketByteBufMixin",
+    "MutableRegistryMixin"
   ],
   "client": [
   ]

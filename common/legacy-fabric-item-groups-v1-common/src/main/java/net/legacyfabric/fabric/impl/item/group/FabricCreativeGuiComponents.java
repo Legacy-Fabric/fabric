@@ -34,8 +34,8 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.itemgroup.ItemGroup;
-import net.minecraft.util.Identifier;
 
+import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
 
 public class FabricCreativeGuiComponents {
@@ -52,7 +52,7 @@ public class FabricCreativeGuiComponents {
 
 		if (hasHotBar) {
 			for (ItemGroup itemGroup : ItemGroup.itemGroups) {
-				if (Objects.equals(itemGroup.getId(), "hotbar")) {
+				if (Objects.equals(((ItemGroupExtensions) itemGroup).getIdentifier(), "hotbar")) {
 					COMMON_GROUPS.add(itemGroup);
 					break;
 				}
@@ -94,7 +94,7 @@ public class FabricCreativeGuiComponents {
 				int v = active ? 0 : 10;
 
 				MinecraftClient minecraftClient = MinecraftClient.getInstance();
-				minecraftClient.getTextureManager().bindTexture(BUTTON_TEX);
+				minecraftClient.getTextureManager().bindTexture(new net.minecraft.util.Identifier(BUTTON_TEX.toString()));
 
 				try { // 1.8+
 					GlStateManager.disableLighting();

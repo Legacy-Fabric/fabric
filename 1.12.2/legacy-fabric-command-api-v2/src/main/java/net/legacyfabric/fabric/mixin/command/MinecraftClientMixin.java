@@ -15,31 +15,24 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.networking;
+package net.legacyfabric.fabric.mixin.command;
 
-import com.google.common.util.concurrent.ListenableFuture;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.integrated.IntegratedServer;
 
-import net.legacyfabric.fabric.impl.networking.server.MinecraftServerExtensions;
+import net.legacyfabric.fabric.impl.command.MinecraftClientAccessor;
 
-@Mixin(MinecraftServer.class)
-public abstract class MinecraftServerMixin implements MinecraftServerExtensions {
+@Mixin(MinecraftClient.class)
+public abstract class MinecraftClientMixin implements MinecraftClientAccessor {
 	@Shadow
-	public abstract boolean isOnThread();
-
-	@Shadow
-	public abstract ListenableFuture<Object> execute(Runnable task);
+	public abstract IntegratedServer getServer();
 
 	@Override
-	public boolean isOnGameThread() {
-		return this.isOnThread();
-	}
-
-	@Override
-	public ListenableFuture<Object> executeTask(Runnable task) {
-		return this.execute(task);
+	public MinecraftServer getMinecraftServer() {
+		return this.getServer();
 	}
 }

@@ -66,9 +66,9 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder, ClientConnect
 		PacketListener handler = this.field_8432;
 
 		if (handler instanceof DisconnectPacketSource) {
-			this.method_7395(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason")));
+			this.method_7395(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)));
 		} else {
-			this.disconnect(new TranslatableText("disconnect.genericReason")); // Don't send packet if we cannot send proper packets
+			this.disconnect(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)); // Don't send packet if we cannot send proper packets
 		}
 	}
 

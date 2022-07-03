@@ -91,7 +91,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 
 	@Override
 	protected void schedule(Runnable task) {
-		this.handler.player.server.execute(task);
+		((MinecraftServerExtensions) this.handler.player.server).executeTask(task);
 	}
 
 	@Override

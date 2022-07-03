@@ -24,11 +24,11 @@ import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.itemgroup.ItemGroup;
-import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
+import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryTest implements ModInitializer {
 	@Override
