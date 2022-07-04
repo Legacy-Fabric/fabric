@@ -17,18 +17,20 @@
 
 package net.legacyfabric.fabric.mixin.resource.loader.client;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.legacyfabric.fabric.api.util.VersionUtils;
+import net.minecraft.client.resource.language.TranslationStorage;
+import net.minecraft.resource.Resource;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Identifier;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -36,17 +38,15 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.include.com.google.gson.Gson;
-import org.spongepowered.include.com.google.gson.GsonBuilder;
-import org.spongepowered.include.com.google.gson.JsonElement;
-import org.spongepowered.include.com.google.gson.JsonObject;
 
-import net.minecraft.client.resource.language.TranslationStorage;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Identifier;
-
-import net.legacyfabric.fabric.api.util.VersionUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 @Mixin(TranslationStorage.class)
 public abstract class TranslationStorageMixin {
@@ -68,23 +68,17 @@ public abstract class TranslationStorageMixin {
 	@Inject(method = "method_5945", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/language/TranslationStorage;method_5950()V"))
 	private void loadLangFileFromOtherVersion(ResourceManager resourceManager, List<String> languages, CallbackInfo ci) {
 		for (String string : languages) {
-			String string2 = String.format("lang/%s.lang", getCorrectLangCode(string, false));
-			String string4 = String.format("lang/%s.json", getCorrectLangCode(string, true));
+			String langName = String.format("lang/%s.lang", getCorrectLangCode(string, false));
+			String jsonName = String.format("lang/%s.json", getCorrectLangCode(string, true));
 
-			for (String string3 : resourceManager.getAllNamespaces()) {
-				boolean styleMoment = false;
+			for (String namespace : resourceManager.getAllNamespaces()) {
+				try {
+					this.method_5949(resourceManager.getAllResources(new Identifier(namespace, langName)));
+				} catch (IOException ignore) { }
 
 				try {
-					this.method_5949(resourceManager.getAllResources(new Identifier(string3, string2)));
-				} catch (IOException ignore) {
-					styleMoment = true;
-				}
-
-				try {
-					this.method_5949(resourceManager.getAllResources(new Identifier(string3, string4)));
-				} catch (IOException ignore) {
-					styleMoment = true;
-				}
+					this.method_5949(resourceManager.getAllResources(new Identifier(namespace, jsonName)));
+				} catch (IOException ignore) { }
 			}
 		}
 	}
@@ -115,11 +109,7 @@ public abstract class TranslationStorageMixin {
 			String content = String.join("\n", lines);
 			JsonObject object = GSON.fromJson(new StringReader(content), JsonObject.class);
 
-			for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
-				String value = field_6656.matcher(entry.getValue().getAsString())
-						.replaceAll("%$1s");
-				this.translations.put(entry.getKey(), value);
-			}
+			recursiveLoadTranslations( "", object );
 		} else { // Load as properties/lang
 			for (String string : lines) {
 				if (!string.isEmpty() && string.charAt(0) != '#') {
@@ -131,6 +121,30 @@ public abstract class TranslationStorageMixin {
 						this.translations.put(string2, string3);
 					}
 				}
+			}
+		}
+	}
+
+	private void recursiveLoadTranslations(@NotNull String currentKey, JsonObject obj) {
+		for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
+			if (entry.getValue() instanceof JsonObject)
+				recursiveLoadTranslations(
+					( currentKey.isEmpty() ? "" : currentKey + "." ) + entry.getKey(),
+					(JsonObject) entry.getValue()
+				);
+			else {
+				String key = currentKey;
+				if (!key.isEmpty()) {
+					if (!entry.getKey().equals( "value" ))
+						key = key + "." + entry.getKey();
+				} else {
+					key = entry.getKey();
+				}
+
+				this.translations.put(
+					key,
+					field_6656.matcher(entry.getValue().getAsString()).replaceAll("%$1s")
+				);
 			}
 		}
 	}
