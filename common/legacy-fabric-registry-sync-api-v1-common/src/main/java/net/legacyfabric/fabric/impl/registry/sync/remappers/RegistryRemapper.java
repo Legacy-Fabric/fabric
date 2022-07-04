@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync;
+package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +47,7 @@ public class RegistryRemapper<V> {
 
 	public static final Identifier ITEMS = new Identifier("items");
 	public static final Identifier BLOCKS = new Identifier("blocks");
+	public static final Identifier BLOCK_ENTITIES = new Identifier("block_entities");
 
 	public RegistryRemapper(SimpleRegistryCompat<?, V> registry, Identifier registryId, String type) {
 		this.registry = registry;

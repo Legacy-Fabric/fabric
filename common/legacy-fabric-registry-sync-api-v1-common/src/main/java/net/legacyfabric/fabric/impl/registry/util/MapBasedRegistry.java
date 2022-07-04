@@ -17,10 +17,11 @@
 
 package net.legacyfabric.fabric.impl.registry.util;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.util.collection.IdList;
@@ -34,25 +35,39 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 
 	private IdListCompat<V> IDLIST = (IdListCompat<V>) new IdList<V>();
 
+	private final Map<K, K> idsMap;
+	private final Map<K, K> invertedIdsMap;
+
 	public MapBasedRegistry(Map<K, V> defaultMap, Map<V, K> invertedMap) {
 		this.defaultMap = defaultMap;
 		this.invertedMap = invertedMap;
 
+		this.idsMap = this.getRemapIdList();
+		this.invertedIdsMap = ((BiMap<K, K>) this.idsMap).inverse();
 		this.remapDefaultIds();
 	}
 
 	private void remapDefaultIds() {
-		Map<K, K> map = this.getRemapIdList();
-
-		for (Map.Entry<K, K> entry : map.entrySet()) {
+		for (Map.Entry<K, K> entry : this.idsMap.entrySet()) {
 			V value = this.defaultMap.remove(entry.getKey());
+
+			if (value == null) continue;
+
 			this.defaultMap.put(entry.getValue(), value);
 			this.invertedMap.put(value, entry.getValue());
 		}
 	}
 
+	public K getNewId(K oldKey) {
+		return this.idsMap.getOrDefault(oldKey, oldKey);
+	}
+
+	public K getOldId(K newKey) {
+		return this.invertedIdsMap.getOrDefault(newKey, newKey);
+	}
+
 	public Map<K, K> getRemapIdList() {
-		return new HashMap<>();
+		return HashBiMap.create();
 	}
 
 	@Override
@@ -62,7 +77,11 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 
 	@Override
 	public Map<V, K> getObjects() {
-		return this.invertedMap;
+		if (this.invertedMap instanceof BiMap) {
+			return this.invertedMap;
+		}
+
+		return HashBiMap.create(this.invertedMap);
 	}
 
 	@Override

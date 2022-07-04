@@ -18,6 +18,7 @@
 package net.legacyfabric.fabric.impl.registry.sync;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.PacketByteBuf;
@@ -25,6 +26,7 @@ import net.minecraft.util.PacketByteBuf;
 import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.PacketByteBufCompat;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 
 public interface RegistryRemapperAccess {
 	Identifier PACKET_ID = new Identifier("legacy-fabric-api:registry_remap");
@@ -33,14 +35,18 @@ public interface RegistryRemapperAccess {
 
 	RegistryRemapper<Block> getBlockRemapper();
 
+	RegistryRemapper<Class<? extends BlockEntity>> getBlockEntityRemapper();
+
 	default void remap() {
 		this.getItemRemapper().remap();
 		this.getBlockRemapper().remap();
+		this.getBlockEntityRemapper().remap();
 	}
 
 	default void readAndRemap(NbtCompound nbt) {
 		this.getItemRemapper().readNbt(nbt.getCompound("Items"));
 		this.getBlockRemapper().readNbt(nbt.getCompound("Blocks"));
+		this.getBlockEntityRemapper().readNbt(nbt.getCompound("BlockEntities"));
 		this.remap();
 	}
 
@@ -48,6 +54,7 @@ public interface RegistryRemapperAccess {
 		NbtCompound nbt = new NbtCompound();
 		nbt.put("Items", this.getItemRemapper().toNbt());
 		nbt.put("Blocks", this.getBlockRemapper().toNbt());
+		nbt.put("BlockEntities", this.getBlockEntityRemapper().toNbt());
 		return nbt;
 	}
 

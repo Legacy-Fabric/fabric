@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync;
+package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

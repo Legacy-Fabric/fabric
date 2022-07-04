@@ -15,14 +15,27 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync;
+package net.legacyfabric.fabric.mixin.registry.sync;
 
+import java.util.Map;
+
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
 
-public class ItemRegistryRemapper extends RegistryRemapper<Item> {
-	public ItemRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getItemRegistry(), ITEMS, "Item");
+@Mixin(Item.class)
+public class ItemMixin implements ItemCompat {
+	@Shadow
+	@Final
+	private static Map<Block, Item> BLOCK_ITEMS;
+
+	@Override
+	public Map<Block, Item> getBLOCK_ITEMS() {
+		return BLOCK_ITEMS;
 	}
 }

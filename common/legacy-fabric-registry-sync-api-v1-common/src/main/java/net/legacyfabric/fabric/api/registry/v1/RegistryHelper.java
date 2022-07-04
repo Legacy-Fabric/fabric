@@ -18,6 +18,7 @@
 package net.legacyfabric.fabric.api.registry.v1;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.util.Identifier;
@@ -41,7 +42,7 @@ public final class RegistryHelper {
 	}
 
 	public static Block registerBlock(Block block, Object id) {
-		return registerBlock(block, new Identifier(id.toString()));
+		return registerBlock(block, new Identifier(id));
 	}
 
 	/**
@@ -58,6 +59,21 @@ public final class RegistryHelper {
 	}
 
 	public static Item registerItem(Item item, Object id) {
-		return registerItem(item, new Identifier(id.toString()));
+		return registerItem(item, new Identifier(id));
+	}
+
+	/**
+	 * Registers a block entity with the given ID.
+	 *
+	 * @param blockEntityClass The block entity class to register
+	 * @param id    The ID of the block entity
+	 * @return The block entity class registered
+	 */
+	public static Class<? extends BlockEntity> registerBlockEntity(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
+		return RegistryHelperImpl.registerBlockEntity(blockEntityClass, id);
+	}
+
+	public static Class<? extends BlockEntity> registerBlockEntity(Class<? extends BlockEntity> blockEntityClass, Object id) {
+		return RegistryHelperImpl.registerBlockEntity(blockEntityClass, new Identifier(id));
 	}
 }

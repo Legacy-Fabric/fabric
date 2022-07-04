@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.google.common.collect.BiMap;
-import com.google.common.collect.Maps;
+import com.google.common.collect.HashBiMap;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.util.collection.IdList;
@@ -34,7 +34,7 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
 public abstract class ArrayBasedRegistry<V> implements SimpleRegistryCompat<Identifier, V> {
 	private V[] valueArray;
-	private final Map<Identifier, V> defaultMap = Maps.newHashMap();;
+	private final Map<Identifier, V> defaultMap = HashBiMap.create();
 	private final Map<V, Identifier> invertedMap = ((BiMap<Identifier, V>) defaultMap).inverse();
 	private IdListCompat<V> IDLIST = (IdListCompat<V>) new IdList<V>();
 

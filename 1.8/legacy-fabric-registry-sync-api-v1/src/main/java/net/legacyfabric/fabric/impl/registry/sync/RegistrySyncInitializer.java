@@ -18,15 +18,20 @@
 package net.legacyfabric.fabric.impl.registry.sync;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.legacyfabric.fabric.impl.registry.registries.OldBlockEntityRegistry;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+import net.legacyfabric.fabric.mixin.registry.sync.BlockEntityAccessor;
 
 public class RegistrySyncInitializer implements PreLaunchEntrypoint {
+	private static SimpleRegistryCompat<String, Class<? extends BlockEntity>> BLOCK_ENTITY_REGISTRY;
+
 	@Override
 	public void onPreLaunch() {
 		RegistryHelperImpl.registriesGetter = new RegistriesGetter() {
@@ -38,6 +43,15 @@ public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 			@Override
 			public <K> SimpleRegistryCompat<K, Item> getItemRegistry() {
 				return (SimpleRegistryCompat<K, Item>) Item.REGISTRY;
+			}
+
+			@Override
+			public SimpleRegistryCompat<String, Class<? extends BlockEntity>> getBlockEntityRegistry() {
+				if (BLOCK_ENTITY_REGISTRY == null) {
+					BLOCK_ENTITY_REGISTRY = new OldBlockEntityRegistry(BlockEntityAccessor.getStringClassMap(), BlockEntityAccessor.getClassStringMap());
+				}
+
+				return BLOCK_ENTITY_REGISTRY;
 			}
 		};
 	}

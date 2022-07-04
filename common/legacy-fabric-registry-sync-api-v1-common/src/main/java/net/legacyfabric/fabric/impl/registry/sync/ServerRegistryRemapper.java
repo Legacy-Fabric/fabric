@@ -18,15 +18,22 @@
 package net.legacyfabric.fabric.impl.registry.sync;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
+
+import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.ItemRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 
 public class ServerRegistryRemapper implements RegistryRemapperAccess {
 	private static final RegistryRemapperAccess INSTANCE = new ServerRegistryRemapper();
 
 	private final RegistryRemapper<Item> itemRemapper = new ItemRegistryRemapper();
 	private final RegistryRemapper<Block> blockRemapper = new BlockRegistryRemapper();
+	private final RegistryRemapper<Class<? extends BlockEntity>> blockEntityRemapper = new BlockEntityRegistryRemapper();
 
-	private final RegistryRemapper<?>[] REMAPPERS = new RegistryRemapper[] {itemRemapper, blockRemapper};
+	private final RegistryRemapper<?>[] REMAPPERS = new RegistryRemapper[] {itemRemapper, blockRemapper, blockEntityRemapper};
 
 	@Override
 	public RegistryRemapper<Item> getItemRemapper() {
@@ -38,6 +45,11 @@ public class ServerRegistryRemapper implements RegistryRemapperAccess {
 		return this.blockRemapper;
 	}
 
+	@Override
+	public RegistryRemapper<Class<? extends BlockEntity>> getBlockEntityRemapper() {
+		return this.blockEntityRemapper;
+	}
+
 	public static RegistryRemapperAccess getInstance() {
 		return INSTANCE;
 	}
@@ -45,7 +57,7 @@ public class ServerRegistryRemapper implements RegistryRemapperAccess {
 	private ServerRegistryRemapper() {
 		for (RegistryRemapper<?> remapper : REMAPPERS) {
 			RegistryRemapper.REMAPPER_MAP.put(remapper.registryId, remapper);
-			RegistryRemapper.REGISTRY_REMAPPER_MAP.put(remapper.registry, remapper);
+			RegistryRemapper.REGISTRY_REMAPPER_MAP.put(remapper.getRegistry(), remapper);
 		}
 	}
 }
