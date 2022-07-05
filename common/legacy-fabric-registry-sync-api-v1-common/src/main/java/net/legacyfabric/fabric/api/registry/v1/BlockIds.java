@@ -50,10 +50,10 @@ public class BlockIds {
 	public static final Identifier SANDSTONE = id("sandstone");
 	public static final Identifier NOTEBLOCK = id("noteblock");
 	public static final Identifier BED = id("bed");
-	public static final Identifier GOLDEN_RAIL = id("golden_rail");
+	public static final Identifier POWERED_RAIL = id("golden_rail");
 	public static final Identifier DETECTOR_RAIL = id("detector_rail");
 	public static final Identifier STICKY_PISTON = id("sticky_piston");
-	public static final Identifier WEB = id("web");
+	public static final Identifier COBWEB = id("web");
 	public static final Identifier TALL_GRASS = id("tallgrass");
 	public static final Identifier DEAD_BUSH = id("deadbush");
 	public static final Identifier PISTON = id("piston");
@@ -68,21 +68,21 @@ public class BlockIds {
 	public static final Identifier IRON_BLOCK = id("iron_block");
 	public static final Identifier DOUBLE_STONE_SLAB = id("double_stone_slab");
 	public static final Identifier STONE_SLAB = id("stone_slab");
-	public static final Identifier BRICK_BLOCK = id("brick_block");
+	public static final Identifier BRICKS = id("brick_block");
 	public static final Identifier TNT = id("tnt");
 	public static final Identifier BOOKSHELF = id("bookshelf");
 	public static final Identifier MOSSY_COBBLESTONE = id("mossy_cobblestone");
 	public static final Identifier OBSIDIAN = id("obsidian");
 	public static final Identifier TORCH = id("torch");
 	public static final Identifier FIRE = id("fire");
-	public static final Identifier MOB_SPAWNER = id("mob_spawner");
+	public static final Identifier SPAWNER = id("mob_spawner");
 	public static final Identifier OAK_STAIRS = id("oak_stairs");
 	public static final Identifier CHEST = id("chest");
 	public static final Identifier REDSTONE_WIRE = id("redstone_wire");
 	public static final Identifier DIAMOND_ORE = id("diamond_ore");
 	public static final Identifier DIAMOND_BLOCK = id("diamond_block");
 	public static final Identifier CRAFTING_TABLE = id("crafting_table");
-	public static final Identifier WHEAT = id("wheat");
+	public static final Identifier WHEAT_CROPS = id("wheat");
 	public static final Identifier FARMLAND = id("farmland");
 	public static final Identifier FURNACE = id("furnace");
 	public static final Identifier LIT_FURNACE = id("lit_furnace");
@@ -131,7 +131,7 @@ public class BlockIds {
 	public static final Identifier ACACIA_FENCE = id("acacia_fence");
 	public static final Identifier PUMPKIN = id("pumpkin");
 	public static final Identifier NETHERRACK = id("netherrack");
-	public static final Identifier SOUL_SAND = id("soul_sand");
+	public static final Identifier SOULSAND = id("soul_sand");
 	public static final Identifier GLOWSTONE = id("glowstone");
 	public static final Identifier PORTAL = id("portal");
 	public static final Identifier JACK_O_LANTERN = id("lit_pumpkin");
@@ -193,8 +193,8 @@ public class BlockIds {
 	public static final Identifier BEACON = id("beacon");
 	public static final Identifier COBBLESTONE_WALL = id("cobblestone_wall");
 	public static final Identifier FLOWER_POT = id("flower_pot");
-	public static final Identifier CARROTS = id("carrots");
-	public static final Identifier POTATOES = id("potatoes");
+	public static final Identifier CARROT_CROPS = id("carrots");
+	public static final Identifier POTATO_CROPS = id("potatoes");
 	public static final Identifier WOODEN_BUTTON = id("wooden_button");
 	public static final Identifier SKULL = id("skull");
 	public static final Identifier ANVIL = id("anvil");
@@ -207,7 +207,7 @@ public class BlockIds {
 	@SinceMC("1.8")
 	public static final Identifier DAYLIGHT_DETECTOR_INVERTED = id("daylight_detector_inverted");
 	public static final Identifier REDSTONE_BLOCK = id("redstone_block");
-	public static final Identifier QUARTZ_ORE = id("quartz_ore");
+	public static final Identifier NETHER_QUARTZ_ORE = id("quartz_ore");
 	public static final Identifier HOPPER = id("hopper");
 	public static final Identifier QUARTZ_BLOCK = id("quartz_block");
 	public static final Identifier QUARTZ_STAIRS = id("quartz_stairs");
@@ -265,7 +265,7 @@ public class BlockIds {
 	@SinceMC("1.9")
 	public static final Identifier END_STONE_BRICKS = id("end_bricks");
 	@SinceMC("1.9")
-	public static final Identifier BEETROOTS = id("beetroots");
+	public static final Identifier BEETROOT_CROPS = id("beetroots");
 	@SinceMC("1.9")
 	public static final Identifier GRASS_PATH = id("grass_path");
 	@SinceMC("1.9")
