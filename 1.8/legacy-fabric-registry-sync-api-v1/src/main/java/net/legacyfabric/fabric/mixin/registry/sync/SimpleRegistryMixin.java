@@ -27,6 +27,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
+import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
@@ -49,6 +52,8 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 
 	@Shadow
 	public abstract void add(int id, K identifier, V object);
+
+	private final Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
 
 	@Override
 	public IdListCompat<V> getIds() {
@@ -83,6 +88,12 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	@Override
 	public V register(int i, Object key, V value) {
 		this.add(i, this.toKeyType(key), value);
+		this.getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
 		return value;
+	}
+
+	@Override
+	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
+		return this.entryAddedCallBack;
 	}
 }

@@ -28,6 +28,9 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.util.collection.IdList;
 
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
+import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
@@ -36,6 +39,8 @@ public class VanillaLikeRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 	protected final Map<K, V> map = this.createMap();
 	protected IdList<V> ids = new IdList<>();
 	protected final Map<V, K> objects = ((BiMap) this.map).inverse();
+
+	private final Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
 
 	public VanillaLikeRegistry() {
 	}
@@ -57,6 +62,11 @@ public class VanillaLikeRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 
 	public Iterator<V> iterator() {
 		return this.ids.iterator();
+	}
+
+	@Override
+	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
+		return this.entryAddedCallBack;
 	}
 
 	@Override
@@ -98,6 +108,7 @@ public class VanillaLikeRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 	public V register(int id, Object identifier, V object) {
 		this.ids.set(object, id);
 		this.put(this.toKeyType(identifier), object);
+		this.getAddEvent().invoker().onEntryAdded(id, new Identifier(identifier), object);
 		return object;
 	}
 }

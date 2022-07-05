@@ -28,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.util.collection.IdList;
 
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
@@ -37,6 +39,8 @@ public abstract class ArrayBasedRegistry<V> implements SimpleRegistryCompat<Iden
 	private final Map<Identifier, V> defaultMap = HashBiMap.create();
 	private final Map<V, Identifier> invertedMap = ((BiMap<Identifier, V>) defaultMap).inverse();
 	private IdListCompat<V> IDLIST = (IdListCompat<V>) new IdList<V>();
+
+	private final Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
 
 	public ArrayBasedRegistry(V[] valueArray) {
 		this.valueArray = (V[]) Array.newInstance(valueArray.getClass().getComponentType(), 1);
@@ -102,6 +106,7 @@ public abstract class ArrayBasedRegistry<V> implements SimpleRegistryCompat<Iden
 		this.defaultMap.put(new Identifier(key), value);
 		this.IDLIST.setValue(value, i);
 		this.addArrayEntry(i, value, update);
+		this.getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
 		return value;
 	}
 
@@ -130,5 +135,10 @@ public abstract class ArrayBasedRegistry<V> implements SimpleRegistryCompat<Iden
 	@Override
 	public KeyType getKeyType() {
 		return KeyType.FABRIC;
+	}
+
+	@Override
+	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
+		return this.entryAddedCallBack;
 	}
 }

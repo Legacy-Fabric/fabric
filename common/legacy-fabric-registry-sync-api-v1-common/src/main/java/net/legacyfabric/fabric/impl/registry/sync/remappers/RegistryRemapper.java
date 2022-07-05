@@ -163,7 +163,8 @@ public class RegistryRemapper<V> {
 	}
 
 	public static <V> RegistryRemapper<V> getRegistryRemapper(Identifier identifier) {
-		return (RegistryRemapper<V>) REMAPPER_MAP.getOrDefault(identifier, null);
+		RegistryRemapper<V> remapper = (RegistryRemapper<V>) REMAPPER_MAP.getOrDefault(identifier, null);
+		return remapper == null ? (RegistryRemapper<V>) DEFAULT_CLIENT_INSTANCE : remapper;
 	}
 
 	public void addMissing(Identifier key, int id) {
