@@ -50,6 +50,7 @@ public class RegistryRemapper<V> {
 	public static final Identifier ITEMS = new Identifier("items");
 	public static final Identifier BLOCKS = new Identifier("blocks");
 	public static final Identifier BLOCK_ENTITIES = new Identifier("block_entities");
+	public static final Identifier STATUS_EFFECTS = new Identifier("status_effects");
 
 	public static RegistryRemapper<RegistryRemapper<?>> DEFAULT_CLIENT_INSTANCE = null;
 

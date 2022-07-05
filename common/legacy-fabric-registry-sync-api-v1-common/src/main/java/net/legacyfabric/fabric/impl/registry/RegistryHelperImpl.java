@@ -25,6 +25,7 @@ import org.jetbrains.annotations.ApiStatus;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 
@@ -78,6 +79,15 @@ public class RegistryHelperImpl {
 		registryRemapper.register(rawId, id, blockEntityClass);
 
 		return blockEntityClass;
+	}
+
+	public static StatusEffect registerStatusEffect(StatusEffect statusEffect, Identifier id) {
+		statusEffect.setTranslationKey(formatTranslationKey(id));
+		RegistryRemapper<StatusEffect> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryRemapper.STATUS_EFFECTS);
+		int rawId = nextId(registryRemapper.getRegistry());
+		registryRemapper.register(rawId, id, statusEffect);
+
+		return statusEffect;
 	}
 
 	public static <V> V getValue(Identifier id, Identifier registryId) {

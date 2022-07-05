@@ -19,6 +19,7 @@ package net.legacyfabric.fabric.api.registry.v1;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.util.Identifier;
@@ -59,7 +60,7 @@ public final class RegistryHelper {
 		return RegistryHelperImpl.registerItem(item, id);
 	}
 
-	public static Block getItem(Identifier id) {
+	public static Item getItem(Identifier id) {
 		return RegistryHelperImpl.getValue(id, RegistryRemapper.ITEMS);
 	}
 
@@ -76,5 +77,22 @@ public final class RegistryHelper {
 
 	public static Class<? extends BlockEntity> getBlockEntity(Identifier id) {
 		return RegistryHelperImpl.getValue(id, RegistryRemapper.BLOCK_ENTITIES);
+	}
+
+	/**
+	 * Registers a status effect with the given ID.
+	 *
+	 * <p>The Status Effect's translation key is automatically set.</p>
+	 *
+	 * @param statusEffect The status effect to register
+	 * @param id   The ID of the status effect
+	 * @return The status effect registered
+	 */
+	public static StatusEffect registerStatusEffect(StatusEffect statusEffect, Identifier id) {
+		return RegistryHelperImpl.registerStatusEffect(statusEffect, id);
+	}
+
+	public static StatusEffect getStatusEffect(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryRemapper.STATUS_EFFECTS);
 	}
 }

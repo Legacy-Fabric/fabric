@@ -17,20 +17,28 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.registries.OldBlockEntityRegistry;
+import net.legacyfabric.fabric.impl.registry.registries.OldStatusEffectRegistry;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 import net.legacyfabric.fabric.mixin.registry.sync.BlockEntityAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.StatusEffectAccessor;
 
 public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 	private static SimpleRegistryCompat<String, Class<? extends BlockEntity>> BLOCK_ENTITY_REGISTRY;
+	private static SimpleRegistryCompat<Identifier, StatusEffect> STATUS_EFFECT_REGISTRY;
 
 	@Override
 	public void onPreLaunch() {
@@ -43,6 +51,23 @@ public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 			@Override
 			public <K> SimpleRegistryCompat<K, Item> getItemRegistry() {
 				return (SimpleRegistryCompat<K, Item>) Item.REGISTRY;
+			}
+
+			@Override
+			public <K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry() {
+				if (STATUS_EFFECT_REGISTRY == null) {
+					BiMap<Identifier, StatusEffect> biMap = HashBiMap.create(StatusEffectAccessor.getSTATUS_EFFECTS_BY_ID());
+					StatusEffectAccessor.setSTATUS_EFFECTS_BY_ID(biMap);
+
+					STATUS_EFFECT_REGISTRY = new OldStatusEffectRegistry(StatusEffect.STATUS_EFFECTS, biMap) {
+						@Override
+						public void updateArray() {
+							StatusEffectAccessor.setSTATUS_EFFECTS(this.getArray());
+						}
+					};
+				}
+
+				return (SimpleRegistryCompat<K, StatusEffect>) STATUS_EFFECT_REGISTRY;
 			}
 
 			@Override

@@ -19,6 +19,7 @@ package net.legacyfabric.fabric.impl.registry.sync;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
@@ -40,6 +41,11 @@ public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 			@Override
 			public <K> SimpleRegistryCompat<K, Item> getItemRegistry() {
 				return (SimpleRegistryCompat<K, Item>) Item.REGISTRY;
+			}
+
+			@Override
+			public <K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry() {
+				return (SimpleRegistryCompat<K, StatusEffect>) StatusEffect.field_3164;
 			}
 
 			@Override

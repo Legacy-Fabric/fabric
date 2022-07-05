@@ -15,18 +15,22 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync.compat;
+package net.legacyfabric.fabric.impl.registry.registries;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
+import com.google.common.collect.BiMap;
+
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
 
-public interface RegistriesGetter {
-	<K> SimpleRegistryCompat<K, Block> getBlockRegistry();
-	<K> SimpleRegistryCompat<K, Item> getItemRegistry();
+import net.legacyfabric.fabric.impl.registry.util.ArrayAndMapBasedRegistry;
 
-	<K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry();
+public abstract class OldStatusEffectRegistry extends ArrayAndMapBasedRegistry<Identifier, StatusEffect> {
+	public OldStatusEffectRegistry(StatusEffect[] valueArray, BiMap<Identifier, StatusEffect> defaultMap) {
+		super(valueArray, defaultMap);
+	}
 
-	<K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry();
+	@Override
+	public KeyType getKeyType() {
+		return KeyType.VANILLA;
+	}
 }

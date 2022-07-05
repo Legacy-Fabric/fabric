@@ -19,18 +19,23 @@ package net.legacyfabric.fabric.impl.registry.sync;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
+import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.registries.OldBlockEntityRegistry;
+import net.legacyfabric.fabric.impl.registry.registries.ReallyOldStatusEffectRegistry;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 import net.legacyfabric.fabric.mixin.registry.sync.BlockEntityAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.StatusEffectAccessor;
 
 public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 	private static SimpleRegistryCompat<String, Class<? extends BlockEntity>> BLOCK_ENTITY_REGISTRY;
+	private static SimpleRegistryCompat<Identifier, StatusEffect> STATUS_EFFECT_REGISTRY;
 
 	@Override
 	public void onPreLaunch() {
@@ -43,6 +48,20 @@ public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 			@Override
 			public <K> SimpleRegistryCompat<K, Item> getItemRegistry() {
 				return (SimpleRegistryCompat<K, Item>) Item.REGISTRY;
+			}
+
+			@Override
+			public <K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry() {
+				if (STATUS_EFFECT_REGISTRY == null) {
+					STATUS_EFFECT_REGISTRY = new ReallyOldStatusEffectRegistry(StatusEffect.STATUS_EFFECTS) {
+						@Override
+						public void updateArray() {
+							StatusEffectAccessor.setSTATUS_EFFECTS(this.getArray());
+						}
+					};
+				}
+
+				return (SimpleRegistryCompat<K, StatusEffect>) STATUS_EFFECT_REGISTRY;
 			}
 
 			@Override

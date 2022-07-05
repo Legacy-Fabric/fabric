@@ -15,18 +15,14 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync.compat;
+package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Item;
 
-public interface RegistriesGetter {
-	<K> SimpleRegistryCompat<K, Block> getBlockRegistry();
-	<K> SimpleRegistryCompat<K, Item> getItemRegistry();
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 
-	<K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry();
-
-	<K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry();
+public class StatusEffectRegistryRemapper extends RegistryRemapper<StatusEffect> {
+	public StatusEffectRegistryRemapper() {
+		super(RegistryHelperImpl.registriesGetter.getStatusEffectRegistry(), STATUS_EFFECTS, "StatusEffect", "StatusEffects");
+	}
 }

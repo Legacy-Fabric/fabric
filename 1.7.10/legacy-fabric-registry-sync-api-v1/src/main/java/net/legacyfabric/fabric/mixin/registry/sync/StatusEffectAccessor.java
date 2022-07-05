@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync.compat;
+package net.legacyfabric.fabric.mixin.registry.sync;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Item;
 
-public interface RegistriesGetter {
-	<K> SimpleRegistryCompat<K, Block> getBlockRegistry();
-	<K> SimpleRegistryCompat<K, Item> getItemRegistry();
-
-	<K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry();
-
-	<K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry();
+@Mixin(StatusEffect.class)
+public interface StatusEffectAccessor {
+	@Mutable
+	@Accessor
+	static void setSTATUS_EFFECTS(StatusEffect[] effects) {
+	}
 }

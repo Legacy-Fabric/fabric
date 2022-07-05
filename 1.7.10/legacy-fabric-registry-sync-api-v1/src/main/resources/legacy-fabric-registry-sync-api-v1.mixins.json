@@ -10,7 +10,8 @@
     "PlayerManagerMixin",
     "PacketByteBufMixin",
     "BlockEntityAccessor",
-    "BlockEntityMixin"
+    "BlockEntityMixin",
+    "StatusEffectAccessor"
   ],
   "client": [
   ]
