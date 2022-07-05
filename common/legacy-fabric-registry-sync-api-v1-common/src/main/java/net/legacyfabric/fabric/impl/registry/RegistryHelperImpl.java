@@ -80,6 +80,24 @@ public class RegistryHelperImpl {
 		return blockEntityClass;
 	}
 
+	public static <V> V getValue(Identifier id, Identifier registryId) {
+		RegistryRemapper<V> registryRemapper = RegistryRemapper.getRegistryRemapper(registryId);
+		return registryRemapper.getRegistry().getValue(id);
+	}
+
+	public static RegistryRemapper<?> registerRegistryRemapper(RegistryRemapper<?> registryRemapper) {
+		RegistryRemapper<RegistryRemapper<?>> registryRemapperRegistryRemapper = RegistryRemapper.getRegistryRemapper(RegistryRemapper.REGISTRY_REMAPPER);
+
+		if (registryRemapperRegistryRemapper == null) {
+			registryRemapperRegistryRemapper = RegistryRemapper.DEFAULT_CLIENT_INSTANCE;
+		}
+
+		int rawId = nextId(registryRemapperRegistryRemapper.getRegistry());
+		registryRemapperRegistryRemapper.register(rawId, registryRemapper.registryId, registryRemapper);
+
+		return registryRemapper;
+	}
+
 	private static String formatTranslationKey(Identifier key) {
 		return key.getNamespace() + "." + key.getPath();
 	}
@@ -87,7 +105,13 @@ public class RegistryHelperImpl {
 	public static int nextId(SimpleRegistryCompat<?, ?> registry) {
 		int id = 0;
 
-		Identifier registryId = RegistryRemapper.getRegistryRemapper(registry).registryId;
+		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
+
+		if (registryRemapper == null) {
+			registryRemapper = RegistryRemapper.DEFAULT_CLIENT_INSTANCE;
+		}
+
+		Identifier registryId = registryRemapper.registryId;
 
 		while (getIdList(registry).fromInt(id) != null
 				|| (id < 256
@@ -101,7 +125,13 @@ public class RegistryHelperImpl {
 	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry) {
 		int id = 0;
 
-		Identifier registryId = RegistryRemapper.getRegistryRemapper(registry).registryId;
+		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
+
+		if (registryRemapper == null) {
+			registryRemapper = RegistryRemapper.DEFAULT_CLIENT_INSTANCE;
+		}
+
+		Identifier registryId = registryRemapper.registryId;
 
 		while (idList.fromInt(id) != null
 				|| (id < 256

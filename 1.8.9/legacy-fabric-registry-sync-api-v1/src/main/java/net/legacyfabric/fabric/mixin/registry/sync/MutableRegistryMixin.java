@@ -35,6 +35,6 @@ public abstract class MutableRegistryMixin<K, V> implements SimpleRegistryCompat
 
 	@Override
 	public V getValue(Object key) {
-		return this.map.get((K) key);
+		return this.map.get(this.toKeyType(key));
 	}
 }

@@ -17,39 +17,30 @@
 
 package net.legacyfabric.fabric.impl.client.registry.sync;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.Item;
-
-import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityRegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockRegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.ItemRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapperRegistryRemapper;
 
 public class ClientRegistryRemapper implements RegistryRemapperAccess {
 	private static final RegistryRemapperAccess INSTANCE = new ClientRegistryRemapper();
 
-	private final RegistryRemapper<Item> itemRemapper = new ItemRegistryRemapper();
-	private final RegistryRemapper<Block> blockRemapper = new BlockRegistryRemapper();
-	private final RegistryRemapper<Class<? extends BlockEntity>> blockEntityRemapper = new BlockEntityRegistryRemapper();
+	private final RegistryRemapper<RegistryRemapper<?>> REGISTRY_REMAPPER;
 
 	@Override
-	public RegistryRemapper<Item> getItemRemapper() {
-		return this.itemRemapper;
-	}
-
-	@Override
-	public RegistryRemapper<Block> getBlockRemapper() {
-		return this.blockRemapper;
-	}
-
-	@Override
-	public RegistryRemapper<Class<? extends BlockEntity>> getBlockEntityRemapper() {
-		return this.blockEntityRemapper;
+	public RegistryRemapper<RegistryRemapper<?>> getRegistryRemapperRegistryRemapper() {
+		return REGISTRY_REMAPPER;
 	}
 
 	public static RegistryRemapperAccess getInstance() {
 		return INSTANCE;
+	}
+
+	private ClientRegistryRemapper() {
+		REGISTRY_REMAPPER = new RegistryRemapperRegistryRemapper();
+
+		for (RegistryRemapper<?> remapper : this.createDefaultRegistryRemappers()) {
+			RegistryHelperImpl.registerRegistryRemapper(remapper);
+		}
 	}
 }

@@ -23,6 +23,7 @@ import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 
 /**
  * Allows registration of Blocks and Items.
@@ -41,8 +42,8 @@ public final class RegistryHelper {
 		return RegistryHelperImpl.registerBlock(block, id);
 	}
 
-	public static Block registerBlock(Block block, Object id) {
-		return registerBlock(block, new Identifier(id));
+	public static Block getBlock(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryRemapper.BLOCKS);
 	}
 
 	/**
@@ -58,8 +59,8 @@ public final class RegistryHelper {
 		return RegistryHelperImpl.registerItem(item, id);
 	}
 
-	public static Item registerItem(Item item, Object id) {
-		return registerItem(item, new Identifier(id));
+	public static Block getItem(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryRemapper.ITEMS);
 	}
 
 	/**
@@ -73,7 +74,7 @@ public final class RegistryHelper {
 		return RegistryHelperImpl.registerBlockEntity(blockEntityClass, id);
 	}
 
-	public static Class<? extends BlockEntity> registerBlockEntity(Class<? extends BlockEntity> blockEntityClass, Object id) {
-		return RegistryHelperImpl.registerBlockEntity(blockEntityClass, new Identifier(id));
+	public static Class<? extends BlockEntity> getBlockEntity(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryRemapper.BLOCK_ENTITIES);
 	}
 }

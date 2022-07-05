@@ -21,6 +21,7 @@ import java.util.Map;
 
 import net.minecraft.block.entity.BlockEntity;
 
+import net.legacyfabric.fabric.api.registry.v1.BlockEntityIds;
 import net.legacyfabric.fabric.impl.registry.util.MapBasedRegistry;
 
 public class OldBlockEntityRegistry extends MapBasedRegistry<String, Class<? extends BlockEntity>> {
@@ -37,29 +38,29 @@ public class OldBlockEntityRegistry extends MapBasedRegistry<String, Class<? ext
 	public Map<String, String> getRemapIdList() {
 		Map<String, String> map = super.getRemapIdList();
 
-		map.put("Furnace", "minecraft:furnace");
-		map.put("Chest", "minecraft:chest");
-		map.put("EnderChest", "minecraft:ender_chest");
-		map.put("RecordPlayer", "minecraft:jukebox");
-		map.put("Trap", "minecraft:dispenser");
-		map.put("Dropper", "minecraft:dropper");
-		map.put("Sign", "minecraft:sign");
-		map.put("MobSpawner", "minecraft:mob_spawner");
-		map.put("Music", "minecraft:noteblock");
-		map.put("Piston", "minecraft:piston");
-		map.put("Cauldron", "minecraft:brewing_stand");
-		map.put("EnchantTable", "minecraft:enchanting_table");
-		map.put("Airportal", "minecraft:end_portal");
-		map.put("Control", "minecraft:command_block");
-		map.put("Beacon", "minecraft:beacon");
-		map.put("Skull", "minecraft:skull");
-		map.put("DLDetector", "minecraft:daylight_detector");
-		map.put("Hopper", "minecraft:hopper");
-		map.put("Comparator", "minecraft:comparator");
-		map.put("FlowerPot", "minecraft:flower_pot");
-		map.put("Banner", "minecraft:banner");
-		map.put("Structure", "minecraft:structure_block");
-		map.put("EndGateway", "minecraft:end_gateway");
+		map.put("Furnace", BlockEntityIds.FURNACE.toString());
+		map.put("Chest", BlockEntityIds.CHEST.toString());
+		map.put("EnderChest", BlockEntityIds.ENDER_CHEST.toString());
+		map.put("RecordPlayer", BlockEntityIds.JUKEBOX.toString());
+		map.put("Trap", BlockEntityIds.DISPENSER.toString());
+		map.put("Dropper", BlockEntityIds.DROPPER.toString());
+		map.put("Sign", BlockEntityIds.SIGN.toString());
+		map.put("MobSpawner", BlockEntityIds.MOB_SPAWNER.toString());
+		map.put("Music", BlockEntityIds.NOTEBLOCK.toString());
+		map.put("Piston", BlockEntityIds.PISTON.toString());
+		map.put("Cauldron", BlockEntityIds.BREWING_STAND.toString());
+		map.put("EnchantTable", BlockEntityIds.ENCHANTING_TABLE.toString());
+		map.put("Airportal", BlockEntityIds.END_PORTAL.toString());
+		map.put("Control", BlockEntityIds.COMMAND_BLOCK.toString());
+		map.put("Beacon", BlockEntityIds.BEACON.toString());
+		map.put("Skull", BlockEntityIds.SKULL.toString());
+		map.put("DLDetector", BlockEntityIds.DAYLIGHT_DETECTOR.toString());
+		map.put("Hopper", BlockEntityIds.HOPPER.toString());
+		map.put("Comparator", BlockEntityIds.COMPARATOR.toString());
+		map.put("FlowerPot", BlockEntityIds.FLOWER_POT.toString());
+		map.put("Banner", BlockEntityIds.BANNER.toString());
+		map.put("Structure", BlockEntityIds.STRUCTURE_BLOCK.toString());
+		map.put("EndGateway", BlockEntityIds.END_GATEWAY.toString());
 
 		return map;
 	}

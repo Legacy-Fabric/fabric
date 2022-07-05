@@ -106,21 +106,21 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 
 	@Override
 	public V getValue(Object key) {
-		return this.defaultMap.get((K) key);
+		return this.defaultMap.get(this.toKeyType(key));
 	}
 
 	@NotNull
 	@Override
 	public Iterator<V> iterator() {
-		return this.defaultMap.values().iterator();
+		return this.IDLIST.iterator();
 	}
 
 	@Override
 	public V register(int i, Object key, V value) {
-		this.defaultMap.put((K) key, value);
+		this.defaultMap.put(this.toKeyType(key), value);
 
 		if (!this.invertedMap.containsKey(value)) {
-			this.invertedMap.put(value, (K) key);
+			this.invertedMap.put(value, this.toKeyType(key));
 		}
 
 		this.IDLIST.setValue(value, i);

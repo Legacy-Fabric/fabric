@@ -37,8 +37,9 @@ public class RegistryTest implements ModInitializer {
 		Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[] {concBlock, concBlock2} : new Block[] {concBlock2, concBlock};
 
 		for (Block block : blocks) {
-			RegistryHelper.registerBlock(block, new Identifier("legacy-fabric-api:conc_block_" + block.getMaterial().getColor().color));
-			RegistryHelper.registerItem(new BlockItem(block), Block.field_7260.method_7332(block));
+			Identifier identifier = new Identifier("legacy-fabric-api:conc_block_" + block.getMaterial().getColor().color);
+			RegistryHelper.registerBlock(block, identifier);
+			RegistryHelper.registerItem(new BlockItem(block), identifier);
 		}
 	}
 }

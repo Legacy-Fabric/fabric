@@ -17,12 +17,10 @@
 
 package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
-import net.minecraft.block.entity.BlockEntity;
+import net.legacyfabric.fabric.impl.registry.registries.RegistryRemapperRegistry;
 
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-
-public class BlockEntityRegistryRemapper extends RegistryRemapper<Class<? extends BlockEntity>> {
-	public BlockEntityRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getBlockEntityRegistry(), BLOCK_ENTITIES, "BlockEntity", "BlockEntities");
+public class RegistryRemapperRegistryRemapper extends RegistryRemapper<RegistryRemapper<?>> {
+	public RegistryRemapperRegistryRemapper() {
+		super(new RegistryRemapperRegistry(), REGISTRY_REMAPPER, "RegistryRemapper", "RegistryRemappers");
 	}
 }

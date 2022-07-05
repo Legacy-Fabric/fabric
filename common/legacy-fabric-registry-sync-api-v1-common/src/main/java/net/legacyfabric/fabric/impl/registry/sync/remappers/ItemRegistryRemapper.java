@@ -23,6 +23,6 @@ import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 
 public class ItemRegistryRemapper extends RegistryRemapper<Item> {
 	public ItemRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getItemRegistry(), ITEMS, "Item");
+		super(RegistryHelperImpl.registriesGetter.getItemRegistry(), ITEMS, "Item", "Items");
 	}
 }

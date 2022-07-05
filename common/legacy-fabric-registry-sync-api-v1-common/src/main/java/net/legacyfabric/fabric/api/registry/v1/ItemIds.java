@@ -15,14 +15,13 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync.remappers;
+package net.legacyfabric.fabric.api.registry.v1;
 
-import net.minecraft.block.entity.BlockEntity;
+import net.legacyfabric.fabric.api.util.Identifier;
 
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-
-public class BlockEntityRegistryRemapper extends RegistryRemapper<Class<? extends BlockEntity>> {
-	public BlockEntityRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getBlockEntityRegistry(), BLOCK_ENTITIES, "BlockEntity", "BlockEntities");
+public class ItemIds {
+	// TODO
+	private static Identifier id(String path) {
+		return new Identifier(path);
 	}
 }

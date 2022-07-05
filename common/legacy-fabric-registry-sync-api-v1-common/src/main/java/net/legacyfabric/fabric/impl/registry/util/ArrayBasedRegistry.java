@@ -84,18 +84,18 @@ public abstract class ArrayBasedRegistry<V> implements SimpleRegistryCompat<Iden
 
 	@Override
 	public V getValue(Object key) {
-		return this.defaultMap.get(new Identifier(key));
+		return this.defaultMap.get(this.toKeyType(key));
 	}
 
 	@NotNull
 	@Override
 	public Iterator<V> iterator() {
-		return this.defaultMap.values().iterator();
+		return this.IDLIST.iterator();
 	}
 
 	@Override
 	public V register(int i, Object key, V value) {
-		return this.register(i, key, value, true);
+		return this.register(i, this.toKeyType(key), value, true);
 	}
 
 	private V register(int i, Object key, V value, boolean update) {
