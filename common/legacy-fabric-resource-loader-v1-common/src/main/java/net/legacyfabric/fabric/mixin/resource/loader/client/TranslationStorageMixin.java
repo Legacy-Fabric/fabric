@@ -73,16 +73,18 @@ public abstract class TranslationStorageMixin {
 			String jsonName = String.format("lang/%s.json", getCorrectLangCode(string, true));
 
 			for (String namespace : resourceManager.getAllNamespaces()) {
+				boolean isStyleHappy = false;
+
 				try {
 					this.method_5949(resourceManager.getAllResources(new Identifier(namespace, langName)));
-				} catch (IOException ignore) {
-					((Runnable) () -> { }).run();
+				} catch (IOException ignored) {
+					isStyleHappy = true;
 				}
 
 				try {
 					this.method_5949(resourceManager.getAllResources(new Identifier(namespace, jsonName)));
-				} catch (IOException ignore) {
-					((Runnable) () -> { }).run();
+				} catch (IOException ignored) {
+					isStyleHappy = true;
 				}
 			}
 		}
