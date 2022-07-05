@@ -1,3 +1,7 @@
 {
-  "fabric.gui.creativeTabPage": "Page %d/%d"
+  "fabric": {
+    "gui": {
+      "creativeTabPage": "Page %d/%d"
+    }
+  }
 }
