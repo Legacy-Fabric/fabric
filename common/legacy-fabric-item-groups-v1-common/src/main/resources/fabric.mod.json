@@ -21,5 +21,17 @@
   "description": "Advanced item groups.",
   "depends": {
     "minecraft": ">=1.3 <=1.12.2"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ],
+      "parent": {
+        "id": "legacy-fabric-api",
+        "name": "Legacy Fabric API",
+        "badges": [ "library" ],
+        "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2.",
+        "icon": "assets/legacy-fabric/icon.png"
+      }
+    }
   }
 }
