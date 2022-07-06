@@ -30,5 +30,17 @@
   "description": "Powerful Command API that uses SpongeAPI's command api",
   "mixins": [
     "legacy-fabric-sponge-command-api-v2.mixins.json"
-  ]
+  ],
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ],
+      "parent": {
+        "id": "legacy-fabric-api",
+        "name": "Legacy Fabric API",
+        "badges": [ "library" ],
+        "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2.",
+        "icon": "assets/legacy-fabric-sponge-command-api-v2/icon.png"
+      }
+    }
+  }
 }

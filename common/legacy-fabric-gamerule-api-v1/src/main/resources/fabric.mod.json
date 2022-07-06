@@ -20,5 +20,17 @@
   "description": "Allows registration of custom game rules.",
   "mixins": [
     "legacy-fabric-gamerule-api-v1.mixins.json"
-  ]
+  ],
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ],
+      "parent": {
+        "id": "legacy-fabric-api",
+        "name": "Legacy Fabric API",
+        "badges": [ "library" ],
+        "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2.",
+        "icon": "assets/legacy-fabric/icon.png"
+      }
+    }
+  }
 }
