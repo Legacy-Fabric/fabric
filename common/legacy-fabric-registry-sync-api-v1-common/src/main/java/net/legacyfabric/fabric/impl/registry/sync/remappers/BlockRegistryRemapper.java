@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync;
+package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -27,7 +27,7 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 
 public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 	public BlockRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getBlockRegistry(), BLOCKS, "Block");
+		super(RegistryHelperImpl.registriesGetter.getBlockRegistry(), BLOCKS, "Block", "Blocks");
 	}
 
 	private static final boolean hasBlockStateList = VersionUtils.matches(">=1.8");

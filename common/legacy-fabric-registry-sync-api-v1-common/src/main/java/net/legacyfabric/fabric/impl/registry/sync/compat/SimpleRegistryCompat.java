@@ -19,7 +19,24 @@ package net.legacyfabric.fabric.impl.registry.sync.compat;
 
 import java.util.Map;
 
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
+import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
+import net.legacyfabric.fabric.api.util.Identifier;
+
 public interface SimpleRegistryCompat<K, V> extends Iterable<V> {
+	default Event<RegistryEntryAddedCallback<V>> createAddEvent() {
+		return EventFactory.createArrayBacked(RegistryEntryAddedCallback.class,
+				(callbacks) -> (rawId, id, object) -> {
+					for (RegistryEntryAddedCallback<V> callback : callbacks) {
+						callback.onEntryAdded(rawId, id, object);
+					}
+				}
+		);
+	}
+
+	Event<RegistryEntryAddedCallback<V>> getAddEvent();
+
 	IdListCompat<V> getIds();
 
 	Map<V, K> getObjects();
@@ -38,6 +55,19 @@ public interface SimpleRegistryCompat<K, V> extends Iterable<V> {
 
 	default KeyType getKeyType() {
 		return KeyType.VANILLA;
+	}
+
+	default K toKeyType(Object key) {
+		switch (this.getKeyType()) {
+		case FABRIC:
+			return (K) (key instanceof Identifier ? key : new Identifier(key.toString()));
+		case JAVA:
+			return (K) key.toString();
+		case VANILLA:
+			return (K) new net.minecraft.util.Identifier(key.toString());
+		}
+
+		return (K) key;
 	}
 
 	enum KeyType {

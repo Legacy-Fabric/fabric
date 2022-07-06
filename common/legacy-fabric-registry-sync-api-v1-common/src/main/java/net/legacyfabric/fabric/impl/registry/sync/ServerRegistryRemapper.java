@@ -17,25 +17,20 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapperRegistryRemapper;
 
 public class ServerRegistryRemapper implements RegistryRemapperAccess {
 	private static final RegistryRemapperAccess INSTANCE = new ServerRegistryRemapper();
 
-	private final RegistryRemapper<Item> itemRemapper = new ItemRegistryRemapper();
-	private final RegistryRemapper<Block> blockRemapper = new BlockRegistryRemapper();
+	private final RegistryRemapper<RegistryRemapper<?>> REGISTRY_REMAPPER;
 
-	private final RegistryRemapper<?>[] REMAPPERS = new RegistryRemapper[] {itemRemapper, blockRemapper};
-
-	@Override
-	public RegistryRemapper<Item> getItemRemapper() {
-		return this.itemRemapper;
-	}
+	private final RegistryRemapper<?>[] REMAPPERS;
 
 	@Override
-	public RegistryRemapper<Block> getBlockRemapper() {
-		return this.blockRemapper;
+	public RegistryRemapper<RegistryRemapper<?>> getRegistryRemapperRegistryRemapper() {
+		return this.REGISTRY_REMAPPER;
 	}
 
 	public static RegistryRemapperAccess getInstance() {
@@ -43,9 +38,16 @@ public class ServerRegistryRemapper implements RegistryRemapperAccess {
 	}
 
 	private ServerRegistryRemapper() {
+		REGISTRY_REMAPPER = new RegistryRemapperRegistryRemapper();
+		REMAPPERS = this.createDefaultRegistryRemappers();
+
+		RegistryRemapper.REMAPPER_MAP.put(REGISTRY_REMAPPER.registryId, REGISTRY_REMAPPER);
+		RegistryRemapper.REGISTRY_REMAPPER_MAP.put(REGISTRY_REMAPPER.getRegistry(), REGISTRY_REMAPPER);
+
 		for (RegistryRemapper<?> remapper : REMAPPERS) {
+			RegistryHelperImpl.registerRegistryRemapper(remapper);
 			RegistryRemapper.REMAPPER_MAP.put(remapper.registryId, remapper);
-			RegistryRemapper.REGISTRY_REMAPPER_MAP.put(remapper.registry, remapper);
+			RegistryRemapper.REGISTRY_REMAPPER_MAP.put(remapper.getRegistry(), remapper);
 		}
 	}
 }

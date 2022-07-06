@@ -18,9 +18,15 @@
 package net.legacyfabric.fabric.impl.registry.sync.compat;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 
 public interface RegistriesGetter {
 	<K> SimpleRegistryCompat<K, Block> getBlockRegistry();
 	<K> SimpleRegistryCompat<K, Item> getItemRegistry();
+
+	<K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry();
+
+	<K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry();
 }

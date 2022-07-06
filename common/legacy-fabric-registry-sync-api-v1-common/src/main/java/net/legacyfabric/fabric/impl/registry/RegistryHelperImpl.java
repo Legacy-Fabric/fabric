@@ -24,12 +24,14 @@ import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
-import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
@@ -71,6 +73,41 @@ public class RegistryHelperImpl {
 		return item;
 	}
 
+	public static Class<? extends BlockEntity> registerBlockEntity(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
+		RegistryRemapper<Class<? extends BlockEntity>> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryRemapper.BLOCK_ENTITIES);
+		int rawId = nextId(registryRemapper.getRegistry());
+		registryRemapper.register(rawId, id, blockEntityClass);
+
+		return blockEntityClass;
+	}
+
+	public static StatusEffect registerStatusEffect(StatusEffect statusEffect, Identifier id) {
+		statusEffect.setTranslationKey(formatTranslationKey(id));
+		RegistryRemapper<StatusEffect> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryRemapper.STATUS_EFFECTS);
+		int rawId = nextId(registryRemapper.getRegistry());
+		registryRemapper.register(rawId, id, statusEffect);
+
+		return statusEffect;
+	}
+
+	public static <V> V getValue(Identifier id, Identifier registryId) {
+		RegistryRemapper<V> registryRemapper = RegistryRemapper.getRegistryRemapper(registryId);
+		return registryRemapper.getRegistry().getValue(id);
+	}
+
+	public static RegistryRemapper<?> registerRegistryRemapper(RegistryRemapper<?> registryRemapper) {
+		RegistryRemapper<RegistryRemapper<?>> registryRemapperRegistryRemapper = RegistryRemapper.getRegistryRemapper(RegistryRemapper.REGISTRY_REMAPPER);
+
+		if (registryRemapperRegistryRemapper == null) {
+			registryRemapperRegistryRemapper = RegistryRemapper.DEFAULT_CLIENT_INSTANCE;
+		}
+
+		int rawId = nextId(registryRemapperRegistryRemapper.getRegistry());
+		registryRemapperRegistryRemapper.register(rawId, registryRemapper.registryId, registryRemapper);
+
+		return registryRemapper;
+	}
+
 	private static String formatTranslationKey(Identifier key) {
 		return key.getNamespace() + "." + key.getPath();
 	}
@@ -78,7 +115,13 @@ public class RegistryHelperImpl {
 	public static int nextId(SimpleRegistryCompat<?, ?> registry) {
 		int id = 0;
 
-		Identifier registryId = RegistryRemapper.getRegistryRemapper(registry).registryId;
+		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
+
+		if (registryRemapper == null) {
+			registryRemapper = RegistryRemapper.DEFAULT_CLIENT_INSTANCE;
+		}
+
+		Identifier registryId = registryRemapper.registryId;
 
 		while (getIdList(registry).fromInt(id) != null
 				|| (id < 256
@@ -92,7 +135,13 @@ public class RegistryHelperImpl {
 	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry) {
 		int id = 0;
 
-		Identifier registryId = RegistryRemapper.getRegistryRemapper(registry).registryId;
+		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
+
+		if (registryRemapper == null) {
+			registryRemapper = RegistryRemapper.DEFAULT_CLIENT_INSTANCE;
+		}
+
+		Identifier registryId = registryRemapper.registryId;
 
 		while (idList.fromInt(id) != null
 				|| (id < 256

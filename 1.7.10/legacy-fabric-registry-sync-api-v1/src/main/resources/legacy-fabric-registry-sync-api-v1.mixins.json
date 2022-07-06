@@ -8,7 +8,10 @@
   "mixins": [
     "SimpleRegistryMixin",
     "PlayerManagerMixin",
-    "PacketByteBufMixin"
+    "PacketByteBufMixin",
+    "BlockEntityAccessor",
+    "BlockEntityMixin",
+    "StatusEffectAccessor"
   ],
   "client": [
   ]

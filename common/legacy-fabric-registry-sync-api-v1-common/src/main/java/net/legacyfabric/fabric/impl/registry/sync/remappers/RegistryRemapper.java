@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync;
+package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,17 +41,28 @@ public class RegistryRemapper<V> {
 	protected BiMap<Identifier, Integer> missingMap = HashBiMap.create();
 	public final Identifier registryId;
 	public final String type;
+	public final String nbtName;
 
 	public static final Map<SimpleRegistryCompat<?, ?>, RegistryRemapper<?>> REGISTRY_REMAPPER_MAP = new HashMap<>();
 	public static final Map<Identifier, RegistryRemapper<?>> REMAPPER_MAP = new HashMap<>();
 
+	public static final Identifier REGISTRY_REMAPPER = new Identifier("legacy-fabric-registry-sync-api-v1-common", "registry_remappers");
 	public static final Identifier ITEMS = new Identifier("items");
 	public static final Identifier BLOCKS = new Identifier("blocks");
+	public static final Identifier BLOCK_ENTITIES = new Identifier("block_entities");
+	public static final Identifier STATUS_EFFECTS = new Identifier("status_effects");
 
-	public RegistryRemapper(SimpleRegistryCompat<?, V> registry, Identifier registryId, String type) {
+	public static RegistryRemapper<RegistryRemapper<?>> DEFAULT_CLIENT_INSTANCE = null;
+
+	public RegistryRemapper(SimpleRegistryCompat<?, V> registry, Identifier registryId, String type, String nbtName) {
 		this.registry = registry;
 		this.registryId = registryId;
 		this.type = type;
+		this.nbtName = nbtName;
+
+		if (this instanceof RegistryRemapperRegistryRemapper && DEFAULT_CLIENT_INSTANCE == null) {
+			DEFAULT_CLIENT_INSTANCE = (RegistryRemapper<RegistryRemapper<?>>) this;
+		}
 	}
 
 	public void dump() {
@@ -90,7 +101,7 @@ public class RegistryRemapper<V> {
 		IdListCompat<V> newList = this.registry.createIdList();
 
 		this.entryDump.forEach((id, rawId) -> {
-			V value = RegistryHelperImpl.getObjects(this.registry).inverse().get(this.toKeyType(id));
+			V value = RegistryHelperImpl.getObjects(this.registry).inverse().get(this.registry.toKeyType(id));
 
 			if (value == null) {
 				newList.setValue(null, rawId);
@@ -153,7 +164,8 @@ public class RegistryRemapper<V> {
 	}
 
 	public static <V> RegistryRemapper<V> getRegistryRemapper(Identifier identifier) {
-		return (RegistryRemapper<V>) REMAPPER_MAP.getOrDefault(identifier, null);
+		RegistryRemapper<V> remapper = (RegistryRemapper<V>) REMAPPER_MAP.getOrDefault(identifier, null);
+		return remapper == null ? (RegistryRemapper<V>) DEFAULT_CLIENT_INSTANCE : remapper;
 	}
 
 	public void addMissing(Identifier key, int id) {
@@ -168,20 +180,11 @@ public class RegistryRemapper<V> {
 		return this.registry;
 	}
 
-	public Object toKeyType(Identifier id) {
-		switch (this.registry.getKeyType()) {
-		case FABRIC:
-			return id;
-		case JAVA:
-			return id.toString();
-		case VANILLA:
-			return new net.minecraft.util.Identifier(id.toString());
-		}
-
-		return id;
+	public Object toKeyType(Object id) {
+		return this.registry.toKeyType(id);
 	}
 
-	public Object toKeyType(String id) {
-		return this.toKeyType(new Identifier(id));
+	public Identifier getIdentifier(V object) {
+		return new Identifier(this.registry.getKey(object).toString());
 	}
 }

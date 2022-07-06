@@ -18,10 +18,13 @@
 package net.legacyfabric.fabric.api.registry.v1;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 
 /**
  * Allows registration of Blocks and Items.
@@ -40,8 +43,8 @@ public final class RegistryHelper {
 		return RegistryHelperImpl.registerBlock(block, id);
 	}
 
-	public static Block registerBlock(Block block, Object id) {
-		return registerBlock(block, new Identifier(id.toString()));
+	public static Block getBlock(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryRemapper.BLOCKS);
 	}
 
 	/**
@@ -57,7 +60,39 @@ public final class RegistryHelper {
 		return RegistryHelperImpl.registerItem(item, id);
 	}
 
-	public static Item registerItem(Item item, Object id) {
-		return registerItem(item, new Identifier(id.toString()));
+	public static Item getItem(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryRemapper.ITEMS);
+	}
+
+	/**
+	 * Registers a block entity with the given ID.
+	 *
+	 * @param blockEntityClass The block entity class to register
+	 * @param id    The ID of the block entity
+	 * @return The block entity class registered
+	 */
+	public static Class<? extends BlockEntity> registerBlockEntity(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
+		return RegistryHelperImpl.registerBlockEntity(blockEntityClass, id);
+	}
+
+	public static Class<? extends BlockEntity> getBlockEntity(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryRemapper.BLOCK_ENTITIES);
+	}
+
+	/**
+	 * Registers a status effect with the given ID.
+	 *
+	 * <p>The Status Effect's translation key is automatically set.</p>
+	 *
+	 * @param statusEffect The status effect to register
+	 * @param id   The ID of the status effect
+	 * @return The status effect registered
+	 */
+	public static StatusEffect registerStatusEffect(StatusEffect statusEffect, Identifier id) {
+		return RegistryHelperImpl.registerStatusEffect(statusEffect, id);
+	}
+
+	public static StatusEffect getStatusEffect(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryRemapper.STATUS_EFFECTS);
 	}
 }

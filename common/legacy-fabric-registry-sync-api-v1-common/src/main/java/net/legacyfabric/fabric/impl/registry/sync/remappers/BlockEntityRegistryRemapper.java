@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync;
+package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
-import net.minecraft.item.Item;
+import net.minecraft.block.entity.BlockEntity;
 
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 
-public class ItemRegistryRemapper extends RegistryRemapper<Item> {
-	public ItemRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getItemRegistry(), ITEMS, "Item");
+public class BlockEntityRegistryRemapper extends RegistryRemapper<Class<? extends BlockEntity>> {
+	public BlockEntityRegistryRemapper() {
+		super(RegistryHelperImpl.registriesGetter.getBlockEntityRegistry(), BLOCK_ENTITIES, "BlockEntity", "BlockEntities");
 	}
 }

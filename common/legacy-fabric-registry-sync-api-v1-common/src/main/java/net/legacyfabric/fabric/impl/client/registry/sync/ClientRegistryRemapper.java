@@ -17,31 +17,30 @@
 
 package net.legacyfabric.fabric.impl.client.registry.sync;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-
-import net.legacyfabric.fabric.impl.registry.sync.BlockRegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.ItemRegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapperRegistryRemapper;
 
 public class ClientRegistryRemapper implements RegistryRemapperAccess {
 	private static final RegistryRemapperAccess INSTANCE = new ClientRegistryRemapper();
 
-	private final RegistryRemapper<Item> itemRemapper = new ItemRegistryRemapper();
-	private final RegistryRemapper<Block> blockRemapper = new BlockRegistryRemapper();
+	private final RegistryRemapper<RegistryRemapper<?>> REGISTRY_REMAPPER;
 
 	@Override
-	public RegistryRemapper<Item> getItemRemapper() {
-		return this.itemRemapper;
-	}
-
-	@Override
-	public RegistryRemapper<Block> getBlockRemapper() {
-		return this.blockRemapper;
+	public RegistryRemapper<RegistryRemapper<?>> getRegistryRemapperRegistryRemapper() {
+		return REGISTRY_REMAPPER;
 	}
 
 	public static RegistryRemapperAccess getInstance() {
 		return INSTANCE;
+	}
+
+	private ClientRegistryRemapper() {
+		REGISTRY_REMAPPER = new RegistryRemapperRegistryRemapper();
+
+		for (RegistryRemapper<?> remapper : this.createDefaultRegistryRemappers()) {
+			RegistryHelperImpl.registerRegistryRemapper(remapper);
+		}
 	}
 }

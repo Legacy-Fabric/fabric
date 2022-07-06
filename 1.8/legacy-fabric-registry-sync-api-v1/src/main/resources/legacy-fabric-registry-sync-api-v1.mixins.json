@@ -11,7 +11,10 @@
     "BlockMixin",
     "ItemMixin",
     "PacketByteBufMixin",
-    "MutableRegistryMixin"
+    "MutableRegistryMixin",
+    "BlockEntityAccessor",
+    "BlockEntityMixin",
+    "StatusEffectAccessor"
   ],
   "client": [
   ]
