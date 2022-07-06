@@ -42,7 +42,7 @@ public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 		RegistryHelperImpl.registriesGetter = new RegistriesGetter() {
 			@Override
 			public <K> SimpleRegistryCompat<K, Block> getBlockRegistry() {
-				return (SimpleRegistryCompat<K, Block>) Block.field_7260;
+				return (SimpleRegistryCompat<K, Block>) Block.REGISTRY;
 			}
 
 			@Override

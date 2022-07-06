@@ -45,7 +45,7 @@ public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 
 			@Override
 			public <K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry() {
-				return (SimpleRegistryCompat<K, StatusEffect>) StatusEffect.field_3164;
+				return (SimpleRegistryCompat<K, StatusEffect>) StatusEffect.REGISTRY;
 			}
 
 			@Override

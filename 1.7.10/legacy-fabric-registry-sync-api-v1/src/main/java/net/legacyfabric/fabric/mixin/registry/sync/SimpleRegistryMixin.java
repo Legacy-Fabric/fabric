@@ -45,16 +45,16 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	protected Map<V, K> objects;
 
 	@Shadow
-	public abstract int getIndex(V object);
-
-	@Shadow
-	public abstract String method_7332(Object par1);
-
-	@Shadow
 	public abstract Object get(String par1);
 
 	@Shadow
-	public abstract void method_7327(int par1, String par2, Object par3);
+	public abstract int getRawId(Object object);
+
+	@Shadow
+	public abstract String getId(Object object);
+
+	@Shadow
+	public abstract void add(int rawId, String id, Object object);
 
 	private final Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
 
@@ -80,12 +80,12 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 
 	@Override
 	public int getRawID(V object) {
-		return this.getIndex(object);
+		return this.getRawId(object);
 	}
 
 	@Override
 	public K getKey(V object) {
-		return (K) this.method_7332(object);
+		return (K) this.getId(object);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 
 	@Override
 	public V register(int i, Object key, V value) {
-		this.method_7327(i, (String) this.toKeyType(key), value);
+		this.add(i, (String) this.toKeyType(key), value);
 		this.getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
 		return value;
 	}

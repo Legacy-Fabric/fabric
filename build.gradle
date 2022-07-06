@@ -135,7 +135,7 @@ class MinecraftVersion {
 		this.userProperties = userProperties;
 	}
 
-	private static final String MAPPINGS_BUILD = "202205311627";
+	private static final String MAPPINGS_BUILD = "202206171821";
 
 	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[] {
 			new MinecraftVersion("1.13.2"),
@@ -144,8 +144,8 @@ class MinecraftVersion {
 			new MinecraftVersion("1.10.2"),
 			new MinecraftVersion("1.9.4"),
 			new MinecraftVersion("1.8.9"),
-			new MinecraftVersion("1.8", true),
-			new MinecraftVersion("1.7.10", true),
+			new MinecraftVersion("1.8", "202206171820", true),
+			new MinecraftVersion("1.7.10", "202206171820", true),
 			new MinecraftVersion("1.6.4"),
 			new MinecraftVersion("1.5.2"),
 			new MinecraftVersion("1.4.7"),
