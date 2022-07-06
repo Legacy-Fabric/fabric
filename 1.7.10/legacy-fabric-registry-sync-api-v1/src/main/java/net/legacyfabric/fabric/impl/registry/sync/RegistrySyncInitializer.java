@@ -17,8 +17,12 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 
@@ -27,15 +31,18 @@ import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.registries.OldBlockEntityRegistry;
+import net.legacyfabric.fabric.impl.registry.registries.ReallyOldEnchantmentRegistry;
 import net.legacyfabric.fabric.impl.registry.registries.ReallyOldStatusEffectRegistry;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 import net.legacyfabric.fabric.mixin.registry.sync.BlockEntityAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.EnchantmentAccessor;
 import net.legacyfabric.fabric.mixin.registry.sync.StatusEffectAccessor;
 
 public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 	private static SimpleRegistryCompat<String, Class<? extends BlockEntity>> BLOCK_ENTITY_REGISTRY;
 	private static SimpleRegistryCompat<Identifier, StatusEffect> STATUS_EFFECT_REGISTRY;
+	private static SimpleRegistryCompat<Identifier, Enchantment> ENCHANTMENT_REGISTRY;
 
 	@Override
 	public void onPreLaunch() {
@@ -65,12 +72,36 @@ public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 			}
 
 			@Override
-			public SimpleRegistryCompat<String, Class<? extends BlockEntity>> getBlockEntityRegistry() {
+			public <K> SimpleRegistryCompat<K, Enchantment> getEnchantmentRegistry() {
+				if (ENCHANTMENT_REGISTRY == null) {
+					ENCHANTMENT_REGISTRY = new ReallyOldEnchantmentRegistry(Enchantment.ALL_ENCHANTMENTS) {
+						@Override
+						public void updateArray() {
+							EnchantmentAccessor.setALL_ENCHANTMENTS(this.getArray());
+
+							List<Enchantment> enchantments = new ArrayList<>();
+
+							for (Enchantment enchantment : Enchantment.ALL_ENCHANTMENTS) {
+								if (enchantment != null) {
+									enchantments.add(enchantment);
+								}
+							}
+
+							EnchantmentAccessor.setField_5457(enchantments.toArray(new Enchantment[0]));
+						}
+					};
+				}
+
+				return (SimpleRegistryCompat<K, Enchantment>) ENCHANTMENT_REGISTRY;
+			}
+
+			@Override
+			public <K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry() {
 				if (BLOCK_ENTITY_REGISTRY == null) {
 					BLOCK_ENTITY_REGISTRY = new OldBlockEntityRegistry(BlockEntityAccessor.getStringClassMap(), BlockEntityAccessor.getClassStringMap());
 				}
 
-				return BLOCK_ENTITY_REGISTRY;
+				return (SimpleRegistryCompat<K, Class<? extends BlockEntity>>) BLOCK_ENTITY_REGISTRY;
 			}
 		};
 	}

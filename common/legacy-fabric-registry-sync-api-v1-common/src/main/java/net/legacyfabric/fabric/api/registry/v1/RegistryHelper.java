@@ -19,15 +19,15 @@ package net.legacyfabric.fabric.api.registry.v1;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 
 /**
- * Allows registration of Blocks and Items.
+ * Allows registration of Blocks, Items, Block Entity Classes, Status Effects and Enchantments.
  */
 public final class RegistryHelper {
 	/**
@@ -44,7 +44,7 @@ public final class RegistryHelper {
 	}
 
 	public static Block getBlock(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryRemapper.BLOCKS);
+		return RegistryHelperImpl.getValue(id, RegistryIds.BLOCKS);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public final class RegistryHelper {
 	}
 
 	public static Item getItem(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryRemapper.ITEMS);
+		return RegistryHelperImpl.getValue(id, RegistryIds.ITEMS);
 	}
 
 	/**
@@ -71,12 +71,12 @@ public final class RegistryHelper {
 	 * @param id    The ID of the block entity
 	 * @return The block entity class registered
 	 */
-	public static Class<? extends BlockEntity> registerBlockEntity(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
+	public static Class<? extends BlockEntity> registerBlockEntityClass(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
 		return RegistryHelperImpl.registerBlockEntity(blockEntityClass, id);
 	}
 
-	public static Class<? extends BlockEntity> getBlockEntity(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryRemapper.BLOCK_ENTITIES);
+	public static Class<? extends BlockEntity> getBlockEntityClass(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryIds.BLOCK_ENTITIES);
 	}
 
 	/**
@@ -93,6 +93,23 @@ public final class RegistryHelper {
 	}
 
 	public static StatusEffect getStatusEffect(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryRemapper.STATUS_EFFECTS);
+		return RegistryHelperImpl.getValue(id, RegistryIds.STATUS_EFFECTS);
+	}
+
+	/**
+	 * Registers an enchantment with the given ID.
+	 *
+	 * <p>The Enchantment's translation key is automatically set.</p>
+	 *
+	 * @param enchantment The enchantment to register
+	 * @param id   The ID of the enchantment effect
+	 * @return The enchantment registered
+	 */
+	public static Enchantment registerEnchantment(Enchantment enchantment, Identifier id) {
+		return RegistryHelperImpl.registerEnchantment(enchantment, id);
+	}
+
+	public static Enchantment getEnchantment(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryIds.ENCHANTMENTS);
 	}
 }

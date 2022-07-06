@@ -14,7 +14,8 @@
     "MutableRegistryMixin",
     "BlockEntityAccessor",
     "BlockEntityMixin",
-    "StatusEffectAccessor"
+    "StatusEffectAccessor",
+    "EnchantmentAccessor"
   ],
   "client": [
   ]

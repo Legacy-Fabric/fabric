@@ -15,20 +15,23 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync.remappers;
+package net.legacyfabric.fabric.mixin.registry.sync;
 
-import net.minecraft.entity.effect.StatusEffect;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.minecraft.enchantment.Enchantment;
 
-public class StatusEffectRegistryRemapper extends RegistryRemapper<StatusEffect> {
-	public StatusEffectRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getStatusEffectRegistry(), RegistryIds.STATUS_EFFECTS, "StatusEffect", "StatusEffects");
+@Mixin(Enchantment.class)
+public interface EnchantmentAccessor {
+	@Mutable
+	@Accessor
+	static void setALL_ENCHANTMENTS(Enchantment[] enchantments) {
 	}
 
-	@Override
-	public int getMinId() {
-		return 1;
+	@Mutable
+	@Accessor
+	static void setField_5457(Enchantment[] enchantments) {
 	}
 }

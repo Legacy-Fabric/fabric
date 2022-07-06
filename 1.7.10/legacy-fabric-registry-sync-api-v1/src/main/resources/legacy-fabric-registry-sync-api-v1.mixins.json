@@ -11,7 +11,8 @@
     "PacketByteBufMixin",
     "BlockEntityAccessor",
     "BlockEntityMixin",
-    "StatusEffectAccessor"
+    "StatusEffectAccessor",
+    "EnchantmentAccessor"
   ],
   "client": [
   ]

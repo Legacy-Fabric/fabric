@@ -19,10 +19,16 @@ package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
 import net.minecraft.item.Item;
 
+import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 
 public class ItemRegistryRemapper extends RegistryRemapper<Item> {
 	public ItemRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getItemRegistry(), ITEMS, "Item", "Items");
+		super(RegistryHelperImpl.registriesGetter.getItemRegistry(), RegistryIds.ITEMS, "Item", "Items");
+	}
+
+	@Override
+	public int getMinId() {
+		return 256;
 	}
 }

@@ -17,18 +17,13 @@
 
 package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.enchantment.Enchantment;
 
 import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 
-public class StatusEffectRegistryRemapper extends RegistryRemapper<StatusEffect> {
-	public StatusEffectRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getStatusEffectRegistry(), RegistryIds.STATUS_EFFECTS, "StatusEffect", "StatusEffects");
-	}
-
-	@Override
-	public int getMinId() {
-		return 1;
+public class EnchantmentRegistryRemapper extends RegistryRemapper<Enchantment> {
+	public EnchantmentRegistryRemapper() {
+		super(RegistryHelperImpl.registriesGetter.getEnchantmentRegistry(), RegistryIds.ENCHANTMENTS, "Enchantment", "Enchantments");
 	}
 }

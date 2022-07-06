@@ -25,6 +25,7 @@ import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.PacketByteBufCompat;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.EnchantmentRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.ItemRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.StatusEffectRegistryRemapper;
@@ -39,7 +40,8 @@ public interface RegistryRemapperAccess {
 				new ItemRegistryRemapper(),
 				new BlockRegistryRemapper(),
 				new BlockEntityRegistryRemapper(),
-				new StatusEffectRegistryRemapper()
+				new StatusEffectRegistryRemapper(),
+				new EnchantmentRegistryRemapper()
 		};
 	}
 

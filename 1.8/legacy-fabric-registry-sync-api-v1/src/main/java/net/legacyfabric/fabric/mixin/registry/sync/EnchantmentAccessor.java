@@ -15,21 +15,40 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync.compat;
+package net.legacyfabric.fabric.mixin.registry.sync;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
+import java.util.Map;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Item;
 
-public interface RegistriesGetter {
-	<K> SimpleRegistryCompat<K, Block> getBlockRegistry();
-	<K> SimpleRegistryCompat<K, Item> getItemRegistry();
+@Mixin(Enchantment.class)
+public interface EnchantmentAccessor {
+	@Mutable
+	@Accessor
+	static void setALL_ENCHANTMENTS(Enchantment[] enchantments) {
+	}
 
-	<K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry();
+	@Mutable
+	@Accessor
+	static void setENCHANTMENTS(Enchantment[] enchantments) {
+	}
 
-	<K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry();
+	@Accessor
+	static Enchantment[] getENCHANTMENTS() {
+		return new Enchantment[0];
+	}
 
-	<K> SimpleRegistryCompat<K, Enchantment> getEnchantmentRegistry();
+	@Accessor
+	static Map getENCHANTMENT_MAP() {
+		return null;
+	}
+
+	@Mutable
+	@Accessor
+	static void setENCHANTMENT_MAP(Map map) {
+	}
 }

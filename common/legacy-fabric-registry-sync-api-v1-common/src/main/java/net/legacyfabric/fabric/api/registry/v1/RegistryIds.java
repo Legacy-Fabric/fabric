@@ -15,20 +15,15 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync.remappers;
+package net.legacyfabric.fabric.api.registry.v1;
 
-import net.minecraft.entity.effect.StatusEffect;
+import net.legacyfabric.fabric.api.util.Identifier;
 
-import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-
-public class StatusEffectRegistryRemapper extends RegistryRemapper<StatusEffect> {
-	public StatusEffectRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getStatusEffectRegistry(), RegistryIds.STATUS_EFFECTS, "StatusEffect", "StatusEffects");
-	}
-
-	@Override
-	public int getMinId() {
-		return 1;
-	}
+public class RegistryIds {
+	public static final Identifier REGISTRY_REMAPPER = new Identifier("legacy-fabric-registry-sync-api-v1-common", "registry_remappers");
+	public static final Identifier ITEMS = new Identifier("items");
+	public static final Identifier BLOCKS = new Identifier("blocks");
+	public static final Identifier BLOCK_ENTITIES = new Identifier("block_entities");
+	public static final Identifier STATUS_EFFECTS = new Identifier("status_effects");
+	public static final Identifier ENCHANTMENTS = new Identifier("enchantments");
 }

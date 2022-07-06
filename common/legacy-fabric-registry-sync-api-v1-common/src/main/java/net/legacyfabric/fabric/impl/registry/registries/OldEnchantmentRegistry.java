@@ -15,20 +15,17 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.registry.sync.remappers;
+package net.legacyfabric.fabric.impl.registry.registries;
 
-import net.minecraft.entity.effect.StatusEffect;
+import com.google.common.collect.BiMap;
 
-import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.util.Identifier;
 
-public class StatusEffectRegistryRemapper extends RegistryRemapper<StatusEffect> {
-	public StatusEffectRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getStatusEffectRegistry(), RegistryIds.STATUS_EFFECTS, "StatusEffect", "StatusEffects");
-	}
+import net.legacyfabric.fabric.impl.registry.util.ArrayAndMapBasedRegistry;
 
-	@Override
-	public int getMinId() {
-		return 1;
+public abstract class OldEnchantmentRegistry extends ArrayAndMapBasedRegistry<Identifier, Enchantment> {
+	public OldEnchantmentRegistry(Enchantment[] valueArray, BiMap<Identifier, Enchantment> defaultMap) {
+		super(valueArray, defaultMap);
 	}
 }

@@ -20,6 +20,7 @@ package net.legacyfabric.fabric.impl.registry.sync.remappers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 
+import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.api.util.VersionUtils;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.compat.BlockCompat;
@@ -27,7 +28,7 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 
 public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 	public BlockRegistryRemapper() {
-		super(RegistryHelperImpl.registriesGetter.getBlockRegistry(), BLOCKS, "Block", "Blocks");
+		super(RegistryHelperImpl.registriesGetter.getBlockRegistry(), RegistryIds.BLOCKS, "Block", "Blocks");
 	}
 
 	private static final boolean hasBlockStateList = VersionUtils.matches(">=1.8");
@@ -79,5 +80,10 @@ public class BlockRegistryRemapper extends RegistryRemapper<Block> {
 
 			((BlockCompat) this.registry.getValue(this.toKeyType("air"))).setBLOCK_STATES(newStates);
 		}
+	}
+
+	@Override
+	public int getMinId() {
+		return 256;
 	}
 }

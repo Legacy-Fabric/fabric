@@ -129,6 +129,8 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 	}
 
 	public void syncArrayWithIdList() {
+		Arrays.fill(this.valueArray, null);
+
 		for (Map.Entry<V, Integer> entry : this.IDLIST.getIdMap(this).entrySet()) {
 			this.valueArray[entry.getValue()] = entry.getKey();
 		}

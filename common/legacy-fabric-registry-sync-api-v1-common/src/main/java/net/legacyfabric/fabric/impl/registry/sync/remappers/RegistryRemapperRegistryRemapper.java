@@ -17,10 +17,11 @@
 
 package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
+import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.impl.registry.registries.RegistryRemapperRegistry;
 
 public class RegistryRemapperRegistryRemapper extends RegistryRemapper<RegistryRemapper<?>> {
 	public RegistryRemapperRegistryRemapper() {
-		super(new RegistryRemapperRegistry(), REGISTRY_REMAPPER, "RegistryRemapper", "RegistryRemappers");
+		super(new RegistryRemapperRegistry(), RegistryIds.REGISTRY_REMAPPER, "RegistryRemapper", "RegistryRemappers");
 	}
 }
