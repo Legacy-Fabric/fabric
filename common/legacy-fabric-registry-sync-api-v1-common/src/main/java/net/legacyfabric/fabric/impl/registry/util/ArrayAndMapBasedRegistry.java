@@ -117,14 +117,18 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 	}
 
 	private void addArrayEntry(int i, V value, boolean update) {
-		while (i >= this.valueArray.length) {
-			this.valueArray = Arrays.copyOf(this.valueArray, this.valueArray.length * 2);
-		}
+		this.updateArrayLength(i);
 
 		if (this.valueArray[i] != value) {
 			this.valueArray[i] = value;
 
 			if (update) this.updateArray();
+		}
+	}
+
+	public void updateArrayLength(int i) {
+		while (i >= this.valueArray.length) {
+			this.valueArray = Arrays.copyOf(this.valueArray, this.valueArray.length * 2);
 		}
 	}
 

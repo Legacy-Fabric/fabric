@@ -30,6 +30,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 
+import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
@@ -38,6 +39,7 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+import net.legacyfabric.fabric.impl.registry.util.ArrayAndMapBasedRegistry;
 
 @ApiStatus.Internal
 public class RegistryHelperImpl {
@@ -92,10 +94,36 @@ public class RegistryHelperImpl {
 		return statusEffect;
 	}
 
+	public static StatusEffect registerStatusEffect(RegistryHelper.EntryCreator<StatusEffect> statusEffectCreator, Identifier id) {
+		RegistryRemapper<StatusEffect> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.STATUS_EFFECTS);
+		int rawId = nextId(registryRemapper.getRegistry());
+
+		((ArrayAndMapBasedRegistry) registryRemapper.getRegistry()).updateArrayLength(rawId);
+
+		StatusEffect statusEffect = statusEffectCreator.create(rawId);
+		statusEffect.setTranslationKey(formatTranslationKey(id));
+		registryRemapper.register(rawId, id, statusEffect);
+
+		return statusEffect;
+	}
+
 	public static Enchantment registerEnchantment(Enchantment enchantment, Identifier id) {
 		enchantment.setName(formatTranslationKey(id));
 		RegistryRemapper<Enchantment> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.ENCHANTMENTS);
 		int rawId = nextId(registryRemapper.getRegistry());
+		registryRemapper.register(rawId, id, enchantment);
+
+		return enchantment;
+	}
+
+	public static Enchantment registerEnchantment(RegistryHelper.EntryCreator<Enchantment> enchantmentCreator, Identifier id) {
+		RegistryRemapper<Enchantment> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.ENCHANTMENTS);
+		int rawId = nextId(registryRemapper.getRegistry());
+
+		((ArrayAndMapBasedRegistry) registryRemapper.getRegistry()).updateArrayLength(rawId);
+
+		Enchantment enchantment = enchantmentCreator.create(rawId);
+		enchantment.setName(formatTranslationKey(id));
 		registryRemapper.register(rawId, id, enchantment);
 
 		return enchantment;

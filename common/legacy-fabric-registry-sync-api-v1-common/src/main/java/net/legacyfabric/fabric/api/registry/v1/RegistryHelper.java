@@ -23,7 +23,9 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 
+import net.legacyfabric.fabric.api.util.BeforeMC;
 import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.api.util.SinceMC;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 
 /**
@@ -88,7 +90,22 @@ public final class RegistryHelper {
 	 * @param id   The ID of the status effect
 	 * @return The status effect registered
 	 */
+	@SinceMC("1.9")
 	public static StatusEffect registerStatusEffect(StatusEffect statusEffect, Identifier id) {
+		return RegistryHelperImpl.registerStatusEffect(statusEffect, id);
+	}
+
+	/**
+	 * Registers a status effect with the given ID.
+	 *
+	 * <p>The Status Effect's translation key is automatically set.</p>
+	 *
+	 * @param statusEffect The status effect to register
+	 * @param id   The ID of the status effect
+	 * @return The status effect registered
+	 */
+	@BeforeMC("1.9")
+	public static StatusEffect registerStatusEffect(EntryCreator<StatusEffect> statusEffect, Identifier id) {
 		return RegistryHelperImpl.registerStatusEffect(statusEffect, id);
 	}
 
@@ -105,11 +122,30 @@ public final class RegistryHelper {
 	 * @param id   The ID of the enchantment effect
 	 * @return The enchantment registered
 	 */
+	@SinceMC("1.9")
 	public static Enchantment registerEnchantment(Enchantment enchantment, Identifier id) {
+		return RegistryHelperImpl.registerEnchantment(enchantment, id);
+	}
+
+	/**
+	 * Registers an enchantment with the given ID.
+	 *
+	 * <p>The Enchantment's translation key is automatically set.</p>
+	 *
+	 * @param enchantment The enchantment to register
+	 * @param id   The ID of the enchantment effect
+	 * @return The enchantment registered
+	 */
+	@BeforeMC("1.9")
+	public static Enchantment registerEnchantment(EntryCreator<Enchantment> enchantment, Identifier id) {
 		return RegistryHelperImpl.registerEnchantment(enchantment, id);
 	}
 
 	public static Enchantment getEnchantment(Identifier id) {
 		return RegistryHelperImpl.getValue(id, RegistryIds.ENCHANTMENTS);
+	}
+
+	public interface EntryCreator<T> {
+		T create(int rawId);
 	}
 }
