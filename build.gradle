@@ -9,7 +9,7 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version "0.12.48" apply false
+	id 'fabric-loom' version "0.12.54" apply false
 	id 'com.diffplug.spotless' version "6.5.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
@@ -29,12 +29,12 @@ import org.apache.commons.codec.digest.DigestUtils
 
 def getSubprojectVersion(project) {
 	def version
-	if (project.name == "legacyfabric-api") version = project.base_version;
+	if (project.name == "legacyfabric-api") version = project.base_version
 	else version = project[project.name.replace("-common", "") + ".version"]
 
-	version = version + "+" + project.getParent().name;
+	version = version + "+" + project.getParent().name
 
-	if (project.name == "legacyfabric-api") return version;
+	if (project.name == "legacyfabric-api") return version
 
 	if (grgit == null) {
 		return version + "+nogit"
@@ -90,7 +90,7 @@ def moduleDependencies(project, List<String> depNames) {
 	}
 
 	if (project.name != "legacy-fabric-logger-api-v1") {
-		deps.add(project.dependencies.project(path: ":common:legacy-fabric-logger-api-v1", configuration: 'namedElements'));
+		deps.add(project.dependencies.project(path: ":common:legacy-fabric-logger-api-v1", configuration: 'namedElements'))
 	}
 
 	// As we manually handle the maven artifacts, we need to also manually specify the deps.
@@ -113,9 +113,9 @@ def moduleDependencies(project, List<String> depNames) {
 }
 
 class MinecraftVersion {
-	public String mc_version;
-	public String yarn_version;
-	public boolean userProperties;
+	public String mc_version
+	public String yarn_version
+	public boolean userProperties
 
 	private MinecraftVersion(String mc_version, boolean userProperties) {
 		this(mc_version, MAPPINGS_BUILD, userProperties)
@@ -130,12 +130,12 @@ class MinecraftVersion {
 	}
 
 	private MinecraftVersion(String mc_version, String yarn_version, boolean userProperties) {
-		this.mc_version = mc_version;
-		this.yarn_version = yarn_version;
-		this.userProperties = userProperties;
+		this.mc_version = mc_version
+		this.yarn_version = yarn_version
+		this.userProperties = userProperties
 	}
 
-	private static final String MAPPINGS_BUILD = "202206171821";
+	private static final String MAPPINGS_BUILD = "202206171821"
 
 	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[] {
 			new MinecraftVersion("1.13.2"),
@@ -150,30 +150,30 @@ class MinecraftVersion {
 			new MinecraftVersion("1.5.2"),
 			new MinecraftVersion("1.4.7"),
 			new MinecraftVersion("1.3.2")
-	};
+	}
 }
 
 static def getVersionInfo(Project project) {
-	MinecraftVersion version = MinecraftVersion.VERSIONS[0];
+	MinecraftVersion version = MinecraftVersion.VERSIONS[0]
 
-	Project parent = project.getParent();
-	String projectMCVersion = project.name;
+	Project parent = project.getParent()
+	String projectMCVersion = project.name
 
 	if (parent != null && parent.name != "legacy-fabric-api") {
-		projectMCVersion = parent.name;
+		projectMCVersion = parent.name
 	}
 	System.out.println("Preparing project ${parent != null ? parent.name : ""}:$project.name")
 
 	for (MinecraftVersion mcVersion : MinecraftVersion.VERSIONS) {
 		if (mcVersion.mc_version == projectMCVersion) {
-			version = mcVersion;
-			break;
+			version = mcVersion
+			break
 		} else if (mcVersion.mc_version == "1.8.9") {
-			version = mcVersion;
+			version = mcVersion
 		}
 	}
 
-	return version;
+	return version
 }
 
 allprojects {
@@ -217,13 +217,11 @@ allprojects {
 		maven { url "https://maven.legacyfabric.net/" }
 	}
 
-	MinecraftVersion versionInfo = getVersionInfo(it);
+	MinecraftVersion versionInfo = getVersionInfo(it)
 
-	String projectName = it.name;
+	String projectName = it.name
 
 	loom {
-		runtimeOnlyLog4j = true
-
 		runs {
 			"testModClient$versionInfo.mc_version" {
 				client()
@@ -246,9 +244,7 @@ allprojects {
 			}
 		}
 
-//		shareRemapCaches = true
-
-		setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar');
+		setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar')
 	}
 
 	allprojects.each { p ->
@@ -257,7 +253,6 @@ allprojects {
 		if (p.file("src/main").exists()) {
 			loom.mods.register(p.name + parentName) {
 				sourceSet p.sourceSets.main
-//			sourceSet p.sourceSets.client
 			}
 		}
 
@@ -289,8 +284,8 @@ allprojects {
 		configurations.all {
 			resolutionStrategy {
 				dependencySubstitution {
-					substitute module('org.lwjgl.lwjgl:lwjgl_util:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209')
-					substitute module('org.lwjgl.lwjgl:lwjgl:2.9.2-nightly-201408222') with module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209')
+					substitute(module('org.lwjgl.lwjgl:lwjgl_util:2.9.2-nightly-201408222')) using module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209')
+					substitute module('org.lwjgl.lwjgl:lwjgl:2.9.2-nightly-201408222') using module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209')
 				}
 				force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
 			}
@@ -324,12 +319,12 @@ allprojects {
 	task testmodJar(type: Jar) {
 		from sourceSets.testmod.output
 		destinationDirectory = new File(project.buildDir, "devlibs")
-		archiveClassifier = "testmod"
+		archiveClassifier.set("testmod")
 	}
 
 	task remapTestmodJar(type: RemapJarTask, dependsOn: testmodJar) {
 		input = testmodJar.archiveFile
-		archiveClassifier = "testmod"
+		archiveClassifier.set("testmod")
 		addNestedDependencies = false
 	}
 	build.dependsOn remapTestmodJar
@@ -379,7 +374,7 @@ task javadocJar(type: Jar) {
 	dependsOn javadoc
 	from javadoc.destinationDir
 	//Set as `fatjavadoc` to prevent an ide form trying to use this javadoc, over using the modules javadoc
-	archiveClassifier = "fatjavadoc"
+	archiveClassifier.set("fatjavadoc")
 }
 
 build.dependsOn javadocJar
@@ -475,7 +470,7 @@ sourceSets {
 dependencies {
 	afterEvaluate {
 		subprojects.each {
-			String par = it.getParent() != null ? it.getParent().name + ":" : "";
+			String par = it.getParent() != null ? it.getParent().name + ":" : ""
 			if (par == "legacy-fabric-api:" || (par.startsWith("1.") && it.name == "legacyfabric-api")) return
 			if (it.file("src/main").exists()) api project(path: ":$par${it.name}", configuration: "namedElements")
 
@@ -487,7 +482,7 @@ dependencies {
 remapJar {
 	afterEvaluate {
 		subprojects.each {
-			String par = it.getParent() != null ? it.getParent().name + ":" : "";
+			String par = it.getParent() != null ? it.getParent().name + ":" : ""
 			if (par == "legacy-fabric-api:" || (par.startsWith("1.") && it.name == "legacyfabric-api")) return
 			// Include the signed or none signed jar from the sub project.
 			if (it.file("src/main").exists()) nestedJars.from project("$par${it.name}:").tasks.getByName("remapJar")
@@ -540,7 +535,7 @@ task github(dependsOn: remapJar) {
 		releaseBuilder.prerelease(false)
 
 		def ghRelease = releaseBuilder.create()
-		ghRelease.uploadAsset(remapJar.archiveFile.get().getAsFile(), "application/java-archive");
+		ghRelease.uploadAsset(remapJar.archiveFile.get().getAsFile(), "application/java-archive")
 	}
 }
 
@@ -566,8 +561,8 @@ task github(dependsOn: remapJar) {
 task checkVersion {
 	doFirst {
 		def xml = new URL("https://maven.legacyfabric.net/net/legacyfabric/legacy-fabric-api/legacy-fabric-api/maven-metadata.xml").text
-		def metadata = new XmlSlurper().parseText(xml)
-		def versions = metadata.versioning.versions.version*.text();
+		def metadata = new groovy.xml.XmlSlurper().parseText(xml)
+		def versions = metadata.versioning.versions.version*.text()
 		if (versions.contains(version)) {
 			throw new RuntimeException("${version} has already been released!")
 		}
