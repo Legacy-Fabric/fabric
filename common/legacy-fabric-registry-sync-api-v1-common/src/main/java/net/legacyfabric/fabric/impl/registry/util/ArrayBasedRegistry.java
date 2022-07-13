@@ -37,7 +37,7 @@ public abstract class ArrayBasedRegistry<V> extends ArrayAndMapBasedRegistry<Ide
 
 			if (value == null) continue;
 
-			this.register(i, defaultIds.getOrDefault(i, new Identifier("modded", String.valueOf(i))), value, false);
+			this.register(i, defaultIds.getOrDefault(i, new Identifier("modded", String.valueOf(i))), value);
 		}
 	}
 

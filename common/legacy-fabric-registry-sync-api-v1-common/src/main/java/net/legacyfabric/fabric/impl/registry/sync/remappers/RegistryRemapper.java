@@ -137,8 +137,8 @@ public class RegistryRemapper<V> {
 
 					V currentBlock = RegistryHelperImpl.getIdList(this.registry).fromInt(id);
 
-					if (currentBlock != null && newList.getInt(currentBlock) == -1) {
-						newList.setValue(currentBlock, id);
+					if (currentBlock == null) {
+						break;
 					}
 				}
 

@@ -45,8 +45,12 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 
 	private Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
 
+	private boolean init = false;
+
 	public ArrayAndMapBasedRegistry(V[] valueArray, BiMap<K, V> defaultMap) {
-		this.valueArray = (V[]) Array.newInstance(valueArray.getClass().getComponentType(), 1);
+		this.valueArray = (V[]) Array.newInstance(valueArray.getClass().getComponentType(), valueArray.length + 1);
+		Arrays.fill(this.valueArray, null);
+
 		this.defaultMap = defaultMap;
 		this.invertedMap = ((BiMap<K, V>) this.defaultMap).inverse();
 
@@ -55,6 +59,7 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 		this.remapDefaultIds();
 
 		this.initRegistry(valueArray);
+		this.init = true;
 
 		this.syncArrayWithIdList();
 	}
@@ -83,8 +88,10 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 
 			if (value == null) continue;
 
-			this.register(i, this.invertedMap.getOrDefault(originalValueArray[i],
-					this.toKeyType(new Identifier("modded", String.valueOf(i)))), value, false);
+			this.register(i,
+					this.invertedMap.getOrDefault(value, this.toKeyType(new Identifier("modded", String.valueOf(i)))),
+					value
+			);
 		}
 	}
 
@@ -131,38 +138,29 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 
 	@Override
 	public V register(int i, Object key, V value) {
-		return this.register(i, this.toKeyType(key), value, true);
-	}
+		this.defaultMap.put(this.toKeyType(key), value);
+		this.IDLIST.setValue(value, i);
 
-	protected V register(int i, Object key, V value, boolean update) {
-		if (!this.invertedMap.containsKey(value)) {
-			this.defaultMap.put(this.toKeyType(key), value);
-			this.IDLIST.setValue(value, i);
-			this.addArrayEntry(i, value, update);
+		if (this.init) {
+			this.syncArrayWithIdList();
 			this.getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
 		}
 
 		return value;
 	}
 
-	private void addArrayEntry(int i, V value, boolean update) {
-		this.updateArrayLength(i);
-
-		if (this.valueArray[i] != value) {
-			this.valueArray[i] = value;
-
-			if (update) this.updateArray();
-		}
-	}
-
 	public void updateArrayLength(int i) {
 		while (i >= this.valueArray.length) {
 			this.valueArray = Arrays.copyOf(this.valueArray, this.valueArray.length * 2);
 		}
+
+		this.updateArray();
 	}
 
 	public void syncArrayWithIdList() {
 		Arrays.fill(this.valueArray, null);
+
+		this.updateArrayLength(this.IDLIST.getIdMap(this).size() + 1);
 
 		for (Map.Entry<V, Integer> entry : this.IDLIST.getIdMap(this).entrySet()) {
 			this.valueArray[entry.getValue()] = entry.getKey();
