@@ -14,7 +14,8 @@
     "PacketByteBufMixin",
     "MutableRegistryMixin",
     "BlockEntityAccessor",
-    "BlockEntityMixin"
+    "BlockEntityMixin",
+    "BiomeAccessor"
   ],
   "client": [
   ]

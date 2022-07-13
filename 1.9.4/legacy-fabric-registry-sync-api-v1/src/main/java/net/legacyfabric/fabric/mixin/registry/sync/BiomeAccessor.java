@@ -15,17 +15,15 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.registry.v1;
+package net.legacyfabric.fabric.mixin.registry.sync;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-@FunctionalInterface
-public interface RegistryEntryAddedCallback<T> {
-	void onEntryAdded(int rawId, Identifier id, T object);
+import net.minecraft.world.biome.Biome;
 
-	static <T> Event<RegistryEntryAddedCallback<T>> event(Identifier registryId) {
-		return RegistryRemapper.registerOnAddEvent(registryId);
-	}
+@Mixin(Biome.class)
+public interface BiomeAccessor {
+	@Accessor
+	String getParent();
 }

@@ -26,11 +26,16 @@ public class ServerRegistryRemapper implements RegistryRemapperAccess {
 
 	private final RegistryRemapper<RegistryRemapper<?>> REGISTRY_REMAPPER;
 
-	private final RegistryRemapper<?>[] REMAPPERS;
-
 	@Override
 	public RegistryRemapper<RegistryRemapper<?>> getRegistryRemapperRegistryRemapper() {
 		return this.REGISTRY_REMAPPER;
+	}
+
+	@Override
+	public void registrerRegistryRemapper(RegistryRemapper<?> remapper) {
+		RegistryHelperImpl.registerRegistryRemapper(REGISTRY_REMAPPER, remapper);
+		RegistryRemapper.REMAPPER_MAP.put(remapper.registryId, remapper);
+		RegistryRemapper.REGISTRY_REMAPPER_MAP.put(remapper.getRegistry(), remapper);
 	}
 
 	public static RegistryRemapperAccess getInstance() {
@@ -39,15 +44,8 @@ public class ServerRegistryRemapper implements RegistryRemapperAccess {
 
 	private ServerRegistryRemapper() {
 		REGISTRY_REMAPPER = new RegistryRemapperRegistryRemapper();
-		REMAPPERS = this.createDefaultRegistryRemappers();
 
 		RegistryRemapper.REMAPPER_MAP.put(REGISTRY_REMAPPER.registryId, REGISTRY_REMAPPER);
 		RegistryRemapper.REGISTRY_REMAPPER_MAP.put(REGISTRY_REMAPPER.getRegistry(), REGISTRY_REMAPPER);
-
-		for (RegistryRemapper<?> remapper : REMAPPERS) {
-			RegistryHelperImpl.registerRegistryRemapper(remapper);
-			RegistryRemapper.REMAPPER_MAP.put(remapper.registryId, remapper);
-			RegistryRemapper.REGISTRY_REMAPPER_MAP.put(remapper.getRegistry(), remapper);
-		}
 	}
 }

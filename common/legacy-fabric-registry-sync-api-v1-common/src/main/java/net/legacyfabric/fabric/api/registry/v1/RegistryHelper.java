@@ -17,12 +17,20 @@
 
 package net.legacyfabric.fabric.api.registry.v1;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
+import net.minecraft.world.biome.Biome;
 
+import net.fabricmc.tinyremapper.extension.mixin.common.data.Pair;
+
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.util.BeforeMC;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
@@ -32,6 +40,27 @@ import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
  * Allows registration of Blocks, Items, Block Entity Classes, Status Effects and Enchantments.
  */
 public final class RegistryHelper {
+	public static final Map<Identifier, Event<RegistryInitialized>> IDENTIFIER_EVENT_MAP = new HashMap<>();
+
+	public static Event<RegistryInitialized> onRegistryInitialized(Identifier identifier) {
+		Event<RegistryInitialized> event;
+
+		if (IDENTIFIER_EVENT_MAP.containsKey(identifier)) {
+			event = IDENTIFIER_EVENT_MAP.get(identifier);
+		} else {
+			event = EventFactory.createArrayBacked(RegistryInitialized.class,
+				(callbacks) -> () -> {
+					for (RegistryInitialized callback : callbacks) {
+						callback.initialized();
+					}
+				}
+			);
+			IDENTIFIER_EVENT_MAP.put(identifier, event);
+		}
+
+		return event;
+	}
+
 	/**
 	 * Registers a block with the given ID.
 	 *
@@ -119,7 +148,7 @@ public final class RegistryHelper {
 	 * <p>The Enchantment's translation key is automatically set.</p>
 	 *
 	 * @param enchantment The enchantment to register
-	 * @param id   The ID of the enchantment effect
+	 * @param id   The ID of the enchantment
 	 * @return The enchantment registered
 	 */
 	@SinceMC("1.9")
@@ -133,7 +162,7 @@ public final class RegistryHelper {
 	 * <p>The Enchantment's translation key is automatically set.</p>
 	 *
 	 * @param enchantment The enchantment to register
-	 * @param id   The ID of the enchantment effect
+	 * @param id   The ID of the enchantment
 	 * @return The enchantment registered
 	 */
 	@BeforeMC("1.9")
@@ -145,7 +174,56 @@ public final class RegistryHelper {
 		return RegistryHelperImpl.getValue(id, RegistryIds.ENCHANTMENTS);
 	}
 
+	/**
+	 * Registers a biome with the given ID.
+	 *
+	 * @param biome The biome to register
+	 * @param id   The ID of the biome
+	 * @return The biome registered
+	 */
+	@SinceMC("1.9")
+	public static Biome registerBiome(Biome biome, Identifier id) {
+		return RegistryHelperImpl.registerBiome(biome, id);
+	}
+
+	/**
+	 * Registers a biome with the given ID.
+	 *
+	 * @param biome The biome to register
+	 * @param id   The ID of the biome
+	 * @return The biome registered
+	 */
+	@BeforeMC("1.9")
+	public static Biome registerBiome(EntryCreator<Biome> biome, Identifier id) {
+		return RegistryHelperImpl.registerBiome(biome, id);
+	}
+
+	/**
+	 * Registers a biome with the given ID and its mutated variant with the other given ID.
+	 *
+	 * @param parentBiome The biome to register
+	 * @param parentId   The ID of the biome
+	 * @param mutatedBiome The mutated biome to register
+	 * @param mutatedId   The ID of the mutated biome
+	 * @return The biomes registered
+	 */
+	@BeforeMC("1.9")
+	public static Pair<Biome, Biome> registerBiomeWithMutatedVariant(
+			EntryCreator<Biome> parentBiome, Identifier parentId,
+			EntryCreator<Biome> mutatedBiome, Identifier mutatedId
+	) {
+		return RegistryHelperImpl.registerBiomeWithMutatedVariant(parentBiome, parentId, mutatedBiome, mutatedId);
+	}
+
+	public static Biome getBiome(Identifier identifier) {
+		return RegistryHelperImpl.getValue(identifier, RegistryIds.BIOMES);
+	}
+
 	public interface EntryCreator<T> {
 		T create(int rawId);
+	}
+
+	public interface RegistryInitialized {
+		void initialized();
 	}
 }

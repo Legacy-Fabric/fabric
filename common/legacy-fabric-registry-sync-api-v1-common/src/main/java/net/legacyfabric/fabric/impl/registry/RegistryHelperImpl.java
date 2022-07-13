@@ -18,6 +18,7 @@
 package net.legacyfabric.fabric.impl.registry;
 
 import java.util.IdentityHashMap;
+import java.util.function.Supplier;
 
 import com.google.common.collect.BiMap;
 import org.jetbrains.annotations.ApiStatus;
@@ -29,11 +30,18 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.world.biome.Biome;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.tinyremapper.extension.mixin.common.data.Pair;
 
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
+import net.legacyfabric.fabric.impl.client.registry.sync.ClientRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.ServerRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
@@ -129,22 +137,62 @@ public class RegistryHelperImpl {
 		return enchantment;
 	}
 
+	public static Biome registerBiome(Biome biome, Identifier id) {
+		RegistryRemapper<Biome> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BIOMES);
+		int rawId = nextId(registryRemapper.getRegistry());
+		registryRemapper.register(rawId, id, biome);
+
+		return biome;
+	}
+
+	public static Biome registerBiome(RegistryHelper.EntryCreator<Biome> biomeCreator, Identifier id) {
+		RegistryRemapper<Biome> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BIOMES);
+		int rawId = nextId(registryRemapper.getRegistry());
+
+		((ArrayAndMapBasedRegistry) registryRemapper.getRegistry()).updateArrayLength(rawId);
+
+		Biome biome = biomeCreator.create(rawId);
+		registryRemapper.register(rawId, id, biome);
+
+		return biome;
+	}
+
+	public static Pair<Biome, Biome> registerBiomeWithMutatedVariant(
+			RegistryHelper.EntryCreator<Biome> parentBiomeCreator, Identifier parentId,
+			RegistryHelper.EntryCreator<Biome> mutatedBiomeCreator, Identifier mutatedId
+	) {
+		RegistryRemapper<Biome> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BIOMES);
+		Pair<Integer, Integer> rawIds = nextIds(registryRemapper.getRegistry(), 128);
+
+		((ArrayAndMapBasedRegistry) registryRemapper.getRegistry()).updateArrayLength(rawIds.second());
+
+		Biome parentBiome = parentBiomeCreator.create(rawIds.first());
+		registryRemapper.register(rawIds.first(), parentId, parentBiome);
+
+		Biome mutatedBiome = mutatedBiomeCreator.create(rawIds.second());
+		registryRemapper.register(rawIds.second(), mutatedId, mutatedBiome);
+
+		return Pair.of(parentBiome, mutatedBiome);
+	}
+
 	public static <V> V getValue(Identifier id, Identifier registryId) {
 		RegistryRemapper<V> registryRemapper = RegistryRemapper.getRegistryRemapper(registryId);
 		return registryRemapper.getRegistry().getValue(id);
 	}
 
-	public static RegistryRemapper<?> registerRegistryRemapper(RegistryRemapper<?> registryRemapper) {
-		RegistryRemapper<RegistryRemapper<?>> registryRemapperRegistryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.REGISTRY_REMAPPER);
-
-		if (registryRemapperRegistryRemapper == null) {
-			registryRemapperRegistryRemapper = RegistryRemapper.DEFAULT_CLIENT_INSTANCE;
-		}
-
+	public static RegistryRemapper<?> registerRegistryRemapper(RegistryRemapper<RegistryRemapper<?>> registryRemapperRegistryRemapper, RegistryRemapper<?> registryRemapper) {
 		int rawId = nextId(registryRemapperRegistryRemapper.getRegistry());
 		registryRemapperRegistryRemapper.register(rawId, registryRemapper.registryId, registryRemapper);
 
 		return registryRemapper;
+	}
+
+	public static void registerRegistryRemapper(Supplier<RegistryRemapper<?>> remapperSupplier) {
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			ClientRegistryRemapper.getInstance().registrerRegistryRemapper(remapperSupplier.get());
+		}
+
+		ServerRegistryRemapper.getInstance().registrerRegistryRemapper(remapperSupplier.get());
 	}
 
 	private static String formatTranslationKey(Identifier key) {
@@ -152,7 +200,11 @@ public class RegistryHelperImpl {
 	}
 
 	public static int nextId(SimpleRegistryCompat<?, ?> registry) {
-		int id = 0;
+		return nextId(registry, 0);
+	}
+
+	public static int nextId(SimpleRegistryCompat<?, ?> registry, int minId) {
+		int id = minId;
 
 		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
 
@@ -167,6 +219,24 @@ public class RegistryHelperImpl {
 		}
 
 		return id;
+	}
+
+	public static Pair<Integer, Integer> nextIds(SimpleRegistryCompat<?, ?> registry, int interval) {
+		int id = 0;
+
+		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
+
+		if (registryRemapper == null) {
+			registryRemapper = RegistryRemapper.DEFAULT_CLIENT_INSTANCE;
+		}
+
+		while (id < registryRemapper.getMinId()
+				|| !(getIdList(registry).fromInt(id) == null && getIdList(registry).fromInt(id + interval) == null)
+		) {
+			id++;
+		}
+
+		return Pair.of(id, id + interval);
 	}
 
 	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry) {

@@ -32,15 +32,16 @@ public class ClientRegistryRemapper implements RegistryRemapperAccess {
 		return REGISTRY_REMAPPER;
 	}
 
+	@Override
+	public void registrerRegistryRemapper(RegistryRemapper<?> registryRemapper) {
+		RegistryHelperImpl.registerRegistryRemapper(REGISTRY_REMAPPER, registryRemapper);
+	}
+
 	public static RegistryRemapperAccess getInstance() {
 		return INSTANCE;
 	}
 
 	private ClientRegistryRemapper() {
 		REGISTRY_REMAPPER = new RegistryRemapperRegistryRemapper();
-
-		for (RegistryRemapper<?> remapper : this.createDefaultRegistryRemappers()) {
-			RegistryHelperImpl.registerRegistryRemapper(remapper);
-		}
 	}
 }

@@ -41,7 +41,7 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 	private final Map<K, K> idsMap;
 	private final Map<K, K> invertedIdsMap;
 
-	private final Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
+	private Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
 
 	public MapBasedRegistry(Map<K, V> defaultMap, Map<V, K> invertedMap) {
 		this.defaultMap = defaultMap;
@@ -78,6 +78,11 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 	@Override
 	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
 		return this.entryAddedCallBack;
+	}
+
+	@Override
+	public void setAddEvent(Event<RegistryEntryAddedCallback<V>> event) {
+		this.entryAddedCallBack = event;
 	}
 
 	@Override

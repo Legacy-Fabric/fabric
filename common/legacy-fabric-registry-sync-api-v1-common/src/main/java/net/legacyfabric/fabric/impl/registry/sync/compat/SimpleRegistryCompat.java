@@ -26,9 +26,13 @@ import net.legacyfabric.fabric.api.util.Identifier;
 
 public interface SimpleRegistryCompat<K, V> extends Iterable<V> {
 	default Event<RegistryEntryAddedCallback<V>> createAddEvent() {
+		return createEvent();
+	}
+
+	static <T> Event<RegistryEntryAddedCallback<T>> createEvent() {
 		return EventFactory.createArrayBacked(RegistryEntryAddedCallback.class,
 				(callbacks) -> (rawId, id, object) -> {
-					for (RegistryEntryAddedCallback<V> callback : callbacks) {
+					for (RegistryEntryAddedCallback<T> callback : callbacks) {
 						callback.onEntryAdded(rawId, id, object);
 					}
 				}
@@ -36,6 +40,8 @@ public interface SimpleRegistryCompat<K, V> extends Iterable<V> {
 	}
 
 	Event<RegistryEntryAddedCallback<V>> getAddEvent();
+
+	void setAddEvent(Event<RegistryEntryAddedCallback<V>> event);
 
 	IdListCompat<V> getIds();
 

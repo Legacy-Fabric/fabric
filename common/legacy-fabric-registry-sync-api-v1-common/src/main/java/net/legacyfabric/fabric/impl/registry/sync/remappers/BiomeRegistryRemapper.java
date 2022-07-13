@@ -15,17 +15,15 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.registry.v1;
+package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
+import net.minecraft.world.biome.Biome;
 
-@FunctionalInterface
-public interface RegistryEntryAddedCallback<T> {
-	void onEntryAdded(int rawId, Identifier id, T object);
+import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 
-	static <T> Event<RegistryEntryAddedCallback<T>> event(Identifier registryId) {
-		return RegistryRemapper.registerOnAddEvent(registryId);
+public class BiomeRegistryRemapper extends RegistryRemapper<Biome> {
+	public BiomeRegistryRemapper() {
+		super(RegistryHelperImpl.registriesGetter.getBiomeRegistry(), RegistryIds.BIOMES, "Biome", "Biomes");
 	}
 }

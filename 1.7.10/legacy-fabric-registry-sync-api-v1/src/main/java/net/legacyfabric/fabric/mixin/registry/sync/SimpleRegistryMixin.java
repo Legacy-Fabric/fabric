@@ -56,7 +56,7 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	@Shadow
 	public abstract void add(int rawId, String id, Object object);
 
-	private final Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
+	private Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
 
 	@Override
 	public IdListCompat<V> getIds() {
@@ -108,5 +108,10 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	@Override
 	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
 		return this.entryAddedCallBack;
+	}
+
+	@Override
+	public void setAddEvent(Event<RegistryEntryAddedCallback<V>> event) {
+		this.entryAddedCallBack = event;
 	}
 }

@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.util.collection.IdList;
@@ -39,16 +40,41 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 	private final Map<V, K> invertedMap;
 	private IdListCompat<V> IDLIST = (IdListCompat<V>) new IdList<V>();
 
-	private final Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
+	private final Map<K, K> idsMap;
+	private final Map<K, K> invertedIdsMap;
+
+	private Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
 
 	public ArrayAndMapBasedRegistry(V[] valueArray, BiMap<K, V> defaultMap) {
 		this.valueArray = (V[]) Array.newInstance(valueArray.getClass().getComponentType(), 1);
 		this.defaultMap = defaultMap;
 		this.invertedMap = ((BiMap<K, V>) this.defaultMap).inverse();
 
+		this.idsMap = this.getRemapIdList();
+		this.invertedIdsMap = ((BiMap<K, K>) this.idsMap).inverse();
+		this.remapDefaultIds();
+
 		this.initRegistry(valueArray);
 
 		this.syncArrayWithIdList();
+	}
+
+	public K getNewId(K oldKey) {
+		return this.idsMap.getOrDefault(oldKey, oldKey);
+	}
+
+	public K getOldId(K newKey) {
+		return this.invertedIdsMap.getOrDefault(newKey, newKey);
+	}
+
+	private void remapDefaultIds() {
+		for (Map.Entry<K, K> entry : this.idsMap.entrySet()) {
+			V value = this.defaultMap.remove(entry.getKey());
+
+			if (value == null) continue;
+
+			if (!this.invertedMap.containsKey(value)) this.defaultMap.put(entry.getValue(), value);
+		}
 	}
 
 	public void initRegistry(V[] originalValueArray) {
@@ -109,10 +135,13 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 	}
 
 	protected V register(int i, Object key, V value, boolean update) {
-		this.defaultMap.put(this.toKeyType(key), value);
-		this.IDLIST.setValue(value, i);
-		this.addArrayEntry(i, value, update);
-		this.getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
+		if (!this.invertedMap.containsKey(value)) {
+			this.defaultMap.put(this.toKeyType(key), value);
+			this.IDLIST.setValue(value, i);
+			this.addArrayEntry(i, value, update);
+			this.getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
+		}
+
 		return value;
 	}
 
@@ -151,5 +180,14 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 	@Override
 	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
 		return this.entryAddedCallBack;
+	}
+
+	public Map<K, K> getRemapIdList() {
+		return HashBiMap.create();
+	}
+
+	@Override
+	public void setAddEvent(Event<RegistryEntryAddedCallback<V>> event) {
+		this.entryAddedCallBack = event;
 	}
 }

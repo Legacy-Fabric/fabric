@@ -26,7 +26,10 @@ import com.google.common.collect.HashBiMap;
 
 import net.minecraft.nbt.NbtCompound;
 
+import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
+import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
@@ -48,6 +51,8 @@ public class RegistryRemapper<V> {
 
 	public static RegistryRemapper<RegistryRemapper<?>> DEFAULT_CLIENT_INSTANCE = null;
 
+	private static final Map<Identifier, Event<RegistryEntryAddedCallback<?>>> IDENTIFIER_EVENT_MAP = new HashMap<>();
+
 	public RegistryRemapper(SimpleRegistryCompat<?, V> registry, Identifier registryId, String type, String nbtName) {
 		this.registry = registry;
 		this.registryId = registryId;
@@ -56,6 +61,14 @@ public class RegistryRemapper<V> {
 
 		if (this instanceof RegistryRemapperRegistryRemapper && DEFAULT_CLIENT_INSTANCE == null) {
 			DEFAULT_CLIENT_INSTANCE = (RegistryRemapper<RegistryRemapper<?>>) this;
+		}
+
+		if (IDENTIFIER_EVENT_MAP.containsKey(this.registryId)) {
+			this.registry.setAddEvent((Event<RegistryEntryAddedCallback<V>>) (Object) IDENTIFIER_EVENT_MAP.remove(this.registryId));
+		}
+
+		if (RegistryHelper.IDENTIFIER_EVENT_MAP.containsKey(registryId)) {
+			RegistryHelper.IDENTIFIER_EVENT_MAP.remove(registryId).invoker();
 		}
 	}
 
@@ -160,6 +173,25 @@ public class RegistryRemapper<V> {
 	public static <V> RegistryRemapper<V> getRegistryRemapper(Identifier identifier) {
 		RegistryRemapper<V> remapper = (RegistryRemapper<V>) REMAPPER_MAP.getOrDefault(identifier, null);
 		return remapper == null ? (RegistryRemapper<V>) DEFAULT_CLIENT_INSTANCE : remapper;
+	}
+
+	public static <V> Event<RegistryEntryAddedCallback<V>> registerOnAddEvent(Identifier identifier) {
+		RegistryRemapper<V> remapper = (RegistryRemapper<V>) REMAPPER_MAP.getOrDefault(identifier, null);
+
+		Object event;
+
+		if (remapper == null) {
+			if (IDENTIFIER_EVENT_MAP.containsKey(identifier)) {
+				event = IDENTIFIER_EVENT_MAP.get(identifier);
+			} else {
+				event = SimpleRegistryCompat.<V>createEvent();
+				IDENTIFIER_EVENT_MAP.put(identifier, (Event<RegistryEntryAddedCallback<?>>) event);
+			}
+		} else {
+			event = remapper.getRegistry().getAddEvent();
+		}
+
+		return (Event<RegistryEntryAddedCallback<V>>) event;
 	}
 
 	public void addMissing(Identifier key, int id) {

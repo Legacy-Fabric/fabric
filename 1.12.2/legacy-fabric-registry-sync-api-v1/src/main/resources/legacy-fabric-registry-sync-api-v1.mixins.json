@@ -13,7 +13,8 @@
     "ItemMixin",
     "PacketByteBufMixin",
     "MutableRegistryMixin",
-    "BlockEntityAccessor"
+    "BlockEntityAccessor",
+    "BiomeAccessor"
   ],
   "client": [
   ]

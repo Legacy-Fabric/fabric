@@ -40,7 +40,7 @@ public class VanillaLikeRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 	protected IdList<V> ids = new IdList<>();
 	protected final Map<V, K> objects = ((BiMap) this.map).inverse();
 
-	private final Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
+	private Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
 
 	public VanillaLikeRegistry() {
 	}
@@ -67,6 +67,11 @@ public class VanillaLikeRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 	@Override
 	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
 		return this.entryAddedCallBack;
+	}
+
+	@Override
+	public void setAddEvent(Event<RegistryEntryAddedCallback<V>> event) {
+		this.entryAddedCallBack = event;
 	}
 
 	@Override
