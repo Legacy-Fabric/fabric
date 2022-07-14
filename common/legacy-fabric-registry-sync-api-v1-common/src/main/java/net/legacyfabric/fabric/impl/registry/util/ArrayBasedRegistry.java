@@ -34,10 +34,11 @@ public abstract class ArrayBasedRegistry<V> extends ArrayAndMapBasedRegistry<Ide
 
 		for (int i = 0; i < originalValueArray.length; i++) {
 			V value = originalValueArray[i];
+			Identifier key = defaultIds.remove(i);
 
-			if (value == null) continue;
+			if (value == null || this.getObjects().containsKey(value)) continue;
 
-			this.register(i, defaultIds.getOrDefault(i, new Identifier("modded", String.valueOf(i))), value);
+			this.register(i, key, value);
 		}
 	}
 

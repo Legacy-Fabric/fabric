@@ -74,8 +74,10 @@ public class RegistryRemapper<V> {
 
 	public void dump() {
 		this.entryDump = HashBiMap.create();
+		LOGGER.debug("Dumping registry %s.", this.registryId);
 		RegistryHelperImpl.getIdMap(this.registry).forEach((value, id) -> {
 			Object key = RegistryHelperImpl.getObjects(this.registry).get(value);
+			LOGGER.debug("%s %s %d %s", this.type, key, id, value);
 			if (key != null) this.entryDump.put(new Identifier(key), id);
 		});
 
@@ -105,6 +107,11 @@ public class RegistryRemapper<V> {
 	// Type erasure, ily
 	public void remap() {
 		LOGGER.info("Remapping registry %s", this.registryId.toString());
+
+		if (this.entryDump == null || this.entryDump.isEmpty()) {
+			this.dump();
+		}
+
 		IdListCompat<V> newList = this.registry.createIdList();
 
 		this.entryDump.forEach((id, rawId) -> {

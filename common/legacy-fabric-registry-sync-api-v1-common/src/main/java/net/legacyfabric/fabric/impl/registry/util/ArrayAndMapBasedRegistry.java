@@ -56,7 +56,6 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 
 		this.idsMap = this.getRemapIdList();
 		this.invertedIdsMap = ((BiMap<K, K>) this.idsMap).inverse();
-		this.remapDefaultIds();
 
 		this.initRegistry(valueArray);
 		this.init = true;
@@ -72,26 +71,16 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 		return this.invertedIdsMap.getOrDefault(newKey, newKey);
 	}
 
-	private void remapDefaultIds() {
-		for (Map.Entry<K, K> entry : this.idsMap.entrySet()) {
-			V value = this.defaultMap.remove(entry.getKey());
-
-			if (value == null) continue;
-
-			if (!this.invertedMap.containsKey(value)) this.defaultMap.put(entry.getValue(), value);
-		}
-	}
-
 	public void initRegistry(V[] originalValueArray) {
 		for (int i = 0; i < originalValueArray.length; i++) {
 			V value = originalValueArray[i];
+			K key = this.invertedMap.remove(value);
 
 			if (value == null) continue;
 
-			this.register(i,
-					this.invertedMap.getOrDefault(value, this.toKeyType(new Identifier("modded", String.valueOf(i)))),
-					value
-			);
+			K newKey = this.idsMap.getOrDefault(key, key);
+
+			this.register(i, newKey, value);
 		}
 	}
 
