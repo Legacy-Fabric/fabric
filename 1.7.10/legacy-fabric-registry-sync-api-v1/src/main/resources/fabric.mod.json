@@ -22,7 +22,7 @@
   "description": "Registry hooks",
   "entrypoints": {
     "preLaunch": [
-      "net.legacyfabric.fabric.impl.registry.sync.RegistrySyncInitializer"
+      "net.legacyfabric.fabric.impl.registry.sync.RegistrySyncEarlyInitializer"
     ]
   },
   "mixins": [

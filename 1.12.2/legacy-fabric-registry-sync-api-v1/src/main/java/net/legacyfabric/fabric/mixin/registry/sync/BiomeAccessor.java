@@ -17,43 +17,13 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync;
 
-import java.util.Map;
-
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.biome.Biome;
 
-@Mixin(Enchantment.class)
-public interface EnchantmentAccessor {
-	@Mutable
+@Mixin(Biome.class)
+public interface BiomeAccessor {
 	@Accessor
-	static void setALL_ENCHANTMENTS(Enchantment[] enchantments) {
-	}
-
-	@Mutable
-	@Accessor
-	static void setENCHANTMENTS(Enchantment[] enchantments) {
-	}
-
-	@Accessor
-	static Enchantment[] getENCHANTMENTS() {
-		return new Enchantment[0];
-	}
-
-	@Accessor
-	static Map<Identifier, Enchantment> getENCHANTMENT_MAP() {
-		return null;
-	}
-
-	@Mutable
-	@Accessor
-	static void setENCHANTMENT_MAP(Map<Identifier, Enchantment> map) {
-	}
-
-	@Mutable
-	@Accessor
-	void setId(int id);
+	String getParent();
 }

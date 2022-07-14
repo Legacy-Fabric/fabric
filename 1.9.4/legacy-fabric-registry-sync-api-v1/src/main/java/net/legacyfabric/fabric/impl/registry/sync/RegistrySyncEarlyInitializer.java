@@ -22,16 +22,22 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.biome.Biome;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
+import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddCallback;
+import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
+import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.registries.OldBlockEntityRegistry;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+import net.legacyfabric.fabric.mixin.registry.sync.BiomeAccessor;
 import net.legacyfabric.fabric.mixin.registry.sync.BlockEntityAccessor;
 
-public class RegistrySyncInitializer implements PreLaunchEntrypoint {
+public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 	private static SimpleRegistryCompat<String, Class<? extends BlockEntity>> BLOCK_ENTITY_REGISTRY;
 
 	@Override
@@ -48,6 +54,15 @@ public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 			}
 
 			@Override
+			public <K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry() {
+				if (BLOCK_ENTITY_REGISTRY == null) {
+					BLOCK_ENTITY_REGISTRY = new OldBlockEntityRegistry(BlockEntityAccessor.getStringClassMap(), BlockEntityAccessor.getClassStringMap());
+				}
+
+				return (SimpleRegistryCompat<K, Class<? extends BlockEntity>>) BLOCK_ENTITY_REGISTRY;
+			}
+
+			@Override
 			public <K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry() {
 				return (SimpleRegistryCompat<K, StatusEffect>) StatusEffect.REGISTRY;
 			}
@@ -58,13 +73,17 @@ public class RegistrySyncInitializer implements PreLaunchEntrypoint {
 			}
 
 			@Override
-			public SimpleRegistryCompat<String, Class<? extends BlockEntity>> getBlockEntityRegistry() {
-				if (BLOCK_ENTITY_REGISTRY == null) {
-					BLOCK_ENTITY_REGISTRY = new OldBlockEntityRegistry(BlockEntityAccessor.getStringClassMap(), BlockEntityAccessor.getClassStringMap());
-				}
-
-				return BLOCK_ENTITY_REGISTRY;
+			public <K> SimpleRegistryCompat<K, Biome> getBiomeRegistry() {
+				return (SimpleRegistryCompat<K, Biome>) Biome.REGISTRY;
 			}
 		};
+
+		RegistryHelper.onRegistryInitialized(RegistryIds.BIOMES).register(() -> {
+			RegistryEntryAddCallback.<Biome>event(RegistryIds.BIOMES).register((rawId, id, biome) -> {
+				if (biome.isMutatedBiome()) {
+					Biome.biomeList.set(biome, Biome.getBiomeIndex(Biome.REGISTRY.get(new Identifier(((BiomeAccessor) biome).getParent()))));
+				}
+			});
+		});
 	}
 }

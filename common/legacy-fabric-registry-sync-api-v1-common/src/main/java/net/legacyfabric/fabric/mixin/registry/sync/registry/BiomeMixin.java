@@ -15,35 +15,22 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
-
-import java.util.Map;
+package net.legacyfabric.fabric.mixin.registry.sync.registry;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.biome.Biome;
 
-@Mixin(StatusEffect.class)
-public interface StatusEffectAccessor {
-	@Mutable
-	@Accessor
-	static void setSTATUS_EFFECTS(StatusEffect[] effects) {
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.BiomeRegistryRemapper;
+
+@Mixin(Biome.class)
+public class BiomeMixin {
+	@Inject(method = "<clinit>", at = @At("RETURN"))
+	private static void initRegistryRemapper(CallbackInfo ci) {
+		RegistryHelperImpl.registerRegistryRemapper(BiomeRegistryRemapper::new);
 	}
-
-	@Accessor
-	static Map<Identifier, StatusEffect> getSTATUS_EFFECTS_BY_ID() {
-		return null;
-	}
-
-	@Mutable
-	@Accessor
-	static void setSTATUS_EFFECTS_BY_ID(Map<Identifier, StatusEffect> map) {
-	}
-
-	@Mutable
-	@Accessor
-	void setId(int id);
 }

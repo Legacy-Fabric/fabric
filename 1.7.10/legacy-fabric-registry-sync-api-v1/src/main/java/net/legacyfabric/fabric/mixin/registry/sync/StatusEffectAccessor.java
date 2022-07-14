@@ -29,4 +29,8 @@ public interface StatusEffectAccessor {
 	@Accessor
 	static void setSTATUS_EFFECTS(StatusEffect[] effects) {
 	}
+
+	@Mutable
+	@Accessor
+	void setId(int id);
 }

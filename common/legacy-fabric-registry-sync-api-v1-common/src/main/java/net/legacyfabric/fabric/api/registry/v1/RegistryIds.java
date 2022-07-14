@@ -26,4 +26,5 @@ public class RegistryIds {
 	public static final Identifier BLOCK_ENTITIES = new Identifier("block_entities");
 	public static final Identifier STATUS_EFFECTS = new Identifier("status_effects");
 	public static final Identifier ENCHANTMENTS = new Identifier("enchantments");
+	public static final Identifier BIOMES = new Identifier("biomes");
 }

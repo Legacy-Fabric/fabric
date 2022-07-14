@@ -15,27 +15,15 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import net.minecraft.world.biome.Biome;
 
-import net.minecraft.enchantment.Enchantment;
+import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 
-@Mixin(Enchantment.class)
-public interface EnchantmentAccessor {
-	@Mutable
-	@Accessor
-	static void setALL_ENCHANTMENTS(Enchantment[] enchantments) {
+public class BiomeRegistryRemapper extends RegistryRemapper<Biome> {
+	public BiomeRegistryRemapper() {
+		super(RegistryHelperImpl.registriesGetter.getBiomeRegistry(), RegistryIds.BIOMES, "Biome", "Biomes");
 	}
-
-	@Mutable
-	@Accessor
-	static void setField_5457(Enchantment[] enchantments) {
-	}
-
-	@Mutable
-	@Accessor
-	void setId(int id);
 }

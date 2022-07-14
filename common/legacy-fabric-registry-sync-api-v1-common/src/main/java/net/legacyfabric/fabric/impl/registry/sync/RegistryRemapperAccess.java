@@ -23,27 +23,12 @@ import net.minecraft.util.PacketByteBuf;
 import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.PacketByteBufCompat;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityRegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockRegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.EnchantmentRegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.ItemRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.StatusEffectRegistryRemapper;
 
 public interface RegistryRemapperAccess {
 	Identifier PACKET_ID = new Identifier("legacy-fabric-api:registry_remap");
 
 	RegistryRemapper<RegistryRemapper<?>> getRegistryRemapperRegistryRemapper();
-
-	default RegistryRemapper<?>[] createDefaultRegistryRemappers() {
-		return new RegistryRemapper[] {
-				new ItemRegistryRemapper(),
-				new BlockRegistryRemapper(),
-				new BlockEntityRegistryRemapper(),
-				new StatusEffectRegistryRemapper(),
-				new EnchantmentRegistryRemapper()
-		};
-	}
 
 	default void remap() {
 		this.getRegistryRemapperRegistryRemapper().remap();
@@ -78,4 +63,6 @@ public interface RegistryRemapperAccess {
 		PacketByteBuf buf = PacketByteBufs.create();
 		return ((PacketByteBufCompat) buf).writeCompound(this.toNbtCompound());
 	}
+
+	void registrerRegistryRemapper(RegistryRemapper<?> registryRemapper);
 }

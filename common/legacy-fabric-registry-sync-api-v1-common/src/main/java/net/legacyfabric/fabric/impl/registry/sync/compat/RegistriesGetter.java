@@ -22,14 +22,13 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
+import net.minecraft.world.biome.Biome;
 
 public interface RegistriesGetter {
 	<K> SimpleRegistryCompat<K, Block> getBlockRegistry();
 	<K> SimpleRegistryCompat<K, Item> getItemRegistry();
-
 	<K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry();
-
 	<K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry();
-
 	<K> SimpleRegistryCompat<K, Enchantment> getEnchantmentRegistry();
+	<K> SimpleRegistryCompat<K, Biome> getBiomeRegistry();
 }

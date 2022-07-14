@@ -23,12 +23,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.util.collection.IdList;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
@@ -39,26 +38,47 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 	private final Map<V, K> invertedMap;
 	private IdListCompat<V> IDLIST = (IdListCompat<V>) new IdList<V>();
 
-	private final Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
+	private final Map<K, K> idsMap;
+	private final Map<K, K> invertedIdsMap;
+
+	private RegistryEventsHolder<V> registryEventsHolder;
+
+	private boolean init = false;
 
 	public ArrayAndMapBasedRegistry(V[] valueArray, BiMap<K, V> defaultMap) {
-		this.valueArray = (V[]) Array.newInstance(valueArray.getClass().getComponentType(), 1);
+		this.valueArray = (V[]) Array.newInstance(valueArray.getClass().getComponentType(), valueArray.length + 1);
+		Arrays.fill(this.valueArray, null);
+
 		this.defaultMap = defaultMap;
 		this.invertedMap = ((BiMap<K, V>) this.defaultMap).inverse();
 
+		this.idsMap = this.getRemapIdList();
+		this.invertedIdsMap = ((BiMap<K, K>) this.idsMap).inverse();
+
 		this.initRegistry(valueArray);
+		this.init = true;
 
 		this.syncArrayWithIdList();
+	}
+
+	public K getNewId(K oldKey) {
+		return this.idsMap.getOrDefault(oldKey, oldKey);
+	}
+
+	public K getOldId(K newKey) {
+		return this.invertedIdsMap.getOrDefault(newKey, newKey);
 	}
 
 	public void initRegistry(V[] originalValueArray) {
 		for (int i = 0; i < originalValueArray.length; i++) {
 			V value = originalValueArray[i];
+			K key = this.invertedMap.remove(value);
 
 			if (value == null) continue;
 
-			this.register(i, this.invertedMap.getOrDefault(originalValueArray[i],
-					this.toKeyType(new Identifier("modded", String.valueOf(i)))), value, false);
+			K newKey = this.idsMap.getOrDefault(key, key);
+
+			this.register(i, newKey, value);
 		}
 	}
 
@@ -105,35 +125,29 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 
 	@Override
 	public V register(int i, Object key, V value) {
-		return this.register(i, this.toKeyType(key), value, true);
-	}
-
-	protected V register(int i, Object key, V value, boolean update) {
 		this.defaultMap.put(this.toKeyType(key), value);
 		this.IDLIST.setValue(value, i);
-		this.addArrayEntry(i, value, update);
-		this.getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
-		return value;
-	}
 
-	private void addArrayEntry(int i, V value, boolean update) {
-		this.updateArrayLength(i);
-
-		if (this.valueArray[i] != value) {
-			this.valueArray[i] = value;
-
-			if (update) this.updateArray();
+		if (this.init) {
+			this.syncArrayWithIdList();
+			this.getEventHolder().getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
 		}
+
+		return value;
 	}
 
 	public void updateArrayLength(int i) {
 		while (i >= this.valueArray.length) {
 			this.valueArray = Arrays.copyOf(this.valueArray, this.valueArray.length * 2);
 		}
+
+		this.updateArray();
 	}
 
 	public void syncArrayWithIdList() {
 		Arrays.fill(this.valueArray, null);
+
+		this.updateArrayLength(this.IDLIST.getIdMap(this).size() + 1);
 
 		for (Map.Entry<V, Integer> entry : this.IDLIST.getIdMap(this).entrySet()) {
 			this.valueArray[entry.getValue()] = entry.getKey();
@@ -148,8 +162,17 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 
 	public abstract void updateArray();
 
+	public Map<K, K> getRemapIdList() {
+		return HashBiMap.create();
+	}
+
 	@Override
-	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
-		return this.entryAddedCallBack;
+	public RegistryEventsHolder<V> getEventHolder() {
+		return this.registryEventsHolder;
+	}
+
+	@Override
+	public void setEventHolder(RegistryEventsHolder<V> registryEventsHolder) {
+		this.registryEventsHolder = registryEventsHolder;
 	}
 }

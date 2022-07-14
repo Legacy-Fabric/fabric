@@ -27,11 +27,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import net.minecraft.util.collection.IdList;
 import net.minecraft.util.registry.SimpleRegistry;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+import net.legacyfabric.fabric.impl.registry.util.RegistryEventsHolder;
 
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<K, V> {
@@ -43,6 +42,7 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	@Shadow
 	@Final
 	protected Map<V, K> objects;
+	private RegistryEventsHolder<V> registryEventsHolder;
 
 	@Shadow
 	public abstract Object get(String par1);
@@ -55,8 +55,6 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 
 	@Shadow
 	public abstract void add(int rawId, String id, Object object);
-
-	private final Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
 
 	@Override
 	public IdListCompat<V> getIds() {
@@ -96,7 +94,7 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	@Override
 	public V register(int i, Object key, V value) {
 		this.add(i, (String) this.toKeyType(key), value);
-		this.getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
+		this.getEventHolder().getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
 		return value;
 	}
 
@@ -106,7 +104,12 @@ public abstract class SimpleRegistryMixin<K, V> implements SimpleRegistryCompat<
 	}
 
 	@Override
-	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
-		return this.entryAddedCallBack;
+	public RegistryEventsHolder<V> getEventHolder() {
+		return this.registryEventsHolder;
+	}
+
+	@Override
+	public void setEventHolder(RegistryEventsHolder<V> registryEventsHolder) {
+		this.registryEventsHolder = registryEventsHolder;
 	}
 }

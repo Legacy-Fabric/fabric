@@ -23,34 +23,23 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.biome.Biome;
 
-@Mixin(Enchantment.class)
-public interface EnchantmentAccessor {
-	@Mutable
+@Mixin(Biome.class)
+public interface BiomeAccessor {
 	@Accessor
-	static void setALL_ENCHANTMENTS(Enchantment[] enchantments) {
+	static Biome[] getBIOMES() {
+		return new Biome[0];
 	}
 
 	@Mutable
 	@Accessor
-	static void setENCHANTMENTS(Enchantment[] enchantments) {
-	}
-
-	@Accessor
-	static Enchantment[] getENCHANTMENTS() {
-		return new Enchantment[0];
-	}
-
-	@Accessor
-	static Map<Identifier, Enchantment> getENCHANTMENT_MAP() {
-		return null;
+	static void setBIOMES(Biome[] biomes) {
 	}
 
 	@Mutable
 	@Accessor
-	static void setENCHANTMENT_MAP(Map<Identifier, Enchantment> map) {
+	static void setMUTATED_BIOMES(Map<String, Biome> map) {
 	}
 
 	@Mutable
