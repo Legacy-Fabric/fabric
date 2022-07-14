@@ -22,15 +22,27 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.Item;
+import net.minecraft.world.biome.Biome;
 
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.ItemRegistryRemapper;
 
 @Mixin(Item.class)
 public class ItemMixin {
-	@Inject(method = "<clinit>", at = @At("RETURN"))
+	@Inject(method = "setup", at = @At("RETURN"))
 	private static void initRegistryRemapper(CallbackInfo ci) {
 		RegistryHelperImpl.registerRegistryRemapper(ItemRegistryRemapper::new);
+
+		if (!RegistryHelperImpl.bootstrap) {
+			try {
+				Class.forName(Biome.class.getName());
+
+				Class.forName(BlockEntity.class.getName());
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 }

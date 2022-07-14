@@ -52,6 +52,7 @@ import net.legacyfabric.fabric.impl.registry.util.ArrayAndMapBasedRegistry;
 @ApiStatus.Internal
 public class RegistryHelperImpl {
 	private static final boolean hasFlatteningBegun = VersionUtils.matches(">=1.8 <=1.12.2");
+	public static final boolean bootstrap = VersionUtils.matches(">1.8.9");
 	public static RegistriesGetter registriesGetter = null;
 
 	public static Block registerBlock(Block block, Identifier id) {
@@ -193,6 +194,10 @@ public class RegistryHelperImpl {
 		}
 
 		ServerRegistryRemapper.getInstance().registrerRegistryRemapper(remapperSupplier.get());
+	}
+
+	public static <V> RegistryRemapper<V> getRegistryRemapper(Identifier identifier) {
+		return (RegistryRemapper<V>) ServerRegistryRemapper.getInstance().getRegistryRemapperRegistryRemapper().getRegistry().getValue(identifier);
 	}
 
 	private static String formatTranslationKey(Identifier key) {

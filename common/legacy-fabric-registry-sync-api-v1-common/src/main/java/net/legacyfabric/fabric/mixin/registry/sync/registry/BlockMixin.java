@@ -23,14 +23,26 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.effect.StatusEffect;
 
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockRegistryRemapper;
 
 @Mixin(Block.class)
 public class BlockMixin {
-	@Inject(method = "<clinit>", at = @At("RETURN"))
+	@Inject(method = "setup", at = @At("RETURN"))
 	private static void initRegistryRemapper(CallbackInfo ci) {
 		RegistryHelperImpl.registerRegistryRemapper(BlockRegistryRemapper::new);
+
+		if (!RegistryHelperImpl.bootstrap) {
+			try {
+				Class.forName(StatusEffect.class.getName());
+
+				Class.forName(Enchantment.class.getName());
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 }

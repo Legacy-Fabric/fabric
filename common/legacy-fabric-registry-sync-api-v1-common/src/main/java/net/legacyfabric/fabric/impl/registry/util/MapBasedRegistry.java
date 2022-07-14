@@ -37,6 +37,7 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 	private IdListCompat<V> IDLIST = (IdListCompat<V>) new IdList<V>();
 
 	private final Map<K, K> idsMap;
+	private final Map<K, Integer> idsMapOrder;
 	private final Map<K, K> invertedIdsMap;
 	private RegistryEventsHolder<V> registryEventsHolder;
 
@@ -45,18 +46,26 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 		this.invertedMap = invertedMap;
 
 		this.idsMap = this.getRemapIdList();
+		this.idsMapOrder = this.getRemapIdOrderList();
 		this.invertedIdsMap = ((BiMap<K, K>) this.idsMap).inverse();
 		this.remapDefaultIds();
 	}
 
 	private void remapDefaultIds() {
+		int i = 0;
+
 		for (Map.Entry<K, K> entry : this.idsMap.entrySet()) {
 			V value = this.defaultMap.remove(entry.getKey());
+			this.invertedMap.remove(value);
 
 			if (value == null) continue;
 
 			this.defaultMap.put(entry.getValue(), value);
-			this.invertedMap.put(value, entry.getValue());
+
+			if (!this.invertedMap.containsKey(value)) this.invertedMap.put(value, entry.getValue());
+
+			this.IDLIST.setValue(value, this.idsMapOrder.getOrDefault(entry.getKey(), i));
+			i++;
 		}
 	}
 
@@ -69,6 +78,10 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 	}
 
 	public Map<K, K> getRemapIdList() {
+		return HashBiMap.create();
+	}
+
+	public Map<K, Integer> getRemapIdOrderList() {
 		return HashBiMap.create();
 	}
 
