@@ -42,4 +42,8 @@ public interface StatusEffectAccessor {
 	@Accessor
 	static void setSTATUS_EFFECTS_BY_ID(Map<Identifier, StatusEffect> map) {
 	}
+
+	@Mutable
+	@Accessor
+	void setId(int id);
 }

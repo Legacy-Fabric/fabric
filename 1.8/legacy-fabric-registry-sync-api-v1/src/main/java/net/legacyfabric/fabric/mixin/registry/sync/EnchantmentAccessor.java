@@ -51,4 +51,8 @@ public interface EnchantmentAccessor {
 	@Accessor
 	static void setENCHANTMENT_MAP(Map map) {
 	}
+
+	@Mutable
+	@Accessor
+	void setId(int id);
 }

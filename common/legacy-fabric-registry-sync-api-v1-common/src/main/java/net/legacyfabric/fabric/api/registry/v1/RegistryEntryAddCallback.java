@@ -22,10 +22,10 @@ import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 
 @FunctionalInterface
-public interface RegistryEntryAddedCallback<T> {
-	void onEntryAdded(int rawId, Identifier id, T object);
+public interface RegistryEntryAddCallback<T> {
+	void onEntryAdded(int rawId, Identifier key, T object);
 
-	static <T> Event<RegistryEntryAddedCallback<T>> event(Identifier registryId) {
-		return RegistryRemapper.registerOnAddEvent(registryId);
+	static <T> Event<RegistryEntryAddCallback<T>> event(Identifier registryId) {
+		return RegistryRemapper.<T>getEventsHolder(registryId).getAddEvent();
 	}
 }

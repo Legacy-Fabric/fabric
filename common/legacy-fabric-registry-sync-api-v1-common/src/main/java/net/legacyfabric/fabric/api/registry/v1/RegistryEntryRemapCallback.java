@@ -15,27 +15,17 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.api.registry.v1;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 
-import net.minecraft.world.biome.Biome;
+@FunctionalInterface
+public interface RegistryEntryRemapCallback<T> {
+	void onEntryAdded(int oldId, int newId, Identifier key, T object);
 
-@Mixin(Biome.class)
-public interface BiomeAccessor {
-	@Accessor
-	static Biome[] getBIOMES() {
-		return new Biome[0];
+	static <T> Event<RegistryEntryRemapCallback<T>> event(Identifier registryId) {
+		return RegistryRemapper.<T>getEventsHolder(registryId).getRemapEvent();
 	}
-
-	@Mutable
-	@Accessor
-	static void setBIOMES(Biome[] biomes) {
-	}
-
-	@Mutable
-	@Accessor
-	void setId(int id);
 }

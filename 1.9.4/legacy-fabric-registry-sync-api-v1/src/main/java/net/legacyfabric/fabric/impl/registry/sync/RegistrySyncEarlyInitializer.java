@@ -27,7 +27,7 @@ import net.minecraft.world.biome.Biome;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
-import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
+import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddCallback;
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
@@ -79,7 +79,7 @@ public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 		};
 
 		RegistryHelper.onRegistryInitialized(RegistryIds.BIOMES).register(() -> {
-			RegistryEntryAddedCallback.<Biome>event(RegistryIds.BIOMES).register((rawId, id, biome) -> {
+			RegistryEntryAddCallback.<Biome>event(RegistryIds.BIOMES).register((rawId, id, biome) -> {
 				if (biome.isMutatedBiome()) {
 					Biome.biomeList.set(biome, Biome.getBiomeIndex(Biome.REGISTRY.get(new Identifier(((BiomeAccessor) biome).getParent()))));
 				}

@@ -26,8 +26,6 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.util.collection.IdList;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
@@ -40,8 +38,7 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 
 	private final Map<K, K> idsMap;
 	private final Map<K, K> invertedIdsMap;
-
-	private Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
+	private RegistryEventsHolder<V> registryEventsHolder;
 
 	public MapBasedRegistry(Map<K, V> defaultMap, Map<V, K> invertedMap) {
 		this.defaultMap = defaultMap;
@@ -73,16 +70,6 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 
 	public Map<K, K> getRemapIdList() {
 		return HashBiMap.create();
-	}
-
-	@Override
-	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
-		return this.entryAddedCallBack;
-	}
-
-	@Override
-	public void setAddEvent(Event<RegistryEntryAddedCallback<V>> event) {
-		this.entryAddedCallBack = event;
 	}
 
 	@Override
@@ -139,7 +126,17 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 		}
 
 		this.IDLIST.setValue(value, i);
-		this.getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
+		this.getEventHolder().getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
 		return value;
+	}
+
+	@Override
+	public RegistryEventsHolder<V> getEventHolder() {
+		return this.registryEventsHolder;
+	}
+
+	@Override
+	public void setEventHolder(RegistryEventsHolder<V> registryEventsHolder) {
+		this.registryEventsHolder = registryEventsHolder;
 	}
 }

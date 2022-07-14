@@ -29,6 +29,9 @@ import net.minecraft.world.biome.Biome;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
+import net.legacyfabric.fabric.api.registry.v1.RegistryEntryRemapCallback;
+import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
+import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.registries.OldBlockEntityRegistry;
@@ -122,5 +125,25 @@ public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 				return (SimpleRegistryCompat<K, Biome>) BIOME_REGISTRY;
 			}
 		};
+
+		RegistryHelper.onRegistryInitialized(RegistryIds.BIOMES).register(() -> {
+			RegistryEntryRemapCallback.<Biome>event(RegistryIds.BIOMES).register((oldId, newId, key, biome) -> {
+				if (biome.id != newId) {
+					((BiomeAccessor) biome).setId(newId);
+				}
+			});
+
+			RegistryEntryRemapCallback.<Enchantment>event(RegistryIds.ENCHANTMENTS).register((oldId, newId, key, enchantment) -> {
+				if (enchantment.id != newId) {
+					((EnchantmentAccessor) enchantment).setId(newId);
+				}
+			});
+
+			RegistryEntryRemapCallback.<StatusEffect>event(RegistryIds.STATUS_EFFECTS).register((oldId, newId, key, statusEffect) -> {
+				if (statusEffect.id != newId) {
+					((StatusEffectAccessor) statusEffect).setId(newId);
+				}
+			});
+		});
 	}
 }

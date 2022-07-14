@@ -34,4 +34,8 @@ public interface EnchantmentAccessor {
 	@Accessor
 	static void setField_5457(Enchantment[] enchantments) {
 	}
+
+	@Mutable
+	@Accessor
+	void setId(int id);
 }

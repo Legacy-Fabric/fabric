@@ -26,9 +26,7 @@ import com.google.common.collect.HashBiMap;
 
 import net.minecraft.nbt.NbtCompound;
 
-import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
@@ -36,6 +34,7 @@ import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 import net.legacyfabric.fabric.impl.registry.util.ArrayBasedRegistry;
+import net.legacyfabric.fabric.impl.registry.util.RegistryEventsHolder;
 
 public class RegistryRemapper<V> {
 	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
@@ -51,7 +50,7 @@ public class RegistryRemapper<V> {
 
 	public static RegistryRemapper<RegistryRemapper<?>> DEFAULT_CLIENT_INSTANCE = null;
 
-	private static final Map<Identifier, Event<RegistryEntryAddedCallback<?>>> IDENTIFIER_EVENT_MAP = new HashMap<>();
+	private static final Map<Identifier, RegistryEventsHolder<?>> IDENTIFIER_EVENT_MAP = new HashMap<>();
 
 	public RegistryRemapper(SimpleRegistryCompat<?, V> registry, Identifier registryId, String type, String nbtName) {
 		this.registry = registry;
@@ -64,7 +63,9 @@ public class RegistryRemapper<V> {
 		}
 
 		if (IDENTIFIER_EVENT_MAP.containsKey(this.registryId)) {
-			this.registry.setAddEvent((Event<RegistryEntryAddedCallback<V>>) (Object) IDENTIFIER_EVENT_MAP.remove(this.registryId));
+			this.registry.setEventHolder((RegistryEventsHolder<V>) IDENTIFIER_EVENT_MAP.get(this.registryId));
+		} else {
+			this.registry.setEventHolder(new RegistryEventsHolder<>());
 		}
 
 		if (RegistryHelper.IDENTIFIER_EVENT_MAP.containsKey(registryId)) {
@@ -163,6 +164,16 @@ public class RegistryRemapper<V> {
 			throw new IllegalStateException("An error occured during remapping");
 		}
 
+		for (V value : newList) {
+			int oldId = this.registry.getIds().getInt(value);
+			int newId = newList.getInt(value);
+
+			if (oldId != -1 && oldId != newId) {
+				LOGGER.info("Remapped %s %s from id %d to id %d", this.type, this.registry.getKey(value), oldId, newId);
+				this.registry.getEventHolder().getRemapEvent().invoker().onEntryAdded(oldId, newId, new Identifier(this.registry.getKey(value)), value);
+			}
+		}
+
 		this.registry.setIds(newList);
 
 		if (this.registry instanceof ArrayBasedRegistry) {
@@ -182,23 +193,23 @@ public class RegistryRemapper<V> {
 		return remapper == null ? (RegistryRemapper<V>) DEFAULT_CLIENT_INSTANCE : remapper;
 	}
 
-	public static <V> Event<RegistryEntryAddedCallback<V>> registerOnAddEvent(Identifier identifier) {
+	public static <V> RegistryEventsHolder<V> getEventsHolder(Identifier identifier) {
 		RegistryRemapper<V> remapper = (RegistryRemapper<V>) REMAPPER_MAP.getOrDefault(identifier, null);
 
-		Object event;
+		RegistryEventsHolder<V> event;
 
 		if (remapper == null) {
 			if (IDENTIFIER_EVENT_MAP.containsKey(identifier)) {
-				event = IDENTIFIER_EVENT_MAP.get(identifier);
+				event = (RegistryEventsHolder<V>) IDENTIFIER_EVENT_MAP.get(identifier);
 			} else {
-				event = SimpleRegistryCompat.<V>createEvent();
-				IDENTIFIER_EVENT_MAP.put(identifier, (Event<RegistryEntryAddedCallback<?>>) event);
+				event = new RegistryEventsHolder<V>();
+				IDENTIFIER_EVENT_MAP.put(identifier, event);
 			}
 		} else {
-			event = remapper.getRegistry().getAddEvent();
+			event = remapper.getRegistry().getEventHolder();
 		}
 
-		return (Event<RegistryEntryAddedCallback<V>>) event;
+		return event;
 	}
 
 	public void addMissing(Identifier key, int id) {

@@ -28,8 +28,6 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.util.collection.IdList;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
@@ -43,7 +41,7 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 	private final Map<K, K> idsMap;
 	private final Map<K, K> invertedIdsMap;
 
-	private Event<RegistryEntryAddedCallback<V>> entryAddedCallBack = this.createAddEvent();
+	private RegistryEventsHolder<V> registryEventsHolder;
 
 	private boolean init = false;
 
@@ -132,7 +130,7 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 
 		if (this.init) {
 			this.syncArrayWithIdList();
-			this.getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
+			this.getEventHolder().getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
 		}
 
 		return value;
@@ -164,17 +162,17 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 
 	public abstract void updateArray();
 
-	@Override
-	public Event<RegistryEntryAddedCallback<V>> getAddEvent() {
-		return this.entryAddedCallBack;
-	}
-
 	public Map<K, K> getRemapIdList() {
 		return HashBiMap.create();
 	}
 
 	@Override
-	public void setAddEvent(Event<RegistryEntryAddedCallback<V>> event) {
-		this.entryAddedCallBack = event;
+	public RegistryEventsHolder<V> getEventHolder() {
+		return this.registryEventsHolder;
+	}
+
+	@Override
+	public void setEventHolder(RegistryEventsHolder<V> registryEventsHolder) {
+		this.registryEventsHolder = registryEventsHolder;
 	}
 }

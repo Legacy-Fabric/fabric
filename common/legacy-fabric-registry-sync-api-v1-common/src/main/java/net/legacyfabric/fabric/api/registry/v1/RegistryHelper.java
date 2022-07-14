@@ -219,10 +219,12 @@ public final class RegistryHelper {
 		return RegistryHelperImpl.getValue(identifier, RegistryIds.BIOMES);
 	}
 
+	@FunctionalInterface
 	public interface EntryCreator<T> {
 		T create(int rawId);
 	}
 
+	@FunctionalInterface
 	public interface RegistryInitialized {
 		void initialized();
 	}

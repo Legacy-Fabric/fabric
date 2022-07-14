@@ -19,29 +19,13 @@ package net.legacyfabric.fabric.impl.registry.sync.compat;
 
 import java.util.Map;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
-import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.impl.registry.util.RegistryEventsHolder;
 
 public interface SimpleRegistryCompat<K, V> extends Iterable<V> {
-	default Event<RegistryEntryAddedCallback<V>> createAddEvent() {
-		return createEvent();
-	}
+	RegistryEventsHolder<V> getEventHolder();
 
-	static <T> Event<RegistryEntryAddedCallback<T>> createEvent() {
-		return EventFactory.createArrayBacked(RegistryEntryAddedCallback.class,
-				(callbacks) -> (rawId, id, object) -> {
-					for (RegistryEntryAddedCallback<T> callback : callbacks) {
-						callback.onEntryAdded(rawId, id, object);
-					}
-				}
-		);
-	}
-
-	Event<RegistryEntryAddedCallback<V>> getAddEvent();
-
-	void setAddEvent(Event<RegistryEntryAddedCallback<V>> event);
+	void setEventHolder(RegistryEventsHolder<V> eventsHolder);
 
 	IdListCompat<V> getIds();
 

@@ -41,4 +41,8 @@ public interface BiomeAccessor {
 	@Accessor
 	static void setMUTATED_BIOMES(Map<String, Biome> map) {
 	}
+
+	@Mutable
+	@Accessor
+	void setId(int id);
 }
