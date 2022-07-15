@@ -215,6 +215,10 @@ allprojects {
 
 	repositories {
 		maven { url "https://maven.legacyfabric.net/" }
+		maven {
+			name = 'Babric'
+			url = 'https://maven.glass-launcher.net/babric'
+		}
 	}
 
 	MinecraftVersion versionInfo = getVersionInfo(it)
@@ -263,6 +267,8 @@ allprojects {
 		}
 	}
 
+	def currentOs = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
+
 	dependencies {
 		minecraft("com.mojang:minecraft:${versionInfo.mc_version}")
 		mappings("net.fabricmc:yarn:${versionInfo.mc_version}+build.${versionInfo.yarn_version}:v2")
@@ -271,16 +277,20 @@ allprojects {
 
 		implementation 'com.mojang:brigadier:1.0.17'
 
-		if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+		if (currentOs.contains("mac")) {
 			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
 			implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209'
 			implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
+		} else if (currentOs.contains("linux")) {
+			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-babric.1'
+			implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-babric.1'
+			implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-babric.1'
 		}
 
 		testmodImplementation sourceSets.main.output
 	}
 
-	if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+	if (currentOs.contains("mac")) {
 		configurations.all {
 			resolutionStrategy {
 				dependencySubstitution {
@@ -288,6 +298,16 @@ allprojects {
 					substitute module('org.lwjgl.lwjgl:lwjgl:2.9.2-nightly-201408222') using module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209')
 				}
 				force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
+			}
+		}
+	} else if (currentOs.contains("linux")) {
+		configurations.all {
+			resolutionStrategy {
+				dependencySubstitution {
+					substitute(module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209')) using module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-babric.1')
+					substitute module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209') using module('org.lwjgl.lwjgl:lwjgl:2.9.4-babric.1')
+				}
+				force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-babric.1'
 			}
 		}
 	}
