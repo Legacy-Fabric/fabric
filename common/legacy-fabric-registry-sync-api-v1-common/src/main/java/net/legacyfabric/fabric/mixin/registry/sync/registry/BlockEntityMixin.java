@@ -25,12 +25,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.block.entity.BlockEntity;
 
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityTypeRegistryRemapper;
 
 @Mixin(BlockEntity.class)
 public class BlockEntityMixin {
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void initRegistryRemapper(CallbackInfo ci) {
-		RegistryHelperImpl.registerRegistryRemapper(BlockEntityRegistryRemapper::new);
+		RegistryHelperImpl.registerRegistryRemapper(BlockEntityTypeRegistryRemapper::new);
 	}
 }

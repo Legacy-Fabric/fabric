@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import net.minecraft.block.entity.BlockEntity;
 
 import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityTypeRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.util.MapBasedRegistry;
 
@@ -32,7 +32,7 @@ import net.legacyfabric.fabric.impl.registry.util.MapBasedRegistry;
 public class BlockEntityMixin {
 	@ModifyArg(method = "createFromNbt", at = @At(value = "INVOKE", remap = false, target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
 	private static Object replaceVanillaId(Object oldKey) {
-		BlockEntityRegistryRemapper registryRemapper = (BlockEntityRegistryRemapper) RegistryRemapper.<Class<? extends BlockEntity>>getRegistryRemapper(RegistryIds.BLOCK_ENTITIES);
+		BlockEntityTypeRegistryRemapper registryRemapper = (BlockEntityTypeRegistryRemapper) RegistryRemapper.<Class<? extends BlockEntity>>getRegistryRemapper(RegistryIds.BLOCK_ENTITY_TYPES);
 		MapBasedRegistry<String, Class<? extends BlockEntity>> registry = (MapBasedRegistry<String, Class<? extends BlockEntity>>) registryRemapper.getRegistry();
 
 		return registry.getNewId(oldKey.toString());

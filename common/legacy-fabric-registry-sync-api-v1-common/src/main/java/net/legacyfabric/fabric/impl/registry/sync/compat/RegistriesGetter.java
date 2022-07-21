@@ -20,6 +20,7 @@ package net.legacyfabric.fabric.impl.registry.sync.compat;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.world.biome.Biome;
@@ -27,8 +28,9 @@ import net.minecraft.world.biome.Biome;
 public interface RegistriesGetter {
 	<K> SimpleRegistryCompat<K, Block> getBlockRegistry();
 	<K> SimpleRegistryCompat<K, Item> getItemRegistry();
-	<K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry();
+	<K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityTypeRegistry();
 	<K> SimpleRegistryCompat<K, StatusEffect> getStatusEffectRegistry();
 	<K> SimpleRegistryCompat<K, Enchantment> getEnchantmentRegistry();
 	<K> SimpleRegistryCompat<K, Biome> getBiomeRegistry();
+	<K> SimpleRegistryCompat<K, Class<? extends Entity>> getEntityTypeRegistry();
 }

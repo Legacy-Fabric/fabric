@@ -15,7 +15,8 @@
     "MutableRegistryMixin",
     "BlockEntityAccessor",
     "BlockEntityMixin",
-    "BiomeAccessor"
+    "BiomeAccessor",
+    "EntityTypeAccessor"
   ],
   "client": [
   ]

@@ -107,7 +107,7 @@ public final class RegistryHelper {
 	}
 
 	public static Class<? extends BlockEntity> getBlockEntityClass(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryIds.BLOCK_ENTITIES);
+		return RegistryHelperImpl.getValue(id, RegistryIds.BLOCK_ENTITY_TYPES);
 	}
 
 	/**

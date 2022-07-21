@@ -87,7 +87,7 @@ public class RegistryHelperImpl {
 	}
 
 	public static Class<? extends BlockEntity> registerBlockEntity(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
-		RegistryRemapper<Class<? extends BlockEntity>> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BLOCK_ENTITIES);
+		RegistryRemapper<Class<? extends BlockEntity>> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BLOCK_ENTITY_TYPES);
 		int rawId = nextId(registryRemapper.getRegistry());
 		registryRemapper.register(rawId, id, blockEntityClass);
 
