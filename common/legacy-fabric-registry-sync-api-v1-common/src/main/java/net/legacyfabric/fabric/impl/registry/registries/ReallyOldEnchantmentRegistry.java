@@ -17,8 +17,7 @@
 
 package net.legacyfabric.fabric.impl.registry.registries;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.common.collect.BiMap;
 
 import net.minecraft.enchantment.Enchantment;
 
@@ -32,8 +31,8 @@ public abstract class ReallyOldEnchantmentRegistry extends ArrayBasedRegistry<En
 	}
 
 	@Override
-	public Map<Integer, Identifier> getDefaultIds() {
-		Map<Integer, Identifier> map = new HashMap<>();
+	public BiMap<Integer, Identifier> generateIdToKeyMap() {
+		BiMap<Integer, Identifier> map = super.generateIdToKeyMap();
 
 		map.put(0, EnchantmentIds.PROTECTION);
 		map.put(1, EnchantmentIds.FIRE_PROTECTION);

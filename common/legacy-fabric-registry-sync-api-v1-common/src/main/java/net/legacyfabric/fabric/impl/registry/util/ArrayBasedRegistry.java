@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.impl.registry.util;
 
-import java.util.Map;
-
 import com.google.common.collect.HashBiMap;
 
 import net.legacyfabric.fabric.api.util.Identifier;
@@ -30,19 +28,15 @@ public abstract class ArrayBasedRegistry<V> extends ArrayAndMapBasedRegistry<Ide
 
 	@Override
 	public void initRegistry(V[] originalValueArray) {
-		Map<Integer, Identifier> defaultIds = this.getDefaultIds();
-
 		for (int i = 0; i < originalValueArray.length; i++) {
 			V value = originalValueArray[i];
-			Identifier key = defaultIds.remove(i);
+			Identifier key = this.getNewKey(i);
 
-			if (value == null || this.getObjects().containsKey(value)) continue;
+			if (value == null || key == null || this.getObjects().containsKey(value)) continue;
 
 			this.register(i, key, value);
 		}
 	}
-
-	public abstract Map<Integer, Identifier> getDefaultIds();
 
 	@Override
 	public KeyType getKeyType() {

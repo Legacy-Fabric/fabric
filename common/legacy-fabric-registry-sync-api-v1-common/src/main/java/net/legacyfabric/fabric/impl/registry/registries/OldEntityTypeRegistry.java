@@ -1,10 +1,11 @@
 package net.legacyfabric.fabric.impl.registry.registries;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.entity.Entity;
@@ -12,17 +13,13 @@ import net.minecraft.util.collection.IdList;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
-import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
-import net.legacyfabric.fabric.impl.registry.util.RegistryEventsHolder;
+import net.legacyfabric.fabric.impl.registry.util.OldRemappedRegistry;
 
-public class OldEntityTypeRegistry implements SimpleRegistryCompat<String, Class<? extends Entity>> {
+public class OldEntityTypeRegistry extends OldRemappedRegistry<String, Class<? extends Entity>> {
 	private final BiMap<String, Class<? extends Entity>> stringClassBiMap;
 	private final BiMap<Integer, Class<? extends Entity>> integerClassBiMap;
 	private final BiMap<String, Integer> stringIntegerBiMap;
 
-	private final Map<String, String> idsMap;
-
-	private RegistryEventsHolder<Class<? extends Entity>> registryEventsHolder;
 	private IdListCompat<Class<? extends Entity>> IDLIST = (IdListCompat<Class<? extends Entity>>) new IdList<Class<? extends Entity>>();
 
 	public OldEntityTypeRegistry(BiMap<String, Class<? extends Entity>> stringClassBiMap,
@@ -32,34 +29,27 @@ public class OldEntityTypeRegistry implements SimpleRegistryCompat<String, Class
 		this.integerClassBiMap = integerClassBiMap;
 		this.stringIntegerBiMap = stringIntegerBiMap;
 
-		this.idsMap = this.getRemapIdList();
-
 		this.remapDefaultIds();
 	}
 
-	private void remapDefaultIds() {
-		for (Map.Entry<String, String> entry : this.idsMap.entrySet()) {
-			this.stringClassBiMap.put(entry.getValue(), this.stringClassBiMap.remove(entry.getKey()));
-			this.stringIntegerBiMap.put(entry.getValue(), this.stringIntegerBiMap.remove(entry.getKey()));
+	@Override
+	public void remapDefaultIds() {
+		List<String> list = new ArrayList<>();
+
+		for (Map.Entry<String, Class<? extends Entity>> entry : this.stringClassBiMap.entrySet()) {
+			if (!this.getNewKey(entry.getKey()).equals(entry.getKey())) {
+				list.add(entry.getKey());
+			}
+		}
+
+		for (String oldKey : list) {
+			this.stringClassBiMap.put(this.getNewKey(oldKey), this.stringClassBiMap.remove(oldKey));
+			this.stringIntegerBiMap.put(this.getNewKey(oldKey), this.stringIntegerBiMap.remove(oldKey));
 		}
 
 		for (Map.Entry<Integer, Class<? extends Entity>> entry : this.integerClassBiMap.entrySet()) {
 			this.IDLIST.setValue(entry.getValue(), entry.getKey());
 		}
-	}
-
-	public Map<String, String> getRemapIdList() {
-		return HashBiMap.create();
-	}
-
-	@Override
-	public RegistryEventsHolder<Class<? extends Entity>> getEventHolder() {
-		return this.registryEventsHolder;
-	}
-
-	@Override
-	public void setEventHolder(RegistryEventsHolder<Class<? extends Entity>> eventsHolder) {
-		this.registryEventsHolder = eventsHolder;
 	}
 
 	@Override

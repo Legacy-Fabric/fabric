@@ -19,6 +19,8 @@ package net.legacyfabric.fabric.impl.registry.registries;
 
 import java.util.Map;
 
+import com.google.common.collect.BiMap;
+
 import net.minecraft.block.entity.BlockEntity;
 
 import net.legacyfabric.fabric.api.registry.v1.BlockEntityTypeIds;
@@ -35,8 +37,8 @@ public class OldBlockEntityRegistry extends MapBasedRegistry<String, Class<? ext
 	}
 
 	@Override
-	public Map<String, String> getRemapIdList() {
-		Map<String, String> map = super.getRemapIdList();
+	public BiMap<String, String> generateOldToNewKeyMap() {
+		BiMap<String, String> map = super.generateOldToNewKeyMap();
 
 		map.put("Furnace", BlockEntityTypeIds.FURNACE.toString());
 		map.put("Chest", BlockEntityTypeIds.CHEST.toString());
@@ -66,32 +68,32 @@ public class OldBlockEntityRegistry extends MapBasedRegistry<String, Class<? ext
 	}
 
 	@Override
-	public Map<String, Integer> getRemapIdOrderList() {
-		Map<String, Integer> map = super.getRemapIdOrderList();
+	public BiMap<Integer, String> generateIdToKeyMap() {
+		BiMap<Integer, String> map = super.generateIdToKeyMap();
 
-		map.put("Furnace", 0);
-		map.put("Chest", 1);
-		map.put("EnderChest", 2);
-		map.put("RecordPlayer", 3);
-		map.put("Trap", 4);
-		map.put("Dropper", 5);
-		map.put("Sign", 6);
-		map.put("MobSpawner", 7);
-		map.put("Music", 8);
-		map.put("Piston", 9);
-		map.put("Cauldron", 10);
-		map.put("EnchantTable", 11);
-		map.put("Airportal", 12);
-		map.put("Control", 13);
-		map.put("Beacon", 14);
-		map.put("Skull", 15);
-		map.put("DLDetector", 16);
-		map.put("Hopper", 17);
-		map.put("Comparator", 18);
-		map.put("FlowerPot", 19);
-		map.put("Banner", 20);
-		map.put("Structure", 21);
-		map.put("EndGateway", 22);
+		map.put(0, "Furnace");
+		map.put(1, "Chest");
+		map.put(2, "EnderChest");
+		map.put(3, "RecordPlayer");
+		map.put(4, "Trap");
+		map.put(5, "Dropper");
+		map.put(6, "Sign");
+		map.put(7, "MobSpawner");
+		map.put(8, "Music");
+		map.put(9, "Piston");
+		map.put(10, "Cauldron");
+		map.put(11, "EnchantTable");
+		map.put(12, "Airportal");
+		map.put(13, "Control");
+		map.put(14, "Beacon");
+		map.put(15, "Skull");
+		map.put(16, "DLDetector");
+		map.put(17, "Hopper");
+		map.put(18, "Comparator");
+		map.put(19, "FlowerPot");
+		map.put(20, "Banner");
+		map.put(21, "Structure");
+		map.put(22, "EndGateway");
 
 		return map;
 	}

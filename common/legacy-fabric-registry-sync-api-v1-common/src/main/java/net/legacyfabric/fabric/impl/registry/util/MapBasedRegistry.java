@@ -28,61 +28,35 @@ import net.minecraft.util.collection.IdList;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
-import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
-public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
+public class MapBasedRegistry<K, V> extends OldRemappedRegistry<K, V> {
 	private final Map<K, V> defaultMap;
 	private final Map<V, K> invertedMap;
 
 	private IdListCompat<V> IDLIST = (IdListCompat<V>) new IdList<V>();
 
-	private final Map<K, K> idsMap;
-	private final Map<K, Integer> idsMapOrder;
-	private final Map<K, K> invertedIdsMap;
-	private RegistryEventsHolder<V> registryEventsHolder;
-
 	public MapBasedRegistry(Map<K, V> defaultMap, Map<V, K> invertedMap) {
 		this.defaultMap = defaultMap;
 		this.invertedMap = invertedMap;
 
-		this.idsMap = this.getRemapIdList();
-		this.idsMapOrder = this.getRemapIdOrderList();
-		this.invertedIdsMap = ((BiMap<K, K>) this.idsMap).inverse();
 		this.remapDefaultIds();
 	}
 
-	private void remapDefaultIds() {
-		int i = 0;
+	@Override
+	public void remapDefaultIds() {
+		this.defaultMap.clear();
 
-		for (Map.Entry<K, K> entry : this.idsMap.entrySet()) {
-			V value = this.defaultMap.remove(entry.getKey());
-			this.invertedMap.remove(value);
+		for (Map.Entry<V, K> entry : this.invertedMap.entrySet()) {
+			this.defaultMap.put(this.getNewKey(entry.getValue()), entry.getKey());
 
-			if (value == null) continue;
-
-			this.defaultMap.put(entry.getValue(), value);
-
-			if (!this.invertedMap.containsKey(value)) this.invertedMap.put(value, entry.getValue());
-
-			this.IDLIST.setValue(value, this.idsMapOrder.getOrDefault(entry.getKey(), i));
-			i++;
+			this.IDLIST.setValue(entry.getKey(), this.getOldId(entry.getValue()));
 		}
-	}
 
-	public K getNewId(K oldKey) {
-		return this.idsMap.getOrDefault(oldKey, oldKey);
-	}
+		this.invertedMap.clear();
 
-	public K getOldId(K newKey) {
-		return this.invertedIdsMap.getOrDefault(newKey, newKey);
-	}
-
-	public Map<K, K> getRemapIdList() {
-		return HashBiMap.create();
-	}
-
-	public Map<K, Integer> getRemapIdOrderList() {
-		return HashBiMap.create();
+		for (Map.Entry<K, V> entry : this.defaultMap.entrySet()) {
+			this.invertedMap.put(entry.getValue(), entry.getKey());
+		}
 	}
 
 	@Override
@@ -141,15 +115,5 @@ public class MapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
 		this.IDLIST.setValue(value, i);
 		this.getEventHolder().getAddEvent().invoker().onEntryAdded(i, new Identifier(key), value);
 		return value;
-	}
-
-	@Override
-	public RegistryEventsHolder<V> getEventHolder() {
-		return this.registryEventsHolder;
-	}
-
-	@Override
-	public void setEventHolder(RegistryEventsHolder<V> registryEventsHolder) {
-		this.registryEventsHolder = registryEventsHolder;
 	}
 }

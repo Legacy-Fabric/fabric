@@ -23,25 +23,18 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.util.collection.IdList;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
-import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 
-public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCompat<K, V> {
+public abstract class ArrayAndMapBasedRegistry<K, V> extends OldRemappedRegistry<K, V> {
 	private V[] valueArray;
 	private final Map<K, V> defaultMap;
 	private final Map<V, K> invertedMap;
 	private IdListCompat<V> IDLIST = (IdListCompat<V>) new IdList<V>();
-
-	private final Map<K, K> idsMap;
-	private final Map<K, K> invertedIdsMap;
-
-	private RegistryEventsHolder<V> registryEventsHolder;
 
 	private boolean init = false;
 
@@ -52,21 +45,10 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 		this.defaultMap = defaultMap;
 		this.invertedMap = ((BiMap<K, V>) this.defaultMap).inverse();
 
-		this.idsMap = this.getRemapIdList();
-		this.invertedIdsMap = ((BiMap<K, K>) this.idsMap).inverse();
-
 		this.initRegistry(valueArray);
 		this.init = true;
 
 		this.syncArrayWithIdList();
-	}
-
-	public K getNewId(K oldKey) {
-		return this.idsMap.getOrDefault(oldKey, oldKey);
-	}
-
-	public K getOldId(K newKey) {
-		return this.invertedIdsMap.getOrDefault(newKey, newKey);
 	}
 
 	public void initRegistry(V[] originalValueArray) {
@@ -76,7 +58,7 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 
 			if (value == null) continue;
 
-			K newKey = this.idsMap.getOrDefault(key, key);
+			K newKey = this.getNewKey(key);
 
 			this.register(i, newKey, value);
 		}
@@ -161,18 +143,4 @@ public abstract class ArrayAndMapBasedRegistry<K, V> implements SimpleRegistryCo
 	}
 
 	public abstract void updateArray();
-
-	public Map<K, K> getRemapIdList() {
-		return HashBiMap.create();
-	}
-
-	@Override
-	public RegistryEventsHolder<V> getEventHolder() {
-		return this.registryEventsHolder;
-	}
-
-	@Override
-	public void setEventHolder(RegistryEventsHolder<V> registryEventsHolder) {
-		this.registryEventsHolder = registryEventsHolder;
-	}
 }
