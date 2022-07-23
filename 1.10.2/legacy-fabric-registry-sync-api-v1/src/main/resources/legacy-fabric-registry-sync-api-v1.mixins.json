@@ -16,7 +16,8 @@
     "BlockEntityAccessor",
     "BlockEntityMixin",
     "BiomeAccessor",
-    "EntityTypeAccessor"
+    "EntityTypeAccessor",
+    "EntityTypeMixin"
   ],
   "client": [
   ]

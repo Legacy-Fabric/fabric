@@ -18,23 +18,30 @@
 package net.legacyfabric.fabric.mixin.registry.sync;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 
 import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityTypeRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.util.MapBasedRegistry;
+import net.legacyfabric.fabric.impl.registry.util.OldRemappedRegistry;
 
-@Mixin(BlockEntity.class)
-public class BlockEntityMixin {
-	@ModifyArg(method = "create", at = @At(value = "INVOKE", remap = false, target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
-	private static Object replaceVanillaId(Object oldKey) {
-		BlockEntityTypeRegistryRemapper registryRemapper = (BlockEntityTypeRegistryRemapper) RegistryRemapper.<Class<? extends BlockEntity>>getRegistryRemapper(RegistryIds.BLOCK_ENTITY_TYPES);
-		MapBasedRegistry<String, Class<? extends BlockEntity>> registry = (MapBasedRegistry<String, Class<? extends BlockEntity>>) registryRemapper.getRegistry();
+@Mixin(EntityType.class)
+public abstract class EntityTypeMixin {
+	@Shadow
+	public static String getEntityName(Entity entity) {
+		return null;
+	}
 
-		return registry.getNewKey(oldKey.toString());
+	@ModifyArg(method = {"createInstanceFromName", "createInstanceFromNbt"},
+			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
+	private static Object remap$createInstanceFromName(Object key) {
+		RegistryRemapper<Class<? extends Entity>> remapper = RegistryHelperImpl.getRegistryRemapper(RegistryIds.ENTITY_TYPES);
+		OldRemappedRegistry<String, Class<? extends Entity>> registry = (OldRemappedRegistry<String, Class<? extends Entity>>) remapper.getRegistry();
+		return registry.getNewKey(key.toString());
 	}
 }
