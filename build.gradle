@@ -152,6 +152,7 @@ static def getVersionInfo(Project project) {
 	if (parent != null && parent.name != "legacy-fabric-api") {
 		projectMCVersion = parent.name
 	}
+
 	System.out.println("Preparing project ${parent != null ? parent.name : ""}:$project.name")
 
 	for (MinecraftVersion mcVersion : MinecraftVersion.VERSIONS) {
