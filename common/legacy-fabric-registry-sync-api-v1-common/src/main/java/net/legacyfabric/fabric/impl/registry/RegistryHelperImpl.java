@@ -21,6 +21,7 @@ import java.util.IdentityHashMap;
 import java.util.function.Supplier;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.block.Block;
@@ -245,6 +246,10 @@ public class RegistryHelperImpl {
 	}
 
 	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry) {
+		return nextId(idList, registry, HashBiMap.create());
+	}
+
+	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry, BiMap<Identifier, Integer> missingMap) {
 		int id = 0;
 
 		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
@@ -255,6 +260,7 @@ public class RegistryHelperImpl {
 
 		while (idList.fromInt(id) != null
 				|| id < registryRemapper.getMinId()
+				|| missingMap.containsValue(id)
 		) {
 			id++;
 		}
