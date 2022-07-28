@@ -32,11 +32,6 @@ import net.legacyfabric.fabric.impl.registry.util.OldRemappedRegistry;
 
 @Mixin(EntityType.class)
 public abstract class EntityTypeMixin {
-	@Shadow
-	public static String getEntityName(Entity entity) {
-		return null;
-	}
-
 	@ModifyArg(method = {"createInstanceFromName", "createInstanceFromNbt"},
 			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
 	private static Object remap$createInstanceFromName(Object key) {

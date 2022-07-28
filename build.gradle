@@ -223,7 +223,6 @@ allprojects {
 				ideConfigGenerated projectName == "legacyfabric-api"
 				name = "$versionInfo.mc_version Testmod Client"
 				source sourceSets.testmod
-				vmArgs "-Dmixin.debug.export=true"
 
 				if (versionInfo.userProperties) {
 					programArgs "--userProperties", "{}"
@@ -235,7 +234,6 @@ allprojects {
 				ideConfigGenerated projectName == "legacyfabric-api"
 				name = "$versionInfo.mc_version Testmod Server"
 				source sourceSets.testmod
-				vmArgs "-Dmixin.debug.export=true"
 			}
 		}
 

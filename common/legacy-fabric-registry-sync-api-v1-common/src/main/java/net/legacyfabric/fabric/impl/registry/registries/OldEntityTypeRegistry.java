@@ -61,9 +61,13 @@ public class OldEntityTypeRegistry extends OldRemappedRegistry<String, Class<? e
 		}
 
 		for (String oldKey : list) {
+			if (this.getNewKey(oldKey) == null) continue;
+
 			this.stringClassBiMap.put(this.getNewKey(oldKey), this.stringClassBiMap.remove(oldKey));
 			this.stringIntegerBiMap.put(this.getNewKey(oldKey), this.stringIntegerBiMap.remove(oldKey));
 		}
+
+		this.stringIntegerBiMap.remove(null);
 
 		for (Map.Entry<Integer, Class<? extends Entity>> entry : this.integerClassBiMap.entrySet()) {
 			this.IDLIST.setValue(entry.getValue(), entry.getKey());
@@ -170,6 +174,8 @@ public class OldEntityTypeRegistry extends OldRemappedRegistry<String, Class<? e
 
 			this.stringIntegerBiMap.put(inversedMap2.get(entityType), this.IDLIST.getInt(entityType));
 		}
+
+		this.stringIntegerBiMap.remove(null);
 	}
 
 	@Override
