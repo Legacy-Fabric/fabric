@@ -46,6 +46,7 @@ import net.legacyfabric.fabric.impl.registry.util.OldRemappedRegistry;
 import net.legacyfabric.fabric.mixin.registry.sync.BiomeAccessor;
 import net.legacyfabric.fabric.mixin.registry.sync.BlockEntityAccessor;
 import net.legacyfabric.fabric.mixin.registry.sync.EntityTypeAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.SpawnEggDataAccessor;
 
 public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 	private static SimpleRegistryCompat<String, Class<? extends BlockEntity>> BLOCK_ENTITY_REGISTRY;
@@ -120,7 +121,9 @@ public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 		RegistryHelper.onRegistryInitialized(RegistryIds.ENTITY_TYPES).register(() -> {
 			for (Map.Entry<String, Integer> entry : EntityTypeAccessor.getNAME_ID_MAP().entrySet()) {
 				if (EntityType.SPAWN_EGGS.containsKey(ENTITY_TYPE_REGISTRY.getOldKey(entry.getKey()))) {
-					EntityType.SPAWN_EGGS.put(entry.getKey(), EntityType.SPAWN_EGGS.remove(ENTITY_TYPE_REGISTRY.getOldKey(entry.getKey())));
+					EntityType.SpawnEggData data = EntityType.SPAWN_EGGS.remove(ENTITY_TYPE_REGISTRY.getOldKey(entry.getKey()));
+					((SpawnEggDataAccessor) data).setName(entry.getKey());
+					EntityType.SPAWN_EGGS.put(entry.getKey(), data);
 				}
 			}
 		});

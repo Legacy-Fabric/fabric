@@ -17,7 +17,9 @@
     "BlockEntityMixin",
     "BiomeAccessor",
     "EntityTypeAccessor",
-    "EntityTypeMixin"
+    "EntityTypeMixin",
+    "EntityMixin",
+    "SpawnEggDataAccessor"
   ],
   "client": [
   ]

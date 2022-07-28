@@ -15,7 +15,8 @@
     "EnchantmentAccessor",
     "BiomeAccessor",
     "EntityTypeAccessor",
-    "EntityTypeMixin"
+    "EntityTypeMixin",
+    "EntityMixin"
   ],
   "client": [
   ]
