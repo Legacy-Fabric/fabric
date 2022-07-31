@@ -132,18 +132,13 @@ class MinecraftVersion {
 	public static final String MAPPINGS_BUILD = "382"
 
 	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[] {
-			new MinecraftVersion("1.13.2"),
 			new MinecraftVersion("1.12.2"),
 			new MinecraftVersion("1.11.2"),
 			new MinecraftVersion("1.10.2"),
 			new MinecraftVersion("1.9.4"),
 			new MinecraftVersion("1.8.9"),
 			new MinecraftVersion("1.8", true),
-			new MinecraftVersion("1.7.10", true),
-			new MinecraftVersion("1.6.4"),
-			new MinecraftVersion("1.5.2"),
-			new MinecraftVersion("1.4.7"),
-			new MinecraftVersion("1.3.2")
+			new MinecraftVersion("1.7.10", true)
 	}
 }
 
@@ -486,8 +481,11 @@ curseforge {
 		id = '400281'
 		changelog = 'A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits'
 		releaseType = 'beta'
-		addGameVersion "1.8.9"
 		addGameVersion 'Fabric'
+
+		MinecraftVersion.VERSIONS.each {
+			addGameVersion it.mc_version
+		}
 
 		mainArtifact(remapJar) {
 			displayName = "Legacy Fabric API ${project.base_version}"
