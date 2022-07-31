@@ -97,6 +97,10 @@ def moduleDependencies(project, List<String> depNames) {
 	project.publishing {
 		publications {
 			mavenJava(MavenPublication) {
+				if (project.name == "legacyfabric-api") {
+					artifactId = "legacy-fabric-api"
+				}
+
 				pom.withXml {
 					def depsNode = asNode().appendNode("dependencies")
 					deps.each {
@@ -440,35 +444,8 @@ task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
 build.dependsOn remapMavenJar
 
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			artifact(remapMavenJar) {
-				builtBy remapMavenJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-
-			artifact javadocJar
-
-			pom.withXml {
-				def depsNode = asNode().appendNode("dependencies")
-				subprojects.each {
-					if (it.parent.name != "legacy-fabric-api" && it.name != "legacyfabric-api") {
-						def depNode = depsNode.appendNode("dependency")
-						depNode.appendNode("groupId", it.group)
-						depNode.appendNode("artifactId", it.name)
-						depNode.appendNode("version", it.version)
-						depNode.appendNode("scope", "compile")
-					}
-				}
-			}
-		}
-	}
+	publications {}
 }
-
-// Required until the deprecation is removed. Fabric API's main jar that is published to maven does not contain sub modules.
-loom.disableDeprecatedPomGeneration(publishing.publications.mavenJava)
 
 subprojects.each { if (it.file("src/main").exists()) remapJar.dependsOn("${it.path}:remapJar") }
 
