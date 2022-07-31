@@ -28,6 +28,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -87,12 +88,20 @@ public class RegistryHelperImpl {
 		return item;
 	}
 
-	public static Class<? extends BlockEntity> registerBlockEntity(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
+	public static Class<? extends BlockEntity> registerBlockEntityType(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
 		RegistryRemapper<Class<? extends BlockEntity>> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BLOCK_ENTITY_TYPES);
 		int rawId = nextId(registryRemapper.getRegistry());
 		registryRemapper.register(rawId, id, blockEntityClass);
 
 		return blockEntityClass;
+	}
+
+	public static Class<? extends Entity> registerEntityType(Class<? extends Entity> entityTypeClass, Identifier id) {
+		RegistryRemapper<Class<? extends Entity>> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.ENTITY_TYPES);
+		int rawId = nextId(registryRemapper.getRegistry());
+		registryRemapper.register(rawId, id, entityTypeClass);
+
+		return entityTypeClass;
 	}
 
 	public static StatusEffect registerStatusEffect(StatusEffect statusEffect, Identifier id) {
