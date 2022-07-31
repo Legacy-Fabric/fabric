@@ -17,9 +17,16 @@
 
 package net.legacyfabric.fabric.impl.registry.sync;
 
+import java.util.Map;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -32,13 +39,18 @@ import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.registries.OldBlockEntityRegistry;
+import net.legacyfabric.fabric.impl.registry.registries.OldEntityTypeRegistry;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+import net.legacyfabric.fabric.impl.registry.util.OldRemappedRegistry;
 import net.legacyfabric.fabric.mixin.registry.sync.BiomeAccessor;
 import net.legacyfabric.fabric.mixin.registry.sync.BlockEntityAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.EntityTypeAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.SpawnEggDataAccessor;
 
 public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 	private static SimpleRegistryCompat<String, Class<? extends BlockEntity>> BLOCK_ENTITY_REGISTRY;
+	private static OldRemappedRegistry<String, Class<? extends Entity>> ENTITY_TYPE_REGISTRY;
 
 	@Override
 	public void onPreLaunch() {
@@ -54,7 +66,7 @@ public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 			}
 
 			@Override
-			public <K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry() {
+			public <K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityTypeRegistry() {
 				if (BLOCK_ENTITY_REGISTRY == null) {
 					BLOCK_ENTITY_REGISTRY = new OldBlockEntityRegistry(BlockEntityAccessor.getStringClassMap(), BlockEntityAccessor.getClassStringMap());
 				}
@@ -76,6 +88,26 @@ public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 			public <K> SimpleRegistryCompat<K, Biome> getBiomeRegistry() {
 				return (SimpleRegistryCompat<K, Biome>) Biome.REGISTRY;
 			}
+
+			@Override
+			public <K> SimpleRegistryCompat<K, Class<? extends Entity>> getEntityTypeRegistry() {
+				if (ENTITY_TYPE_REGISTRY == null) {
+					BiMap<String, Class<? extends Entity>> NAME_CLASS_MAP = HashBiMap.create(EntityTypeAccessor.getNAME_CLASS_MAP());
+					EntityTypeAccessor.setNAME_CLASS_MAP(NAME_CLASS_MAP);
+					EntityTypeAccessor.setCLASS_NAME_MAP(NAME_CLASS_MAP.inverse());
+
+					BiMap<Integer, Class<? extends Entity>> ID_CLASS_MAP = HashBiMap.create(EntityTypeAccessor.getID_CLASS_MAP());
+					EntityTypeAccessor.setID_CLASS_MAP(ID_CLASS_MAP);
+					EntityTypeAccessor.setCLASS_ID_MAP(ID_CLASS_MAP.inverse());
+
+					BiMap<String, Integer> NAME_ID_MAP = HashBiMap.create(EntityTypeAccessor.getNAME_ID_MAP());
+					EntityTypeAccessor.setNAME_ID_MAP(NAME_ID_MAP);
+
+					ENTITY_TYPE_REGISTRY = new OldEntityTypeRegistry(NAME_CLASS_MAP, ID_CLASS_MAP, NAME_ID_MAP);
+				}
+
+				return (SimpleRegistryCompat<K, Class<? extends Entity>>) ENTITY_TYPE_REGISTRY;
+			}
 		};
 
 		RegistryHelper.onRegistryInitialized(RegistryIds.BIOMES).register(() -> {
@@ -84,6 +116,16 @@ public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 					Biome.biomeList.set(biome, Biome.getBiomeIndex(Biome.REGISTRY.get(new Identifier(((BiomeAccessor) biome).getParent()))));
 				}
 			});
+		});
+
+		RegistryHelper.onRegistryInitialized(RegistryIds.ENTITY_TYPES).register(() -> {
+			for (Map.Entry<String, Integer> entry : EntityTypeAccessor.getNAME_ID_MAP().entrySet()) {
+				if (EntityType.SPAWN_EGGS.containsKey(ENTITY_TYPE_REGISTRY.getOldKey(entry.getKey()))) {
+					EntityType.SpawnEggData data = EntityType.SPAWN_EGGS.remove(ENTITY_TYPE_REGISTRY.getOldKey(entry.getKey()));
+					((SpawnEggDataAccessor) data).setName(entry.getKey());
+					EntityType.SPAWN_EGGS.put(entry.getKey(), data);
+				}
+			}
 		});
 	}
 }

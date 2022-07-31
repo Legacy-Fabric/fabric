@@ -15,22 +15,19 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync.registry;
+package net.legacyfabric.fabric.mixin.registry.sync;
+
+import java.util.List;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.EntityType;
 
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityTypeRegistryRemapper;
-
-@Mixin(BlockEntity.class)
-public class BlockEntityMixin {
-	@Inject(method = "<clinit>", at = @At("RETURN"))
-	private static void initRegistryRemapper(CallbackInfo ci) {
-		RegistryHelperImpl.registerRegistryRemapper(BlockEntityTypeRegistryRemapper::new);
+@Mixin(EntityType.class)
+public interface EntityTypeAccessor {
+	@Accessor
+	static List<String> getNAMES() {
+		return null;
 	}
 }

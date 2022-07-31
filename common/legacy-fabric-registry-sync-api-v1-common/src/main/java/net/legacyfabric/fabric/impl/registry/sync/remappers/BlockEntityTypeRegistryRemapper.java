@@ -15,22 +15,15 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync.registry;
-
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+package net.legacyfabric.fabric.impl.registry.sync.remappers;
 
 import net.minecraft.block.entity.BlockEntity;
 
+import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.BlockEntityTypeRegistryRemapper;
 
-@Mixin(BlockEntity.class)
-public class BlockEntityMixin {
-	@Inject(method = "<clinit>", at = @At("RETURN"))
-	private static void initRegistryRemapper(CallbackInfo ci) {
-		RegistryHelperImpl.registerRegistryRemapper(BlockEntityTypeRegistryRemapper::new);
+public class BlockEntityTypeRegistryRemapper extends RegistryRemapper<Class<? extends BlockEntity>> {
+	public BlockEntityTypeRegistryRemapper() {
+		super(RegistryHelperImpl.registriesGetter.getBlockEntityTypeRegistry(), RegistryIds.BLOCK_ENTITY_TYPES, "BlockEntityType", "BlockEntityTypes");
 	}
 }

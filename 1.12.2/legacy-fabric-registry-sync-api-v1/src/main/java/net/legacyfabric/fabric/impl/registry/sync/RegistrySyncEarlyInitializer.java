@@ -20,6 +20,8 @@ package net.legacyfabric.fabric.impl.registry.sync;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -28,6 +30,7 @@ import net.minecraft.world.biome.Biome;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddCallback;
+import net.legacyfabric.fabric.api.registry.v1.RegistryEntryRemapCallback;
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
@@ -35,6 +38,7 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 import net.legacyfabric.fabric.mixin.registry.sync.BiomeAccessor;
 import net.legacyfabric.fabric.mixin.registry.sync.BlockEntityAccessor;
+import net.legacyfabric.fabric.mixin.registry.sync.EntityTypeAccessor;
 
 public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 	@Override
@@ -51,7 +55,7 @@ public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 			}
 
 			@Override
-			public <K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityRegistry() {
+			public <K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityTypeRegistry() {
 				return (SimpleRegistryCompat<K, Class<? extends BlockEntity>>) BlockEntityAccessor.getBLOCK_ENTITY();
 			}
 
@@ -69,6 +73,11 @@ public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 			public <K> SimpleRegistryCompat<K, Biome> getBiomeRegistry() {
 				return (SimpleRegistryCompat<K, Biome>) Biome.REGISTRY;
 			}
+
+			@Override
+			public <K> SimpleRegistryCompat<K, Class<? extends Entity>> getEntityTypeRegistry() {
+				return (SimpleRegistryCompat<K, Class<? extends Entity>>) EntityType.REGISTRY;
+			}
 		};
 
 		RegistryHelper.onRegistryInitialized(RegistryIds.BIOMES).register(() -> {
@@ -76,6 +85,33 @@ public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 				if (biome.isMutatedBiome()) {
 					Biome.biomeList.set(biome, Biome.getBiomeIndex(Biome.REGISTRY.get(new Identifier(((BiomeAccessor) biome).getParent()))));
 				}
+			});
+		});
+
+		RegistryHelper.onRegistryInitialized(RegistryIds.ENTITY_TYPES).register(() -> {
+			RegistryEntryAddCallback.<Class<? extends Entity>>event(RegistryIds.ENTITY_TYPES).register((rawId, key, object) -> {
+				EntityType.IDENTIFIERS.add(new Identifier(key.toString()));
+
+				while (EntityTypeAccessor.getNAMES().size() <= rawId) {
+					EntityTypeAccessor.getNAMES().add(null);
+				}
+
+				EntityTypeAccessor.getNAMES().set(rawId, key.getNamespace() + "." + key.getPath());
+			});
+
+			RegistryEntryRemapCallback.<Class<? extends Entity>>event(RegistryIds.ENTITY_TYPES).register((oldId, newId, key, object) -> {
+				while (EntityTypeAccessor.getNAMES().size() <= oldId || EntityTypeAccessor.getNAMES().size() <= newId) {
+					EntityTypeAccessor.getNAMES().add(null);
+				}
+
+				String name = EntityTypeAccessor.getNAMES().get(oldId);
+
+				if (name.isEmpty()) {
+					name = key.getNamespace() + "." + key.getPath();
+				}
+
+				EntityTypeAccessor.getNAMES().set(oldId, null);
+				EntityTypeAccessor.getNAMES().set(newId, name);
 			});
 		});
 	}

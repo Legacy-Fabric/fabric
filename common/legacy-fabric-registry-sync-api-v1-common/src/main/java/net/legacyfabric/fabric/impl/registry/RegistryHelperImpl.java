@@ -21,12 +21,14 @@ import java.util.IdentityHashMap;
 import java.util.function.Supplier;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -86,12 +88,20 @@ public class RegistryHelperImpl {
 		return item;
 	}
 
-	public static Class<? extends BlockEntity> registerBlockEntity(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
-		RegistryRemapper<Class<? extends BlockEntity>> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BLOCK_ENTITIES);
+	public static Class<? extends BlockEntity> registerBlockEntityType(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
+		RegistryRemapper<Class<? extends BlockEntity>> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BLOCK_ENTITY_TYPES);
 		int rawId = nextId(registryRemapper.getRegistry());
 		registryRemapper.register(rawId, id, blockEntityClass);
 
 		return blockEntityClass;
+	}
+
+	public static Class<? extends Entity> registerEntityType(Class<? extends Entity> entityTypeClass, Identifier id) {
+		RegistryRemapper<Class<? extends Entity>> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.ENTITY_TYPES);
+		int rawId = nextId(registryRemapper.getRegistry());
+		registryRemapper.register(rawId, id, entityTypeClass);
+
+		return entityTypeClass;
 	}
 
 	public static StatusEffect registerStatusEffect(StatusEffect statusEffect, Identifier id) {
@@ -245,6 +255,10 @@ public class RegistryHelperImpl {
 	}
 
 	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry) {
+		return nextId(idList, registry, HashBiMap.create());
+	}
+
+	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry, BiMap<Identifier, Integer> missingMap) {
 		int id = 0;
 
 		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
@@ -255,6 +269,7 @@ public class RegistryHelperImpl {
 
 		while (idList.fromInt(id) != null
 				|| id < registryRemapper.getMinId()
+				|| missingMap.containsValue(id)
 		) {
 			id++;
 		}

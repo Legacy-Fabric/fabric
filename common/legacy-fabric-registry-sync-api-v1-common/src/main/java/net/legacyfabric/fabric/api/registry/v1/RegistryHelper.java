@@ -23,6 +23,7 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.world.biome.Biome;
@@ -96,18 +97,18 @@ public final class RegistryHelper {
 	}
 
 	/**
-	 * Registers a block entity with the given ID.
+	 * Registers a block entity type with the given ID.
 	 *
-	 * @param blockEntityClass The block entity class to register
-	 * @param id    The ID of the block entity
-	 * @return The block entity class registered
+	 * @param blockEntityTypeClass The block entity type class to register
+	 * @param id    The ID of the block entity type
+	 * @return The block entity type class registered
 	 */
-	public static Class<? extends BlockEntity> registerBlockEntityClass(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
-		return RegistryHelperImpl.registerBlockEntity(blockEntityClass, id);
+	public static Class<? extends BlockEntity> registerBlockEntityType(Class<? extends BlockEntity> blockEntityTypeClass, Identifier id) {
+		return RegistryHelperImpl.registerBlockEntityType(blockEntityTypeClass, id);
 	}
 
-	public static Class<? extends BlockEntity> getBlockEntityClass(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryIds.BLOCK_ENTITIES);
+	public static Class<? extends BlockEntity> getBlockEntityType(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryIds.BLOCK_ENTITY_TYPES);
 	}
 
 	/**
@@ -217,6 +218,21 @@ public final class RegistryHelper {
 
 	public static Biome getBiome(Identifier identifier) {
 		return RegistryHelperImpl.getValue(identifier, RegistryIds.BIOMES);
+	}
+
+	/**
+	 * Registers an entity type with the given ID.
+	 *
+	 * @param entityTypeClass The entity type class to register
+	 * @param id    The ID of the entity type
+	 * @return The entity type class registered
+	 */
+	public static Class<? extends Entity> registerEntityType(Class<? extends Entity> entityTypeClass, Identifier id) {
+		return RegistryHelperImpl.registerEntityType(entityTypeClass, id);
+	}
+
+	public static Class<? extends Entity> getEntityType(Identifier id) {
+		return RegistryHelperImpl.getValue(id, RegistryIds.ENTITY_TYPES);
 	}
 
 	@FunctionalInterface

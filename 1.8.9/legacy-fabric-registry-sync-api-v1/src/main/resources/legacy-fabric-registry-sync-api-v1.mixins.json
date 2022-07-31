@@ -16,7 +16,10 @@
     "BlockEntityMixin",
     "StatusEffectAccessor",
     "EnchantmentAccessor",
-    "BiomeAccessor"
+    "BiomeAccessor",
+    "EntityTypeAccessor",
+    "EntityTypeMixin",
+    "EntityMixin"
   ],
   "client": [
   ]

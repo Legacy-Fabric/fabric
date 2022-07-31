@@ -114,28 +114,18 @@ def moduleDependencies(project, List<String> depNames) {
 
 class MinecraftVersion {
 	public String mc_version
-	public String yarn_version
 	public boolean userProperties
 
-	private MinecraftVersion(String mc_version, boolean userProperties) {
-		this(mc_version, MAPPINGS_BUILD, userProperties)
-	}
-
-	private MinecraftVersion(String mc_version, String yarn_version) {
-		this(mc_version, yarn_version, false)
-	}
-
 	private MinecraftVersion(String mc_version) {
-		this(mc_version, MAPPINGS_BUILD, false)
+		this(mc_version, false)
 	}
 
-	private MinecraftVersion(String mc_version, String yarn_version, boolean userProperties) {
+	private MinecraftVersion(String mc_version, boolean userProperties) {
 		this.mc_version = mc_version
-		this.yarn_version = yarn_version
 		this.userProperties = userProperties
 	}
 
-	private static final String MAPPINGS_BUILD = "202206171821"
+	public static final String MAPPINGS_BUILD = "382"
 
 	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[] {
 			new MinecraftVersion("1.13.2"),
@@ -144,8 +134,8 @@ class MinecraftVersion {
 			new MinecraftVersion("1.10.2"),
 			new MinecraftVersion("1.9.4"),
 			new MinecraftVersion("1.8.9"),
-			new MinecraftVersion("1.8", "202206171820", true),
-			new MinecraftVersion("1.7.10", "202206171820", true),
+			new MinecraftVersion("1.8", true),
+			new MinecraftVersion("1.7.10", true),
 			new MinecraftVersion("1.6.4"),
 			new MinecraftVersion("1.5.2"),
 			new MinecraftVersion("1.4.7"),
@@ -162,6 +152,7 @@ static def getVersionInfo(Project project) {
 	if (parent != null && parent.name != "legacy-fabric-api") {
 		projectMCVersion = parent.name
 	}
+
 	System.out.println("Preparing project ${parent != null ? parent.name : ""}:$project.name")
 
 	for (MinecraftVersion mcVersion : MinecraftVersion.VERSIONS) {
@@ -232,7 +223,6 @@ allprojects {
 				ideConfigGenerated projectName == "legacyfabric-api"
 				name = "$versionInfo.mc_version Testmod Client"
 				source sourceSets.testmod
-				vmArgs "-Dmixin.debug.export=true"
 
 				if (versionInfo.userProperties) {
 					programArgs "--userProperties", "{}"
@@ -244,11 +234,10 @@ allprojects {
 				ideConfigGenerated projectName == "legacyfabric-api"
 				name = "$versionInfo.mc_version Testmod Server"
 				source sourceSets.testmod
-				vmArgs "-Dmixin.debug.export=true"
 			}
 		}
 
-		setIntermediaryUrl('https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar')
+		setIntermediaryUrl('https://maven.legacyfabric.net/net/legacyfabric/intermediary/%1$s/intermediary-%1$s-v2.jar')
 	}
 
 	allprojects.each { p ->
@@ -271,7 +260,7 @@ allprojects {
 
 	dependencies {
 		minecraft("com.mojang:minecraft:${versionInfo.mc_version}")
-		mappings("net.fabricmc:yarn:${versionInfo.mc_version}+build.${versionInfo.yarn_version}:v2")
+		mappings("net.legacyfabric:yarn:${versionInfo.mc_version}+build.${MinecraftVersion.MAPPINGS_BUILD}:v2")
 
 		modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
 

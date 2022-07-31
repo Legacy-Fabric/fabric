@@ -82,7 +82,14 @@ public class RegistryRemapper<V> {
 			if (key != null) this.entryDump.put(new Identifier(key), id);
 		});
 
-		this.entryDump.putAll(this.missingMap);
+		for (Map.Entry<Identifier, Integer> entry : this.missingMap.entrySet()) {
+			if (!this.entryDump.containsValue(entry.getValue())) {
+				this.entryDump.put(entry.getKey(), entry.getValue());
+			} else {
+				LOGGER.warn("Tried to add missing entry %s at index %d, but it is already taken by %s",
+						entry.getKey(), entry.getValue(), this.entryDump.inverse().get(entry.getValue()));
+			}
+		}
 	}
 
 	public NbtCompound toNbt() {
@@ -140,8 +147,8 @@ public class RegistryRemapper<V> {
 			RegistryHelperImpl.getObjects(this.registry).keySet().stream().filter(obj -> newList.getInt(obj) == -1).forEach(missing -> {
 				int id = RegistryHelperImpl.nextId(this.registry);
 
-				while (newList.fromInt(id) != null) {
-					id = RegistryHelperImpl.nextId(newList, this.registry);
+				while (newList.fromInt(id) != null || this.missingMap.containsValue(id)) {
+					id = RegistryHelperImpl.nextId(newList, this.registry, this.missingMap);
 
 					V currentBlock = RegistryHelperImpl.getIdList(this.registry).fromInt(id);
 

@@ -14,7 +14,8 @@
     "registry.BlockEntityMixin",
     "registry.StatusEffectMixin",
     "registry.EnchantmentMixin",
-    "registry.BiomeMixin"
+    "registry.BiomeMixin",
+    "registry.EntityTypeMixin"
   ],
   "client": [
     "client.MinecraftClientMixin"

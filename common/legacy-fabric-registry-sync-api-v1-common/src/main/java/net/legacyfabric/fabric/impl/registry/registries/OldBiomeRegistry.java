@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.impl.registry.registries;
 
-import java.util.Map;
-
 import com.google.common.collect.BiMap;
 
 import net.minecraft.world.biome.Biome;
@@ -32,8 +30,8 @@ public abstract class OldBiomeRegistry extends ArrayAndMapBasedRegistry<String, 
 	}
 
 	@Override
-	public Map<String, String> getRemapIdList() {
-		Map<String, String> map = super.getRemapIdList();
+	public BiMap<String, String> generateOldToNewKeyMap() {
+		BiMap<String, String> map = super.generateOldToNewKeyMap();
 
 		map.put("Ocean", BiomeIds.OCEAN.toString());
 		map.put("Plains", BiomeIds.PLAINS.toString());
