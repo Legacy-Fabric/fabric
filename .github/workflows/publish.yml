@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew checkVersion build publish --stacktrace #curseforge github
+      - run: ./gradlew checkVersion build publish --stacktrace curseforge github
         env:
           MAVEN_PUBLISH_TOKEN: ${{ secrets.MAVEN_PUBLISH_TOKEN }}
           CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
