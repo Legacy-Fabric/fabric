@@ -9,7 +9,6 @@ Fabric API is the library for essential hooks and interoperability mechanisms fo
 For support, consider joining the [Legacy Fabric discord server](https://legacyfabric.net/discord) or opening an issue.
 
 ## Modules available and tested by minecraft version
-
 ✅ = Working as expected\
 ⚠ = Working but has some issues.\
 ? = Not sure if it was tested or working correctly\
