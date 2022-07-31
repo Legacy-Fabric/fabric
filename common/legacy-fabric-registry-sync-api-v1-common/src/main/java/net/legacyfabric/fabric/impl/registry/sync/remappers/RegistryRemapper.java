@@ -87,7 +87,7 @@ public class RegistryRemapper<V> {
 				this.entryDump.put(entry.getKey(), entry.getValue());
 			} else {
 				LOGGER.warn("Tried to add missing entry %s at index %d, but it is already taken by %s",
-						entry.getKey(),  entry.getValue(), this.entryDump.inverse().get(entry.getValue()));
+						entry.getKey(), entry.getValue(), this.entryDump.inverse().get(entry.getValue()));
 			}
 		}
 	}
