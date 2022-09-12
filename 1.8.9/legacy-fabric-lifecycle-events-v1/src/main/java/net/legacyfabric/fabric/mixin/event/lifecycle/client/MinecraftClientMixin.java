@@ -48,7 +48,7 @@ public class MinecraftClientMixin {
 		ClientLifecycleEvents.CLIENT_STOPPING.invoker().onClientStopping((MinecraftClient) (Object) this);
 	}
 
-	@Inject(at = @At(value = "RETURN"), method = "initializeGame")
+	@Inject(at = @At(value = "TAIL"), method = "initializeGame")
 	private void onStart(CallbackInfo ci) {
 		ClientLifecycleEvents.CLIENT_STARTED.invoker().onClientStarted((MinecraftClient) (Object) this);
 	}

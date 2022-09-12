@@ -3,6 +3,7 @@
   "package": "net.legacyfabric.fabric.mixin.resource.loader",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "client.ModelIdentifierMixin",
     "client.TranslationStorageMixin"
   ],
   "injectors": {
