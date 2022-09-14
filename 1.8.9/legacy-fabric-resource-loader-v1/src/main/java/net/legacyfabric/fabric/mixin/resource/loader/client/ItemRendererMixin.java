@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.mixin.resource.loader.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.render.item.ItemRenderer;
