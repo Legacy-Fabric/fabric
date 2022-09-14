@@ -35,9 +35,11 @@ public class ModelIdentifierMixin {
 	@Inject(method = "split", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/String;indexOf(I)I"), locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void modifyArray(String id, CallbackInfoReturnable<String[]> cir, String[] strings) {
 		Identifier identifier = new Identifier((id));
+
 		if (identifier.getNamespace().equals("minecraft")) {
 			return;
 		}
+
 		strings[0] = identifier.getNamespace();
 		strings[1] = identifier.getPath();
 	}
