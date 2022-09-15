@@ -23,11 +23,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.itemgroup.ItemGroup;
 
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
+import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryTest implements ModInitializer {
@@ -42,5 +44,9 @@ public class RegistryTest implements ModInitializer {
 			RegistryHelper.registerBlock(block, identifier);
 			RegistryHelper.registerItem(new BlockItem(block), identifier);
 		}
+
+		Item testItem = new Item().setItemGroup(ItemGroup.FOOD);
+		RegistryHelper.registerItem(testItem, new Identifier("legacy-fabric-api", "test_item"));
+		ItemModelRegistry.registerItemModel(testItem, new Identifier("legacy-fabric-api:test_item"));
 	}
 }
