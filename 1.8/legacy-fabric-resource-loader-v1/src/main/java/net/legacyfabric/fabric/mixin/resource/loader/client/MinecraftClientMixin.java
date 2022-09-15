@@ -21,7 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import net.legacyfabric.fabric.impl.resource.loader.ItemModelRegistryImpl;
+import net.minecraft.client.render.item.ItemRenderer;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -35,6 +38,9 @@ import net.legacyfabric.fabric.impl.resource.loader.ModResourcePackUtil;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
+	@Shadow
+	private ItemRenderer itemRenderer;
+
 	private void fabric_modifyResourcePackList(List<ResourcePack> list) {
 		List<ResourcePack> oldList = Lists.newArrayList(list);
 		list.clear();
@@ -66,5 +72,10 @@ public class MinecraftClientMixin {
 	@Inject(method = "stitchTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
 	public void reloadResources(CallbackInfo ci, ArrayList list) {
 		fabric_modifyResourcePackList(list);
+	}
+
+	@Inject(method = "initializeGame", at = @At("TAIL"))
+	public void addItemModels(CallbackInfo ci) {
+		((ItemModelRegistryImpl.Registrar) this.itemRenderer).fabric_register();
 	}
 }
