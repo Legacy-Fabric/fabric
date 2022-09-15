@@ -6,7 +6,8 @@
     "client.ClientResourceReloadListenerMixins",
     "client.DefaultResourcePackMixin",
     "client.MinecraftClientMixin",
-    "client.ReloadableResourceManagerImplMixin"
+    "client.ReloadableResourceManagerImplMixin",
+    "client.ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

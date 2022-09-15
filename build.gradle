@@ -9,7 +9,7 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version "0.12.54" apply false
+	id 'fabric-loom' version "0.13.12" apply false
 	id 'com.diffplug.spotless' version "6.5.1"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
@@ -32,7 +32,9 @@ def getSubprojectVersion(project) {
 	if (project.name == "legacyfabric-api") version = project.base_version
 	else version = project[project.name.replace("-common", "") + ".version"]
 
-	version = version + "+" + project.getParent().name
+	if (project.getParent().name != "common") {
+		version = version + "+" + project.getParent().name
+	}
 
 	if (project.name == "legacyfabric-api") return version
 

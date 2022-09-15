@@ -4,6 +4,7 @@ moduleDependencies(project, [
 		'common:legacy-fabric-api-base-common',
 		'common:legacy-fabric-networking-api-v1-common',
 		'common:legacy-fabric-registry-sync-api-v1-common',
+		'common:legacy-fabric-resource-loader-v1-common',
 		'1.8.9:legacy-fabric-api-base'
 ])
 

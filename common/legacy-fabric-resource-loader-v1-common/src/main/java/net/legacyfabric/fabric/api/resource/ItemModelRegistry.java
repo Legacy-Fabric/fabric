@@ -21,6 +21,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.api.util.SinceMC;
 import net.legacyfabric.fabric.impl.resource.loader.ItemModelRegistryImpl;
 
 /**
@@ -32,6 +33,7 @@ import net.legacyfabric.fabric.impl.resource.loader.ItemModelRegistryImpl;
  * "minecraft". This class allows registering models to the
  * correct namespace.</p>
  */
+@SinceMC("1.8")
 public final class ItemModelRegistry {
 	public static void registerItemModel(Item item, Identifier modelId) {
 		ItemModelRegistryImpl.registerItemModel(item, modelId.toString());
