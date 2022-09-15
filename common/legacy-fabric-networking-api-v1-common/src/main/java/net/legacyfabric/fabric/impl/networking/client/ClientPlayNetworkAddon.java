@@ -110,7 +110,7 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 
 	@Override
 	protected void schedule(Runnable task) {
-		MinecraftClient.getInstance().execute(task);
+		MinecraftClient.getInstance().submit(task);
 	}
 
 	@Override

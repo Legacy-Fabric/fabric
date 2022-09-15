@@ -31,7 +31,7 @@ public abstract class MinecraftServerMixin implements MinecraftServerExtensions 
 	public abstract boolean isOnThread();
 
 	@Shadow
-	public abstract ListenableFuture<Object> execute(Runnable task);
+	public abstract ListenableFuture<Object> submit(Runnable task);
 
 	@Override
 	public boolean isOnGameThread() {
@@ -40,6 +40,6 @@ public abstract class MinecraftServerMixin implements MinecraftServerExtensions 
 
 	@Override
 	public ListenableFuture<Object> executeTask(Runnable task) {
-		return this.execute(task);
+		return this.submit(task);
 	}
 }

@@ -42,7 +42,7 @@ public class ClientRemapInitializer implements ClientModInitializer {
 				throw new UncheckedIOException(e);
 			}
 
-			client.execute(() -> ClientRegistryRemapper.getInstance().readAndRemap(nbt));
+			client.submit(() -> ClientRegistryRemapper.getInstance().readAndRemap(nbt));
 		});
 	}
 }

@@ -31,7 +31,7 @@ import net.legacyfabric.fabric.impl.client.rendering.BuiltinItemRendererRegistry
 
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
-	@Redirect(method = "method_10243", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityItemStackRenderHelper;renderItem(Lnet/minecraft/item/ItemStack;)V"))
+	@Redirect(method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/BakedModel;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/entity/BlockEntityItemStackRenderHelper;renderItem(Lnet/minecraft/item/ItemStack;)V"))
 	public void onRender(BlockEntityItemStackRenderHelper instance, ItemStack stack, ItemStack itemStack, BakedModel bakedModel) {
 		BuiltinItemRendererRegistry.DynamicItemRenderer renderer = BuiltinItemRendererRegistryImpl.getRenderer(stack.getItem());
 

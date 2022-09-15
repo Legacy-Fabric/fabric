@@ -131,7 +131,7 @@ class MinecraftVersion {
 		this.userProperties = userProperties
 	}
 
-	public static final String MAPPINGS_BUILD = "382"
+	public static final String MAPPINGS_BUILD = "390"
 
 	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[] {
 			new MinecraftVersion("1.12.2"),
