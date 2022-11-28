@@ -112,7 +112,7 @@ public class SequenceCommandElement extends CommandElement {
 		for (Iterator<CommandElement> it = this.elements.iterator(); it.hasNext(); ) {
 			Text usage = it.next().getUsage(commander);
 
-			if (!usage.getString().isEmpty()) {
+			if (!usage.asUnformattedString().isEmpty()) {
 				build.append(usage);
 
 				if (it.hasNext()) {
@@ -121,6 +121,6 @@ public class SequenceCommandElement extends CommandElement {
 			}
 		}
 
-		return new LiteralText(build.getString());
+		return new LiteralText(build.asUnformattedString());
 	}
 }

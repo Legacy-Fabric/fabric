@@ -69,6 +69,6 @@ public class RepeatedCommandElement extends CommandElement {
 
 	@Override
 	public Text getUsage(PermissibleCommandSource src) {
-		return new LiteralText(this.times + '*' + this.element.getUsage(src).getString());
+		return new LiteralText(this.times + '*' + this.element.getUsage(src).asUnformattedString());
 	}
 }

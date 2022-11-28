@@ -29,10 +29,10 @@ import net.legacyfabric.fabric.impl.networking.client.CustomPayloadS2CPacketExte
 @Mixin(CustomPayloadS2CPacket.class)
 public abstract class CustomPayloadS2CPacketMixin implements CustomPayloadS2CPacketExtension {
 	@Shadow
-	public abstract byte[] method_7734();
+	public abstract byte[] getPayload();
 
 	@Override
 	public PacketByteBuf getData() {
-		return new PacketByteBuf(PacketByteBufs.empty().writeBytes(this.method_7734()));
+		return new PacketByteBuf(PacketByteBufs.empty().writeBytes(this.getPayload()));
 	}
 }

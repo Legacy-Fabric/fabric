@@ -44,13 +44,13 @@ import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
 @Mixin(ClientConnection.class)
 abstract class ClientConnectionMixin implements ChannelInfoHolder, ClientConnectionExtension {
 	@Shadow
-	private PacketListener field_8432;
+	private PacketListener packetListener;
 
 	@Shadow
 	public abstract void disconnect(Text disconnectReason);
 
 	@Shadow
-	public abstract void method_7395(Packet par1, GenericFutureListener<?>... par2);
+	public abstract void send(Packet par1, GenericFutureListener<?>... par2);
 
 	@Unique
 	private Collection<String> playChannels;
@@ -63,19 +63,19 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder, ClientConnect
 	@SuppressWarnings("UnnecessaryQualifiedMemberReference")
 	@Redirect(method = "Lnet/minecraft/network/ClientConnection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;disconnect(Lnet/minecraft/text/Text;)V"))
 	private void resendOnExceptionCaught(ClientConnection clientConnection, Text disconnectReason) {
-		PacketListener handler = this.field_8432;
+		PacketListener handler = this.packetListener;
 
 		if (handler instanceof DisconnectPacketSource) {
-			this.method_7395(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)));
+			this.send(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)));
 		} else {
 			this.disconnect(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)); // Don't send packet if we cannot send proper packets
 		}
 	}
 
-	@Inject(method = "method_7401", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false))
+	@Inject(method = "sendImmediately", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false))
 	private void checkPacket(Packet packet, GenericFutureListener<?>[] genericFutureListeners, CallbackInfo ci) {
-		if (this.field_8432 instanceof PacketCallbackListener) {
-			((PacketCallbackListener) this.field_8432).sent(packet);
+		if (this.packetListener instanceof PacketCallbackListener) {
+			((PacketCallbackListener) this.packetListener).sent(packet);
 		}
 	}
 
@@ -86,6 +86,6 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder, ClientConnect
 
 	@Override
 	public void sendPacket(Packet packet) {
-		this.method_7395(packet);
+		this.send(packet);
 	}
 }

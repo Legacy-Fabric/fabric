@@ -32,14 +32,14 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 @Mixin(class_2929.class)
 public abstract class class_2929Mixin<V> implements IdListCompat<V> {
 	@Shadow
-	public abstract void method_12859(V object, int i);
+	public abstract void add(V object, int i);
 
 	@Shadow
 	@Nullable
-	public abstract V method_12857(int i);
+	public abstract V getById(int i);
 
 	@Shadow
-	public abstract int method_12858(V object);
+	public abstract int getId(V object);
 
 	@Shadow
 	private V[] field_14375;
@@ -68,17 +68,17 @@ public abstract class class_2929Mixin<V> implements IdListCompat<V> {
 
 	@Override
 	public V fromInt(int index) {
-		return this.method_12857(index);
+		return this.getById(index);
 	}
 
 	@Override
 	public void setValue(V value, int index) {
-		this.method_12859(value, index);
+		this.add(value, index);
 	}
 
 	@Override
 	public int getInt(V value) {
-		return this.method_12858(value);
+		return this.getId(value);
 	}
 
 	@Override

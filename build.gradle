@@ -9,7 +9,7 @@ plugins {
 	id 'eclipse'
 	id 'idea'
 	id 'maven-publish'
-	id 'fabric-loom' version "1.0.7" apply false
+	id 'fabric-loom' version "1.0.12" apply false
 	id 'com.diffplug.spotless' version "6.11.0"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id 'com.matthewprenger.cursegradle' version "1.4.0"
@@ -131,7 +131,7 @@ class MinecraftVersion {
 		this.userProperties = userProperties
 	}
 
-	public static final String MAPPINGS_BUILD = "390"
+	public static final String MAPPINGS_BUILD = "441"
 
 	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[] {
 			new MinecraftVersion("1.12.2"),
@@ -332,7 +332,7 @@ allprojects {
 		archiveClassifier.set("testmod")
 	}
 	
-	[jar, testmodJar, sourcesJar].each {
+	[jar, sourcesJar].each {
 		it.from(rootProject.file("LICENSE")) {
 			rename { "${it}-${project.archivesBaseName}"}
 		}
@@ -414,7 +414,7 @@ subprojects {
 						builtBy(remapJar)
 					}
 
-					artifact(remapSourcesJar) {
+					artifact(sourcesJar) {
 						builtBy remapSourcesJar
 					}
 				}
@@ -438,13 +438,6 @@ subprojects {
 //		genCommonSourcesWithFernFlower.enabled = false
 	}
 }
-
-task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
-	input = jar.archiveFile
-	archiveFileName = "${archivesBaseName}-${project.version}-maven.jar"
-	addNestedDependencies = false
-}
-build.dependsOn remapMavenJar
 
 publishing {
 	publications {}

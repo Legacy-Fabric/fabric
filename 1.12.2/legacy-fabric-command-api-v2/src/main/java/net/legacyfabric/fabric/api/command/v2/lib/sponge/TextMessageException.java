@@ -70,7 +70,7 @@ public class TextMessageException extends Exception {
 	@Override
 	public String getMessage() {
 		Text message = this.getText();
-		return message == null ? null : message.asString();
+		return message == null ? null : message.computeValue();
 	}
 
 	/**

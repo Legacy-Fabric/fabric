@@ -268,7 +268,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 
 		Text elementUsage = this.fallbackElements.getUsage(src);
 
-		if (elementUsage.asString().isEmpty()) {
+		if (elementUsage.computeValue().isEmpty()) {
 			return usage;
 		}
 

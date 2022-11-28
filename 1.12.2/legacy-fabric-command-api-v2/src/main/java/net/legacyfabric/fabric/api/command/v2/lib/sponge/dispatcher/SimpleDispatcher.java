@@ -399,7 +399,7 @@ public final class SimpleDispatcher implements Dispatcher {
 			}
 		}
 
-		return Optional.of(new LiteralText(build.getString()));
+		return Optional.of(new LiteralText(build.asUnformattedString()));
 	}
 
 	private Set<String> filterCommands(final PermissibleCommandSource src) {

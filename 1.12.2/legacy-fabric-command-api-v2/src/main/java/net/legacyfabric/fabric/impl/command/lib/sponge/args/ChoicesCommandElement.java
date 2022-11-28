@@ -83,7 +83,7 @@ public class ChoicesCommandElement extends CommandElement {
 			}
 
 			build.append(CommandMessageFormatting.GT_TEXT);
-			return new LiteralText(build.getString());
+			return new LiteralText(build.asUnformattedString());
 		}
 
 		return super.getUsage(commander);

@@ -58,7 +58,7 @@ public class ModMetadataCommand {
 			LiteralText issueText = new LiteralText("");
 			issueText.append("Issues: ");
 			LiteralText issueUrl = new LiteralText(contact.get("issues").get());
-			if (useStyle) issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, issueUrl.asString())));
+			if (useStyle) issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, issueUrl.computeValue())));
 			issueText.append(issueUrl);
 			issueText.append("\n");
 			builder.append(issueText);
@@ -68,7 +68,7 @@ public class ModMetadataCommand {
 			LiteralText sourcesText = new LiteralText("");
 			sourcesText.append("Sources: ");
 			LiteralText sourcesUrl = new LiteralText(contact.get("sources").get());
-			if (useStyle) sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, sourcesUrl.asString())));
+			if (useStyle) sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, sourcesUrl.computeValue())));
 			sourcesText.append(sourcesUrl);
 			sourcesText.append("\n");
 			builder.append(sourcesText);

@@ -157,7 +157,7 @@ public class CommandManagerImpl implements CommandManager {
 			final String[] argSplit = arguments.split(" ", 2);
 			return Lists.newArrayList(this.dispatcher.getSuggestions(source, arguments, targetPosition));
 		} catch (CommandException e) {
-			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
+			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().asUnformattedString()))));
 			return Collections.emptyList();
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Error occured while tab completing '%s'", arguments), e);

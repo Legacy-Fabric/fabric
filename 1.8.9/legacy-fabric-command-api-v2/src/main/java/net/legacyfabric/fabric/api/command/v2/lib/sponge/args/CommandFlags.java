@@ -173,7 +173,7 @@ public final class CommandFlags extends CommandElement {
 
 			Text usage = arg.getValue().getUsage(src);
 
-			if (usage.getString().trim().length() > 0) {
+			if (usage.asUnformattedString().trim().length() > 0) {
 				builder.add(" ");
 				builder.add(usage);
 			}

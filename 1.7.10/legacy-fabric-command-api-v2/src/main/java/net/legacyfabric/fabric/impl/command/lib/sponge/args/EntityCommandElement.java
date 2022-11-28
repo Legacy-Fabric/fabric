@@ -160,6 +160,6 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 	@Override
 	public Text getUsage(PermissibleCommandSource src) {
-		return src instanceof Entity && (this.returnSource || this.returnTarget) ? new LiteralText("[" + this.getKey().getString() + "]") : super.getUsage(src);
+		return src instanceof Entity && (this.returnSource || this.returnTarget) ? new LiteralText("[" + this.getKey().asUnformattedString() + "]") : super.getUsage(src);
 	}
 }

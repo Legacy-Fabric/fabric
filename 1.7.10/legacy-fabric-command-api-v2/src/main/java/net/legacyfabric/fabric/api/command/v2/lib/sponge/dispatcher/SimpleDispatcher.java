@@ -39,8 +39,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.class_1981;
 import net.minecraft.text.ClickEvent;
+import net.minecraft.text.ClickEventAction;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -393,14 +393,14 @@ public final class SimpleDispatcher implements Dispatcher {
 			CommandMapping mapping = mappingOpt.get();
 			final Optional<Text> description = mapping.getCallable().getShortDescription(source);
 			Text text = new LiteralText(mapping.getPrimaryAlias());
-			build.append(text.setStyle(text.getStyle().setFormatting(Formatting.GREEN).setUnderline(Boolean.TRUE).setClickEvent(new ClickEvent(class_1981.field_8478, "/" + mapping.getPrimaryAlias())))).append(CommandMessageFormatting.SPACE_TEXT).append(description.orElse(mapping.getCallable().getUsage(source)));
+			build.append(text.setStyle(text.getStyle().setFormatting(Formatting.GREEN).setUnderline(Boolean.TRUE).setClickEvent(new ClickEvent(ClickEventAction.RUN_COMMAND, "/" + mapping.getPrimaryAlias())))).append(CommandMessageFormatting.SPACE_TEXT).append(description.orElse(mapping.getCallable().getUsage(source)));
 
 			if (it.hasNext()) {
 				build.append("\n");
 			}
 		}
 
-		return Optional.of(new LiteralText(build.getString()));
+		return Optional.of(new LiteralText(build.asUnformattedString()));
 	}
 
 	private Set<String> filterCommands(final PermissibleCommandSource src) {

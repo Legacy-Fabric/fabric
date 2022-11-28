@@ -57,7 +57,7 @@ public class CommandWrapper extends AbstractCommand {
 
 	@Override
 	public String getUsageTranslationKey(CommandSource source) {
-		return this.mapping.getCallable().getHelp((PermissibleCommandSource) source).map(Text::asString).orElse("");
+		return this.mapping.getCallable().getHelp((PermissibleCommandSource) source).map(Text::computeValue).orElse("");
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class CommandWrapper extends AbstractCommand {
 		try {
 			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getWorld(), pos));
 		} catch (CommandException e) {
-			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
+			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().asUnformattedString()))));
 			return Collections.emptyList();
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Error occurred while providing auto complete hints for '%s'", String.join(" ", args)), e);

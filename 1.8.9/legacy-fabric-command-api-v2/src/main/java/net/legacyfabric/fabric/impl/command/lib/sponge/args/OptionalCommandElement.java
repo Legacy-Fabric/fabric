@@ -49,7 +49,7 @@ public class OptionalCommandElement extends CommandElement {
 			Text key = this.element.getKey();
 
 			if (key != null && this.value != null) {
-				context.putArg(key.asString(), this.value);
+				context.putArg(key.computeValue(), this.value);
 			}
 
 			return;
@@ -86,7 +86,7 @@ public class OptionalCommandElement extends CommandElement {
 	public Text getUsage(PermissibleCommandSource src) {
 		final Text containingUsage = this.element.getUsage(src);
 
-		if (containingUsage.getString().isEmpty()) {
+		if (containingUsage.asUnformattedString().isEmpty()) {
 			return new LiteralText("");
 		}
 
