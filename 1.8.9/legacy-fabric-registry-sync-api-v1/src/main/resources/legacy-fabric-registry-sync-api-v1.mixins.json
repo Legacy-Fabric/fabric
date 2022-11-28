@@ -19,7 +19,8 @@
     "BiomeAccessor",
     "EntityTypeAccessor",
     "EntityTypeMixin",
-    "EntityMixin"
+    "EntityMixin",
+    "SpawnEggItemMixin"
   ],
   "client": [
   ]
