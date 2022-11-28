@@ -37,4 +37,12 @@ public class BlockEntityMixin {
 
 		return registry.getNewKey(oldKey.toString());
 	}
+
+	@ModifyArg(method = "toNbt", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtCompound;putString(Ljava/lang/String;Ljava/lang/String;)V"), index = 1)
+	private static String saveAsVanillaId(String newKey) {
+		BlockEntityTypeRegistryRemapper registryRemapper = (BlockEntityTypeRegistryRemapper) RegistryRemapper.<Class<? extends BlockEntity>>getRegistryRemapper(RegistryIds.BLOCK_ENTITY_TYPES);
+		MapBasedRegistry<String, Class<? extends BlockEntity>> registry = (MapBasedRegistry<String, Class<? extends BlockEntity>>) registryRemapper.getRegistry();
+
+		return registry.getOldKey(newKey);
+	}
 }
