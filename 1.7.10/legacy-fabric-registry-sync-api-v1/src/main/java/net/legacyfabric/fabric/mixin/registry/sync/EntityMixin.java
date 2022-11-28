@@ -49,7 +49,7 @@ public class EntityMixin {
 	}
 
 	@ModifyArg(method = {"saveSelfToNbt", "saveToNbt"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NbtCompound;putString(Ljava/lang/String;Ljava/lang/String;)V"), index = 1)
-	private static String saveAsVanillaId(String newKey) {
+	private String saveAsVanillaId(String newKey) {
 		RegistryRemapper<Class<? extends Entity>> remapper = RegistryHelperImpl.getRegistryRemapper(RegistryIds.ENTITY_TYPES);
 		OldRemappedRegistry<String, Class<? extends Entity>> registry = (OldRemappedRegistry<String, Class<? extends Entity>>) remapper.getRegistry();
 
