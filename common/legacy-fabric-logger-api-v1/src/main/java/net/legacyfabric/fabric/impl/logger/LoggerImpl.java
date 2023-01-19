@@ -17,97 +17,77 @@
 
 package net.legacyfabric.fabric.impl.logger;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import net.fabricmc.loader.impl.util.log.Log;
-import net.fabricmc.loader.impl.util.log.LogCategory;
-
 import net.legacyfabric.fabric.api.logger.v1.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class LoggerImpl implements Logger {
 	public static final String API = "LegacyFabricAPI";
-	private LogCategory category;
+	private static final String SEPARATOR = "/";
+	private final org.apache.logging.log4j.Logger Log;
 
 	public LoggerImpl(String context, String... subs) {
-		try { // Loader 0.14.3+
-			tryCreatingLogger(context, subs);
-		} catch (NoSuchMethodError e) { // Loader 0.13+
-			List<String> parts = new ArrayList<>();
-			parts.add(context);
-			Collections.addAll(parts, subs);
+		String sub = String.join(SEPARATOR, subs);
 
-			try {
-				this.category = LogCategory.class.getDeclaredConstructor(String[].class).newInstance(parts.toArray(new String[0]));
-			} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
-				throw new RuntimeException(ex);
-			}
-		}
-	}
-
-	private void tryCreatingLogger(String context, String... subs) throws NoSuchMethodError {
-		this.category = LogCategory.createCustom(context, subs);
+		Log = LogManager.getLogger("("+context + (sub.isEmpty() ? SEPARATOR+sub : "")+")");
 	}
 
 	public void info(String format) {
-		Log.info(this.category, format);
+		Log.info(format);
 	}
 
 	public void info(String format, Object... args) {
-		Log.info(this.category, format, args);
+		Log.info(format, args);
 	}
 
 	public void info(String format, Throwable exc) {
-		Log.info(this.category, format, exc);
+		Log.info(format, exc);
 	}
 
 	public void error(String format) {
-		Log.error(this.category, format);
+		Log.error(format);
 	}
 
 	public void error(String format, Object... args) {
-		Log.error(this.category, format, args);
+		Log.error(format, args);
 	}
 
 	public void error(String format, Throwable exc) {
-		Log.error(this.category, format, exc);
+		Log.error(format, exc);
 	}
 
 	public void warn(String format) {
-		Log.warn(this.category, format);
+		Log.warn(format);
 	}
 
 	public void warn(String format, Object... args) {
-		Log.warn(this.category, format, args);
+		Log.warn(format, args);
 	}
 
 	public void warn(String format, Throwable exc) {
-		Log.warn(this.category, format, exc);
+		Log.warn(format, exc);
 	}
 
 	public void debug(String format) {
-		Log.debug(this.category, format);
+		Log.debug(format);
 	}
 
 	public void debug(String format, Object... args) {
-		Log.debug(this.category, format, args);
+		Log.debug(format, args);
 	}
 
 	public void debug(String format, Throwable exc) {
-		Log.debug(this.category, format, exc);
+		Log.debug(format, exc);
 	}
 
 	public void trace(String format) {
-		Log.trace(this.category, format);
+		Log.trace(format);
 	}
 
 	public void trace(String format, Object... args) {
-		Log.trace(this.category, format, args);
+		Log.trace(format, args);
 	}
 
 	public void trace(String format, Throwable exc) {
-		Log.trace(this.category, format, exc);
+		Log.trace(format, exc);
 	}
 }
