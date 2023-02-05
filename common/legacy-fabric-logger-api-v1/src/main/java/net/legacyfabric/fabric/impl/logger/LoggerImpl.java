@@ -17,77 +17,78 @@
 
 package net.legacyfabric.fabric.impl.logger;
 
-import net.legacyfabric.fabric.api.logger.v1.Logger;
 import org.apache.logging.log4j.LogManager;
+
+import net.legacyfabric.fabric.api.logger.v1.Logger;
 
 public class LoggerImpl implements Logger {
 	public static final String API = "LegacyFabricAPI";
 	private static final String SEPARATOR = "/";
-	private final org.apache.logging.log4j.Logger Log;
+	private final org.apache.logging.log4j.Logger log;
 
 	public LoggerImpl(String context, String... subs) {
 		String sub = String.join(SEPARATOR, subs);
 
-		Log = LogManager.getLogger("("+context + (sub.isEmpty() ? SEPARATOR+sub : "")+")");
+		log = LogManager.getLogger("(" + context + (sub.isEmpty() ? SEPARATOR + sub : "") + ")");
 	}
 
 	public void info(String format) {
-		Log.info(format);
+		log.info(format);
 	}
 
 	public void info(String format, Object... args) {
-		Log.info(format, args);
+		log.info(format, args);
 	}
 
 	public void info(String format, Throwable exc) {
-		Log.info(format, exc);
+		log.info(format, exc);
 	}
 
 	public void error(String format) {
-		Log.error(format);
+		log.error(format);
 	}
 
 	public void error(String format, Object... args) {
-		Log.error(format, args);
+		log.error(format, args);
 	}
 
 	public void error(String format, Throwable exc) {
-		Log.error(format, exc);
+		log.error(format, exc);
 	}
 
 	public void warn(String format) {
-		Log.warn(format);
+		log.warn(format);
 	}
 
 	public void warn(String format, Object... args) {
-		Log.warn(format, args);
+		log.warn(format, args);
 	}
 
 	public void warn(String format, Throwable exc) {
-		Log.warn(format, exc);
+		log.warn(format, exc);
 	}
 
 	public void debug(String format) {
-		Log.debug(format);
+		log.debug(format);
 	}
 
 	public void debug(String format, Object... args) {
-		Log.debug(format, args);
+		log.debug(format, args);
 	}
 
 	public void debug(String format, Throwable exc) {
-		Log.debug(format, exc);
+		log.debug(format, exc);
 	}
 
 	public void trace(String format) {
-		Log.trace(format);
+		log.trace(format);
 	}
 
 	public void trace(String format, Object... args) {
-		Log.trace(format, args);
+		log.trace(format, args);
 	}
 
 	public void trace(String format, Throwable exc) {
-		Log.trace(format, exc);
+		log.trace(format, exc);
 	}
 }
