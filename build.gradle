@@ -64,7 +64,7 @@ def getBranch() {
 
 def static setupRepositories(RepositoryHandler repositories) {
 	def ENV = System.getenv()
-	if (ENV.MAVEN_PUBLISH_TOKEN) {
+	if (ENV.MAVEN_PUBLISH_CREDENTIALS) {
 		repositories.maven {
 			url 'https://maven.legacyfabric.net/'
 			credentials {
