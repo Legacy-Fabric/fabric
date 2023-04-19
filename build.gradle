@@ -68,8 +68,8 @@ def static setupRepositories(RepositoryHandler repositories) {
 		repositories.maven {
 			url 'https://maven.legacyfabric.net/'
 			credentials {
-				username 'legacyfabric-ci'
-				password ENV.MAVEN_PUBLISH_TOKEN
+				username ENV.MAVEN_PUBLISH_CREDENTIALS.split(":")[0]
+				password ENV.MAVEN_PUBLISH_CREDENTIALS.split(":")[1]
 			}
 			authentication {
 				basic(BasicAuthentication)
