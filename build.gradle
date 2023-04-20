@@ -66,7 +66,7 @@ def static setupRepositories(RepositoryHandler repositories) {
 	def ENV = System.getenv()
 	if (ENV.MAVEN_PUBLISH_CREDENTIALS) {
 		repositories.maven {
-			url 'https://maven.legacyfabric.net/'
+			url 'https://repo.legacyfabric.net/repository/legacyfabric'
 			credentials {
 				username ENV.MAVEN_PUBLISH_CREDENTIALS.split(":")[0]
 				password ENV.MAVEN_PUBLISH_CREDENTIALS.split(":")[1]
@@ -361,6 +361,7 @@ remapTestmodJar {
 
 javadoc {
 	options {
+		failOnError = false
 		source = "8"
 		encoding = 'UTF-8'
 		charSet = 'UTF-8'
