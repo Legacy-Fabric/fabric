@@ -449,7 +449,7 @@ public final class CommandSpec implements CommandCallable {
 		Preconditions.checkNotNull(source, "source");
 		StringBuilder builder = new StringBuilder();
 		this.getShortDescription(source).ifPresent((a) -> builder.append(a.asUnformattedString()).append("\n"));
-		builder.append(this.getUsage(source));
+		builder.append(this.getUsage(source).computeValue());
 		this.getExtendedDescription(source).ifPresent((a) -> builder.append(a.asUnformattedString()).append("\n"));
 		return Optional.of(new LiteralText(builder.toString()));
 	}
