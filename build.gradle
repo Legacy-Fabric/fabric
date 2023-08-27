@@ -1,20 +1,21 @@
 buildscript {
 	dependencies {
-		classpath 'org.kohsuke:github-api:1.135'
+		classpath "org.kohsuke:github-api:1.135"
 	}
 }
 
 plugins {
-	id 'java-library'
-	id 'eclipse'
-	id 'idea'
-	id 'maven-publish'
-	id 'fabric-loom' version "1.0.12" apply false
-	id 'com.diffplug.spotless' version "6.11.0"
+	id "java-library"
+	id "eclipse"
+	id "idea"
+	id "maven-publish"
+	id "fabric-loom" version "1.3.9" apply false
+	id "legacy-looming" version "1.3.75" apply false
+	id "com.diffplug.spotless" version "6.18.0"
 	id "org.ajoberstar.grgit" version "3.1.1"
-	id 'com.matthewprenger.cursegradle' version "1.4.0"
-	id "com.modrinth.minotaur" version "2.4.3"
-	id 'signing'
+	id "com.matthewprenger.cursegradle" version "1.4.0"
+	id "com.modrinth.minotaur" version "2.8.2"
+	id "signing"
 }
 
 def ENV = System.getenv()
@@ -22,10 +23,9 @@ def ENV = System.getenv()
 setVersion("${project.base_version}")
 logger.lifecycle("Building Fabric: " + version)
 
-
 import net.fabricmc.loom.task.RemapJarTask
 import org.apache.commons.codec.digest.DigestUtils
-
+import org.kohsuke.github.GHReleaseBuilder
 
 def getSubprojectVersion(project) {
 	def version
@@ -46,18 +46,20 @@ def getSubprojectVersion(project) {
 		return version + "+uncommited"
 	} else {
 		return version + "+" + latestCommits.get(0).id.substring(0, 8) +
-				DigestUtils.sha256Hex("${project.getParent().name}").substring(0, 2)
+			DigestUtils.sha256Hex("${project.getParent().name}").substring(0, 2)
 	}
 }
 
 def getBranch() {
-	if (System.getenv().GIT_BRANCH) {
-		def branch = System.getenv().GIT_BRANCH
+	if (ENV.GIT_BRANCH) {
+		def branch = ENV.GIT_BRANCH
 		return branch.substring(branch.lastIndexOf("/") + 1)
 	}
+
 	if (grgit == null) {
 		return "unknown"
 	}
+
 	def branch = grgit.branch.current().name
 	return branch.substring(branch.lastIndexOf("/") + 1)
 }
@@ -66,7 +68,7 @@ def static setupRepositories(RepositoryHandler repositories) {
 	def ENV = System.getenv()
 	if (ENV.MAVEN_PUBLISH_CREDENTIALS) {
 		repositories.maven {
-			url 'https://repo.legacyfabric.net/repository/legacyfabric'
+			url "https://repo.legacyfabric.net/repository/legacyfabric"
 			credentials {
 				username ENV.MAVEN_PUBLISH_CREDENTIALS.split(":")[0]
 				password ENV.MAVEN_PUBLISH_CREDENTIALS.split(":")[1]
@@ -79,8 +81,9 @@ def static setupRepositories(RepositoryHandler repositories) {
 }
 
 def moduleDependencies(project, List<String> depNames) {
-	def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: 'namedElements') }
+	def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: "namedElements") }
 	def testOutputs = depNames.iterator().collect { findProject(":$it").sourceSets.testmod.output }
+
 	project.dependencies {
 		deps.each {
 			api it
@@ -92,7 +95,7 @@ def moduleDependencies(project, List<String> depNames) {
 	}
 
 	if (project.name != "legacy-fabric-logger-api-v1") {
-		deps.add(project.dependencies.project(path: ":common:legacy-fabric-logger-api-v1", configuration: 'namedElements'))
+		deps.add(project.dependencies.project(path: ":common:legacy-fabric-logger-api-v1", configuration: "namedElements"))
 	}
 
 	// As we manually handle the maven artifacts, we need to also manually specify the deps.
@@ -131,16 +134,14 @@ class MinecraftVersion {
 		this.userProperties = userProperties
 	}
 
-	public static final String MAPPINGS_BUILD = "441"
-
-	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[] {
-			new MinecraftVersion("1.12.2"),
-			new MinecraftVersion("1.11.2"),
-			new MinecraftVersion("1.10.2"),
-			new MinecraftVersion("1.9.4"),
-			new MinecraftVersion("1.8.9"),
-			new MinecraftVersion("1.8", true),
-			new MinecraftVersion("1.7.10", true)
+	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[]{
+		new MinecraftVersion("1.12.2"),
+		new MinecraftVersion("1.11.2"),
+		new MinecraftVersion("1.10.2"),
+		new MinecraftVersion("1.9.4"),
+		new MinecraftVersion("1.8.9"),
+		new MinecraftVersion("1.8", true),
+		new MinecraftVersion("1.7.10", true)
 	}
 }
 
@@ -172,10 +173,11 @@ allprojects {
 	group = "net.legacyfabric.legacy-fabric-api"
 
 	apply plugin: "java-library"
-	apply plugin: 'checkstyle'
-	apply plugin: 'maven-publish'
-	apply plugin: 'signing'
-	apply plugin: 'fabric-loom'
+	apply plugin: "checkstyle"
+	apply plugin: "maven-publish"
+	apply plugin: "signing"
+	apply plugin: "fabric-loom"
+	apply plugin: "legacy-looming"
 	apply plugin: "com.diffplug.spotless"
 
 	tasks.withType(GenerateModuleMetadata) {
@@ -186,8 +188,8 @@ allprojects {
 		setupRepositories(repositories)
 	}
 
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
 
 	tasks.withType(JavaCompile).configureEach {
 		it.options.release = 8
@@ -205,16 +207,7 @@ allprojects {
 		}
 	}
 
-	repositories {
-		maven { url "https://maven.legacyfabric.net/" }
-		maven {
-			name = 'Babric'
-			url = 'https://maven.glass-launcher.net/babric'
-		}
-	}
-
 	MinecraftVersion versionInfo = getVersionInfo(it)
-
 	String projectName = it.name
 
 	loom {
@@ -237,8 +230,6 @@ allprojects {
 				source sourceSets.testmod
 			}
 		}
-
-		setIntermediaryUrl('https://maven.legacyfabric.net/net/legacyfabric/intermediary/%1$s/intermediary-%1$s-v2.jar')
 	}
 
 	allprojects.each { p ->
@@ -257,49 +248,16 @@ allprojects {
 		}
 	}
 
-	def currentOs = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
+	def currentOs = System.getProperty("os.name").toLowerCase(Locale.ENGLISH)
 
 	dependencies {
-		minecraft("com.mojang:minecraft:${versionInfo.mc_version}")
-		mappings("net.legacyfabric:yarn:${versionInfo.mc_version}+build.${MinecraftVersion.MAPPINGS_BUILD}:v2")
+		minecraft "com.mojang:minecraft:${versionInfo.mc_version}"
+		mappings legacy.yarn(versionInfo.mc_version, project.yarn_mappings_build)
+		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-		modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
-
-		implementation 'com.mojang:brigadier:1.0.17'
-
-		if (currentOs.contains("mac")) {
-			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209'
-			implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209'
-			implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
-		} else if (currentOs.contains("linux")) {
-			implementation 'org.lwjgl.lwjgl:lwjgl_util:2.9.4-babric.1'
-			implementation 'org.lwjgl.lwjgl:lwjgl:2.9.4-babric.1'
-			implementation 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-babric.1'
-		}
+		implementation "com.mojang:brigadier:1.0.17"
 
 		testmodImplementation sourceSets.main.output
-	}
-
-	if (currentOs.contains("mac")) {
-		configurations.all {
-			resolutionStrategy {
-				dependencySubstitution {
-					substitute(module('org.lwjgl.lwjgl:lwjgl_util:2.9.2-nightly-201408222')) using module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209')
-					substitute module('org.lwjgl.lwjgl:lwjgl:2.9.2-nightly-201408222') using module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209')
-				}
-				force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
-			}
-		}
-	} else if (currentOs.contains("linux")) {
-		configurations.all {
-			resolutionStrategy {
-				dependencySubstitution {
-					substitute(module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209')) using module('org.lwjgl.lwjgl:lwjgl_util:2.9.4-babric.1')
-					substitute module('org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209') using module('org.lwjgl.lwjgl:lwjgl:2.9.4-babric.1')
-				}
-				force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-babric.1'
-			}
-		}
 	}
 
 	tasks.withType(ProcessResources).configureEach {
@@ -318,7 +276,7 @@ allprojects {
 
 	checkstyle {
 		configFile = rootProject.file("checkstyle.xml")
-		toolVersion = "10.3.3"
+		toolVersion = "10.11.0"
 	}
 
 	tasks.withType(AbstractArchiveTask) {
@@ -331,10 +289,10 @@ allprojects {
 		destinationDirectory = new File(project.buildDir, "devlibs")
 		archiveClassifier.set("testmod")
 	}
-	
+
 	[jar, sourcesJar].each {
 		it.from(rootProject.file("LICENSE")) {
-			rename { "${it}-${project.archivesBaseName}"}
+			rename { "${it}-${project.archivesBaseName}" }
 		}
 	}
 
@@ -363,19 +321,19 @@ javadoc {
 	options {
 		failOnError = false
 		source = "8"
-		encoding = 'UTF-8'
-		charSet = 'UTF-8'
+		encoding = "UTF-8"
+		charSet = "UTF-8"
 		memberLevel = JavadocMemberLevel.PACKAGE
 		links(
-				'https://guava.dev/releases/21.0/api/docs/',
-				'https://asm.ow2.io/javadoc/',
-				'https://docs.oracle.com/javase/8/docs/api/',
-				'https://jenkins.liteloader.com/job/Mixin/javadoc/',
-				'https://logging.apache.org/log4j/2.x/log4j-api/apidocs/'
-				// Need to add minecraft jd publication etc once there is one available
+			"https://guava.dev/releases/21.0/api/docs/",
+			"https://asm.ow2.io/javadoc/",
+			"https://docs.oracle.com/javase/8/docs/api/",
+			"https://jenkins.liteloader.com/job/Mixin/javadoc/",
+			"https://logging.apache.org/log4j/2.x/log4j-api/apidocs/"
+			// Need to add minecraft jd publication etc once there is one available
 		)
 		// Disable the crazy super-strict doclint tool in Java 8
-		addStringOption('Xdoclint:none', '-quiet')
+		addStringOption("Xdoclint:none", "-quiet")
 	}
 
 	allprojects.each {
@@ -401,7 +359,7 @@ subprojects {
 		testmodImplementation sourceSets.main.output
 
 		if (project.name != "legacy-fabric-logger-api-v1") {
-			api project(path: ":common:legacy-fabric-logger-api-v1", configuration: 'namedElements')
+			api project(path: ":common:legacy-fabric-logger-api-v1", configuration: "namedElements")
 		}
 	}
 
@@ -411,13 +369,7 @@ subprojects {
 		publishing {
 			publications {
 				mavenJava(MavenPublication) {
-					artifact(remapJar) {
-						builtBy(remapJar)
-					}
-
-					artifact(sourcesJar) {
-						builtBy remapSourcesJar
-					}
+					from components.java
 				}
 			}
 		}
@@ -474,16 +426,16 @@ remapJar {
 }
 
 curseforge {
-	if (project.hasProperty('curse_api_key')) {
-		apiKey = project.getProperty('curse_api_key')
+	if (project.hasProperty("curse_api_key")) {
+		apiKey = project.getProperty("curse_api_key")
 	} else if (ENV.CURSE_API_KEY) {
 		apiKey = ENV.CURSE_API_KEY
 	}
 	project {
-		id = '400281'
-		changelog = 'A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits'
-		releaseType = 'release'
-		addGameVersion 'Fabric'
+		id = "400281"
+		changelog = "A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits"
+		releaseType = "release"
+		addGameVersion "Fabric"
 
 		MinecraftVersion.VERSIONS.each {
 			addGameVersion it.mc_version
@@ -502,7 +454,7 @@ curseforge {
 	}
 }
 
-import org.kohsuke.github.GHReleaseBuilder
+
 import org.kohsuke.github.GitHub
 
 task github(dependsOn: remapJar) {
@@ -527,19 +479,20 @@ task github(dependsOn: remapJar) {
 
 modrinth {
 	projectId = "legacy-fabric-api"
-	versionName = "Legacy Fabric API $project.version"
+
+	versionNumber = "${project.version}"
+	versionName = "Legacy Fabric API ${project.version}"
 	versionType = "release"
 	changelog = "A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits"
 
 	uploadFile = remapJar
 
 	def vers = []
-
 	MinecraftVersion.VERSIONS.each {
 		vers.add it.mc_version
 	}
-
 	gameVersions = vers
+	loaders = ["fabric"]
 }
 
 // A task to ensure that the version being released has not already been released.

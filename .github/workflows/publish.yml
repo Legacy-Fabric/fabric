@@ -1,23 +1,24 @@
 name: Release
-on: [workflow_dispatch] # Manual trigger
+
+on: [workflow_dispatch]
 
 permissions:
   contents: write
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container:
       image: eclipse-temurin:17-jdk
       options: --user root
     steps:
       - run: apt update && apt install git -y && git --version
       - run: git config --global --add safe.directory /__w/fabric/fabric
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew checkVersion build publish --stacktrace github curseforge modrinth
+      - run: ./gradlew checkVersion build publish github curseforge modrinth --stacktrace
         env:
           MAVEN_PUBLISH_CREDENTIALS: ${{ secrets.MAVEN_PUBLISH_CREDENTIALS }}
           CURSE_API_KEY: ${{ secrets.CURSE_API_KEY }}
