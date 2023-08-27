@@ -42,8 +42,8 @@ public class ModelFeatureTest implements ClientModInitializer {
 					public void render(LivingEntity entity, float handSwing, float handSwingAmount, float tickDelta, float age, float headYaw, float headPitch, float scale) {
 						GlStateManager.pushMatrix();
 						GlStateManager.enableTexture();
-						GlStateManager.translatef(0.0F, 1.0F, 0.0F);
-						GlStateManager.scalef(2, 2, 2);
+						GlStateManager.translate(0.0F, 1.0F, 0.0F);
+						GlStateManager.scale(2, 2, 2);
 						MinecraftClient.getInstance().getBlockRenderManager().renderBlockEntity(state, 9923917);
 						GlStateManager.disableTexture();
 						GlStateManager.popMatrix();

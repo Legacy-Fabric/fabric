@@ -84,7 +84,7 @@ public class FabricCreativeGuiComponents {
 		}
 
 		@Override
-		public void renderBg(MinecraftClient client, int mouseX, int mouseY) {
+		public void mouseDragged(MinecraftClient client, int mouseX, int mouseY) {
 			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 			this.visible = extensions.fabric_isButtonVisible(type);
 			this.active = extensions.fabric_isButtonEnabled(type);
@@ -98,7 +98,7 @@ public class FabricCreativeGuiComponents {
 
 				try { // 1.8+
 					GlStateManager.disableLighting();
-					GlStateManager.color4f(1F, 1F, 1F, 1F);
+					GlStateManager.color(1F, 1F, 1F, 1F);
 				} catch (NoClassDefFoundError e) { // 1.7.10-
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				}

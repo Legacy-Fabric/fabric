@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.test.client.keybinding;
 
 import org.lwjgl.input.Keyboard;
 
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 
 import net.fabricmc.api.ClientModInitializer;
 

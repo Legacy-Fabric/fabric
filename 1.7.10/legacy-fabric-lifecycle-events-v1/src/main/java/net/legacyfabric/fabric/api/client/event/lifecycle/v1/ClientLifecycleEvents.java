@@ -18,7 +18,7 @@
 package net.legacyfabric.fabric.api.client.event.lifecycle.v1;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.GameOptions;
+import net.minecraft.client.option.GameOptions;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.level.LevelInfo;
 

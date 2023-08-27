@@ -21,7 +21,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 
 public final class KeyBindingRegistryImpl {
 	private static final List<KeyBinding> moddedKeyBindings = Lists.newArrayList();
