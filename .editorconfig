@@ -16,6 +16,10 @@ indent_style = tab
 indent_style = space
 indent_size = 2
 
+[*.yml]
+indent_style = space
+indent_size = 2
+
 [*.properties]
 indent_style = space
 indent_size = 2

@@ -4,16 +4,17 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    container:
-      image: eclipse-temurin:17-jdk
-      options: --user root
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew check build publishToMavenLocal --stacktrace --parallel --warning-mode=fail --refresh-dependencies
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
+      - run: ./gradlew check build publishToMavenLocal --stacktrace --parallel
       - uses: actions/upload-artifact@v3
         with:
           name: Artifacts
