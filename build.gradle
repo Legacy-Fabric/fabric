@@ -369,6 +369,9 @@ subprojects {
 		publishing {
 			publications {
 				mavenJava(MavenPublication) {
+					artifact(remapJar) {
+						builtBy remapJar
+					}
 					artifact(remapSourcesJar) {
 						builtBy remapSourcesJar
 					}
