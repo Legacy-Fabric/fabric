@@ -1,6 +1,10 @@
 # Gradle
 .gradle
 
+# VSCode
+.settings/
+.vscode/
+
 # Eclipse
 .checkstyle
 .classpath
@@ -23,6 +27,10 @@ jars/
 out/
 classes/
 
+# Generated sources
+# The trailing * is important, otherwise Git wouldn't evaluate the directories at all and we wouldn't be able to un-ignore some of them.
+**/src/generated/*
+
 # Debug artifacts
 run
 *.log
@@ -33,13 +41,3 @@ $RECYCLE.BIN/
 
 # Mac
 .DS_Store
-
-# Other
-*~
-[._]*.s[a-v][a-z]
-[._]*.sw[a-p]
-[._]s[a-rt-v][a-z]
-[._]ss[a-gi-z]
-[._]sw[a-p]
-[._]*.un~
-!*.svg 

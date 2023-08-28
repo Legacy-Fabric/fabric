@@ -32,10 +32,10 @@ public abstract class SignBlockEntity_2Mixin implements PermissibleCommandSource
 	@Final
 	@Dynamic
 	@Shadow
-	PlayerEntity field_1466;
+	PlayerEntity editor;
 
 	@Override
 	public boolean hasPermission(String perm) {
-		return ((PermissibleCommandSource) this.field_1466).hasPermission(perm);
+		return ((PermissibleCommandSource) this.editor).hasPermission(perm);
 	}
 }

@@ -36,7 +36,7 @@ public class InGameHudMixin {
 	@Final
 	private MinecraftClient client;
 
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;color4f(FFFF)V"), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(I)V")))
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;color(FFFF)V"), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(I)V")))
 	public void render(float tickDelta, CallbackInfo callbackInfo) {
 		HudRenderCallback.EVENT.invoker().onHudRender(this.client, tickDelta);
 	}

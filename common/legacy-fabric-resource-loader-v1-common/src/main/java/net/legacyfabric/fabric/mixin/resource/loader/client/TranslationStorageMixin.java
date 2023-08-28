@@ -52,21 +52,22 @@ import net.legacyfabric.fabric.api.util.VersionUtils;
 @Mixin(TranslationStorage.class)
 public abstract class TranslationStorageMixin {
 	@Shadow
-	protected abstract void method_5949(List<Resource> resources) throws IOException;
+	protected abstract void load(List<Resource> resources) throws IOException;
 
 	@Shadow
 	@Final
-	private static Splitter field_6655;
+	private static Splitter TOKEN_SPLITTER;
 	@Shadow
 	@Final
-	private static Pattern field_6656;
+	private static Pattern TOKEN_PATTERN;
 	@Shadow
 	Map<String, String> translations;
+
 	private static final boolean isUpperCase = VersionUtils.matches("<1.11");
 
 	private static final Gson GSON = new GsonBuilder().create();
 
-	@Inject(method = "method_5945", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/language/TranslationStorage;method_5950()V"))
+	@Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/language/TranslationStorage;setRightToLeft()V"))
 	private void loadLangFileFromOtherVersion(ResourceManager resourceManager, List<String> languages, CallbackInfo ci) {
 		for (String string : languages) {
 			String langName = String.format("lang/%s.lang", getCorrectLangCode(string, false));
@@ -76,13 +77,13 @@ public abstract class TranslationStorageMixin {
 				boolean isStyleHappy = false;
 
 				try {
-					this.method_5949(resourceManager.getAllResources(new Identifier(namespace, langName)));
+					this.load(resourceManager.getAllResources(new Identifier(namespace, langName)));
 				} catch (IOException ignored) {
 					isStyleHappy = true;
 				}
 
 				try {
-					this.method_5949(resourceManager.getAllResources(new Identifier(namespace, jsonName)));
+					this.load(resourceManager.getAllResources(new Identifier(namespace, jsonName)));
 				} catch (IOException ignored) {
 					isStyleHappy = true;
 				}
@@ -109,7 +110,7 @@ public abstract class TranslationStorageMixin {
 	 * @reason optimize + load json files correctly
 	 */
 	@Overwrite
-	private void method_5946(InputStream stream) throws IOException {
+	private void load(InputStream stream) throws IOException {
 		List<String> lines = IOUtils.readLines(stream, Charsets.UTF_8);
 
 		if (lines.get(0).startsWith("{")) { // Load as json
@@ -120,11 +121,11 @@ public abstract class TranslationStorageMixin {
 		} else { // Load as properties/lang
 			for (String string : lines) {
 				if (!string.isEmpty() && string.charAt(0) != '#') {
-					String[] strings = Iterables.toArray(field_6655.split(string), String.class);
+					String[] strings = Iterables.toArray(TOKEN_SPLITTER.split(string), String.class);
 
 					if (strings != null && strings.length == 2) {
 						String string2 = strings[0];
-						String string3 = field_6656.matcher(strings[1]).replaceAll("%$1s");
+						String string3 = TOKEN_PATTERN.matcher(strings[1]).replaceAll("%$1s");
 						this.translations.put(string2, string3);
 					}
 				}
@@ -135,10 +136,7 @@ public abstract class TranslationStorageMixin {
 	private void recursiveLoadTranslations(@NotNull String currentKey, JsonObject obj) {
 		for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
 			if (entry.getValue() instanceof JsonObject) {
-				recursiveLoadTranslations(
-						(currentKey.isEmpty() ? "" : currentKey + ".") + entry.getKey(),
-						(JsonObject) entry.getValue()
-				);
+				recursiveLoadTranslations((currentKey.isEmpty() ? "" : currentKey + ".") + entry.getKey(), (JsonObject) entry.getValue());
 			} else {
 				String key = currentKey;
 
@@ -150,10 +148,7 @@ public abstract class TranslationStorageMixin {
 					key = entry.getKey();
 				}
 
-				this.translations.put(
-						key,
-						field_6656.matcher(entry.getValue().getAsString()).replaceAll("%$1s")
-				);
+				this.translations.put(key, TOKEN_PATTERN.matcher(entry.getValue().getAsString()).replaceAll("%$1s"));
 			}
 		}
 	}
