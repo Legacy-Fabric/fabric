@@ -213,10 +213,10 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 
 				if (ex instanceof ArgumentParseException.WithUsage) {
 					// This indicates a previous child failed, so we just prepend our child
-					throw new ArgumentParseException.WithUsage(ex, new LiteralText(key + " " + ((ArgumentParseException.WithUsage) ex).getUsage().computeValue()));
+					throw new ArgumentParseException.WithUsage(ex, new LiteralText(key + " " + ((ArgumentParseException.WithUsage) ex).getUsage().asUnformattedString()));
 				}
 
-				throw new ArgumentParseException.WithUsage(ex, new LiteralText(key + " " + mapping.getCallable().getUsage(source).computeValue()));
+				throw new ArgumentParseException.WithUsage(ex, new LiteralText(key + " " + mapping.getCallable().getUsage(source).asUnformattedString()));
 			}
 		} else {
 			// Not a child, so let's continue with the fallback.
