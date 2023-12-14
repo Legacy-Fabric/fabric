@@ -120,6 +120,6 @@ public abstract class CommandElement {
 	 * @return The formatted usage
 	 */
 	public Text getUsage(PermissibleCommandSource src) {
-		return this.getKey() == null ? new LiteralText("") : new LiteralText("<" + this.getKey() + ">");
+		return this.getKey() == null ? new LiteralText("") : new LiteralText("<" + this.getKey().asUnformattedString() + ">");
 	}
 }

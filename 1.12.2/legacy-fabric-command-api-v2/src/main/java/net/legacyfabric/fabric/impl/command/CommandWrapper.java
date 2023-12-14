@@ -92,7 +92,7 @@ public class CommandWrapper extends AbstractCommand {
 						usage = this.mapping.getCallable().getUsage((PermissibleCommandSource) source);
 					}
 
-					source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", this.getCommandName(), usage))));
+					source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", this.getCommandName(), usage.asUnformattedString()))));
 				}
 			}
 		} catch (Throwable t) {

@@ -82,7 +82,7 @@ public final class CommandArgs {
 	 */
 	public String peek() throws ArgumentParseException {
 		if (!this.hasNext()) {
-			throw this.createError(new LiteralText("Not enough arguments"));
+			throw this.createError(new LiteralText("Not enough arguments!"));
 		}
 
 		return this.args.get(this.index + 1).getValue();
