@@ -1,5 +1,7 @@
 version = getSubprojectVersion(project)
 
 moduleDependencies(project, [
-		"common:legacy-fabric-item-groups-v1-common"
+	"common": [
+	    "legacy-fabric-item-groups-v1-common"
+	]
 ])

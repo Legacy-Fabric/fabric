@@ -121,6 +121,54 @@ def moduleDependencies(project, List<String> depNames) {
 	}
 }
 
+def moduleDependencies(project, Map<String, List<String>> depMap) {
+	def depNames = depMap.entrySet().iterator().collect {entry ->
+		def moduleMC = entry.getKey()
+		def modules = entry.getValue();
+
+		return modules.collect {"$moduleMC:$it"}
+	}.flatten()
+
+	def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: "namedElements") }
+	def testOutputs = depNames.iterator().collect { findProject(":$it").sourceSets.testmod.output }
+
+	project.dependencies {
+		deps.each {
+			api it
+		}
+
+		testOutputs.each {
+			testmodImplementation it
+		}
+	}
+
+	if (project.name != "legacy-fabric-logger-api-v1") {
+		deps.add(project.dependencies.project(path: ":common:legacy-fabric-logger-api-v1", configuration: "namedElements"))
+	}
+
+	// As we manually handle the maven artifacts, we need to also manually specify the deps.
+	project.publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				if (project.name == "legacyfabric-api") {
+					artifactId = "legacy-fabric-api"
+				}
+
+				pom.withXml {
+					def depsNode = asNode().appendNode("dependencies")
+					deps.each {
+						def depNode = depsNode.appendNode("dependency")
+						depNode.appendNode("groupId", it.group)
+						depNode.appendNode("artifactId", it.name)
+						depNode.appendNode("version", it.version)
+						depNode.appendNode("scope", "compile")
+					}
+				}
+			}
+		}
+	}
+}
+
 class MinecraftVersion {
 	public String mc_version
 	public boolean userProperties
