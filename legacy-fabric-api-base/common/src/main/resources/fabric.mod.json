@@ -16,7 +16,7 @@
     "FabricMC"
   ],
   "depends": {
-    "minecraft": "<1.14"
+    "minecraft": "${minecraft_version}"
   },
   "description": "Shared hooks used by other api modules",
   "custom": {

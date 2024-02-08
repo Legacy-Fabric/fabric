@@ -9,6 +9,6 @@
     "main": []
   },
   "depends": {
-    "minecraft": ">=1.8"
+    "minecraft": "${minecraft_version}"
   }
 }
