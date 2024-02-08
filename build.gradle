@@ -153,6 +153,8 @@ def moduleDependencies(Project project, List<String> projectNames) {
 
 	def projectMCVersion = VersionHelper.parseVersion(getMCVersion(project))
 
+	def isCommon = project.name.endsWith("_common")
+
 	rootProject.subprojects {
 		def subProjectName = getProjectSimpleName(it)
 
@@ -163,12 +165,14 @@ def moduleDependencies(Project project, List<String> projectNames) {
 		}
 	}
 
-	if (!project.name.endsWith("_common")) {
+	if (!isCommon) {
 		def commonProject = findProject(":${getProjectSimpleName(project)}_common")
 
 		if (commonProject != null) {
 			depNames.add(0, commonProject.name)
 		}
+	} else {
+		depNames.removeIf { !it.endsWith("_common")}
 	}
 
 	def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: "namedElements") }
