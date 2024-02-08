@@ -64,6 +64,32 @@ def getProjectMavenName(project) {
 	return simpleName
 }
 
+
+
+static def getMCRange(Project project) {
+	def predicates = []
+
+	if (project.hasProperty("minVersionIncluded")) {
+		predicates.add(">=${VersionHelper.parseVersion(project["minVersionIncluded"]).friendlyString}")
+	}
+
+	if (project.hasProperty("minVersionExcluded")) {
+		predicates.add(">${VersionHelper.parseVersion(project["minVersionExcluded"]).friendlyString}")
+	}
+
+	if (project.hasProperty("maxVersionIncluded")) {
+		predicates.add("<=${VersionHelper.parseVersion(project["maxVersionIncluded"]).friendlyString}")
+	}
+
+	if (project.hasProperty("maxVersionExcluded")) {
+		predicates.add("<${VersionHelper.parseVersion(project["maxVersionExcluded"]).friendlyString}")
+	}
+
+	if (predicates.isEmpty()) predicates.add("*")
+
+	return predicates.join(" ")
+}
+
 def getSubprojectVersion(Project project) {
 	def version
 
@@ -122,7 +148,21 @@ def static setupRepositories(RepositoryHandler repositories) {
 	}
 }
 
-def moduleDependencies(Project project, List<String> depNames) {
+def moduleDependencies(Project project, List<String> projectNames) {
+	def depNames = []
+
+	def projectMCVersion = VersionHelper.parseVersion(getMCVersion(project))
+
+	rootProject.subprojects {
+		def subProjectName = getProjectSimpleName(it)
+
+		if (projectNames.contains(subProjectName)) {
+			def predicate = VersionHelper.parsePredicate(getMCRange(it))
+
+			if (predicate.test(projectMCVersion)) depNames.add(it.name)
+		}
+	}
+
 	if (!project.name.endsWith("_common")) {
 		def commonProject = findProject(":${getProjectSimpleName(project)}_common")
 
@@ -171,30 +211,6 @@ def moduleDependencies(Project project, List<String> depNames) {
 			}
 		}
 	}
-}
-
-static def getMCRange(Project project) {
-	def predicates = []
-
-	if (project.hasProperty("minVersionIncluded")) {
-		predicates.add(">=${VersionHelper.parseVersion(project["minVersionIncluded"]).friendlyString}")
-	}
-
-	if (project.hasProperty("minVersionExcluded")) {
-		predicates.add(">${VersionHelper.parseVersion(project["minVersionExcluded"]).friendlyString}")
-	}
-
-	if (project.hasProperty("maxVersionIncluded")) {
-		predicates.add("<=${VersionHelper.parseVersion(project["maxVersionIncluded"]).friendlyString}")
-	}
-
-	if (project.hasProperty("maxVersionExcluded")) {
-		predicates.add("<${VersionHelper.parseVersion(project["maxVersionExcluded"]).friendlyString}")
-	}
-
-	if (predicates.isEmpty()) predicates.add("*")
-
-	return predicates.join(" ")
 }
 
 allprojects {
