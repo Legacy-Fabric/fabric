@@ -33,6 +33,7 @@ loadProject("legacy-fabric-command-api-v1")
 loadProject("legacy-fabric-entity-events-v1")
 loadProject("legacy-fabric-gamerule-api-v1")
 loadProject("legacy-fabric-item-groups-v1")
+loadProject("legacy-fabric-keybindings-api-v1")
 
 //include("common")
 //include("common:legacy-fabric-logger-api-v1")

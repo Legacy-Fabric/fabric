@@ -9,6 +9,6 @@
     ]
   },
   "depends": {
-    "minecraft": "<=1.7.10"
+    "minecraft": "${minecraft_version}"
   }
 }
