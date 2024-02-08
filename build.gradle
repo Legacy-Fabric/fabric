@@ -269,6 +269,7 @@ allprojects {
 
 	def mcVersion = getMCVersion(it)
 	String projectName = getProjectSimpleName(it)
+	def hasTest = it.file("src/testmod").exists()
 
 	loom {
 		runs {
@@ -341,10 +342,12 @@ allprojects {
 		reproducibleFileOrder = true
 	}
 
-	task testmodJar(type: Jar) {
-		from sourceSets.testmod.output
-		destinationDirectory = new File(project.buildDir, "devlibs")
-		archiveClassifier.set("testmod")
+	if (hasTest) {
+		task testmodJar(type: Jar) {
+			from sourceSets.testmod.output
+			destinationDirectory = new File(project.buildDir, "devlibs")
+			archiveClassifier.set("testmod")
+		}
 	}
 
 	[jar, sourcesJar].each {
@@ -353,12 +356,14 @@ allprojects {
 		}
 	}
 
-	task remapTestmodJar(type: RemapJarTask, dependsOn: testmodJar) {
-		input = testmodJar.archiveFile
-		archiveClassifier.set("testmod")
-		addNestedDependencies = false
+	if (hasTest) {
+		task remapTestmodJar(type: RemapJarTask, dependsOn: testmodJar) {
+			input = testmodJar.archiveFile
+			archiveClassifier.set("testmod")
+			addNestedDependencies = false
+		}
+		build.dependsOn remapTestmodJar
 	}
-	build.dependsOn remapTestmodJar
 }
 
 remapTestmodJar {
