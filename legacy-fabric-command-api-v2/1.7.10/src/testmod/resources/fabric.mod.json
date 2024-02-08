@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-command-api-v2-testmod",
+  "id": "legacy-fabric-sponge-command-api-v2-testmod",
   "description": "Tests for api features",
   "version": "1.0.0",
   "entrypoints": {
@@ -9,6 +9,6 @@
     ]
   },
   "depends": {
-    "minecraft": ">1.8.9 <=1.12.2"
+    "minecraft": "${minecraft_version}"
   }
 }

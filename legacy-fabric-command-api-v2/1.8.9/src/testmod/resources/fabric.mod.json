@@ -9,6 +9,6 @@
     ]
   },
   "depends": {
-    "minecraft": ">=1.8 <=1.8.9"
+    "minecraft": "${minecraft_version}"
   }
 }
