@@ -36,6 +36,7 @@ loadProject("legacy-fabric-item-groups-v1")
 loadProject("legacy-fabric-keybindings-api-v1")
 loadProject("legacy-fabric-networking-api-v1")
 loadProject("legacy-fabric-permissions-api-v1")
+loadProject("legacy-fabric-registry-sync-api-v1")
 
 //include("common")
 //include("common:legacy-fabric-logger-api-v1")
