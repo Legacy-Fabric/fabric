@@ -20,7 +20,7 @@
   ],
   "description": "Advanced item groups.",
   "depends": {
-    "minecraft": "<=1.10.2"
+    "minecraft": "${minecraft_version}"
   },
   "custom": {
     "modmenu": {
