@@ -20,7 +20,7 @@
     "legacy-fabric-rendering-api-v1.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.8 <=1.12.2"
+    "minecraft": "${minecraft_version}"
   },
   "custom": {
     "modmenu": {

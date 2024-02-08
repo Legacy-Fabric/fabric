@@ -5,11 +5,10 @@
   "version": "1.0.0",
   "entrypoints": {
     "client": [
-      "net.legacyfabric.fabric.test.client.rendering.ModelFeatureTest",
       "net.legacyfabric.fabric.test.client.rendering.RenderingEventsTest"
     ]
   },
   "depends": {
-    "minecraft": ">=1.8 <=1.12.2"
+    "minecraft": "${minecraft_version}"
   }
 }
