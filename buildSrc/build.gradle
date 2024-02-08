@@ -1,0 +1,10 @@
+repositories {
+	maven {
+		name = "Fabric"
+		url = "https://maven.fabricmc.net/"
+	}
+}
+
+dependencies {
+	implementation("net.fabricmc:fabric-loader:0.15.6")
+}
