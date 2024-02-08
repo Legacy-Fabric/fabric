@@ -22,7 +22,7 @@
   ],
   "description": "Adds command-related hooks.",
   "depends": {
-    "minecraft": "<=1.12.2"
+    "minecraft": "${minecraft_version}"
   },
   "custom": {
     "modmenu": {

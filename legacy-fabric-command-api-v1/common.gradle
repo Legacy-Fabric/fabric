@@ -1,0 +1,4 @@
+moduleDependencies(project, [
+    "legacy-fabric-api-base",
+	"legacy-fabric-lifecycle-events-v1"
+])
