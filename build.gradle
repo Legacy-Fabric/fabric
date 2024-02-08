@@ -204,8 +204,6 @@ def moduleDependencies(Project project, List<String> projectNames) {
 			mavenJava(MavenPublication) {
 				if (getProjectSimpleName(project) == "legacyfabric-api") {
 					artifactId = "legacy-fabric-api"
-				} else {
-					artifactId = getProjectMavenName(project)
 				}
 
 				pom.withXml {
@@ -417,6 +415,8 @@ task javadocJar(type: Jar) {
 build.dependsOn javadocJar
 
 subprojects {
+	base.setArchivesName(getProjectMavenName(it))
+
 	dependencies {
 		testmodImplementation sourceSets.main.output
 

@@ -13,7 +13,8 @@ jobs:
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew check build publishToMavenLocal --stacktrace --parallel
+      - run: ./gradlew check build --stacktrace --parallel
+      - run: ./gradlew publishToMavenLocal --stacktrace
       - uses: actions/upload-artifact@v3
         with:
           name: Artifacts
