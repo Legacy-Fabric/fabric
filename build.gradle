@@ -69,23 +69,29 @@ def getProjectMavenName(project) {
 static def getMCRange(Project project) {
 	def predicates = []
 
-	if (project.hasProperty("minVersionIncluded")) {
-		predicates.add(">=${VersionHelper.parseVersion(project["minVersionIncluded"]).friendlyString}")
-	}
+	if (project.hasProperty("minVersionIncluded") && project.hasProperty("maxVersionIncluded")
+		&& project["minVersionIncluded"] == project["maxVersionIncluded"]
+	) {
+		predicates.add(project["maxVersionIncluded"])
+	} else {
+		if (project.hasProperty("minVersionIncluded")) {
+			predicates.add(">=${VersionHelper.parseVersion(project["minVersionIncluded"]).friendlyString}")
+		}
 
-	if (project.hasProperty("minVersionExcluded")) {
-		predicates.add(">${VersionHelper.parseVersion(project["minVersionExcluded"]).friendlyString}")
-	}
+		if (project.hasProperty("minVersionExcluded")) {
+			predicates.add(">${VersionHelper.parseVersion(project["minVersionExcluded"]).friendlyString}")
+		}
 
-	if (project.hasProperty("maxVersionIncluded")) {
-		predicates.add("<=${VersionHelper.parseVersion(project["maxVersionIncluded"]).friendlyString}")
-	}
+		if (project.hasProperty("maxVersionIncluded")) {
+			predicates.add("<=${VersionHelper.parseVersion(project["maxVersionIncluded"]).friendlyString}")
+		}
 
-	if (project.hasProperty("maxVersionExcluded")) {
-		predicates.add("<${VersionHelper.parseVersion(project["maxVersionExcluded"]).friendlyString}")
-	}
+		if (project.hasProperty("maxVersionExcluded")) {
+			predicates.add("<${VersionHelper.parseVersion(project["maxVersionExcluded"]).friendlyString}")
+		}
 
-	if (predicates.isEmpty()) predicates.add("*")
+		if (predicates.isEmpty()) predicates.add("*")
+	}
 
 	return predicates.join(" ")
 }
