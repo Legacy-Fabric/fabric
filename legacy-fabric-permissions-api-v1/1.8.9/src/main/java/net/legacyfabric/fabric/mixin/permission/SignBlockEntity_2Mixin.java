@@ -26,9 +26,8 @@ import net.minecraft.entity.player.PlayerEntity;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
-@Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$2")
+@Mixin(targets = "net/minecraft/block/entity/SignBlockEntity")
 public abstract class SignBlockEntity_2Mixin implements PermissibleCommandSource {
-	@SuppressWarnings("ShadowTarget")
 	@Final
 	@Dynamic
 	@Shadow
