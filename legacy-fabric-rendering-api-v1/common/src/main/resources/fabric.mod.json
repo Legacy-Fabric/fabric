@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-rendering-api-v1-common",
+  "name": "Legacy Fabric Rendering API (V1)",
+  "version": "${version}",
+  "environment": "client",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-fabric/icon.png",
+  "contact": {
+    "homepage": "https://legacy-fabric.github.io/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "Legacy Fabric",
+    "FabricMC"
+  ],
+  "description": "Hooks and registries for rendering-related things.",
+  "mixins": [
+    "legacy-fabric-rendering-api-v1-common.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "${minecraft_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ],
+      "parent": {
+        "id": "legacy-fabric-api",
+        "name": "Legacy Fabric API",
+        "badges": [ "library" ],
+        "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2.",
+        "icon": "assets/legacy-fabric/icon.png"
+      }
+    }
+  }
+}

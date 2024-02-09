@@ -26,17 +26,91 @@ logger.lifecycle("Building Fabric: " + version)
 import net.fabricmc.loom.task.RemapJarTask
 import org.apache.commons.codec.digest.DigestUtils
 import org.kohsuke.github.GHReleaseBuilder
+import net.legacyfabric.VersionHelper
 
-def getSubprojectVersion(project) {
-	def version
-	if (project.name == "legacyfabric-api") version = project.base_version
-	else version = project[project.name.replace("-common", "") + ".version"]
+static def getMCVersion(Project project) {
+	def projectFullName = project.name
 
-	if (project.getParent().name != "common") {
-		version = version + "+" + project.getParent().name
+	if (!projectFullName.contains("_")) return "1.8.9"
+
+	def mcVersion = projectFullName.split("_")[1]
+
+	if (mcVersion == "common") return "1.8.9"
+
+	return mcVersion
+}
+
+static def getProjectSimpleName(Project project) {
+	def projectFullName = project.name
+
+	if (!projectFullName.contains("_")) return projectFullName
+
+	return projectFullName.split("_")[0]
+}
+
+def getProjectMavenName(project) {
+	if (!(project instanceof Project)) project = rootProject.findProject("$project.name".toString())
+
+	def simpleName = getProjectSimpleName(project)
+
+	if (project.name.endsWith("_common")) {
+		if (project.hasProperty("artifactSuffix")) {
+			simpleName += project.artifactSuffix
+		} else {
+			simpleName += "-common"
+		}
 	}
 
-	if (project.name == "legacyfabric-api") return version
+	return simpleName
+}
+
+
+
+static def getMCRange(Project project) {
+	def predicates = []
+
+	if (project.hasProperty("minVersionIncluded") && project.hasProperty("maxVersionIncluded")
+		&& project["minVersionIncluded"] == project["maxVersionIncluded"]
+	) {
+		predicates.add(project["maxVersionIncluded"])
+	} else {
+		if (project.hasProperty("minVersionIncluded")) {
+			predicates.add(">=${VersionHelper.parseVersion(project["minVersionIncluded"]).friendlyString}")
+		}
+
+		if (project.hasProperty("minVersionExcluded")) {
+			predicates.add(">${VersionHelper.parseVersion(project["minVersionExcluded"]).friendlyString}")
+		}
+
+		if (project.hasProperty("maxVersionIncluded")) {
+			predicates.add("<=${VersionHelper.parseVersion(project["maxVersionIncluded"]).friendlyString}")
+		}
+
+		if (project.hasProperty("maxVersionExcluded")) {
+			predicates.add("<${VersionHelper.parseVersion(project["maxVersionExcluded"]).friendlyString}")
+		}
+
+		if (predicates.isEmpty()) predicates.add("*")
+	}
+
+	return predicates.join(" ")
+}
+
+def getSubprojectVersion(Project project) {
+	def version
+
+	def nameParts = project.name.split("_")
+	def projectName = nameParts[0]
+	def mcVersion = nameParts[1]
+
+	if (projectName == "legacyfabric-api") version = rootProject.version
+	else version = rootProject[projectName + ".version"]
+
+	if (mcVersion != "common") {
+		version = version + "+" + mcVersion
+	}
+
+	if (projectName == "legacyfabric-api") return version
 
 	if (grgit == null) {
 		return version + "+nogit"
@@ -46,7 +120,7 @@ def getSubprojectVersion(project) {
 		return version + "+uncommited"
 	} else {
 		return version + "+" + latestCommits.get(0).id.substring(0, 8) +
-			DigestUtils.sha256Hex("${project.getParent().name}").substring(0, 2)
+			DigestUtils.sha256Hex("${project.name}").substring(0, 2)
 	}
 }
 
@@ -80,7 +154,33 @@ def static setupRepositories(RepositoryHandler repositories) {
 	}
 }
 
-def moduleDependencies(project, List<String> depNames) {
+def moduleDependencies(Project project, List<String> projectNames) {
+	def depNames = []
+
+	def projectMCVersion = VersionHelper.parseVersion(getMCVersion(project))
+
+	def isCommon = project.name.endsWith("_common")
+
+	rootProject.subprojects {
+		def subProjectName = getProjectSimpleName(it)
+
+		if (projectNames.contains(subProjectName)) {
+			def predicate = VersionHelper.parsePredicate(getMCRange(it))
+
+			if (predicate.test(projectMCVersion)) depNames.add(it.name)
+		}
+	}
+
+	if (!isCommon) {
+		def commonProject = findProject(":${getProjectSimpleName(project)}_common")
+
+		if (commonProject != null) {
+			depNames.add(0, commonProject.name)
+		}
+	} else {
+		depNames.removeIf { !it.endsWith("_common")}
+	}
+
 	def deps = depNames.iterator().collect { project.dependencies.project(path: ":$it", configuration: "namedElements") }
 	def testOutputs = depNames.iterator().collect { findProject(":$it").sourceSets.testmod.output }
 
@@ -94,15 +194,15 @@ def moduleDependencies(project, List<String> depNames) {
 		}
 	}
 
-	if (project.name != "legacy-fabric-logger-api-v1") {
-		deps.add(project.dependencies.project(path: ":common:legacy-fabric-logger-api-v1", configuration: "namedElements"))
+	if (getProjectSimpleName(project) != "legacy-fabric-logger-api-v1") {
+		deps.add(project.dependencies.project(path: ":legacy-fabric-logger-api-v1_common", configuration: "namedElements"))
 	}
 
 	// As we manually handle the maven artifacts, we need to also manually specify the deps.
 	project.publishing {
 		publications {
 			mavenJava(MavenPublication) {
-				if (project.name == "legacyfabric-api") {
+				if (getProjectSimpleName(project) == "legacyfabric-api") {
 					artifactId = "legacy-fabric-api"
 				}
 
@@ -111,7 +211,7 @@ def moduleDependencies(project, List<String> depNames) {
 					deps.each {
 						def depNode = depsNode.appendNode("dependency")
 						depNode.appendNode("groupId", it.group)
-						depNode.appendNode("artifactId", it.name)
+						depNode.appendNode("artifactId", getProjectMavenName(it))
 						depNode.appendNode("version", it.version)
 						depNode.appendNode("scope", "compile")
 					}
@@ -119,54 +219,6 @@ def moduleDependencies(project, List<String> depNames) {
 			}
 		}
 	}
-}
-
-class MinecraftVersion {
-	public String mc_version
-	public boolean userProperties
-
-	private MinecraftVersion(String mc_version) {
-		this(mc_version, false)
-	}
-
-	private MinecraftVersion(String mc_version, boolean userProperties) {
-		this.mc_version = mc_version
-		this.userProperties = userProperties
-	}
-
-	public static MinecraftVersion[] VERSIONS = new MinecraftVersion[]{
-		new MinecraftVersion("1.12.2"),
-		new MinecraftVersion("1.11.2"),
-		new MinecraftVersion("1.10.2"),
-		new MinecraftVersion("1.9.4"),
-		new MinecraftVersion("1.8.9"),
-		new MinecraftVersion("1.8", true),
-		new MinecraftVersion("1.7.10", true)
-	}
-}
-
-static def getVersionInfo(Project project) {
-	MinecraftVersion version = MinecraftVersion.VERSIONS[0]
-
-	Project parent = project.getParent()
-	String projectMCVersion = project.name
-
-	if (parent != null && parent.name != "legacy-fabric-api") {
-		projectMCVersion = parent.name
-	}
-
-	System.out.println("Preparing project ${parent != null ? parent.name : ""}:$project.name")
-
-	for (MinecraftVersion mcVersion : MinecraftVersion.VERSIONS) {
-		if (mcVersion.mc_version == projectMCVersion) {
-			version = mcVersion
-			break
-		} else if (mcVersion.mc_version == "1.8.9") {
-			version = mcVersion
-		}
-	}
-
-	return version
 }
 
 allprojects {
@@ -207,52 +259,55 @@ allprojects {
 		}
 	}
 
-	MinecraftVersion versionInfo = getVersionInfo(it)
-	String projectName = it.name
+	System.out.println("Project: $it.name")
+
+	if (it != rootProject) {
+		setVersion(getSubprojectVersion(it))
+	}
+
+	def mcVersion = getMCVersion(it)
+	String projectName = getProjectSimpleName(it)
+	def hasTest = it.file("src/testmod").exists()
 
 	loom {
 		runs {
-			"testModClient$versionInfo.mc_version" {
+			"testModClient$mcVersion" {
 				client()
 				ideConfigGenerated projectName == "legacyfabric-api"
-				name = "$versionInfo.mc_version Testmod Client"
+				name = "$mcVersion Testmod Client"
 				source sourceSets.testmod
 
-				if (versionInfo.userProperties) {
+				if (VersionHelper.needUserProperties(mcVersion)) {
 					programArgs "--userProperties", "{}"
 				}
 			}
 
-			"testModServer$versionInfo.mc_version" {
+			"testModServer$mcVersion" {
 				server()
 				ideConfigGenerated projectName == "legacyfabric-api"
-				name = "$versionInfo.mc_version Testmod Server"
+				name = "$mcVersion Testmod Server"
 				source sourceSets.testmod
 			}
 		}
 	}
 
 	allprojects.each { p ->
-		String parentName = p.getParent() != null ? "-" + p.getParent().name : ""
-
 		if (p.file("src/main").exists()) {
-			loom.mods.register(p.name + parentName) {
+			loom.mods.register(p.name) {
 				sourceSet p.sourceSets.main
 			}
 		}
 
 		if (p.file("src/testmod").exists()) {
-			loom.mods.register(p.name + parentName + "-testmod") {
+			loom.mods.register(p.name + "-testmod") {
 				sourceSet p.sourceSets.testmod
 			}
 		}
 	}
 
-	def currentOs = System.getProperty("os.name").toLowerCase(Locale.ENGLISH)
-
 	dependencies {
-		minecraft "com.mojang:minecraft:${versionInfo.mc_version}"
-		mappings legacy.yarn(versionInfo.mc_version, project.yarn_mappings_build)
+		minecraft "com.mojang:minecraft:${mcVersion}"
+		mappings legacy.yarn(mcVersion, project.yarn_mappings_build)
 		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 		implementation "com.mojang:brigadier:1.0.17"
@@ -262,9 +317,10 @@ allprojects {
 
 	tasks.withType(ProcessResources).configureEach {
 		inputs.property "version", project.version
+		inputs.property "minecraft_version", getMCRange(project)
 
 		filesMatching("fabric.mod.json") {
-			expand "version": project.version
+			expand "version": project.version, "minecraft_version": getMCRange(project)
 		}
 	}
 
@@ -284,10 +340,12 @@ allprojects {
 		reproducibleFileOrder = true
 	}
 
-	task testmodJar(type: Jar) {
-		from sourceSets.testmod.output
-		destinationDirectory = new File(project.buildDir, "devlibs")
-		archiveClassifier.set("testmod")
+	if (hasTest) {
+		task testmodJar(type: Jar) {
+			from sourceSets.testmod.output
+			destinationDirectory = new File(project.buildDir, "devlibs")
+			archiveClassifier.set("testmod")
+		}
 	}
 
 	[jar, sourcesJar].each {
@@ -296,12 +354,14 @@ allprojects {
 		}
 	}
 
-	task remapTestmodJar(type: RemapJarTask, dependsOn: testmodJar) {
-		input = testmodJar.archiveFile
-		archiveClassifier.set("testmod")
-		addNestedDependencies = false
+	if (hasTest) {
+		task remapTestmodJar(type: RemapJarTask, dependsOn: testmodJar) {
+			input = testmodJar.archiveFile
+			archiveClassifier.set("testmod")
+			addNestedDependencies = false
+		}
+		build.dependsOn remapTestmodJar
 	}
-	build.dependsOn remapTestmodJar
 }
 
 remapTestmodJar {
@@ -355,35 +415,38 @@ task javadocJar(type: Jar) {
 build.dependsOn javadocJar
 
 subprojects {
+	base.setArchivesName(getProjectMavenName(it))
+
 	dependencies {
 		testmodImplementation sourceSets.main.output
 
-		if (project.name != "legacy-fabric-logger-api-v1") {
-			api project(path: ":common:legacy-fabric-logger-api-v1", configuration: "namedElements")
+		if (getProjectSimpleName(project) != "legacy-fabric-logger-api-v1") {
+			api project(path: ":legacy-fabric-logger-api-v1_common", configuration: "namedElements")
 		}
 	}
 
-	def parent = project.getParent()
-
-	if (parent == null || parent.name != "legacy-fabric-api") {
-		publishing {
-			publications {
-				mavenJava(MavenPublication) {
-					artifact(remapJar) {
-						builtBy remapJar
-					}
-					artifact(remapSourcesJar) {
-						builtBy remapSourcesJar
-					}
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				artifact(remapJar) {
+					builtBy remapJar
+				}
+				artifact(remapSourcesJar) {
+					builtBy remapSourcesJar
 				}
 			}
 		}
-
-		// We manually handle the pom generation
-		loom.disableDeprecatedPomGeneration(publishing.publications.mavenJava)
 	}
 
+	// We manually handle the pom generation
+	loom.disableDeprecatedPomGeneration(publishing.publications.mavenJava)
+
 	javadoc.enabled = false
+
+	def scriptPath = rootProject.file("${getProjectSimpleName(project)}/common.gradle")
+	if (scriptPath.exists()) {
+		apply from: rootProject.file("${getProjectSimpleName(project)}/common.gradle")
+	}
 
 	afterEvaluate {
 		// Disable the gen sources task on sub projects
@@ -410,11 +473,10 @@ sourceSets {
 dependencies {
 	afterEvaluate {
 		subprojects.each {
-			String par = it.getParent() != null ? it.getParent().name + ":" : ""
-			if (par == "legacy-fabric-api:" || (par.startsWith("1.") && it.name == "legacyfabric-api")) return
-			if (it.file("src/main").exists()) api project(path: ":$par${it.name}", configuration: "namedElements")
+			if (getProjectSimpleName(it) == "legacyfabric-api") return
 
-			if (it.file("src/testmod").exists()) testmodImplementation project("$par${it.name}:").sourceSets.testmod.output
+			if (it.file("src/main").exists()) api project(path: "${it.path}", configuration: "namedElements")
+			if (it.file("src/testmod").exists()) testmodImplementation project("${it.path}").sourceSets.testmod.output
 		}
 	}
 }
@@ -422,10 +484,9 @@ dependencies {
 remapJar {
 	afterEvaluate {
 		subprojects.each {
-			String par = it.getParent() != null ? it.getParent().name + ":" : ""
-			if (par == "legacy-fabric-api:" || (par.startsWith("1.") && it.name == "legacyfabric-api")) return
+			if (getProjectSimpleName(it) == "legacyfabric-api") return
 			// Include the signed or none signed jar from the sub project.
-			if (it.file("src/main").exists()) nestedJars.from project("$par${it.name}:").tasks.getByName("remapJar")
+			if (it.file("src/main").exists()) nestedJars.from project("${it.path}:").tasks.getByName("remapJar")
 		}
 	}
 }
@@ -442,9 +503,9 @@ curseforge {
 		releaseType = "release"
 		addGameVersion "Fabric"
 
-		MinecraftVersion.VERSIONS.each {
-			addGameVersion it.mc_version
-		}
+//		MinecraftVersion.VERSIONS.each {
+//			addGameVersion it.mc_version
+//		}
 
 		mainArtifact(remapJar) {
 			displayName = "Legacy Fabric API ${project.base_version}"
@@ -493,9 +554,9 @@ modrinth {
 	uploadFile = remapJar
 
 	def vers = []
-	MinecraftVersion.VERSIONS.each {
-		vers.add it.mc_version
-	}
+//	MinecraftVersion.VERSIONS.each {
+//		vers.add it.mc_version
+//	}
 	gameVersions = vers
 	loaders = ["fabric"]
 }
@@ -506,7 +567,7 @@ task checkVersion {
 		def xml = new URL("https://maven.legacyfabric.net/net/legacyfabric/legacy-fabric-api/legacy-fabric-api/maven-metadata.xml").text
 		def metadata = new groovy.xml.XmlSlurper().parseText(xml)
 		def versions = metadata.versioning.versions.version*.text()
-		if (versions.contains(version)) {
+		if (versions.contains(version + "+1.8.9")) {
 			throw new RuntimeException("${version} has already been released!")
 		}
 	}

@@ -1,6 +1,0 @@
-version = getSubprojectVersion(project)
-
-moduleDependencies(project, [
-		'common:legacy-fabric-api-base-common',
-		'common:legacy-fabric-lifecycle-events-v1-common'
-])

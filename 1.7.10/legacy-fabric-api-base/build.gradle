@@ -1,6 +1,0 @@
-//archiveBaseName = "legacy-fabric-api-base"
-version = getSubprojectVersion(project)
-
-moduleDependencies(project, [
-		'common:legacy-fabric-api-base-common'
-])
