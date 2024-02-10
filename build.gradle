@@ -50,7 +50,13 @@ static def getProjectSimpleName(Project project) {
 
 def getProjectMavenName(projectLike) {
 	Project project
-	if (!(projectLike instanceof Project)) project = rootProject.findProject("${projectLike.archivesName.get()}".toString())
+	if (!(projectLike instanceof Project)) {
+		if (projectLike instanceof BasePluginExtension) {
+			project = rootProject.findProject("${projectLike.archivesName.get()}".toString())
+		} else {
+			project = rootProject.findProject("$projectLike.name".toString())
+		}
+	}
 	else project = projectLike
 
 	def simpleName = getProjectSimpleName(project)
