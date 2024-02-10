@@ -29,8 +29,7 @@ def supportedRanges = [
 ]
 
 import net.fabricmc.loom.task.RemapJarTask
-import org.apache.commons.codec.digest.DigestUtils
-import org.kohsuke.github.GHReleaseBuilder
+//import org.apache.commons.codec.digest.DigestUtils
 import net.legacyfabric.VersionHelper
 
 static def getMCVersion(Project project) {
@@ -124,8 +123,8 @@ def getSubprojectVersion(Project project) {
 	if (latestCommits.isEmpty()) {
 		return version + "+uncommited"
 	} else {
-		return version + "+" + latestCommits.get(0).id.substring(0, 8) +
-			DigestUtils.sha256Hex("${project.name}").substring(0, 2)
+		return version + "+" + latestCommits.get(0).id.substring(0, 8) //+
+//			DigestUtils.sha256Hex("${project.name}").substring(0, 2)
 	}
 }
 
