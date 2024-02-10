@@ -26,10 +26,10 @@ import net.fabricmc.api.ClientModInitializer;
 import net.legacyfabric.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.legacyfabric.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.NativeLoggerImpl;
 
 public class RenderingEventsTest implements ClientModInitializer {
-	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "RenderingEvents");
+	private static final Logger LOGGER = Logger.get(NativeLoggerImpl.API, "Test", "RenderingEvents");
 
 	@Override
 	public void onInitializeClient() {

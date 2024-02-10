@@ -27,10 +27,10 @@ import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.NativeLoggerImpl;
 
 public class ResourceReloadTest implements ClientModInitializer {
-	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "ResourceReload");
+	private static final Logger LOGGER = Logger.get(NativeLoggerImpl.API, "Test", "ResourceReload");
 
 	@Override
 	public void onInitializeClient() {

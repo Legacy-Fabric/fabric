@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.logger.v1;
 
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public interface Logger {
 	/**
@@ -32,7 +32,7 @@ public interface Logger {
 	 * @return a Logger implementation
 	 */
 	static Logger get(String context, String... subs) {
-		return new LoggerImpl(context, subs);
+		return LoggerHelper.getLogger(context, subs);
 	}
 
 	void info(String format);

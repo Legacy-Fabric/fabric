@@ -36,10 +36,10 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.ModResourcePack;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.NativeLoggerImpl;
 
 public class ModNioResourcePack extends AbstractFileResourcePack implements ModResourcePack, Closeable {
-	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "ModNioResourcePack");
+	private static final Logger LOGGER = Logger.get(NativeLoggerImpl.API, "ModNioResourcePack");
 	private static final Pattern RESOURCE_PACK_PATH = Pattern.compile("[a-z0-9-_]+");
 	private final ModContainer container;
 	private final Path basePath;

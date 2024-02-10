@@ -25,10 +25,10 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.NativeLoggerImpl;
 
 public class ClientLifecycleEventsTest implements ClientModInitializer {
-	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "ClientLifecycleEvents");
+	private static final Logger LOGGER = Logger.get(NativeLoggerImpl.API, "Test", "ClientLifecycleEvents");
 
 	@Override
 	public void onInitializeClient() {
