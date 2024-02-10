@@ -48,11 +48,12 @@ public final class ModResourcePackUtil {
 				continue;
 			}
 
-			Path path = container.getRootPath();
-			ResourcePack pack = new ModNioResourcePack(container, path, null);
+			for (Path path : container.getRootPaths()) {
+				ResourcePack pack = new ModNioResourcePack(container, path, null);
 
-			if (!pack.getNamespaces().isEmpty()) {
-				packList.add(pack);
+				if (!pack.getNamespaces().isEmpty()) {
+					packList.add(pack);
+				}
 			}
 		}
 	}
