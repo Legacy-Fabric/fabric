@@ -567,8 +567,10 @@ task checkVersion {
 		def xml = new URL("https://maven.legacyfabric.net/net/legacyfabric/legacy-fabric-api/legacy-fabric-api/maven-metadata.xml").text
 		def metadata = new groovy.xml.XmlSlurper().parseText(xml)
 		def versions = metadata.versioning.versions.version*.text()
-		if (versions.contains(version + "+1.8.9")) {
-			throw new RuntimeException("${version} has already been released!")
+		versions.each {
+			if (it.startsWith(project.version + "+1.8.9")) {
+				throw new RuntimeException("${project.version} has already been released!")
+			}
 		}
 	}
 }
