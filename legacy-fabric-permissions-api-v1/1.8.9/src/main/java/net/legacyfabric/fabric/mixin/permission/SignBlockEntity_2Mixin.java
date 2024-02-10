@@ -28,14 +28,13 @@ import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$2")
 public abstract class SignBlockEntity_2Mixin implements PermissibleCommandSource {
-	@SuppressWarnings("ShadowTarget")
 	@Final
 	@Dynamic
 	@Shadow
-	PlayerEntity editor;
+	PlayerEntity field_9859;
 
 	@Override
 	public boolean hasPermission(String perm) {
-		return ((PermissibleCommandSource) this.editor).hasPermission(perm);
+		return ((PermissibleCommandSource) this.field_9859).hasPermission(perm);
 	}
 }
