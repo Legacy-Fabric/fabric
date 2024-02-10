@@ -48,14 +48,16 @@ static def getProjectSimpleName(Project project) {
 	return projectFullName.split("_")[0]
 }
 
-def getProjectMavenName(project) {
-	if (!(project instanceof Project)) project = rootProject.findProject("$project.name".toString())
+def getProjectMavenName(projectLike) {
+	Project project
+	if (!(projectLike instanceof Project)) project = rootProject.findProject("${projectLike.archivesName.get()}".toString())
+	else project = projectLike
 
 	def simpleName = getProjectSimpleName(project)
 
 	if (project.name.endsWith("_common")) {
 		if (project.hasProperty("artifactSuffix")) {
-			simpleName += project.artifactSuffix
+			simpleName += project["artifactSuffix"]
 		} else {
 			simpleName += "-common"
 		}
@@ -240,14 +242,13 @@ allprojects {
 		setupRepositories(repositories)
 	}
 
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
-
 	tasks.withType(JavaCompile).configureEach {
 		it.options.release = 8
 	}
 
 	java {
+		sourceCompatibility = JavaVersion.VERSION_1_8
+		targetCompatibility = JavaVersion.VERSION_1_8
 		// Must be added before the split source sets are setup.
 		withSourcesJar()
 	}
@@ -415,7 +416,9 @@ task javadocJar(type: Jar) {
 build.dependsOn javadocJar
 
 subprojects {
-	base.setArchivesName(getProjectMavenName(it))
+	base {
+		archivesName = getProjectMavenName(it)
+	}
 
 	dependencies {
 		testmodImplementation sourceSets.main.output

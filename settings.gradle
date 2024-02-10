@@ -20,7 +20,7 @@ def loadProject(String path) {
 		if (it.isDirectory()) {
 			include("${path}_$it.name")
 
-			project(":${path}_$it.name").setProjectDir(it)
+			project(":${path}_$it.name").projectDir = it
 		}
 	}
 }
