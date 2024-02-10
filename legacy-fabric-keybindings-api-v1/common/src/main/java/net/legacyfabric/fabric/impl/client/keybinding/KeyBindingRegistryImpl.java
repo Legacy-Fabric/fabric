@@ -21,10 +21,13 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 
 public final class KeyBindingRegistryImpl {
 	private static final List<KeyBinding> moddedKeyBindings = Lists.newArrayList();
+	private static boolean processed = false;
 
 	private KeyBindingRegistryImpl() {
 	}
@@ -39,6 +42,10 @@ public final class KeyBindingRegistryImpl {
 		}
 
 		moddedKeyBindings.add(binding);
+
+		// In 1.7.10 Game Options are loaded before any client entrypoint, so we need to reload when a new keybinding is registered.
+		if (processed) reloadGameOptions();
+
 		return binding;
 	}
 
@@ -49,6 +56,21 @@ public final class KeyBindingRegistryImpl {
 		List<KeyBinding> newKeysAll = Lists.newArrayList(keysAll);
 		newKeysAll.removeAll(moddedKeyBindings);
 		newKeysAll.addAll(moddedKeyBindings);
+
+		processed = true;
+
 		return newKeysAll.toArray(new KeyBinding[0]);
+	}
+
+	/**
+	 * Update keybinding list and reload game options file.
+	 */
+	private static void reloadGameOptions() {
+		final GameOptions options = MinecraftClient.getInstance().options;
+
+		if (options != null) {
+			options.allKeys = process(options.allKeys);
+			options.load();
+		}
 	}
 }
