@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     container:
-      image: mcr.microsoft.com/openjdk/jdk:21-ubuntu
+      image: eclipse-temurin:21-jdk
       options: --user root
     steps:
       - run: apt update && apt install git -y && git --version
