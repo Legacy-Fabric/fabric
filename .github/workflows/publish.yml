@@ -9,15 +9,15 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     container:
-      image: eclipse-temurin:17-jdk
+      image: mcr.microsoft.com/openjdk/jdk:21-ubuntu
       options: --user root
     steps:
       - run: apt update && apt install git -y && git --version
       - run: git config --global --add safe.directory /__w/fabric/fabric
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@v1
+         fetch-depth: 0
+      - uses: gradle/wrapper-validation-action@v2
       - run: ./gradlew checkVersion build publish github curseforge modrinth --stacktrace
         env:
           MAVEN_PUBLISH_CREDENTIALS: ${{ secrets.MAVEN_PUBLISH_CREDENTIALS }}
