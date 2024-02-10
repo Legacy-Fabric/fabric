@@ -1,9 +1,3 @@
-buildscript {
-	dependencies {
-		classpath "org.kohsuke:github-api:1.135"
-	}
-}
-
 plugins {
 	id "java-library"
 	id "eclipse"
@@ -13,15 +7,26 @@ plugins {
 	id "legacy-looming" version "1.3.75" apply false
 	id "com.diffplug.spotless" version "6.18.0"
 	id "org.ajoberstar.grgit" version "3.1.1"
-	id "com.matthewprenger.cursegradle" version "1.4.0"
-	id "com.modrinth.minotaur" version "2.8.2"
-	id "signing"
+	id "me.modmuss50.mod-publish-plugin" version "0.4.5"
 }
 
 def ENV = System.getenv()
 
 setVersion("${project.base_version}")
 logger.lifecycle("Building Fabric: " + version)
+
+def supportedVersions = [
+    "1.12.2",
+	"1.11.2",
+	"1.10.2",
+	"1.9.4",
+	"1.8.9",
+	"1.8",
+	"1.7.10"
+]
+def supportedRanges = [
+//    ["1.8", "1.8.9", false] // third parameter is whether or not to include snapshots in the range.
+]
 
 import net.fabricmc.loom.task.RemapJarTask
 import org.apache.commons.codec.digest.DigestUtils
@@ -491,74 +496,64 @@ remapJar {
 	}
 }
 
-curseforge {
-	if (project.hasProperty("curse_api_key")) {
-		apiKey = project.getProperty("curse_api_key")
-	} else if (ENV.CURSE_API_KEY) {
-		apiKey = ENV.CURSE_API_KEY
-	}
-	project {
-		id = "400281"
-		changelog = "A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits"
-		releaseType = "release"
-		addGameVersion "Fabric"
+publishMods {
+	file = remapJar.archiveFile
+	changelog = providers.environmentVariable("CHANGELOG").getOrElse("A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits")
+	type = STABLE
+	displayName = "Legacy Fabric API $project.version"
+	modLoaders.add("fabric")
+	dryRun = providers.environmentVariable("CURSE_API_KEY").getOrNull() == null
 
-//		MinecraftVersion.VERSIONS.each {
-//			addGameVersion it.mc_version
-//		}
+	curseforge {
+		accessToken = providers.environmentVariable("CURSE_API_KEY")
+		projectId = "400281"
+		projectSlug = "legacy-fabric-api"
 
-		mainArtifact(remapJar) {
-			displayName = "Legacy Fabric API ${project.base_version}"
+		minecraftVersions.addAll(supportedVersions)
+
+		if (!supportedRanges.isEmpty()) {
+			supportedRanges.each { range ->
+				minecraftVersionRange {
+					start = range[0]
+					end = range[1]
+				}
+			}
 		}
+	}
 
-		afterEvaluate {
-			uploadTask.dependsOn("remapJar")
+	modrinth {
+		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		projectId = "9CJED7xi"
+
+		minecraftVersions.addAll(supportedVersions)
+
+		if (!supportedRanges.isEmpty()) {
+			supportedRanges.each { range ->
+				minecraftVersionRange {
+					start = range[0]
+					end = range[1]
+
+					includeSnapshots = range[2]
+				}
+			}
 		}
 	}
-	options {
-		forgeGradleIntegration = false
-	}
-}
 
-
-import org.kohsuke.github.GitHub
-
-task github(dependsOn: remapJar) {
-	onlyIf {
-		ENV.GITHUB_TOKEN
+	github {
+		accessToken = providers.environmentVariable("GITHUB_TOKEN")
+		repository = providers.environmentVariable("GITHUB_REPOSITORY").getOrElse("LegacyFabric/dryrun")
+		commitish = providers.environmentVariable("GITHUB_REF_NAME").getOrElse("dryrun")
 	}
 
-	doLast {
-		def github = GitHub.connectUsingOAuth(ENV.GITHUB_TOKEN as String)
-		def repository = github.getRepository(ENV.GITHUB_REPOSITORY)
+	discord {
+		webhookUrl = providers.environmentVariable("DISCORD_WEBHOOK")
 
-		def releaseBuilder = new GHReleaseBuilder(repository, version as String)
-		releaseBuilder.name("Legacy Fabric API $project.version")
-		releaseBuilder.body("A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits")
-		releaseBuilder.commitish(getBranch())
-		releaseBuilder.prerelease(false)
+		dryRunWebhookUrl = ""
 
-		def ghRelease = releaseBuilder.create()
-		ghRelease.uploadAsset(remapJar.archiveFile.get().getAsFile(), "application/java-archive")
+		username = "Legacy Fabric Bot"
+
+		content = changelog.map { "# Legacy Fabric API $project.version has been released! \n" + it}
 	}
-}
-
-modrinth {
-	projectId = "legacy-fabric-api"
-
-	versionNumber = "${project.version}"
-	versionName = "Legacy Fabric API ${project.version}"
-	versionType = "release"
-	changelog = "A changelog can be found at https://github.com/Legacy-Fabric/fabric/commits"
-
-	uploadFile = remapJar
-
-	def vers = []
-//	MinecraftVersion.VERSIONS.each {
-//		vers.add it.mc_version
-//	}
-	gameVersions = vers
-	loaders = ["fabric"]
 }
 
 // A task to ensure that the version being released has not already been released.
@@ -575,7 +570,5 @@ task checkVersion {
 	}
 }
 
-github.mustRunAfter checkVersion
-//modrinth.mustRunAfter checkVersion
+tasks.publishMods.dependsOn checkVersion
 publish.mustRunAfter checkVersion
-project.tasks.curseforge.mustRunAfter checkVersion
