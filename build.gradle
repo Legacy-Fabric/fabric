@@ -350,14 +350,15 @@ allprojects {
 	if (hasTest) {
 		task testmodJar(type: Jar) {
 			from sourceSets.testmod.output
-			destinationDirectory = new File(project.buildDir, "devlibs")
+//			destinationDirectory = new File(, "devlibs")
+			destinationDirectory = project.layout.buildDirectory.dir("devlibs")
 			archiveClassifier.set("testmod")
 		}
 	}
 
 	[jar, sourcesJar].each {
 		it.from(rootProject.file("LICENSE")) {
-			rename { "${it}-${project.archivesBaseName}" }
+			rename { "${it}-${project.base.archivesName}" }
 		}
 	}
 
