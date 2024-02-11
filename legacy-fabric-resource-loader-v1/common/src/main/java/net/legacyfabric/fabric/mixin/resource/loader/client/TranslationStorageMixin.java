@@ -17,13 +17,13 @@
 
 package net.legacyfabric.fabric.mixin.resource.loader.client;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
-import java.io.StringReader;
-import java.io.IOException;
-import java.io.InputStream;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
@@ -43,8 +43,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.resource.language.TranslationStorage;
-import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.Resource;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
 import net.legacyfabric.fabric.api.util.VersionUtils;
