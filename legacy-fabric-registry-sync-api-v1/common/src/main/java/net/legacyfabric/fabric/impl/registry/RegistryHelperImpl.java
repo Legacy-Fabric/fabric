@@ -44,11 +44,11 @@ import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
 import net.legacyfabric.fabric.impl.client.registry.sync.ClientRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.ServerRegistryRemapper;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.util.ArrayAndMapBasedRegistry;
 
 @ApiStatus.Internal

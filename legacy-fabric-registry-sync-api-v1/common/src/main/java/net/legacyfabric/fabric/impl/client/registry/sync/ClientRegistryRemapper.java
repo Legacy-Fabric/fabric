@@ -18,8 +18,8 @@
 package net.legacyfabric.fabric.impl.client.registry.sync;
 
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
+import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapperRegistryRemapper;
 
 public class ClientRegistryRemapper implements RegistryRemapperAccess {
