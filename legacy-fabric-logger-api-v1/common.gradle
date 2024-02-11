@@ -1,1 +1,3 @@
-moduleDependencies(project, [])
+moduleDependencies(project, [
+    "legacy-fabric-api-base"
+])
