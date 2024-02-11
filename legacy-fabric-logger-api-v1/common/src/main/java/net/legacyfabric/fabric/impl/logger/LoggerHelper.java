@@ -17,16 +17,29 @@
 
 package net.legacyfabric.fabric.impl.logger;
 
+import java.util.function.BiFunction;
+
 import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.api.util.TriState;
 
 public class LoggerHelper {
 	public static final String API = "LegacyFabricAPI";
 
+	private static TriState exists = TriState.DEFAULT;
+	private static final BiFunction<String, String[], Logger> javaLogger = JavaLoggerImpl::new;
+	private static final BiFunction<String, String[], Logger> nativeLogger = NativeLoggerImpl::new;
+
 	public static Logger getLogger(String context, String... subs) {
-		try {
-			return new NativeLoggerImpl(context, subs);
-		} catch (NoClassDefFoundError e) {
-			return new JavaLoggerImpl(context, subs);
+		if (exists == TriState.DEFAULT) {
+			try {
+				Class.forName("net.fabricmc.loader.impl.util.log.LogCategory");
+				Class.forName("net.fabricmc.loader.impl.util.log.Log");
+				exists = TriState.TRUE;
+			} catch (ClassNotFoundException ignored) {
+				exists = TriState.FALSE;
+			}
 		}
+
+		return exists.get() ? nativeLogger.apply(context, subs) : javaLogger.apply(context, subs);
 	}
 }
