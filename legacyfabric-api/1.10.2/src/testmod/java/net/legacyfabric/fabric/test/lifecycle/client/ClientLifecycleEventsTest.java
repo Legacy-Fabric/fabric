@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.test.lifecycle.client;
 
-import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 import net.minecraft.entity.EntityType;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -26,6 +25,7 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public class ClientLifecycleEventsTest implements ClientModInitializer {
 	private static final Logger LOGGER = Logger.get(LoggerHelper.API, "Test", "ClientLifecycleEvents");

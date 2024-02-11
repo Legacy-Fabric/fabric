@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.impl.logger.utils;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a boolean value which can be true, false or refer to a default value.

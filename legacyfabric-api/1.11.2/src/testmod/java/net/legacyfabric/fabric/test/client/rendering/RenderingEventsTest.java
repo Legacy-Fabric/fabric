@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.test.client.rendering;
 
 import java.awt.Color;
 
-import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 import net.minecraft.client.resource.language.I18n;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -27,6 +26,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.legacyfabric.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.legacyfabric.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public class RenderingEventsTest implements ClientModInitializer {
 	private static final Logger LOGGER = Logger.get(LoggerHelper.API, "Test", "RenderingEvents");
