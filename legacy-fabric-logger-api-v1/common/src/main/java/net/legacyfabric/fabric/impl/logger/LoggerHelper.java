@@ -20,7 +20,7 @@ package net.legacyfabric.fabric.impl.logger;
 import java.util.function.BiFunction;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.api.util.TriState;
+import net.legacyfabric.fabric.impl.logger.utils.TriState;
 
 public class LoggerHelper {
 	public static final String API = "LegacyFabricAPI";
