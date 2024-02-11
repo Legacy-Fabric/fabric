@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.HoverEvent;
@@ -48,10 +49,9 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispat
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.util.Location;
-import net.legacyfabric.fabric.impl.logger.NativeLoggerImpl;
 
 public class CommandManagerImpl implements CommandManager {
-	private static final Logger LOGGER = Logger.get(NativeLoggerImpl.API, "Command Manager");
+	private static final Logger LOGGER = Logger.get(LoggerHelper.API, "Command Manager");
 	private final Object lock = new Object();
 	private final SimpleDispatcher dispatcher;
 	private final List<CommandMapping> mappings = Lists.newArrayList();

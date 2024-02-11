@@ -25,17 +25,17 @@ import java.util.Set;
 
 import com.google.common.collect.Lists;
 
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 import net.minecraft.resource.ResourceReloadListener;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.logger.NativeLoggerImpl;
 
 public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 	private static final ResourceManagerHelperImpl INSTANCE = new ResourceManagerHelperImpl();
-	public static final Logger LOGGER = Logger.get(NativeLoggerImpl.API, "ResourceManagerHelperImpl");
+	public static final Logger LOGGER = Logger.get(LoggerHelper.API, "ResourceManagerHelperImpl");
 
 	private final Set<Identifier> addedListenerIds = new HashSet<>();
 	private final Set<IdentifiableResourceReloadListener> addedListeners = new LinkedHashSet<>();

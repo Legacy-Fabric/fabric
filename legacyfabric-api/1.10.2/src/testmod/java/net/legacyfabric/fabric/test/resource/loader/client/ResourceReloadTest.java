@@ -19,6 +19,7 @@ package net.legacyfabric.fabric.test.resource.loader.client;
 
 import java.util.Arrays;
 
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 import net.minecraft.resource.ResourceManager;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -27,10 +28,9 @@ import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.logger.NativeLoggerImpl;
 
 public class ResourceReloadTest implements ClientModInitializer {
-	private static final Logger LOGGER = Logger.get(NativeLoggerImpl.API, "Test", "ResourceReload");
+	private static final Logger LOGGER = Logger.get(LoggerHelper.API, "Test", "ResourceReload");
 
 	@Override
 	public void onInitializeClient() {

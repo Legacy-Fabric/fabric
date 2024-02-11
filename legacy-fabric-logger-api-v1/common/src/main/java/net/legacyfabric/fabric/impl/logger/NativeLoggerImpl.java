@@ -23,7 +23,6 @@ import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 
 public class NativeLoggerImpl implements Logger {
-	public static final String API = "LegacyFabricAPI";
 	private LogCategory category;
 
 	public NativeLoggerImpl(String context, String... subs) {
