@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-keybinding-api-v1-common",
+  "id": "legacy-fabric-keybinding-api-v1",
   "name": "Legacy Fabric Keybinding API (V1)",
   "version": "${version}",
   "environment": "client",
@@ -19,7 +19,7 @@
     "minecraft": "${minecraft_version}"
   },
   "mixins": [
-    "legacy-fabric-keybinding-api-v1-common.mixins.json"
+    "legacy-fabric-keybinding-api-v1.mixins.json"
   ],
   "description": "Hooks that help adding keybindings",
   "custom": {

@@ -15,26 +15,30 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.permission;
+package net.legacyfabric.fabric.mixin.client.keybinding;
 
-import org.spongepowered.asm.mixin.Dynamic;
+import java.util.Map;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.option.KeyBinding;
 
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-
-@Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$2")
-public abstract class SignBlockEntity_2Mixin implements PermissibleCommandSource {
-	@Final
-	@Dynamic
+@Mixin(KeyBinding.class)
+public class KeyBindingMixin {
 	@Shadow
-	PlayerEntity field_9859;
-
-	@Override
-	public boolean hasPermission(String perm) {
-		return ((PermissibleCommandSource) this.field_9859).hasPermission(perm);
+	@Final
+	private static Map<String, Integer> field_15867;
+	private static int lf$category_count = 7;
+	@Inject(method = "<init>", at = @At("RETURN"))
+	private void registerCategory(String string, int i, String category, CallbackInfo ci) {
+		if (!field_15867.containsKey(category)) {
+			while (field_15867.containsValue(lf$category_count)) lf$category_count++;
+			field_15867.put(category, lf$category_count);
+		}
 	}
 }
