@@ -29,7 +29,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 import net.minecraft.resource.AbstractFileResourcePack;
 
 import net.fabricmc.loader.api.ModContainer;
@@ -37,6 +36,7 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.ModResourcePack;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public class ModNioResourcePack extends AbstractFileResourcePack implements ModResourcePack, Closeable {
 	private static final Logger LOGGER = Logger.get(LoggerHelper.API, "ModNioResourcePack");

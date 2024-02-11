@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,6 +38,7 @@ import net.minecraft.world.WorldSaveHandler;
 import net.minecraft.world.level.LevelProperties;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
 @Mixin(WorldSaveHandler.class)
