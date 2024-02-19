@@ -217,7 +217,7 @@ def moduleDependencies(Project project, List<String> projectNames) {
 				if (getProjectSimpleName(project) == "legacyfabric-api") {
 					artifactId = "legacy-fabric-api"
 				} else {
-					artifactId = getProjectMavenName(it)
+					artifactId = getProjectMavenName(project)
 				}
 
 				pom.withXml {
