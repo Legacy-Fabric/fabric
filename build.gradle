@@ -216,6 +216,8 @@ def moduleDependencies(Project project, List<String> projectNames) {
 			mavenJava(MavenPublication) {
 				if (getProjectSimpleName(project) == "legacyfabric-api") {
 					artifactId = "legacy-fabric-api"
+				} else {
+					artifactId = getProjectMavenName(it)
 				}
 
 				pom.withXml {
