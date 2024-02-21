@@ -217,12 +217,17 @@ def moduleDependencies(Project project, List<String> projectNames) {
 	project.publishing {
 		publications {
 			mavenJava(MavenPublication) {
+				if (getProjectSimpleName(project) == "legacyfabric-api") {
+					artifactId = "legacy-fabric-api"
+				} else {
+					artifactId = getProjectMavenName(project)
+				}
+
 				pom.withXml {
 					def depsNode = asNode().appendNode("dependencies")
 					deps.each {
 						def depNode = depsNode.appendNode("dependency")
 						depNode.appendNode("groupId", it.group)
-						System.out.println(it.name)
 						depNode.appendNode("artifactId", getProjectMavenName(it))
 						depNode.appendNode("version", it.version)
 						depNode.appendNode("scope", "compile")
