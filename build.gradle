@@ -532,6 +532,12 @@ publishing {
 	publications {}
 }
 
+subprojects {
+	project.tasks.withType(PublishToMavenLocal).each {
+		it.outputs.file("$rootProject.projectDir/temp")
+	}
+}
+
 subprojects.each { if (it.file("src/main").exists()) remapJar.dependsOn("${it.path}:remapJar") }
 
 sourceSets {
