@@ -51,7 +51,7 @@ static def getProjectSimpleName(Project project) {
 
 	if (!projectFullName.contains("_")) return projectFullName
 
-	return projectFullName.split("_")[0]
+	return projectFullName.split("_")[0].trim()
 }
 
 def getProjectMavenName(projectLike) {
@@ -73,9 +73,11 @@ def getProjectMavenName(projectLike) {
 		} else {
 			simpleName += "-common"
 		}
+	} else {
+		simpleName = project.name.replace("_", "-")
 	}
 
-	return simpleName
+	return simpleName.trim()
 }
 
 
@@ -487,6 +489,8 @@ subprojects {
 				} else {
 					artifactId = getProjectMavenName(project)
 				}
+
+				System.out.println("'$artifactId'")
 
 				pom {
 					addPomMetadataInformation(project, pom)
