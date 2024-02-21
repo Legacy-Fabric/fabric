@@ -28,6 +28,8 @@ def supportedRanges = [
 //    ["1.8", "1.8.9", false] // third parameter is whether or not to include snapshots in the range.
 ]
 
+
+import groovy.json.JsonSlurper
 import net.fabricmc.loom.task.RemapJarTask
 import net.legacyfabric.VersionHelper
 import org.apache.commons.codec.digest.DigestUtils
@@ -215,15 +217,12 @@ def moduleDependencies(Project project, List<String> projectNames) {
 	project.publishing {
 		publications {
 			mavenJava(MavenPublication) {
-				if (getProjectSimpleName(project) == "legacyfabric-api") {
-					artifactId = "legacy-fabric-api"
-				}
-
 				pom.withXml {
 					def depsNode = asNode().appendNode("dependencies")
 					deps.each {
 						def depNode = depsNode.appendNode("dependency")
 						depNode.appendNode("groupId", it.group)
+						System.out.println(it.name)
 						depNode.appendNode("artifactId", getProjectMavenName(it))
 						depNode.appendNode("version", it.version)
 						depNode.appendNode("scope", "compile")
@@ -434,6 +433,40 @@ task javadocJar(type: Jar) {
 
 build.dependsOn javadocJar
 
+def addPomMetadataInformation(Project project, MavenPom pom) {
+	def modJsonFile = project.file("src/main/resources/fabric.mod.json")
+
+	if (!modJsonFile.exists()) {
+		modJsonFile = project.file("src/client/resources/fabric.mod.json")
+	}
+
+	def modJson = new JsonSlurper().parse(modJsonFile)
+	pom.name = modJson.name
+	pom.url = "https://github.com/Legacy-Fabric/fabric/tree/HEAD/${project.rootDir.relativePath(project.projectDir)}"
+	pom.description = modJson.description
+	pom.licenses {
+		license {
+			name = "Apache-2.0"
+			url = "https://github.com/Legacy-Fabric/fabric/blob/HEAD/LICENSE"
+		}
+	}
+	pom.developers {
+		developer {
+			name = "Legacy Fabric"
+			url = "https://legacyfabric.net/"
+		}
+	}
+	pom.scm {
+		connection = "scm:git:https://github.com/Legacy-Fabric/fabric.git"
+		url = "https://github.com/Legacy-Fabric/fabric"
+		developerConnection = "scm:git:git@github.com:Legacy-Fabric/fabric.git"
+	}
+	pom.issueManagement {
+		system = "GitHub"
+		url = "https://github.com/Legacy-Fabric/fabric/issues"
+	}
+}
+
 subprojects {
 	base {
 		archivesName = getProjectMavenName(it)
@@ -450,6 +483,9 @@ subprojects {
 	publishing {
 		publications {
 			mavenJava(MavenPublication) {
+				pom {
+					addPomMetadataInformation(project, pom)
+				}
 				artifact(remapJar) {
 					builtBy remapJar
 				}
