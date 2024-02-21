@@ -217,12 +217,6 @@ def moduleDependencies(Project project, List<String> projectNames) {
 	project.publishing {
 		publications {
 			mavenJava(MavenPublication) {
-				if (getProjectSimpleName(project) == "legacyfabric-api") {
-					artifactId = "legacy-fabric-api"
-				} else {
-					artifactId = getProjectMavenName(project)
-				}
-
 				pom.withXml {
 					def depsNode = asNode().appendNode("dependencies")
 					deps.each {
@@ -488,9 +482,16 @@ subprojects {
 	publishing {
 		publications {
 			mavenJava(MavenPublication) {
+				if (getProjectSimpleName(project) == "legacyfabric-api") {
+					artifactId = "legacy-fabric-api"
+				} else {
+					artifactId = getProjectMavenName(project)
+				}
+
 				pom {
 					addPomMetadataInformation(project, pom)
 				}
+
 				artifact(remapJar) {
 					builtBy remapJar
 				}
