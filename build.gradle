@@ -73,8 +73,6 @@ def getProjectMavenName(projectLike) {
 		} else {
 			simpleName += "-common"
 		}
-	} else {
-		simpleName = project.name.replace("_", "-")
 	}
 
 	return simpleName.trim()
@@ -490,8 +488,6 @@ subprojects {
 					artifactId = getProjectMavenName(project)
 				}
 
-				System.out.println("'$artifactId'")
-
 				pom {
 					addPomMetadataInformation(project, pom)
 				}
@@ -534,6 +530,9 @@ publishing {
 
 subprojects {
 	project.tasks.withType(PublishToMavenLocal).each {
+		it.outputs.file("$rootProject.projectDir/temp")
+	}
+	project.tasks.withType(PublishToMavenRepository).each {
 		it.outputs.file("$rootProject.projectDir/temp")
 	}
 }
