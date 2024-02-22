@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.entity.event.versionned;
+package net.legacyfabric.fabric.mixin.entity.event.versioned;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.PlayerManager;
 
 import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 
-@Mixin(ServerPlayerEntity.class)
-abstract class ServerPlayerEntityMixin {
-	@Inject(method = "copyFrom", at = @At("TAIL"))
-	private void onCopyFrom(PlayerEntity player, boolean alive, CallbackInfo ci) {
-		ServerPlayerEvents.COPY_FROM.invoker().copyFromPlayer((ServerPlayerEntity) player, (ServerPlayerEntity) (Object) this, alive);
+@Mixin(PlayerManager.class)
+abstract class PlayerManagerMixin {
+	@Inject(method = "respawnPlayer", at = @At("TAIL"))
+	private void afterRespawn(ServerPlayerEntity oldPlayer, int dimension, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
+		ServerPlayerEvents.AFTER_RESPAWN.invoker().afterRespawn(oldPlayer, cir.getReturnValue(), oldPlayer.server.getWorld(dimension), alive);
 	}
 }

@@ -33,7 +33,6 @@ import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents
 
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
-
 	/**
 	 * This is called by both "moveToWorld" and "teleport".
 	 * So this is suitable to handle the after event from both call sites.
