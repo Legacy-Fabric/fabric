@@ -47,8 +47,8 @@ abstract class ClientPlayNetworkHandlerMixin implements ClientPlayNetworkHandler
 	@Unique
 	private ClientPlayNetworkAddon addon;
 
-	@Inject(method = "<init>", at = @At("RETURN"))
-	private void initAddon(CallbackInfo ci) {
+	@Override
+	public void lf$initAddon() {
 		this.addon = new ClientPlayNetworkAddon((ClientPlayNetworkHandler) (Object) this, this.client);
 		// A bit of a hack but it allows the field above to be set in case someone registers handlers during INIT event which refers to said field
 		ClientNetworkingImpl.setClientPlayAddon(this.addon);
