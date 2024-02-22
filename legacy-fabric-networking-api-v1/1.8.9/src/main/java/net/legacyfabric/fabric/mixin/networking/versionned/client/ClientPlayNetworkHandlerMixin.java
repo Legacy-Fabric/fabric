@@ -15,16 +15,25 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.networking.client;
+package net.legacyfabric.fabric.mixin.networking.versionned.client;
 
-import org.jetbrains.annotations.ApiStatus;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkHandlerExtensions;
+
 @Environment(EnvType.CLIENT)
-public interface ClientPlayNetworkHandlerExtensions {
-	ClientPlayNetworkAddon getAddon();
-	@ApiStatus.Internal
-	void lf$initAddon();
+@Mixin(value = ClientPlayNetworkHandler.class, priority = 999)
+abstract class ClientPlayNetworkHandlerMixin implements ClientPlayNetworkHandlerExtensions {
+	@Inject(method = "<init>", at = @At("RETURN"))
+	private void initAddon(CallbackInfo ci) {
+		this.lf$initAddon();
+	}
 }

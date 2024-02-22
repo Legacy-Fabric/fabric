@@ -3,14 +3,15 @@
   "package": "net.legacyfabric.fabric.mixin.networking",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "PlayerManagerMixin",
     "ClientConnectionMixin",
+    "CustomPayloadC2SPacketMixin",
     "MinecraftServerMixin",
-    "CustomPayloadC2SPacketMixin"
+    "PlayerManagerMixin"
   ],
   "client": [
+    "client.CustomPayloadS2CPacketMixin",
     "client.MinecraftClientMixin",
-    "client.CustomPayloadS2CPacketMixin"
+    "versionned.client.ClientPlayNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
