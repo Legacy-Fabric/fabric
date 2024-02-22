@@ -11,7 +11,7 @@
   "client": [
     "client.CustomPayloadS2CPacketMixin",
     "client.MinecraftClientMixin",
-    "versionned.client.ClientPlayNetworkHandlerMixin"
+    "versioned.client.ClientPlayNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
