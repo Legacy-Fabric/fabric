@@ -3,8 +3,10 @@ repositories {
 		name = "Fabric"
 		url = "https://maven.fabricmc.net/"
 	}
+	mavenCentral()
 }
 
 dependencies {
 	implementation("net.fabricmc:fabric-loader:0.15.6")
+	implementation("commons-codec:commons-codec:1.16.1")
 }
