@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.entity.event;
+package net.legacyfabric.fabric.mixin.entity.event.versionned;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
-import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
+import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 
-@Mixin(LivingEntity.class)
-abstract class LivingEntityMixin {
-	@Inject(method = "onKilled", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;onKilledOther(Lnet/minecraft/entity/LivingEntity;)V", shift = At.Shift.AFTER))
-	public void onEntityKilledOther(DamageSource source, CallbackInfo ci) {
-		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(source.getAttacker(), (LivingEntity) (Object) this);
+@Mixin(ServerPlayerEntity.class)
+abstract class ServerPlayerEntityMixin {
+	@Inject(method = "copyFrom", at = @At("TAIL"))
+	private void onCopyFrom(PlayerEntity player, boolean alive, CallbackInfo ci) {
+		ServerPlayerEvents.COPY_FROM.invoker().copyFromPlayer((ServerPlayerEntity) player, (ServerPlayerEntity) (Object) this, alive);
 	}
 }

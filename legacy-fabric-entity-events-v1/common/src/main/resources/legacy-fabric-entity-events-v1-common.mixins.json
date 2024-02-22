@@ -3,9 +3,9 @@
   "package": "net.legacyfabric.fabric.mixin.entity.event",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "EntityMixin",
-    "versionned.PlayerManagerMixin",
-    "versionned.ServerPlayerEntityMixin"
+    "LivingEntityMixin",
+    "PlayerManagerMixin",
+    "ServerPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

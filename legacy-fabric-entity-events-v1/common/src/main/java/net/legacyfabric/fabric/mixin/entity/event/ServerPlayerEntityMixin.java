@@ -24,14 +24,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
-import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 
 @Mixin(ServerPlayerEntity.class)
-abstract class ServerPlayerEntityMixin extends LivingEntityMixin {
+public class ServerPlayerEntityMixin {
 	/**
 	 * Minecraft by default does not call Entity#onKilledOther for a ServerPlayerEntity being killed.
 	 * This is a Mojang bug.
@@ -46,10 +44,5 @@ abstract class ServerPlayerEntityMixin extends LivingEntityMixin {
 			attacker.onKilledOther((ServerPlayerEntity) (Object) this);
 			ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(attacker, (ServerPlayerEntity) (Object) this);
 		}
-	}
-
-	@Inject(method = "copyFrom", at = @At("TAIL"))
-	private void onCopyFrom(PlayerEntity player, boolean alive, CallbackInfo ci) {
-		ServerPlayerEvents.COPY_FROM.invoker().copyFromPlayer((ServerPlayerEntity) player, (ServerPlayerEntity) (Object) this, alive);
 	}
 }

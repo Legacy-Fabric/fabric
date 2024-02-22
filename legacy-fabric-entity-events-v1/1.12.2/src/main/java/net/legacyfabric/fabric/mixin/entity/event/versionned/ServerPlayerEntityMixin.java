@@ -15,38 +15,19 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.entity.event;
+package net.legacyfabric.fabric.mixin.entity.event.versionned;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 
-import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 
 @Mixin(ServerPlayerEntity.class)
-abstract class ServerPlayerEntityMixin extends LivingEntityMixin {
-	/**
-	 * Minecraft by default does not call Entity#onKilledOther for a ServerPlayerEntity being killed.
-	 * This is a Mojang bug.
-	 * This is implements the method call on the server player entity and then calls the corresponding event.
-	 */
-	@Inject(method = "onKilled", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getOpponent()Lnet/minecraft/entity/LivingEntity;"))
-	private void callOnKillForPlayer(DamageSource source, CallbackInfo ci) {
-		final Entity attacker = source.getAttacker();
-
-		// If the damage source that killed the player was an entity, then fire the event.
-		if (attacker != null) {
-			attacker.onKilledOther((ServerPlayerEntity) (Object) this);
-			ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(attacker, (ServerPlayerEntity) (Object) this);
-		}
-	}
-
+abstract class ServerPlayerEntityMixin {
 	@Inject(method = "method_14968", at = @At("TAIL"))
 	private void onCopyFrom(ServerPlayerEntity player, boolean alive, CallbackInfo ci) {
 		ServerPlayerEvents.COPY_FROM.invoker().copyFromPlayer((ServerPlayerEntity) player, (ServerPlayerEntity) (Object) this, alive);
