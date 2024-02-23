@@ -100,6 +100,7 @@ public class FabricCreativeGuiComponents {
 					GlStateManager.disableLighting();
 					GlStateManager.color(1F, 1F, 1F, 1F);
 				} catch (NoClassDefFoundError e) { // 1.7.10-
+					GL11.glDisable(2896);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				}
 
