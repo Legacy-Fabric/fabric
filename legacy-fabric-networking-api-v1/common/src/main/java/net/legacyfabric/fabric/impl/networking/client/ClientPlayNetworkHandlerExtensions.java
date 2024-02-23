@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 - 2022 Legacy Fabric
+ * Copyright (c) 2020 - 2024 Legacy Fabric
  * Copyright (c) 2016 - 2022 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,14 @@
 
 package net.legacyfabric.fabric.impl.networking.client;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public interface ClientPlayNetworkHandlerExtensions {
 	ClientPlayNetworkAddon getAddon();
+	@ApiStatus.Internal
+	void lf$initAddon();
 }
