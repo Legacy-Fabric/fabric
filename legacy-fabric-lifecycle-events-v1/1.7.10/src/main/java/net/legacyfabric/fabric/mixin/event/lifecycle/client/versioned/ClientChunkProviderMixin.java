@@ -15,15 +15,13 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.event.lifecycle.client;
+package net.legacyfabric.fabric.mixin.event.lifecycle.client.versioned;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.World;
@@ -47,10 +45,5 @@ public abstract class ClientChunkProviderMixin {
 	@Inject(at = @At("RETURN"), method = "unloadChunk")
 	public void api$chunkUnload(int i, int j, CallbackInfo ci) {
 		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getChunk(i, j));
-	}
-
-	@Inject(at = @At("RETURN"), method = "getOrGenerateChunk", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	public void api$chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
-		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, chunk);
 	}
 }

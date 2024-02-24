@@ -18,9 +18,6 @@
 package net.legacyfabric.fabric.api.client.event.lifecycle.v1;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.world.GameMode;
-import net.minecraft.world.level.LevelInfo;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -60,20 +57,5 @@ public final class ClientLifecycleEvents {
 	@FunctionalInterface
 	public interface ClientStopping {
 		void onClientStopping(MinecraftClient client);
-	}
-
-	@FunctionalInterface
-	public interface OutOfMemory {
-		void onOutOfMemoryError(MinecraftClient client);
-	}
-
-	@FunctionalInterface
-	public interface IntegratedServerPublished {
-		void onServerPublished(MinecraftClient client, GameMode gameMode, boolean cheats, LevelInfo levelInfo);
-	}
-
-	@FunctionalInterface
-	public interface OptionsSaved {
-		void onGameOptionsSaved(GameOptions options);
 	}
 }

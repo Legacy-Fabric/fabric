@@ -33,7 +33,7 @@ import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 
 @Mixin(MinecraftServer.class)
-public abstract class MinecraftServerMixin {
+public class MinecraftServerMixin {
 	@Shadow
 	public ServerWorld[] worlds;
 
@@ -71,13 +71,6 @@ public abstract class MinecraftServerMixin {
 	public void api$serverWorldUnload(boolean silent, CallbackInfo ci) {
 		for (ServerWorld world : this.worlds) {
 			ServerWorldEvents.UNLOAD.invoker().onWorldUnload((MinecraftServer) (Object) this, world);
-		}
-	}
-
-	@Inject(at = @At(value = "TAIL"), method = "method_2980")
-	public void api$serverWorldLoad(CallbackInfo ci) {
-		for (ServerWorld world : this.worlds) {
-			ServerWorldEvents.LOAD.invoker().onWorldLoad((MinecraftServer) (Object) this, world);
 		}
 	}
 }

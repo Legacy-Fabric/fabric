@@ -15,15 +15,14 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.event.lifecycle.client;
+package net.legacyfabric.fabric.mixin.event.lifecycle.client.versioned;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.World;
@@ -38,19 +37,15 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 @Environment(EnvType.CLIENT)
 @Mixin(ClientChunkProvider.class)
 public abstract class ClientChunkProviderMixin {
+	@Final
 	@Shadow
 	private World world;
 
 	@Shadow
-	public abstract Chunk getChunk(int i, int j);
+	public abstract Chunk getLoadedChunk(int par1, int par2);
 
 	@Inject(at = @At("RETURN"), method = "unloadChunk")
 	public void chunkUnload(int i, int j, CallbackInfo ci) {
-		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getChunk(i, j));
-	}
-
-	@Inject(at = @At("RETURN"), method = "getOrGenerateChunk", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
-		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, chunk);
+		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getLoadedChunk(i, j));
 	}
 }
