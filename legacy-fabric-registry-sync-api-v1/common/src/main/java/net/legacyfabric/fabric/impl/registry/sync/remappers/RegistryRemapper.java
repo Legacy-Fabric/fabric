@@ -20,6 +20,7 @@ package net.legacyfabric.fabric.impl.registry.sync.remappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.IntSupplier;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -133,27 +134,17 @@ public class RegistryRemapper<V> {
 	private void addNewEntries(IdListCompat<V> newList, IntSupplier currentSize, IntSupplier previousSize) {
 		LOGGER.info("Adding " + (previousSize.getAsInt() - currentSize.getAsInt()) + " missing entries to registry");
 
-		RegistryHelperImpl.getObjects(this.registry).keySet().stream().filter(obj -> newList.getInt(obj) == -1).forEach(missingValue -> {
-			int index = RegistryHelperImpl.nextId(this.registry);
+		RegistryHelperImpl.getObjects(this.registry)
+				.keySet().stream()
+				.filter(obj -> newList.getInt(obj) == -1)
+				.collect(Collectors.toList())
+				.forEach(missingValue -> {
+					int newId = RegistryHelperImpl.nextId(newList, this.registry, this.missingMap);
 
-			while (newList.fromInt(index) != null || this.missingMap.containsValue(index)) {
-				index = RegistryHelperImpl.nextId(newList, this.registry, this.missingMap);
+					newList.setValue(missingValue, newId);
 
-				V currentValue = RegistryHelperImpl.getIdList(this.registry).fromInt(index);
-
-				if (currentValue == null) {
-					break;
-				}
-			}
-
-			if (newList.getInt(missingValue) == -1) {
-				newList.setValue(missingValue, index);
-			} else {
-				index = newList.getInt(missingValue);
-			}
-
-			LOGGER.info("Adding %s %s with numerical id %d to registry", this.type, this.registry.getKey(missingValue), index);
-		});
+					LOGGER.info("Adding %s %s with numerical id %d to registry", this.type, this.registry.getKey(missingValue), newId);
+				});
 	}
 
 	private void invokeRemapListeners(IdListCompat<V> newList) {

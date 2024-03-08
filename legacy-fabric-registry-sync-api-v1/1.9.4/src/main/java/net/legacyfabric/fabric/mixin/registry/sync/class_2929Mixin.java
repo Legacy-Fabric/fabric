@@ -20,6 +20,7 @@ package net.legacyfabric.fabric.mixin.registry.sync;
 import java.util.IdentityHashMap;
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -63,7 +64,7 @@ public abstract class class_2929Mixin<V> implements IdListCompat<V> {
 
 	@Override
 	public List<V> getList() {
-		return null;
+		return Lists.newArrayList(this.field_14375);
 	}
 
 	@Override
