@@ -36,7 +36,6 @@ import net.minecraft.world.biome.Biome;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.tinyremapper.extension.mixin.common.data.Pair;
 
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
@@ -50,6 +49,8 @@ import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.util.ArrayAndMapBasedRegistry;
+import net.legacyfabric.fabric.impl.registry.util.BiomePair;
+import net.legacyfabric.fabric.impl.registry.util.NumericalIdPair;
 
 @ApiStatus.Internal
 public class RegistryHelperImpl {
@@ -168,22 +169,22 @@ public class RegistryHelperImpl {
 		return biome;
 	}
 
-	public static Pair<Biome, Biome> registerBiomeWithMutatedVariant(
+	public static BiomePair registerBiomeWithMutatedVariant(
 			RegistryHelper.EntryCreator<Biome> parentBiomeCreator, Identifier parentId,
 			RegistryHelper.EntryCreator<Biome> mutatedBiomeCreator, Identifier mutatedId
 	) {
 		RegistryRemapper<Biome> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BIOMES);
-		Pair<Integer, Integer> rawIds = nextIds(registryRemapper.getRegistry(), 128);
+		NumericalIdPair rawIds = nextIds(registryRemapper.getRegistry(), 128);
 
-		((ArrayAndMapBasedRegistry) registryRemapper.getRegistry()).updateArrayLength(rawIds.second());
+		((ArrayAndMapBasedRegistry) registryRemapper.getRegistry()).updateArrayLength(rawIds.getSecondary());
 
-		Biome parentBiome = parentBiomeCreator.create(rawIds.first());
-		registryRemapper.register(rawIds.first(), parentId, parentBiome);
+		Biome parentBiome = parentBiomeCreator.create(rawIds.getMain());
+		registryRemapper.register(rawIds.getMain(), parentId, parentBiome);
 
-		Biome mutatedBiome = mutatedBiomeCreator.create(rawIds.second());
-		registryRemapper.register(rawIds.second(), mutatedId, mutatedBiome);
+		Biome mutatedBiome = mutatedBiomeCreator.create(rawIds.getSecondary());
+		registryRemapper.register(rawIds.getSecondary(), mutatedId, mutatedBiome);
 
-		return Pair.of(parentBiome, mutatedBiome);
+		return new BiomePair(parentBiome, mutatedBiome);
 	}
 
 	public static <V> V getValue(Identifier id, Identifier registryId) {
@@ -236,7 +237,7 @@ public class RegistryHelperImpl {
 		return id;
 	}
 
-	public static Pair<Integer, Integer> nextIds(SimpleRegistryCompat<?, ?> registry, int interval) {
+	public static NumericalIdPair nextIds(SimpleRegistryCompat<?, ?> registry, int offset) {
 		int id = 0;
 
 		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
@@ -246,12 +247,12 @@ public class RegistryHelperImpl {
 		}
 
 		while (id < registryRemapper.getMinId()
-				|| !(getIdList(registry).fromInt(id) == null && getIdList(registry).fromInt(id + interval) == null)
+				|| !(getIdList(registry).fromInt(id) == null && getIdList(registry).fromInt(id + offset) == null)
 		) {
 			id++;
 		}
 
-		return Pair.of(id, id + interval);
+		return new NumericalIdPair(id, id + offset);
 	}
 
 	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry) {
