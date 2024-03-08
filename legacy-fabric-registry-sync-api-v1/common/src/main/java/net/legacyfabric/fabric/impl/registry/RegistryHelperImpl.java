@@ -18,6 +18,7 @@
 package net.legacyfabric.fabric.impl.registry;
 
 import java.util.IdentityHashMap;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.google.common.collect.BiMap;
@@ -57,11 +58,36 @@ public class RegistryHelperImpl {
 	public static final boolean bootstrap = VersionUtils.matches(">1.8.9");
 	public static RegistriesGetter registriesGetter = null;
 
+	public static <T> int register(T object, Identifier id, Identifier registryId) {
+		RegistryRemapper<T> remapper = RegistryRemapper.getRegistryRemapper(registryId);
+		int rawId = nextId(remapper.getRegistry());
+		remapper.register(rawId, id, object);
+
+		return rawId;
+	}
+
+	public static <T> T register(RegistryHelper.EntryCreator<T> entryCreator, Identifier id, Identifier registryId) {
+		return register(entryCreator, id, registryId, instance -> { });
+	}
+
+	public static <T> T register(RegistryHelper.EntryCreator<T> entryCreator, Identifier id, Identifier registryId, Consumer<T> beforeRegistration) {
+		RegistryRemapper<T> remapper = RegistryRemapper.getRegistryRemapper(registryId);
+		SimpleRegistryCompat<?, T> registry = remapper.getRegistry();
+		int rawId = nextId(registry);
+
+		if (registry instanceof ArrayAndMapBasedRegistry) ((ArrayAndMapBasedRegistry<?, T>) registry).updateArrayLength(rawId);
+
+		T instance = entryCreator.create(rawId);
+		beforeRegistration.accept(instance);
+
+		remapper.register(rawId, id, instance);
+
+		return instance;
+	}
+
 	public static Block registerBlock(Block block, Identifier id) {
 		block.setTranslationKey(formatTranslationKey(id));
-		RegistryRemapper<Block> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BLOCKS);
-		int rawId = nextId(registryRemapper.getRegistry());
-		registryRemapper.register(rawId, id, block);
+		int rawId = register(block, id, RegistryIds.BLOCKS);
 
 		if (hasFlatteningBegun) {
 			for (BlockState blockState : block.getStateManager().getBlockStates()) {
@@ -75,9 +101,7 @@ public class RegistryHelperImpl {
 
 	public static Item registerItem(Item item, Identifier id) {
 		item.setTranslationKey(formatTranslationKey(id));
-		RegistryRemapper<Item> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.ITEMS);
-		int rawId = nextId(registryRemapper.getRegistry());
-		registryRemapper.register(rawId, id, item);
+		register(item, id, RegistryIds.ITEMS);
 
 		if (hasFlatteningBegun) {
 			if (item instanceof BlockItem) {
@@ -89,83 +113,47 @@ public class RegistryHelperImpl {
 	}
 
 	public static Class<? extends BlockEntity> registerBlockEntityType(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
-		RegistryRemapper<Class<? extends BlockEntity>> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BLOCK_ENTITY_TYPES);
-		int rawId = nextId(registryRemapper.getRegistry());
-		registryRemapper.register(rawId, id, blockEntityClass);
+		register(blockEntityClass, id, RegistryIds.BLOCK_ENTITY_TYPES);
 
 		return blockEntityClass;
 	}
 
 	public static Class<? extends Entity> registerEntityType(Class<? extends Entity> entityTypeClass, Identifier id) {
-		RegistryRemapper<Class<? extends Entity>> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.ENTITY_TYPES);
-		int rawId = nextId(registryRemapper.getRegistry());
-		registryRemapper.register(rawId, id, entityTypeClass);
+		register(entityTypeClass, id, RegistryIds.ENTITY_TYPES);
 
 		return entityTypeClass;
 	}
 
 	public static StatusEffect registerStatusEffect(StatusEffect statusEffect, Identifier id) {
 		statusEffect.setTranslationKey(formatTranslationKey(id));
-		RegistryRemapper<StatusEffect> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.STATUS_EFFECTS);
-		int rawId = nextId(registryRemapper.getRegistry());
-		registryRemapper.register(rawId, id, statusEffect);
+		register(statusEffect, id, RegistryIds.STATUS_EFFECTS);
 
 		return statusEffect;
 	}
 
 	public static StatusEffect registerStatusEffect(RegistryHelper.EntryCreator<StatusEffect> statusEffectCreator, Identifier id) {
-		RegistryRemapper<StatusEffect> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.STATUS_EFFECTS);
-		int rawId = nextId(registryRemapper.getRegistry());
-
-		((ArrayAndMapBasedRegistry) registryRemapper.getRegistry()).updateArrayLength(rawId);
-
-		StatusEffect statusEffect = statusEffectCreator.create(rawId);
-		statusEffect.setTranslationKey(formatTranslationKey(id));
-		registryRemapper.register(rawId, id, statusEffect);
-
-		return statusEffect;
+		return register(statusEffectCreator, id, RegistryIds.STATUS_EFFECTS, effect -> effect.setTranslationKey(formatTranslationKey(id)));
 	}
 
 	public static Enchantment registerEnchantment(Enchantment enchantment, Identifier id) {
 		enchantment.setName(formatTranslationKey(id));
-		RegistryRemapper<Enchantment> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.ENCHANTMENTS);
-		int rawId = nextId(registryRemapper.getRegistry());
-		registryRemapper.register(rawId, id, enchantment);
+		register(enchantment, id, RegistryIds.ENCHANTMENTS);
 
 		return enchantment;
 	}
 
 	public static Enchantment registerEnchantment(RegistryHelper.EntryCreator<Enchantment> enchantmentCreator, Identifier id) {
-		RegistryRemapper<Enchantment> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.ENCHANTMENTS);
-		int rawId = nextId(registryRemapper.getRegistry());
-
-		((ArrayAndMapBasedRegistry) registryRemapper.getRegistry()).updateArrayLength(rawId);
-
-		Enchantment enchantment = enchantmentCreator.create(rawId);
-		enchantment.setName(formatTranslationKey(id));
-		registryRemapper.register(rawId, id, enchantment);
-
-		return enchantment;
+		return register(enchantmentCreator, id, RegistryIds.ENCHANTMENTS, enchantment -> enchantment.setName(formatTranslationKey(id)));
 	}
 
 	public static Biome registerBiome(Biome biome, Identifier id) {
-		RegistryRemapper<Biome> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BIOMES);
-		int rawId = nextId(registryRemapper.getRegistry());
-		registryRemapper.register(rawId, id, biome);
+		register(biome, id, RegistryIds.BIOMES);
 
 		return biome;
 	}
 
 	public static Biome registerBiome(RegistryHelper.EntryCreator<Biome> biomeCreator, Identifier id) {
-		RegistryRemapper<Biome> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BIOMES);
-		int rawId = nextId(registryRemapper.getRegistry());
-
-		((ArrayAndMapBasedRegistry) registryRemapper.getRegistry()).updateArrayLength(rawId);
-
-		Biome biome = biomeCreator.create(rawId);
-		registryRemapper.register(rawId, id, biome);
-
-		return biome;
+		return register(biomeCreator, id, RegistryIds.BIOMES);
 	}
 
 	public static Pair<Biome, Biome> registerBiomeWithMutatedVariant(
@@ -175,7 +163,7 @@ public class RegistryHelperImpl {
 		RegistryRemapper<Biome> registryRemapper = RegistryRemapper.getRegistryRemapper(RegistryIds.BIOMES);
 		Pair<Integer, Integer> rawIds = nextIds(registryRemapper.getRegistry(), 128);
 
-		((ArrayAndMapBasedRegistry) registryRemapper.getRegistry()).updateArrayLength(rawIds.second());
+		((ArrayAndMapBasedRegistry<?, ?>) registryRemapper.getRegistry()).updateArrayLength(rawIds.second());
 
 		Biome parentBiome = parentBiomeCreator.create(rawIds.first());
 		registryRemapper.register(rawIds.first(), parentId, parentBiome);
@@ -215,25 +203,11 @@ public class RegistryHelperImpl {
 	}
 
 	public static int nextId(SimpleRegistryCompat<?, ?> registry) {
-		return nextId(registry, 0);
+		return nextId(registry.getIds(), registry);
 	}
 
 	public static int nextId(SimpleRegistryCompat<?, ?> registry, int minId) {
-		int id = minId;
-
-		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
-
-		if (registryRemapper == null) {
-			registryRemapper = RegistryRemapper.DEFAULT_CLIENT_INSTANCE;
-		}
-
-		while (getIdList(registry).fromInt(id) != null
-				|| id < registryRemapper.getMinId()
-		) {
-			id++;
-		}
-
-		return id;
+		return nextId(registry.getIds(), registry, minId);
 	}
 
 	public static Pair<Integer, Integer> nextIds(SimpleRegistryCompat<?, ?> registry, int interval) {
@@ -254,12 +228,20 @@ public class RegistryHelperImpl {
 		return Pair.of(id, id + interval);
 	}
 
+	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry, int minId) {
+		return nextId(idList, registry, HashBiMap.create(), minId);
+	}
+
 	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry) {
-		return nextId(idList, registry, HashBiMap.create());
+		return nextId(idList, registry, 0);
 	}
 
 	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry, BiMap<Identifier, Integer> missingMap) {
-		int id = 0;
+		return nextId(idList, registry, missingMap, 0);
+	}
+
+	public static int nextId(IdListCompat<?> idList, SimpleRegistryCompat<?, ?> registry, BiMap<Identifier, Integer> missingMap, int minId) {
+		int id = minId;
 
 		RegistryRemapper<?> registryRemapper = RegistryRemapper.getRegistryRemapper(registry);
 
