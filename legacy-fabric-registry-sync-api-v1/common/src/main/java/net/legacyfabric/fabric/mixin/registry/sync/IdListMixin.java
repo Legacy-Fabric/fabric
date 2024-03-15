@@ -48,6 +48,7 @@ public abstract class IdListMixin<V> implements IdListCompat<V> {
 	@Shadow
 	public abstract int getId(V value);
 
+	@Override
 	public <K> IdentityHashMap<V, Integer> getIdMap(SimpleRegistryCompat<K, V> simpleRegistry) {
 		return this.idMap;
 	}
