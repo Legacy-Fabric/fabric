@@ -28,14 +28,13 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.world.biome.Biome;
 
-import net.fabricmc.tinyremapper.extension.mixin.common.data.Pair;
-
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.util.BeforeMC;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
+import net.legacyfabric.fabric.impl.registry.util.BiomePair;
 
 /**
  * Allows registration of Blocks, Items, Block Entity Classes, Status Effects and Enchantments.
@@ -209,7 +208,7 @@ public final class RegistryHelper {
 	 * @return The biomes registered
 	 */
 	@BeforeMC("1.9")
-	public static Pair<Biome, Biome> registerBiomeWithMutatedVariant(
+	public static BiomePair registerBiomeWithMutatedVariant(
 			EntryCreator<Biome> parentBiome, Identifier parentId,
 			EntryCreator<Biome> mutatedBiome, Identifier mutatedId
 	) {
