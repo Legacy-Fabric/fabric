@@ -18,11 +18,11 @@
 package net.legacyfabric.fabric.impl.networking;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public final class NetworkingImpl {
 	public static final String MOD_ID = "fabric-networking-api-v1";
-	public static final Logger LOGGER = Logger.get(LoggerImpl.API, MOD_ID);
+	public static final Logger LOGGER = Logger.get(LoggerHelper.API, MOD_ID);
 	/**
 	 * Id of packet used to register supported channels.
 	 */
