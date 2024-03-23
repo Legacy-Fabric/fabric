@@ -15,21 +15,31 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.registry.v2.event;
+package net.legacyfabric.fabric.mixin.registry.sync;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryHolder;
-import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
-/**
- * Triggered only when a new registry is registered.
- */
-@FunctionalInterface
-public interface RegistryInitializedEvent {
-	<T> void initialized(RegistryHolder<T> registry);
+import net.minecraft.util.collection.IdList;
 
-	static Event<RegistryInitializedEvent> event(Identifier registryId) {
-		return RegistryHelperImplementation.getInitializationEvent(registryId);
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
+
+@Mixin(IdList.class)
+public abstract class IdListMixinV2<T> implements IdsHolder<T> {
+	@Shadow
+	public abstract Object fromId(int index);
+
+	@Override
+	public IdsHolder<T> fabric$new() {
+		return (IdsHolder<T>) new IdList<>();
+	}
+
+	@Override
+	public int fabric$nextId() {
+		int id = 0;
+
+		while (this.fromId(id) != null) id++;
+
+		return id;
 	}
 }

@@ -17,12 +17,31 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync;
 
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.class_2929;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistryHolder;
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 
-@Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixinV2<K, V> implements SyncedRegistryHolder<V> {
+@Mixin(class_2929.class)
+public abstract class class_2929Mixin<T> implements IdsHolder<T> {
+	@Shadow
+	@Nullable
+	public abstract T getById(int id);
+
+	@Override
+	public IdsHolder<T> fabric$new() {
+		return (IdsHolder<T>) new class_2929<>(256);
+	}
+
+	@Override
+	public int fabric$nextId() {
+		int id = 0;
+
+		while (this.getById(id) != null) id++;
+
+		return id;
+	}
 }

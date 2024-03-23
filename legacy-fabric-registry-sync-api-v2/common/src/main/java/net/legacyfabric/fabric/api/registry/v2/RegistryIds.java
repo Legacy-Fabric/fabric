@@ -15,22 +15,16 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.registry.v2.event;
+package net.legacyfabric.fabric.api.registry.v2;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
-@FunctionalInterface
-public interface RegistryBeforeAddCallback<T> {
-	void onEntryAdding(int rawId, Identifier id, T object);
-
-	static <T> Event<RegistryBeforeAddCallback<T>> event(Identifier registryId) {
-		return event(RegistryHelperImplementation.getRegistry(registryId));
-	}
-
-	static <T> Event<RegistryBeforeAddCallback<T>> event(RegistryHolder<T> registry) {
-		return registry.fabric$getBeforeAddedCallback();
-	}
+public class RegistryIds {
+	public static final Identifier ITEMS = new Identifier("items");
+	public static final Identifier BLOCKS = new Identifier("blocks");
+	public static final Identifier BLOCK_ENTITY_TYPES = new Identifier("block_entity_types");
+	public static final Identifier STATUS_EFFECTS = new Identifier("status_effects");
+	public static final Identifier ENCHANTMENTS = new Identifier("enchantments");
+	public static final Identifier BIOMES = new Identifier("biomes");
+	public static final Identifier ENTITY_TYPES = new Identifier("entity_types");
 }

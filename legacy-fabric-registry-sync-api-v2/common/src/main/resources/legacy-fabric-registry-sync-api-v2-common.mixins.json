@@ -6,6 +6,8 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "IdListMixinV2",
+    "MutableRegistryMixin",
     "SimpleRegistryMixinV2"
   ],
   "client": [

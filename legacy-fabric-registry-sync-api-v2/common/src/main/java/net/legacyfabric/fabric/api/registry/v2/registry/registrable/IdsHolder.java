@@ -15,21 +15,10 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.registry.v2.event;
+package net.legacyfabric.fabric.api.registry.v2.registry.registrable;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryHolder;
-import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
+public interface IdsHolder<T> extends Iterable<T> {
+	IdsHolder<T> fabric$new();
 
-/**
- * Triggered only when a new registry is registered.
- */
-@FunctionalInterface
-public interface RegistryInitializedEvent {
-	<T> void initialized(RegistryHolder<T> registry);
-
-	static Event<RegistryInitializedEvent> event(Identifier registryId) {
-		return RegistryHelperImplementation.getInitializationEvent(registryId);
-	}
+	int fabric$nextId();
 }

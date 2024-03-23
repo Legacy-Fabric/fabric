@@ -15,22 +15,20 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.registry.v2.event;
+package net.legacyfabric.fabric.api.registry.v2.registry.holder;
 
 import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryHolder;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
-@FunctionalInterface
-public interface RegistryBeforeAddCallback<T> {
-	void onEntryAdding(int rawId, Identifier id, T object);
+public interface RegistryHolder<T> {
+	Identifier fabric$getId();
+	Event<RegistryEntryAddedCallback<T>> fabric$getEntryAddedCallback();
+	Event<RegistryBeforeAddCallback<T>> fabric$getBeforeAddedCallback();
 
-	static <T> Event<RegistryBeforeAddCallback<T>> event(Identifier registryId) {
-		return event(RegistryHelperImplementation.getRegistry(registryId));
-	}
+	<K> K fabric$toKeyType(Object o);
 
-	static <T> Event<RegistryBeforeAddCallback<T>> event(RegistryHolder<T> registry) {
-		return registry.fabric$getBeforeAddedCallback();
-	}
+	T fabric$getValue(Identifier id);
+	Identifier fabric$getId(T value);
 }

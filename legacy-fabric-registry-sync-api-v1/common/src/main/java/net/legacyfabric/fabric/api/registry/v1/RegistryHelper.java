@@ -88,11 +88,13 @@ public final class RegistryHelper {
 	 * @return The item registered
 	 */
 	public static Item registerItem(Item item, Identifier id) {
-		return RegistryHelperImpl.registerItem(item, id);
+		net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(net.legacyfabric.fabric.api.registry.v2.RegistryIds.ITEMS, id, item);
+
+		return item;
 	}
 
 	public static Item getItem(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryIds.ITEMS);
+		return net.legacyfabric.fabric.api.registry.v2.RegistryHelper.getValue(RegistryIds.ITEMS, id);
 	}
 
 	/**
