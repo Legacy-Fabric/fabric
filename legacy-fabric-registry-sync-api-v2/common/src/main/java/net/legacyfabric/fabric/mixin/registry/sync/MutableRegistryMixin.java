@@ -1,0 +1,119 @@
+/*
+ * Copyright (c) 2020 - 2024 Legacy Fabric
+ * Copyright (c) 2016 - 2022 FabricMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package net.legacyfabric.fabric.mixin.registry.sync;
+
+import java.util.Map;
+
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+
+import net.minecraft.util.registry.MutableRegistry;
+
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryHolder;
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
+import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
+import net.legacyfabric.fabric.impl.registry.accessor.RegistryIdSetter;
+
+@Mixin(MutableRegistry.class)
+public abstract class MutableRegistryMixin<K, V> implements RegistryHolder<V>, RegistryIdSetter, Registrable<V> {
+	@Shadow
+	public abstract void put(Object key, Object value);
+
+	@Shadow
+	public abstract Object get(Object key);
+
+	@Shadow
+	@Final
+	protected Map<K, V> map;
+	@Unique
+	private final Event<RegistryEntryAddedCallback<V>> fabric_addObjectEvent = EventFactory.createArrayBacked(RegistryEntryAddedCallback.class,
+			(callbacks) -> (rawId, id, object) -> {
+				for (RegistryEntryAddedCallback<V> callback : callbacks) {
+					callback.onEntryAdded(rawId, id, object);
+				}
+			}
+	);
+
+	@Unique
+	private final Event<RegistryBeforeAddCallback<V>> fabric_beforeAddObjectEvent = EventFactory.createArrayBacked(RegistryBeforeAddCallback.class,
+			(callbacks) -> (rawId, id, object) -> {
+				for (RegistryBeforeAddCallback<V> callback : callbacks) {
+					callback.onEntryAdding(rawId, id, object);
+				}
+			}
+	);
+
+	@Unique
+	private Identifier fabric_id;
+
+	@Override
+	public Event<RegistryEntryAddedCallback<V>> fabric$getEntryAddedCallback() {
+		return this.fabric_addObjectEvent;
+	}
+
+	@Override
+	public Event<RegistryBeforeAddCallback<V>> fabric$getBeforeAddedCallback() {
+		return this.fabric_beforeAddObjectEvent;
+	}
+
+	@Override
+	public Identifier fabric$getId() {
+		return this.fabric_id;
+	}
+
+	@Override
+	public void fabric$setId(Identifier identifier) {
+		assert this.fabric_id == null;
+		this.fabric_id = identifier;
+	}
+
+	@Override
+	public K fabric$toKeyType(Object o) {
+		return RegistryHelperImplementation.hasFlatteningBegun ? (K) new net.minecraft.util.Identifier(o.toString()) : (K) o.toString();
+	}
+
+	@Override
+	public void fabric$register(int rawId, Identifier identifier, V value) {
+		fabric$getBeforeAddedCallback().invoker().onEntryAdding(rawId, identifier, value);
+		put(fabric$toKeyType(identifier), value);
+		fabric$getEntryAddedCallback().invoker().onEntryAdded(rawId, identifier, value);
+	}
+
+	@Override
+	public V fabric$getValue(Identifier id) {
+		return (V) get(fabric$toKeyType(id));
+	}
+
+	@Override
+	public Identifier fabric$getId(V value) {
+		if (map.containsValue(value)) {
+			for (Map.Entry<K, V> entry : map.entrySet()) {
+				if (entry.getValue() != null && entry.getValue().equals(value)) return new Identifier(entry.getKey());
+			}
+		}
+
+		return null;
+	}
+}

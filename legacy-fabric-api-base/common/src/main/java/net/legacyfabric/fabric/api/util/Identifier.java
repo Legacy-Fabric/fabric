@@ -71,6 +71,10 @@ public class Identifier implements Comparable<Identifier> {
 		return this.namespace + ':' + this.path;
 	}
 
+	public String toTranslationKey() {
+		return this.namespace + "." + this.path;
+	}
+
 	public boolean equals(Object object) {
 		if (this == object) {
 			return true;

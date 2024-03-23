@@ -100,19 +100,6 @@ public class RegistryHelperImpl {
 		return block;
 	}
 
-	public static Item registerItem(Item item, Identifier id) {
-		item.setTranslationKey(formatTranslationKey(id));
-		register(item, id, RegistryIds.ITEMS);
-
-		if (hasFlatteningBegun) {
-			if (item instanceof BlockItem) {
-				((ItemCompat) item).getBLOCK_ITEMS().put(((BlockItem) item).getBlock(), item);
-			}
-		}
-
-		return item;
-	}
-
 	public static Class<? extends BlockEntity> registerBlockEntityType(Class<? extends BlockEntity> blockEntityClass, Identifier id) {
 		register(blockEntityClass, id, RegistryIds.BLOCK_ENTITY_TYPES);
 
