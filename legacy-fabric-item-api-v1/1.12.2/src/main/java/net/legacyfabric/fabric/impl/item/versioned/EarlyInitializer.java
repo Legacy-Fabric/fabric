@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.impl.item.versioned;
 
-import net.legacyfabric.fabric.mixin.item.versioned.ItemAccessor;
-
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 
@@ -27,6 +25,7 @@ import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryHolder;
+import net.legacyfabric.fabric.mixin.item.versioned.ItemAccessor;
 
 public class EarlyInitializer implements PreLaunchEntrypoint {
 	@Override
