@@ -31,12 +31,26 @@ import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixin<K, V> implements SyncedRegistryHolder<V>, SyncedRegistrable<V> {
+	// 1.8+
 	@Shadow
 	public abstract void add(int id, K identifier, V object);
 
+	// 1.9+
 	@Shadow
 	@Final
 	protected class_2929<V> field_13718;
+
+	// 1.8+
+	@Shadow
+	public abstract K getIdentifier(Object par1);
+
+	// 1.9+
+	@Shadow
+	public abstract int getRawId(Object object);
+
+	// 1.7+
+	@Shadow
+	public abstract Object getByRawId(int index);
 
 	@Override
 	public void fabric$register(int rawId, Identifier identifier, V value) {
@@ -48,5 +62,20 @@ public abstract class SimpleRegistryMixin<K, V> implements SyncedRegistryHolder<
 	@Override
 	public IdsHolder<V> fabric$getIdsHolder() {
 		return (IdsHolder<V>) field_13718;
+	}
+
+	@Override
+	public Identifier fabric$getId(V value) {
+		return new Identifier(getIdentifier(this.fabric$toKeyType(value)));
+	}
+
+	@Override
+	public int fabric$getRawId(V value) {
+		return getRawId(value);
+	}
+
+	@Override
+	public V fabric$getValue(int rawId) {
+		return (V) getByRawId(rawId);
 	}
 }

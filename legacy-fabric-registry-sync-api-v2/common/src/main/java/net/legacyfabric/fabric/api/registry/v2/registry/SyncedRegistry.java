@@ -15,20 +15,10 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.registry.v2.registry.holder;
+package net.legacyfabric.fabric.api.registry.v2.registry;
 
-import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistryHolder;
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 
-public interface SyncedRegistryHolder<T> extends RegistryHolder<T> {
-	int fabric$getRawId(T value);
-	default int fabric$getRawId(Identifier identifier) {
-		T value = fabric$getValue(identifier);
-		return fabric$getRawId(value);
-	}
-
-	T fabric$getValue(int rawId);
-	default Identifier fabric$getId(int rawId) {
-		T value = fabric$getValue(rawId);
-		return fabric$getId(value);
-	}
+public interface SyncedRegistry<T> extends SyncedRegistryHolder<T>, SyncedRegistrable<T> {
 }

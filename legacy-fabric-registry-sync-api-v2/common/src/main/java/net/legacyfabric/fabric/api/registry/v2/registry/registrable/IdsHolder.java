@@ -21,4 +21,6 @@ public interface IdsHolder<T> extends Iterable<T> {
 	IdsHolder<T> fabric$new();
 
 	int fabric$nextId();
+
+	void fabric$setValue(T value, int id);
 }

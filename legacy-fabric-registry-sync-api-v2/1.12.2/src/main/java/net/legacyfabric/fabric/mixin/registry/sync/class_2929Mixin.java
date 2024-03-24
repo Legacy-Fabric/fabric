@@ -31,6 +31,9 @@ public abstract class class_2929Mixin<T> implements IdsHolder<T> {
 	@Nullable
 	public abstract T getById(int id);
 
+	@Shadow
+	public abstract void add(T value, int id);
+
 	@Override
 	public IdsHolder<T> fabric$new() {
 		return (IdsHolder<T>) new class_2929<>(256);
@@ -43,5 +46,10 @@ public abstract class class_2929Mixin<T> implements IdsHolder<T> {
 		while (this.getById(id) != null) id++;
 
 		return id;
+	}
+
+	@Override
+	public void fabric$setValue(T value, int id) {
+		add(value, id);
 	}
 }

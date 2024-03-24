@@ -29,6 +29,9 @@ public abstract class IdListMixinV2<T> implements IdsHolder<T> {
 	@Shadow
 	public abstract Object fromId(int index);
 
+	@Shadow
+	public abstract void set(Object value, int index);
+
 	@Override
 	public IdsHolder<T> fabric$new() {
 		return (IdsHolder<T>) new IdList<>();
@@ -41,5 +44,10 @@ public abstract class IdListMixinV2<T> implements IdsHolder<T> {
 		while (this.fromId(id) != null) id++;
 
 		return id;
+	}
+
+	@Override
+	public void fabric$setValue(T value, int id) {
+		set(value, id);
 	}
 }

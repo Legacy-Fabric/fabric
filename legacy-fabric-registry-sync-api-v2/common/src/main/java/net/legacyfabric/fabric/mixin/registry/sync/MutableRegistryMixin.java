@@ -108,12 +108,11 @@ public abstract class MutableRegistryMixin<K, V> implements RegistryHolder<V>, R
 
 	@Override
 	public Identifier fabric$getId(V value) {
-		if (map.containsValue(value)) {
-			for (Map.Entry<K, V> entry : map.entrySet()) {
-				if (entry.getValue() != null && entry.getValue().equals(value)) return new Identifier(entry.getKey());
-			}
-		}
-
-		return null;
+		return map.entrySet()
+				.stream()
+				.filter(entry -> entry.getValue().equals(value))
+				.findFirst()
+				.map(entry -> new Identifier(entry.getKey()))
+				.orElse(null);
 	}
 }
