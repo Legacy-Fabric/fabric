@@ -225,6 +225,11 @@ def moduleDependencies(Project project, List<String> projectNames) {
 						depNode.appendNode("artifactId", getProjectMavenName(it))
 						depNode.appendNode("version", it.version)
 						depNode.appendNode("scope", "compile")
+
+						def exclusionsNode = depNode.appendNode("exclusions")
+						def exclusionNode = exclusionsNode.appendNode("exclusion")
+						exclusionNode.appendNode("groupId", "net.legacyfabric.legacy-fabric-api")
+						exclusionNode.appendNode("artifactId", "*")
 					}
 				}
 			}
