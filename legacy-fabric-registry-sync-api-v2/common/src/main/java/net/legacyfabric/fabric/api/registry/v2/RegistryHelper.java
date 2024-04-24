@@ -19,12 +19,12 @@ package net.legacyfabric.fabric.api.registry.v2;
 
 import java.util.function.Function;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryHolder;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
 public class RegistryHelper {
-	public static <T> void register(RegistryHolder<T> registry, Identifier identifier, T value) {
+	public static <T> void register(Registry<T> registry, Identifier identifier, T value) {
 		RegistryHelperImplementation.register(registry, identifier, value);
 	}
 
@@ -32,7 +32,7 @@ public class RegistryHelper {
 		register(RegistryHelperImplementation.getRegistry(registryId), identifier, value);
 	}
 
-	public static <T> T register(RegistryHolder<T> registry, Identifier identifier, Function<Integer, T> valueConstructor) {
+	public static <T> T register(Registry<T> registry, Identifier identifier, Function<Integer, T> valueConstructor) {
 		return RegistryHelperImplementation.register(registry, identifier, valueConstructor);
 	}
 
@@ -40,11 +40,11 @@ public class RegistryHelper {
 		return register(RegistryHelperImplementation.<T>getRegistry(registryId), identifier, valueConstructor);
 	}
 
-	public static void addRegistry(Identifier identifier, RegistryHolder<?> registryHolder) {
-		RegistryHelperImplementation.registerRegistry(identifier, registryHolder);
+	public static void addRegistry(Identifier identifier, Registry<?> registry) {
+		RegistryHelperImplementation.registerRegistry(identifier, registry);
 	}
 
-	public static <T> RegistryHolder<T> getRegistry(Identifier identifier) {
+	public static <T> Registry<T> getRegistry(Identifier identifier) {
 		return RegistryHelperImplementation.getRegistry(identifier);
 	}
 
@@ -53,7 +53,7 @@ public class RegistryHelper {
 				.fabric$getValue(identifier);
 	}
 
-	public static <T> T getValue(RegistryHolder<T> registry, Identifier identifier) {
+	public static <T> T getValue(Registry<T> registry, Identifier identifier) {
 		return registry.fabric$getValue(identifier);
 	}
 }

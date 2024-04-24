@@ -18,7 +18,7 @@
 package net.legacyfabric.fabric.api.registry.v2.event;
 
 import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryHolder;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
@@ -27,7 +27,7 @@ import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
  */
 @FunctionalInterface
 public interface RegistryInitializedEvent {
-	<T> void initialized(RegistryHolder<T> registry);
+	<T> void initialized(Registry<T> registry);
 
 	static Event<RegistryInitializedEvent> event(Identifier registryId) {
 		return RegistryHelperImplementation.getInitializationEvent(registryId);

@@ -30,14 +30,14 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryHolder;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 import net.legacyfabric.fabric.impl.registry.accessor.RegistryIdSetter;
 
 @Mixin(MutableRegistry.class)
-public abstract class MutableRegistryMixin<K, V> implements RegistryHolder<V>, RegistryIdSetter, Registrable<V> {
+public abstract class MutableRegistryMixin<K, V> implements Registry<V>, RegistryIdSetter, Registrable<V> {
 	@Shadow
 	public abstract void put(Object key, Object value);
 

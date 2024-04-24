@@ -24,7 +24,7 @@ import java.util.function.Function;
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryHolder;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
@@ -34,7 +34,7 @@ import net.legacyfabric.fabric.impl.registry.accessor.RegistryIdSetter;
 public class RegistryHelperImplementation {
 	public static final boolean hasFlatteningBegun = VersionUtils.matches(">=1.8 <=1.12.2");
 	public static final Map<Identifier, Event<RegistryInitializedEvent>> INITIALIZATION_EVENTS = new HashMap<>();
-	private static final Map<Identifier, RegistryHolder<?>> REGISTRIES = new HashMap<>();
+	private static final Map<Identifier, Registry<?>> REGISTRIES = new HashMap<>();
 
 	public static Event<RegistryInitializedEvent> getInitializationEvent(Identifier registryId) {
 		Event<RegistryInitializedEvent> event;
@@ -45,7 +45,7 @@ public class RegistryHelperImplementation {
 			event = EventFactory.createArrayBacked(RegistryInitializedEvent.class,
 					(callbacks) -> new RegistryInitializedEvent() {
 						@Override
-						public <T> void initialized(RegistryHolder<T> registry) {
+						public <T> void initialized(Registry<T> registry) {
 							for (RegistryInitializedEvent callback : callbacks) {
 								callback.initialized(registry);
 							}
@@ -58,18 +58,18 @@ public class RegistryHelperImplementation {
 		return event;
 	}
 
-	public static <T> RegistryHolder<T> getRegistry(Identifier identifier) {
-		return (RegistryHolder<T>) REGISTRIES.get(identifier);
+	public static <T> Registry<T> getRegistry(Identifier identifier) {
+		return (Registry<T>) REGISTRIES.get(identifier);
 	}
 
-	public static void registerRegistry(Identifier identifier, RegistryHolder<?> holder) {
+	public static void registerRegistry(Identifier identifier, Registry<?> holder) {
 		if (REGISTRIES.containsKey(identifier)) throw new IllegalArgumentException("Attempted to register registry " + identifier.toString() + " twices!");
 		REGISTRIES.put(identifier, holder);
 
 		if (holder instanceof RegistryIdSetter) ((RegistryIdSetter) holder).fabric$setId(identifier);
 	}
 
-	public static <T> void register(RegistryHolder<T> registry, Identifier identifier, T value) {
+	public static <T> void register(Registry<T> registry, Identifier identifier, T value) {
 		if (!(registry instanceof Registrable)) throw new IllegalArgumentException("Can't register object to non registrable registry " + registry.fabric$getId());
 
 		Registrable<T> registrable = (Registrable<T>) registry;
@@ -82,7 +82,7 @@ public class RegistryHelperImplementation {
 		registrable.fabric$register(computedId, identifier, value);
 	}
 
-	public static <T> T register(RegistryHolder<T> registry, Identifier identifier, Function<Integer, T> valueConstructor) {
+	public static <T> T register(Registry<T> registry, Identifier identifier, Function<Integer, T> valueConstructor) {
 		if (!(registry instanceof SyncedRegistrable)) throw new IllegalArgumentException("Can't register object to non registrable registry " + registry.fabric$getId());
 
 		SyncedRegistrable<T> registrable = (SyncedRegistrable<T>) registry;
