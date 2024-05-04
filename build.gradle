@@ -3,8 +3,8 @@ plugins {
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "fabric-loom" version "1.5.4" apply false
-	id "legacy-looming" version "1.5.3" apply false
+	id "fabric-loom" version "1.6.2" apply false
+	id "legacy-looming" version "1.6.3" apply false
 	id "com.diffplug.spotless" version "6.20.0"
 	id "org.ajoberstar.grgit" version "3.1.1"
 	id "me.modmuss50.mod-publish-plugin" version "0.4.5"
