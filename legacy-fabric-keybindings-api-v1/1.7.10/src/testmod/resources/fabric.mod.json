@@ -9,6 +9,8 @@
     ]
   },
   "depends": {
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version}",
+    "legacy-fabric-keybinding-api-v1": "*",
+    "legacy-fabric-lifecycle-events-v1-common": "*"
   }
 }
