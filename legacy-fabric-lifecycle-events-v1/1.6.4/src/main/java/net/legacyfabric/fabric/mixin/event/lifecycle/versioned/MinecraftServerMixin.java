@@ -43,19 +43,19 @@ public abstract class MinecraftServerMixin {
 		}
 	}
 
-	@Inject(at = @At(value = "TAIL"), method = "prepareWorlds")
-	public void serverWorldLoad(CallbackInfo ci) {
+	@Inject(at = @At(value = "TAIL"), method = "method_2980")
+	public void api$serverWorldLoad(CallbackInfo ci) {
 		for (ServerWorld world : this.worlds) {
 			ServerWorldEvents.LOAD.invoker().onWorldLoad((MinecraftServer) (Object) this, world);
 		}
 	}
 
-	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J"), method = "run", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setServerMeta(Lnet/minecraft/server/ServerMetadata;)V")))
+	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J"), method = "run", slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/server/MinecraftServer;running:Z")))
 	public void api$startServerTick(CallbackInfo ci) {
 		ServerTickEvents.START_SERVER_TICK.invoker().onStartTick((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setServerMeta(Lnet/minecraft/server/ServerMetadata;)V", shift = At.Shift.AFTER), method = "run")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J", ordinal = 0, shift = At.Shift.AFTER), method = "run")
 	public void api$afterServerStart(CallbackInfo ci) {
 		ServerLifecycleEvents.SERVER_STARTED.invoker().onServerStarted((MinecraftServer) (Object) this);
 	}

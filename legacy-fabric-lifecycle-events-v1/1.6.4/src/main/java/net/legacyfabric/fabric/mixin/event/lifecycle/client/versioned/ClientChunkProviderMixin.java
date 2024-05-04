@@ -15,36 +15,35 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.event.lifecycle.client;
+package net.legacyfabric.fabric.mixin.event.lifecycle.client.versioned;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ClientChunkProvider;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 
 @Environment(EnvType.CLIENT)
-@Mixin(MinecraftClient.class)
-public class MinecraftClientMixin {
-	@Inject(at = @At("HEAD"), method = "tick")
-	private void api$onStartTick(CallbackInfo info) {
-		ClientTickEvents.START_CLIENT_TICK.invoker().onStartTick((MinecraftClient) (Object) this);
-	}
+@Mixin(ClientChunkProvider.class)
+public abstract class ClientChunkProviderMixin {
+	@Shadow
+	private World world;
 
-	@Inject(at = @At("RETURN"), method = "tick")
-	private void api$onEndTick(CallbackInfo info) {
-		ClientTickEvents.END_CLIENT_TICK.invoker().onEndTick((MinecraftClient) (Object) this);
-	}
+	@Shadow
+	public abstract Chunk getChunk(int i, int j);
 
-	@Inject(at = @At(value = "RETURN"), method = "initializeGame")
-	private void api$onStart(CallbackInfo ci) {
-		ClientLifecycleEvents.CLIENT_STARTED.invoker().onClientStarted((MinecraftClient) (Object) this);
+	@Inject(at = @At("RETURN"), method = "unloadChunk")
+	public void api$chunkUnload(int i, int j, CallbackInfo ci) {
+		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, this.getChunk(i, j));
 	}
 }

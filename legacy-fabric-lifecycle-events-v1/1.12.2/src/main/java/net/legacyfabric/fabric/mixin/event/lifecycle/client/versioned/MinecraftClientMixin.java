@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.event.lifecycle.client;
+package net.legacyfabric.fabric.mixin.event.lifecycle.client.versioned;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,23 +28,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-	@Inject(at = @At("HEAD"), method = "tick")
-	private void api$onStartTick(CallbackInfo info) {
-		ClientTickEvents.START_CLIENT_TICK.invoker().onStartTick((MinecraftClient) (Object) this);
-	}
-
-	@Inject(at = @At("RETURN"), method = "tick")
-	private void api$onEndTick(CallbackInfo info) {
-		ClientTickEvents.END_CLIENT_TICK.invoker().onEndTick((MinecraftClient) (Object) this);
-	}
-
-	@Inject(at = @At(value = "RETURN"), method = "initializeGame")
-	private void api$onStart(CallbackInfo ci) {
-		ClientLifecycleEvents.CLIENT_STARTED.invoker().onClientStarted((MinecraftClient) (Object) this);
+	@Inject(at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V", shift = At.Shift.AFTER, remap = false), method = "stop")
+	private void api$onStopping(CallbackInfo ci) {
+		ClientLifecycleEvents.CLIENT_STOPPING.invoker().onClientStopping((MinecraftClient) (Object) this);
 	}
 }
