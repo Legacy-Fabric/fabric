@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-keybinding-api-v1-testmod",
+  "description": "Tests for keybindings",
+  "version": "1.0.0",
+  "entrypoints": {
+    "client": [
+      "net.legacyfabric.fabric.test.client.keybinding.KeybindingTest"
+    ]
+  },
+  "depends": {
+    "minecraft": "${minecraft_version}",
+    "legacy-fabric-keybinding-api-v1": "*",
+    "legacy-fabric-lifecycle-events-v1-common": "*"
+  }
+}

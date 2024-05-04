@@ -23,7 +23,7 @@ For support, consider joining the [Legacy Fabric discord server](https://legacyf
 | entity-events-v1     | ✅     | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
 | gamerule-api-v1      | ?     | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ?      |
 | item-groups-v1       | ❌     | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
-| keybindings-api-v1   | ❌     | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
+| keybindings-api-v1   | ✅     | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
 | lifecycle-events-v1  | ✅     | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
 | logger-api-v1        | ✅     | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ✅      |
 | networking-api-v1    | ❌     | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
