@@ -15,41 +15,24 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.mixin.networking.versioned;
 
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.class_2929;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.PacketByteBuf;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
+import net.legacyfabric.fabric.impl.networking.PacketByteBufExtension;
 
-@Mixin(class_2929.class)
-public abstract class class_2929Mixin<T> implements IdsHolder<T> {
+@Mixin(PacketByteBuf.class)
+public abstract class PacketByteBufMixin implements PacketByteBufExtension {
 	@Shadow
-	@Nullable
-	public abstract T getById(int id);
-
-	@Shadow
-	public abstract void add(T value, int id);
+	public abstract PacketByteBuf writeNbtCompound(@Nullable NbtCompound nbt);
 
 	@Override
-	public IdsHolder<T> fabric$new() {
-		return (IdsHolder<T>) new class_2929<>(256);
-	}
-
-	@Override
-	public int fabric$nextId() {
-		int id = 0;
-
-		while (this.getById(id) != null) id++;
-
-		return id;
-	}
-
-	@Override
-	public void fabric$setValue(T value, int id) {
-		add(value, id);
+	public PacketByteBuf writeCompound(NbtCompound tag) {
+		return writeNbtCompound(tag);
 	}
 }

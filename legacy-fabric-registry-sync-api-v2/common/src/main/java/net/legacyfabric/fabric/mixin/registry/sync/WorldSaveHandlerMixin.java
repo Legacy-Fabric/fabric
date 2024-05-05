@@ -39,7 +39,7 @@ import net.minecraft.world.level.LevelProperties;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
-import net.legacyfabric.fabric.impl.registry.sync.ServerRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
 @Mixin(WorldSaveHandler.class)
 public class WorldSaveHandlerMixin {
@@ -63,7 +63,7 @@ public class WorldSaveHandlerMixin {
 			}
 
 			if (nbt != null) {
-				ServerRegistryRemapper.getInstance().readAndRemap(nbt);
+				RegistryHelperImplementation.readAndRemap(nbt);
 				return true;
 			}
 		}
@@ -78,7 +78,7 @@ public class WorldSaveHandlerMixin {
 
 	@Unique
 	private void fabric_saveRegistryData() {
-		NbtCompound newIdMap = ServerRegistryRemapper.getInstance().toNbtCompound();
+		NbtCompound newIdMap = RegistryHelperImplementation.toNbt();
 
 		if (!newIdMap.equals(this.fabric_lastSavedIdMap)) {
 			for (int i = FABRIC_ID_REGISTRY_BACKUPS - 1; i >= 0; i--) {

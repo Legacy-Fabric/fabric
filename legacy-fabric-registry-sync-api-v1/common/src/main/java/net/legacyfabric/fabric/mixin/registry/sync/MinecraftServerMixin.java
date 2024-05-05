@@ -18,18 +18,14 @@
 package net.legacyfabric.fabric.mixin.registry.sync;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.MinecraftServer;
 
-import net.legacyfabric.fabric.impl.registry.sync.ServerRegistryRemapper;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
-	@Inject(method = "<clinit>", at = @At("RETURN"))
-	private static void remapperInit(CallbackInfo ci) {
-		ServerRegistryRemapper.getInstance();
-	}
+//	@Inject(method = "<clinit>", at = @At("RETURN"))
+//	private static void remapperInit(CallbackInfo ci) {
+//		ServerRegistryRemapper.getInstance();
+//	}
 }

@@ -6,7 +6,8 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "class_2929Mixin",
+    "versioned.OtherIdListMixin",
+    "versioned.PlayerManagerMixin",
     "versioned.SimpleRegistryMixin"
   ],
   "client": [

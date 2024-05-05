@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.api.registry.v2.registry.holder;
 
+import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public interface SyncedRegistry<T> extends Registry<T> {
@@ -31,4 +33,6 @@ public interface SyncedRegistry<T> extends Registry<T> {
 		T value = fabric$getValue(rawId);
 		return fabric$getId(value);
 	}
+
+	Event<RegistryRemapCallback<T>> fabric$getRegistryRemapCallback();
 }

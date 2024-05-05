@@ -23,4 +23,6 @@ public interface SyncedRegistrable<T> extends Registrable<T> {
 	default int fabric$nextId() {
 		return fabric$getIdsHolder().fabric$nextId();
 	}
+
+	void fabric$updateRegistry(IdsHolder<T> ids);
 }

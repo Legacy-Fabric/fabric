@@ -7,8 +7,9 @@
   },
   "mixins": [
     "IdListMixinV2",
-    "MutableRegistryMixin",
-    "SimpleRegistryMixinV2"
+    "MutableRegistryMixinV2",
+    "SimpleRegistryMixinV2",
+    "WorldSaveHandlerMixin"
   ],
   "client": [
   ]

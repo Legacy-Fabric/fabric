@@ -23,7 +23,6 @@ import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistry;
 
-
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixinV2<K, V> implements SyncedRegistry<V> {
 }

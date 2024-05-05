@@ -23,4 +23,9 @@ public interface IdsHolder<T> extends Iterable<T> {
 	int fabric$nextId();
 
 	void fabric$setValue(T value, int id);
+	int fabric$size();
+	int fabric$getId(T value);
+	default boolean fabric$contains(T value) {
+		return fabric$getId(value) != -1;
+	}
 }

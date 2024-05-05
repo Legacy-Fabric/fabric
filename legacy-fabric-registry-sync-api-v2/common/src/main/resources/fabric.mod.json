@@ -22,6 +22,7 @@
   "description": "Registry hooks",
   "entrypoints": {
     "client": [
+      "net.legacyfabric.fabric.impl.registry.ClientRemapInitializer"
     ]
   },
   "mixins": [
@@ -29,10 +30,9 @@
   ],
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_1367": ["net/legacyfabric/fabric/api/registry/v2/RegistryHolder"],
-      "net/minecraft/class_1943": ["net/legacyfabric/fabric/api/registry/v2/SyncedRegistryHolder"],
-      "net/minecraft/class_1942": ["net/legacyfabric/fabric/api/registry/v2/registrable/IdsHolder"],
-      "net/minecraft/class_2929": ["net/legacyfabric/fabric/api/registry/v2/registrable/IdsHolder"]
+      "net/minecraft/class_1367": ["net/legacyfabric/fabric/api/registry/v2/registry/holder/Registry"],
+      "net/minecraft/class_1943": ["net/legacyfabric/fabric/api/registry/v2/registry/holder/SyncedRegistry"],
+      "net/minecraft/class_1942": ["net/legacyfabric/fabric/api/registry/v2/registry/registrable/IdsHolder"]
     },
     "modmenu": {
       "badges": [ "library" ],

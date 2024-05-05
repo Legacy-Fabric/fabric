@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.mixin.registry.sync.versioned;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,8 +36,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.legacyfabric.fabric.api.networking.v1.ServerPlayNetworking;
-import net.legacyfabric.fabric.impl.registry.sync.RegistryRemapperAccess;
-import net.legacyfabric.fabric.impl.registry.sync.ServerRegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
@@ -48,7 +47,7 @@ public class PlayerManagerMixin {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V", ordinal = 2), method = "method_12827")
 	public void playerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
 		if (fabric_shouldSend()) {
-			player.networkHandler.sendPacket(ServerPlayNetworking.createS2CPacket(RegistryRemapperAccess.PACKET_ID, ServerRegistryRemapper.getInstance().createBuf()));
+			ServerPlayNetworking.send(player, RegistryHelperImplementation.PACKET_ID, RegistryHelperImplementation.createBuf());
 		}
 	}
 

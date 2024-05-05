@@ -17,6 +17,9 @@
 
 package net.legacyfabric.fabric.impl.registry;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.IntSupplier;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.BiMap;
@@ -26,6 +29,7 @@ import net.minecraft.nbt.NbtCompound;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
@@ -86,6 +90,16 @@ public class RegistryRemapper<T> {
 		this.dump();
 
 		IdsHolder<T> dumpIds = getDumpIds();
+
+		IntSupplier previousSize = normalizeEntryList(dumpIds);
+
+		invokeListeners(dumpIds);
+
+		updateRegistry(dumpIds);
+
+		this.entryDump.clear();
+		this.dump();
+		LOGGER.info("Remapped " + previousSize.getAsInt() + " entries");
 	}
 
 	private IdsHolder<T> getDumpIds() {
@@ -101,5 +115,88 @@ public class RegistryRemapper<T> {
 				ids.fabric$setValue(value, rawId);
 			}
 		});
+
+		return ids;
+	}
+
+	private IntSupplier normalizeEntryList(IdsHolder<T> ids) {
+		IntSupplier currentSize = ids::fabric$size;
+		IntSupplier previousSize = () -> this.registry.fabric$getIdsHolder().fabric$size();
+
+		if (currentSize.getAsInt() > previousSize.getAsInt()) {
+			if (this.missingMap.isEmpty()) {
+				throw new IllegalStateException("Registry size increased from " + previousSize.getAsInt() + " to " + currentSize.getAsInt() + " after remapping! This is not possible!");
+			}
+		} else if (currentSize.getAsInt() < previousSize.getAsInt()) {
+			addNewEntries(ids, currentSize, previousSize);
+		}
+
+		if (currentSize.getAsInt() != previousSize.getAsInt() && this.missingMap.isEmpty()) {
+			throw new IllegalStateException("An error occured during remapping");
+		}
+
+		return previousSize;
+	}
+
+	private void addNewEntries(IdsHolder<T> newList, IntSupplier currentSize, IntSupplier previousSize) {
+		LOGGER.info("Adding " + (previousSize.getAsInt() - currentSize.getAsInt()) + " missing entries to registry");
+
+		this.registry.stream()
+				.filter(obj -> !newList.fabric$contains(obj))
+				.collect(Collectors.toList())
+				.forEach(missingEntry -> {
+					int newId = newList.fabric$nextId();
+
+					newList.fabric$setValue(missingEntry, newId);
+
+					LOGGER.info("Adding %s %s with numerical id %d to registry", this.registry.fabric$getId(), this.registry.fabric$getId(missingEntry), newId);
+				});
+	}
+
+	private void invokeListeners(IdsHolder<T> ids) {
+		Map<Integer, RegistryEntry<T>> changed = new HashMap<>();
+
+		for (T value : ids) {
+			int oldId = this.registry.fabric$getIdsHolder().fabric$getId(value);
+			int newId = ids.fabric$getId(value);
+
+			if (oldId != -1 && oldId != newId) {
+				LOGGER.info("Remapped %s %s from id %d to id %d", this.registry.fabric$getId(), this.registry.fabric$getId(value), oldId, newId);
+				changed.put(oldId, new RegistryEntryImpl<>(newId, this.registry.fabric$getId(value), value));
+			}
+		}
+
+		this.registry.fabric$getRegistryRemapCallback().invoker().callback(changed);
+	}
+
+	private void updateRegistry(IdsHolder<T> ids) {
+		this.registry.fabric$updateRegistry(ids);
+	}
+
+	private static class RegistryEntryImpl<T> implements RegistryEntry<T> {
+		private final int id;
+		private final Identifier identifier;
+		private final T value;
+
+		RegistryEntryImpl(int id, Identifier identifier, T value) {
+			this.id = id;
+			this.identifier = identifier;
+			this.value = value;
+		}
+
+		@Override
+		public int getId() {
+			return 0;
+		}
+
+		@Override
+		public Identifier getIdentifier() {
+			return null;
+		}
+
+		@Override
+		public T getValue() {
+			return null;
+		}
 	}
 }

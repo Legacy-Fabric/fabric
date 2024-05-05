@@ -30,14 +30,13 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 import net.legacyfabric.fabric.impl.registry.accessor.RegistryIdSetter;
 
 @Mixin(MutableRegistry.class)
-public abstract class MutableRegistryMixin<K, V> implements Registry<V>, RegistryIdSetter, Registrable<V> {
+public abstract class MutableRegistryMixinV2<K, V> implements net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry<V>, RegistryIdSetter, Registrable<V> {
 	@Shadow
 	public abstract void put(Object key, Object value);
 
@@ -48,33 +47,41 @@ public abstract class MutableRegistryMixin<K, V> implements Registry<V>, Registr
 	@Final
 	protected Map<K, V> map;
 	@Unique
-	private final Event<RegistryEntryAddedCallback<V>> fabric_addObjectEvent = EventFactory.createArrayBacked(RegistryEntryAddedCallback.class,
-			(callbacks) -> (rawId, id, object) -> {
-				for (RegistryEntryAddedCallback<V> callback : callbacks) {
-					callback.onEntryAdded(rawId, id, object);
-				}
-			}
-	);
+	private Event<RegistryEntryAddedCallback<V>> fabric_addObjectEvent;
 
 	@Unique
-	private final Event<RegistryBeforeAddCallback<V>> fabric_beforeAddObjectEvent = EventFactory.createArrayBacked(RegistryBeforeAddCallback.class,
-			(callbacks) -> (rawId, id, object) -> {
-				for (RegistryBeforeAddCallback<V> callback : callbacks) {
-					callback.onEntryAdding(rawId, id, object);
-				}
-			}
-	);
+	private Event<RegistryBeforeAddCallback<V>> fabric_beforeAddObjectEvent;
 
 	@Unique
 	private Identifier fabric_id;
 
 	@Override
 	public Event<RegistryEntryAddedCallback<V>> fabric$getEntryAddedCallback() {
+		if (this.fabric_addObjectEvent == null) {
+			fabric_addObjectEvent = EventFactory.createArrayBacked(RegistryEntryAddedCallback.class,
+					(callbacks) -> (rawId, id, object) -> {
+						for (RegistryEntryAddedCallback<V> callback : callbacks) {
+							callback.onEntryAdded(rawId, id, object);
+						}
+					}
+			);
+		}
+
 		return this.fabric_addObjectEvent;
 	}
 
 	@Override
 	public Event<RegistryBeforeAddCallback<V>> fabric$getBeforeAddedCallback() {
+		if (this.fabric_beforeAddObjectEvent == null) {
+			fabric_beforeAddObjectEvent = EventFactory.createArrayBacked(RegistryBeforeAddCallback.class,
+					(callbacks) -> (rawId, id, object) -> {
+						for (RegistryBeforeAddCallback<V> callback : callbacks) {
+							callback.onEntryAdding(rawId, id, object);
+						}
+					}
+			);
+		}
+
 		return this.fabric_beforeAddObjectEvent;
 	}
 
