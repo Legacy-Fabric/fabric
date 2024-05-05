@@ -22,7 +22,7 @@
   "description": "Item utils",
   "entrypoints": {
     "preLaunch": [
-      "net.legacyfabric.fabric.impl.item.versionned.EarlyInitializer"
+      "net.legacyfabric.fabric.impl.item.versioned.EarlyInitializer"
     ]
   },
   "mixins": [
