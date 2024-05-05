@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-lifecycle-events-v1-testmod-versioned",
+  "id": "legacy-fabric-lifecycle-events-v1-testmod",
   "description": "Tests for lifecycle events",
   "version": "1.0.0",
   "entrypoints": {
