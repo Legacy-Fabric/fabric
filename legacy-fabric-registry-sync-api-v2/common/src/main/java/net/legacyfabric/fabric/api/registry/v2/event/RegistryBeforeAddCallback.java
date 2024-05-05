@@ -20,14 +20,14 @@ package net.legacyfabric.fabric.api.registry.v2.event;
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
+import net.legacyfabric.fabric.impl.registry.RegistryEventHelper;
 
 @FunctionalInterface
 public interface RegistryBeforeAddCallback<T> {
 	void onEntryAdding(int rawId, Identifier id, T object);
 
 	static <T> Event<RegistryBeforeAddCallback<T>> event(Identifier registryId) {
-		return event(RegistryHelperImplementation.getRegistry(registryId));
+		return RegistryEventHelper.addRegistryBeforeCallback(registryId);
 	}
 
 	static <T> Event<RegistryBeforeAddCallback<T>> event(Registry<T> registry) {

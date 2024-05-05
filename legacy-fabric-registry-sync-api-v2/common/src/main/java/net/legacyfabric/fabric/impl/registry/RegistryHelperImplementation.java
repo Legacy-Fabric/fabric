@@ -17,8 +17,11 @@
 
 package net.legacyfabric.fabric.impl.registry;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import net.minecraft.nbt.NbtCompound;
@@ -28,7 +31,10 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
@@ -44,6 +50,11 @@ public class RegistryHelperImplementation {
 	public static final Map<Identifier, Event<RegistryInitializedEvent>> INITIALIZATION_EVENTS = new HashMap<>();
 	private static final Map<Identifier, Registry<?>> REGISTRIES = new HashMap<>();
 	private static final Map<Identifier, RegistryRemapper<?>> REMAPPERS = new HashMap<>();
+	private static final List<Consumer<Identifier>> REGISTRY_REGISTERED = new ArrayList<>();
+
+	public static void registerRegisterEvent(Consumer<Identifier> callback) {
+		REGISTRY_REGISTERED.add(callback);
+	}
 
 	public static Event<RegistryInitializedEvent> getInitializationEvent(Identifier registryId) {
 		Event<RegistryInitializedEvent> event;
@@ -71,7 +82,7 @@ public class RegistryHelperImplementation {
 		return (Registry<T>) REGISTRIES.get(identifier);
 	}
 
-	public static void registerRegistry(Identifier identifier, Registry<?> holder) {
+	public static <T> void registerRegistry(Identifier identifier, Registry<T> holder) {
 		if (REGISTRIES.containsKey(identifier)) throw new IllegalArgumentException("Attempted to register registry " + identifier.toString() + " twices!");
 		REGISTRIES.put(identifier, holder);
 
@@ -81,7 +92,29 @@ public class RegistryHelperImplementation {
 			REMAPPERS.put(identifier, new RegistryRemapper<>((SyncedRegistry<?>) holder));
 		}
 
+		REGISTRY_REGISTERED.forEach(c -> c.accept(identifier));
+
 		getInitializationEvent(identifier).invoker().initialized(holder);
+
+		holder.fabric$getBeforeAddedCallback().register((rawId, id, object) -> {
+			Event<RegistryBeforeAddCallback<T>> event = (Event<RegistryBeforeAddCallback<T>>) (Object) RegistryEventHelper.IDENTIFIER_BEFORE_MAP.get(identifier);
+
+			if (event != null) event.invoker().onEntryAdding(rawId, id, object);
+		});
+
+		holder.fabric$getEntryAddedCallback().register((rawId, id, object) -> {
+			Event<RegistryEntryAddedCallback<T>> event = (Event<RegistryEntryAddedCallback<T>>) (Object) RegistryEventHelper.IDENTIFIER_ADDED_MAP.get(identifier);
+
+			if (event != null) event.invoker().onEntryAdded(rawId, id, object);
+		});
+
+		if (holder instanceof SyncedRegistry) {
+			((SyncedRegistry<T>) holder).fabric$getRegistryRemapCallback().register(changedIdsMap -> {
+				Event<RegistryRemapCallback<T>> event = (Event<RegistryRemapCallback<T>>) (Object) RegistryEventHelper.IDENTIFIER_REMAP_MAP.get(identifier);
+
+				if (event != null) event.invoker().callback(changedIdsMap);
+			});
+		}
 	}
 
 	public static <T> void register(Registry<T> registry, Identifier identifier, T value) {
@@ -140,6 +173,12 @@ public class RegistryHelperImplementation {
 	private static final Map<String, String> BACKWARD_COMPATIBILITY = new HashMap<>();
 	static {
 		BACKWARD_COMPATIBILITY.put("Items", RegistryIds.ITEMS.toString());
+		BACKWARD_COMPATIBILITY.put("Blocks", RegistryIds.BLOCKS.toString());
+		BACKWARD_COMPATIBILITY.put("Biomes", RegistryIds.BIOMES.toString());
+		BACKWARD_COMPATIBILITY.put("BlockEntityTypes", RegistryIds.BLOCK_ENTITY_TYPES.toString());
+		BACKWARD_COMPATIBILITY.put("Enchantments", RegistryIds.ENCHANTMENTS.toString());
+		BACKWARD_COMPATIBILITY.put("EntityTypes", RegistryIds.ENTITY_TYPES.toString());
+		BACKWARD_COMPATIBILITY.put("StatusEffects", RegistryIds.STATUS_EFFECTS.toString());
 	}
 
 	public static NbtCompound toNbt() {

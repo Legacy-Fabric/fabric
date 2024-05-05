@@ -19,13 +19,13 @@ package net.legacyfabric.fabric.api.registry.v1;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
+import net.legacyfabric.fabric.impl.registry.BackwardCompatibilityHelper;
 
 @FunctionalInterface
 public interface RegistryEntryRemapCallback<T> {
 	void onEntryAdded(int oldId, int newId, Identifier key, T object);
 
 	static <T> Event<RegistryEntryRemapCallback<T>> event(Identifier registryId) {
-		return RegistryRemapper.<T>getEventsHolder(registryId).getRemapEvent();
+		return BackwardCompatibilityHelper.<T>getEventHolder(registryId).getRemapEvent();
 	}
 }

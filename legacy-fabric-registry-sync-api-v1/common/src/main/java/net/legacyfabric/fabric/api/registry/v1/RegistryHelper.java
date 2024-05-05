@@ -71,11 +71,16 @@ public final class RegistryHelper {
 	 * @return The block registered
 	 */
 	public static Block registerBlock(Block block, Identifier id) {
-		return RegistryHelperImpl.registerBlock(block, id);
+		net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(
+				net.legacyfabric.fabric.api.registry.v2.RegistryIds.BLOCKS,
+				id, block
+		);
+
+		return block;
 	}
 
 	public static Block getBlock(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryIds.BLOCKS);
+		return net.legacyfabric.fabric.api.registry.v2.RegistryHelper.getValue(net.legacyfabric.fabric.api.registry.v2.RegistryIds.BLOCKS, id);
 	}
 
 	/**
@@ -88,7 +93,10 @@ public final class RegistryHelper {
 	 * @return The item registered
 	 */
 	public static Item registerItem(Item item, Identifier id) {
-		net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(net.legacyfabric.fabric.api.registry.v2.RegistryIds.ITEMS, id, item);
+		net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(
+				net.legacyfabric.fabric.api.registry.v2.RegistryIds.ITEMS,
+				id, item
+		);
 
 		return item;
 	}
@@ -105,11 +113,16 @@ public final class RegistryHelper {
 	 * @return The block entity type class registered
 	 */
 	public static Class<? extends BlockEntity> registerBlockEntityType(Class<? extends BlockEntity> blockEntityTypeClass, Identifier id) {
-		return RegistryHelperImpl.registerBlockEntityType(blockEntityTypeClass, id);
+		net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(
+				net.legacyfabric.fabric.api.registry.v2.RegistryIds.BLOCK_ENTITY_TYPES,
+				id, blockEntityTypeClass
+		);
+
+		return blockEntityTypeClass;
 	}
 
 	public static Class<? extends BlockEntity> getBlockEntityType(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryIds.BLOCK_ENTITY_TYPES);
+		return net.legacyfabric.fabric.api.registry.v2.RegistryHelper.getValue(RegistryIds.BLOCK_ENTITY_TYPES, id);
 	}
 
 	/**
@@ -123,7 +136,12 @@ public final class RegistryHelper {
 	 */
 	@SinceMC("1.9")
 	public static StatusEffect registerStatusEffect(StatusEffect statusEffect, Identifier id) {
-		return RegistryHelperImpl.registerStatusEffect(statusEffect, id);
+		net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(
+				net.legacyfabric.fabric.api.registry.v2.RegistryIds.STATUS_EFFECTS,
+				id, statusEffect
+		);
+
+		return statusEffect;
 	}
 
 	/**
@@ -137,11 +155,14 @@ public final class RegistryHelper {
 	 */
 	@BeforeMC("1.9")
 	public static StatusEffect registerStatusEffect(EntryCreator<StatusEffect> statusEffect, Identifier id) {
-		return RegistryHelperImpl.registerStatusEffect(statusEffect, id);
+		return net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(
+				net.legacyfabric.fabric.api.registry.v2.RegistryIds.STATUS_EFFECTS,
+				id, statusEffect::create
+		);
 	}
 
 	public static StatusEffect getStatusEffect(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryIds.STATUS_EFFECTS);
+		return net.legacyfabric.fabric.api.registry.v2.RegistryHelper.getValue(RegistryIds.STATUS_EFFECTS, id);
 	}
 
 	/**
@@ -155,7 +176,12 @@ public final class RegistryHelper {
 	 */
 	@SinceMC("1.9")
 	public static Enchantment registerEnchantment(Enchantment enchantment, Identifier id) {
-		return RegistryHelperImpl.registerEnchantment(enchantment, id);
+		net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(
+				net.legacyfabric.fabric.api.registry.v2.RegistryIds.ENCHANTMENTS,
+				id, enchantment
+		);
+
+		return enchantment;
 	}
 
 	/**
@@ -169,11 +195,14 @@ public final class RegistryHelper {
 	 */
 	@BeforeMC("1.9")
 	public static Enchantment registerEnchantment(EntryCreator<Enchantment> enchantment, Identifier id) {
-		return RegistryHelperImpl.registerEnchantment(enchantment, id);
+		return net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(
+				net.legacyfabric.fabric.api.registry.v2.RegistryIds.ENCHANTMENTS,
+				id, enchantment::create
+		);
 	}
 
 	public static Enchantment getEnchantment(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryIds.ENCHANTMENTS);
+		return net.legacyfabric.fabric.api.registry.v2.RegistryHelper.getValue(RegistryIds.ENCHANTMENTS, id);
 	}
 
 	/**
@@ -185,7 +214,12 @@ public final class RegistryHelper {
 	 */
 	@SinceMC("1.9")
 	public static Biome registerBiome(Biome biome, Identifier id) {
-		return RegistryHelperImpl.registerBiome(biome, id);
+		net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(
+				net.legacyfabric.fabric.api.registry.v2.RegistryIds.BIOMES,
+				id, biome
+		);
+
+		return biome;
 	}
 
 	/**
@@ -197,7 +231,10 @@ public final class RegistryHelper {
 	 */
 	@BeforeMC("1.9")
 	public static Biome registerBiome(EntryCreator<Biome> biome, Identifier id) {
-		return RegistryHelperImpl.registerBiome(biome, id);
+		return net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(
+				net.legacyfabric.fabric.api.registry.v2.RegistryIds.BIOMES,
+				id, biome::create
+		);
 	}
 
 	/**
@@ -217,8 +254,8 @@ public final class RegistryHelper {
 		return RegistryHelperImpl.registerBiomeWithMutatedVariant(parentBiome, parentId, mutatedBiome, mutatedId);
 	}
 
-	public static Biome getBiome(Identifier identifier) {
-		return RegistryHelperImpl.getValue(identifier, RegistryIds.BIOMES);
+	public static Biome getBiome(Identifier id) {
+		return net.legacyfabric.fabric.api.registry.v2.RegistryHelper.getValue(RegistryIds.BIOMES, id);
 	}
 
 	/**
@@ -229,11 +266,16 @@ public final class RegistryHelper {
 	 * @return The entity type class registered
 	 */
 	public static Class<? extends Entity> registerEntityType(Class<? extends Entity> entityTypeClass, Identifier id) {
-		return RegistryHelperImpl.registerEntityType(entityTypeClass, id);
+		net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(
+				net.legacyfabric.fabric.api.registry.v2.RegistryIds.ENTITY_TYPES,
+				id, entityTypeClass
+		);
+
+		return entityTypeClass;
 	}
 
 	public static Class<? extends Entity> getEntityType(Identifier id) {
-		return RegistryHelperImpl.getValue(id, RegistryIds.ENTITY_TYPES);
+		return net.legacyfabric.fabric.api.registry.v2.RegistryHelper.getValue(RegistryIds.ENTITY_TYPES, id);
 	}
 
 	@FunctionalInterface

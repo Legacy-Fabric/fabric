@@ -24,14 +24,14 @@ import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
+import net.legacyfabric.fabric.impl.registry.RegistryEventHelper;
 
 @FunctionalInterface
 public interface RegistryRemapCallback<T> {
 	void callback(Map<Integer, RegistryEntry<T>> changedIdsMap);
 
 	static <T> Event<RegistryRemapCallback<T>> event(Identifier registryId) {
-		return event(RegistryHelperImplementation.getRegistry(registryId));
+		return RegistryEventHelper.remapCallbackEvent(registryId);
 	}
 
 	static <T> Event<RegistryRemapCallback<T>> event(Registry<T> registry) {
