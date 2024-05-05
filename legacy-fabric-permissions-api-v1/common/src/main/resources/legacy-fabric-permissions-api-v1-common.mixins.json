@@ -3,11 +3,9 @@
   "package": "net.legacyfabric.fabric.mixin.permission",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "CommandBlockExecutorMixin",
-    "CommandStats_1Mixin",
-    "ExecuteCommand_1Mixin",
-    "SignBlockEntity_1Mixin",
-    "SignBlockEntity_2Mixin"
+    "ConsoleMixin",
+    "EntityMixin",
+    "ServerPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
