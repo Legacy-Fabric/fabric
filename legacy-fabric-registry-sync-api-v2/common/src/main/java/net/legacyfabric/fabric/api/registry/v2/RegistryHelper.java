@@ -20,8 +20,10 @@ package net.legacyfabric.fabric.api.registry.v2;
 import java.util.function.Function;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
+
 
 public class RegistryHelper {
 	public static <T> void register(Registry<T> registry, Identifier identifier, T value) {
@@ -55,5 +57,25 @@ public class RegistryHelper {
 
 	public static <T> T getValue(Registry<T> registry, Identifier identifier) {
 		return registry.fabric$getValue(identifier);
+	}
+
+	public static <T> Identifier getId(Registry<T> registry, T object) {
+		return registry.fabric$getId(object);
+	}
+
+	public static <T> Identifier getId(Identifier registryId, T object) {
+		return getId(RegistryHelperImplementation.getRegistry(registryId), object);
+	}
+
+	public static <T> int getRawId(Registry<T> registry, T object) {
+		if (!(registry instanceof SyncedRegistry)) {
+			throw new IllegalArgumentException("Cannot get raw id of " + object + " of non synced registry " + registry.fabric$getId());
+		}
+
+		return ((SyncedRegistry<T>) registry).fabric$getRawId(object);
+	}
+
+	public static <T> int getRawId(Identifier registryId, T object) {
+		return getRawId(RegistryHelperImplementation.getRegistry(registryId), object);
 	}
 }
