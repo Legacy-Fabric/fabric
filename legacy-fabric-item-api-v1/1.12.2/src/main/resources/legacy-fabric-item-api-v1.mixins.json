@@ -9,5 +9,7 @@
     "versioned.ItemAccessor"
   ],
   "client": [
+    "versioned.ItemModelsAccessor",
+    "versioned.ItemModelsMixin"
   ]
 }
