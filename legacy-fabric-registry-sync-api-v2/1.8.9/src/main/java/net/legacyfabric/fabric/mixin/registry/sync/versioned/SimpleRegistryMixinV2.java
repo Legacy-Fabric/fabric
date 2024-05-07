@@ -71,7 +71,11 @@ public abstract class SimpleRegistryMixinV2<K, V> implements SyncedRegistry<V>, 
 
 	@Override
 	public Identifier fabric$getId(V value) {
-		return new Identifier(getIdentifier(value));
+		K vanillaId = getIdentifier(value);
+
+		if (vanillaId == null) return null;
+
+		return new Identifier(vanillaId);
 	}
 
 	@Override
