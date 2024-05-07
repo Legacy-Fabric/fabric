@@ -40,7 +40,6 @@
       "net.legacyfabric.fabric.testing.TestMod"
     ]
   },
-  "accessWidener": "testmods.accesswidener",
   "custom": {
     "modmenu": {
       "badges": [ "library" ]
