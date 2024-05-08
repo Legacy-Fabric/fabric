@@ -28,6 +28,5 @@ import net.minecraft.util.collection.IdList;
 public interface BlockAccessor {
 	@Accessor
 	static void setBLOCK_STATES(IdList<BlockState> blockStates) {
-
 	}
 }
