@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.impl.item.versioned;
 
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
@@ -26,7 +25,6 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
-import net.legacyfabric.fabric.mixin.item.versioned.ItemAccessor;
 
 public class EarlyInitializer implements PreLaunchEntrypoint {
 	@Override
@@ -36,12 +34,6 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 
 	private static void itemRegistryInit(Registry<?> holder) {
 		SyncedRegistry<Item> registry = (SyncedRegistry<Item>) holder;
-
-		registry.fabric$getEntryAddedCallback().register((rawId, id, item) -> {
-			if (item instanceof BlockItem) {
-				ItemAccessor.getBLOCK_ITEMS().put(((BlockItem) item).getBlock(), item);
-			}
-		});
 
 		registry.fabric$getRegistryRemapCallback().register(new ItemModelsRemapper());
 	}
