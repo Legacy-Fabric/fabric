@@ -15,15 +15,12 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.api.registry.v2.registry.registrable;
 
-import org.spongepowered.asm.mixin.Mixin;
+public interface DesynchronizeableRegistrable {
+	default boolean canSynchronize() {
+		return true;
+	}
 
-import net.minecraft.util.registry.SimpleRegistry;
-
-import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
-import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
-
-@Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixinV2<K, V> implements SyncedRegistrableRegistry<V>, DesynchronizeableRegistrable {
+	void setSynchronize(boolean synchronize);
 }

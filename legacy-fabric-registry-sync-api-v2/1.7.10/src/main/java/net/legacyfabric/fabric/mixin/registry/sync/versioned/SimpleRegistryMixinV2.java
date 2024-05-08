@@ -24,18 +24,20 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import net.minecraft.util.collection.IdList;
+import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixinV2<V> implements SyncedRegistry<V>, SyncedRegistrable<V> {
+public abstract class SimpleRegistryMixinV2<V> implements SyncedRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
 	// 1.8+
 	@Shadow
 	public abstract void add(int id, String identifier, Object object);
@@ -56,10 +58,29 @@ public abstract class SimpleRegistryMixinV2<V> implements SyncedRegistry<V>, Syn
 	@Shadow
 	public abstract String getId(Object par1);
 
+	@Unique
+	private boolean synchronize = true;
+
+	@Override
+	public void setSynchronize(boolean isSynchronize) {
+		this.synchronize = isSynchronize;
+	}
+
+	@Override
+	public boolean canSynchronize() {
+		return this.synchronize;
+	}
+
 	@Override
 	public void fabric$register(int rawId, Identifier identifier, V value) {
 		fabric$getBeforeAddedCallback().invoker().onEntryAdding(rawId, identifier, value);
-		add(rawId, fabric$toKeyType(identifier), value);
+
+		if (this.synchronize) {
+			add(rawId, fabric$toKeyType(identifier), value);
+		} else {
+			((MutableRegistry) (Object) this).put(fabric$toKeyType(identifier), value);
+		}
+
 		fabric$getEntryAddedCallback().invoker().onEntryAdded(rawId, identifier, value);
 	}
 

@@ -37,6 +37,7 @@ import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
@@ -88,7 +89,13 @@ public class RegistryHelperImplementation {
 
 		if (holder instanceof RegistryIdSetter) ((RegistryIdSetter) holder).fabric$setId(identifier);
 
-		if (holder instanceof SyncedRegistrableRegistry) {
+		boolean remappable = true;
+
+		if (holder instanceof DesynchronizeableRegistrable) {
+			remappable = ((DesynchronizeableRegistrable) holder).canSynchronize();
+		}
+
+		if (holder instanceof SyncedRegistrableRegistry && remappable) {
 			REMAPPERS.put(identifier, new RegistryRemapper<>((SyncedRegistrableRegistry<?>) holder));
 		}
 
@@ -108,7 +115,7 @@ public class RegistryHelperImplementation {
 			if (event != null) event.invoker().onEntryAdded(rawId, id, object);
 		});
 
-		if (holder instanceof SyncedRegistrableRegistry) {
+		if (holder instanceof SyncedRegistrableRegistry && remappable) {
 			((SyncedRegistrableRegistry<T>) holder).fabric$getRegistryRemapCallback().register(changedIdsMap -> {
 				Event<RegistryRemapCallback<T>> event = (Event<RegistryRemapCallback<T>>) (Object) RegistryEventHelper.IDENTIFIER_REMAP_MAP.get(identifier);
 
@@ -124,7 +131,13 @@ public class RegistryHelperImplementation {
 		Registrable<T> registrable = (Registrable<T>) registry;
 		int computedId = -1;
 
-		if (registry instanceof SyncedRegistrable) {
+		boolean remappable = true;
+
+		if (registry instanceof DesynchronizeableRegistrable) {
+			remappable = ((DesynchronizeableRegistrable) registry).canSynchronize();
+		}
+
+		if (registry instanceof SyncedRegistrable && remappable) {
 			computedId = ((SyncedRegistrable<T>) registrable).fabric$nextId();
 		}
 
