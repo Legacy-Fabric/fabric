@@ -455,7 +455,7 @@ def addPomMetadataInformation(Project project, MavenPom pom) {
 	def modJsonFile = project.file("src/main/resources/fabric.mod.json")
 
 	if (!modJsonFile.exists()) {
-		System.out.println("Can't find fabric.mod.json at ${modJsonFile.toString()}!")
+		logger.error("Can't find fabric.mod.json at ${modJsonFile.toString()}!")
 		return;
 	}
 
