@@ -33,7 +33,5 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 
 	private static void itemRegistryInit(Registry<?> holder) {
 		Registry<Item> registry = (Registry<Item>) holder;
-
-
 	}
 }

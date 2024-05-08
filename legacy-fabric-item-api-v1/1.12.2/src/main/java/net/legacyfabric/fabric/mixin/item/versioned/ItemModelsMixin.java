@@ -37,6 +37,5 @@ public class ItemModelsMixin {
 		Identifier identifier = RegistryHelper.getId(Item.REGISTRY, item);
 
 		if (identifier != null) ItemModelsRemapper.registerModelId(identifier, metadata, id);
-		else System.out.println(item + " " + metadata + " " + id);
 	}
 }
