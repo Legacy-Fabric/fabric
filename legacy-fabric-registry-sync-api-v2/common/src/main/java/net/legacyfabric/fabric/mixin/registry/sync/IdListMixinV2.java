@@ -49,7 +49,7 @@ public abstract class IdListMixinV2<T> implements IdsHolder<T> {
 
 	@Override
 	public int fabric$nextId() {
-		int id = 0;
+		int id = 1;
 
 		while (this.fromId(id) != null) id++;
 

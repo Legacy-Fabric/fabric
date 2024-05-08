@@ -47,7 +47,7 @@ public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
 
 	@Override
 	public int fabric$nextId() {
-		int id = 0;
+		int id = 1;
 
 		while (this.getById(id) != null) id++;
 
