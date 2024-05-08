@@ -24,6 +24,7 @@ import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 
 import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.RegistrableRegistry;
@@ -35,6 +36,21 @@ public class MapRegistryWrapper<K, V> implements RegistrableRegistry<V> {
 	private final Map<V, K> valueToId;
 	private final Function<Identifier, K> toMapKey;
 	private final Function<K, Identifier> fromMapKey;
+
+	private final Event<RegistryEntryAddedCallback<V>> addObjectEvent = EventFactory.createArrayBacked(RegistryEntryAddedCallback.class,
+			(callbacks) -> (rawId, id, object) -> {
+				for (RegistryEntryAddedCallback<V> callback : callbacks) {
+					callback.onEntryAdded(rawId, id, object);
+				}
+			}
+	);
+	private final Event<RegistryBeforeAddCallback<V>> beforeAddObjectEvent = EventFactory.createArrayBacked(RegistryBeforeAddCallback.class,
+			(callbacks) -> (rawId, id, object) -> {
+				for (RegistryBeforeAddCallback<V> callback : callbacks) {
+					callback.onEntryAdding(rawId, id, object);
+				}
+			}
+	);
 
 	public MapRegistryWrapper(Identifier id, Map<K, V> idToValue, Map<V, K> valueToId, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey) {
 		this.id = id;
@@ -51,12 +67,12 @@ public class MapRegistryWrapper<K, V> implements RegistrableRegistry<V> {
 
 	@Override
 	public Event<RegistryEntryAddedCallback<V>> fabric$getEntryAddedCallback() {
-		return null;
+		return this.addObjectEvent;
 	}
 
 	@Override
 	public Event<RegistryBeforeAddCallback<V>> fabric$getBeforeAddedCallback() {
-		return null;
+		return this.beforeAddObjectEvent;
 	}
 
 	@Override
