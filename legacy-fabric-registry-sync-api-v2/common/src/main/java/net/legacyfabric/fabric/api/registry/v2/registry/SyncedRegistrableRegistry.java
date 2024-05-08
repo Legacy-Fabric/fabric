@@ -19,5 +19,5 @@ package net.legacyfabric.fabric.api.registry.v2.registry;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 
-public interface SyncedRegistry<T> extends net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry<T>, SyncedRegistrable<T> {
+public interface SyncedRegistrableRegistry<T> extends net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry<T>, SyncedRegistrable<T> {
 }

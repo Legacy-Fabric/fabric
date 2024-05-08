@@ -15,14 +15,10 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.api.registry.v2.registry;
 
-import org.spongepowered.asm.mixin.Mixin;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 
-import net.minecraft.util.registry.SimpleRegistry;
-
-import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
-
-@Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixinV2<K, V> implements SyncedRegistrableRegistry<V> {
+public interface RegistrableRegistry<T> extends Registry<T>, Registrable<T> {
 }

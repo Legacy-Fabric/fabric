@@ -97,8 +97,8 @@ public abstract class MutableRegistryMixinV2<K, V> implements net.legacyfabric.f
 	}
 
 	@Override
-	public K fabric$toKeyType(Object o) {
-		return RegistryHelperImplementation.hasFlatteningBegun ? (K) new net.minecraft.util.Identifier(o.toString()) : (K) o.toString();
+	public K fabric$toKeyType(Identifier identifier) {
+		return RegistryHelperImplementation.hasFlatteningBegun ? (K) new net.minecraft.util.Identifier(identifier.toString()) : (K) identifier.toString();
 	}
 
 	@Override

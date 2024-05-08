@@ -28,7 +28,7 @@ import com.google.common.collect.HashBiMap;
 import net.minecraft.nbt.NbtCompound;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
@@ -36,11 +36,11 @@ import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class RegistryRemapper<T> {
 	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
-	private final SyncedRegistry<T> registry;
+	private final SyncedRegistrableRegistry<T> registry;
 	private BiMap<Identifier, Integer> entryDump;
 	private BiMap<Identifier, Integer> missingMap = HashBiMap.create();
 
-	public RegistryRemapper(SyncedRegistry<T> registry) {
+	public RegistryRemapper(SyncedRegistrableRegistry<T> registry) {
 		this.registry = registry;
 	}
 
@@ -127,9 +127,9 @@ public class RegistryRemapper<T> {
 			if (this.missingMap.isEmpty()) {
 				throw new IllegalStateException("Registry size increased from " + previousSize.getAsInt() + " to " + currentSize.getAsInt() + " after remapping! This is not possible!");
 			}
-		} else if (currentSize.getAsInt() < previousSize.getAsInt()) {
-			addNewEntries(ids, currentSize, previousSize);
 		}
+
+		addNewEntries(ids);
 
 		if (currentSize.getAsInt() != previousSize.getAsInt() && this.missingMap.isEmpty()) {
 			throw new IllegalStateException("An error occured during remapping");
@@ -138,8 +138,8 @@ public class RegistryRemapper<T> {
 		return previousSize;
 	}
 
-	private void addNewEntries(IdsHolder<T> newList, IntSupplier currentSize, IntSupplier previousSize) {
-		LOGGER.info("Adding " + (previousSize.getAsInt() - currentSize.getAsInt()) + " missing entries to registry");
+	private void addNewEntries(IdsHolder<T> newList) {
+		LOGGER.info("Checking for missing entries in registry");
 
 		this.registry.stream()
 				.filter(obj -> !newList.fabric$contains(obj))
@@ -149,7 +149,7 @@ public class RegistryRemapper<T> {
 
 					newList.fabric$setValue(missingEntry, newId);
 
-					LOGGER.info("Adding %s %s with numerical id %d to registry", this.registry.fabric$getId(), this.registry.fabric$getId(missingEntry), newId);
+					LOGGER.info("Adding %s with numerical id %d to registry %s", this.registry.fabric$getId(missingEntry), newId, this.registry.fabric$getId());
 				});
 	}
 
@@ -186,17 +186,17 @@ public class RegistryRemapper<T> {
 
 		@Override
 		public int getId() {
-			return 0;
+			return this.id;
 		}
 
 		@Override
 		public Identifier getIdentifier() {
-			return null;
+			return this.identifier;
 		}
 
 		@Override
 		public T getValue() {
-			return null;
+			return this.value;
 		}
 	}
 }

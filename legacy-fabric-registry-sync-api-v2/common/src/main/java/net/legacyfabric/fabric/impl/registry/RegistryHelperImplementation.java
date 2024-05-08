@@ -35,7 +35,7 @@ import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
@@ -88,8 +88,8 @@ public class RegistryHelperImplementation {
 
 		if (holder instanceof RegistryIdSetter) ((RegistryIdSetter) holder).fabric$setId(identifier);
 
-		if (holder instanceof SyncedRegistry) {
-			REMAPPERS.put(identifier, new RegistryRemapper<>((SyncedRegistry<?>) holder));
+		if (holder instanceof SyncedRegistrableRegistry) {
+			REMAPPERS.put(identifier, new RegistryRemapper<>((SyncedRegistrableRegistry<?>) holder));
 		}
 
 		REGISTRY_REGISTERED.forEach(c -> c.accept(identifier));
@@ -108,8 +108,8 @@ public class RegistryHelperImplementation {
 			if (event != null) event.invoker().onEntryAdded(rawId, id, object);
 		});
 
-		if (holder instanceof SyncedRegistry) {
-			((SyncedRegistry<T>) holder).fabric$getRegistryRemapCallback().register(changedIdsMap -> {
+		if (holder instanceof SyncedRegistrableRegistry) {
+			((SyncedRegistrableRegistry<T>) holder).fabric$getRegistryRemapCallback().register(changedIdsMap -> {
 				Event<RegistryRemapCallback<T>> event = (Event<RegistryRemapCallback<T>>) (Object) RegistryEventHelper.IDENTIFIER_REMAP_MAP.get(identifier);
 
 				if (event != null) event.invoker().callback(changedIdsMap);

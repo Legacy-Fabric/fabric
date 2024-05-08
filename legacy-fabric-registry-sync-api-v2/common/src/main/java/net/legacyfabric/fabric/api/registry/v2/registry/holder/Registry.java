@@ -30,7 +30,7 @@ public interface Registry<T> extends Iterable<T> {
 	Event<RegistryEntryAddedCallback<T>> fabric$getEntryAddedCallback();
 	Event<RegistryBeforeAddCallback<T>> fabric$getBeforeAddedCallback();
 
-	<K> K fabric$toKeyType(Object o);
+	<K> K fabric$toKeyType(Identifier identifier);
 
 	T fabric$getValue(Identifier id);
 	Identifier fabric$getId(T value);

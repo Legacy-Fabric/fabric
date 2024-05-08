@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync;
 
-import java.util.IdentityHashMap;
+import java.util.List;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,17 +30,17 @@ import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 @Mixin(IdList.class)
 public abstract class IdListMixinV2<T> implements IdsHolder<T> {
 	@Shadow
-	public abstract Object fromId(int index);
+	public abstract T fromId(int index);
 
 	@Shadow
-	public abstract void set(Object value, int index);
-
-	@Shadow
-	@Final
-	private IdentityHashMap<T, Integer> idMap;
+	public abstract void set(T value, int index);
 
 	@Shadow
 	public abstract int getId(T value);
+
+	@Shadow
+	@Final
+	private List<T> list;
 
 	@Override
 	public IdsHolder<T> fabric$new() {
@@ -51,7 +51,7 @@ public abstract class IdListMixinV2<T> implements IdsHolder<T> {
 	public int fabric$nextId() {
 		int id = 1;
 
-		while (this.fromId(id) != null) id++;
+		while (this.fabric$getValue(id) != null) id++;
 
 		return id;
 	}
@@ -63,7 +63,12 @@ public abstract class IdListMixinV2<T> implements IdsHolder<T> {
 
 	@Override
 	public int fabric$size() {
-		return idMap.size();
+		return list.size();
+	}
+
+	@Override
+	public T fabric$getValue(int rawId) {
+		return this.fromId(rawId);
 	}
 
 	@Override

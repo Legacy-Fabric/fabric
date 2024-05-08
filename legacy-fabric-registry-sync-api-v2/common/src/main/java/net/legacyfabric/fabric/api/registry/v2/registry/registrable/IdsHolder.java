@@ -28,4 +28,6 @@ public interface IdsHolder<T> extends Iterable<T> {
 	default boolean fabric$contains(T value) {
 		return fabric$getId(value) != -1;
 	}
+
+	T fabric$getValue(int rawId);
 }

@@ -68,4 +68,9 @@ public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
 	public int fabric$getId(T value) {
 		return getId(value);
 	}
+
+	@Override
+	public T fabric$getValue(int rawId) {
+		return this.getById(rawId);
+	}
 }
