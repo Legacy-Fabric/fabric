@@ -18,13 +18,18 @@
 package net.legacyfabric.fabric.impl.block.versioned;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
+import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.util.Identifier;
 
 public class EarlyInitializer implements PreLaunchEntrypoint {
 	@Override
@@ -34,5 +39,24 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 
 	private static void blockRegistryInit(Registry<?> holder) {
 		SyncedRegistry<Block> registry = (SyncedRegistry<Block>) holder;
+
+		registry.fabric$getEntryAddedCallback().register((rawId, id, block) -> {
+			if (block.getMaterial() == Material.AIR) {
+				block.useNeighbourLight = false;
+			} else {
+				boolean var12 = false;
+				boolean var13 = block.getBlockType() == 10;
+				boolean var14 = block instanceof SlabBlock;
+				boolean var15 = block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("farmland"));
+				boolean var16 = block.transluscent;
+				boolean var17 = block.getOpacity() == 0;
+
+				if (var13 || var14 || var15 || var16 || var17) {
+					var12 = true;
+				}
+
+				block.useNeighbourLight = var12;
+			}
+		});
 	}
 }

@@ -28,6 +28,7 @@
   "mixins": [
     "legacy-fabric-block-api-v1.mixins.json"
   ],
+  "accessWidener": "legacy-fabric-block-api-v1.accesswidener",
   "custom": {
     "loom:injected_interfaces": {
     },
