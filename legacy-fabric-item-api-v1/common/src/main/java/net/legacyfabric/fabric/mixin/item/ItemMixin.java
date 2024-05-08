@@ -37,7 +37,7 @@ public class ItemMixin {
 	@Final
 	public static SimpleRegistry REGISTRY;
 
-	@Inject(method = "<clinit>", at = @At("RETURN"))
+	@Inject(method = "setup", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
 		RegistryHelper.addRegistry(RegistryIds.ITEMS, (Registry<?>) REGISTRY);
 	}
