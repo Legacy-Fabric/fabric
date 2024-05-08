@@ -67,7 +67,7 @@ public class BackwardCompatibilityHelper implements PreLaunchEntrypoint {
 										entry.getValue().getId(),
 										entry.getValue().getIdentifier(),
 										entry.getValue().getValue()
-								);
+						);
 					}
 				});
 	}

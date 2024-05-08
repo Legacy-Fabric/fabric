@@ -24,7 +24,6 @@ import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
-
 public class RegistryHelper {
 	public static <T> void register(Registry<T> registry, Identifier identifier, T value) {
 		RegistryHelperImplementation.register(registry, identifier, value);
