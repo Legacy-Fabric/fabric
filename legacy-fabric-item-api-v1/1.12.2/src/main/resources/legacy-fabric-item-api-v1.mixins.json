@@ -6,7 +6,6 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "versioned.ItemAccessor"
   ],
   "client": [
     "versioned.ItemModelsAccessor",
