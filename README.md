@@ -18,7 +18,7 @@ For support, consider joining the [Legacy Fabric discord server](https://legacyf
 |----------------------|-------------------------------|--------|-----|-------|-------|--------|--------|--------|--------|
 | api-base             | ✅                             | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ✅      |
 | command-api-v1       | ✅                             | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
-| command-api-v2       | ⚠ Text formatting need rework | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
+| command-api-v2       | ❌                             | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
 | crash-report-info-v1 | ✅                             | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ✅      |
 | entity-events-v1     | ✅                             | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ❌      |
 | gamerule-api-v1      | ?                             | ✅      | ✅   | ✅     | ✅     | ✅      | ✅      | ✅      | ?      |
