@@ -17,11 +17,14 @@
 
 package net.legacyfabric.fabric.test.command;
 
+import java.util.Optional;
+
 import net.minecraft.command.AbstractCommand;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandSource;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ContactInformation;
 
 public class ModMetadataCommandV1 extends AbstractCommand {
@@ -38,7 +41,11 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 	@Override
 	public void execute(CommandSource source, String[] args) throws CommandException {
 		if (args.length > 0) {
-			FabricLoader.getInstance().getModContainer(args[0]).ifPresent(container -> {
+			Optional<ModContainer> optionalModContainer = FabricLoader.getInstance().getModContainer(args[0]);
+
+			if (optionalModContainer.isPresent()) {
+				ModContainer container = optionalModContainer.get();
+
 				StringBuilder builder = new StringBuilder();
 				builder.append("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
 				builder.append("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));
@@ -64,7 +71,9 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 
 				builder.append("Metadata Type: ".concat(container.getMetadata().getType()).concat("\n"));
 				CommandV1Test.LOGGER.info(builder.toString());
-			});
+			} else {
+				CommandV1Test.LOGGER.error("Couldn't find Mod container for mod id '" + args[0] + "'");
+			}
 		}
 	}
 }
