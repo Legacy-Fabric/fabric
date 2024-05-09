@@ -7,8 +7,7 @@
   ],
   "client": [
     "client.MixinCreativePlayerInventoryGui",
-    "client.MixinItemGroup",
-    "client.MixinScreen"
+    "client.MixinItemGroup"
   ],
   "injectors": {
     "defaultRequire": 1

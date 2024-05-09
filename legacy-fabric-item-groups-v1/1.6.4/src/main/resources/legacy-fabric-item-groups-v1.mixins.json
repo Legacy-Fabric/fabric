@@ -6,7 +6,7 @@
     "ItemGroupMixin"
   ],
   "client": [
-    "client.MixinScreen"
+    "client.HandledScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
