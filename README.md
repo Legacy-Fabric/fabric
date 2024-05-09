@@ -9,10 +9,10 @@ Fabric API is the library for essential hooks and interoperability mechanisms fo
 For support, consider joining the [Legacy Fabric discord server](https://legacyfabric.net/discord) or opening an issue.
 
 ## Modules available and tested by minecraft version
-✅ = Working as expected\
+✅ = Working as expected.\
 ⚠ = Working but has some issues.\
-? = Not sure if it was tested or working correctly\
-❌ = Not working at all, likely crashing
+? = Not tested, might not work as intended.\
+❌ = Not ported or probably not working.
 
 |                      | 1.6.4                         | 1.7.10 | 1.8 | 1.8.9 | 1.9.4 | 1.10.2 | 1.11.2 | 1.12.2 | 1.13.2 |
 |----------------------|-------------------------------|--------|-----|-------|-------|--------|--------|--------|--------|
