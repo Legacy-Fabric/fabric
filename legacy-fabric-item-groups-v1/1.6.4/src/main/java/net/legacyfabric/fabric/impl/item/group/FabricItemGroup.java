@@ -21,12 +21,12 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.itemgroup.ItemGroup;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class FabricItemGroup extends ItemGroup {
 	private final Supplier<ItemStack> itemSupplier;
