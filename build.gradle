@@ -350,6 +350,15 @@ allprojects {
 			importOrder("java", "javax", "", "net.minecraft", "net.fabricmc", "net.legacyfabric")
 			indentWithTabs()
 			trimTrailingWhitespace()
+			targetExclude('**/lib/sponge/*.java', '**/lib/sponge/**/*.java')
+		}
+		format("sponge", com.diffplug.gradle.spotless.JavaExtension) {
+			licenseHeaderFile(rootProject.file("SPONGE_HEADER"))
+			removeUnusedImports()
+			importOrder("java", "javax", "", "net.minecraft", "net.fabricmc", "net.legacyfabric")
+			indentWithTabs()
+			trimTrailingWhitespace()
+			target('**/lib/sponge/*.java', '**/lib/sponge/**/*.java')
 		}
 	}
 
