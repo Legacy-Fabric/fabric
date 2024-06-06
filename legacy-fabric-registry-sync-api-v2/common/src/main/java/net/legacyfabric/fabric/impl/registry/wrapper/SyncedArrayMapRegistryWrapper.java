@@ -35,7 +35,7 @@ import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.IdsHolderImpl;
 
 public class SyncedArrayMapRegistryWrapper<K, V> implements SyncedRegistrableRegistry<V> {
-	private IdsHolder<V> idsHolder = new IdsHolderImpl<>();
+	private IdsHolder<V> idsHolder = new IdsHolderImpl<>(1);
 
 	private final Identifier id;
 	private final BiMap<K, V> keyToValue;
