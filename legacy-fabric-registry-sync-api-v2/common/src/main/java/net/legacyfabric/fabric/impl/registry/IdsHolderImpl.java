@@ -32,14 +32,24 @@ public class IdsHolderImpl<T> implements IdsHolder<T> {
 	private final IdentityHashMap<T, Integer> valueToId = new IdentityHashMap<>(512);
 	private final List<T> values = Lists.newArrayList();
 
+	private final int minId;
+
+	public IdsHolderImpl(int minId) {
+		this.minId = minId;
+	}
+
+	public IdsHolderImpl() {
+		this(0);
+	}
+
 	@Override
 	public IdsHolder<T> fabric$new() {
-		return new IdsHolderImpl<>();
+		return new IdsHolderImpl<>(this.minId);
 	}
 
 	@Override
 	public int fabric$nextId() {
-		int id = 0;
+		int id = this.minId;
 
 		while (this.fabric$getValue(id) != null) id++;
 
@@ -70,7 +80,7 @@ public class IdsHolderImpl<T> implements IdsHolder<T> {
 
 	@Override
 	public T fabric$getValue(int rawId) {
-		return rawId >= 0 && rawId < this.values.size() ? this.values.get(rawId) : null;
+		return rawId >= this.minId && rawId < this.values.size() ? this.values.get(rawId) : null;
 	}
 
 	@NotNull
