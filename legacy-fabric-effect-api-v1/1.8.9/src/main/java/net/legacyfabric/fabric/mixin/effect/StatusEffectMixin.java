@@ -70,7 +70,7 @@ public class StatusEffectMixin {
 					for (StatusEffect effect : ids) {
 						int id = ids.fabric$getId(effect);
 
-						if (id > array.length) {
+						if (id >= array.length) {
 							StatusEffect[] newArray = new StatusEffect[id + 1];
 							Arrays.fill(newArray, null);
 							System.arraycopy(array, 0, newArray, 0, array.length);

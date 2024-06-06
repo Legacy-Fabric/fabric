@@ -25,6 +25,7 @@
       "net.legacyfabric.fabric.impl.effect.versioned.EarlyInitializer"
     ]
   },
+  "accessWidener": "legacy-fabric-effect-api.accesswidener",
   "mixins": [
     "legacy-fabric-effect-api-v1.mixins.json"
   ],
