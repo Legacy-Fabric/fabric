@@ -21,8 +21,8 @@
   },
   "description": "Registry hooks",
   "entrypoints": {
-    "client": [
-      "net.legacyfabric.fabric.impl.client.registry.sync.ClientRemapInitializer"
+    "preLaunch": [
+      "net.legacyfabric.fabric.impl.registry.BackwardCompatibilityHelper"
     ]
   },
   "mixins": [
