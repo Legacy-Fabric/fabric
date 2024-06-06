@@ -6,7 +6,8 @@
     "ClientConnectionMixin",
     "CustomPayloadC2SPacketMixin",
     "MinecraftServerMixin",
-    "PlayerManagerMixin"
+    "PlayerManagerMixin",
+    "versioned.PacketByteBufMixin"
   ],
   "client": [
     "client.CustomPayloadS2CPacketMixin",
