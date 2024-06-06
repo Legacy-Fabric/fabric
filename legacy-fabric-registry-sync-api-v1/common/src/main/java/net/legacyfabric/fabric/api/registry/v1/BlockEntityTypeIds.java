@@ -21,38 +21,34 @@ import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
 
 public class BlockEntityTypeIds {
-	public static final Identifier FURNACE = id("furnace");
-	public static final Identifier CHEST = id("chest");
-	public static final Identifier ENDER_CHEST = id("ender_chest");
-	public static final Identifier JUKEBOX = id("jukebox");
-	public static final Identifier DISPENSER = id("dispenser");
-	public static final Identifier DROPPER = id("dropper");
-	public static final Identifier SIGN = id("sign");
-	public static final Identifier MOB_SPAWNER = id("mob_spawner");
-	public static final Identifier NOTEBLOCK = id("noteblock");
-	public static final Identifier PISTON = id("piston");
-	public static final Identifier BREWING_STAND = id("brewing_stand");
-	public static final Identifier ENCHANTING_TABLE = id("enchanting_table");
-	public static final Identifier END_PORTAL = id("end_portal");
-	public static final Identifier BEACON = id("beacon");
-	public static final Identifier SKULL = id("skull");
-	public static final Identifier DAYLIGHT_DETECTOR = id("daylight_detector");
-	public static final Identifier HOPPER = id("hopper");
-	public static final Identifier COMPARATOR = id("comparator");
-	public static final Identifier FLOWER_POT = id("flower_pot");
+	public static final Identifier FURNACE = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.FURNACE;
+	public static final Identifier CHEST = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.CHEST;
+	public static final Identifier ENDER_CHEST = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.ENDER_CHEST;
+	public static final Identifier JUKEBOX = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.JUKEBOX;
+	public static final Identifier DISPENSER = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.DISPENSER;
+	public static final Identifier DROPPER = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.DROPPER;
+	public static final Identifier SIGN = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.SIGN;
+	public static final Identifier MOB_SPAWNER = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.MOB_SPAWNER;
+	public static final Identifier NOTEBLOCK = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.NOTEBLOCK;
+	public static final Identifier PISTON = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.PISTON;
+	public static final Identifier BREWING_STAND = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.BREWING_STAND;
+	public static final Identifier ENCHANTING_TABLE = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.ENCHANTING_TABLE;
+	public static final Identifier END_PORTAL = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.END_PORTAL;
+	public static final Identifier BEACON = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.BEACON;
+	public static final Identifier SKULL = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.SKULL;
+	public static final Identifier DAYLIGHT_DETECTOR = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.DAYLIGHT_DETECTOR;
+	public static final Identifier HOPPER = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.HOPPER;
+	public static final Identifier COMPARATOR = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.COMPARATOR;
+	public static final Identifier FLOWER_POT = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.FLOWER_POT;
 	@SinceMC("1.8")
-	public static final Identifier BANNER = id("banner");
+	public static final Identifier BANNER = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.BANNER;
 	@SinceMC("1.9.4")
-	public static final Identifier STRUCTURE_BLOCK = id("structure_block");
+	public static final Identifier STRUCTURE_BLOCK = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.STRUCTURE_BLOCK;
 	@SinceMC("1.9.4")
-	public static final Identifier END_GATEWAY = id("end_gateway");
-	public static final Identifier COMMAND_BLOCK = id("command_block");
+	public static final Identifier END_GATEWAY = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.END_GATEWAY;
+	public static final Identifier COMMAND_BLOCK = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.COMMAND_BLOCK;
 	@SinceMC("1.11.2")
-	public static final Identifier SHULKER_BOX = id("shulker_box");
+	public static final Identifier SHULKER_BOX = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.SHULKER_BOX;
 	@SinceMC("1.12.2")
-	public static final Identifier BED = id("bed");
-
-	private static Identifier id(String path) {
-		return new Identifier(path);
-	}
+	public static final Identifier BED = net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds.BED;
 }
