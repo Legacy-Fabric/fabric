@@ -132,7 +132,7 @@ public class RegistryRemapper<T> {
 		addNewEntries(ids);
 
 		if (currentSize.getAsInt() != previousSize.getAsInt() && this.missingMap.isEmpty()) {
-			throw new IllegalStateException("An error occured during remapping");
+			throw new IllegalStateException("An error occurred during remapping");
 		}
 
 		return previousSize;

@@ -35,10 +35,10 @@ public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
 	public abstract void add(T value, int id);
 
 	@Shadow
-	private T[] field_14375;
+	public abstract int getId(T value);
 
 	@Shadow
-	public abstract int getId(T value);
+	public abstract int size();
 
 	@Override
 	public IdsHolder<T> fabric$new() {
@@ -61,7 +61,7 @@ public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
 
 	@Override
 	public int fabric$size() {
-		return this.field_14375.length;
+		return this.size();
 	}
 
 	@Override

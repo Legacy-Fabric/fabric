@@ -69,7 +69,7 @@ public class IdsHolderImpl<T> implements IdsHolder<T> {
 
 	@Override
 	public int fabric$size() {
-		return values.size();
+		return this.valueToId.size();
 	}
 
 	@Override
