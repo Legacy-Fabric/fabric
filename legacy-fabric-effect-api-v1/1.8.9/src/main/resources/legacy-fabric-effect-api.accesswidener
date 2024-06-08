@@ -3,4 +3,3 @@ accessWidener	v2	named
 transitive-accessible method net/minecraft/entity/effect/StatusEffect <init> (ILnet/minecraft/util/Identifier;ZI)V
 transitive-accessible method net/minecraft/entity/effect/StatusEffect method_2440 (II)Lnet/minecraft/entity/effect/StatusEffect;
 transitive-accessible method net/minecraft/entity/effect/StatusEffect method_2434 (D)Lnet/minecraft/entity/effect/StatusEffect;
-transitive-accessible method net/minecraft/entity/effect/StatusEffectStrings method_14242 (Lnet/minecraft/potion/Potion;Lnet/minecraft/item/Item;Lnet/minecraft/potion/Potion;)V

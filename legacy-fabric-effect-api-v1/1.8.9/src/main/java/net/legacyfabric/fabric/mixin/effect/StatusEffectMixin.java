@@ -64,14 +64,14 @@ public class StatusEffectMixin {
 				universal -> new Identifier(universal.toString()),
 				net.legacyfabric.fabric.api.util.Identifier::new,
 				ids -> {
-					StatusEffect[] array = new StatusEffect[ids.fabric$size()];
+					StatusEffect[] array = new StatusEffect[ids.fabric$size() + 1];
 					Arrays.fill(array, null);
 
 					for (StatusEffect effect : ids) {
 						int id = ids.fabric$getId(effect);
 
-						if (id >= array.length) {
-							StatusEffect[] newArray = new StatusEffect[id + 1];
+						if (id >= array.length - 1) {
+							StatusEffect[] newArray = new StatusEffect[id + 2];
 							Arrays.fill(newArray, null);
 							System.arraycopy(array, 0, newArray, 0, array.length);
 							array = newArray;
