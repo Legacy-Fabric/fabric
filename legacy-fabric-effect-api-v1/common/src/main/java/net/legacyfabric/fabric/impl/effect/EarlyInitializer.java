@@ -18,6 +18,7 @@
 package net.legacyfabric.fabric.impl.effect;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.util.VersionUtils;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 
@@ -29,6 +30,11 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
 
 public class EarlyInitializer implements PreLaunchEntrypoint {
+	/**
+	 * Before MC 1.9, effects translation key starts with 'potion' instead of 'effect'
+	 */
+	private static final String keyPrefix = VersionUtils.matches(">=1.9") ? "effect" : "potion";
+
 	@Override
 	public void onPreLaunch() {
 		RegistryInitializedEvent.event(RegistryIds.STATUS_EFFECTS).register(EarlyInitializer::effectRegistryInit);
@@ -37,6 +43,6 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 	private static void effectRegistryInit(FabricRegistry<?> holder) {
 		SyncedFabricRegistry<StatusEffect> registry = (SyncedFabricRegistry<StatusEffect>) holder;
 
-		registry.fabric$getBeforeAddedCallback().register((rawId, id, object) -> object.setTranslationKey("effect." + id.toTranslationKey()));
+		registry.fabric$getBeforeAddedCallback().register((rawId, id, object) -> object.setTranslationKey(keyPrefix + "." + id.toTranslationKey()));
 	}
 }
