@@ -1,4 +1,4 @@
-package net.legacyfabric.fabric.impl.entity;
+package net.legacyfabric.fabric.impl.entity.versionned;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 

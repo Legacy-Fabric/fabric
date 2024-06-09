@@ -22,7 +22,7 @@
   "description": "Entity utils",
   "entrypoints": {
     "preLaunch": [
-      "net.legacyfabric.fabric.impl.entity.EarlyInitializer"
+      "net.legacyfabric.fabric.impl.entity.versionned.EarlyInitializer"
     ]
   },
   "mixins": [
