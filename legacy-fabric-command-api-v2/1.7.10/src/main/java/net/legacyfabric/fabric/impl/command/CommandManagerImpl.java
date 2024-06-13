@@ -49,10 +49,10 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.dispatcher.SimpleDispat
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.util.Location;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public class CommandManagerImpl implements CommandManager {
-	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Command Manager");
+	private static final Logger LOGGER = Logger.get(LoggerHelper.API, "Command Manager");
 	private final Object lock = new Object();
 	private final SimpleDispatcher dispatcher;
 	private final List<CommandMapping> mappings = Lists.newArrayList();

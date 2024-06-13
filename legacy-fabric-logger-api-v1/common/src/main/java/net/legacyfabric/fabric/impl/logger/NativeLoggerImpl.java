@@ -17,37 +17,15 @@
 
 package net.legacyfabric.fabric.impl.logger;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import net.fabricmc.loader.impl.util.log.Log;
 import net.fabricmc.loader.impl.util.log.LogCategory;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 
-public class LoggerImpl implements Logger {
-	public static final String API = "LegacyFabricAPI";
-	private LogCategory category;
+public class NativeLoggerImpl implements Logger {
+	private final LogCategory category;
 
-	public LoggerImpl(String context, String... subs) {
-		try { // Loader 0.14.3+
-			tryCreatingLogger(context, subs);
-		} catch (NoSuchMethodError e) { // Loader 0.13+
-			List<String> parts = new ArrayList<>();
-			parts.add(context);
-			Collections.addAll(parts, subs);
-
-			try {
-				this.category = LogCategory.class.getDeclaredConstructor(String[].class).newInstance(parts.toArray(new String[0]));
-			} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
-				throw new RuntimeException(ex);
-			}
-		}
-	}
-
-	private void tryCreatingLogger(String context, String... subs) throws NoSuchMethodError {
+	public NativeLoggerImpl(String context, String... subs) {
 		this.category = LogCategory.createCustom(context, subs);
 	}
 

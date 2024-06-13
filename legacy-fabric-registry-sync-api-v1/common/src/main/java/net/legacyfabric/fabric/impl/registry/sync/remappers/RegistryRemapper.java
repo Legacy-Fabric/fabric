@@ -30,7 +30,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
@@ -38,7 +38,7 @@ import net.legacyfabric.fabric.impl.registry.util.ArrayBasedRegistry;
 import net.legacyfabric.fabric.impl.registry.util.RegistryEventsHolder;
 
 public class RegistryRemapper<V> {
-	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
+	protected static final Logger LOGGER = Logger.get(LoggerHelper.API, "RegistryRemapper");
 	protected final SimpleRegistryCompat<?, V> registry;
 	protected BiMap<Identifier, Integer> entryDump;
 	protected BiMap<Identifier, Integer> missingMap = HashBiMap.create();

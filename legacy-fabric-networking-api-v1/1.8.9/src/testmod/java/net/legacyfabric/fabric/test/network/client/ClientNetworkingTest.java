@@ -24,10 +24,10 @@ import net.fabricmc.api.ClientModInitializer;
 import net.legacyfabric.fabric.api.client.networking.v1.C2SPlayChannelEvents;
 import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public class ClientNetworkingTest implements ClientModInitializer {
-	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "ClientNetworking");
+	private static final Logger LOGGER = Logger.get(LoggerHelper.API, "Test", "ClientNetworking");
 
 	@Override
 	public void onInitializeClient() {

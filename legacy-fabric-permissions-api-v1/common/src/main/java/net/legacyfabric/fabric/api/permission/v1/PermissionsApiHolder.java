@@ -27,7 +27,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 /**
  * @deprecated Unstable API, may change in the future.
@@ -35,7 +35,7 @@ import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 @Deprecated
 @ApiStatus.Experimental
 public class PermissionsApiHolder {
-	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "PermissionApiHolder");
+	private static final Logger LOGGER = Logger.get(LoggerHelper.API, "PermissionApiHolder");
 	private static PlayerPermissionsApi PLAYER_PERMISSIONS_API = null;
 
 	public static boolean setPlayerPermissionsApi(PlayerPermissionsApi api) {
