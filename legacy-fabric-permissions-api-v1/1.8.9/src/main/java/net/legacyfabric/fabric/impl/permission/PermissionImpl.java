@@ -17,13 +17,9 @@
 
 package net.legacyfabric.fabric.impl.permission;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.server.MinecraftServer;
 
-import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissionsApiHolder;
 import net.legacyfabric.fabric.api.permission.v1.PlayerPermissionsApi;
@@ -44,19 +40,7 @@ public class PermissionImpl implements ModInitializer {
 
 		@Override
 		public boolean hasPermission(ServerPlayerEntity player, String perm) {
-			return getServer().getPlayerManager().isOperator(player.getGameProfile());
-		}
-	}
-
-	protected static MinecraftServer getServer() {
-		try {
-			return MinecraftServer.getServer();
-		} catch (NoSuchMethodError e) {
-			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-				return MinecraftClient.getInstance().getServer();
-			} else {
-				return (MinecraftServer) FabricLoader.getInstance().getGameInstance();
-			}
+			return player.server.getPlayerManager().isOperator(player.getGameProfile());
 		}
 	}
 }
