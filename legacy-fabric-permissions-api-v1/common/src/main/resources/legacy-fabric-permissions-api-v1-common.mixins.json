@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.permission",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ConsoleMixin",
+    "EntityMixin",
+    "ServerPlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

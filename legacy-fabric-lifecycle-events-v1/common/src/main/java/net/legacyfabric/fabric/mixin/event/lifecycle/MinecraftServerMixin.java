@@ -22,7 +22,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.MinecraftServer;
@@ -36,11 +35,6 @@ import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 public class MinecraftServerMixin {
 	@Shadow
 	public ServerWorld[] worlds;
-
-	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J"), method = "run", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setServerMeta(Lnet/minecraft/server/ServerMetadata;)V")))
-	public void api$startServerTick(CallbackInfo ci) {
-		ServerTickEvents.START_SERVER_TICK.invoker().onStartTick((MinecraftServer) (Object) this);
-	}
 
 	@Inject(at = @At(value = "INVOKE", target = "Ljava/lang/Thread;sleep(J)V", remap = false), method = "run")
 	public void api$endServerTick(CallbackInfo ci) {
@@ -60,11 +54,6 @@ public class MinecraftServerMixin {
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setupServer()Z"), method = "run")
 	public void api$beforeServerStart(CallbackInfo ci) {
 		ServerLifecycleEvents.SERVER_STARTING.invoker().onServerStarting((MinecraftServer) (Object) this);
-	}
-
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setServerMeta(Lnet/minecraft/server/ServerMetadata;)V", shift = At.Shift.AFTER), method = "run")
-	public void api$afterServerStart(CallbackInfo ci) {
-		ServerLifecycleEvents.SERVER_STARTED.invoker().onServerStarted((MinecraftServer) (Object) this);
 	}
 
 	@Inject(at = @At("HEAD"), method = "saveWorlds")

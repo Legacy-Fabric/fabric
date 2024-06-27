@@ -20,7 +20,9 @@
     "minecraft": "${minecraft_version}"
   },
   "description": "Simple permission api",
-  "mixins": [],
+  "mixins": [
+    "legacy-fabric-permissions-api-v1-common.mixins.json"
+  ],
   "custom": {
     "modmenu": {
       "badges": [ "library" ],

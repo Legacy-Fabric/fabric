@@ -19,13 +19,6 @@ package net.legacyfabric.fabric.api.permission.v1;
 
 import org.jetbrains.annotations.ApiStatus;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.server.MinecraftServer;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
-
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
@@ -37,6 +30,7 @@ import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 public class PermissionsApiHolder {
 	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "PermissionApiHolder");
 	private static PlayerPermissionsApi PLAYER_PERMISSIONS_API = null;
+	private static PlayerPermissionsApi FALLBACK_PLAYER_PERMISSIONS_API = null;
 
 	public static boolean setPlayerPermissionsApi(PlayerPermissionsApi api) {
 		if (PLAYER_PERMISSIONS_API == null) {
@@ -49,32 +43,11 @@ public class PermissionsApiHolder {
 	}
 
 	public static PlayerPermissionsApi getPlayerPermissionsApi() {
-		return PLAYER_PERMISSIONS_API != null ? PLAYER_PERMISSIONS_API : FallbackPlayerPermissionsApi.INSTANCE;
+		return PLAYER_PERMISSIONS_API != null ? PLAYER_PERMISSIONS_API : FALLBACK_PLAYER_PERMISSIONS_API;
 	}
 
-	private enum FallbackPlayerPermissionsApi implements PlayerPermissionsApi {
-		INSTANCE;
-
-		@Override
-		public String getId() {
-			return "legacy-fabric-fallback-permissions-api";
-		}
-
-		@Override
-		public boolean hasPermission(ServerPlayerEntity player, String perm) {
-			return getServer().getPlayerManager().isOperator(player.getGameProfile());
-		}
-	}
-
-	protected static MinecraftServer getServer() {
-		try {
-			return MinecraftServer.getServer();
-		} catch (NoSuchMethodError e) {
-			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-				return MinecraftClient.getInstance().getServer();
-			} else {
-				return (MinecraftServer) FabricLoader.getInstance().getGameInstance();
-			}
-		}
+	@ApiStatus.Internal
+	public static void setFallbackPlayerPermissionsApi(PlayerPermissionsApi api) {
+		FALLBACK_PLAYER_PERMISSIONS_API = api;
 	}
 }

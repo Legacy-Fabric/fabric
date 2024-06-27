@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.mixin.resource.loader.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,10 +26,9 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +36,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -63,9 +62,11 @@ public abstract class TranslationStorageMixin {
 	@Shadow
 	Map<String, String> translations;
 
+	@Unique
 	private static final boolean isUpperCase = VersionUtils.matches("<1.11");
 
-	private static final Gson GSON = new GsonBuilder().create();
+	@Unique
+	private static final JsonParser JSON_PARSER = new JsonParser();
 
 	@Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/language/TranslationStorage;setRightToLeft()V"))
 	private void loadLangFileFromOtherVersion(ResourceManager resourceManager, List<String> languages, CallbackInfo ci) {
@@ -115,8 +116,7 @@ public abstract class TranslationStorageMixin {
 
 		if (lines.get(0).startsWith("{")) { // Load as json
 			String content = String.join("\n", lines);
-			JsonObject object = GSON.fromJson(new StringReader(content), JsonObject.class);
-
+			JsonObject object = JSON_PARSER.parse(content).getAsJsonObject();
 			recursiveLoadTranslations("", object);
 		} else { // Load as properties/lang
 			for (String string : lines) {

@@ -5,10 +5,7 @@
   "mixins": [
     "CommandBlockExecutorMixin",
     "CommandStats_1Mixin",
-    "ConsoleMixin",
-    "EntityMixin",
     "ExecuteCommand_1Mixin",
-    "ServerPlayerEntityMixin",
     "SignBlockEntity_1Mixin",
     "SignBlockEntity_2Mixin"
   ],
