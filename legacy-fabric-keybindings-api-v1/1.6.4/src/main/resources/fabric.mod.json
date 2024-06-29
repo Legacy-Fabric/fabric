@@ -18,7 +18,9 @@
   "depends": {
     "minecraft": "${minecraft_version}"
   },
-  "mixins": [],
+  "mixins": [
+    "legacy-fabric-keybinding-api-v1.mixins.json"
+  ],
   "description": "Hooks that help adding keybindings",
   "custom": {
     "modmenu": {
