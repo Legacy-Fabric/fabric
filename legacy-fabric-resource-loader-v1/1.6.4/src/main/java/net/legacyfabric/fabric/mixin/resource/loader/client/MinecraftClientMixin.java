@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.resource.DefaultResourcePack;
@@ -63,8 +63,8 @@ public class MinecraftClientMixin {
 		}
 	}
 
-	@Inject(method = "reloadResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
-	public void reloadResources(CallbackInfo ci, ArrayList list) {
+	@Inject(method = "reloadResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/language/LanguageManager;reloadResourceLanguages(Ljava/util/List;)V"))
+	public void reloadResources(CallbackInfo ci, @Local(ordinal = 0) ArrayList list) {
 		fabric_modifyResourcePackList(list);
 	}
 }

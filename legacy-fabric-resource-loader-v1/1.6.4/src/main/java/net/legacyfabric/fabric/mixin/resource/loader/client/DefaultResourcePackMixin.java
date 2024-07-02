@@ -20,8 +20,12 @@ package net.legacyfabric.fabric.mixin.resource.loader.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Enumeration;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,6 +36,7 @@ import net.minecraft.util.Identifier;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 
 @Environment(EnvType.CLIENT)
 @Mixin(DefaultResourcePack.class)
@@ -71,5 +76,14 @@ public class DefaultResourcePackMixin {
 		} catch (Exception e) {
 			// Default path
 		}
+	}
+
+	@WrapOperation(method = "parseMetadata", at = @At(value = "INVOKE", target = "Ljava/lang/Class;getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;"))
+	private InputStream fixPackMetaPath(Class instance, String e, Operation<InputStream> original) throws IOException {
+		Path path = FabricLoader.getInstance().getModContainer("minecraft").get().findPath(e).orElse(null);
+
+		if (path == null) return null;
+
+		return Files.newInputStream(path);
 	}
 }
