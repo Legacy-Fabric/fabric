@@ -35,7 +35,7 @@ public class FabricControlsScreenComponents {
 		Type type;
 
 		public ControlsButtonWidget(int x, int y, Type type, ControlsScreenExtensions extensions) {
-			super(1000 + type.ordinal(), x, y, 20, 20, "");
+			super(1000 + type.ordinal(), x, y, 20, 20, type.text);
 			this.extensions = extensions;
 			this.type = type;
 			this.gui = (ControlsOptionsScreen) extensions;
