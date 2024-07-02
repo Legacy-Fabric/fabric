@@ -21,6 +21,7 @@
   "mixins": [
     "legacy-fabric-keybinding-api-v1-common.mixins.json"
   ],
+  "accessWidener": "legacy-fabric-keybinding-api-v1-common.accesswidener",
   "description": "Hooks that help adding keybindings",
   "custom": {
     "modmenu": {

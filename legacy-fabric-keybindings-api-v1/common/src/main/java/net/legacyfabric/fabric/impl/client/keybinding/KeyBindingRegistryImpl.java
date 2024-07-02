@@ -35,9 +35,9 @@ public final class KeyBindingRegistryImpl {
 	public static KeyBinding registerKeyBinding(KeyBinding binding) {
 		for (KeyBinding existingKeyBindings : moddedKeyBindings) {
 			if (existingKeyBindings == binding) {
-				throw new RuntimeException("Attempted to register same key binding twice " + binding.getTranslationKey() + "!");
-			} else if (existingKeyBindings.getTranslationKey().equals(binding.getTranslationKey())) {
-				throw new RuntimeException("Attempted to register two key bindings with equal ID: " + binding.getTranslationKey() + "!");
+				throw new RuntimeException("Attempted to register same key binding twice " + binding.translationKey + "!");
+			} else if (existingKeyBindings.translationKey.equals(binding.translationKey)) {
+				throw new RuntimeException("Attempted to register two key bindings with equal ID: " + binding.translationKey + "!");
 			}
 		}
 

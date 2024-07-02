@@ -1,0 +1,3 @@
+loom {
+	accessWidenerPath = file("src/main/resources/legacy-fabric-keybinding-api-v1-common.accesswidener")
+}
