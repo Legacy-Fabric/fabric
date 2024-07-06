@@ -1,0 +1,3 @@
+loom {
+	accessWidenerPath = file("src/main/resources/legacy-fabric-block-api-v1.accesswidener")
+}

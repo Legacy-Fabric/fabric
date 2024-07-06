@@ -25,14 +25,10 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.jetbrains.annotations.ApiStatus;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.world.biome.Biome;
 
 import net.fabricmc.api.EnvType;
@@ -45,7 +41,6 @@ import net.legacyfabric.fabric.api.util.VersionUtils;
 import net.legacyfabric.fabric.impl.client.registry.sync.ClientRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.ServerRegistryRemapper;
 import net.legacyfabric.fabric.impl.registry.sync.compat.IdListCompat;
-import net.legacyfabric.fabric.impl.registry.sync.compat.ItemCompat;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 import net.legacyfabric.fabric.impl.registry.sync.remappers.RegistryRemapper;
@@ -84,33 +79,6 @@ public class RegistryHelperImpl {
 		remapper.register(rawId, id, instance);
 
 		return instance;
-	}
-
-	public static Block registerBlock(Block block, Identifier id) {
-		block.setTranslationKey(formatTranslationKey(id));
-		int rawId = register(block, id, RegistryIds.BLOCKS);
-
-		if (hasFlatteningBegun) {
-			for (BlockState blockState : block.getStateManager().getBlockStates()) {
-				int i = rawId << 4 | block.getData(blockState);
-				Block.BLOCK_STATES.set(blockState, i);
-			}
-		}
-
-		return block;
-	}
-
-	public static Item registerItem(Item item, Identifier id) {
-		item.setTranslationKey(formatTranslationKey(id));
-		register(item, id, RegistryIds.ITEMS);
-
-		if (hasFlatteningBegun) {
-			if (item instanceof BlockItem) {
-				((ItemCompat) item).getBLOCK_ITEMS().put(((BlockItem) item).getBlock(), item);
-			}
-		}
-
-		return item;
 	}
 
 	public static Class<? extends BlockEntity> registerBlockEntityType(Class<? extends BlockEntity> blockEntityClass, Identifier id) {

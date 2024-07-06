@@ -8,9 +8,6 @@
   "mixins": [
     "SimpleRegistryMixin",
     "class_2929Mixin",
-    "PlayerManagerMixin",
-    "BlockMixin",
-    "ItemMixin",
     "PacketByteBufMixin",
     "MutableRegistryMixin",
     "BlockEntityAccessor",
