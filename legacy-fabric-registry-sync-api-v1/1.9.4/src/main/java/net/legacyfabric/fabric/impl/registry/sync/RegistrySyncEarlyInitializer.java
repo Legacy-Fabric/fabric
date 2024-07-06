@@ -38,13 +38,11 @@ import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddCallback;
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v1.RegistryIds;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
-import net.legacyfabric.fabric.impl.registry.registries.OldBlockEntityRegistry;
 import net.legacyfabric.fabric.impl.registry.registries.OldEntityTypeRegistry;
 import net.legacyfabric.fabric.impl.registry.sync.compat.RegistriesGetter;
 import net.legacyfabric.fabric.impl.registry.sync.compat.SimpleRegistryCompat;
 import net.legacyfabric.fabric.impl.registry.util.OldRemappedRegistry;
 import net.legacyfabric.fabric.mixin.registry.sync.BiomeAccessor;
-import net.legacyfabric.fabric.mixin.registry.sync.BlockEntityAccessor;
 import net.legacyfabric.fabric.mixin.registry.sync.EntityTypeAccessor;
 import net.legacyfabric.fabric.mixin.registry.sync.SpawnEggDataAccessor;
 
@@ -67,11 +65,13 @@ public class RegistrySyncEarlyInitializer implements PreLaunchEntrypoint {
 
 			@Override
 			public <K> SimpleRegistryCompat<K, Class<? extends BlockEntity>> getBlockEntityTypeRegistry() {
-				if (BLOCK_ENTITY_REGISTRY == null) {
-					BLOCK_ENTITY_REGISTRY = new OldBlockEntityRegistry(BlockEntityAccessor.getStringClassMap(), BlockEntityAccessor.getClassStringMap());
-				}
+//				if (BLOCK_ENTITY_REGISTRY == null) {
+//					BLOCK_ENTITY_REGISTRY = new OldBlockEntityRegistry(BlockEntityAccessor.getStringClassMap(), BlockEntityAccessor.getClassStringMap());
+//				}
+//
+//				return (SimpleRegistryCompat<K, Class<? extends BlockEntity>>) BLOCK_ENTITY_REGISTRY;
 
-				return (SimpleRegistryCompat<K, Class<? extends BlockEntity>>) BLOCK_ENTITY_REGISTRY;
+				return null;
 			}
 
 			@Override
