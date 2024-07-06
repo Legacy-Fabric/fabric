@@ -55,7 +55,7 @@ public class EnchantmentMixin {
 						int id = ids.fabric$getId(enchantment);
 
 						if (id >= array.length - 1) {
-							Enchantment[] newArray = new Enchantment[array.length + 2];
+							Enchantment[] newArray = new Enchantment[id + 2];
 							Arrays.fill(newArray, null);
 							System.arraycopy(array, 0, newArray, 0, array.length);
 							array = newArray;
