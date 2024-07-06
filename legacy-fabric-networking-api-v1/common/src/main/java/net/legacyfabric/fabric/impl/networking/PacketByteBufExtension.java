@@ -17,13 +17,21 @@
 
 package net.legacyfabric.fabric.impl.networking;
 
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 public interface PacketByteBufExtension {
 	@Environment(EnvType.CLIENT)
-	Packet createCustomPayloadC2SPacket(String channelName);
-	Packet createCustomPayloadS2CPacket(String channelName);
+	default Packet createCustomPayloadC2SPacket(String channelName) {
+		return null;
+	}
+	default Packet createCustomPayloadS2CPacket(String channelName) {
+		return null;
+	}
+
+	PacketByteBuf writeCompound(NbtCompound tag);
 }

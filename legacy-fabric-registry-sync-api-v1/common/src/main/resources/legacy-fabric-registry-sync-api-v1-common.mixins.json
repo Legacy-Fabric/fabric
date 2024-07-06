@@ -6,11 +6,7 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "MinecraftServerMixin",
-    "WorldSaveHandlerMixin",
     "IdListMixin",
-    "registry.ItemMixin",
-    "registry.BlockMixin",
     "registry.BlockEntityMixin",
     "registry.StatusEffectMixin",
     "registry.EnchantmentMixin",
@@ -18,6 +14,5 @@
     "registry.EntityTypeMixin"
   ],
   "client": [
-    "client.MinecraftClientMixin"
   ]
 }
