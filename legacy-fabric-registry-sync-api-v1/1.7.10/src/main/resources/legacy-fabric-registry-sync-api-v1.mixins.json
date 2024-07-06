@@ -7,7 +7,6 @@
   },
   "mixins": [
     "SimpleRegistryMixin",
-    "PlayerManagerMixin",
     "PacketByteBufMixin",
     "BlockEntityAccessor",
     "BlockEntityMixin",
