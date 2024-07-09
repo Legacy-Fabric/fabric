@@ -28,6 +28,8 @@ import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Desynchroniz
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
 
+import java.util.Objects;
+
 @Mixin(BiDefaultedRegistry.class)
 public abstract class BiDefaultedRegistryMixin<K, V> implements SyncedRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
 	@Shadow
@@ -42,7 +44,7 @@ public abstract class BiDefaultedRegistryMixin<K, V> implements SyncedRegistry<V
 		K key = (K) fabric$toKeyType(id);
 		V value = ((BiDefaultedRegistry<K, V>)(Object) this).get(key);
 
-		if (value == this.defaultValue && this.defaultKey != key) return null;
+		if (value == this.defaultValue && !Objects.equals(this.defaultKey.toString(), key.toString())) return null;
 
 		return value;
 	}
