@@ -15,4 +15,7 @@ public interface BiomeAccessor {
 	static void setBiomeList(IdList<Biome> idList) {
 
 	}
+
+	@Accessor
+	void setName(String name);
 }

@@ -23,6 +23,10 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 	private static void biomeRegistryInit(Registry<?> holder) {
 		SyncedRegistry<Biome> registry = (SyncedRegistry<Biome>) holder;
 
+		registry.fabric$getBeforeAddedCallback().register((rawId, id, object) -> {
+			((BiomeAccessor) object).setName(id.toTranslationKey());
+		});
+
 		registry.fabric$getEntryAddedCallback().register((rawId, id, object) -> {
 			if (object.hasParent()) {
 				Biome.biomeList.set(object, registry.fabric$getRawId(
