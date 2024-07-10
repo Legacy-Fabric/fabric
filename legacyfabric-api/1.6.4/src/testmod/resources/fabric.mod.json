@@ -15,7 +15,6 @@
     "client": [
       "net.legacyfabric.fabric.test.resource.loader.client.ResourceReloadTest",
       "net.legacyfabric.fabric.test.client.rendering.RenderingEventsTest",
-      "net.legacyfabric.fabric.test.lifecycle.client.ClientLifecycleEventsCommonTest",
       "net.legacyfabric.fabric.test.lifecycle.client.ClientLifecycleEventsTest",
       "net.legacyfabric.fabric.test.client.keybinding.KeybindingTest"
     ],
