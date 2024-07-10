@@ -27,8 +27,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ContactInformation;
 
-import net.minecraft.server.MinecraftServer;
-
 public class ModMetadataCommandV1 extends AbstractCommand {
 	@Override
 	public String getCommandName() {
@@ -41,7 +39,7 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 	}
 
 	@Override
-	public void method_3279(MinecraftServer minecraftServer, CommandSource commandSource, String[] args) throws CommandException {
+	public void execute(CommandSource commandSource, String[] args) throws CommandException {
 		if (args.length > 0) {
 			Optional<ModContainer> optionalModContainer = FabricLoader.getInstance().getModContainer(args[0]);
 

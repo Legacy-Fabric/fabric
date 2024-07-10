@@ -19,15 +19,15 @@ package net.legacyfabric.fabric.test.command;
 
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.command.AbstractCommand;
-import net.minecraft.command.CommandException;
+import net.minecraft.command.Command;
 import net.minecraft.command.CommandSource;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ContactInformation;
-
-import net.minecraft.server.MinecraftServer;
 
 public class ModMetadataCommandV1 extends AbstractCommand {
 	@Override
@@ -41,7 +41,7 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 	}
 
 	@Override
-	public void method_3279(MinecraftServer minecraftServer, CommandSource commandSource, String[] args) throws CommandException {
+	public void execute(CommandSource commandSource, String[] args) {
 		if (args.length > 0) {
 			Optional<ModContainer> optionalModContainer = FabricLoader.getInstance().getModContainer(args[0]);
 
@@ -77,5 +77,10 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 				CommandV1Test.LOGGER.error("Couldn't find Mod container for mod id '" + args[0] + "'");
 			}
 		}
+	}
+
+	@Override
+	public int compareTo(@NotNull Object o) {
+		return super.compareTo((Command) o);
 	}
 }

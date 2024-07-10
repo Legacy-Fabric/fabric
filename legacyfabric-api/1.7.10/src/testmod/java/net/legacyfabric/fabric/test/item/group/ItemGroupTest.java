@@ -35,14 +35,16 @@ public class ItemGroupTest implements ModInitializer {
 			.iconWithItemStack(() -> new ItemStack(Items.DIAMOND))
 			.appendItems(stacks ->
 					StreamSupport.stream(Item.REGISTRY.spliterator(), false)
-							.map(ItemStack::new)
-							.forEach(stacks::add)
+							.map(o -> new ItemStack((Item) o))
+							.forEach(o -> stacks.add((ItemStack) o))
 			).build();
 
 	private static final ItemGroup ITEM_GROUP_2 = FabricItemGroupBuilder.create(new Identifier("legacy-fabric-item-groups-v1-testmod", "test_group_two"))
 			.iconWithItemStack(() -> new ItemStack(Items.REDSTONE))
 			.appendItems((stacks, itemGroup) -> {
-				for (Item item : Item.REGISTRY) {
+				for (Object o : Item.REGISTRY) {
+					Item item = (Item) o;
+
 					if (item.getItemGroup() == ItemGroup.FOOD || item.getItemGroup() == itemGroup) {
 						stacks.add(new ItemStack(item));
 					}
