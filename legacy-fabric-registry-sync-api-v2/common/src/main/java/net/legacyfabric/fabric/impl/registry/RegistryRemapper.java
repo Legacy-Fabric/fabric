@@ -64,6 +64,8 @@ public class RegistryRemapper<T> {
 					LOGGER.debug("[%s] %s %s %s", this.registry.fabric$getId(), entry.getKey(), entry.getValue(), value);
 					this.entryDump.put(entry.getKey(), entry.getValue());
 				});
+
+		this.entryDump.putAll(this.missingMap);
 	}
 
 	public NbtCompound toNbt() {
@@ -104,6 +106,8 @@ public class RegistryRemapper<T> {
 
 	private IdsHolder<T> getDumpIds() {
 		IdsHolder<T> ids = this.registry.fabric$getIdsHolder().fabric$new();
+
+		this.missingMap.clear();
 
 		this.entryDump.forEach((id, rawId) -> {
 			T value = this.registry.fabric$getValue(id);
@@ -146,6 +150,8 @@ public class RegistryRemapper<T> {
 				.collect(Collectors.toList())
 				.forEach(missingEntry -> {
 					int newId = newList.fabric$nextId();
+
+					while (this.missingMap.containsValue(newId) || newList.fabric$getValue(newId) != null) newId++;
 
 					newList.fabric$setValue(missingEntry, newId);
 
