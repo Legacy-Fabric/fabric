@@ -29,6 +29,9 @@ import com.google.common.collect.Iterables;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
+
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -148,7 +151,13 @@ public abstract class TranslationStorageMixin {
 					key = entry.getKey();
 				}
 
-				this.translations.put(key, TOKEN_PATTERN.matcher(entry.getValue().getAsString()).replaceAll("%$1s"));
+				JsonElement value = entry.getValue();
+
+				if (value.isJsonPrimitive()) {
+					this.translations.put(key, TOKEN_PATTERN.matcher(value.getAsString()).replaceAll("%$1s"));
+				} else {
+					ResourceManagerHelperImpl.LOGGER.warn("Skipping translation key \"" + key + "\" with unsupported format " + value);
+				}
 			}
 		}
 	}
