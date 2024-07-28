@@ -17,6 +17,9 @@
 
 package net.legacyfabric.fabric.impl.item.versioned;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
+
 import net.minecraft.item.Item;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
@@ -35,6 +38,6 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 	private static void itemRegistryInit(Registry<?> holder) {
 		SyncedRegistry<Item> registry = (SyncedRegistry<Item>) holder;
 
-		registry.fabric$getRegistryRemapCallback().register(new ItemModelsRemapper());
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) registry.fabric$getRegistryRemapCallback().register(new ItemModelsRemapper());
 	}
 }
