@@ -29,9 +29,6 @@ import com.google.common.collect.Iterables;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
-
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +47,7 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
 import net.legacyfabric.fabric.api.util.VersionUtils;
+import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
 @Mixin(TranslationStorage.class)
 public abstract class TranslationStorageMixin {
