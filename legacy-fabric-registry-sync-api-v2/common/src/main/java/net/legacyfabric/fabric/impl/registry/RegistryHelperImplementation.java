@@ -24,6 +24,10 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.RegistryEntryCreator;
+
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.PacketByteBuf;
 
@@ -156,6 +160,58 @@ public class RegistryHelperImplementation {
 		registrable.fabric$register(computedId, identifier, value);
 
 		return value;
+	}
+
+	public static <T> RegistryEntryCreator<T> createEntryCreator(Identifier identifier, Function<Integer, T> valueConstructor, int offset) {
+		return new RegistryEntryCreatorImpl<>(identifier, offset, valueConstructor);
+	}
+
+	@SafeVarargs
+	public static <T> List<RegistryEntry<T>> register(Registry<T> registry, RegistryEntryCreator<T>... entryCreators) {
+		if (entryCreators.length < 1) throw new IllegalArgumentException("Can't register nothing to a registry!");
+		if (registry == null) throw new IllegalArgumentException("Can't register to a null registry!");
+		if (!(registry instanceof SyncedRegistrable) || !(registry instanceof SyncedRegistry)) throw new IllegalArgumentException("Can't register object to non registrable registry " + registry.fabric$getId());
+
+		SyncedRegistrableRegistry<T> registrable = (SyncedRegistrableRegistry<T>) registry;
+		int baseComputedId = registrable.fabric$nextId();
+
+		Map<Integer, Integer> computedIdsMap = new HashMap<>();
+
+		boolean matchPredicate = false;
+
+		while (!matchPredicate) {
+			for (RegistryEntryCreator<T> creator : entryCreators) {
+				int offset = creator.getIdOffset();
+				int offsetId = baseComputedId + offset;
+
+				if (registrable.fabric$getValue(offsetId) == null) {
+					matchPredicate = true;
+					computedIdsMap.put(offset, offsetId);
+				} else {
+					matchPredicate = false;
+					computedIdsMap.clear();
+
+					do {
+						baseComputedId++;
+					} while (registrable.fabric$getValue(baseComputedId) != null);
+
+					break;
+				}
+			}
+		}
+
+		List<RegistryEntry<T>> entries = new ArrayList<>();
+
+		for (RegistryEntryCreator<T> creator : entryCreators) {
+			int computedId = computedIdsMap.get(creator.getIdOffset());
+
+			RegistryEntry<T> registryEntry = new RegistryEntryImpl<>(computedId, creator.getIdentifier(), creator.getValue(computedId));
+			entries.add(registryEntry);
+
+			registrable.fabric$register(registryEntry.getId(), registryEntry.getIdentifier(), registryEntry.getValue());
+		}
+
+		return entries;
 	}
 
 	public static void remapRegistries() {

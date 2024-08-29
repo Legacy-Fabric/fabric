@@ -17,10 +17,13 @@
 
 package net.legacyfabric.fabric.api.registry.v2;
 
+import java.util.List;
 import java.util.function.Function;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.RegistryEntryCreator;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
@@ -76,5 +79,29 @@ public class RegistryHelper {
 
 	public static <T> int getRawId(Identifier registryId, T object) {
 		return getRawId(RegistryHelperImplementation.getRegistry(registryId), object);
+	}
+
+	public static <T> RegistryEntryCreator<T> createEntryCreator(Identifier identifier, Function<Integer, T> valueConstructor, int offset) {
+		return RegistryHelperImplementation.createEntryCreator(identifier, valueConstructor, offset);
+	}
+
+	public static <T> RegistryEntryCreator<T> createEntryCreator(Identifier identifier, T value, int offset) {
+		return createEntryCreator(identifier, (id) -> value, offset);
+	}
+
+	public static <T> RegistryEntryCreator<T> createEntryCreator(Identifier identifier, Function<Integer, T> valueConstructor) {
+		return createEntryCreator(identifier, valueConstructor, 0);
+	}
+
+	public static <T> RegistryEntryCreator<T> createEntryCreator(Identifier identifier, T value) {
+		return createEntryCreator(identifier, value, 0);
+	}
+
+	public static <T> List<RegistryEntry<T>> registerMultiple(Registry<T> registry, RegistryEntryCreator<T>... creators) {
+		return RegistryHelperImplementation.register(registry, creators);
+	}
+
+	public static <T> List<RegistryEntry<T>> registerMultiple(Identifier registryId, RegistryEntryCreator<T>... creators) {
+		return registerMultiple(RegistryHelperImplementation.getRegistry(registryId), creators);
 	}
 }
