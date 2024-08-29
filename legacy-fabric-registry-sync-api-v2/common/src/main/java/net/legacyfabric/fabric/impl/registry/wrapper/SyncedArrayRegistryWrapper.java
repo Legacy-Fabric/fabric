@@ -1,28 +1,8 @@
-/*
- * Copyright (c) 2020 - 2024 Legacy Fabric
- * Copyright (c) 2016 - 2022 FabricMC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package net.legacyfabric.fabric.impl.registry.wrapper;
 
-import java.util.Iterator;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import com.google.common.collect.BiMap;
-import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.HashBiMap;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
@@ -34,16 +14,22 @@ import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.IdsHolderImpl;
 
-public class SyncedArrayMapRegistryWrapper<K, V> implements SyncedRegistrableRegistry<V> {
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+public class SyncedArrayRegistryWrapper<K, V> implements SyncedRegistrableRegistry<V> {
 	private IdsHolder<V> idsHolder = new IdsHolderImpl<>(1);
 
 	private final Identifier id;
-	private final BiMap<K, V> keyToValue;
-	private final boolean updateMap;
-	private final BiMap<V, K> valueToKey;
+	private final BiMap<K, V> keyToValue = HashBiMap.create();
+	private final BiMap<V, K> valueToKey = keyToValue.inverse();
+	private final Consumer<IdsHolder<V>> arraySetter;
 	private final Function<Identifier, K> toMapKey;
 	private final Function<K, Identifier> fromMapKey;
-	private final Consumer<IdsHolder<V>> arraySetter;
 
 	private final Event<RegistryEntryAddedCallback<V>> addObjectEvent = EventFactory.createArrayBacked(RegistryEntryAddedCallback.class,
 			(callbacks) -> (rawId, id, object) -> {
@@ -67,22 +53,27 @@ public class SyncedArrayMapRegistryWrapper<K, V> implements SyncedRegistrableReg
 			}
 	);
 
-	public SyncedArrayMapRegistryWrapper(Identifier id, V[] array, BiMap<K, V> keyToValue, boolean updateMap, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey, Consumer<IdsHolder<V>> arraySetter) {
+	public SyncedArrayRegistryWrapper(Identifier id, V[] array, Map<Integer, Identifier> defaultIds, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey, Consumer<IdsHolder<V>> arraySetter) {
 		this.id = id;
-		this.keyToValue = keyToValue;
-		this.updateMap = updateMap;
-		this.valueToKey = this.keyToValue.inverse();
+		this.arraySetter = arraySetter;
 		this.toMapKey = toMapKey;
 		this.fromMapKey = fromMapKey;
-		this.arraySetter = arraySetter;
 
 		for (int i = 0; i < array.length; i++) {
 			V value = array[i];
 
 			if (value != null) {
-				idsHolder.fabric$setValue(value, i);
+				Identifier key = defaultIds.get(i);
+
+				if (key == null) {
+					idsHolder.fabric$setValue(value, i);
+				} else {
+					this.registerWithoutEvents(i, key, value);
+				}
 			}
 		}
+
+		this.arraySetter.accept(this.idsHolder);
 	}
 
 	@Override
@@ -156,11 +147,15 @@ public class SyncedArrayMapRegistryWrapper<K, V> implements SyncedRegistrableReg
 	public void fabric$register(int rawId, Identifier identifier, V value) {
 		beforeAddObjectEvent.invoker().onEntryAdding(rawId, identifier, value);
 
-		this.idsHolder.fabric$setValue(value, rawId);
-		if (updateMap) this.keyToValue.put(this.fabric$toKeyType(identifier), value);
+		this.registerWithoutEvents(rawId, identifier, value);
 
 		addObjectEvent.invoker().onEntryAdded(rawId, identifier, value);
 
 		this.arraySetter.accept(this.idsHolder);
+	}
+
+	private void registerWithoutEvents(int rawId, Identifier identifier, V value) {
+		this.idsHolder.fabric$setValue(value, rawId);
+		this.keyToValue.put(this.fabric$toKeyType(identifier), value);
 	}
 }
