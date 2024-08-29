@@ -7,13 +7,8 @@
   },
   "mixins": [
     "SimpleRegistryMixin",
-    "PlayerManagerMixin",
-    "BlockMixin",
-    "ItemMixin",
     "PacketByteBufMixin",
     "MutableRegistryMixin",
-    "BlockEntityAccessor",
-    "BlockEntityMixin",
     "StatusEffectAccessor",
     "EnchantmentAccessor",
     "BiomeAccessor",
