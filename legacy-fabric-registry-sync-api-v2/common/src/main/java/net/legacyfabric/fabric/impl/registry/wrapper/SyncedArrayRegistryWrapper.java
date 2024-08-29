@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class SyncedArrayRegistryWrapper<K, V> implements SyncedRegistrableRegistry<V> {
-	private IdsHolder<V> idsHolder = new IdsHolderImpl<>(1);
+	private IdsHolder<V> idsHolder;
 
 	private final Identifier id;
 	private final BiMap<K, V> keyToValue = HashBiMap.create();
@@ -54,6 +54,11 @@ public class SyncedArrayRegistryWrapper<K, V> implements SyncedRegistrableRegist
 	);
 
 	public SyncedArrayRegistryWrapper(Identifier id, V[] array, Map<Integer, Identifier> defaultIds, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey, Consumer<IdsHolder<V>> arraySetter) {
+		this(id, array, defaultIds, toMapKey, fromMapKey, arraySetter, 0);
+	}
+
+	public SyncedArrayRegistryWrapper(Identifier id, V[] array, Map<Integer, Identifier> defaultIds, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey, Consumer<IdsHolder<V>> arraySetter, int minId) {
+		this.idsHolder = new IdsHolderImpl<>(minId);
 		this.id = id;
 		this.arraySetter = arraySetter;
 		this.toMapKey = toMapKey;

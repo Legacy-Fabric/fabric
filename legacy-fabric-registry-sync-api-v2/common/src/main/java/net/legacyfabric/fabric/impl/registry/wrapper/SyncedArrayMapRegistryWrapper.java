@@ -35,7 +35,7 @@ import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.IdsHolderImpl;
 
 public class SyncedArrayMapRegistryWrapper<K, V> implements SyncedRegistrableRegistry<V> {
-	private IdsHolder<V> idsHolder = new IdsHolderImpl<>(1);
+	private IdsHolder<V> idsHolder;
 
 	private final Identifier id;
 	private final BiMap<K, V> keyToValue;
@@ -68,6 +68,11 @@ public class SyncedArrayMapRegistryWrapper<K, V> implements SyncedRegistrableReg
 	);
 
 	public SyncedArrayMapRegistryWrapper(Identifier id, V[] array, BiMap<K, V> keyToValue, boolean updateMap, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey, Consumer<IdsHolder<V>> arraySetter) {
+		this(id, array, keyToValue, updateMap, toMapKey, fromMapKey, arraySetter, 0);
+	}
+
+	public SyncedArrayMapRegistryWrapper(Identifier id, V[] array, BiMap<K, V> keyToValue, boolean updateMap, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey, Consumer<IdsHolder<V>> arraySetter, int minId) {
+		this.idsHolder = new IdsHolderImpl<>(minId);
 		this.id = id;
 		this.keyToValue = keyToValue;
 		this.updateMap = updateMap;
