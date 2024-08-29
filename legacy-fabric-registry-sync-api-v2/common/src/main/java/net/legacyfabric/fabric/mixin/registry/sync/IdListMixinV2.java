@@ -18,7 +18,6 @@
 package net.legacyfabric.fabric.mixin.registry.sync;
 
 import java.util.IdentityHashMap;
-import java.util.List;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

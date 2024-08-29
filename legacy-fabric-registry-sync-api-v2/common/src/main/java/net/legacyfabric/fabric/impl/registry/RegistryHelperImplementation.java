@@ -24,10 +24,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
-import net.legacyfabric.fabric.api.registry.v2.registry.registrable.RegistryEntryCreator;
-
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.PacketByteBuf;
 
@@ -41,8 +37,11 @@ import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.RegistryEntryCreator;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
