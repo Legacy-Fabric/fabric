@@ -1,6 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "legacy-fabric-registry-sync-api-v1-common",
+  "provides": [
+    "legacy-fabric-registry-sync-api-v1"
+  ],
   "name": "Legacy Fabric Registry Sync API (V1)",
   "version": "${version}",
   "environment": "*",
@@ -25,9 +28,7 @@
       "net.legacyfabric.fabric.impl.registry.BackwardCompatibilityHelper"
     ]
   },
-  "mixins": [
-    "legacy-fabric-registry-sync-api-v1-common.mixins.json"
-  ],
+  "mixins": [],
   "custom": {
     "modmenu": {
       "badges": [ "library" ],

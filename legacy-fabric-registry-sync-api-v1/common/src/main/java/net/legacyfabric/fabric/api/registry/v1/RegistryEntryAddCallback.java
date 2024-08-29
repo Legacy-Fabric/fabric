@@ -21,6 +21,7 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.BackwardCompatibilityHelper;
 
+@Deprecated
 @FunctionalInterface
 public interface RegistryEntryAddCallback<T> {
 	void onEntryAdded(int rawId, Identifier key, T object);

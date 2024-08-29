@@ -20,6 +20,7 @@ package net.legacyfabric.fabric.api.registry.v1;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
 
+@Deprecated
 public class BlockIds {
 	public static final Identifier AIR = id("air");
 	public static final Identifier STONE = id("stone");

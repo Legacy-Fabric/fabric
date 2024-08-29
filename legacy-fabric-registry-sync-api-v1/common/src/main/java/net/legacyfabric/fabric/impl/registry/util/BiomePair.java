@@ -19,6 +19,7 @@ package net.legacyfabric.fabric.impl.registry.util;
 
 import net.minecraft.world.biome.Biome;
 
+@Deprecated
 public class BiomePair {
 	private final Biome parent, mutated;
 

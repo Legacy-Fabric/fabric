@@ -20,6 +20,8 @@ package net.legacyfabric.fabric.api.registry.v1;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
@@ -33,12 +35,12 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.util.BeforeMC;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImpl;
 import net.legacyfabric.fabric.impl.registry.util.BiomePair;
 
 /**
  * Allows registration of Blocks, Items, Block Entity Classes, Status Effects and Enchantments.
  */
+@Deprecated
 public final class RegistryHelper {
 	public static final Map<Identifier, Event<RegistryInitialized>> IDENTIFIER_EVENT_MAP = new HashMap<>();
 
@@ -251,7 +253,13 @@ public final class RegistryHelper {
 			EntryCreator<Biome> parentBiome, Identifier parentId,
 			EntryCreator<Biome> mutatedBiome, Identifier mutatedId
 	) {
-		return RegistryHelperImpl.registerBiomeWithMutatedVariant(parentBiome, parentId, mutatedBiome, mutatedId);
+		//		List<RegistryEntry<Biome>> list = BiomeHelper.registerBiomeWithParent(
+		//				parentId, parentBiome::create,
+		//				mutatedId, (id, biome) -> mutatedBiome.create(id)
+		//		);
+		//
+		//		return new BiomePair(list.get(0).getValue(), list.get(1).getValue());
+		throw new NotImplementedException("Registering biome with parent is currently not implemented before 1.9");
 	}
 
 	public static Biome getBiome(Identifier id) {
