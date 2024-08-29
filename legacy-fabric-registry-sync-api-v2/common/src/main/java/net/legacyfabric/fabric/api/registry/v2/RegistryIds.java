@@ -18,6 +18,7 @@
 package net.legacyfabric.fabric.api.registry.v2;
 
 import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.api.util.SinceMC;
 
 public class RegistryIds {
 	public static final Identifier ITEMS = new Identifier("items");
@@ -27,4 +28,6 @@ public class RegistryIds {
 	public static final Identifier ENCHANTMENTS = new Identifier("enchantments");
 	public static final Identifier BIOMES = new Identifier("biomes");
 	public static final Identifier ENTITY_TYPES = new Identifier("entity_types");
+	@SinceMC("1.9")
+	public static final Identifier POTIONS = new Identifier("potions");
 }
