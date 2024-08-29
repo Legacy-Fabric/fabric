@@ -17,11 +17,9 @@
 
 package net.legacyfabric.fabric.api.registry.v2;
 
-import java.util.List;
 import java.util.function.Function;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.RegistryEntryCreator;
 import net.legacyfabric.fabric.api.util.Identifier;
@@ -97,11 +95,12 @@ public class RegistryHelper {
 		return createEntryCreator(identifier, value, 0);
 	}
 
-	public static <T> List<RegistryEntry<T>> registerMultiple(Registry<T> registry, RegistryEntryCreator<T>... creators) {
-		return RegistryHelperImplementation.register(registry, creators);
-	}
-
-	public static <T> List<RegistryEntry<T>> registerMultiple(Identifier registryId, RegistryEntryCreator<T>... creators) {
-		return registerMultiple(RegistryHelperImplementation.getRegistry(registryId), creators);
-	}
+	// TODO Finish remapping part of it
+	//	public static <T> List<RegistryEntry<T>> registerMultiple(Registry<T> registry, RegistryEntryCreator<T>... creators) {
+	//		return RegistryHelperImplementation.register(registry, creators);
+	//	}
+	//
+	//	public static <T> List<RegistryEntry<T>> registerMultiple(Identifier registryId, RegistryEntryCreator<T>... creators) {
+	//		return registerMultiple(RegistryHelperImplementation.getRegistry(registryId), creators);
+	//	}
 }
