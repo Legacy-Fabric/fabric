@@ -178,5 +178,4 @@ public class RegistryRemapper<T> {
 	private void updateRegistry(IdsHolder<T> ids) {
 		this.registry.fabric$updateRegistry(ids);
 	}
-
 }
