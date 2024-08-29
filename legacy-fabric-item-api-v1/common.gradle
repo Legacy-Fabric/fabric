@@ -1,0 +1,6 @@
+moduleDependencies(project, [
+    "legacy-fabric-api-base",
+	"legacy-fabric-networking-api-v1",
+	"legacy-fabric-resource-loader-v1",
+	"legacy-fabric-registry-sync-api-v2"
+])
