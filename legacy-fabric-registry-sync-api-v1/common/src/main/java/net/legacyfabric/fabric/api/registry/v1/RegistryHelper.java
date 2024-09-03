@@ -20,8 +20,6 @@ package net.legacyfabric.fabric.api.registry.v1;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
@@ -259,7 +257,7 @@ public final class RegistryHelper {
 		//		);
 		//
 		//		return new BiomePair(list.get(0).getValue(), list.get(1).getValue());
-		throw new NotImplementedException("Registering biome with parent is currently not implemented before 1.9");
+		throw new UnsupportedOperationException("Registering biome with parent is currently not implemented before 1.9");
 	}
 
 	public static Biome getBiome(Identifier id) {
