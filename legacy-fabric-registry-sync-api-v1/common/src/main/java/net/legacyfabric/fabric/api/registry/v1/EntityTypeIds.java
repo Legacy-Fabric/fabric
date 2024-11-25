@@ -21,7 +21,6 @@ import net.legacyfabric.fabric.api.util.BeforeMC;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
 
-@Deprecated
 public class EntityTypeIds {
 	public static final Identifier ITEM = id("item");
 	public static final Identifier XP_ORB = id("xp_orb");

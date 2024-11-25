@@ -20,7 +20,6 @@ package net.legacyfabric.fabric.api.registry.v1;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
 
-@Deprecated
 public class BlockEntityTypeIds {
 	public static final Identifier FURNACE = id("furnace");
 	public static final Identifier CHEST = id("chest");

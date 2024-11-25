@@ -20,7 +20,6 @@ package net.legacyfabric.fabric.api.registry.v1;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
 
-@Deprecated
 public class StatusEffectIds {
 	public static final Identifier SPEED = id("speed");
 	public static final Identifier SLOWNESS = id("slowness");

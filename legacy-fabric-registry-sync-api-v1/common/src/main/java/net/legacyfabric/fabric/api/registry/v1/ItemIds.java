@@ -21,7 +21,6 @@ import net.legacyfabric.fabric.api.util.BeforeMC;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
 
-@Deprecated
 public class ItemIds {
 	// Block Items
 	@SinceMC("1.11")

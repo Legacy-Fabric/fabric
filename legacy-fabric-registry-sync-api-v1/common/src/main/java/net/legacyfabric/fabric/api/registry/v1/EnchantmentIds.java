@@ -20,7 +20,6 @@ package net.legacyfabric.fabric.api.registry.v1;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
 
-@Deprecated
 public class EnchantmentIds {
 	public static final Identifier PROTECTION = id("protection");
 	public static final Identifier FIRE_PROTECTION = id("fire_protection");

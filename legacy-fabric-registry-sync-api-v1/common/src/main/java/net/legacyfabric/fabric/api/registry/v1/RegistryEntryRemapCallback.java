@@ -18,14 +18,23 @@
 package net.legacyfabric.fabric.api.registry.v1;
 
 import net.legacyfabric.fabric.api.event.Event;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.BackwardCompatibilityHelper;
 
+/**
+ * @deprecated Use {@link RegistryRemapCallback} instead.
+ */
 @Deprecated
 @FunctionalInterface
 public interface RegistryEntryRemapCallback<T> {
 	void onEntryAdded(int oldId, int newId, Identifier key, T object);
 
+	/**
+	 * @deprecated Use {@link RegistryRemapCallback#event(Registry)} or {@link RegistryRemapCallback#event(Identifier)} instead.
+	 */
+	@Deprecated
 	static <T> Event<RegistryEntryRemapCallback<T>> event(Identifier registryId) {
 		return BackwardCompatibilityHelper.<T>getEventHolder(registryId).getRemapEvent();
 	}

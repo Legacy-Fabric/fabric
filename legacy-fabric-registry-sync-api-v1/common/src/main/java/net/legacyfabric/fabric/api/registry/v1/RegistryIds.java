@@ -19,8 +19,15 @@ package net.legacyfabric.fabric.api.registry.v1;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 
+/**
+ * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryIds} instead.
+ */
 @Deprecated
 public class RegistryIds {
+	/**
+	 * @deprecated Unsupported
+	 */
+	@Deprecated
 	public static final Identifier REGISTRY_REMAPPER = new Identifier("legacy-fabric-registry-sync-api-v1-common", "registry_remappers");
 	public static final Identifier ITEMS = net.legacyfabric.fabric.api.registry.v2.RegistryIds.ITEMS;
 	public static final Identifier BLOCKS = net.legacyfabric.fabric.api.registry.v2.RegistryIds.BLOCKS;

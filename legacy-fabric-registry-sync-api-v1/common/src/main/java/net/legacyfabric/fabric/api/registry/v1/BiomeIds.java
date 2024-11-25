@@ -20,7 +20,6 @@ package net.legacyfabric.fabric.api.registry.v1;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
 
-@Deprecated
 public class BiomeIds {
 	public static final Identifier OCEAN = id("ocean");
 	public static final Identifier PLAINS = id("plains");
