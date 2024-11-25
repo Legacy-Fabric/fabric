@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableFabricRegistry;
 import org.apache.commons.lang3.Validate;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,11 +31,10 @@ import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
 
-public class SyncedRegistrableRegistryImpl<V> implements SyncedRegistrableRegistry<V> {
+public class SyncedRegistrableFabricRegistryImpl<V> implements SyncedRegistrableFabricRegistry<V> {
 	private static final Logger LOGGER = Logger.get("LegacyFabricAPI", "SyncedRegistryImpl");
 	protected final BiMap<Identifier, V> valueMap = HashBiMap.create();
 	protected IdsHolder<V> idsHolder = new IdsHolderImpl<>();
@@ -64,7 +64,7 @@ public class SyncedRegistrableRegistryImpl<V> implements SyncedRegistrableRegist
 
 	private final Identifier identifier;
 
-	public SyncedRegistrableRegistryImpl(Identifier id) {
+	public SyncedRegistrableFabricRegistryImpl(Identifier id) {
 		this.identifier = id;
 	}
 

@@ -25,13 +25,13 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.util.registry.BiDefaultedRegistry;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin(BiDefaultedRegistry.class)
-public abstract class BiDefaultedRegistryMixin<K, V> implements SyncedRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
+public abstract class BiDefaultedRegistryMixin<K, V> implements SyncedFabricRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
 	@Shadow
 	private V defaultValue;
 

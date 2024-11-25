@@ -17,25 +17,10 @@
 
 package net.legacyfabric.fabric.api.registry.v2.registry.holder;
 
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.util.Identifier;
 
-public interface Registry<T> extends Iterable<T> {
-	Identifier fabric$getId();
-	Event<RegistryEntryAddedCallback<T>> fabric$getEntryAddedCallback();
-	Event<RegistryBeforeAddCallback<T>> fabric$getBeforeAddedCallback();
-
-	<K> K fabric$toKeyType(Identifier identifier);
-
-	T fabric$getValue(Identifier id);
-	Identifier fabric$getId(T value);
-
-	default Stream<T> stream() {
-		return StreamSupport.stream(spliterator(), false);
-	}
+public interface FabricRegistryEntry<T> {
+	int getId();
+	Identifier getIdentifier();
+	T getValue();
 }

@@ -30,14 +30,14 @@ import net.minecraft.util.registry.SimpleRegistry;
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixinV2<K, V> implements SyncedRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
+public abstract class SimpleRegistryMixinV2<K, V> implements SyncedFabricRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
 	// 1.8+
 	@Shadow
 	public abstract void add(int id, K identifier, V object);

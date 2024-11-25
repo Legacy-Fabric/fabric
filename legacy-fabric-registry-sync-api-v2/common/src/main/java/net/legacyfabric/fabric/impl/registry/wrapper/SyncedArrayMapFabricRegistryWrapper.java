@@ -18,12 +18,11 @@
 package net.legacyfabric.fabric.impl.registry.wrapper;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableFabricRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import net.legacyfabric.fabric.api.event.Event;
@@ -31,20 +30,20 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.IdsHolderImpl;
 
-public class SyncedArrayRegistryWrapper<K, V> implements SyncedRegistrableRegistry<V> {
+public class SyncedArrayMapFabricRegistryWrapper<K, V> implements SyncedRegistrableFabricRegistry<V> {
 	private IdsHolder<V> idsHolder;
 
 	private final Identifier id;
-	private final BiMap<K, V> keyToValue = HashBiMap.create();
-	private final BiMap<V, K> valueToKey = keyToValue.inverse();
-	private final Consumer<IdsHolder<V>> arraySetter;
+	private final BiMap<K, V> keyToValue;
+	private final boolean updateMap;
+	private final BiMap<V, K> valueToKey;
 	private final Function<Identifier, K> toMapKey;
 	private final Function<K, Identifier> fromMapKey;
+	private final Consumer<IdsHolder<V>> arraySetter;
 
 	private final Event<RegistryEntryAddedCallback<V>> addObjectEvent = EventFactory.createArrayBacked(RegistryEntryAddedCallback.class,
 			(callbacks) -> (rawId, id, object) -> {
@@ -68,32 +67,27 @@ public class SyncedArrayRegistryWrapper<K, V> implements SyncedRegistrableRegist
 			}
 	);
 
-	public SyncedArrayRegistryWrapper(Identifier id, V[] array, Map<Integer, Identifier> defaultIds, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey, Consumer<IdsHolder<V>> arraySetter) {
-		this(id, array, defaultIds, toMapKey, fromMapKey, arraySetter, 0);
+	public SyncedArrayMapFabricRegistryWrapper(Identifier id, V[] array, BiMap<K, V> keyToValue, boolean updateMap, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey, Consumer<IdsHolder<V>> arraySetter) {
+		this(id, array, keyToValue, updateMap, toMapKey, fromMapKey, arraySetter, 0);
 	}
 
-	public SyncedArrayRegistryWrapper(Identifier id, V[] array, Map<Integer, Identifier> defaultIds, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey, Consumer<IdsHolder<V>> arraySetter, int minId) {
+	public SyncedArrayMapFabricRegistryWrapper(Identifier id, V[] array, BiMap<K, V> keyToValue, boolean updateMap, Function<Identifier, K> toMapKey, Function<K, Identifier> fromMapKey, Consumer<IdsHolder<V>> arraySetter, int minId) {
 		this.idsHolder = new IdsHolderImpl<>(minId);
 		this.id = id;
-		this.arraySetter = arraySetter;
+		this.keyToValue = keyToValue;
+		this.updateMap = updateMap;
+		this.valueToKey = this.keyToValue.inverse();
 		this.toMapKey = toMapKey;
 		this.fromMapKey = fromMapKey;
+		this.arraySetter = arraySetter;
 
 		for (int i = 0; i < array.length; i++) {
 			V value = array[i];
 
 			if (value != null) {
-				Identifier key = defaultIds.get(i);
-
-				if (key == null) {
-					idsHolder.fabric$setValue(value, i);
-				} else {
-					this.registerWithoutEvents(i, key, value);
-				}
+				idsHolder.fabric$setValue(value, i);
 			}
 		}
-
-		this.arraySetter.accept(this.idsHolder);
 	}
 
 	@Override
@@ -167,15 +161,11 @@ public class SyncedArrayRegistryWrapper<K, V> implements SyncedRegistrableRegist
 	public void fabric$register(int rawId, Identifier identifier, V value) {
 		beforeAddObjectEvent.invoker().onEntryAdding(rawId, identifier, value);
 
-		this.registerWithoutEvents(rawId, identifier, value);
+		this.idsHolder.fabric$setValue(value, rawId);
+		if (updateMap) this.keyToValue.put(this.fabric$toKeyType(identifier), value);
 
 		addObjectEvent.invoker().onEntryAdded(rawId, identifier, value);
 
 		this.arraySetter.accept(this.idsHolder);
-	}
-
-	private void registerWithoutEvents(int rawId, Identifier identifier, V value) {
-		this.idsHolder.fabric$setValue(value, rawId);
-		this.keyToValue.put(this.fabric$toKeyType(identifier), value);
 	}
 }

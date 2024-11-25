@@ -20,23 +20,23 @@ package net.legacyfabric.fabric.api.registry.v2.event;
 import java.util.Map;
 
 import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryEventHelper;
 
 @FunctionalInterface
 public interface RegistryRemapCallback<T> {
-	void callback(Map<Integer, RegistryEntry<T>> changedIdsMap);
+	void callback(Map<Integer, FabricRegistryEntry<T>> changedIdsMap);
 
 	static <T> Event<RegistryRemapCallback<T>> event(Identifier registryId) {
 		return RegistryEventHelper.remapCallbackEvent(registryId);
 	}
 
-	static <T> Event<RegistryRemapCallback<T>> event(Registry<T> registry) {
-		if (!(registry instanceof SyncedRegistry)) throw new IllegalArgumentException("Provided registry is not remappable!");
+	static <T> Event<RegistryRemapCallback<T>> event(FabricRegistry<T> registry) {
+		if (!(registry instanceof SyncedFabricRegistry)) throw new IllegalArgumentException("Provided registry is not remappable!");
 
-		return ((SyncedRegistry<T>) registry).fabric$getRegistryRemapCallback();
+		return ((SyncedFabricRegistry<T>) registry).fabric$getRegistryRemapCallback();
 	}
 }

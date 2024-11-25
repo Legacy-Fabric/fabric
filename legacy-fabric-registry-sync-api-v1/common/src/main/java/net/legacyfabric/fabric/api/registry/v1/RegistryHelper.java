@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
@@ -31,7 +33,6 @@ import net.minecraft.world.biome.Biome;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 import net.legacyfabric.fabric.api.util.BeforeMC;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
@@ -72,7 +73,7 @@ public final class RegistryHelper {
 	 * @param block The block to register
 	 * @param id    The ID of the block
 	 * @return The block registered
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Registry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(FabricRegistry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
 	 */
 	@Deprecated
 	public static Block registerBlock(Block block, Identifier id) {
@@ -85,7 +86,7 @@ public final class RegistryHelper {
 	}
 
 	/**
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Registry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(FabricRegistry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
 	 */
 	@Deprecated
 	public static Block getBlock(Identifier id) {
@@ -100,7 +101,7 @@ public final class RegistryHelper {
 	 * @param item The item to register
 	 * @param id   The ID of the item
 	 * @return The item registered
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Registry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(FabricRegistry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
 	 */
 	@Deprecated
 	public static Item registerItem(Item item, Identifier id) {
@@ -113,7 +114,7 @@ public final class RegistryHelper {
 	}
 
 	/**
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Registry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(FabricRegistry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
 	 */
 	@Deprecated
 	public static Item getItem(Identifier id) {
@@ -126,7 +127,7 @@ public final class RegistryHelper {
 	 * @param blockEntityTypeClass The block entity type class to register
 	 * @param id    The ID of the block entity type
 	 * @return The block entity type class registered
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Registry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(FabricRegistry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
 	 */
 	@Deprecated
 	public static Class<? extends BlockEntity> registerBlockEntityType(Class<? extends BlockEntity> blockEntityTypeClass, Identifier id) {
@@ -139,7 +140,7 @@ public final class RegistryHelper {
 	}
 
 	/**
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Registry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(FabricRegistry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
 	 */
 	@Deprecated
 	public static Class<? extends BlockEntity> getBlockEntityType(Identifier id) {
@@ -154,7 +155,7 @@ public final class RegistryHelper {
 	 * @param statusEffect The status effect to register
 	 * @param id   The ID of the status effect
 	 * @return The status effect registered
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Registry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(FabricRegistry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
 	 */
 	@Deprecated
 	@SinceMC("1.9")
@@ -175,7 +176,7 @@ public final class RegistryHelper {
 	 * @param statusEffect The status effect to register
 	 * @param id   The ID of the status effect
 	 * @return The status effect registered
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Registry, Identifier, Function)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Function)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(FabricRegistry, Identifier, Function)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Function)} instead.
 	 */
 	@Deprecated
 	@BeforeMC("1.9")
@@ -187,7 +188,7 @@ public final class RegistryHelper {
 	}
 
 	/**
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Registry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(FabricRegistry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
 	 */
 	@Deprecated
 	public static StatusEffect getStatusEffect(Identifier id) {
@@ -202,7 +203,7 @@ public final class RegistryHelper {
 	 * @param enchantment The enchantment to register
 	 * @param id   The ID of the enchantment
 	 * @return The enchantment registered
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Registry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(FabricRegistry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
 	 */
 	@Deprecated
 	@SinceMC("1.9")
@@ -223,7 +224,7 @@ public final class RegistryHelper {
 	 * @param enchantment The enchantment to register
 	 * @param id   The ID of the enchantment
 	 * @return The enchantment registered
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Registry, Identifier, Function)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Function)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(FabricRegistry, Identifier, Function)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Function)} instead.
 	 */
 	@Deprecated
 	@BeforeMC("1.9")
@@ -235,7 +236,7 @@ public final class RegistryHelper {
 	}
 
 	/**
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Registry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(FabricRegistry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
 	 */
 	@Deprecated
 	public static Enchantment getEnchantment(Identifier id) {
@@ -248,7 +249,7 @@ public final class RegistryHelper {
 	 * @param biome The biome to register
 	 * @param id   The ID of the biome
 	 * @return The biome registered
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Registry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(FabricRegistry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
 	 */
 	@Deprecated
 	@SinceMC("1.9")
@@ -267,7 +268,7 @@ public final class RegistryHelper {
 	 * @param biome The biome to register
 	 * @param id   The ID of the biome
 	 * @return The biome registered
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Registry, Identifier, Function)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Function)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(FabricRegistry, Identifier, Function)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Function)} instead.
 	 */
 	@Deprecated
 	@BeforeMC("1.9")
@@ -304,7 +305,7 @@ public final class RegistryHelper {
 	}
 
 	/**
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Registry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(FabricRegistry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
 	 */
 	@Deprecated
 	public static Biome getBiome(Identifier id) {
@@ -317,7 +318,7 @@ public final class RegistryHelper {
 	 * @param entityTypeClass The entity type class to register
 	 * @param id    The ID of the entity type
 	 * @return The entity type class registered
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Registry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(FabricRegistry, Identifier, Object)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#register(Identifier, Identifier, Object)} instead.
 	 */
 	@Deprecated
 	public static Class<? extends Entity> registerEntityType(Class<? extends Entity> entityTypeClass, Identifier id) {
@@ -330,7 +331,7 @@ public final class RegistryHelper {
 	}
 
 	/**
-	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Registry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
+	 * @deprecated Use {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(FabricRegistry, Identifier)} or {@link net.legacyfabric.fabric.api.registry.v2.RegistryHelper#getValue(Identifier, Identifier)} instead.
 	 */
 	@Deprecated
 	public static Class<? extends Entity> getEntityType(Identifier id) {

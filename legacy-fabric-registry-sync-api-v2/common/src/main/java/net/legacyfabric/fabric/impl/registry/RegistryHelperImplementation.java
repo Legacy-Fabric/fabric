@@ -24,6 +24,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableFabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.PacketByteBuf;
 
@@ -35,10 +38,7 @@ import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.RegistryEntryCreator;
@@ -52,7 +52,7 @@ public class RegistryHelperImplementation {
 	public static final Identifier PACKET_ID = new Identifier("legacy-fabric-api:registry_remap");
 	public static final boolean hasFlatteningBegun = VersionUtils.matches(">=1.8 <=1.12.2");
 	public static final Map<Identifier, Event<RegistryInitializedEvent>> INITIALIZATION_EVENTS = new HashMap<>();
-	private static final Map<Identifier, Registry<?>> REGISTRIES = new HashMap<>();
+	private static final Map<Identifier, FabricRegistry<?>> REGISTRIES = new HashMap<>();
 	private static final Map<Identifier, RegistryRemapper<?>> REMAPPERS = new HashMap<>();
 	private static final List<Consumer<Identifier>> REGISTRY_REGISTERED = new ArrayList<>();
 
@@ -69,7 +69,7 @@ public class RegistryHelperImplementation {
 			event = EventFactory.createArrayBacked(RegistryInitializedEvent.class,
 					(callbacks) -> new RegistryInitializedEvent() {
 						@Override
-						public <T> void initialized(Registry<T> registry) {
+						public <T> void initialized(FabricRegistry<T> registry) {
 							for (RegistryInitializedEvent callback : callbacks) {
 								callback.initialized(registry);
 							}
@@ -82,11 +82,11 @@ public class RegistryHelperImplementation {
 		return event;
 	}
 
-	public static <T> Registry<T> getRegistry(Identifier identifier) {
-		return (Registry<T>) REGISTRIES.get(identifier);
+	public static <T> FabricRegistry<T> getRegistry(Identifier identifier) {
+		return (FabricRegistry<T>) REGISTRIES.get(identifier);
 	}
 
-	public static <T> void registerRegistry(Identifier identifier, Registry<T> holder) {
+	public static <T> void registerRegistry(Identifier identifier, FabricRegistry<T> holder) {
 		if (REGISTRIES.containsKey(identifier)) throw new IllegalArgumentException("Attempted to register registry " + identifier.toString() + " twices!");
 		REGISTRIES.put(identifier, holder);
 
@@ -98,8 +98,8 @@ public class RegistryHelperImplementation {
 			remappable = ((DesynchronizeableRegistrable) holder).canSynchronize();
 		}
 
-		if (holder instanceof SyncedRegistrableRegistry && remappable) {
-			REMAPPERS.put(identifier, new RegistryRemapper<>((SyncedRegistrableRegistry<?>) holder));
+		if (holder instanceof SyncedRegistrableFabricRegistry && remappable) {
+			REMAPPERS.put(identifier, new RegistryRemapper<>((SyncedRegistrableFabricRegistry<?>) holder));
 		}
 
 		REGISTRY_REGISTERED.forEach(c -> c.accept(identifier));
@@ -118,8 +118,8 @@ public class RegistryHelperImplementation {
 			if (event != null) event.invoker().onEntryAdded(rawId, id, object);
 		});
 
-		if (holder instanceof SyncedRegistrableRegistry && remappable) {
-			((SyncedRegistrableRegistry<T>) holder).fabric$getRegistryRemapCallback().register(changedIdsMap -> {
+		if (holder instanceof SyncedRegistrableFabricRegistry && remappable) {
+			((SyncedRegistrableFabricRegistry<T>) holder).fabric$getRegistryRemapCallback().register(changedIdsMap -> {
 				Event<RegistryRemapCallback<T>> event = (Event<RegistryRemapCallback<T>>) (Object) RegistryEventHelper.IDENTIFIER_REMAP_MAP.get(identifier);
 
 				if (event != null) event.invoker().callback(changedIdsMap);
@@ -127,7 +127,7 @@ public class RegistryHelperImplementation {
 		}
 	}
 
-	public static <T> void register(Registry<T> registry, Identifier identifier, T value) {
+	public static <T> void register(FabricRegistry<T> registry, Identifier identifier, T value) {
 		if (registry == null) throw new IllegalArgumentException("Can't register to a null registry!");
 		if (!(registry instanceof Registrable)) throw new IllegalArgumentException("Can't register object to non registrable registry " + registry.fabric$getId());
 
@@ -147,7 +147,7 @@ public class RegistryHelperImplementation {
 		registrable.fabric$register(computedId, identifier, value);
 	}
 
-	public static <T> T register(Registry<T> registry, Identifier identifier, Function<Integer, T> valueConstructor) {
+	public static <T> T register(FabricRegistry<T> registry, Identifier identifier, Function<Integer, T> valueConstructor) {
 		if (registry == null) throw new IllegalArgumentException("Can't register to a null registry!");
 		if (!(registry instanceof SyncedRegistrable)) throw new IllegalArgumentException("Can't register object to non registrable registry " + registry.fabric$getId());
 
@@ -166,12 +166,12 @@ public class RegistryHelperImplementation {
 	}
 
 	@SafeVarargs
-	public static <T> List<RegistryEntry<T>> register(Registry<T> registry, RegistryEntryCreator<T>... entryCreators) {
+	public static <T> List<FabricRegistryEntry<T>> register(FabricRegistry<T> registry, RegistryEntryCreator<T>... entryCreators) {
 		if (entryCreators.length < 1) throw new IllegalArgumentException("Can't register nothing to a registry!");
 		if (registry == null) throw new IllegalArgumentException("Can't register to a null registry!");
-		if (!(registry instanceof SyncedRegistrable) || !(registry instanceof SyncedRegistry)) throw new IllegalArgumentException("Can't register object to non registrable registry " + registry.fabric$getId());
+		if (!(registry instanceof SyncedRegistrable) || !(registry instanceof SyncedFabricRegistry)) throw new IllegalArgumentException("Can't register object to non registrable registry " + registry.fabric$getId());
 
-		SyncedRegistrableRegistry<T> registrable = (SyncedRegistrableRegistry<T>) registry;
+		SyncedRegistrableFabricRegistry<T> registrable = (SyncedRegistrableFabricRegistry<T>) registry;
 		int baseComputedId = registrable.fabric$nextId();
 
 		Map<Integer, Integer> computedIdsMap = new HashMap<>();
@@ -199,12 +199,12 @@ public class RegistryHelperImplementation {
 			}
 		}
 
-		List<RegistryEntry<T>> entries = new ArrayList<>();
+		List<FabricRegistryEntry<T>> entries = new ArrayList<>();
 
 		for (RegistryEntryCreator<T> creator : entryCreators) {
 			int computedId = computedIdsMap.get(creator.getIdOffset());
 
-			RegistryEntry<T> registryEntry = new RegistryEntryImpl<>(computedId, creator.getIdentifier(), creator.getValue(computedId));
+			FabricRegistryEntry<T> registryEntry = new FabricRegistryEntryImpl<>(computedId, creator.getIdentifier(), creator.getValue(computedId));
 			entries.add(registryEntry);
 
 			registrable.fabric$register(registryEntry.getId(), registryEntry.getIdentifier(), registryEntry.getValue());

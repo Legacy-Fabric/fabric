@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.api.registry.v1;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.BackwardCompatibilityHelper;
 
@@ -33,7 +33,7 @@ public interface RegistryEntryAddCallback<T> {
 	void onEntryAdded(int rawId, Identifier key, T object);
 
 	/**
-	 * @deprecated Use {@link RegistryEntryAddedCallback#event(Registry)} or {@link RegistryEntryAddedCallback#event(Identifier)} instead.
+	 * @deprecated Use {@link RegistryEntryAddedCallback#event(FabricRegistry)} or {@link RegistryEntryAddedCallback#event(Identifier)} instead.
 	 */
 	static <T> Event<RegistryEntryAddCallback<T>> event(Identifier registryId) {
 		return BackwardCompatibilityHelper.<T>getEventHolder(registryId).getAddEvent();

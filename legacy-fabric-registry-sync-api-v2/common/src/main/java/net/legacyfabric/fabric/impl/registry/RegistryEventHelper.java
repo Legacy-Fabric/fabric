@@ -25,8 +25,8 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryEventHelper {
@@ -35,7 +35,7 @@ public class RegistryEventHelper {
 	protected static final Map<Identifier, Event<RegistryRemapCallback<?>>> IDENTIFIER_REMAP_MAP = new HashMap<>();
 
 	public static <T> Event<RegistryBeforeAddCallback<T>> addRegistryBeforeCallback(Identifier registryId) {
-		Registry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
+		FabricRegistry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
 
 		if (registry != null) return registry.fabric$getBeforeAddedCallback();
 
@@ -54,7 +54,7 @@ public class RegistryEventHelper {
 	}
 
 	public static <T> Event<RegistryEntryAddedCallback<T>> addedCallbackEvent(Identifier registryId) {
-		Registry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
+		FabricRegistry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
 
 		if (registry != null) return registry.fabric$getEntryAddedCallback();
 
@@ -73,9 +73,9 @@ public class RegistryEventHelper {
 	}
 
 	public static <T> Event<RegistryRemapCallback<T>> remapCallbackEvent(Identifier registryId) {
-		Registry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
+		FabricRegistry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
 
-		if (registry != null) return ((SyncedRegistry<T>) registry).fabric$getRegistryRemapCallback();
+		if (registry != null) return ((SyncedFabricRegistry<T>) registry).fabric$getRegistryRemapCallback();
 
 		if (!IDENTIFIER_REMAP_MAP.containsKey(registryId)) {
 			Event<RegistryRemapCallback<T>> event = EventFactory.createArrayBacked(RegistryRemapCallback.class,

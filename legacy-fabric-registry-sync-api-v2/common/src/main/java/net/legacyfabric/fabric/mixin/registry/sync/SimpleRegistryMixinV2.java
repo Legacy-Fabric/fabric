@@ -17,13 +17,14 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableFabricRegistry;
+
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.util.registry.SimpleRegistry;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 
 @Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixinV2<K, V> implements SyncedRegistrableRegistry<V>, DesynchronizeableRegistrable {
+public abstract class SimpleRegistryMixinV2<K, V> implements SyncedRegistrableFabricRegistry<V>, DesynchronizeableRegistrable {
 }

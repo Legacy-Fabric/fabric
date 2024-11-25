@@ -26,7 +26,7 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.registry.v1.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.util.RegistryEventsHolder;
 
@@ -60,7 +60,7 @@ public class BackwardCompatibilityHelper implements PreLaunchEntrypoint {
 				.register(holder.getAddEvent().invoker()::onEntryAdded);
 		RegistryRemapCallback.<T>event(identifier)
 				.register(changedIdsMap -> {
-					for (Map.Entry<Integer, RegistryEntry<T>> entry : changedIdsMap.entrySet()) {
+					for (Map.Entry<Integer, FabricRegistryEntry<T>> entry : changedIdsMap.entrySet()) {
 						holder.getRemapEvent().invoker()
 								.onEntryAdded(
 										entry.getKey(),

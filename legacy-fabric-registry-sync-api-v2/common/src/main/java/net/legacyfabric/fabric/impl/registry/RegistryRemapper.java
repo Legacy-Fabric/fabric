@@ -25,22 +25,23 @@ import java.util.stream.Collectors;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableFabricRegistry;
+
 import net.minecraft.nbt.NbtCompound;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableRegistry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class RegistryRemapper<T> {
 	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
-	private final SyncedRegistrableRegistry<T> registry;
+	private final SyncedRegistrableFabricRegistry<T> registry;
 	private BiMap<Identifier, Integer> entryDump;
 	private BiMap<Identifier, Integer> missingMap = HashBiMap.create();
 
-	public RegistryRemapper(SyncedRegistrableRegistry<T> registry) {
+	public RegistryRemapper(SyncedRegistrableFabricRegistry<T> registry) {
 		this.registry = registry;
 	}
 
@@ -160,7 +161,7 @@ public class RegistryRemapper<T> {
 	}
 
 	private void invokeListeners(IdsHolder<T> ids) {
-		Map<Integer, RegistryEntry<T>> changed = new HashMap<>();
+		Map<Integer, FabricRegistryEntry<T>> changed = new HashMap<>();
 
 		for (T value : ids) {
 			int oldId = this.registry.fabric$getIdsHolder().fabric$getId(value);
@@ -168,7 +169,7 @@ public class RegistryRemapper<T> {
 
 			if (oldId != -1 && oldId != newId) {
 				LOGGER.info("Remapped %s %s from id %d to id %d", this.registry.fabric$getId(), this.registry.fabric$getId(value), oldId, newId);
-				changed.put(oldId, new RegistryEntryImpl<>(newId, this.registry.fabric$getId(value), value));
+				changed.put(oldId, new FabricRegistryEntryImpl<>(newId, this.registry.fabric$getId(value), value));
 			}
 		}
 

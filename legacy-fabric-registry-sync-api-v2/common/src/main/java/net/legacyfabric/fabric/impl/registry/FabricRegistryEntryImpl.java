@@ -15,24 +15,34 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.registry.v2.registry.holder;
+package net.legacyfabric.fabric.impl.registry;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
-public interface SyncedRegistry<T> extends Registry<T> {
-	int fabric$getRawId(T value);
-	default int fabric$getRawId(Identifier identifier) {
-		T value = fabric$getValue(identifier);
-		return fabric$getRawId(value);
+class FabricRegistryEntryImpl<T> implements FabricRegistryEntry<T> {
+	private final int id;
+	private final Identifier identifier;
+	private final T value;
+
+	FabricRegistryEntryImpl(int id, Identifier identifier, T value) {
+		this.id = id;
+		this.identifier = identifier;
+		this.value = value;
 	}
 
-	T fabric$getValue(int rawId);
-	default Identifier fabric$getId(int rawId) {
-		T value = fabric$getValue(rawId);
-		return fabric$getId(value);
+	@Override
+	public int getId() {
+		return this.id;
 	}
 
-	Event<RegistryRemapCallback<T>> fabric$getRegistryRemapCallback();
+	@Override
+	public Identifier getIdentifier() {
+		return this.identifier;
+	}
+
+	@Override
+	public T getValue() {
+		return this.value;
+	}
 }

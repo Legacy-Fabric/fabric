@@ -15,22 +15,24 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.registry.v2.event;
+package net.legacyfabric.fabric.api.registry.v2.registry.holder;
 
 import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.RegistryEventHelper;
 
-@FunctionalInterface
-public interface RegistryEntryAddedCallback<T> {
-	void onEntryAdded(int rawId, Identifier id, T object);
-
-	static <T> Event<RegistryEntryAddedCallback<T>> event(Identifier registryId) {
-		return RegistryEventHelper.addedCallbackEvent(registryId);
+public interface SyncedFabricRegistry<T> extends FabricRegistry<T> {
+	int fabric$getRawId(T value);
+	default int fabric$getRawId(Identifier identifier) {
+		T value = fabric$getValue(identifier);
+		return fabric$getRawId(value);
 	}
 
-	static <T> Event<RegistryEntryAddedCallback<T>> event(FabricRegistry<T> registry) {
-		return registry.fabric$getEntryAddedCallback();
+	T fabric$getValue(int rawId);
+	default Identifier fabric$getId(int rawId) {
+		T value = fabric$getValue(rawId);
+		return fabric$getId(value);
 	}
+
+	Event<RegistryRemapCallback<T>> fabric$getRegistryRemapCallback();
 }
