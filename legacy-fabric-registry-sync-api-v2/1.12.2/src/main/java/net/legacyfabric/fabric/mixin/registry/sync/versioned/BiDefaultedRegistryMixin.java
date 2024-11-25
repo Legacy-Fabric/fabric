@@ -19,14 +19,13 @@ package net.legacyfabric.fabric.mixin.registry.sync.versioned;
 
 import java.util.Objects;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.util.registry.BiDefaultedRegistry;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;

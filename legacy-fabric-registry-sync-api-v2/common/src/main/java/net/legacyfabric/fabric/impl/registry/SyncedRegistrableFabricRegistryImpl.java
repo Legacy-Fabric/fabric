@@ -21,7 +21,6 @@ import java.util.Iterator;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableFabricRegistry;
 import org.apache.commons.lang3.Validate;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +30,7 @@ import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
+import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableFabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
 

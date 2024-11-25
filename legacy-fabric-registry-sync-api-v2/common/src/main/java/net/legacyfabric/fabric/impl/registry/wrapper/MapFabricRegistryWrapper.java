@@ -21,13 +21,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Function;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.RegistrableFabricRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
+import net.legacyfabric.fabric.api.registry.v2.registry.RegistrableFabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public class MapFabricRegistryWrapper<K, V> implements RegistrableFabricRegistry<V> {

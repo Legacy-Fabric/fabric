@@ -30,8 +30,8 @@
   ],
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_1367": ["net/legacyfabric/fabric/api/registry/v2/registry/holder/Registry"],
-      "net/minecraft/class_1943": ["net/legacyfabric/fabric/api/registry/v2/registry/holder/SyncedRegistry"],
+      "net/minecraft/class_1367": ["net/legacyfabric/fabric/api/registry/v2/registry/holder/FabricRegistry"],
+      "net/minecraft/class_1943": ["net/legacyfabric/fabric/api/registry/v2/registry/holder/SyncedFabricRegistry"],
       "net/minecraft/class_1942": ["net/legacyfabric/fabric/api/registry/v2/registry/registrable/IdsHolder"]
     },
     "modmenu": {
