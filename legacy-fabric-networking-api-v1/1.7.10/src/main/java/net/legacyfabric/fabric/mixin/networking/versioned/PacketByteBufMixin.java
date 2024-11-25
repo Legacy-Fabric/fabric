@@ -31,8 +31,8 @@ public abstract class PacketByteBufMixin implements PacketByteBufExtension {
 	public abstract void writeNbtCompound(NbtCompound par1);
 
 	@Override
-	public PacketByteBuf writeCompound(NbtCompound tag) {
-		this.writeNbtCompound(tag);
+	public PacketByteBuf writeCompound(NbtCompound compound) {
+		this.writeNbtCompound(compound);
 		return (PacketByteBuf) (Object) this;
 	}
 }

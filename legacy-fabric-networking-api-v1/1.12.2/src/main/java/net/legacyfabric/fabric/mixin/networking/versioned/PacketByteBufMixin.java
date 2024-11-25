@@ -32,7 +32,7 @@ public abstract class PacketByteBufMixin implements PacketByteBufExtension {
 	public abstract PacketByteBuf writeNbtCompound(@Nullable NbtCompound nbt);
 
 	@Override
-	public PacketByteBuf writeCompound(NbtCompound tag) {
-		return writeNbtCompound(tag);
+	public PacketByteBuf writeCompound(NbtCompound compound) {
+		return writeNbtCompound(compound);
 	}
 }
