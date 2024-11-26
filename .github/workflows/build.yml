@@ -24,11 +24,11 @@ jobs:
             **/build/reports/checkstyle/*.xml
       - uses: actions/upload-artifact@v4
         with:
-          name: Artifacts
+          name: Main Artifacts
           path: build/libs/
       - uses: actions/upload-artifact@v4
         with:
-          name: Artifacts
+          name: Modules Artifacts
           path: ./**/build/libs/
       - uses: actions/upload-artifact@v4
         with:
