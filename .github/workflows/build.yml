@@ -23,14 +23,17 @@ jobs:
           reports: |
             **/build/reports/checkstyle/*.xml
       - uses: actions/upload-artifact@v4
+        if: ${{ matrix.java == '21-jdk' }}
         with:
           name: Main Artifacts
           path: build/libs/
       - uses: actions/upload-artifact@v4
+        if: ${{ matrix.java == '21-jdk' }}
         with:
           name: Modules Artifacts
           path: ./**/build/libs/
       - uses: actions/upload-artifact@v4
+        if: ${{ matrix.java == '21-jdk' }}
         with:
           name: Maven Local
           path: /root/.m2/repository
