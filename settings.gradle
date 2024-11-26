@@ -6,7 +6,7 @@ pluginManagement {
 		}
 		maven {
 			name = "legacy-fabric"
-			url = "https://repo.legacyfabric.net/repository/legacyfabric/"
+			url = "https://maven.legacyfabric.net/"
 		}
 		gradlePluginPortal()
 		mavenLocal()

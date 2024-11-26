@@ -15,22 +15,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@v2
+      - uses: gradle/actions/wrapper-validation@v3
       - run: ./gradlew check build publishToMavenLocal --stacktrace -Porg.gradle.parallel.threads=4 --warning-mode=fail
       - uses: Juuxel/publish-checkstyle-report@v1
         if: ${{ failure() }}
         with:
           reports: |
             **/build/reports/checkstyle/*.xml
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
+        if: ${{ matrix.java == '21-jdk' }}
         with:
-          name: Artifacts
+          name: Main Artifacts
           path: build/libs/
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
+        if: ${{ matrix.java == '21-jdk' }}
         with:
-          name: Artifacts
+          name: Modules Artifacts
           path: ./**/build/libs/
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
+        if: ${{ matrix.java == '21-jdk' }}
         with:
           name: Maven Local
           path: /root/.m2/repository
