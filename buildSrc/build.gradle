@@ -7,6 +7,6 @@ repositories {
 }
 
 dependencies {
-	implementation("net.fabricmc:fabric-loader:0.15.6")
+	implementation("net.fabricmc:fabric-loader:0.16.8")
 	implementation("commons-codec:commons-codec:1.16.1")
 }
