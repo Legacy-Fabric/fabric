@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-api-testmod-impl",
+  "name": "Legacy Fabric API Testmod",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-fabric-api/icon.png",
+  "contact": {
+    "homepage": "https://legacyfabric.net/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "entrypoints": {
+    "client": [
+      "net.legacyfabric.fabric.test.resource.loader.client.ResourceReloadTest",
+      "net.legacyfabric.fabric.test.client.rendering.ModelFeatureTest",
+      "net.legacyfabric.fabric.test.client.rendering.RenderingEventsTest",
+      "net.legacyfabric.fabric.test.network.client.ClientNetworkingTest",
+      "net.legacyfabric.fabric.test.lifecycle.client.ClientLifecycleEventsTest",
+      "net.legacyfabric.fabric.test.client.keybinding.KeybindingTest"
+    ],
+    "main": [
+      "net.legacyfabric.fabric.test.registry.RegistryTest",
+      "net.legacyfabric.fabric.test.network.ServerNetworkingTest",
+      "net.legacyfabric.fabric.test.lifecycle.ServerLifecycleEventsTest",
+      "net.legacyfabric.fabric.test.item.group.ItemGroupTest",
+      "net.legacyfabric.fabric.test.entity.EntityEventsTest",
+      "net.legacyfabric.fabric.test.command.SpongeCommandTest",
+      "net.legacyfabric.fabric.test.command.CommandV1Test"
+    ]
+  },
+  "authors": [
+    {
+      "name": "Legacy Fabric",
+      "contact": {
+        "homepage": "https://legacyfabric.net/",
+        "discord": "https://legacyfabric.net/discord",
+        "sources": "https://github.com/Legacy-Fabric/fabric",
+        "issues": "https://github.com/Legacy-Fabric/fabric/issues"
+      }
+    },
+    {
+      "name": "FabricMC",
+      "contact": {
+        "homepage": "https://fabricmc.net",
+        "discord": "https://discord.gg/v6v4pMv",
+        "sources": "https://github.com/FabricMC/fabric",
+        "issues": "https://github.com/FabricMC/fabric/issues"
+      }
+    }
+  ],
+  "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2.",
+  "depends": {
+    "minecraft": "${minecraft_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ]
+    }
+  }
+}
