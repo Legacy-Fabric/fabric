@@ -26,7 +26,6 @@
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
