@@ -3,10 +3,10 @@ plugins {
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "fabric-loom" version "1.6.2" apply false
-	id "legacy-looming" version "1.6.3" apply false
+	id "fabric-loom" version "1.8.11" apply false
+	id "legacy-looming" version "1.8.2" apply false
 	id "com.diffplug.spotless" version "6.20.0"
-	id "org.ajoberstar.grgit" version "3.1.1"
+	id "org.ajoberstar.grgit" version "5.2.2"
 	id "me.modmuss50.mod-publish-plugin" version "0.4.5"
 }
 
@@ -158,7 +158,7 @@ def static setupRepositories(RepositoryHandler repositories) {
 	def ENV = System.getenv()
 	if (ENV.MAVEN_PUBLISH_CREDENTIALS) {
 		repositories.maven {
-			url "https://repo.legacyfabric.net/repository/legacyfabric"
+			url "https://maven.legacyfabric.net/"
 			credentials {
 				username ENV.MAVEN_PUBLISH_CREDENTIALS.split(":")[0]
 				password ENV.MAVEN_PUBLISH_CREDENTIALS.split(":")[1]

@@ -35,7 +35,7 @@ import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 	private static final ResourceManagerHelperImpl INSTANCE = new ResourceManagerHelperImpl();
-	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "ResourceManagerHelperImpl");
+	public static final Logger LOGGER = Logger.get(LoggerImpl.API, "ResourceManagerHelperImpl");
 
 	private final Set<Identifier> addedListenerIds = new HashSet<>();
 	private final Set<IdentifiableResourceReloadListener> addedListeners = new LinkedHashSet<>();

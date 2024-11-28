@@ -47,6 +47,7 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 
 import net.legacyfabric.fabric.api.util.VersionUtils;
+import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
 @Mixin(TranslationStorage.class)
 public abstract class TranslationStorageMixin {
@@ -148,7 +149,13 @@ public abstract class TranslationStorageMixin {
 					key = entry.getKey();
 				}
 
-				this.translations.put(key, TOKEN_PATTERN.matcher(entry.getValue().getAsString()).replaceAll("%$1s"));
+				JsonElement value = entry.getValue();
+
+				if (value.isJsonPrimitive()) {
+					this.translations.put(key, TOKEN_PATTERN.matcher(value.getAsString()).replaceAll("%$1s"));
+				} else {
+					ResourceManagerHelperImpl.LOGGER.warn("Skipping translation key \"" + key + "\" with unsupported format " + value);
+				}
 			}
 		}
 	}
