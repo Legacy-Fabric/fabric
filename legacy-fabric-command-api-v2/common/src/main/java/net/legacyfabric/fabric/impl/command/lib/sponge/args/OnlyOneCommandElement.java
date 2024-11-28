@@ -52,7 +52,7 @@ public class OnlyOneCommandElement extends CommandElement {
 
 		if (context.getAll(this.element.getUntranslatedKey()).size() > 1) {
 			Text key = this.element.getKey();
-			throw args.createError(new LiteralText(String.format("Argument %s may have only one value!", key != null ? key : "unknown")));
+			throw args.createError(new LiteralText(String.format("Argument %s may have only one value!", key != null ? key.asUnformattedString() : "unknown")));
 		}
 	}
 

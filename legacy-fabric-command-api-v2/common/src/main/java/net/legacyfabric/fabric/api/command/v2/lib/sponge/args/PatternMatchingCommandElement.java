@@ -86,7 +86,7 @@ public abstract class PatternMatchingCommandElement extends CommandElement {
 
 		if (!ret.iterator().hasNext()) {
 			throw args.createError(new LiteralText(String.format("No values matching pattern '%s' present for %s!", arg, this.getKey() == null
-					? nullKeyArg : this.getKey())));
+					? nullKeyArg : this.getKey().asUnformattedString())));
 		}
 
 		return ret;

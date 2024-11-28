@@ -77,7 +77,7 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Object getValue(String choice) throws IllegalArgumentException {
-		Optional<PlayerEntity> ret = this.getServer().getPlayerManager().players.stream().findFirst().map(Function.identity());
+		Optional<PlayerEntity> ret = this.getServer().getPlayerManager().players.stream().findFirst();
 
 		if (!ret.isPresent()) {
 			throw new IllegalArgumentException("Input value " + choice + " was not a player");
@@ -96,6 +96,6 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	public Text getUsage(PermissibleCommandSource src) {
-		return src != null && this.returnSource ? new LiteralText("[" + super.getUsage(src) + "]") : super.getUsage(src);
+		return src != null && this.returnSource ? new LiteralText("[" + super.getUsage(src).asUnformattedString() + "]") : super.getUsage(src);
 	}
 }

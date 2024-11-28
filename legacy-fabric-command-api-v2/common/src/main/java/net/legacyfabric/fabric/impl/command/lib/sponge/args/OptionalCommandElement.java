@@ -98,6 +98,6 @@ public class OptionalCommandElement extends CommandElement {
 			return new LiteralText("");
 		}
 
-		return new LiteralText("[" + this.element.getUsage(src) + "]");
+		return new LiteralText("[" + this.element.getUsage(src).asUnformattedString() + "]");
 	}
 }

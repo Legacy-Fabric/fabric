@@ -96,6 +96,6 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	public Text getUsage(PermissibleCommandSource src) {
-		return src != null && this.returnSource ? new LiteralText("[" + super.getUsage(src) + "]") : super.getUsage(src);
+		return src != null && this.returnSource ? new LiteralText("[" + super.getUsage(src).asUnformattedString() + "]") : super.getUsage(src);
 	}
 }

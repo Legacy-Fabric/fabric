@@ -66,7 +66,7 @@ public class PermissionCommandElement extends CommandElement {
 
 		if (!hasPermission && !this.isOptional) {
 			Text key = this.getKey();
-			throw args.createError(new LiteralText(String.format("You do not have permission to use the %s argument", key != null ? key : "unknown")));
+			throw args.createError(new LiteralText(String.format("You do not have permission to use the %s argument", key != null ? key.asUnformattedString() : "unknown")));
 		}
 
 		return hasPermission;
