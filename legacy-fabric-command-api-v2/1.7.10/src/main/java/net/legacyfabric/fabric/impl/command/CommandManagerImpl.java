@@ -132,7 +132,7 @@ public class CommandManagerImpl implements CommandManager {
 							usage = mapping.get().getCallable().getUsage(source);
 						}
 
-						source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", argSplit[0], usage))));
+						source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", argSplit[0], usage.asUnformattedString()))));
 					}
 				}
 			}

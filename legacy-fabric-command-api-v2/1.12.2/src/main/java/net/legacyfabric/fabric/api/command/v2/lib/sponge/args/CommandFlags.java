@@ -183,7 +183,7 @@ public final class CommandFlags extends CommandElement {
 
 			if (usage.asUnformattedString().trim().length() > 0) {
 				builder.add(" ");
-				builder.add(usage);
+				builder.add(usage.asUnformattedString());
 			}
 
 			builder.add("]");

@@ -119,11 +119,11 @@ public class EntityCommandElement extends SelectorCommandElement {
 			uuid = UUID.fromString(choice);
 		} catch (IllegalArgumentException ignored) {
 			// Player could be a name
-			return Optional.ofNullable(MinecraftServer.getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
+			return Optional.ofNullable(this.getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
 		}
 
 		boolean found = false;
-		Optional<Entity> ret = Optional.ofNullable(MinecraftServer.getServer().getEntity(uuid));
+		Optional<Entity> ret = Optional.ofNullable(this.getServer().getEntity(uuid));
 
 		if (ret.isPresent()) {
 			Entity entity = ret.get();

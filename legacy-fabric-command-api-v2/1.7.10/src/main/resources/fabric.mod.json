@@ -28,9 +28,7 @@
     ]
   },
   "description": "Powerful Command API that uses SpongeAPI's command api",
-  "mixins": [
-    "legacy-fabric-sponge-command-api-v2.mixins.json"
-  ],
+  "mixins": [],
   "custom": {
     "modmenu": {
       "badges": [ "library" ],
