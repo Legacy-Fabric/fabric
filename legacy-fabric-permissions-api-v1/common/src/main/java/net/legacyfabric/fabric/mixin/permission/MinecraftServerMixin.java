@@ -15,10 +15,9 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.command;
+package net.legacyfabric.fabric.mixin.permission;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.server.MinecraftServer;
 
@@ -26,9 +25,6 @@ import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin implements PermissibleCommandSource {
-	@Shadow
-	public abstract boolean isDedicated();
-
 	@Override
 	public boolean hasPermission(String perm) {
 		return true;

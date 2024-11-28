@@ -27,8 +27,6 @@ package net.legacyfabric.fabric.api.command.v2.lib.sponge.args;
 
 import java.util.List;
 
-import net.legacyfabric.fabric.impl.command.CrossCompatibleText;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.server.MinecraftServer;
@@ -134,7 +132,7 @@ public abstract class CommandElement {
 	 * @return The formatted usage
 	 */
 	public Text getUsage(PermissibleCommandSource src) {
-		return this.getKey() == null ? new LiteralText("") : new LiteralText("<" + ((CrossCompatibleText) this.getKey()).asSanitizedString() + ">");
+		return this.getKey() == null ? new LiteralText("") : new LiteralText("<" + this.getKey().asUnformattedString() + ">");
 	}
 
 	public MinecraftServer getServer() {

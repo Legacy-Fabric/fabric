@@ -5,6 +5,7 @@
   "mixins": [
     "ConsoleMixin",
     "EntityMixin",
+    "MinecraftServerMixin",
     "ServerPlayerEntityMixin"
   ],
   "injectors": {
