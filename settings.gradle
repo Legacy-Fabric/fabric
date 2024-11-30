@@ -17,7 +17,10 @@ rootProject.name = "legacy-fabric-api"
 
 def loadProject(String path) {
 	file(path).listFiles().each {
-		if (it.isDirectory()) {
+		if (it.isDirectory() && (
+			file("$it/src/main/resources/fabric.mod.json").exists() ||
+			file("$it/src/testmod/resources/fabric.mod.json").exists()
+		)) {
 			include("${path}_$it.name")
 
 			project(":${path}_$it.name").projectDir = it
