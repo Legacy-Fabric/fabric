@@ -35,27 +35,31 @@ import net.fabricmc.loom.task.RemapJarTask
 import net.legacyfabric.VersionHelper
 import org.apache.commons.codec.digest.DigestUtils
 
-static def getMCVersion(Project project) {
-	def projectFullName = project.name
+static def parseProjectName(String name, Project project) {
+	def parts = name.split("_")
 
-	if (!projectFullName.contains("_")) return "1.8.9"
+	if (parts.length < 2) parts = [*parts, "1.8.9"]
 
-	def mcVersion = projectFullName.split("_")[1]
+	def (moduleName, mcVersion) = parts
 
-	if (mcVersion == "common") return "1.8.9"
+	def isCommon = mcVersion == "common"
 
-	return mcVersion
+	def mavenName = moduleName.trim()
+
+	if (isCommon) {
+		mcVersion = "1.8.9"
+
+		if (project != null && project.hasProperty("artifactSuffix")) {
+			mavenName += project["artifactSuffix"]
+		} else {
+			mavenName += "-common"
+		}
+	}
+
+	return [moduleName.trim(), mcVersion, isCommon, mavenName.trim()]
 }
 
-static def getProjectSimpleName(Project project) {
-	def projectFullName = project.name
-
-	if (!projectFullName.contains("_")) return projectFullName
-
-	return projectFullName.split("_")[0].trim()
-}
-
-def getProjectMavenName(projectLike) {
+def projectInfoFromName(projectLike) {
 	Project project
 	if (!(projectLike instanceof Project)) {
 		if (projectLike instanceof BasePluginExtension) {
@@ -66,20 +70,8 @@ def getProjectMavenName(projectLike) {
 	}
 	else project = projectLike
 
-	def simpleName = getProjectSimpleName(project)
-
-	if (project.name.endsWith("_common")) {
-		if (project.hasProperty("artifactSuffix")) {
-			simpleName += project["artifactSuffix"]
-		} else {
-			simpleName += "-common"
-		}
-	}
-
-	return simpleName.trim()
+	return parseProjectName(project.name, project)
 }
-
-
 
 static def getMCRange(Project project) {
 	def predicates = []
@@ -114,18 +106,16 @@ static def getMCRange(Project project) {
 def getSubprojectVersion(Project project) {
 	def version
 
-	def nameParts = project.name.split("_")
-	def projectName = nameParts[0]
-	def mcVersion = nameParts[1]
+	def (moduleName, mcVersion, isCommon) = projectInfoFromName(project)
 
-	if (projectName == "legacyfabric-api") version = rootProject.version
-	else version = rootProject[projectName + ".version"]
+	if (moduleName == "legacyfabric-api") version = rootProject.version
+	else version = rootProject[moduleName + ".version"]
 
-	if (mcVersion != "common") {
+	if (!isCommon) {
 		version = version + "+" + mcVersion
 	}
 
-	if (projectName == "legacyfabric-api") return version
+	if (moduleName == "legacyfabric-api") return version
 
 	if (grgit == null) {
 		return version + "+nogit"
@@ -158,7 +148,7 @@ def static setupRepositories(RepositoryHandler repositories) {
 	def ENV = System.getenv()
 	if (ENV.MAVEN_PUBLISH_CREDENTIALS) {
 		repositories.maven {
-			url "https://maven.legacyfabric.net/"
+			url "https://repo.legacyfabric.net/legacyfabric/"
 			credentials {
 				username ENV.MAVEN_PUBLISH_CREDENTIALS.split(":")[0]
 				password ENV.MAVEN_PUBLISH_CREDENTIALS.split(":")[1]
@@ -173,14 +163,14 @@ def static setupRepositories(RepositoryHandler repositories) {
 def moduleDependencies(Project project, List<String> projectNames) {
 	def depNames = []
 
-	def projectMCVersion = VersionHelper.parseVersion(getMCVersion(project))
+	def (moduleName, mcVersion, isCommon) = projectInfoFromName(project)
 
-	def isCommon = project.name.endsWith("_common")
+	def projectMCVersion = VersionHelper.parseVersion(mcVersion)
 
 	rootProject.subprojects {
-		def subProjectName = getProjectSimpleName(it)
+		def (subModuleName) = projectInfoFromName(it)
 
-		if (projectNames.contains(subProjectName)) {
+		if (projectNames.contains(subModuleName)) {
 			def predicate = VersionHelper.parsePredicate(getMCRange(it))
 
 			if (predicate.test(projectMCVersion)) depNames.add(it.name)
@@ -188,7 +178,7 @@ def moduleDependencies(Project project, List<String> projectNames) {
 	}
 
 	if (!isCommon) {
-		def commonProject = findProject(":${getProjectSimpleName(project)}_common")
+		def commonProject = findProject(":${moduleName}_common")
 
 		if (commonProject != null) {
 			depNames.add(0, commonProject.name)
@@ -210,7 +200,7 @@ def moduleDependencies(Project project, List<String> projectNames) {
 		}
 	}
 
-	if (getProjectSimpleName(project) != "legacy-fabric-logger-api-v1") {
+	if (moduleName != "legacy-fabric-logger-api-v1") {
 		deps.add(project.dependencies.project(path: ":legacy-fabric-logger-api-v1_common", configuration: "namedElements"))
 	}
 
@@ -221,9 +211,11 @@ def moduleDependencies(Project project, List<String> projectNames) {
 				pom.withXml {
 					def depsNode = asNode().appendNode("dependencies")
 					deps.each {
+						def (_, _1, _2, mavenName) = projectInfoFromName(it)
+
 						def depNode = depsNode.appendNode("dependency")
 						depNode.appendNode("groupId", it.group)
-						depNode.appendNode("artifactId", getProjectMavenName(it))
+						depNode.appendNode("artifactId", mavenName)
 						depNode.appendNode("version", it.version)
 						depNode.appendNode("scope", "compile")
 
@@ -281,8 +273,7 @@ allprojects {
 		setVersion(getSubprojectVersion(it))
 	}
 
-	def mcVersion = getMCVersion(it)
-	String projectName = getProjectSimpleName(it)
+	def (moduleName, mcVersion, _) = projectInfoFromName(it)
 	def hasTest = it.file("src/testmod").exists()
 
 	loom {
@@ -293,7 +284,7 @@ allprojects {
 		runs {
 			"testModClient$mcVersion" {
 				client()
-				ideConfigGenerated projectName == "legacyfabric-api"
+				ideConfigGenerated moduleName == "legacyfabric-api"
 				name = "$mcVersion Testmod Client"
 				source sourceSets.testmod
 
@@ -304,7 +295,7 @@ allprojects {
 
 			"testModServer$mcVersion" {
 				server()
-				ideConfigGenerated projectName == "legacyfabric-api"
+				ideConfigGenerated moduleName == "legacyfabric-api"
 				name = "$mcVersion Testmod Server"
 				source sourceSets.testmod
 			}
@@ -482,14 +473,16 @@ def addPomMetadataInformation(Project project, MavenPom pom) {
 }
 
 subprojects {
+	def (moduleName, _, _1, mavenName) = projectInfoFromName(project)
+
 	base {
-		archivesName = getProjectMavenName(it)
+		archivesName = mavenName
 	}
 
 	dependencies {
 		testmodImplementation sourceSets.main.output
 
-		if (getProjectSimpleName(project) != "legacy-fabric-logger-api-v1") {
+		if (moduleName != "legacy-fabric-logger-api-v1") {
 			api project(path: ":legacy-fabric-logger-api-v1_common", configuration: "namedElements")
 		}
 	}
@@ -497,10 +490,10 @@ subprojects {
 	publishing {
 		publications {
 			mavenJava(MavenPublication) {
-				if (getProjectSimpleName(project) == "legacyfabric-api") {
+				if (moduleName == "legacyfabric-api") {
 					artifactId = "legacy-fabric-api"
 				} else {
-					artifactId = getProjectMavenName(project)
+					artifactId = mavenName
 				}
 
 				pom {
@@ -522,9 +515,9 @@ subprojects {
 
 	javadoc.enabled = false
 
-	def scriptPath = rootProject.file("${getProjectSimpleName(project)}/common.gradle")
+	def scriptPath = rootProject.file("${moduleName}/common.gradle")
 	if (scriptPath.exists()) {
-		apply from: rootProject.file("${getProjectSimpleName(project)}/common.gradle")
+		apply from: rootProject.file("${moduleName}/common.gradle")
 	}
 
 	afterEvaluate {
@@ -561,7 +554,9 @@ sourceSets {
 dependencies {
 	afterEvaluate {
 		subprojects.each {
-			if (getProjectSimpleName(it) == "legacyfabric-api") return
+			def (moduleName) = projectInfoFromName(it)
+
+			if (moduleName == "legacyfabric-api") return
 
 			if (it.file("src/main").exists()) api project(path: "${it.path}", configuration: "namedElements")
 			if (it.file("src/testmod").exists()) testmodImplementation project("${it.path}").sourceSets.testmod.output
@@ -572,7 +567,9 @@ dependencies {
 remapJar {
 	afterEvaluate {
 		subprojects.each {
-			if (getProjectSimpleName(it) == "legacyfabric-api") return
+			def (moduleName) = projectInfoFromName(it)
+
+			if (moduleName == "legacyfabric-api") return
 			// Include the signed or none signed jar from the sub project.
 			if (it.file("src/main").exists()) nestedJars.from project("${it.path}:").tasks.getByName("remapJar")
 		}
