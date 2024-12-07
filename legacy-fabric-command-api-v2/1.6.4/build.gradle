@@ -1,0 +1,3 @@
+loom {
+	accessWidenerPath = file("src/main/resources/command-api-v2.accesswidener")
+}
