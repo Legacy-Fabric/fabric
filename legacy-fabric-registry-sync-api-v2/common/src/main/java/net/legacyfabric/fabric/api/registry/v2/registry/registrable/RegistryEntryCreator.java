@@ -17,8 +17,11 @@
 
 package net.legacyfabric.fabric.api.registry.v2.registry.registrable;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import net.legacyfabric.fabric.api.util.Identifier;
 
+@ApiStatus.Experimental
 public interface RegistryEntryCreator<T> {
 	T getValue(int id);
 	Identifier getIdentifier();

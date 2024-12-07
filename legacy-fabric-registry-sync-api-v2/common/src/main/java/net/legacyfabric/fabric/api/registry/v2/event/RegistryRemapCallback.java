@@ -26,14 +26,38 @@ import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegis
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryEventHelper;
 
+/**
+ * An event for when a registry has been remapped.
+ *
+ * @param <T> the type of entries within the registry
+ */
 @FunctionalInterface
 public interface RegistryRemapCallback<T> {
+	/**
+	 * Called when the registry has been remapped.
+	 * @param changedIdsMap A map containing changed ids in the registry following the remapping process.
+	 *                      Key is the original id and Value is the affected entry data see {@link FabricRegistryEntry}.
+	 */
 	void callback(Map<Integer, FabricRegistryEntry<T>> changedIdsMap);
 
+	/**
+	 * Get the {@link Event} for the {@link RegistryRemapCallback} for the given registry.
+	 *
+	 * @param registryId the id of the registry to get the event for
+	 * @return the event
+	 * @throws IllegalArgumentException When the provided registry doesn't support remapping.
+	 */
 	static <T> Event<RegistryRemapCallback<T>> event(Identifier registryId) {
 		return RegistryEventHelper.remapCallbackEvent(registryId);
 	}
 
+	/**
+	 * Get the {@link Event} for the {@link RegistryRemapCallback} for the given registry.
+	 *
+	 * @param registry the registry to get the event for
+	 * @return the event
+	 * @throws IllegalArgumentException When the provided registry doesn't support remapping.
+	 */
 	static <T> Event<RegistryRemapCallback<T>> event(FabricRegistry<T> registry) {
 		if (!(registry instanceof SyncedFabricRegistry)) throw new IllegalArgumentException("Provided registry is not remappable!");
 

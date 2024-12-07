@@ -17,12 +17,27 @@
 
 package net.legacyfabric.fabric.api.registry.v2.registry.registrable;
 
+/**
+ * A registry-like object that can register new entries and makes use of numerical ids and thus can require remapping.
+ * @param <T> type of entries to register
+ */
 public interface SyncedRegistrable<T> extends Registrable<T> {
+	/**
+	 * @return This registry-like's {@link IdsHolder} instance
+	 */
 	IdsHolder<T> fabric$getIdsHolder();
 
+	/**
+	 * @return The next free numerical id in the registry
+	 */
 	default int fabric$nextId() {
 		return fabric$getIdsHolder().fabric$nextId();
 	}
 
+	/**
+	 * Set this registry-like's {@link IdsHolder} instance.
+	 * Mainly used during registry remapping.
+	 * @param ids The updated ids holder instance
+	 */
 	void fabric$updateRegistry(IdsHolder<T> ids);
 }

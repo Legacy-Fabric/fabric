@@ -19,8 +19,23 @@ package net.legacyfabric.fabric.api.registry.v2.registry.holder;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 
+/**
+ * Represents a registry entry's data.
+ * @param <T> the registry entry value type
+ */
 public interface FabricRegistryEntry<T> {
+	/**
+	 * @return The entry's numerical id
+	 */
 	int getId();
+
+	/**
+	 * @return The entry's identifier
+	 */
 	Identifier getIdentifier();
+
+	/**
+	 * @return The entry's value
+	 */
 	T getValue();
 }

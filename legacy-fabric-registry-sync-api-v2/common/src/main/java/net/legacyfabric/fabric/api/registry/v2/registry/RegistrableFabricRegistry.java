@@ -20,5 +20,10 @@ package net.legacyfabric.fabric.api.registry.v2.registry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 
+/**
+ * A simple Identifier-Entry registry.<br>
+ * Vanilla implementation: {@link net.minecraft.util.registry.MutableRegistry}
+ * @param <T> type of entries within the registry
+ */
 public interface RegistrableFabricRegistry<T> extends FabricRegistry<T>, Registrable<T> {
 }

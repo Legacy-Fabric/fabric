@@ -20,5 +20,11 @@ package net.legacyfabric.fabric.api.registry.v2.registry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 
+/**
+ * A synced Id-Identifier-Entry registry.<br>
+ * Vanilla implementations: {@link net.minecraft.util.registry.SimpleRegistry}
+ * and {@link net.minecraft.util.registry.BiDefaultedRegistry}
+ * @param <T> type of entries within the registry
+ */
 public interface SyncedRegistrableFabricRegistry<T> extends SyncedFabricRegistry<T>, SyncedRegistrable<T> {
 }

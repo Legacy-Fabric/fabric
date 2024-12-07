@@ -22,14 +22,38 @@ import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryEventHelper;
 
+/**
+ * An event for when an entry is about to be added to a registry.
+ *
+ * @param <T> the type of the entry within the registry
+ */
 @FunctionalInterface
 public interface RegistryBeforeAddCallback<T> {
+	/**
+	 * Called when a new entry is about to be added to the registry.
+	 *
+	 * @param rawId the raw id of the entry
+	 * @param id the identifier of the entry
+	 * @param object the object that is about to be added
+	 */
 	void onEntryAdding(int rawId, Identifier id, T object);
 
+	/**
+	 * Get the {@link Event} for the {@link RegistryBeforeAddCallback} for the given registry.
+	 *
+	 * @param registryId the id of the registry to get the event for
+	 * @return the event
+	 */
 	static <T> Event<RegistryBeforeAddCallback<T>> event(Identifier registryId) {
 		return RegistryEventHelper.addRegistryBeforeCallback(registryId);
 	}
 
+	/**
+	 * Get the {@link Event} for the {@link RegistryBeforeAddCallback} for the given registry.
+	 *
+	 * @param registry the registry to get the event for
+	 * @return the event
+	 */
 	static <T> Event<RegistryBeforeAddCallback<T>> event(FabricRegistry<T> registry) {
 		return registry.fabric$getBeforeAddedCallback();
 	}

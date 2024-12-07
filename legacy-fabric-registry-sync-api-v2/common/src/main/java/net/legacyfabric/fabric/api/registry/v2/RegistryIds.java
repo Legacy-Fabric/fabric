@@ -20,6 +20,10 @@ package net.legacyfabric.fabric.api.registry.v2;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.SinceMC;
 
+/**
+ * Some vanilla registries id,
+ * used when registering them and when needing to refer to a registry without a proper implementation in vanilla.
+ */
 public class RegistryIds {
 	public static final Identifier ITEMS = new Identifier("items");
 	public static final Identifier BLOCKS = new Identifier("blocks");

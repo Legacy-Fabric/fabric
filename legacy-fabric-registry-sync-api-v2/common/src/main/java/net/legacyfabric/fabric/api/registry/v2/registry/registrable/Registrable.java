@@ -19,6 +19,16 @@ package net.legacyfabric.fabric.api.registry.v2.registry.registrable;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 
+/**
+ * A registry-like object that can register new entries.
+ * @param <T> type of entries to register
+ */
 public interface Registrable<T> {
+	/**
+	 * Register an entry to this registry-like object.
+	 * @param rawId The entry's numerical id
+	 * @param identifier The entry's identifier
+	 * @param value The entry value
+	 */
 	void fabric$register(int rawId, Identifier identifier, T value);
 }
