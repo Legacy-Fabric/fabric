@@ -28,7 +28,7 @@ import net.minecraft.util.collection.IdList;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 
 @Mixin(IdList.class)
-public abstract class IdListMixinV2<T> implements IdsHolder<T> {
+public abstract class IdListMixin<T> implements IdsHolder<T> {
 	@Shadow
 	public abstract T fromId(int index);
 

@@ -41,7 +41,7 @@ public abstract class BiDefaultedRegistryMixin<K, V> implements SyncedFabricRegi
 
 	@Override
 	public V fabric$getValue(Identifier id) {
-		K key = (K) fabric$toKeyType(id);
+		K key = fabric$toKeyType(id);
 		V value = ((BiDefaultedRegistry<K, V>) (Object) this).get(key);
 
 		if (value == this.defaultValue && !Objects.equals(this.defaultKey.toString(), key.toString())) return null;

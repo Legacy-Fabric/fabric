@@ -37,38 +37,34 @@ import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegist
 import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixinV2<K, V> implements SyncedFabricRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
-	// 1.8+
+public abstract class SimpleRegistryMixin<V> implements SyncedFabricRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
 	@Shadow
-	public abstract void add(int id, K identifier, V object);
+	public abstract void add(int id, String identifier, Object object);
 
-	// 1.8+
-	@Shadow
-	public abstract K getIdentifier(Object par1);
-
-	// 1.9+
 	@Shadow
 	public abstract int getRawId(Object object);
 
-	// 1.7+
 	@Shadow
 	public abstract Object getByRawId(int index);
 
 	@Mutable
 	@Shadow
 	@Final
-	protected IdList<V> ids;
+	protected IdList ids;
+
+	@Shadow
+	public abstract String getId(Object par1);
 
 	@Unique
 	private boolean synchronize = true;
 
 	@Override
-	public void setSynchronize(boolean isSynchronize) {
+	public void fabric$setSynchronize(boolean isSynchronize) {
 		this.synchronize = isSynchronize;
 	}
 
 	@Override
-	public boolean canSynchronize() {
+	public boolean fabric$canSynchronize() {
 		return this.synchronize;
 	}
 
@@ -79,7 +75,7 @@ public abstract class SimpleRegistryMixinV2<K, V> implements SyncedFabricRegistr
 		if (this.synchronize) {
 			add(rawId, fabric$toKeyType(identifier), value);
 		} else {
-			((MutableRegistry<K, V>) (Object) this).put(fabric$toKeyType(identifier), value);
+			((MutableRegistry) (Object) this).put(fabric$toKeyType(identifier), value);
 		}
 
 		fabric$getEntryAddedCallback().invoker().onEntryAdded(rawId, identifier, value);
@@ -92,7 +88,7 @@ public abstract class SimpleRegistryMixinV2<K, V> implements SyncedFabricRegistr
 
 	@Override
 	public Identifier fabric$getId(V value) {
-		K vanillaId = getIdentifier(value);
+		String vanillaId = getId(value);
 
 		if (vanillaId == null) return null;
 
@@ -111,7 +107,7 @@ public abstract class SimpleRegistryMixinV2<K, V> implements SyncedFabricRegistr
 
 	@Override
 	public void fabric$updateRegistry(IdsHolder<V> ids) {
-		this.ids = (IdList<V>) ids;
+		this.ids = (IdList) ids;
 	}
 
 	@Unique

@@ -8,7 +8,7 @@
   "mixins": [
     "versioned.BiDefaultedRegistryMixin",
     "versioned.PlayerManagerMixin",
-    "versioned.SimpleRegistryMixinV2"
+    "versioned.SimpleRegistryMixin"
   ],
   "client": [
   ]

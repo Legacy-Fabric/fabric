@@ -38,25 +38,20 @@ import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
-	// 1.8+
 	@Shadow
 	public abstract void add(int id, K identifier, V object);
 
-	// 1.9+
 	@Mutable
 	@Shadow
 	@Final
 	protected class_2929<V> field_13718;
 
-	// 1.8+
 	@Shadow
 	public abstract K getIdentifier(Object par1);
 
-	// 1.9+
 	@Shadow
 	public abstract int getRawId(Object object);
 
-	// 1.7+
 	@Shadow
 	public abstract Object getByRawId(int index);
 
@@ -64,12 +59,12 @@ public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<
 	private boolean synchronize = true;
 
 	@Override
-	public void setSynchronize(boolean isSynchronize) {
+	public void fabric$setSynchronize(boolean isSynchronize) {
 		this.synchronize = isSynchronize;
 	}
 
 	@Override
-	public boolean canSynchronize() {
+	public boolean fabric$canSynchronize() {
 		return this.synchronize;
 	}
 

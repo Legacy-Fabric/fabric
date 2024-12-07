@@ -18,9 +18,9 @@
 package net.legacyfabric.fabric.api.registry.v2.registry.registrable;
 
 public interface DesynchronizeableRegistrable {
-	default boolean canSynchronize() {
+	default boolean fabric$canSynchronize() {
 		return true;
 	}
 
-	void setSynchronize(boolean synchronize);
+	void fabric$setSynchronize(boolean synchronize);
 }

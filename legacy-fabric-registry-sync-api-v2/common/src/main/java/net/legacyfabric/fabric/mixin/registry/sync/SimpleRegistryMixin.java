@@ -25,5 +25,5 @@ import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableFabricR
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 
 @Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixinV2<K, V> implements SyncedRegistrableFabricRegistry<V>, DesynchronizeableRegistrable {
+public abstract class SimpleRegistryMixin<K, V> implements SyncedRegistrableFabricRegistry<V>, DesynchronizeableRegistrable {
 }

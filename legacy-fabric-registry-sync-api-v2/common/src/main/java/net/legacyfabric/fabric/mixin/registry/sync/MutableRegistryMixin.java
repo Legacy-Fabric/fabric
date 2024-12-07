@@ -37,7 +37,7 @@ import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 import net.legacyfabric.fabric.impl.registry.accessor.RegistryIdSetter;
 
 @Mixin(MutableRegistry.class)
-public abstract class MutableRegistryMixinV2<K, V> implements FabricRegistry<V>, RegistryIdSetter, Registrable<V> {
+public abstract class MutableRegistryMixin<K, V> implements FabricRegistry<V>, RegistryIdSetter, Registrable<V> {
 	@Shadow
 	public abstract void put(Object key, Object value);
 

@@ -95,7 +95,7 @@ public class RegistryHelperImplementation {
 		boolean remappable = true;
 
 		if (holder instanceof DesynchronizeableRegistrable) {
-			remappable = ((DesynchronizeableRegistrable) holder).canSynchronize();
+			remappable = ((DesynchronizeableRegistrable) holder).fabric$canSynchronize();
 		}
 
 		if (holder instanceof SyncedRegistrableFabricRegistry && remappable) {
@@ -137,7 +137,7 @@ public class RegistryHelperImplementation {
 		boolean remappable = true;
 
 		if (registry instanceof DesynchronizeableRegistrable) {
-			remappable = ((DesynchronizeableRegistrable) registry).canSynchronize();
+			remappable = ((DesynchronizeableRegistrable) registry).fabric$canSynchronize();
 		}
 
 		if (registry instanceof SyncedRegistrable && remappable) {
