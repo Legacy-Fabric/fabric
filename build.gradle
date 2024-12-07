@@ -181,7 +181,8 @@ def moduleDependencies(Project project, List<String> projectNames) {
 		def commonProject = findProject(":${moduleName}_common")
 
 		if (commonProject != null) {
-			depNames.add(0, commonProject.name)
+			def predicate = VersionHelper.parsePredicate(getMCRange(commonProject))
+			if (predicate.test(projectMCVersion)) depNames.add(0, commonProject.name)
 		}
 	} else {
 		depNames.removeIf { !it.endsWith("_common")}
