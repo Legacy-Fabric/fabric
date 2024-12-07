@@ -22,6 +22,7 @@
       "net.legacyfabric.fabric.test.lifecycle.ServerLifecycleEventsTest",
       "net.legacyfabric.fabric.test.item.group.ItemGroupTest",
       "net.legacyfabric.fabric.test.entity.EntityEventsTest",
+      "net.legacyfabric.fabric.test.command.SpongeCommandTest",
       "net.legacyfabric.fabric.test.command.CommandV1Test"
     ]
   },
