@@ -22,6 +22,7 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v1.RegistryEntryAddCallback;
 import net.legacyfabric.fabric.api.registry.v1.RegistryEntryRemapCallback;
 
+@Deprecated
 public class RegistryEventsHolder<V> {
 	private final Event<RegistryEntryAddCallback<V>> ADD_EVENT = EventFactory.createArrayBacked(RegistryEntryAddCallback.class,
 			(callbacks) -> (rawId, id, object) -> {
