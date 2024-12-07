@@ -25,9 +25,9 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.text.ChatMessage;
 
 import net.legacyfabric.fabric.api.command.v2.StringType;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;

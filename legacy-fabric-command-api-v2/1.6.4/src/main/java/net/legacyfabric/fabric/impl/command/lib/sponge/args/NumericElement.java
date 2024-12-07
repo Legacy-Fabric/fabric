@@ -28,9 +28,9 @@ package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.text.ChatMessage;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;

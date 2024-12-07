@@ -35,11 +35,9 @@ import java.util.stream.Collectors;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
-
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.text.ChatMessage;
 import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;

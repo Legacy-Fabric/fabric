@@ -34,11 +34,9 @@ import java.util.Optional;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.text.ChatMessage;
 import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;

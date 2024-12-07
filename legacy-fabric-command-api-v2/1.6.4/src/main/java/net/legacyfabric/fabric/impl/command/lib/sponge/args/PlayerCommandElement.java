@@ -32,13 +32,12 @@ import java.util.stream.StreamSupport;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.ChatMessage;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.SelectorCommandElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-
-import net.minecraft.text.ChatMessage;
 
 public class PlayerCommandElement extends SelectorCommandElement {
 	private final boolean returnSource;

@@ -30,10 +30,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import net.minecraft.text.ChatMessage;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.PatternMatchingCommandElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-
-import net.minecraft.text.ChatMessage;
 
 public class EnumValueElement<T extends Enum<T>> extends PatternMatchingCommandElement {
 	private final Class<T> type;

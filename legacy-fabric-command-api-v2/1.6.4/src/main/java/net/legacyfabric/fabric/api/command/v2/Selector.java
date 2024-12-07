@@ -64,7 +64,7 @@ public enum Selector {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
 			//TODO @s didn't exist this early in the game's development, and there seems to be no code to handle it, so maybe this'll work?
-			return Sets.newHashSet(sender.getWorld().getPlayerByName(sender.getTranslationKey()));
+			return Sets.newHashSet(sender.getWorld().getPlayerByName(sender.getUsername()));
 		}
 	};
 

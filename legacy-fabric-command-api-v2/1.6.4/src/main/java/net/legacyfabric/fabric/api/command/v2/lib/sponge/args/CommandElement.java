@@ -27,11 +27,10 @@ package net.legacyfabric.fabric.api.command.v2.lib.sponge.args;
 
 import java.util.List;
 
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.ChatMessage;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;

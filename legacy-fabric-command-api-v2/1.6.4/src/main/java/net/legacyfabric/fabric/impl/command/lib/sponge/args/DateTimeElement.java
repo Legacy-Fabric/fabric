@@ -32,10 +32,9 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.ChatMessage;
-
-import org.jetbrains.annotations.Nullable;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;

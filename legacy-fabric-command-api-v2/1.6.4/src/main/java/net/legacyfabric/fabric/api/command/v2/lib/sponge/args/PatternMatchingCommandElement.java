@@ -34,10 +34,9 @@ import java.util.stream.StreamSupport;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.ChatMessage;
-
-import org.jetbrains.annotations.Nullable;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 

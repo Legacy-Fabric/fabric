@@ -28,9 +28,9 @@ package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.text.ChatMessage;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;

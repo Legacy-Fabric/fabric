@@ -29,11 +29,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.text.ChatMessage;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;

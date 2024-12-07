@@ -25,13 +25,13 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
+import net.minecraft.text.ChatMessage;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
-
-import net.minecraft.text.ChatMessage;
 
 public class RemainingJoinedStringsCommandElement extends KeyElement {
 	private final boolean raw;

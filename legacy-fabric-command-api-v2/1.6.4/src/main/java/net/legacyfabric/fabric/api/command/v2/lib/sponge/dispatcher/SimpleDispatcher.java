@@ -45,11 +45,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.text.ChatMessage;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 

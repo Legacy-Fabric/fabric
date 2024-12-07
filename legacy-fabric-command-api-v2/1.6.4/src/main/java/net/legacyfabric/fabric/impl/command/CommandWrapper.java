@@ -23,12 +23,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.command.AbstractCommand;
 import net.minecraft.command.CommandSource;
+import net.minecraft.text.ChatMessage;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMapping;

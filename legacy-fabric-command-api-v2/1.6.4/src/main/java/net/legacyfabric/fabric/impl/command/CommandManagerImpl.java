@@ -26,11 +26,9 @@ import java.util.function.Function;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.text.ChatMessage;
 import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;

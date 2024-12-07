@@ -36,10 +36,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.ChatMessage;
-
-import org.jetbrains.annotations.Nullable;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 

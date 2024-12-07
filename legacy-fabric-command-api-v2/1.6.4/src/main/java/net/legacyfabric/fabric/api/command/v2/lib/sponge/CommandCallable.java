@@ -28,10 +28,9 @@ package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 import java.util.List;
 import java.util.Optional;
 
-import net.minecraft.text.ChatMessage;
-
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.text.ChatMessage;
 import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;

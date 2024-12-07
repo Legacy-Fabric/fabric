@@ -35,10 +35,9 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.ChatMessage;
-
-import org.jetbrains.annotations.Nullable;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;

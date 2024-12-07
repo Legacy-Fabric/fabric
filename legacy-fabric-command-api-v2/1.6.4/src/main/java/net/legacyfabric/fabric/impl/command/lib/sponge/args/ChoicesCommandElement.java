@@ -33,6 +33,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import net.minecraft.text.ChatMessage;
+
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -40,8 +42,6 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.util.TriState;
-
-import net.minecraft.text.ChatMessage;
 
 public class ChoicesCommandElement extends CommandElement {
 	public static final int CUTOFF = 5;
