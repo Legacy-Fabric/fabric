@@ -282,6 +282,10 @@ allprojects {
 			useLegacyMixinAp = true
 		}
 
+		interfaceInjection {
+			enableDependencyInterfaceInjection = true
+		}
+
 		runs {
 			"testModClient$mcVersion" {
 				client()
@@ -443,7 +447,8 @@ def addPomMetadataInformation(Project project, MavenPom pom) {
 	def modJsonFile = project.file("src/main/resources/fabric.mod.json")
 
 	if (!modJsonFile.exists()) {
-		modJsonFile = project.file("src/client/resources/fabric.mod.json")
+		logger.error("Can't find fabric.mod.json at ${modJsonFile.toString()}!")
+		return;
 	}
 
 	def modJson = new JsonSlurper().parse(modJsonFile)

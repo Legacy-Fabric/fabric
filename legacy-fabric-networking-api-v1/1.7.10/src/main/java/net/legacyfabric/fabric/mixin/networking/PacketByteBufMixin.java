@@ -30,7 +30,7 @@ import net.fabricmc.api.Environment;
 import net.legacyfabric.fabric.impl.networking.PacketByteBufExtension;
 
 @Mixin(PacketByteBuf.class)
-public class PacketByteBufMixin implements PacketByteBufExtension {
+public abstract class PacketByteBufMixin implements PacketByteBufExtension {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public Packet createCustomPayloadC2SPacket(String channelName) {
