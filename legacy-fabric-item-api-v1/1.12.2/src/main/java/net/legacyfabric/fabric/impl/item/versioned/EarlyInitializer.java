@@ -25,8 +25,8 @@ import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 
 public class EarlyInitializer implements PreLaunchEntrypoint {
 	@Override
@@ -34,8 +34,8 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		RegistryInitializedEvent.event(RegistryIds.ITEMS).register(EarlyInitializer::itemRegistryInit);
 	}
 
-	private static void itemRegistryInit(Registry<?> holder) {
-		SyncedRegistry<Item> registry = (SyncedRegistry<Item>) holder;
+	private static void itemRegistryInit(FabricRegistry<?> holder) {
+		SyncedFabricRegistry<Item> registry = (SyncedFabricRegistry<Item>) holder;
 
 		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) registry.fabric$getRegistryRemapCallback().register(new ItemModelsRemapper());
 	}

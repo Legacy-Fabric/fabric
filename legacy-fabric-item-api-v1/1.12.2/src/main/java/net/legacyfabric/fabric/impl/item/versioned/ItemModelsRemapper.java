@@ -27,7 +27,7 @@ import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.mixin.item.versioned.ItemModelsAccessor;
 
@@ -48,7 +48,7 @@ public class ItemModelsRemapper implements RegistryRemapCallback<Item> {
 	}
 
 	@Override
-	public void callback(Map<Integer, RegistryEntry<Item>> changedIdsMap) {
+	public void callback(Map<Integer, FabricRegistryEntry<Item>> changedIdsMap) {
 		((ItemModelsAccessor) getModelRegistry()).getModelIds().clear();
 
 		for (Map.Entry<Identifier, Map<Integer, ModelIdentifier>> entry : modelIds.entrySet()) {

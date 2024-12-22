@@ -18,14 +18,9 @@
 package net.legacyfabric.fabric.testing;
 
 
-import net.minecraft.item.Item;
-import net.minecraft.item.itemgroup.ItemGroup;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
-import net.legacyfabric.fabric.api.util.Identifier;
 
 public class TestMod implements ModInitializer {
 	@Override
@@ -50,12 +45,5 @@ public class TestMod implements ModInitializer {
 //			net.legacyfabric.fabric.api.registry.v1.RegistryHelper.registerBlock(block, identifier);
 //			net.legacyfabric.fabric.api.registry.v1.RegistryHelper.registerItem(new BlockItem(block), identifier);
 //		}
-
-		Item testItem = new Item().setItemGroup(ItemGroup.FOOD);
-		RegistryHelper.register(
-				Item.REGISTRY,
-				new Identifier("legacy-fabric-api", "test_item"), testItem
-		);
-		ItemModelRegistry.registerItemModel(testItem, new Identifier("legacy-fabric-api:test_item"));
 	}
 }

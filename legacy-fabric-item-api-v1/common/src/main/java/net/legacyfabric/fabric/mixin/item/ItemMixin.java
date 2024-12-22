@@ -29,7 +29,7 @@ import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 
 @Mixin(Item.class)
 public class ItemMixin {
@@ -39,6 +39,6 @@ public class ItemMixin {
 
 	@Inject(method = "setup", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
-		RegistryHelper.addRegistry(RegistryIds.ITEMS, (Registry<?>) REGISTRY);
+		RegistryHelper.addRegistry(RegistryIds.ITEMS, (FabricRegistry<?>) REGISTRY);
 	}
 }
