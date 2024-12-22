@@ -15,29 +15,29 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.item;
-
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+package net.legacyfabric.fabric.test.registry;
 
 import net.minecraft.item.Item;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.item.itemgroup.ItemGroup;
+
+import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
+import net.legacyfabric.fabric.api.util.Identifier;
 
-@Mixin(Item.class)
-public class ItemMixin {
-	@Shadow
-	@Final
-	public static SimpleRegistry REGISTRY;
+public class RegistryTest implements ModInitializer {
+	@Override
+	public void onInitialize() {
+		this.registerItems();
+	}
 
-	@Inject(method = "setup", at = @At("RETURN"))
-	private static void registerRegistry(CallbackInfo ci) {
-		RegistryHelper.addRegistry(RegistryIds.ITEMS, REGISTRY);
+	private void registerItems() {
+		Item testItem = new Item()
+				.setItemGroup(ItemGroup.FOOD)
+				.getFromId(new Identifier("legacy-fabric-api", "test_item").toString());
+		RegistryHelper.register(
+				Item.REGISTRY,
+				new Identifier("legacy-fabric-api", "test_item"), testItem
+		);
 	}
 }

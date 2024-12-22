@@ -1,4 +1,5 @@
 {
   "api.keybinding.testTranslationKey": "Test Keybinding",
-  "legacyfabric.api.youreTesting": "You're Testing Fabric API!"
+  "legacyfabric.api.youreTesting": "You're Testing Fabric API!",
+  "item.legacy-fabric-api.test_item.name": "Test Item"
 }
