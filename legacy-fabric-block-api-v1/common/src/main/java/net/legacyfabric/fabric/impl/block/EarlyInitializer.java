@@ -23,7 +23,7 @@ import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 
 public class EarlyInitializer implements PreLaunchEntrypoint {
 	@Override
@@ -31,8 +31,8 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		RegistryInitializedEvent.event(RegistryIds.BLOCKS).register(EarlyInitializer::blockRegistryInit);
 	}
 
-	private static void blockRegistryInit(Registry<?> holder) {
-		Registry<Block> registry = (Registry<Block>) holder;
+	private static void blockRegistryInit(FabricRegistry<?> holder) {
+		FabricRegistry<Block> registry = (FabricRegistry<Block>) holder;
 
 		registry.fabric$getBeforeAddedCallback().register((rawId, id, block) -> block.setTranslationKey(id.toTranslationKey()));
 	}

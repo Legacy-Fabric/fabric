@@ -25,7 +25,7 @@ import net.minecraft.util.collection.IdList;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
@@ -36,7 +36,7 @@ public class BlockStateRemapper implements RegistryRemapCallback<Block> {
 	private static final Identifier specialCaseId = new Identifier("tripwire");
 
 	@Override
-	public void callback(Map<Integer, RegistryEntry<Block>> changedIdsMap) {
+	public void callback(Map<Integer, FabricRegistryEntry<Block>> changedIdsMap) {
 		IdsHolder<BlockState> newList = Block.BLOCK_STATES.fabric$new();
 
 		for (Block block : Block.REGISTRY) {

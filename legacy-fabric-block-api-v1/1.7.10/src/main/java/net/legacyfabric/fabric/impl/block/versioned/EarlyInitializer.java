@@ -27,8 +27,8 @@ import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public class EarlyInitializer implements PreLaunchEntrypoint {
@@ -37,8 +37,8 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		RegistryInitializedEvent.event(RegistryIds.BLOCKS).register(EarlyInitializer::blockRegistryInit);
 	}
 
-	private static void blockRegistryInit(Registry<?> holder) {
-		SyncedRegistry<Block> registry = (SyncedRegistry<Block>) holder;
+	private static void blockRegistryInit(FabricRegistry<?> holder) {
+		SyncedFabricRegistry<Block> registry = (SyncedFabricRegistry<Block>) holder;
 
 		registry.fabric$getEntryAddedCallback().register((rawId, id, block) -> {
 			if (block.getMaterial() == Material.AIR) {
