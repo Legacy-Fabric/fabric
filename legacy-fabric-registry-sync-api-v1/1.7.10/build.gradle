@@ -1,3 +1,0 @@
-loom {
-	accessWidenerPath = file("src/main/resources/registrysync.accesswidener")
-}
