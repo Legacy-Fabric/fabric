@@ -23,7 +23,6 @@ import net.minecraft.item.itemgroup.ItemGroup;
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryTest implements ModInitializer {
@@ -33,11 +32,12 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	private void registerItems() {
-		Item testItem = new Item().setItemGroup(ItemGroup.FOOD);
+		Item testItem = new Item()
+				.setItemGroup(ItemGroup.FOOD)
+				.getFromId(new Identifier("legacy-fabric-api", "test_item").toString());
 		RegistryHelper.register(
 				Item.REGISTRY,
 				new Identifier("legacy-fabric-api", "test_item"), testItem
 		);
-		ItemModelRegistry.registerItemModel(testItem, new Identifier("legacy-fabric-api:test_item"));
 	}
 }

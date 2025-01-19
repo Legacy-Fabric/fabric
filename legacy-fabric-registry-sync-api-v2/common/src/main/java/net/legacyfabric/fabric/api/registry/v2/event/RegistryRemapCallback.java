@@ -27,14 +27,14 @@ import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryEventHelper;
 
 /**
- * An event for when a registry has been remapped.
+ * An event for when a registry has been remapped, but hasn't been updated yet.
  *
  * @param <T> the type of entries within the registry
  */
 @FunctionalInterface
 public interface RegistryRemapCallback<T> {
 	/**
-	 * Called when the registry has been remapped.
+	 * Called when the registry has been remapped but hasn't been updated yet.
 	 * @param changedIdsMap A map containing changed ids in the registry following the remapping process.
 	 *                      Key is the original id and Value is the affected entry data see {@link FabricRegistryEntry}.
 	 */
