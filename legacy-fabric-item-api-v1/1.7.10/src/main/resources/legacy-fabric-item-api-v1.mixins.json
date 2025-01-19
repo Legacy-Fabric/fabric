@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.item",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+  ],
+  "client": [
+  ]
+}
