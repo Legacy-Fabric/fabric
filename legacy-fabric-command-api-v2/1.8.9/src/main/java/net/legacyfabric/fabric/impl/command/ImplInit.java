@@ -23,7 +23,6 @@ import net.fabricmc.api.DedicatedServerModInitializer;
 import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
 import net.legacyfabric.fabric.api.registry.CommandRegistrationCallback;
-import net.legacyfabric.fabric.api.registry.CommandRegistry;
 
 public class ImplInit implements DedicatedServerModInitializer, ClientModInitializer, CommandRegistrar {
 	@Override
@@ -32,7 +31,7 @@ public class ImplInit implements DedicatedServerModInitializer, ClientModInitial
 			CommandRegistrar.EVENT.invoker().register(manager, dedicated);
 			InternalObjects.getCommandManager().getCommands().forEach(mapping -> {
 				CommandWrapper wrapper = new CommandWrapper(mapping);
-				CommandRegistry.INSTANCE.register(wrapper);
+				registry.register(wrapper);
 			});
 		});
 	}
