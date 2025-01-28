@@ -21,7 +21,7 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 
 /**
- * An event for registering commands to the {@link CommandRegistry}
+ * An event for registering commands to the {@link CommandRegistry}.
  */
 @FunctionalInterface
 public interface CommandRegistrationCallback {
