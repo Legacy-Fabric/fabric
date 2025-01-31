@@ -20,13 +20,15 @@ package net.legacyfabric.fabric.test.command;
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.api.registry.CommandRegistry;
+import net.legacyfabric.fabric.api.registry.CommandRegistrationCallback;
 
 public class CommandV1Test implements ModInitializer {
 	public static final Logger LOGGER = Logger.get("LegacyFabricAPI", "Test", "CommandV1Test");
 
 	@Override
 	public void onInitialize() {
-		CommandRegistry.INSTANCE.register(new ModMetadataCommandV1());
+		CommandRegistrationCallback.EVENT.register(registry -> {
+			registry.register(new ModMetadataCommandV1());
+		});
 	}
 }
