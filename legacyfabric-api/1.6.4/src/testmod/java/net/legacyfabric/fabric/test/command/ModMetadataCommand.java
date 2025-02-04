@@ -17,11 +17,8 @@
 
 package net.legacyfabric.fabric.test.command;
 
-import java.util.Objects;
-
 import net.minecraft.text.ChatMessage;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ContactInformation;
 
@@ -44,10 +41,8 @@ public class ModMetadataCommand {
 		);
 	}
 
-	private static final boolean useStyle = !Objects.equals(FabricLoader.getInstance().getModContainer("minecraft").get().getMetadata().getVersion().getFriendlyString(), "1.8");
-
 	private static CommandResult execute(PermissibleCommandSource source, CommandContext ctx) throws CommandException {
-		ModContainer container = ctx.<ModContainer>getOne("modid").orElseThrow(() -> new CommandException(ChatMessage.createTextMessage("mod not found")));
+		ModContainer container = ctx.<ModContainer>getOne("modid").orElseThrow(() -> new CommandException(ChatMessage.createTextMessage("Couldn't find Mod container")));
 		ChatMessage builder = ChatMessage.createTextMessage("");
 		builder.addText("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
 		builder.addText("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));

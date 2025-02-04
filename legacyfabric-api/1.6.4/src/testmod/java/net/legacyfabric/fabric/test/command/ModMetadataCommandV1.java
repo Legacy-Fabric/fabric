@@ -19,6 +19,10 @@ package net.legacyfabric.fabric.test.command;
 
 import java.util.Optional;
 
+import net.minecraft.text.ChatMessage;
+
+import net.minecraft.util.Formatting;
+
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.command.AbstractCommand;
@@ -49,33 +53,35 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 			if (optionalModContainer.isPresent()) {
 				ModContainer container = optionalModContainer.get();
 
-				StringBuilder builder = new StringBuilder();
-				builder.append("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
-				builder.append("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));
+				ChatMessage builder = ChatMessage.createTextMessage("");
+				builder.addText("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
+				builder.addText("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));
 				ContactInformation contact = container.getMetadata().getContact();
 
 				if (contact.get("issues").isPresent()) {
-					StringBuilder issueText = new StringBuilder("");
-					issueText.append("Issues: ");
-					StringBuilder issueUrl = new StringBuilder(contact.get("issues").get());
-					issueText.append(issueUrl);
-					issueText.append("\n");
-					builder.append(issueText);
+					ChatMessage issueText = ChatMessage.createTextMessage("");
+					issueText.addText("Issues: ");
+					ChatMessage issueUrl = ChatMessage.createTextMessage(contact.get("issues").get());
+					issueText.addUsing(issueUrl);
+					issueText.addText("\n");
+					builder.addUsing(issueText);
 				}
 
 				if (contact.get("sources").isPresent()) {
-					StringBuilder sourcesText = new StringBuilder("");
-					sourcesText.append("Sources: ");
-					StringBuilder sourcesUrl = new StringBuilder(contact.get("sources").get());
-					sourcesText.append(sourcesUrl);
-					sourcesText.append("\n");
-					builder.append(sourcesText);
+					ChatMessage sourcesText = ChatMessage.createTextMessage("");
+					sourcesText.addText("Sources: ");
+					ChatMessage sourcesUrl = ChatMessage.createTextMessage(contact.get("sources").get());
+					sourcesText.addUsing(sourcesUrl);
+					sourcesText.addText("\n");
+					builder.addUsing(sourcesText);
 				}
 
-				builder.append("Metadata Type: ".concat(container.getMetadata().getType()).concat("\n"));
-				CommandV1Test.LOGGER.info(builder.toString());
+				builder.addText("Metadata Type: ".concat(container.getMetadata().getType()).concat("\n"));
+				commandSource.method_5505(builder);
 			} else {
-				CommandV1Test.LOGGER.error("Couldn't find Mod container for mod id '" + args[0] + "'");
+				ChatMessage builder = ChatMessage.createTextMessage("Couldn't find Mod container for mod id '" + args[0] + "'");
+				builder.setColor(Formatting.RED);
+				commandSource.method_5505(builder);
 			}
 		}
 	}
