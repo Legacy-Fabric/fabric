@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.test.registry;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
@@ -27,8 +29,6 @@ import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.util.Identifier;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public class RegistryTest implements ModInitializer {
 	@Override
