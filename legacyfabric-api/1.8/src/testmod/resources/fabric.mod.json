@@ -53,6 +53,7 @@
   "depends": {
     "minecraft": "${minecraft_version}"
   },
+  "accessWidener": "testmods.accesswidener",
   "custom": {
     "modmenu": {
       "badges": [ "library" ]

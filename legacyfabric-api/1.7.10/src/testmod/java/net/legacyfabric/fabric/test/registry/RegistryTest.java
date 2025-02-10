@@ -17,6 +17,9 @@
 
 package net.legacyfabric.fabric.test.registry;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.itemgroup.ItemGroup;
 
@@ -25,10 +28,13 @@ import net.fabricmc.api.ModInitializer;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.util.Identifier;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class RegistryTest implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		this.registerItems();
+		this.registerBlocks();
 	}
 
 	private void registerItems() {
@@ -39,5 +45,17 @@ public class RegistryTest implements ModInitializer {
 				Item.REGISTRY,
 				new Identifier("legacy-fabric-api", "test_item"), testItem
 		);
+	}
+
+	private void registerBlocks() {
+		Block concBlock = new Block(Material.STONE).setItemGroup(ItemGroup.FOOD);
+		Block concBlock2 = new Block(Material.GLASS).setItemGroup(ItemGroup.FOOD);
+		Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[]{concBlock, concBlock2} : new Block[]{concBlock2, concBlock};
+
+		for (Block block : blocks) {
+			Identifier identifier = new Identifier("legacy-fabric-api:conc_block_" + block.getMaterial().getColor().color);
+			RegistryHelper.register(Block.REGISTRY, identifier, block);
+			RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(block));
+		}
 	}
 }
