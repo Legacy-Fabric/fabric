@@ -26,7 +26,7 @@ import net.minecraft.util.collection.IdList;
 
 @Mixin(Block.class)
 public interface BlockAccessor {
-	@Accessor
-	static void setBLOCK_STATES(IdList<BlockState> blockStates) {
+	@Accessor("BLOCK_STATES")
+	static void setBlockStateList(IdList<BlockState> blockStates) {
 	}
 }

@@ -60,19 +60,19 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 			if (block.material == Material.AIR) {
 				block.useNeighbourLight = false;
 			} else {
-				boolean var12 = false;
-				boolean var13 = block instanceof StairsBlock;
-				boolean var14 = block instanceof SlabBlock;
-				boolean var15 = block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("farmland"))
+				boolean useNeighbourLight = false;
+				boolean isStairs = block instanceof StairsBlock;
+				boolean isSlab = block instanceof SlabBlock;
+				boolean isMissingTop = block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("farmland"))
 						|| (checkGrass && block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("grass_path")));
-				boolean var16 = block.transluscent;
-				boolean var17 = block.opacity == 0;
+				boolean isTranslucent = block.transluscent;
+				boolean isNotOpaque = block.opacity == 0;
 
-				if (var13 || var14 || var15 || var16 || var17) {
-					var12 = true;
+				if (isStairs || isSlab || isMissingTop || isTranslucent || isNotOpaque) {
+					useNeighbourLight = true;
 				}
 
-				block.useNeighbourLight = var12;
+				block.useNeighbourLight = useNeighbourLight;
 			}
 		});
 	}
@@ -82,7 +82,7 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 
 		registry.fabric$getEntryAddedCallback().register((rawId, id, item) -> {
 			if (item instanceof BlockItem) {
-				ItemAccessor.getBLOCK_ITEMS().put(((BlockItem) item).getBlock(), item);
+				ItemAccessor.getBlockItemsMap().put(((BlockItem) item).getBlock(), item);
 			}
 		});
 	}

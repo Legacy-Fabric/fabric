@@ -44,18 +44,18 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 			if (block.getMaterial() == Material.AIR) {
 				block.useNeighbourLight = false;
 			} else {
-				boolean var12 = false;
-				boolean var13 = block.getBlockType() == 10;
-				boolean var14 = block instanceof SlabBlock;
-				boolean var15 = block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("farmland"));
-				boolean var16 = block.transluscent;
-				boolean var17 = block.getOpacity() == 0;
+				boolean useNeighbourLight = false;
+				boolean isStairs = block.getBlockType() == 10;
+				boolean isSlab = block instanceof SlabBlock;
+				boolean isMissingTop = block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("farmland"));
+				boolean isTranslucent = block.transluscent;
+				boolean isNotOpaque = block.getOpacity() == 0;
 
-				if (var13 || var14 || var15 || var16 || var17) {
-					var12 = true;
+				if (isStairs || isSlab || isMissingTop || isTranslucent || isNotOpaque) {
+					useNeighbourLight = true;
 				}
 
-				block.useNeighbourLight = var12;
+				block.useNeighbourLight = useNeighbourLight;
 			}
 		});
 	}

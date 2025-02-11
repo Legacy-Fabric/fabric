@@ -64,6 +64,6 @@ public class BlockStateRemapper implements RegistryRemapCallback<Block> {
 			}
 		}
 
-		BlockAccessor.setBLOCK_STATES((IdList<BlockState>) newList);
+		BlockAccessor.setBlockStateList((IdList<BlockState>) newList);
 	}
 }

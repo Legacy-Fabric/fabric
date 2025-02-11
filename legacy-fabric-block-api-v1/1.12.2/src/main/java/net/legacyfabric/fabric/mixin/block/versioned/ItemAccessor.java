@@ -27,8 +27,8 @@ import net.minecraft.item.Item;
 
 @Mixin(Item.class)
 public interface ItemAccessor {
-	@Accessor
-	static Map<Block, Item> getBLOCK_ITEMS() {
+	@Accessor("BLOCK_ITEMS")
+	static Map<Block, Item> getBlockItemsMap() {
 		return null;
 	}
 }
