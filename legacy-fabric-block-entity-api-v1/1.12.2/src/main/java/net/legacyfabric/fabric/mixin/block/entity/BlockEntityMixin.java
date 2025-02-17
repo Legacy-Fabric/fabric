@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.mixin.block.entity;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,6 +41,7 @@ public class BlockEntityMixin {
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
+		((DesynchronizeableRegistrable) BLOCK_ENTITY).fabric$setSynchronize(false);
 		RegistryHelper.addRegistry(RegistryIds.BLOCK_ENTITY_TYPES, BLOCK_ENTITY);
 	}
 }
