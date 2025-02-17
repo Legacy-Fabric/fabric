@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.block.entity;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,6 +30,7 @@ import net.minecraft.util.registry.SimpleRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
+import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 
 @Mixin(BlockEntity.class)
 public class BlockEntityMixin {
