@@ -20,9 +20,12 @@ package net.legacyfabric.fabric.test.command;
 import java.util.Optional;
 
 import net.minecraft.command.AbstractCommand;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Style;
+import net.minecraft.util.Formatting;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -40,40 +43,44 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 	}
 
 	@Override
-	public void method_3279(MinecraftServer minecraftServer, CommandSource commandSource, String[] args) throws CommandException {
+	public void method_3279(MinecraftServer minecraftServer, CommandSource commandSource, String[] args) {
 		if (args.length > 0) {
 			Optional<ModContainer> optionalModContainer = FabricLoader.getInstance().getModContainer(args[0]);
 
 			if (optionalModContainer.isPresent()) {
 				ModContainer container = optionalModContainer.get();
 
-				StringBuilder builder = new StringBuilder();
+				LiteralText builder = new LiteralText("");
 				builder.append("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
 				builder.append("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));
 				ContactInformation contact = container.getMetadata().getContact();
 
 				if (contact.get("issues").isPresent()) {
-					StringBuilder issueText = new StringBuilder("");
+					LiteralText issueText = new LiteralText("");
 					issueText.append("Issues: ");
-					StringBuilder issueUrl = new StringBuilder(contact.get("issues").get());
+					LiteralText issueUrl = new LiteralText(contact.get("issues").get());
+					issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, issueUrl.computeValue())));
 					issueText.append(issueUrl);
 					issueText.append("\n");
 					builder.append(issueText);
 				}
 
 				if (contact.get("sources").isPresent()) {
-					StringBuilder sourcesText = new StringBuilder("");
+					LiteralText sourcesText = new LiteralText("");
 					sourcesText.append("Sources: ");
-					StringBuilder sourcesUrl = new StringBuilder(contact.get("sources").get());
+					LiteralText sourcesUrl = new LiteralText(contact.get("sources").get());
+					sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, sourcesUrl.computeValue())));
 					sourcesText.append(sourcesUrl);
 					sourcesText.append("\n");
 					builder.append(sourcesText);
 				}
 
 				builder.append("Metadata Type: ".concat(container.getMetadata().getType()).concat("\n"));
-				CommandV1Test.LOGGER.info(builder.toString());
+				commandSource.sendMessage(builder);
 			} else {
-				CommandV1Test.LOGGER.error("Couldn't find Mod container for mod id '" + args[0] + "'");
+				LiteralText builder = new LiteralText("Couldn't find Mod container for mod id '" + args[0] + "'");
+				builder.setStyle(new Style().setFormatting(Formatting.RED));
+				commandSource.sendMessage(builder);
 			}
 		}
 	}

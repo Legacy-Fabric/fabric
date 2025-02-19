@@ -17,13 +17,10 @@
 
 package net.legacyfabric.fabric.test.command;
 
-import java.util.Objects;
-
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.ClickEventAction;
 import net.minecraft.text.LiteralText;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ContactInformation;
 
@@ -46,10 +43,8 @@ public class ModMetadataCommand {
 		);
 	}
 
-	private static final boolean useStyle = !Objects.equals(FabricLoader.getInstance().getModContainer("minecraft").get().getMetadata().getVersion().getFriendlyString(), "1.8");
-
 	private static CommandResult execute(PermissibleCommandSource source, CommandContext ctx) throws CommandException {
-		ModContainer container = ctx.<ModContainer>getOne("modid").orElseThrow(() -> new CommandException(new LiteralText("mod not found")));
+		ModContainer container = ctx.<ModContainer>getOne("modid").orElseThrow(() -> new CommandException(new LiteralText("Couldn't find Mod container")));
 		LiteralText builder = new LiteralText("");
 		builder.append("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
 		builder.append("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));
@@ -59,7 +54,7 @@ public class ModMetadataCommand {
 			LiteralText issueText = new LiteralText("");
 			issueText.append("Issues: ");
 			LiteralText issueUrl = new LiteralText(contact.get("issues").get());
-			if (useStyle) issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, issueUrl.computeValue())));
+			issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, issueUrl.computeValue())));
 			issueText.append(issueUrl);
 			issueText.append("\n");
 			builder.append(issueText);
@@ -69,7 +64,7 @@ public class ModMetadataCommand {
 			LiteralText sourcesText = new LiteralText("");
 			sourcesText.append("Sources: ");
 			LiteralText sourcesUrl = new LiteralText(contact.get("sources").get());
-			if (useStyle) sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, sourcesUrl.computeValue())));
+			sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, sourcesUrl.computeValue())));
 			sourcesText.append(sourcesUrl);
 			sourcesText.append("\n");
 			builder.append(sourcesText);
