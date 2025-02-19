@@ -22,15 +22,14 @@ import java.util.Optional;
 import net.minecraft.command.AbstractCommand;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.MinecraftServer;
-
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.api.metadata.ContactInformation;
-
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
 import net.minecraft.util.Formatting;
+
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.ContactInformation;
 
 public class ModMetadataCommandV1 extends AbstractCommand {
 	@Override

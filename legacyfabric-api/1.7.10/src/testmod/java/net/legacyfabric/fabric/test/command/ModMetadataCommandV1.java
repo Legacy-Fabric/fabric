@@ -19,18 +19,17 @@ package net.legacyfabric.fabric.test.command;
 
 import java.util.Optional;
 
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.ClickEventAction;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
-import net.minecraft.util.Formatting;
-
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.command.AbstractCommand;
 import net.minecraft.command.Command;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandSource;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.ClickEventAction;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Style;
+import net.minecraft.util.Formatting;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
