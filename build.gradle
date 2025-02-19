@@ -125,8 +125,7 @@ def getSubprojectVersion(Project project) {
 		return version + "+uncommited"
 	} else {
 		return version + "+" + latestCommits.get(0).id.substring(0, 8) +
-			DigestUtils.sha256Hex("${project.name}").substring(0, 2) +
-			DigestUtils.sha256Hex("${mcVersion}").substring(0, 2)
+			DigestUtils.sha256Hex("${rootProject.version}").substring(0, 4)
 	}
 }
 
