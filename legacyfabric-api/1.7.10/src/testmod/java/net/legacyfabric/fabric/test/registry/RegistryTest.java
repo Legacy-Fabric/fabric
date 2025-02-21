@@ -19,15 +19,25 @@ package net.legacyfabric.fabric.test.registry;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.itemgroup.ItemGroup;
+import net.minecraft.text.LiteralText;
+import net.minecraft.world.World;
 
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
+import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
+import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryTest implements ModInitializer {
@@ -35,6 +45,7 @@ public class RegistryTest implements ModInitializer {
 	public void onInitialize() {
 		this.registerItems();
 		this.registerBlocks();
+		this.registerBlockEntity();
 	}
 
 	private void registerItems() {
@@ -57,5 +68,47 @@ public class RegistryTest implements ModInitializer {
 			RegistryHelper.register(Block.REGISTRY, identifier, block);
 			RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(block));
 		}
+	}
+
+	private void registerBlockEntity() {
+		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
+
+		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setItemGroup(ItemGroup.FOOD);
+		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
+		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
+
+		RegistryInitializedEvent.event(RegistryIds.BLOCK_ENTITY_TYPES).register(new RegistryInitializedEvent() {
+			@Override
+			public <T> void initialized(FabricRegistry<T> registry) {
+				RegistryHelper.register(registry, identifier, (T) TestBlockEntity.class);
+			}
+		});
+	}
+
+	public static class TestBlockWithEntity extends BlockWithEntity {
+		protected TestBlockWithEntity(Material material) {
+			super(material);
+		}
+
+		@Override
+		public @Nullable BlockEntity createBlockEntity(World world, int id) {
+			return new TestBlockEntity();
+		}
+
+		@Override
+		public boolean onActivated(World world, int x, int y, int z, PlayerEntity player, int i, float f, float g, float h) {
+			if (!world.isClient) {
+				BlockEntity entity = world.getBlockEntity(x, y, z);
+
+				if (entity instanceof TestBlockEntity) {
+					player.sendMessage(new LiteralText(entity + " at " + x + "," + y + "," + z));
+				}
+			}
+
+			return true;
+		}
+	}
+
+	public static class TestBlockEntity extends BlockEntity {
 	}
 }

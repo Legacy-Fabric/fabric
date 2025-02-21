@@ -19,9 +19,12 @@ package net.legacyfabric.fabric.mixin.registry.sync.versioned;
 
 import java.util.Objects;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.util.registry.BiDefaultedRegistry;
 import net.minecraft.util.registry.SimpleRegistry;
@@ -34,18 +37,22 @@ public abstract class BiDefaultedRegistryMixin extends SimpleRegistry {
 	private Object defaultValue;
 
 	@Shadow
-	@Final
-	private String field_8395;
-
-	@Shadow
 	public abstract Object get(String par1);
+
+	@Unique
+	private Identifier lf$defaultKey;
+
+	@Inject(method = "<init>", at = @At("RETURN"))
+	private void fabric$setDefaultKey(String par1, CallbackInfo ci) {
+		this.lf$defaultKey = new Identifier(par1);
+	}
 
 	@Override
 	public Object fabric$getValue(Identifier id) {
 		String key = (String) fabric$toKeyType(id);
 		Object value = get(key);
 
-		if (value == this.defaultValue && !Objects.equals(this.field_8395, key)) return null;
+		if (value == this.defaultValue && !Objects.equals(this.lf$defaultKey.toString(), key)) return null;
 
 		return value;
 	}
