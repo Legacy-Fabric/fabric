@@ -5,4 +5,5 @@ moduleDependencies(project, [
 	"legacy-fabric-registry-sync-api-v2",
 	"legacy-fabric-item-api-v1",
 	"legacy-fabric-block-api-v1",
+	"legacy-fabric-block-entity-api-v1"
 ])
