@@ -19,8 +19,9 @@ package net.legacyfabric.fabric.mixin.effect;
 
 import java.util.Arrays;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.impl.effect.versioned.EarlyInitializer;
-import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayRegistryWrapper;
+import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayFabricRegistryWrapper;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +36,6 @@ import net.minecraft.entity.effect.StatusEffect;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
 
 @Mixin(StatusEffect.class)
 public class StatusEffectMixin {
@@ -46,11 +46,11 @@ public class StatusEffectMixin {
 	public static StatusEffect[] STATUS_EFFECTS;
 
 	@Unique
-	private static Registry<StatusEffect> STATUS_EFFECT_REGISTRY;
+	private static FabricRegistry<StatusEffect> STATUS_EFFECT_REGISTRY;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		STATUS_EFFECT_REGISTRY = new SyncedArrayRegistryWrapper<>(
+		STATUS_EFFECT_REGISTRY = new SyncedArrayFabricRegistryWrapper<>(
 				RegistryIds.STATUS_EFFECTS,
 				STATUS_EFFECTS, EarlyInitializer.getVanillaIds(),
 				universal -> universal,
@@ -73,7 +73,8 @@ public class StatusEffectMixin {
 					}
 
 					STATUS_EFFECTS = array;
-				}
+				},
+				1
 		);
 
 		RegistryHelper.addRegistry(RegistryIds.STATUS_EFFECTS, STATUS_EFFECT_REGISTRY);

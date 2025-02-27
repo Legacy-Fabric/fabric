@@ -26,30 +26,30 @@ import net.minecraft.entity.effect.StatusEffectStrings;
 
 @Mixin(StatusEffectStrings.class)
 public interface StatusEffectStringsAccessor {
-	@Accessor
-	static HashMap<Integer, String> getField_4424() {
+	@Accessor("field_4424")
+	static HashMap<Integer, String> getLevelsMap() {
 		return null;
 	}
 
-	@Accessor
-	static void setField_4424(HashMap<Integer, String> value) {
+	@Accessor("field_4424")
+	static void setLevelsMap(HashMap<Integer, String> value) {
 	}
 
-	@Accessor
-	static HashMap<Integer, String> getField_4425() {
+	@Accessor("field_4425")
+	static HashMap<Integer, String> getAmplifyingFactorsMap() {
 		return null;
 	}
 
-	@Accessor
-	static void setField_4425(HashMap<Integer, String> value) {
+	@Accessor("field_4425")
+	static void setAmplifyingFactorsMap(HashMap<Integer, String> value) {
 	}
 
-	@Accessor
-	static HashMap<Integer, Integer> getField_4426() {
+	@Accessor("field_4426")
+	static HashMap<Integer, Integer> getEffectColorsMap() {
 		return null;
 	}
 
-	@Accessor
-	static void setField_4426(HashMap<Integer, Integer> value) {
+	@Accessor("field_4426")
+	static void setEffectColorsMap(HashMap<Integer, Integer> value) {
 	}
 }

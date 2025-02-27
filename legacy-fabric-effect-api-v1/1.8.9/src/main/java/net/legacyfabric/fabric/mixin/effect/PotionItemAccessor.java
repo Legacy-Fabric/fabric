@@ -28,10 +28,10 @@ import net.minecraft.item.PotionItem;
 
 @Mixin(PotionItem.class)
 public interface PotionItemAccessor {
-	@Accessor
-	Map<Integer, List<StatusEffectInstance>> getSTATUS_EFFECTS_1();
-	@Accessor
-	static Map<List<StatusEffectInstance>, Integer> getSTATUS_EFFECTS_2() {
+	@Accessor("STATUS_EFFECTS_1")
+	Map<Integer, List<StatusEffectInstance>> getMetaToEffectListMap();
+	@Accessor("STATUS_EFFECTS_2")
+	static Map<List<StatusEffectInstance>, Integer> getEffectListToMetaMap() {
 		return null;
 	}
 }

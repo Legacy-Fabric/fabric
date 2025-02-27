@@ -19,16 +19,17 @@ package net.legacyfabric.fabric.impl.effect.versioned;
 
 import java.util.Map;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
+
 import net.minecraft.entity.effect.StatusEffect;
 
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
 import net.legacyfabric.fabric.mixin.effect.StatusEffectAccessor;
 
 public class StatusEffectRemapper implements RegistryRemapCallback<StatusEffect> {
 	@Override
-	public void callback(Map<Integer, RegistryEntry<StatusEffect>> changedIdsMap) {
-		for (RegistryEntry<StatusEffect> entry : changedIdsMap.values()) {
+	public void callback(Map<Integer, FabricRegistryEntry<StatusEffect>> changedIdsMap) {
+		for (FabricRegistryEntry<StatusEffect> entry : changedIdsMap.values()) {
 			StatusEffect effect = entry.getValue();
 
 			if (effect != null) {

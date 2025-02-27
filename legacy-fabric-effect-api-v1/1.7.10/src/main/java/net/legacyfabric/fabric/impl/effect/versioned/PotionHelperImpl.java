@@ -6,10 +6,10 @@ import net.minecraft.entity.effect.StatusEffect;
 
 public class PotionHelperImpl {
 	public static void registerLevels(StatusEffect effect, String levels) {
-		StatusEffectStringsAccessor.getField_4424().put(effect.getId(), levels);
+		StatusEffectStringsAccessor.getLevelsMap().put(effect.getId(), levels);
 	}
 
 	public static void registerAmplifyingFactor(StatusEffect effect, String amplifyingFactor) {
-		StatusEffectStringsAccessor.getField_4425().put(effect.getId(), amplifyingFactor);
+		StatusEffectStringsAccessor.getAmplifyingFactorsMap().put(effect.getId(), amplifyingFactor);
 	}
 }

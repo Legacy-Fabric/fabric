@@ -32,7 +32,7 @@ public class StatusEffectStringsRemapper implements RegistryRemapCallback<Status
 	public void callback(Map<Integer, FabricRegistryEntry<StatusEffect>> changedIdsMap) {
 		Map<Integer, String> firstStringMap = new HashMap<>();
 
-		for (Map.Entry<Integer, String> entry : StatusEffectStringsAccessor.getField_9162().entrySet()) {
+		for (Map.Entry<Integer, String> entry : StatusEffectStringsAccessor.getLevelsMap().entrySet()) {
 			int id = entry.getKey();
 
 			if (changedIdsMap.containsKey(id)) {
@@ -42,11 +42,11 @@ public class StatusEffectStringsRemapper implements RegistryRemapCallback<Status
 			firstStringMap.put(id, entry.getValue());
 		}
 
-		StatusEffectStringsAccessor.setField_9162(firstStringMap);
+		StatusEffectStringsAccessor.setLevelsMap(firstStringMap);
 
 		Map<Integer, String> secondStringMap = new HashMap<>();
 
-		for (Map.Entry<Integer, String> entry : StatusEffectStringsAccessor.getField_9163().entrySet()) {
+		for (Map.Entry<Integer, String> entry : StatusEffectStringsAccessor.getAmplifyingFactorsMap().entrySet()) {
 			int id = entry.getKey();
 
 			if (changedIdsMap.containsKey(id)) {
@@ -56,11 +56,11 @@ public class StatusEffectStringsRemapper implements RegistryRemapCallback<Status
 			secondStringMap.put(id, entry.getValue());
 		}
 
-		StatusEffectStringsAccessor.setField_9163(secondStringMap);
+		StatusEffectStringsAccessor.setAmplifyingFactorsMap(secondStringMap);
 
 		Map<Integer, Integer> integerMap = new HashMap<>();
 
-		for (Map.Entry<Integer, Integer> entry : StatusEffectStringsAccessor.getField_9164().entrySet()) {
+		for (Map.Entry<Integer, Integer> entry : StatusEffectStringsAccessor.getEffectColorsMap().entrySet()) {
 			int id = entry.getKey();
 
 			if (changedIdsMap.containsKey(id)) {
@@ -70,6 +70,6 @@ public class StatusEffectStringsRemapper implements RegistryRemapCallback<Status
 			integerMap.put(id, entry.getValue());
 		}
 
-		StatusEffectStringsAccessor.setField_9164(integerMap);
+		StatusEffectStringsAccessor.setEffectColorsMap(integerMap);
 	}
 }

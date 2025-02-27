@@ -18,6 +18,8 @@
 package net.legacyfabric.fabric.impl.effect.versioned;
 
 import net.legacyfabric.fabric.api.effect.StatusEffectIds;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 import net.minecraft.entity.effect.StatusEffect;
@@ -26,8 +28,6 @@ import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,8 +38,8 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		RegistryInitializedEvent.event(RegistryIds.STATUS_EFFECTS).register(EarlyInitializer::effectRegistryInit);
 	}
 
-	private static void effectRegistryInit(Registry<?> holder) {
-		SyncedRegistry<StatusEffect> registry = (SyncedRegistry<StatusEffect>) holder;
+	private static void effectRegistryInit(FabricRegistry<?> holder) {
+		SyncedFabricRegistry<StatusEffect> registry = (SyncedFabricRegistry<StatusEffect>) holder;
 
 		registry.fabric$getRegistryRemapCallback().register(new StatusEffectRemapper());
 		registry.fabric$getRegistryRemapCallback().register(new StatusEffectStringsRemapper());

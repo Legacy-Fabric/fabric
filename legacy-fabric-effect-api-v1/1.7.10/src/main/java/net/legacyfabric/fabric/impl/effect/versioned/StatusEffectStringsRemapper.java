@@ -20,18 +20,19 @@ package net.legacyfabric.fabric.impl.effect.versioned;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
+
 import net.minecraft.entity.effect.StatusEffect;
 
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
 import net.legacyfabric.fabric.mixin.effect.StatusEffectStringsAccessor;
 
 public class StatusEffectStringsRemapper implements RegistryRemapCallback<StatusEffect> {
 	@Override
-	public void callback(Map<Integer, RegistryEntry<StatusEffect>> changedIdsMap) {
+	public void callback(Map<Integer, FabricRegistryEntry<StatusEffect>> changedIdsMap) {
 		HashMap<Integer, String> firstStringMap = new HashMap<>();
 
-		for (Map.Entry<Integer, String> entry : StatusEffectStringsAccessor.getField_4424().entrySet()) {
+		for (Map.Entry<Integer, String> entry : StatusEffectStringsAccessor.getLevelsMap().entrySet()) {
 			int id = entry.getKey();
 
 			if (changedIdsMap.containsKey(id)) {
@@ -41,11 +42,11 @@ public class StatusEffectStringsRemapper implements RegistryRemapCallback<Status
 			firstStringMap.put(id, entry.getValue());
 		}
 
-		StatusEffectStringsAccessor.setField_4424(firstStringMap);
+		StatusEffectStringsAccessor.setLevelsMap(firstStringMap);
 
 		HashMap<Integer, String> secondStringMap = new HashMap<>();
 
-		for (Map.Entry<Integer, String> entry : StatusEffectStringsAccessor.getField_4425().entrySet()) {
+		for (Map.Entry<Integer, String> entry : StatusEffectStringsAccessor.getAmplifyingFactorsMap().entrySet()) {
 			int id = entry.getKey();
 
 			if (changedIdsMap.containsKey(id)) {
@@ -55,11 +56,11 @@ public class StatusEffectStringsRemapper implements RegistryRemapCallback<Status
 			secondStringMap.put(id, entry.getValue());
 		}
 
-		StatusEffectStringsAccessor.setField_4425(secondStringMap);
+		StatusEffectStringsAccessor.setAmplifyingFactorsMap(secondStringMap);
 
 		HashMap<Integer, Integer> integerMap = new HashMap<>();
 
-		for (Map.Entry<Integer, Integer> entry : StatusEffectStringsAccessor.getField_4426().entrySet()) {
+		for (Map.Entry<Integer, Integer> entry : StatusEffectStringsAccessor.getEffectColorsMap().entrySet()) {
 			int id = entry.getKey();
 
 			if (changedIdsMap.containsKey(id)) {
@@ -69,6 +70,6 @@ public class StatusEffectStringsRemapper implements RegistryRemapCallback<Status
 			integerMap.put(id, entry.getValue());
 		}
 
-		StatusEffectStringsAccessor.setField_4426(integerMap);
+		StatusEffectStringsAccessor.setEffectColorsMap(integerMap);
 	}
 }

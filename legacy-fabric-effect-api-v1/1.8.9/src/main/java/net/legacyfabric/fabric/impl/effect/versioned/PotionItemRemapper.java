@@ -35,9 +35,9 @@ public class PotionItemRemapper implements RegistryRemapCallback<StatusEffect> {
 	@Override
 	public void callback(Map<Integer, FabricRegistryEntry<StatusEffect>> changedIdsMap) {
 		for (PotionItem potionItem : POTION_ITEMS) {
-			((PotionItemAccessor) potionItem).getSTATUS_EFFECTS_1().clear();
+			((PotionItemAccessor) potionItem).getMetaToEffectListMap().clear();
 		}
 
-		PotionItemAccessor.getSTATUS_EFFECTS_2().clear();
+		PotionItemAccessor.getEffectListToMetaMap().clear();
 	}
 }
