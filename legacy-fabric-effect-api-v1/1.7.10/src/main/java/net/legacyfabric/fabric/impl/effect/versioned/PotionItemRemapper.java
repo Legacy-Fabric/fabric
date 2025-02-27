@@ -21,12 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
-
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.PotionItem;
 
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
 import net.legacyfabric.fabric.mixin.effect.PotionItemAccessor;
 
 public class PotionItemRemapper implements RegistryRemapCallback<StatusEffect> {

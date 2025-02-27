@@ -19,10 +19,6 @@ package net.legacyfabric.fabric.mixin.effect;
 
 import java.util.Arrays;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.effect.versioned.EarlyInitializer;
-import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayFabricRegistryWrapper;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -36,10 +32,12 @@ import net.minecraft.entity.effect.StatusEffect;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.impl.effect.versioned.EarlyInitializer;
+import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayFabricRegistryWrapper;
 
 @Mixin(StatusEffect.class)
 public class StatusEffectMixin {
-
 	@Mutable
 	@Shadow
 	@Final

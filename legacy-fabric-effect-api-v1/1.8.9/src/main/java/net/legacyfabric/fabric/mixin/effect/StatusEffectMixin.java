@@ -41,7 +41,6 @@ import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayMapFabricRegistr
 
 @Mixin(StatusEffect.class)
 public class StatusEffectMixin {
-
 	@Mutable
 	@Shadow
 	@Final

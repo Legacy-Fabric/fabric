@@ -19,11 +19,6 @@ package net.legacyfabric.fabric.test.registry;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import net.legacyfabric.fabric.api.effect.PotionHelper;
-
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -31,6 +26,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -42,6 +39,7 @@ import net.minecraft.world.World;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.legacyfabric.fabric.api.effect.PotionHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
@@ -136,7 +134,6 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	public static class TestStatusEffect extends StatusEffect {
-
 		public TestStatusEffect(int i, Identifier identifier, boolean bl, int j) {
 			super(i, new net.minecraft.util.Identifier(identifier.toString()), bl, j);
 		}
@@ -153,6 +150,7 @@ public class RegistryTest implements ModInitializer {
 			int i;
 
 			i = 50 >> amplifier;
+
 			if (i > 0) {
 				return duration % i == 0;
 			} else {

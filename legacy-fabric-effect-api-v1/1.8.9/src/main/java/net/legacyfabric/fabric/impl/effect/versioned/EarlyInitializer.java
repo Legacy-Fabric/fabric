@@ -17,16 +17,14 @@
 
 package net.legacyfabric.fabric.impl.effect.versioned;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
-
 import net.minecraft.entity.effect.StatusEffect;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 
 public class EarlyInitializer implements PreLaunchEntrypoint {
 	@Override

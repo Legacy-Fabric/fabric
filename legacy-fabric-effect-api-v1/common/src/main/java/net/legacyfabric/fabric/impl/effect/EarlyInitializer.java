@@ -17,21 +17,19 @@
 
 package net.legacyfabric.fabric.impl.effect;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.api.util.VersionUtils;
-
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
-
 import net.minecraft.entity.effect.StatusEffect;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
+import net.legacyfabric.fabric.api.util.VersionUtils;
 
 public class EarlyInitializer implements PreLaunchEntrypoint {
 	/**
-	 * Before MC 1.9, effects translation key starts with 'potion' instead of 'effect'
+	 * Before MC 1.9, effects translation key starts with 'potion' instead of 'effect'.
 	 */
 	private static final String keyPrefix = VersionUtils.matches(">=1.9") ? "effect" : "potion";
 
