@@ -29,6 +29,10 @@
       "net.legacyfabric.fabric.test.command.CommandV1Test"
     ]
   },
+  "mixins": [
+    "test-mod.mixins.json"
+  ],
+  "accessWidener": "legacy-fabric-api-test-mod.accesswidener",
   "authors": [
     {
       "name": "Legacy Fabric",
@@ -53,7 +57,6 @@
   "depends": {
     "minecraft": "${minecraft_version}"
   },
-  "accessWidener": "testmods.accesswidener",
   "custom": {
     "modmenu": {
       "badges": [ "library" ]

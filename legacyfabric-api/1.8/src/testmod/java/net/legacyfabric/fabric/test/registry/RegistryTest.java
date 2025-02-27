@@ -19,6 +19,11 @@ package net.legacyfabric.fabric.test.registry;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.legacyfabric.fabric.api.effect.PotionHelper;
+
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -45,11 +50,14 @@ import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryTest implements ModInitializer {
+	public static StatusEffect EFFECT;
+
 	@Override
 	public void onInitialize() {
 		this.registerItems();
 		this.registerBlocks();
-		this.registerBlockEntity();
+		this.registerBlockEntities();
+		this.registerEffectsAndPotions();
 	}
 
 	private void registerItems() {
@@ -73,7 +81,7 @@ public class RegistryTest implements ModInitializer {
 		}
 	}
 
-	private void registerBlockEntity() {
+	private void registerBlockEntities() {
 		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
 
 		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setItemGroup(ItemGroup.FOOD);
@@ -86,6 +94,18 @@ public class RegistryTest implements ModInitializer {
 				RegistryHelper.register(registry, identifier, (T) TestBlockEntity.class);
 			}
 		});
+	}
+
+	private void registerEffectsAndPotions() {
+		Identifier identifier = new Identifier("legacy-fabric-api", "test_effect");
+
+		EFFECT = net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(RegistryIds.STATUS_EFFECTS, identifier,
+				id -> new TestStatusEffect(id, identifier, false, 1234567)
+						.method_2440(3, 1)
+						.method_2434(0.25)
+		);
+		PotionHelper.registerLevels(EFFECT, "!0 & !1 & !2 & !3 & 1+6");
+		PotionHelper.registerAmplifyingFactor(EFFECT, "5");
 	}
 
 	public static class TestBlockWithEntity extends BlockWithEntity {
@@ -113,5 +133,31 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	public static class TestBlockEntity extends BlockEntity {
+	}
+
+	public static class TestStatusEffect extends StatusEffect {
+
+		public TestStatusEffect(int i, Identifier identifier, boolean bl, int j) {
+			super(i, new net.minecraft.util.Identifier(identifier.toString()), bl, j);
+		}
+
+		@Override
+		public void method_6087(LivingEntity livingEntity, int i) {
+			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
+				livingEntity.heal(1.0F);
+			}
+		}
+
+		@Override
+		public boolean canApplyUpdateEffect(int duration, int amplifier) {
+			int i;
+
+			i = 50 >> amplifier;
+			if (i > 0) {
+				return duration % i == 0;
+			} else {
+				return true;
+			}
+		}
 	}
 }
