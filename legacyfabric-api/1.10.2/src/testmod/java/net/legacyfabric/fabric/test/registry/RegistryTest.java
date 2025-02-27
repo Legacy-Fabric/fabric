@@ -19,6 +19,15 @@ package net.legacyfabric.fabric.test.registry;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffectStrings;
+import net.minecraft.item.Items;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.Potions;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -46,11 +55,14 @@ import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryTest implements ModInitializer {
+	public static StatusEffect EFFECT;
+
 	@Override
 	public void onInitialize() {
 		this.registerItems();
 		this.registerBlocks();
-		this.registerBlockEntity();
+		this.registerBlockEntities();
+		this.registerEffectsAndPotions();
 	}
 
 	private void registerItems() {
@@ -81,13 +93,23 @@ public class RegistryTest implements ModInitializer {
 		}
 	}
 
-	private void registerBlockEntity() {
+	private void registerBlockEntities() {
 		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
 
 		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setItemGroup(ItemGroup.FOOD);
 		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
 		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
 		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
+	}
+
+	private void registerEffectsAndPotions() {
+		Identifier identifier = new Identifier("legacy-fabric-api", "test_effect");
+
+		EFFECT = new TestStatusEffect(false, 1234567).method_2440(3, 1).method_2434(0.25).method_12944();
+		RegistryHelper.register(StatusEffect.REGISTRY, identifier, EFFECT);
+		Potion potion = new Potion(new StatusEffectInstance(EFFECT, 3600, 5));
+		RegistryHelper.register(Potion.REGISTRY, identifier, potion);
+		StatusEffectStrings.method_11420(Potions.LEAPING, new StatusEffectStrings.class_2696(Items.GLISTERING_MELON), potion);
 	}
 
 	public static class TestBlockWithEntity extends BlockWithEntity {
@@ -115,5 +137,31 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	public static class TestBlockEntity extends BlockEntity {
+	}
+
+	public static class TestStatusEffect extends StatusEffect {
+
+		public TestStatusEffect(boolean bl, int i) {
+			super(bl, i);
+		}
+
+		@Override
+		public void method_6087(LivingEntity livingEntity, int i) {
+			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
+				livingEntity.heal(1.0F);
+			}
+		}
+
+		@Override
+		public boolean canApplyUpdateEffect(int duration, int amplifier) {
+			int i;
+
+			i = 50 >> amplifier;
+			if (i > 0) {
+				return duration % i == 0;
+			} else {
+				return true;
+			}
+		}
 	}
 }

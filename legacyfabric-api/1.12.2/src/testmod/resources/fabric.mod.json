@@ -30,6 +30,9 @@
       "net.legacyfabric.fabric.test.command.CommandV1Test"
     ]
   },
+  "mixins": [
+    "test-mod.mixins.json"
+  ],
   "authors": [
     {
       "name": "Legacy Fabric",
