@@ -17,14 +17,16 @@
 
 package net.legacyfabric.fabric.impl.effect;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
+
 import net.minecraft.entity.effect.StatusEffect;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
 
 public class EarlyInitializer implements PreLaunchEntrypoint {
 	@Override
@@ -32,8 +34,8 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		RegistryInitializedEvent.event(RegistryIds.STATUS_EFFECTS).register(EarlyInitializer::effectRegistryInit);
 	}
 
-	private static void effectRegistryInit(Registry<?> holder) {
-		SyncedRegistry<StatusEffect> registry = (SyncedRegistry<StatusEffect>) holder;
+	private static void effectRegistryInit(FabricRegistry<?> holder) {
+		SyncedFabricRegistry<StatusEffect> registry = (SyncedFabricRegistry<StatusEffect>) holder;
 
 		registry.fabric$getBeforeAddedCallback().register((rawId, id, object) -> object.setTranslationKey("effect." + id.toTranslationKey()));
 	}

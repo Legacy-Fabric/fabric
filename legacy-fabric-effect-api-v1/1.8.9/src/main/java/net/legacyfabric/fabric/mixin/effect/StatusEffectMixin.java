@@ -36,8 +36,8 @@ import net.minecraft.util.Identifier;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayMapRegistryWrapper;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayMapFabricRegistryWrapper;
 
 @Mixin(StatusEffect.class)
 public class StatusEffectMixin {
@@ -51,14 +51,14 @@ public class StatusEffectMixin {
 	@Final
 	private static Map<Identifier, StatusEffect> STATUS_EFFECTS_BY_ID;
 	@Unique
-	private static Registry<StatusEffect> STATUS_EFFECT_REGISTRY;
+	private static FabricRegistry<StatusEffect> STATUS_EFFECT_REGISTRY;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
 		BiMap<Identifier, StatusEffect> map = HashBiMap.create(STATUS_EFFECTS_BY_ID);
 		STATUS_EFFECTS_BY_ID = map;
 
-		STATUS_EFFECT_REGISTRY = new SyncedArrayMapRegistryWrapper<>(
+		STATUS_EFFECT_REGISTRY = new SyncedArrayMapFabricRegistryWrapper<>(
 				RegistryIds.STATUS_EFFECTS,
 				STATUS_EFFECTS, map, false,
 				universal -> new Identifier(universal.toString()),
