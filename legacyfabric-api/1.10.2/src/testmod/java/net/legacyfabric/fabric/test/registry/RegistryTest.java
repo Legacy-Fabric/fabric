@@ -101,12 +101,13 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	private void registerEffectsAndPotions() {
-		Identifier identifier = new Identifier("legacy-fabric-api", "test_effect");
-
+		Identifier effectIdentifier = new Identifier("legacy-fabric-api", "test_effect");
 		EFFECT = new TestStatusEffect(false, 1234567).method_2440(3, 1).method_2434(0.25).method_12944();
-		RegistryHelper.register(StatusEffect.REGISTRY, identifier, EFFECT);
-		Potion potion = new Potion(new StatusEffectInstance(EFFECT, 3600, 5));
-		RegistryHelper.register(Potion.REGISTRY, identifier, potion);
+		RegistryHelper.register(StatusEffect.REGISTRY, effectIdentifier, EFFECT);
+
+		Identifier potionIdentifier = new Identifier("legacy-fabric-api", "test_potion");
+		Potion potion = new Potion(potionIdentifier.toTranslationKey(), new StatusEffectInstance(EFFECT, 3600, 5));
+		RegistryHelper.register(Potion.REGISTRY, potionIdentifier, potion);
 		PotionHelper.registerPotionRecipe(Potions.LEAPING, Items.GLISTERING_MELON, potion);
 	}
 
