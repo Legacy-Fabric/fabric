@@ -29,7 +29,7 @@ import net.legacyfabric.fabric.mixin.effect.StatusEffectStringsAccessor;
 public class StatusEffectStringsRemapper implements RegistryRemapCallback<StatusEffect> {
 	@Override
 	public void callback(Map<Integer, FabricRegistryEntry<StatusEffect>> changedIdsMap) {
-		Map<Integer, String> firstStringMap = new HashMap<>();
+		Map<Integer, String> levelsMap = new HashMap<>();
 
 		for (Map.Entry<Integer, String> entry : StatusEffectStringsAccessor.getLevelsMap().entrySet()) {
 			int id = entry.getKey();
@@ -38,12 +38,12 @@ public class StatusEffectStringsRemapper implements RegistryRemapCallback<Status
 				id = changedIdsMap.get(id).getId();
 			}
 
-			firstStringMap.put(id, entry.getValue());
+			levelsMap.put(id, entry.getValue());
 		}
 
-		StatusEffectStringsAccessor.setLevelsMap(firstStringMap);
+		StatusEffectStringsAccessor.setLevelsMap(levelsMap);
 
-		Map<Integer, String> secondStringMap = new HashMap<>();
+		Map<Integer, String> amplifyingFactorsMap = new HashMap<>();
 
 		for (Map.Entry<Integer, String> entry : StatusEffectStringsAccessor.getAmplifyingFactorsMap().entrySet()) {
 			int id = entry.getKey();
@@ -52,12 +52,12 @@ public class StatusEffectStringsRemapper implements RegistryRemapCallback<Status
 				id = changedIdsMap.get(id).getId();
 			}
 
-			secondStringMap.put(id, entry.getValue());
+			amplifyingFactorsMap.put(id, entry.getValue());
 		}
 
-		StatusEffectStringsAccessor.setAmplifyingFactorsMap(secondStringMap);
+		StatusEffectStringsAccessor.setAmplifyingFactorsMap(amplifyingFactorsMap);
 
-		Map<Integer, Integer> integerMap = new HashMap<>();
+		Map<Integer, Integer> colorsMap = new HashMap<>();
 
 		for (Map.Entry<Integer, Integer> entry : StatusEffectStringsAccessor.getEffectColorsMap().entrySet()) {
 			int id = entry.getKey();
@@ -66,9 +66,9 @@ public class StatusEffectStringsRemapper implements RegistryRemapCallback<Status
 				id = changedIdsMap.get(id).getId();
 			}
 
-			integerMap.put(id, entry.getValue());
+			colorsMap.put(id, entry.getValue());
 		}
 
-		StatusEffectStringsAccessor.setEffectColorsMap(integerMap);
+		StatusEffectStringsAccessor.setEffectColorsMap(colorsMap);
 	}
 }
