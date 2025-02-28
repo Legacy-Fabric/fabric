@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-effect-api-v1-common",
+  "id": "legacy-fabric-effect-api-v1",
   "name": "Legacy Fabric Effect API (V1)",
   "version": "${version}",
   "environment": "*",
@@ -22,11 +22,11 @@
   "description": "Effect and Potion utils",
   "entrypoints": {
     "preLaunch": [
-      "net.legacyfabric.fabric.impl.effect.EarlyInitializer"
     ]
   },
-  "accessWidener": "legacy-fabric-effect-api-common.accesswidener",
+  "accessWidener": "legacy-fabric-effect-api.accesswidener",
   "mixins": [
+    "legacy-fabric-effect-api-v1.mixins.json"
   ],
   "custom": {
     "loom:injected_interfaces": {

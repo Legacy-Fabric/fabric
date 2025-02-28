@@ -30,7 +30,6 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffectStrings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -47,6 +46,7 @@ import net.minecraft.world.World;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.legacyfabric.fabric.api.effect.PotionHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
@@ -115,7 +115,7 @@ public class RegistryTest implements ModInitializer {
 		RegistryHelper.register(StatusEffect.REGISTRY, identifier, EFFECT);
 		Potion potion = new Potion(new StatusEffectInstance(EFFECT, 3600, 5));
 		RegistryHelper.register(Potion.REGISTRY, identifier, potion);
-		StatusEffectStrings.method_11420(Potions.LEAPING, new StatusEffectStrings.class_2696(Items.GLISTERING_MELON), potion);
+		PotionHelper.registerPotionRecipe(Potions.LEAPING, Items.GLISTERING_MELON, potion);
 	}
 
 	public static class TestBlockWithEntity extends BlockWithEntity {
