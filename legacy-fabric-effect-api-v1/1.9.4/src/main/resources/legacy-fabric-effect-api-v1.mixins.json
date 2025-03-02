@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.effect",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "PotionMixin",
+    "StatusEffectMixin",
+    "StatusEffectStringsAccessor"
+  ],
+  "client": [
+  ]
+}

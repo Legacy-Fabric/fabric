@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.test.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "effect.LivingEntityMixin"
+  ],
+  "client": [
+  ]
+}

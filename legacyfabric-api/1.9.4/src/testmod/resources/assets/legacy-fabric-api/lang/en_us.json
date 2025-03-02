@@ -4,5 +4,9 @@
   "item.legacy-fabric-api.test_item.name": "Test Item",
   "tile.legacy-fabric-api.conc_block_1644825.name": "Test Block 1644825",
   "tile.legacy-fabric-api.conc_block_3361970.name": "Test Block 3361970",
-  "tile.legacy-fabric-api.test_block_entity.name": "Test Block with Entity"
+  "tile.legacy-fabric-api.test_block_entity.name": "Test Block with Entity",
+  "effect.legacy-fabric-api.test_effect": "Test Effect",
+  "potion.effect.legacy-fabric-api.test_potion": "Test Potion",
+  "splash_potion.effect.legacy-fabric-api.test_potion": "Test Potion (Splash)",
+  "lingering_potion.effect.legacy-fabric-api.test_potion": "Test Potion (Lingering)"
 }
