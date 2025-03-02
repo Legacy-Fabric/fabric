@@ -29,6 +29,10 @@
       "net.legacyfabric.fabric.test.command.CommandV1Test"
     ]
   },
+  "mixins": [
+    "test-mod.mixins.json"
+  ],
+  "accessWidener": "legacy-fabric-api-test-mod.accesswidener",
   "authors": [
     {
       "name": "Legacy Fabric",
