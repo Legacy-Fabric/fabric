@@ -48,6 +48,7 @@ public class TestCreeperEntityRenderer extends MobEntityRenderer {
 		RegistryTest.TestCreeperEntity creeperEntity = (RegistryTest.TestCreeperEntity) entity;
 		float var3 = creeperEntity.getClientFuseTime(f);
 		float var4 = 1.0F + MathHelper.sin(var3 * 100.0F) * var3 * 0.01F;
+
 		if (var3 < 0.0F) {
 			var3 = 0.0F;
 		}
@@ -66,10 +67,12 @@ public class TestCreeperEntityRenderer extends MobEntityRenderer {
 	protected int method_5776(LivingEntity entity, float f, float g) {
 		RegistryTest.TestCreeperEntity creeperEntity = (RegistryTest.TestCreeperEntity) entity;
 		float var4 = creeperEntity.getClientFuseTime(g);
-		if ((int)(var4 * 10.0F) % 2 == 0) {
+
+		if ((int) (var4 * 10.0F) % 2 == 0) {
 			return 0;
 		} else {
-			int var5 = (int)(var4 * 0.2F * 255.0F);
+			int var5 = (int) (var4 * 0.2F * 255.0F);
+
 			if (var5 < 0) {
 				var5 = 0;
 			}
@@ -87,15 +90,12 @@ public class TestCreeperEntityRenderer extends MobEntityRenderer {
 
 	protected int method_5779(LivingEntity entity, int i, float f) {
 		RegistryTest.TestCreeperEntity creeperEntity = (RegistryTest.TestCreeperEntity) entity;
+
 		if (creeperEntity.method_3074()) {
-			if (creeperEntity.isInvisible()) {
-				GL11.glDepthMask(false);
-			} else {
-				GL11.glDepthMask(true);
-			}
+			GL11.glDepthMask(!creeperEntity.isInvisible());
 
 			if (i == 1) {
-				float var4 = (float)creeperEntity.ticksAlive + f;
+				float var4 = (float) creeperEntity.ticksAlive + f;
 				this.bindTexture(field_6472);
 				GL11.glMatrixMode(5890);
 				GL11.glLoadIdentity();

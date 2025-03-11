@@ -34,7 +34,7 @@ public class TestCreeperEntityRenderer extends MobEntityRenderer {
 
 	public TestCreeperEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
 		super(entityRenderDispatcher, new CreeperEntityModel(), 0.5F);
-//		this.addFeature(new CreeperLightningFeatureRenderer(this));
+		//		this.addFeature(new CreeperLightningFeatureRenderer(this));
 	}
 
 	protected void scale(LivingEntity creeperEntity, float f) {
@@ -50,10 +50,11 @@ public class TestCreeperEntityRenderer extends MobEntityRenderer {
 
 	protected int method_5776(LivingEntity creeperEntity, float f, float g) {
 		float h = ((RegistryTest.TestCreeperEntity) creeperEntity).getClientFuseTime(g);
-		if ((int)(h * 10.0F) % 2 == 0) {
+
+		if ((int) (h * 10.0F) % 2 == 0) {
 			return 0;
 		} else {
-			int i = (int)(h * 0.2F * 255.0F);
+			int i = (int) (h * 0.2F * 255.0F);
 			i = MathHelper.clamp(i, 0, 255);
 			return i << 24 | 822083583;
 		}

@@ -22,7 +22,7 @@ import net.fabricmc.api.ClientModInitializer;
 public class EntityRendererTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-//		EntityRendererRegistry.INSTANCE.register(RegistryTest.TestCreeperEntity.class,
-//				(dispatcher, context) -> new TestCreeperEntityRenderer(dispatcher));
+		//		EntityRendererRegistry.INSTANCE.register(RegistryTest.TestCreeperEntity.class,
+		//				(dispatcher, context) -> new TestCreeperEntityRenderer(dispatcher));
 	}
 }
