@@ -316,6 +316,10 @@ allprojects {
 		}
 	}
 
+	repositories {
+		maven { url = "https://maven.bawnorton.com/releases" }
+	}
+
 	dependencies {
 		minecraft "com.mojang:minecraft:${mcVersion}"
 		mappings legacy.yarn(mcVersion, project.yarn_mappings_build)
@@ -324,6 +328,8 @@ allprojects {
 		implementation "com.mojang:brigadier:1.0.17"
 
 		testmodImplementation sourceSets.main.output
+
+		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0"))
 	}
 
 	tasks.withType(ProcessResources).configureEach {
@@ -552,6 +558,8 @@ sourceSets {
 }
 
 dependencies {
+	include("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
+
 	afterEvaluate {
 		subprojects.each {
 			def (moduleName) = projectInfoFromName(it)
