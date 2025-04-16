@@ -8,5 +8,6 @@
   "effect.legacy-fabric-api.test_effect": "Test Effect",
   "potion.effect.legacy-fabric-api.test_potion": "Test Potion",
   "splash_potion.effect.legacy-fabric-api.test_potion": "Test Potion (Splash)",
-  "lingering_potion.effect.legacy-fabric-api.test_potion": "Test Potion (Lingering)"
+  "lingering_potion.effect.legacy-fabric-api.test_potion": "Test Potion (Lingering)",
+  "entity.legacy-fabric-api.test_entity.name": "Test Entity"
 }

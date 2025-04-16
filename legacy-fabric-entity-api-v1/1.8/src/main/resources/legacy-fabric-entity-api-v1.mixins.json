@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.entity",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "EntityTypeMixin",
+    "SpawnEggDataAccessor"
+  ],
+  "client": [
+  ]
+}
