@@ -27,9 +27,11 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -46,6 +48,7 @@ import net.minecraft.world.World;
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.effect.PotionHelper;
+import net.legacyfabric.fabric.api.entity.EntityHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
@@ -60,6 +63,7 @@ public class RegistryTest implements ModInitializer {
 		this.registerBlocks();
 		this.registerBlockEntities();
 		this.registerEffectsAndPotions();
+		this.registerEntities();
 	}
 
 	private void registerItems() {
@@ -108,6 +112,12 @@ public class RegistryTest implements ModInitializer {
 		Potion potion = new Potion(potionIdentifier.toTranslationKey(), new StatusEffectInstance(EFFECT, 3600, 5));
 		RegistryHelper.register(Potion.REGISTRY, potionIdentifier, potion);
 		PotionHelper.registerPotionRecipe(Potions.LEAPING, Items.GLISTERING_MELON, potion);
+	}
+
+	private void registerEntities() {
+		Identifier creeperId = new Identifier("legacy-fabric-api", "test_entity");
+		RegistryHelper.register(EntityType.REGISTRY, creeperId, TestCreeperEntity.class);
+		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
 	}
 
 	public static class TestBlockWithEntity extends BlockWithEntity {
@@ -160,6 +170,23 @@ public class RegistryTest implements ModInitializer {
 			} else {
 				return true;
 			}
+		}
+	}
+
+	public static class TestCreeperEntity extends CreeperEntity {
+		public TestCreeperEntity(World world) {
+			super(world);
+		}
+
+		@Override
+		public void tick() {
+			if (this.isAlive()) {
+				if (this.hasStatusEffect(EFFECT)) {
+					this.ignite();
+				}
+			}
+
+			super.tick();
 		}
 	}
 }
