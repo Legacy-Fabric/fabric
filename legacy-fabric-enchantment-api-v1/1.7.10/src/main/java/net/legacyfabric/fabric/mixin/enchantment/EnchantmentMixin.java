@@ -6,11 +6,10 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.impl.enchantment.versioned.EarlyInitializer;
 
-import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayRegistryWrapper;
+import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayFabricRegistryWrapper;
 
 import net.minecraft.enchantment.Enchantment;
 
@@ -38,11 +37,11 @@ public class EnchantmentMixin {
 	public static Enchantment[] ALL_ENCHANTMENTS;
 
 	@Unique
-	private static Registry<Enchantment> ENCHANTMENT_REGISTRY;
+	private static FabricRegistry<Enchantment> ENCHANTMENT_REGISTRY;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		ENCHANTMENT_REGISTRY = new SyncedArrayRegistryWrapper<>(
+		ENCHANTMENT_REGISTRY = new SyncedArrayFabricRegistryWrapper<>(
 				RegistryIds.ENCHANTMENTS,
 				ALL_ENCHANTMENTS, EarlyInitializer.getVanillaIds(),
 				universal -> universal,

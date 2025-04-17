@@ -5,10 +5,10 @@ import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.legacyfabric.fabric.api.enchantment.EnchantmentIds;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.RegistryEntry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedRegistry;
 
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.mixin.enchantment.EnchantmentAccessor;
 
@@ -23,11 +23,11 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		RegistryInitializedEvent.event(RegistryIds.ENCHANTMENTS).register(EarlyInitializer::enchantmentRegistryInit);
 	}
 
-	private static void enchantmentRegistryInit(Registry<?> holder) {
-		SyncedRegistry<Enchantment> registry = (SyncedRegistry<Enchantment>) holder;
+	private static void enchantmentRegistryInit(FabricRegistry<?> holder) {
+		SyncedFabricRegistry<Enchantment> registry = (SyncedFabricRegistry<Enchantment>) holder;
 
 		registry.fabric$getRegistryRemapCallback().register(changedIdsMap -> {
-			for (RegistryEntry<Enchantment> entry : changedIdsMap.values()) {
+			for (FabricRegistryEntry<Enchantment> entry : changedIdsMap.values()) {
 				Enchantment enchantment = entry.getValue();
 
 				if (enchantment != null) {

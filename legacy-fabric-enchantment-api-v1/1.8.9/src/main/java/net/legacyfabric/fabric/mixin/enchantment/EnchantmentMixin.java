@@ -10,14 +10,13 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.Registry;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 
-import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayMapRegistryWrapper;
+import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayMapFabricRegistryWrapper;
 
 import net.minecraft.enchantment.Enchantment;
 
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.SimpleRegistry;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,18 +45,15 @@ public class EnchantmentMixin {
 	@Shadow
 	@Final
 	public static Enchantment[] ALL_ENCHANTMENTS;
-	@Shadow
-	@Final
-	public int id;
 	@Unique
-	private static Registry<Enchantment> ENCHANTMENT_REGISTRY;
+	private static FabricRegistry<Enchantment> ENCHANTMENT_REGISTRY;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
 		BiMap<Identifier, Enchantment> map = HashBiMap.create(ENCHANTMENT_MAP);
 		ENCHANTMENT_MAP = map;
 
-		ENCHANTMENT_REGISTRY = new SyncedArrayMapRegistryWrapper<>(
+		ENCHANTMENT_REGISTRY = new SyncedArrayMapFabricRegistryWrapper<>(
 				RegistryIds.ENCHANTMENTS,
 				ENCHANTMENTS, map, false,
 				universal -> new Identifier(universal.toString()),
