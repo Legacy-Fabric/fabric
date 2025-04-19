@@ -26,8 +26,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentTarget;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
@@ -59,6 +63,7 @@ public class RegistryTest implements ModInitializer {
 		this.registerBlockEntities();
 		this.registerEffectsAndPotions();
 		this.registerEntities();
+		this.registerEnchantments();
 	}
 
 	private void registerItems() {
@@ -113,6 +118,17 @@ public class RegistryTest implements ModInitializer {
 		Identifier creeperId = new Identifier("legacy-fabric-api", "test_entity");
 		RegistryHelper.register(RegistryIds.ENTITY_TYPES, creeperId, TestCreeperEntity.class);
 		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
+	}
+
+	private void registerEnchantments() {
+		Identifier enchantmentId = new Identifier("legacy-fabric-api", "test_enchantment");
+
+		RegistryInitializedEvent.event(RegistryIds.ENCHANTMENTS).register(new RegistryInitializedEvent() {
+			@Override
+			public <T> void initialized(FabricRegistry<T> registry) {
+				RegistryHelper.<T>register(registry, enchantmentId, id -> (T) new TestEnchantment(id, enchantmentId));
+			}
+		});
 	}
 
 	public static class TestBlockWithEntity extends BlockWithEntity {
@@ -182,6 +198,22 @@ public class RegistryTest implements ModInitializer {
 			}
 
 			super.tick();
+		}
+	}
+
+	public static class TestEnchantment extends Enchantment {
+		protected TestEnchantment(int id, Identifier identifier) {
+			super(id, new net.minecraft.util.Identifier(identifier.toString()), 2, EnchantmentTarget.FEET);
+		}
+
+		@Override
+		public void onDamage(LivingEntity bearer, Entity entity, int power) {
+			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
+		}
+
+		@Override
+		public void onDamaged(LivingEntity bearer, Entity entity, int power) {
+			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
 		}
 	}
 }

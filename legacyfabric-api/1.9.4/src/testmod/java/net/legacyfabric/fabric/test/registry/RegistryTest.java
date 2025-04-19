@@ -27,6 +27,10 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentTarget;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -66,6 +70,7 @@ public class RegistryTest implements ModInitializer {
 		this.registerBlockEntities();
 		this.registerEffectsAndPotions();
 		this.registerEntities();
+		this.registerEnchantments();
 	}
 
 	private void registerItems() {
@@ -126,6 +131,11 @@ public class RegistryTest implements ModInitializer {
 		Identifier creeperId = new Identifier("legacy-fabric-api", "test_entity");
 		RegistryHelper.register(RegistryIds.ENTITY_TYPES, creeperId, TestCreeperEntity.class);
 		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
+	}
+
+	private void registerEnchantments() {
+		Identifier enchantmentId = new Identifier("legacy-fabric-api", "test_enchantment");
+		RegistryHelper.register(Enchantment.REGISTRY, enchantmentId, new TestEnchantment());
 	}
 
 	public static class TestBlockWithEntity extends BlockWithEntity {
@@ -195,6 +205,22 @@ public class RegistryTest implements ModInitializer {
 			}
 
 			super.tick();
+		}
+	}
+
+	public static class TestEnchantment extends Enchantment {
+		protected TestEnchantment() {
+			super(Rarity.COMMON, EnchantmentTarget.FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
+		}
+
+		@Override
+		public void onDamage(LivingEntity bearer, Entity entity, int power) {
+			bearer.addStatusEffect(new StatusEffectInstance(EFFECT, 50, 10));
+		}
+
+		@Override
+		public void onDamaged(LivingEntity bearer, Entity entity, int power) {
+			bearer.addStatusEffect(new StatusEffectInstance(EFFECT, 50, 10));
 		}
 	}
 }

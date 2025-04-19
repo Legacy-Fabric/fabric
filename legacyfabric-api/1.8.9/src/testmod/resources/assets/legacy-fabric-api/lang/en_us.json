@@ -7,5 +7,6 @@
   "tile.legacy-fabric-api.test_block_entity.name": "Test Block with Entity",
   "potion.legacy-fabric-api.test_effect": "Test Effect",
   "potion.legacy-fabric-api.test_effect.postfix": "Potion of Testing",
-  "entity.legacy-fabric-api.test_entity.name": "Test Entity"
+  "entity.legacy-fabric-api.test_entity.name": "Test Entity",
+  "enchantment.legacy-fabric-api.test_enchantment": "Test Enchantment"
 }
