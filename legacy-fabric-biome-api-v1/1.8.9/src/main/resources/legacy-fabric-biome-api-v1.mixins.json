@@ -7,7 +7,8 @@
   },
   "mixins": [
     "BiomeAccessor",
-    "BiomeMixin"
+    "BiomeMixin",
+    "BootstrapMixin"
   ],
   "client": [
   ]
