@@ -10,4 +10,3 @@ transitive-accessible method net/minecraft/world/biome/Biome setMutated ()Lnet/m
 transitive-accessible method net/minecraft/world/biome/Biome method_3839 ()Lnet/minecraft/world/biome/Biome;
 transitive-accessible method net/minecraft/world/biome/Biome method_6422 (Lnet/minecraft/world/biome/class_1742;)Lnet/minecraft/world/biome/Biome;
 transitive-accessible method net/minecraft/world/biome/Biome setTempratureAndDownfall (FF)Lnet/minecraft/world/biome/Biome;
-accessible method net/minecraft/world/biome/Biome method_6422 (Lnet/minecraft/world/biome/class_1742;)Lnet/minecraft/world/biome/Biome;
