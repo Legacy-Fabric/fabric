@@ -30,7 +30,6 @@ public interface BiomeAccessor {
 
 	@Accessor
 	static void setBiomeList(IdList<Biome> idList) {
-
 	}
 
 	@Accessor

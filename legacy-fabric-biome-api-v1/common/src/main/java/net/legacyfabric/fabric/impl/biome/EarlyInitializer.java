@@ -28,7 +28,6 @@ import net.legacyfabric.fabric.api.util.Identifier;
 public class EarlyInitializer implements PreLaunchEntrypoint {
 	@Override
 	public void onPreLaunch() {
-
 	}
 
 	public static Map<Integer, Identifier> getVanillaIds() {

@@ -19,8 +19,6 @@ package net.legacyfabric.fabric.test.registry;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import net.minecraft.world.biome.PlainsBiome;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -40,6 +38,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.itemgroup.ItemGroup;
 import net.minecraft.text.LiteralText;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.PlainsBiome;
 
 import net.fabricmc.api.ModInitializer;
 
