@@ -35,7 +35,6 @@ public class CustomizeWorldScreenMixin {
 			index = 5
 	)
 	private float allowSelectingAllBiomesInSelector(float max) {
-		System.out.println(Biome.getBiomes().length);
 		SyncedFabricRegistry<Biome> registry = (SyncedFabricRegistry<Biome>) (Object) RegistryHelper.getRegistry(RegistryIds.BIOMES);
 		return registry.stream().mapToInt(b -> registry.fabric$getRawId(b)).max().orElse((int) max) - 1;
 	}
