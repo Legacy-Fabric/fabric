@@ -48,6 +48,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.PlainsBiome;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -71,6 +73,7 @@ public class RegistryTest implements ModInitializer {
 		this.registerEffectsAndPotions();
 		this.registerEntities();
 		this.registerEnchantments();
+		this.registerBiomes();
 	}
 
 	private void registerItems() {
@@ -136,6 +139,12 @@ public class RegistryTest implements ModInitializer {
 	private void registerEnchantments() {
 		Identifier enchantmentId = new Identifier("legacy-fabric-api", "test_enchantment");
 		RegistryHelper.register(Enchantment.REGISTRY, enchantmentId, new TestEnchantment());
+	}
+
+	private void registerBiomes() {
+		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
+		RegistryHelper.register(Biome.REGISTRY, biomeId, new TestBiome(false,
+				new Biome.Settings("Test Biome").setBaseHeightModifier(0.525F).setVariationModifier(0.95F).setTemperature(0.3F).setDownfall(0.7F)));
 	}
 
 	public static class TestBlockWithEntity extends BlockWithEntity {
@@ -221,6 +230,12 @@ public class RegistryTest implements ModInitializer {
 		@Override
 		public void onDamaged(LivingEntity bearer, Entity entity, int power) {
 			bearer.addStatusEffect(new StatusEffectInstance(EFFECT, 50, 10));
+		}
+	}
+
+	public static class TestBiome extends PlainsBiome {
+		protected TestBiome(boolean bl, Settings settings) {
+			super(bl, settings);
 		}
 	}
 }

@@ -6,8 +6,10 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "biome.CustomizedWorldPropertiesSerializerMixin",
     "effect.LivingEntityMixin"
   ],
   "client": [
+    "biome.CustomizeWorldScreenMixin"
   ]
 }

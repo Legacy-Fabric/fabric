@@ -50,5 +50,6 @@ loadProject("legacy-fabric-command-api-v2")
 loadProject("legacy-fabric-effect-api-v1")
 loadProject("legacy-fabric-entity-api-v1")
 loadProject("legacy-fabric-enchantment-api-v1")
+loadProject("legacy-fabric-biome-api-v1")
 
 loadProject("legacyfabric-api")
