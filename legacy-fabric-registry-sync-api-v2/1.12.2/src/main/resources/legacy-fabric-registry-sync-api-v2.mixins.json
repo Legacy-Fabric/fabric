@@ -7,6 +7,7 @@
   },
   "mixins": [
     "versioned.BiDefaultedRegistryMixin",
+    "versioned.MutableRegistryMixin",
     "versioned.OtherIdListMixin",
     "versioned.PlayerManagerMixin",
     "versioned.SimpleRegistryMixin"
