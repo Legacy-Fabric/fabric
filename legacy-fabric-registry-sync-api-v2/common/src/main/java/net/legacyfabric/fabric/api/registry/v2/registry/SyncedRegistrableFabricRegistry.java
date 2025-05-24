@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 - 2024 Legacy Fabric
+ * Copyright (c) 2020 - 2025 Legacy Fabric
  * Copyright (c) 2016 - 2022 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
