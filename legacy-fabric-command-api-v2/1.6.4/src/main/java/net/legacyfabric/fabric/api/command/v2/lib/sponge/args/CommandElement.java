@@ -32,10 +32,8 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.ChatMessage;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
-
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+import net.legacyfabric.fabric.api.util.ServerUtils;
 
 /**
  * Represents a command argument element.
@@ -134,22 +132,6 @@ public abstract class CommandElement {
 	}
 
 	public MinecraftServer getServer() {
-		MinecraftServer minecraftServer = null;
-
-		try {
-			minecraftServer = MinecraftServer.getServer();
-		} catch (RuntimeException e1) {
-			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
-				minecraftServer = (MinecraftServer) FabricLoader.getInstance().getGameInstance();
-			} else {
-				try {
-					minecraftServer = net.minecraft.client.MinecraftClient.getInstance().getServer();
-				} catch (RuntimeException e2) {
-					e2.printStackTrace();
-				}
-			}
-		}
-
-		return minecraftServer;
+		return ServerUtils.getServer();
 	}
 }

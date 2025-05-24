@@ -33,7 +33,6 @@ import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 import net.legacyfabric.fabric.impl.registry.accessor.RegistryIdSetter;
 
 @Mixin(MutableRegistry.class)
@@ -95,11 +94,6 @@ public abstract class MutableRegistryMixin<K, V> implements FabricRegistry<V>, R
 	public void fabric$setId(Identifier identifier) {
 		assert this.fabric_id == null;
 		this.fabric_id = identifier;
-	}
-
-	@Override
-	public K fabric$toKeyType(Identifier identifier) {
-		return RegistryHelperImplementation.hasFlatteningBegun ? (K) new net.minecraft.util.Identifier(identifier.toString()) : (K) identifier.toString();
 	}
 
 	@Override
