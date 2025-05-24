@@ -49,7 +49,7 @@ import net.legacyfabric.fabric.impl.networking.PacketByteBufExtension;
 import net.legacyfabric.fabric.impl.registry.accessor.RegistryIdSetter;
 
 public class RegistryHelperImplementation {
-	public static final Identifier PACKET_ID = new Identifier("legacy-fabric-api:registry_remap");
+	public static final Identifier PACKET_ID = new Identifier("lf-api:registry");
 	public static final boolean hasFlatteningBegun = VersionUtils.matches(">=1.8 <=1.12.2");
 	public static final Map<Identifier, Event<RegistryInitializedEvent>> INITIALIZATION_EVENTS = new HashMap<>();
 	private static final Map<Identifier, FabricRegistry<?>> REGISTRIES = new HashMap<>();
