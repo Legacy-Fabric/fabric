@@ -124,8 +124,13 @@ public class WorldSaveHandlerMixin {
 		fabric_saveRegistryData();
 	}
 
+	private boolean readRegistryData = false;
+
 	@Inject(method = "getLevelProperties", at = @At("HEAD"))
 	public void readWorldProperties(CallbackInfoReturnable<LevelProperties> callbackInfo) {
+		if (readRegistryData) return;
+		readRegistryData = true;
+
 		// Load
 		for (int i = 0; i < FABRIC_ID_REGISTRY_BACKUPS; i++) {
 			LOGGER.trace("[legacy-fabric-registry-sync-api-v1] Loading Legacy Fabric registry [file " + (i + 1) + "/" + (FABRIC_ID_REGISTRY_BACKUPS + 1) + "]");
