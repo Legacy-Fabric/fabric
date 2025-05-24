@@ -121,13 +121,7 @@ public class RegistryTest implements ModInitializer {
 
 	private void registerEnchantments() {
 		Identifier enchantmentId = new Identifier("legacy-fabric-api", "test_enchantment");
-
-		RegistryInitializedEvent.event(RegistryIds.ENCHANTMENTS).register(new RegistryInitializedEvent() {
-			@Override
-			public <T> void initialized(FabricRegistry<T> registry) {
-				RegistryHelper.<T>register(registry, enchantmentId, id -> (T) new TestEnchantment(id));
-			}
-		});
+		RegistryHelper.register(RegistryIds.ENCHANTMENTS, enchantmentId, TestEnchantment::new);
 	}
 
 	private void registerBiomes() {
