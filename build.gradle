@@ -384,7 +384,7 @@ allprojects {
 
 	[jar, sourcesJar].each {
 		it.from(rootProject.file("LICENSE")) {
-			rename { "${it}-${project.base.archivesName}" }
+			rename { "${it}-${project.base.archivesName.get()}" }
 		}
 	}
 
