@@ -419,7 +419,7 @@ public class GenericArguments {
 	}
 
 	/**
-	 * <p>Make the provided command element optional.</p>
+	 * Make the provided command element optional.
 	 *
 	 * <p>This means the command element is not required.</p>
 	 *

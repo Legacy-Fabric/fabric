@@ -7,7 +7,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
       image: eclipse-temurin:21-jdk
       options: --user root
@@ -18,7 +18,7 @@ jobs:
         with:
          fetch-depth: 0
       - uses: gradle/actions/wrapper-validation@v3
-      - run: ./gradlew checkVersion build publish publishMods --stacktrace
+      - run: ./gradlew checkVersion build publish publishMods --stacktrace --no-configuration-cache
         env:
           MAVEN_PUBLISH_CREDENTIALS: ${{ secrets.MAVEN_PUBLISH_CREDENTIALS }}
           CURSE_API_KEY: ${{ secrets.CURSE_API_KEY }}

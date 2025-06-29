@@ -24,6 +24,7 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 
 /**
  * Allows adding custom game rules.
+ *
  * <p>To add a game rule, hook into {@code GameRulesInitializedCallback}
  * and call {@code dispatcher.addGameRule("name", "default_value", variableType)}</p>
  */
