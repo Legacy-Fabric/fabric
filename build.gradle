@@ -345,12 +345,13 @@ allprojects {
 		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0"))
 	}
 
-	tasks.withType(ProcessResources).configureEach {
+	tasks.withType(ProcessResources).configureEach { processResourcesTask ->
 		inputs.property "version", project.version
 		inputs.property "minecraft_version", getMCRange(project)
 
 		filesMatching("fabric.mod.json") {
-			expand "version": inputs.properties.version, "minecraft_version": inputs.properties.minecraft_version
+			expand "version": processResourcesTask.inputs.properties.version,
+				"minecraft_version": processResourcesTask.inputs.properties.minecraft_version
 		}
 	}
 
@@ -400,9 +401,10 @@ allprojects {
 		}
 	}
 
+	String archivesName = project.base.archivesName.get()
 	[jar, sourcesJar].each {
 		it.from(rootProject.file("LICENSE")) {
-			rename { "${it}-${project.base.archivesName.get()}" }
+			rename { "${it}-${archivesName}" }
 		}
 	}
 
