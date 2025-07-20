@@ -205,22 +205,30 @@ def moduleDependencies(Project project, List<String> projectNames) {
 		deps.add(project.dependencies.project(path: ":legacy-fabric-logger-api-v1_common", configuration: "namedElements"))
 	}
 
+	def depNodes = deps.collect {
+		[
+			groupId: it.group,
+			artifactId: projectInfoFromName(it)[3],
+			version: it.version,
+			scope: "compile"
+		]
+	}
+
 	// As we manually handle the maven artifacts, we need to also manually specify the deps.
 	project.publishing {
 		publications {
 			mavenJava(MavenPublication) {
 				pom.withXml {
 					def depsNode = asNode().appendNode("dependencies")
-					deps.each {
-						def (_, _1, _2, mavenName) = projectInfoFromName(it)
 
-						def depNode = depsNode.appendNode("dependency")
-						depNode.appendNode("groupId", it.group)
-						depNode.appendNode("artifactId", mavenName)
-						depNode.appendNode("version", it.version)
-						depNode.appendNode("scope", "compile")
+					for (def depNode in depNodes) {
+						def node = depsNode.appendNode("dependency")
 
-						def exclusionsNode = depNode.appendNode("exclusions")
+						for (def entry in depNode) {
+							node.appendNode(entry.key, entry.value)
+						}
+
+						def exclusionsNode = node.appendNode("exclusions")
 						def exclusionNode = exclusionsNode.appendNode("exclusion")
 						exclusionNode.appendNode("groupId", "net.legacyfabric.legacy-fabric-api")
 						exclusionNode.appendNode("artifactId", "*")
@@ -447,7 +455,7 @@ javadoc {
 
 	classpath = sourceSets.main.compileClasspath
 	include("**/api/**")
-	failOnError false
+	failOnError = false
 }
 
 task javadocJar(type: Jar) {
