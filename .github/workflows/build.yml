@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         java: [ 17-jdk, 21-jdk ]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
       image: eclipse-temurin:${{ matrix.java }}
       options: --user root
@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0
       - uses: gradle/actions/wrapper-validation@v3
-      - run: ./gradlew check build publishToMavenLocal --stacktrace -Porg.gradle.parallel.threads=4 --warning-mode=fail
+      - run: ./gradlew check build publishToMavenLocal --stacktrace -Porg.gradle.parallel.threads=4 --warning-mode=fail --configuration-cache
       - uses: Juuxel/publish-checkstyle-report@v1
         if: ${{ failure() }}
         with:
@@ -36,4 +36,4 @@ jobs:
         if: ${{ matrix.java == '21-jdk' }}
         with:
           name: Maven Local
-          path: /root/.m2/repository
+          path: ~/.m2/repository
