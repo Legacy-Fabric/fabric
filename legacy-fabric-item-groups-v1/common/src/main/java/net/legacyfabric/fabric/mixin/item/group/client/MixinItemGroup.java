@@ -37,22 +37,22 @@ public abstract class MixinItemGroup {
 
 	@Inject(method = "isTopRow", cancellable = true, at = @At("HEAD"))
 	private void isTopRow(CallbackInfoReturnable<Boolean> info) {
-		   if(ItemGroup.itemGroups[4].getId() == "hotbar") {
+		if(ItemGroup.itemGroups[4].getId() == "hotbar") {
 				if (getIndex() > 11) {
 					info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) < 4);
 				}
-		   }else {
+		}else {
 				if (getIndex() > 11) {
 					info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) < 5);
 				}
-		   }
-	
+		}
+
 	}
 
 	@Inject(method = "getColumn", cancellable = true, at = @At("HEAD"))
 	private void getColumn(CallbackInfoReturnable<Integer> info) {
-	
-	   if(ItemGroup.itemGroups[4].getId() == "hotbar") {
+
+	if(ItemGroup.itemGroups[4].getId() == "hotbar") {
 			if (getIndex() > 11) {
 				if (isTopRow()) {
 					info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()));
@@ -60,7 +60,7 @@ public abstract class MixinItemGroup {
 					info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) - 4);
 				}
 			}
-	   }else {
+	}else {
 			if (getIndex() > 11) {
 				if (isTopRow()) {
 					info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()));
@@ -68,7 +68,8 @@ public abstract class MixinItemGroup {
 					info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) - 5);
 				}
 			}
-	   }
+	}
 
 	}
 }
+
