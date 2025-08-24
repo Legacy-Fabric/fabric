@@ -22,7 +22,10 @@ def supportedVersions = [
 	"1.8.9",
 	"1.8",
 	"1.7.10",
-	"1.6.4"
+	"1.6.4",
+	"1.5.2",
+	"1.4.7",
+	"1.3.2"
 ]
 def supportedRanges = [
 //    ["1.8", "1.8.9", false] // third parameter is whether or not to include snapshots in the range.

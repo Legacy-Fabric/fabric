@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-item-groups-v1",
+  "name": "Legacy Fabric Item Groups (V1)",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-fabric/icon.png",
+  "contact": {
+    "homepage": "https://legacyfabric.net/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "FabricMC",
+    "Legacy Fabric"
+  ],
+  "mixins": [
+    "legacy-fabric-item-groups-v1.mixins.json"
+  ],
+  "description": "Advanced item groups.",
+  "depends": {
+    "minecraft": "${minecraft_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ],
+      "parent": {
+        "id": "legacy-fabric-api",
+        "name": "Legacy Fabric API",
+        "badges": [ "library" ],
+        "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2.",
+        "icon": "assets/legacy-fabric/icon.png"
+      }
+    }
+  }
+}
