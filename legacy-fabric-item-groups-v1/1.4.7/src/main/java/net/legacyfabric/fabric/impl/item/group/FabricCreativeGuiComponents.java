@@ -61,6 +61,7 @@ public class FabricCreativeGuiComponents {
 		CreativeGuiExtensions extensions;
 		CreativeInventoryScreen gui;
 		Type type;
+		boolean hovered;
 
 		public ItemGroupButtonWidget(int x, int y, Type type, CreativeGuiExtensions extensions) {
 			super(1000 + type.ordinal(), x, y, 11, 10, "");
@@ -78,6 +79,10 @@ public class FabricCreativeGuiComponents {
 		@Override
 		public boolean method_894(Minecraft client, int mouseX, int mouseY) {
 			return super.method_894(client, mouseX, mouseY);
+		}
+
+		public boolean isHovered() {
+			return this.hovered;
 		}
 
 		@Override
