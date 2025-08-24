@@ -25,7 +25,6 @@ public interface ButtonWidgetHelper {
 	}
 
 	default void lf$setHovered(boolean hovered) {
-
 	}
 
 	default boolean lf$isHovered() {

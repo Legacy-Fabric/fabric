@@ -44,6 +44,7 @@ public class FabricCreativeGuiComponents {
 
 	public static final boolean hasHotBar = VersionUtils.matches(">=1.12-alpha.17.06.a <=1.13.2");
 	private static final boolean hasStateManager = VersionUtils.matches(">=1.8");
+	public static final int TAB_OFFSET = hasHotBar ? 4 : 5;
 
 	public static ItemGroupCreator ITEM_GROUP_CREATOR;
 

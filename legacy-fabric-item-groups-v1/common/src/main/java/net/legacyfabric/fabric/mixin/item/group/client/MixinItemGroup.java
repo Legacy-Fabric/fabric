@@ -17,9 +17,10 @@
 
 package net.legacyfabric.fabric.mixin.item.group.client;
 
+import static net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents.TAB_OFFSET;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -39,7 +40,7 @@ public abstract class MixinItemGroup {
 	@Inject(method = "isTopRow", cancellable = true, at = @At("HEAD"))
 	private void isTopRow(CallbackInfoReturnable<Boolean> info) {
 		if (getIndex() > 11) {
-			info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) < lf$getTabOffset());
+			info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) < TAB_OFFSET);
 		}
 	}
 
@@ -50,13 +51,8 @@ public abstract class MixinItemGroup {
 				info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()));
 			} else {
 				info.setReturnValue(
-						(getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) - lf$getTabOffset());
+						(getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) - TAB_OFFSET);
 			}
 		}
-	}
-
-	@Unique
-	private static int lf$getTabOffset() {
-		return FabricCreativeGuiComponents.hasHotBar ? 4 : 5;
 	}
 }
