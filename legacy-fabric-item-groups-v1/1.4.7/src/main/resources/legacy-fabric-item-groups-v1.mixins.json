@@ -6,7 +6,9 @@
     "ItemGroupMixin"
   ],
   "client": [
-    "client.HandledScreenMixin"
+    "client.ButtonWidgetMixin",
+    "client.HandledScreenMixin",
+    "client.MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

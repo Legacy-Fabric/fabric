@@ -19,17 +19,17 @@ package net.legacyfabric.fabric.api.util;
 
 import java.util.Locale;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-
 public class Identifier implements Comparable<Identifier> {
 	protected final String namespace;
 	protected final String path;
 
 	private Identifier(String... pathParts) {
-		this.namespace = StringUtils.isEmpty(pathParts[0]) ? "minecraft" : pathParts[0].toLowerCase(Locale.ROOT);
+		this.namespace = pathParts[0] == null || pathParts[0].isEmpty() ? "minecraft" : pathParts[0].toLowerCase(Locale.ROOT);
 		this.path = pathParts[1].toLowerCase(Locale.ROOT);
-		Validate.notNull(this.path);
+
+		if (this.path == null) {
+			throw new IllegalArgumentException("Path cannot be null!");
+		}
 	}
 
 	public Identifier(String name) {
