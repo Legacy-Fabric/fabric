@@ -40,21 +40,29 @@ import org.apache.commons.codec.digest.DigestUtils
 static def parseProjectName(String name, Project project) {
 	def parts = name.split("_")
 
-	if (parts.length < 2) parts = [*parts, "1.8.9"]
+	if (parts.length < 2) parts = [*parts, "1.8.9", ""]
+	else if (parts.length < 3) parts = [*parts, ""]
 
-	def (moduleName, mcVersion) = parts
+	def (moduleName, mcVersion, extraMcVersion) = parts
 
 	def isCommon = mcVersion == "common"
+
+	if (!extraMcVersion.isEmpty()) {
+		isCommon = true
+	}
 
 	def mavenName = moduleName.trim()
 
 	if (isCommon) {
-		mcVersion = "1.8.9"
+		mcVersion = extraMcVersion.isEmpty() ? "1.8.9" : extraMcVersion
 
 		if (project != null && project.hasProperty("artifactSuffix")) {
 			mavenName += project["artifactSuffix"]
 		} else {
 			mavenName += "-common"
+			if (!extraMcVersion.isEmpty()) {
+				mavenName += "-" + extraMcVersion
+			}
 		}
 	}
 
@@ -108,12 +116,12 @@ static def getMCRange(Project project) {
 def getSubprojectVersion(Project project) {
 	def version
 
-	def (moduleName, mcVersion, isCommon) = projectInfoFromName(project)
+	def (moduleName, mcVersion, isCommon, mavenName) = projectInfoFromName(project)
 
 	if (moduleName == "legacyfabric-api") version = rootProject.version
 	else version = rootProject[moduleName + ".version"]
 
-	if (!isCommon) {
+	if (!isCommon || mavenName.contains("common-")) {
 		version = version + "+" + mcVersion
 	}
 
@@ -166,7 +174,7 @@ def setupRepositories(RepositoryHandler repositories) {
 def moduleDependencies(Project project, List<String> projectNames) {
 	def depNames = []
 
-	def (moduleName, mcVersion, isCommon) = projectInfoFromName(project)
+	def (moduleName, mcVersion, isCommon, mavenName) = projectInfoFromName(project)
 
 	def projectMCVersion = VersionHelper.parseVersion(mcVersion)
 
@@ -180,12 +188,16 @@ def moduleDependencies(Project project, List<String> projectNames) {
 		}
 	}
 
-	if (!isCommon) {
-		def commonProject = findProject(":${moduleName}_common")
+	if (!isCommon || mavenName.contains("common-")) {
+		rootProject.subprojects {
+			if (it.name.startsWith("${moduleName}_common") && it.name != project.name) {
+				def predicate = VersionHelper.parsePredicate(getMCRange(it))
+				if (predicate.test(projectMCVersion)) depNames.add(0, it.name)
+			}
+		}
 
-		if (commonProject != null) {
-			def predicate = VersionHelper.parsePredicate(getMCRange(commonProject))
-			if (predicate.test(projectMCVersion)) depNames.add(0, commonProject.name)
+		if (mavenName.contains("common-")) {
+			depNames.removeIf { !it.contains("_common")}
 		}
 	} else {
 		depNames.removeIf { !it.endsWith("_common")}
