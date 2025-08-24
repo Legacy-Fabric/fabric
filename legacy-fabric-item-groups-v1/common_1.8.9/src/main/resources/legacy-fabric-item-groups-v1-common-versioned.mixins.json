@@ -3,14 +3,12 @@
   "package": "net.legacyfabric.fabric.mixin.item.group",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "ItemGroupMixin"
+  ],
+  "client": [
+    "ButtonWidgetMixin",
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "client": [
-    "client.ButtonWidgetMixin",
-    "client.HandledScreenMixin",
-    "client.MinecraftClientMixin"
-  ]
+  }
 }

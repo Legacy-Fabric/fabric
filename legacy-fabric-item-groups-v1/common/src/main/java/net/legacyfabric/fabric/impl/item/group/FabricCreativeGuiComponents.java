@@ -22,18 +22,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.itemgroup.ItemGroup;
+import net.minecraft.util.CommonI18n;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
@@ -43,6 +43,7 @@ public class FabricCreativeGuiComponents {
 	public static final Set<ItemGroup> COMMON_GROUPS = new HashSet<>();
 
 	public static final boolean hasHotBar = VersionUtils.matches(">=1.12-alpha.17.06.a <=1.13.2");
+	private static final boolean hasStateManager = VersionUtils.matches(">=1.8");
 
 	public static ItemGroupCreator ITEM_GROUP_CREATOR;
 
@@ -60,7 +61,7 @@ public class FabricCreativeGuiComponents {
 		}
 	}
 
-	public static class ItemGroupButtonWidget extends ButtonWidget {
+	public static class ItemGroupButtonWidget extends ButtonWidget implements ButtonWidgetHelper {
 		CreativeGuiExtensions extensions;
 		CreativeInventoryScreen gui;
 		Type type;
@@ -79,36 +80,35 @@ public class FabricCreativeGuiComponents {
 		}
 
 		@Override
-		public boolean isMouseOver(MinecraftClient client, int mouseX, int mouseY) {
-			return super.isMouseOver(client, mouseX, mouseY);
-		}
-
-		@Override
-		public void mouseDragged(MinecraftClient client, int mouseX, int mouseY) {
-			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+		public void lf$mouseDragged(MinecraftAccessor client, int mouseX, int mouseY, BiFunction<Integer, Integer, Void> superMethod) {
+			this.lf$setHovered(mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height);
 			this.visible = extensions.fabric_isButtonVisible(type);
 			this.active = extensions.fabric_isButtonEnabled(type);
 
 			if (this.visible) {
-				int u = active && this.isHovered() ? 22 : 0;
+				int u = active && this.lf$isHovered() ? 22 : 0;
 				int v = active ? 0 : 10;
 
-				MinecraftClient minecraftClient = MinecraftClient.getInstance();
-				minecraftClient.getTextureManager().bindTexture(new net.minecraft.util.Identifier(BUTTON_TEX.toString()));
+				client.legacy_fabric_api$bindTexture(BUTTON_TEX);
 
-				try { // 1.8+
-					GlStateManager.disableLighting();
-					GlStateManager.color(1F, 1F, 1F, 1F);
-				} catch (NoClassDefFoundError e) { // 1.7.10-
+				if (hasStateManager) {
+					try { // 1.8+
+						GlStateManager.disableLighting();
+						GlStateManager.color(1F, 1F, 1F, 1F);
+					} catch (NoClassDefFoundError e) { // 1.7.10-
+						GL11.glDisable(GL11.GL_LIGHTING);
+						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+					}
+				} else {
 					GL11.glDisable(GL11.GL_LIGHTING);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				}
 
 				this.drawTexture(this.x, this.y, u + (type == Type.NEXT ? 11 : 0), v, 11, 10);
 
-				if (this.hovered) {
+				if (this.lf$isHovered()) {
 					int pageCount = (int) Math.ceil((ItemGroup.itemGroups.length - COMMON_GROUPS.size()) / 9D);
-					((ScreenAccessor) gui).callRenderTooltip(I18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, pageCount), mouseX, mouseY);
+					((ScreenAccessor) gui).callRenderTooltip(CommonI18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, pageCount), mouseX, mouseY);
 				}
 			}
 		}

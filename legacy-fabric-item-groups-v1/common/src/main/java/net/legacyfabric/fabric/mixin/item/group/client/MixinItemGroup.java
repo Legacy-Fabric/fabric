@@ -19,6 +19,7 @@ package net.legacyfabric.fabric.mixin.item.group.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -37,37 +38,25 @@ public abstract class MixinItemGroup {
 
 	@Inject(method = "isTopRow", cancellable = true, at = @At("HEAD"))
 	private void isTopRow(CallbackInfoReturnable<Boolean> info) {
-		if (ItemGroup.itemGroups[4].getId().equals("hotbar")) {
-			if (getIndex() > 11) {
-				info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) < 4);
-			}
-		} else {
-			if (getIndex() > 11) {
-				info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) < 5);
-			}
+		if (getIndex() > 11) {
+			info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) < lf$getTabOffset());
 		}
 	}
 
 	@Inject(method = "getColumn", cancellable = true, at = @At("HEAD"))
 	private void getColumn(CallbackInfoReturnable<Integer> info) {
-		if (ItemGroup.itemGroups[4].getId().equals("hotbar")) {
-			if (getIndex() > 11) {
-				if (isTopRow()) {
-					info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()));
-				} else {
-					info.setReturnValue(
-							(getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) - 4);
-				}
-			}
-		} else {
-			if (getIndex() > 11) {
-				if (isTopRow()) {
-					info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()));
-				} else {
-					info.setReturnValue(
-							(getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) - 5);
-				}
+		if (getIndex() > 11) {
+			if (isTopRow()) {
+				info.setReturnValue((getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()));
+			} else {
+				info.setReturnValue(
+						(getIndex() - 12) % (12 - FabricCreativeGuiComponents.COMMON_GROUPS.size()) - lf$getTabOffset());
 			}
 		}
+	}
+
+	@Unique
+	private static int lf$getTabOffset() {
+		return FabricCreativeGuiComponents.hasHotBar ? 4 : 5;
 	}
 }
