@@ -47,4 +47,9 @@ public class MinecraftClientMixin {
 	private void api$onStart(CallbackInfo ci) {
 		ClientLifecycleEvents.CLIENT_STARTED.invoker().onClientStarted((MinecraftClient) (Object) this);
 	}
+
+	@Inject(at = @At(value = "HEAD"), method = "stop")
+	private void api$onStopping(CallbackInfo ci) {
+		ClientLifecycleEvents.CLIENT_STOPPING.invoker().onClientStopping((MinecraftClient) (Object) this);
+	}
 }

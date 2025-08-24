@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle.client;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,9 +36,10 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 @Environment(EnvType.CLIENT)
 @Mixin(ClientWorld.class)
 public class ClientWorldMixin {
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;tick()V", shift = At.Shift.AFTER), method = "tick")
-	public void startWorldTick(CallbackInfo ci) {
-		ClientTickEvents.START_WORLD_TICK.invoker().onStartTick((ClientWorld) (Object) this);
+	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;tick()V"), method = "tick")
+	public void startWorldTick(ClientWorld instance, Operation<Void> original) {
+		original.call(instance);
+		ClientTickEvents.START_WORLD_TICK.invoker().onStartTick(instance);
 	}
 
 	@Inject(at = @At("RETURN"), method = "tick")
@@ -45,12 +48,17 @@ public class ClientWorldMixin {
 	}
 
 	@Inject(at = @At("TAIL"), method = "onEntitySpawned")
-	public void unloadEntity(Entity entity, CallbackInfo ci) {
+	public void loadEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ClientWorld) (Object) this);
 	}
 
+	@Inject(at = @At("HEAD"), method = "onEntityRemoved")
+	public void unloadEntity(Entity entity, CallbackInfo ci) {
+		ClientEntityEvents.ENTITY_REMOVING.invoker().onUnload(entity, (ClientWorld) (Object) this);
+	}
+
 	@Inject(at = @At("TAIL"), method = "onEntityRemoved")
-	public void loadEntity(Entity entity, CallbackInfo ci) {
-		ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ClientWorld) (Object) this);
+	public void unloadedEntity(Entity entity, CallbackInfo ci) {
+		ClientEntityEvents.ENTITY_REMOVE.invoker().onUnload(entity, (ClientWorld) (Object) this);
 	}
 }
