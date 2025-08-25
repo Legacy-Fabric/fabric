@@ -51,8 +51,6 @@ import net.legacyfabric.fabric.api.effect.PotionHelper;
 import net.legacyfabric.fabric.api.entity.EntityHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
@@ -97,13 +95,7 @@ public class RegistryTest implements ModInitializer {
 		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setItemGroup(ItemGroup.FOOD);
 		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
 		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
-
-		RegistryInitializedEvent.event(RegistryIds.BLOCK_ENTITY_TYPES).register(new RegistryInitializedEvent() {
-			@Override
-			public <T> void initialized(FabricRegistry<T> registry) {
-				RegistryHelper.register(registry, identifier, (T) TestBlockEntity.class);
-			}
-		});
+		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
 	}
 
 	private void registerEffectsAndPotions() {
