@@ -15,8 +15,8 @@
     "Legacy-Fabric"
   ],
   "depends": {
-    "fabricloader": ">=0.8.2",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version}",
+    "fabricloader": "${loader_version}"
   },
   "description": "Allows registration of custom game rules.",
   "mixins": [

@@ -16,7 +16,8 @@
     "FabricMC"
   ],
   "depends": {
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version}",
+    "fabricloader": "${loader_version}"
   },
   "mixins": [
     "legacy-fabric-lifecycle-events-v1-common-versioned.mixins.json"

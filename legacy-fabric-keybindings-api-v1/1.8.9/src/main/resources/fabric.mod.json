@@ -16,7 +16,8 @@
     "FabricMC"
   ],
   "depends": {
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version}",
+    "fabricloader": "${loader_version}"
   },
   "mixins": [],
   "description": "Hooks that help adding keybindings",

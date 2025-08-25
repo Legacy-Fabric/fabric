@@ -16,8 +16,8 @@
     "FabricMC"
   ],
   "depends": {
-    "fabricloader": ">=0.4.0",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version}",
+    "fabricloader": "${loader_version}"
   },
   "entrypoints": {
     "mixinsquared": [
