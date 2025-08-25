@@ -17,16 +17,18 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle.versioned;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkStorage;
 import net.minecraft.world.chunk.ServerChunkProvider;
 
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerChunkEvents;
@@ -41,8 +43,10 @@ public class ServerChunkProviderMixin {
 		ServerChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, chunk);
 	}
 
-	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/chunk/ChunkStorage;loadChunk(Lnet/minecraft/world/World;II)Lnet/minecraft/world/chunk/Chunk;"), method = "method_2129", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	public void api$chunkLoad(int x, int z, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
+	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/ChunkStorage;loadChunk(Lnet/minecraft/world/World;II)Lnet/minecraft/world/chunk/Chunk;"), method = "method_2129")
+	public Chunk api$chunkLoad(ChunkStorage instance, World world, int i, int j, Operation<Chunk> original) {
+		Chunk chunk = original.call(instance, world, i, j);
 		ServerChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, chunk);
+		return chunk;
 	}
 }

@@ -13,7 +13,11 @@
   },
   "entrypoints": {
     "main": [
-      "net.legacyfabric.fabric.test.item.group.ItemGroupTest"
+      "net.legacyfabric.fabric.test.item.group.ItemGroupTest",
+      "net.legacyfabric.fabric.test.lifecycle.ServerLifecycleEventsTest"
+    ],
+    "client": [
+      "net.legacyfabric.fabric.test.lifecycle.client.ClientLifecycleEventsTest"
     ]
   },
   "authors": [

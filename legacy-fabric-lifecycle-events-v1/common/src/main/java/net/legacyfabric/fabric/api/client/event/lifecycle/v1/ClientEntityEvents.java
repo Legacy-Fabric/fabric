@@ -57,14 +57,44 @@ public final class ClientEntityEvents {
 	});
 
 	/**
+	 * Called when an Entity has been unloaded from a ClientWorld.
+	 *
+	 * <p>When this event is called, the entity is no longer in the world.
+	 */
+	public static final Event<Unload> ENTITY_REMOVED = EventFactory.createArrayBacked(Unload.class, callbacks -> (entity, world) -> {
+		if (EventFactory.isProfilingEnabled()) {
+			final Profiler profiler = world.profiler;
+			profiler.push("fabricClientEntityUnloaded");
+
+			for (Unload callback : callbacks) {
+				profiler.push(EventFactory.getHandlerName(callback));
+				callback.onUnload(entity, world);
+				profiler.pop();
+			}
+
+			profiler.pop();
+		} else {
+			for (Unload callback : callbacks) {
+				callback.onUnload(entity, world);
+			}
+		}
+	});
+
+	/**
+	 * @deprecated Use {@link #ENTITY_REMOVED} instead.
+	 * */
+	@Deprecated
+	public static final Event<Unload> ENTITY_UNLOAD = ENTITY_REMOVED;
+
+	/**
 	 * Called when an Entity is about to be unloaded from a ClientWorld.
 	 *
 	 * <p>When this event is called, the entity is still present in the world.
 	 */
-	public static final Event<Unload> ENTITY_UNLOAD = EventFactory.createArrayBacked(Unload.class, callbacks -> (entity, world) -> {
+	public static final Event<Unload> ENTITY_REMOVING = EventFactory.createArrayBacked(Unload.class, callbacks -> (entity, world) -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = world.profiler;
-			profiler.push("fabricClientEntityLoad");
+			profiler.push("fabricClientEntityUnload");
 
 			for (Unload callback : callbacks) {
 				profiler.push(EventFactory.getHandlerName(callback));

@@ -7,8 +7,6 @@
     "versioned.ServerChunkProviderMixin"
   ],
   "client": [
-    "client.versioned.ClientChunkProviderMixin",
-    "client.versioned.MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

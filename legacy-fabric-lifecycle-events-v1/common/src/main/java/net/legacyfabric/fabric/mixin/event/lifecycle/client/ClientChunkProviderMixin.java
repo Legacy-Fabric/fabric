@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle.client;
 
+import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.world.World;
@@ -40,8 +40,14 @@ public abstract class ClientChunkProviderMixin {
 	@Shadow
 	private World world;
 
-	@Inject(at = @At("RETURN"), method = "getOrGenerateChunk", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir, Chunk chunk) {
-		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, chunk);
+	@Inject(at = @At("RETURN"), method = "getOrGenerateChunk")
+	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir) {
+		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, cir.getReturnValue());
+	}
+
+	@ModifyReceiver(method = "unloadChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/Chunk;unloadFromWorld()V"))
+	public Chunk chunkUnload(Chunk instance) {
+		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, instance);
+		return instance;
 	}
 }

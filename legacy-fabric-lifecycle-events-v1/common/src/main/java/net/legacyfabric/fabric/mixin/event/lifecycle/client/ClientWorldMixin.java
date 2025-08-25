@@ -29,28 +29,22 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ClientWorld.class)
 public class ClientWorldMixin {
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;tick()V", shift = At.Shift.AFTER), method = "tick")
-	public void startWorldTick(CallbackInfo ci) {
-		ClientTickEvents.START_WORLD_TICK.invoker().onStartTick((ClientWorld) (Object) this);
-	}
-
-	@Inject(at = @At("RETURN"), method = "tick")
-	public void endWorldTick(CallbackInfo ci) {
-		ClientTickEvents.END_WORLD_TICK.invoker().onEndTick((ClientWorld) (Object) this);
-	}
-
 	@Inject(at = @At("TAIL"), method = "onEntitySpawned")
-	public void unloadEntity(Entity entity, CallbackInfo ci) {
+	public void loadEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ClientWorld) (Object) this);
 	}
 
+	@Inject(at = @At("HEAD"), method = "onEntityRemoved")
+	public void unloadEntity(Entity entity, CallbackInfo ci) {
+		ClientEntityEvents.ENTITY_REMOVING.invoker().onUnload(entity, (ClientWorld) (Object) this);
+	}
+
 	@Inject(at = @At("TAIL"), method = "onEntityRemoved")
-	public void loadEntity(Entity entity, CallbackInfo ci) {
-		ClientEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ClientWorld) (Object) this);
+	public void unloadedEntity(Entity entity, CallbackInfo ci) {
+		ClientEntityEvents.ENTITY_REMOVED.invoker().onUnload(entity, (ClientWorld) (Object) this);
 	}
 }
