@@ -363,10 +363,12 @@ allprojects {
 	tasks.withType(ProcessResources).configureEach { processResourcesTask ->
 		inputs.property "version", project.version
 		inputs.property "minecraft_version", getMCRange(project)
+		inputs.property "loader_version", ">=${project.loader_version}"
 
 		filesMatching("fabric.mod.json") {
 			expand "version": processResourcesTask.inputs.properties.version,
-				"minecraft_version": processResourcesTask.inputs.properties.minecraft_version
+				"minecraft_version": processResourcesTask.inputs.properties.minecraft_version,
+				"loader_version": processResourcesTask.inputs.properties.loader_version
 		}
 	}
 
