@@ -61,7 +61,7 @@ public final class ClientEntityEvents {
 	 *
 	 * <p>When this event is called, the entity is no longer in the world.
 	 */
-	public static final Event<Unload> ENTITY_REMOVE = EventFactory.createArrayBacked(Unload.class, callbacks -> (entity, world) -> {
+	public static final Event<Unload> ENTITY_REMOVED = EventFactory.createArrayBacked(Unload.class, callbacks -> (entity, world) -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = world.profiler;
 			profiler.push("fabricClientEntityUnloaded");
@@ -81,10 +81,10 @@ public final class ClientEntityEvents {
 	});
 
 	/**
-	 * @deprecated Use {@link #ENTITY_REMOVE} instead.
+	 * @deprecated Use {@link #ENTITY_REMOVED} instead.
 	 * */
 	@Deprecated
-	public static final Event<Unload> ENTITY_UNLOAD = ENTITY_REMOVE;
+	public static final Event<Unload> ENTITY_UNLOAD = ENTITY_REMOVED;
 
 	/**
 	 * Called when an Entity is about to be unloaded from a ClientWorld.

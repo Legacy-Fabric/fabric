@@ -15,41 +15,33 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.event.lifecycle.client;
+package net.legacyfabric.fabric.mixin.event.lifecycle.modern.client;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 @Environment(EnvType.CLIENT)
-@Mixin(MinecraftClient.class)
-public class MinecraftClientMixin {
-	@Inject(at = @At("HEAD"), method = "tick")
-	private void api$onStartTick(CallbackInfo info) {
-		ClientTickEvents.START_CLIENT_TICK.invoker().onStartTick((MinecraftClient) (Object) this);
+@Mixin(ClientWorld.class)
+public class ClientWorldMixin {
+	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;tick()V"), method = "tick")
+	public void startWorldTick(ClientWorld instance, Operation<Void> original) {
+		original.call(instance);
+		ClientTickEvents.START_WORLD_TICK.invoker().onStartTick(instance);
 	}
 
 	@Inject(at = @At("RETURN"), method = "tick")
-	private void api$onEndTick(CallbackInfo info) {
-		ClientTickEvents.END_CLIENT_TICK.invoker().onEndTick((MinecraftClient) (Object) this);
-	}
-
-	@Inject(at = @At(value = "RETURN"), method = "initializeGame")
-	private void api$onStart(CallbackInfo ci) {
-		ClientLifecycleEvents.CLIENT_STARTED.invoker().onClientStarted((MinecraftClient) (Object) this);
-	}
-
-	@Inject(at = @At(value = "HEAD"), method = "stop")
-	private void api$onStopping(CallbackInfo ci) {
-		ClientLifecycleEvents.CLIENT_STOPPING.invoker().onClientStopping((MinecraftClient) (Object) this);
+	public void endWorldTick(CallbackInfo ci) {
+		ClientTickEvents.END_WORLD_TICK.invoker().onEndTick((ClientWorld) (Object) this);
 	}
 }
