@@ -17,9 +17,9 @@
 
 package net.legacyfabric.fabric.impl.client.keybinding;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 
@@ -29,7 +29,7 @@ public class FabricControlsScreenComponents {
 	private static final Identifier BUTTON_TEX = new Identifier("legacy-fabric", "textures/gui/creative_buttons.png");
 	public static final int AMOUNT_PER_PAGE = 14;
 
-	public static class ControlsButtonWidget extends ButtonWidget {
+	public static class ControlsButtonWidget extends ButtonWidget implements ButtonWidgetHelper {
 		ControlsScreenExtensions extensions;
 		ControlsOptionsScreen gui;
 		Type type;
@@ -48,15 +48,11 @@ public class FabricControlsScreenComponents {
 		}
 
 		@Override
-		public boolean isMouseOver(MinecraftClient client, int mouseX, int mouseY) {
-			return super.isMouseOver(client, mouseX, mouseY);
-		}
-
-		@Override
-		public void mouseDragged(MinecraftClient client, int mouseX, int mouseY) {
-			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+		public void lf$mouseDragged(int mouseX, int mouseY, BiFunction<Integer, Integer, Void> superMethod) {
+			this.lf$setHovered(mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height);
 			this.visible = extensions.fabric_isButtonVisible(type);
 			this.active = extensions.fabric_isButtonEnabled(type);
+			superMethod.apply(mouseX, mouseY);
 		}
 	}
 

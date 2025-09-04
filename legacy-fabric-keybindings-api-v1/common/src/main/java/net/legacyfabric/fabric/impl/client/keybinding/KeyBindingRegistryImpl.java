@@ -17,16 +17,17 @@
 
 package net.legacyfabric.fabric.impl.client.keybinding;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 
+import net.fabricmc.loader.api.FabricLoader;
+
 public final class KeyBindingRegistryImpl {
-	private static final List<KeyBinding> moddedKeyBindings = Lists.newArrayList();
+	private static final List<KeyBinding> moddedKeyBindings = new ArrayList<>();
 	private static boolean processed = false;
 
 	private KeyBindingRegistryImpl() {
@@ -53,7 +54,7 @@ public final class KeyBindingRegistryImpl {
 	// first removing existing modded keybindings and re-adding
 	// them, we can make sure that there are no duplicates this way.
 	public static KeyBinding[] process(KeyBinding[] keysAll) {
-		List<KeyBinding> newKeysAll = Lists.newArrayList(keysAll);
+		List<KeyBinding> newKeysAll = new ArrayList<>(Arrays.asList(keysAll));
 		newKeysAll.removeAll(moddedKeyBindings);
 		newKeysAll.addAll(moddedKeyBindings);
 
@@ -66,7 +67,7 @@ public final class KeyBindingRegistryImpl {
 	 * Update keybinding list and reload game options file.
 	 */
 	private static void reloadGameOptions() {
-		final GameOptions options = MinecraftClient.getInstance().options;
+		final GameOptions options = ((MinecraftAccessor) FabricLoader.getInstance().getGameInstance()).lf$getGameOptions();
 
 		if (options != null) {
 			options.allKeys = process(options.allKeys);
