@@ -59,7 +59,7 @@ public class BiomeMixin {
 				.seedModifier(5858897, true)
 				.setName("Mega Spruce Taiga")
 				.method_3820(5159473)
-				.setTempratureAndDownfall(0.25F, 0.8F)
+				.setTemperatureAndDownfall(0.25F, 0.8F)
 				.method_6422(new class_1742(MEGA_TAIGA.depth, MEGA_TAIGA.variationModifier));
 
 		REGISTRY = new SyncedArrayFabricRegistryWrapper<>(

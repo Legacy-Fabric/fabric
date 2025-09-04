@@ -126,7 +126,7 @@ public class RegistryTest implements ModInitializer {
 		RegistryHelper.register(RegistryIds.BIOMES, biomeId,
 				id -> new TestBiome(id)
 						.setSeedModifier(4446496)
-						.setTempratureAndDownfall(0.3F, 0.7F));
+						.setTemperatureAndDownfall(0.3F, 0.7F));
 	}
 
 	public static class TestBlockWithEntity extends BlockWithEntity {

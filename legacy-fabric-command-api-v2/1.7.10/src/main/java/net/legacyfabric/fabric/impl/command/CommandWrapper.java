@@ -107,7 +107,7 @@ public class CommandWrapper extends AbstractCommand {
 	@Override
 	public List<String> method_3276(CommandSource source, String[] args) {
 		try {
-			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getWorld(), source.method_4086()));
+			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getWorld(), source.getPosition()));
 		} catch (CommandException e) {
 			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().asUnformattedString()))));
 			return Collections.emptyList();
