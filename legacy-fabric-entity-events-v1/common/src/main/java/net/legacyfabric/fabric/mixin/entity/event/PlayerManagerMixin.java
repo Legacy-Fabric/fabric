@@ -37,8 +37,8 @@ public class PlayerManagerMixin {
 	 */
 	@Inject(method = "teleportToDimension", at = @At("TAIL"))
 	private void afterWorldChanged(ServerPlayerEntity player, int dimension, CallbackInfo ci,
-								   @Local(ordinal = 0) ServerWorld serverWorld,
-								   @Local(ordinal = 1) ServerWorld serverWorld2) {
+								@Local(ordinal = 0) ServerWorld serverWorld,
+								@Local(ordinal = 1) ServerWorld serverWorld2) {
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.invoker().afterChangeWorld(player, serverWorld, serverWorld2);
 	}
 }

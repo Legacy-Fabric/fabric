@@ -32,9 +32,9 @@ import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents
 abstract class EntityMixin {
 	@Inject(method = "teleportToDimension", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;spawnEntity(Lnet/minecraft/entity/Entity;)Z"))
 	private void afterWorldChanged(int dimensionId, CallbackInfo ci,
-								   @Local(ordinal = 0) ServerWorld serverWorld,
-								   @Local(ordinal = 1) ServerWorld serverWorld2,
-								   @Local(ordinal = 0) Entity entity) {
+								@Local(ordinal = 0) ServerWorld serverWorld,
+								@Local(ordinal = 1) ServerWorld serverWorld2,
+								@Local(ordinal = 0) Entity entity) {
 		ServerEntityWorldChangeEvents.AFTER_ENTITY_CHANGE_WORLD.invoker().afterChangeWorld((Entity) (Object) this, entity, serverWorld, serverWorld2);
 	}
 }
