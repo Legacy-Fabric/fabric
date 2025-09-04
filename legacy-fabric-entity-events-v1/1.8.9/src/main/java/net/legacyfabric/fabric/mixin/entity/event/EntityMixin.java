@@ -34,7 +34,7 @@ abstract class EntityMixin {
 	private void afterWorldChanged(int dimensionId, CallbackInfo ci,
 								@Local(ordinal = 0) ServerWorld serverWorld,
 								@Local(ordinal = 1) ServerWorld serverWorld2,
-								@Local(ordinal = 0) Entity entity) {
+								@Local Entity entity) {
 		ServerEntityWorldChangeEvents.AFTER_ENTITY_CHANGE_WORLD.invoker().afterChangeWorld((Entity) (Object) this, entity, serverWorld, serverWorld2);
 	}
 }
