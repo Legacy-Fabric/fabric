@@ -48,7 +48,7 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 				boolean isStairs = block.getBlockType() == 10;
 				boolean isSlab = block instanceof SlabBlock;
 				boolean isMissingTop = block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("farmland"));
-				boolean isTranslucent = block.transluscent;
+				boolean isTranslucent = block.translucent;
 				boolean isNotOpaque = block.getOpacity() == 0;
 
 				if (isStairs || isSlab || isMissingTop || isTranslucent || isNotOpaque) {

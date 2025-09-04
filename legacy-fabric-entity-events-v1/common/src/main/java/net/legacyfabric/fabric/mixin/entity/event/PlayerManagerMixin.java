@@ -17,13 +17,11 @@
 
 package net.legacyfabric.fabric.mixin.entity.event;
 
-import java.util.Iterator;
-
+import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.PlayerManager;
@@ -37,8 +35,10 @@ public class PlayerManagerMixin {
 	 * This is called by both "moveToWorld" and "teleport".
 	 * So this is suitable to handle the after event from both call sites.
 	 */
-	@Inject(method = "teleportToDimension", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void afterWorldChanged(ServerPlayerEntity player, int dimension, CallbackInfo ci, int i, ServerWorld serverWorld, ServerWorld serverWorld2, Iterator iterator) {
+	@Inject(method = "teleportToDimension", at = @At("TAIL"))
+	private void afterWorldChanged(ServerPlayerEntity player, int dimension, CallbackInfo ci,
+								@Local(ordinal = 0) ServerWorld serverWorld,
+								@Local(ordinal = 1) ServerWorld serverWorld2) {
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.invoker().afterChangeWorld(player, serverWorld, serverWorld2);
 	}
 }

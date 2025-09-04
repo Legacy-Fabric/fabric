@@ -47,7 +47,7 @@ public enum Selector {
 	NEAREST_PLAYER('p') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.method_4086().x, sender.method_4086().y, sender.method_4086().z, 50.0D));
+			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.getPosition().x, sender.getPosition().y, sender.getPosition().z, 50.0D));
 		}
 	},
 	RANDOM_PLAYER('r') {

@@ -12,4 +12,4 @@ transitive-accessible method net/minecraft/block/Block setTickRandomly (Z)Lnet/m
 transitive-accessible method net/minecraft/block/Block disableStats ()Lnet/minecraft/block/Block;
 
 accessible field net/minecraft/block/Block useNeighbourLight Z
-accessible field net/minecraft/block/Block transluscent Z
+accessible field net/minecraft/block/Block translucent Z
