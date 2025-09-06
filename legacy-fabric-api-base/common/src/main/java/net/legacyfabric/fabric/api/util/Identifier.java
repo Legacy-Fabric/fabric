@@ -23,9 +23,9 @@ public class Identifier implements Comparable<Identifier> {
 	protected final String namespace;
 	protected final String path;
 
-	private Identifier(String... pathParts) {
-		this.namespace = pathParts[0] == null || pathParts[0].isEmpty() ? "minecraft" : pathParts[0].toLowerCase(Locale.ROOT);
-		this.path = pathParts[1].toLowerCase(Locale.ROOT);
+	private Identifier(boolean keepCase, String... pathParts) {
+		this.namespace = pathParts[0] == null || pathParts[0].isEmpty() ? "minecraft" : pathParts[0].toLowerCase(Locale.ENGLISH);
+		this.path = keepCase ? pathParts[1] : pathParts[1].toLowerCase(Locale.ENGLISH);
 
 		if (this.path == null) {
 			throw new IllegalArgumentException("Path cannot be null!");
@@ -33,15 +33,19 @@ public class Identifier implements Comparable<Identifier> {
 	}
 
 	public Identifier(String name) {
-		this(parseString(name));
+		this(false, parseString(name));
 	}
 
 	public Identifier(Object object) {
-		this(object.toString());
+		this(false, object.toString());
 	}
 
 	public Identifier(String namespace, String path) {
-		this(new String[]{namespace, path});
+		this(false, namespace, path);
+	}
+
+	public Identifier(String namespace, String path, boolean keepCase) {
+		this(keepCase, namespace, path);
 	}
 
 	protected static String[] parseString(String path) {
