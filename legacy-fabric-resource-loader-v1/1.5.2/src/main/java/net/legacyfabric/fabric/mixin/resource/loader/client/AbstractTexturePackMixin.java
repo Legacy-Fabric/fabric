@@ -64,6 +64,7 @@ public class AbstractTexturePackMixin {
 						return;
 					}
 				} catch (Exception e) {
+					continue;
 				}
 			}
 		}
