@@ -58,21 +58,14 @@ public final class ModResourcePackUtil {
 	}
 
 	public static boolean containsDefault(ModMetadata info, String filename) {
-		return "pack.mcmeta".equals(filename);
+		return "/pack.txt".equals(filename);
 	}
 
 	public static InputStream openDefault(ModMetadata info, String filename) {
-		if ("pack.mcmeta".equals(filename)) {
+		if ("/pack.txt".equals(filename)) {
 			String description = info.getName();
 
-			if (description == null) {
-				description = "";
-			} else {
-				description = description.replaceAll("\"", "\\\"");
-			}
-
-			String pack = String.format("{\"pack\":{\"pack_format\":" + PACK_FORMAT_VERSION + ",\"description\":\"%s\"}}", description);
-			return new ByteArrayInputStream(pack.getBytes(StandardCharsets.UTF_8));
+			return new ByteArrayInputStream(description.getBytes(StandardCharsets.UTF_8));
 		}
 
 		return null;

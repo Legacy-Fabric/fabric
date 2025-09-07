@@ -45,4 +45,12 @@ public class ResourcePackManager {
 	public static ModResourcePack getModResourcePack(String modId) {
 		return ResourcePackManagerImpl.getModResourcePack(modId);
 	}
+
+	public static List<ModResourcePack> getResourcePacks() {
+		return ResourcePackManagerImpl.getResourcePacks();
+	}
+
+	public static String getAssetPath(Identifier id) {
+		return "/assets/" + id.getNamespace() + "/" + id.getPath();
+	}
 }

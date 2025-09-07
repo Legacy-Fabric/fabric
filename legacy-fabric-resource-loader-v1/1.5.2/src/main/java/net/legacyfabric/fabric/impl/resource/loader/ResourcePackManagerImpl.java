@@ -105,4 +105,10 @@ public class ResourcePackManagerImpl {
 
 		return null;
 	}
+
+	public static List<ModResourcePack> getResourcePacks() {
+		init();
+
+		return RESOURCE_PACKS;
+	}
 }
