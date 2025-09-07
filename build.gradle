@@ -6,7 +6,7 @@ plugins {
 	id "legacy-looming" version "1.10.1" apply false
 	id "com.diffplug.spotless" version "7.0.2"
 	id "org.ajoberstar.grgit" version "5.3.2"
-	id "me.modmuss50.mod-publish-plugin" version "0.8.4"
+	id "me.modmuss50.mod-publish-plugin" version "1.0.0"
 }
 
 def ENV = System.getenv()
