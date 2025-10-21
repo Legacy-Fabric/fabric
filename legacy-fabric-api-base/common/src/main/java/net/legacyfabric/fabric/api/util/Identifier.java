@@ -37,7 +37,7 @@ public class Identifier implements Comparable<Identifier> {
 	}
 
 	public Identifier(Object object) {
-		this(false, object.toString());
+		this(false, parseString(object.toString()));
 	}
 
 	public Identifier(String namespace, String path) {
