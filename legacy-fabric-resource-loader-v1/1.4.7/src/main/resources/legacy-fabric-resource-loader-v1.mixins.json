@@ -9,6 +9,5 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "client.LanguageMixin"
   ]
 }

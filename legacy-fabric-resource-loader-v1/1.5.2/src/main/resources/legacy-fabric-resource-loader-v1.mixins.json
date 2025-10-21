@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.resource.loader",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "client.AbstractTexturePackMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+  ]
+}
