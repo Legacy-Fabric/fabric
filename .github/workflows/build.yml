@@ -4,12 +4,9 @@ on: [push, pull_request]
 
 jobs:
   build:
-    strategy:
-      matrix:
-        java: [ 17-jdk, 21-jdk ]
     runs-on: ubuntu-24.04
     container:
-      image: eclipse-temurin:${{ matrix.java }}
+      image: eclipse-temurin:21-jdk
       options: --user root
     steps:
       - uses: actions/checkout@v4
@@ -23,17 +20,14 @@ jobs:
           reports: |
             **/build/reports/checkstyle/*.xml
       - uses: actions/upload-artifact@v4
-        if: ${{ matrix.java == '21-jdk' }}
         with:
           name: Main Artifacts
           path: build/libs/
       - uses: actions/upload-artifact@v4
-        if: ${{ matrix.java == '21-jdk' }}
         with:
           name: Modules Artifacts
           path: ./**/build/libs/
       - uses: actions/upload-artifact@v4
-        if: ${{ matrix.java == '21-jdk' }}
         with:
           name: Maven Local
           path: ~/.m2/repository
