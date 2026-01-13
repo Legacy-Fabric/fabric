@@ -22,32 +22,32 @@ import java.util.stream.StreamSupport;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.itemgroup.ItemGroup;
+//import net.minecraft.item.itemgroup.ItemGroup;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.legacyfabric.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+//import net.legacyfabric.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 public class ItemGroupTest implements ModInitializer {
 	//Adds an item group with all items in it
-	private static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("legacy-fabric-item-groups-v1-testmod", "test_group"))
-			.iconWithItemStack(() -> new ItemStack(Items.DIAMOND))
-			.appendItems(stacks ->
-					StreamSupport.stream(Item.REGISTRY.spliterator(), false)
-							.map(ItemStack::new)
-							.forEach(stacks::add)
-			).build();
-
-	private static final ItemGroup ITEM_GROUP_2 = FabricItemGroupBuilder.create(new Identifier("legacy-fabric-item-groups-v1-testmod", "test_group_two"))
-			.iconWithItemStack(() -> new ItemStack(Items.REDSTONE))
-			.appendItems((stacks, itemGroup) -> {
-				for (Item item : Item.REGISTRY) {
-					if (item.getItemGroup() == ItemGroup.FOOD || item.getItemGroup() == itemGroup) {
-						stacks.add(new ItemStack(item));
-					}
-				}
-			}).build();
+//	private static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("legacy-fabric-item-groups-v1-testmod", "test_group"))
+//			.iconWithItemStack(() -> new ItemStack(Items.DIAMOND))
+//			.appendItems(stacks ->
+//					StreamSupport.stream(Item.REGISTRY.spliterator(), false)
+//							.map(ItemStack::new)
+//							.forEach(stacks::add)
+//			).build();
+//
+//	private static final ItemGroup ITEM_GROUP_2 = FabricItemGroupBuilder.create(new Identifier("legacy-fabric-item-groups-v1-testmod", "test_group_two"))
+//			.iconWithItemStack(() -> new ItemStack(Items.REDSTONE))
+//			.appendItems((stacks, itemGroup) -> {
+//				for (Item item : Item.REGISTRY) {
+//					if (item.getItemGroup() == ItemGroup.FOOD || item.getItemGroup() == itemGroup) {
+//						stacks.add(new ItemStack(item));
+//					}
+//				}
+//			}).build();
 
 	@Override
 	public void onInitialize() { }

@@ -17,57 +17,57 @@
 
 package net.legacyfabric.fabric.test.command;
 
-import net.minecraft.text.ChatMessage;
+//import net.minecraft.text.ChatMessage;
 
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ContactInformation;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.GenericArguments;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.GenericArguments;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
+//import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class ModMetadataCommand {
-	public static void register(CommandManager manager) {
-		manager.register(
-				CommandSpec.builder()
-						.arguments(GenericArguments.mod(ChatMessage.createTextMessage("modid")))
-						.executor(ModMetadataCommand::execute)
-						.build(),
-				"modmetadata"
-		);
-	}
+//	public static void register(CommandManager manager) {
+//		manager.register(
+//				CommandSpec.builder()
+//						.arguments(GenericArguments.mod(ChatMessage.createTextMessage("modid")))
+//						.executor(ModMetadataCommand::execute)
+//						.build(),
+//				"modmetadata"
+//		);
+//	}
 
-	private static CommandResult execute(PermissibleCommandSource source, CommandContext ctx) throws CommandException {
-		ModContainer container = ctx.<ModContainer>getOne("modid").orElseThrow(() -> new CommandException(ChatMessage.createTextMessage("Couldn't find Mod container")));
-		ChatMessage builder = ChatMessage.createTextMessage("");
-		builder.addText("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
-		builder.addText("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));
-		ContactInformation contact = container.getMetadata().getContact();
-
-		if (contact.get("issues").isPresent()) {
-			ChatMessage issueText = ChatMessage.createTextMessage("");
-			issueText.addText("Issues: ");
-			ChatMessage issueUrl = ChatMessage.createTextMessage(contact.get("issues").get());
-			issueText.addUsing(issueUrl);
-			issueText.addText("\n");
-			builder.addUsing(issueText);
-		}
-
-		if (contact.get("sources").isPresent()) {
-			ChatMessage sourcesText = ChatMessage.createTextMessage("");
-			sourcesText.addText("Sources: ");
-			ChatMessage sourcesUrl = ChatMessage.createTextMessage(contact.get("sources").get());
-			sourcesText.addUsing(sourcesUrl);
-			sourcesText.addText("\n");
-			builder.addUsing(sourcesText);
-		}
-
-		builder.addText("Metadata Type: ".concat(container.getMetadata().getType()).concat("\n"));
-		source.method_5505(builder);
-		return CommandResult.success();
-	}
+//	private static CommandResult execute(PermissibleCommandSource source, CommandContext ctx) throws CommandException {
+//		ModContainer container = ctx.<ModContainer>getOne("modid").orElseThrow(() -> new CommandException(ChatMessage.createTextMessage("Couldn't find Mod container")));
+//		ChatMessage builder = ChatMessage.createTextMessage("");
+//		builder.addText("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
+//		builder.addText("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));
+//		ContactInformation contact = container.getMetadata().getContact();
+//
+//		if (contact.get("issues").isPresent()) {
+//			ChatMessage issueText = ChatMessage.createTextMessage("");
+//			issueText.addText("Issues: ");
+//			ChatMessage issueUrl = ChatMessage.createTextMessage(contact.get("issues").get());
+//			issueText.addUsing(issueUrl);
+//			issueText.addText("\n");
+//			builder.addUsing(issueText);
+//		}
+//
+//		if (contact.get("sources").isPresent()) {
+//			ChatMessage sourcesText = ChatMessage.createTextMessage("");
+//			sourcesText.addText("Sources: ");
+//			ChatMessage sourcesUrl = ChatMessage.createTextMessage(contact.get("sources").get());
+//			sourcesText.addUsing(sourcesUrl);
+//			sourcesText.addText("\n");
+//			builder.addUsing(sourcesText);
+//		}
+//
+//		builder.addText("Metadata Type: ".concat(container.getMetadata().getType()).concat("\n"));
+//		source.method_5505(builder);
+//		return CommandResult.success();
+//	}
 }

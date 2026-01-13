@@ -19,13 +19,13 @@ package net.legacyfabric.fabric.test.client.rendering;
 
 import net.fabricmc.api.ClientModInitializer;
 
-import net.legacyfabric.fabric.api.client.rendering.v1.EntityRendererRegistry;
+//import net.legacyfabric.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.legacyfabric.fabric.test.registry.RegistryTest;
 
 public class EntityRendererTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		EntityRendererRegistry.INSTANCE.register(RegistryTest.TestCreeperEntity.class,
-				(dispatcher, context) -> new TestCreeperEntityRenderer(dispatcher));
+//		EntityRendererRegistry.INSTANCE.register(RegistryTest.TestCreeperEntity.class,
+//				(dispatcher, context) -> new TestCreeperEntityRenderer(dispatcher));
 	}
 }

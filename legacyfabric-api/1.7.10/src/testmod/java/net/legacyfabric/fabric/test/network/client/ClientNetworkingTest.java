@@ -21,8 +21,8 @@ import java.util.Arrays;
 
 import net.fabricmc.api.ClientModInitializer;
 
-import net.legacyfabric.fabric.api.client.networking.v1.C2SPlayChannelEvents;
-import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+//import net.legacyfabric.fabric.api.client.networking.v1.C2SPlayChannelEvents;
+//import net.legacyfabric.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
@@ -31,20 +31,20 @@ public class ClientNetworkingTest implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		C2SPlayChannelEvents.REGISTER.register((handler, sender, client, channels) -> {
-			LOGGER.info("Registered channels (C2S callback) - " + Arrays.toString(channels.toArray()));
-		});
-		C2SPlayChannelEvents.UNREGISTER.register((handler, sender, client, channels) -> {
-			LOGGER.info("Unregistered channels (C2S callback) - " + Arrays.toString(channels.toArray()));
-		});
-		ClientPlayConnectionEvents.INIT.register((handler, client) -> {
-			LOGGER.info("Connection initialized (C2S)");
-		});
-		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-			LOGGER.info("World joined (C2S)");
-		});
-		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
-			LOGGER.info("Connection disconnected (C2S)");
-		});
+//		C2SPlayChannelEvents.REGISTER.register((handler, sender, client, channels) -> {
+//			LOGGER.info("Registered channels (C2S callback) - " + Arrays.toString(channels.toArray()));
+//		});
+//		C2SPlayChannelEvents.UNREGISTER.register((handler, sender, client, channels) -> {
+//			LOGGER.info("Unregistered channels (C2S callback) - " + Arrays.toString(channels.toArray()));
+//		});
+//		ClientPlayConnectionEvents.INIT.register((handler, client) -> {
+//			LOGGER.info("Connection initialized (C2S)");
+//		});
+//		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+//			LOGGER.info("World joined (C2S)");
+//		});
+//		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+//			LOGGER.info("Connection disconnected (C2S)");
+//		});
 	}
 }

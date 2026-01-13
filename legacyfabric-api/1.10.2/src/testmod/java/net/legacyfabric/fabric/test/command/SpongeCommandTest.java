@@ -19,13 +19,13 @@ package net.legacyfabric.fabric.test.command;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
+//import net.legacyfabric.fabric.api.command.v2.CommandRegistrar;
 
 public class SpongeCommandTest implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		CommandRegistrar.EVENT.register((manager, dedicated) -> {
-			ModMetadataCommand.register(manager);
-		});
+//		CommandRegistrar.EVENT.register((manager, dedicated) -> {
+//			ModMetadataCommand.register(manager);
+//		});
 	}
 }

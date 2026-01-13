@@ -17,13 +17,13 @@
 
 package net.legacyfabric.fabric.test.entity;
 
-import net.minecraft.entity.EntityType;
+//import net.minecraft.entity.EntityType;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
-import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
-import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
+//import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
+//import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+//import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
@@ -32,20 +32,20 @@ public class EntityEventsTest implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((entity, killedEntity) -> {
-			LOGGER.info("%s killed %s", EntityType.getEntityName(entity), EntityType.getEntityName(killedEntity));
-		});
-		ServerEntityWorldChangeEvents.AFTER_ENTITY_CHANGE_WORLD.register((originalEntity, newEntity, origin, destination) -> {
-			LOGGER.info("%s went from dim %s to dim %s", EntityType.getEntityName(newEntity), origin.dimension.getName(), destination.dimension.getName());
-		});
-		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
-			LOGGER.info("Player went from dim %s to dim %s", origin.dimension.getName(), destination.dimension.getName());
-		});
-		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, world, alive) -> {
-			LOGGER.info("Player %s respawned", newPlayer.getGameProfile().getName());
-		});
-		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
-			LOGGER.info("%s player data is being copied", newPlayer.getGameProfile().getName());
-		});
+//		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((entity, killedEntity) -> {
+//			LOGGER.info("%s killed %s", EntityType.getEntityName(entity), EntityType.getEntityName(killedEntity));
+//		});
+//		ServerEntityWorldChangeEvents.AFTER_ENTITY_CHANGE_WORLD.register((originalEntity, newEntity, origin, destination) -> {
+//			LOGGER.info("%s went from dim %s to dim %s", EntityType.getEntityName(newEntity), origin.dimension.getName(), destination.dimension.getName());
+//		});
+//		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
+//			LOGGER.info("Player went from dim %s to dim %s", origin.dimension.getName(), destination.dimension.getName());
+//		});
+//		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, world, alive) -> {
+//			LOGGER.info("Player %s respawned", newPlayer.getGameProfile().getName());
+//		});
+//		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
+//			LOGGER.info("%s player data is being copied", newPlayer.getGameProfile().getName());
+//		});
 	}
 }

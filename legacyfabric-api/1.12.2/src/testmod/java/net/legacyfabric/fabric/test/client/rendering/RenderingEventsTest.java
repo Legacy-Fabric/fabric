@@ -23,8 +23,8 @@ import net.minecraft.client.resource.language.I18n;
 
 import net.fabricmc.api.ClientModInitializer;
 
-import net.legacyfabric.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.legacyfabric.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
+//import net.legacyfabric.fabric.api.client.rendering.v1.HudRenderCallback;
+//import net.legacyfabric.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
@@ -33,11 +33,11 @@ public class RenderingEventsTest implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		HudRenderCallback.EVENT.register((client, tickDelta) -> {
-			client.textRenderer.draw(I18n.translate("legacyfabric.api.youreTesting"), 10, 10, Color.RED.getRGB());
-		});
-		InvalidateRenderStateCallback.EVENT.register(() -> {
-			LOGGER.info("Render state invalidated");
-		});
+//		HudRenderCallback.EVENT.register((client, tickDelta) -> {
+//			client.textRenderer.draw(I18n.translate("legacyfabric.api.youreTesting"), 10, 10, Color.RED.getRGB());
+//		});
+//		InvalidateRenderStateCallback.EVENT.register(() -> {
+//			LOGGER.info("Render state invalidated");
+//		});
 	}
 }

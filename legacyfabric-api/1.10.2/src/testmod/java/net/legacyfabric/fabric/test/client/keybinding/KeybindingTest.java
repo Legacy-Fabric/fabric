@@ -19,22 +19,22 @@ package net.legacyfabric.fabric.test.client.keybinding;
 
 import org.lwjgl.input.Keyboard;
 
-import net.minecraft.client.option.KeyBinding;
+//import net.minecraft.client.option.KeyBinding;
 
 import net.fabricmc.api.ClientModInitializer;
 
-import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.legacyfabric.fabric.api.client.keybinding.v1.KeyBindingHelper;
+//import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+//import net.legacyfabric.fabric.api.client.keybinding.v1.KeyBindingHelper;
 
 public class KeybindingTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		KeyBinding keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("api.keybinding.testTranslationKey", Keyboard.KEY_F, "key.categories.lftesting"));
-		KeyBinding keyBinding2 = KeyBindingHelper.registerKeyBinding(new KeyBinding("api.keybinding.testTranslationKey2", Keyboard.KEY_G, "key.categories.lftesting"));
-		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			if (keyBinding.wasPressed()) {
-				System.out.printf("The key %s was pressed%n", Keyboard.getKeyName(keyBinding.getCode()));
-			}
-		});
+//		KeyBinding keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("api.keybinding.testTranslationKey", Keyboard.KEY_F, "key.categories.lftesting"));
+//		KeyBinding keyBinding2 = KeyBindingHelper.registerKeyBinding(new KeyBinding("api.keybinding.testTranslationKey2", Keyboard.KEY_G, "key.categories.lftesting"));
+//		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+//			if (keyBinding.wasPressed()) {
+//				System.out.printf("The key %s was pressed%n", Keyboard.getKeyName(keyBinding.getCode()));
+//			}
+//		});
 	}
 }

@@ -18,60 +18,60 @@
 package net.legacyfabric.fabric.test.command;
 
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.ClickEventAction;
+//import net.minecraft.text.ClickEventAction;
 import net.minecraft.text.LiteralText;
 
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ContactInformation;
 
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.GenericArguments;
-import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
-import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandManager;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandResult;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandContext;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.GenericArguments;
+//import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
+//import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class ModMetadataCommand {
-	public static void register(CommandManager manager) {
-		manager.register(
-				CommandSpec.builder()
-						.arguments(GenericArguments.mod(new LiteralText("modid")))
-						.executor(ModMetadataCommand::execute)
-						.build(),
-				"modmetadata"
-		);
-	}
-
-	private static CommandResult execute(PermissibleCommandSource source, CommandContext ctx) throws CommandException {
-		ModContainer container = ctx.<ModContainer>getOne("modid").orElseThrow(() -> new CommandException(new LiteralText("Couldn't find Mod container")));
-		LiteralText builder = new LiteralText("");
-		builder.append("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
-		builder.append("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));
-		ContactInformation contact = container.getMetadata().getContact();
-
-		if (contact.get("issues").isPresent()) {
-			LiteralText issueText = new LiteralText("");
-			issueText.append("Issues: ");
-			LiteralText issueUrl = new LiteralText(contact.get("issues").get());
-			issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, issueUrl.computeValue())));
-			issueText.append(issueUrl);
-			issueText.append("\n");
-			builder.append(issueText);
-		}
-
-		if (contact.get("sources").isPresent()) {
-			LiteralText sourcesText = new LiteralText("");
-			sourcesText.append("Sources: ");
-			LiteralText sourcesUrl = new LiteralText(contact.get("sources").get());
-			sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, sourcesUrl.computeValue())));
-			sourcesText.append(sourcesUrl);
-			sourcesText.append("\n");
-			builder.append(sourcesText);
-		}
-
-		builder.append("Metadata Type: ".concat(container.getMetadata().getType()).concat("\n"));
-		source.sendMessage(builder);
-		return CommandResult.success();
-	}
+//	public static void register(CommandManager manager) {
+//		manager.register(
+//				CommandSpec.builder()
+//						.arguments(GenericArguments.mod(new LiteralText("modid")))
+//						.executor(ModMetadataCommand::execute)
+//						.build(),
+//				"modmetadata"
+//		);
+//	}
+//
+//	private static CommandResult execute(PermissibleCommandSource source, CommandContext ctx) throws CommandException {
+//		ModContainer container = ctx.<ModContainer>getOne("modid").orElseThrow(() -> new CommandException(new LiteralText("Couldn't find Mod container")));
+//		LiteralText builder = new LiteralText("");
+//		builder.append("Mod Name: ".concat(container.getMetadata().getName()).concat("\n"));
+//		builder.append("Description: ".concat(container.getMetadata().getDescription()).concat("\n"));
+//		ContactInformation contact = container.getMetadata().getContact();
+//
+//		if (contact.get("issues").isPresent()) {
+//			LiteralText issueText = new LiteralText("");
+//			issueText.append("Issues: ");
+//			LiteralText issueUrl = new LiteralText(contact.get("issues").get());
+//			issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, issueUrl.computeValue())));
+//			issueText.append(issueUrl);
+//			issueText.append("\n");
+//			builder.append(issueText);
+//		}
+//
+//		if (contact.get("sources").isPresent()) {
+//			LiteralText sourcesText = new LiteralText("");
+//			sourcesText.append("Sources: ");
+//			LiteralText sourcesUrl = new LiteralText(contact.get("sources").get());
+//			sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, sourcesUrl.computeValue())));
+//			sourcesText.append(sourcesUrl);
+//			sourcesText.append("\n");
+//			builder.append(sourcesText);
+//		}
+//
+//		builder.append("Metadata Type: ".concat(container.getMetadata().getType()).concat("\n"));
+//		source.sendMessage(builder);
+//		return CommandResult.success();
+//	}
 }
