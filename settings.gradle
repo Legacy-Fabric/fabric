@@ -32,7 +32,7 @@ def loadProject(String path) {
 	}
 }
 
-//loadProject("legacy-fabric-api-base")
+loadProject("legacy-fabric-api-base")
 loadProject("legacy-fabric-logger-api-v1")
 //loadProject("legacy-fabric-resource-loader-v1")
 //loadProject("legacy-fabric-lifecycle-events-v1")

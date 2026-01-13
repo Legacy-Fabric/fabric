@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.util;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 
 import net.fabricmc.api.EnvType;
@@ -26,10 +26,10 @@ import net.fabricmc.loader.api.FabricLoader;
 public class ServerUtils {
 	public static MinecraftServer getServer() {
 		try {
-			return MinecraftServer.getServer();
+			return MinecraftServer.getInstance();
 		} catch (NoSuchMethodError e) {
 			if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-				return MinecraftClient.getInstance().getServer();
+				return Minecraft.getInstance().getServer();
 			} else {
 				return (MinecraftServer) FabricLoader.getInstance().getGameInstance();
 			}
