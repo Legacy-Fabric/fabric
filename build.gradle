@@ -3,7 +3,7 @@ plugins {
 	id "eclipse"
 	id "maven-publish"
 	id "net.fabricmc.fabric-loom-remap" version "1.15.3" apply false
-	id "legacy-looming" version "1.15.2" apply false
+	id "ploceus" version "1.15.6" apply false
 	id "com.diffplug.spotless" version "7.2.1"
 	id "org.ajoberstar.grgit" version "5.3.2"
 	id "me.modmuss50.mod-publish-plugin" version "1.1.0"
@@ -254,19 +254,58 @@ def moduleDependencies(Project project, List<String> projectNames) {
 	}
 }
 
+def getNestBuild(String mcVersion) {
+	if (mcVersion == "1.7.10") {
+		return "5"
+	} else if (mcVersion == "1.6.4") {
+		return "2"
+	}
+
+	return null;
+}
+
+def getSparrowBuild(String mcVersion) {
+	if (mcVersion == "1.7.10") {
+		return "1"
+	} else if (mcVersion == "1.6.4") {
+		return "1"
+	} else if (mcVersion == "1.12.2") {
+		return "1"
+	}
+
+	return null;
+}
+
+def getRavenBuild(String mcVersion) {
+	if (mcVersion == "1.7.10") {
+		return "1"
+	} else if (mcVersion == "1.5.2") {
+		return "1"
+	} else if (mcVersion == "1.6.4") {
+		return "1"
+	} else if (mcVersion == "1.12.2") {
+		return "1"
+	}
+
+	return null;
+}
+
 allprojects {
 	group = "net.legacyfabric.legacy-fabric-api"
 
 	apply plugin: "java-library"
 	apply plugin: "checkstyle"
 	apply plugin: "maven-publish"
-	apply plugin: "signing"
 	apply plugin: "net.fabricmc.fabric-loom-remap"
-	apply plugin: "legacy-looming"
+	apply plugin: "ploceus"
 	apply plugin: "com.diffplug.spotless"
 
 	tasks.withType(GenerateModuleMetadata) {
 		enabled = false
+	}
+
+	ploceus {
+		setIntermediaryGeneration(2)
 	}
 
 	publishing {
@@ -345,13 +384,28 @@ allprojects {
 	}
 
 	repositories {
+		maven {
+			name = "legacy-fabric"
+			url = "https://maven.legacyfabric.net/"
+		}
 		maven { url = "https://maven.bawnorton.com/releases" }
 	}
 
+	def nestBuild = getNestBuild(mcVersion)
+	def ravenBuild = getRavenBuild(mcVersion)
+	def sparrowBuild = getSparrowBuild(mcVersion)
+
 	dependencies {
 		minecraft "com.mojang:minecraft:${mcVersion}"
-		mappings legacy.yarn(mcVersion, project.yarn_mappings_build)
 		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+		mappings "net.legacyfabric:legacy-yarn:${mcVersion}+build.${project.rootProject.feather_build}:v2"
+//		mappings project.ploceus.featherMappings(project.rootProject.feather_build)
+		if (ravenBuild != null) exceptions project.ploceus.raven(ravenBuild) // remove this line if not using exceptions patches
+		if (sparrowBuild != null) signatures project.ploceus.sparrow(sparrowBuild) // remove this line if not using generics patches
+//		if (nestBuild != null) nests project.ploceus.nests(nestBuild) // remove this line if not using inner class patches
+
+		ploceus.dependOsl(project.osl_version)
 
 		implementation "com.mojang:brigadier:1.0.17"
 
@@ -360,9 +414,9 @@ allprojects {
 		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0"))
 		implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.4.1"))
 
-		if (VersionHelper.parsePredicate("<1.6").test(VersionHelper.parseVersion(mcVersion))) {
-			implementation 'com.google.code.gson:gson:2.8.9'
-		}
+//		if (VersionHelper.parsePredicate("<1.6").test(VersionHelper.parseVersion(mcVersion))) {
+//			implementation 'com.google.code.gson:gson:2.8.9'
+//		}
 	}
 
 	tasks.withType(ProcessResources).configureEach { processResourcesTask ->
