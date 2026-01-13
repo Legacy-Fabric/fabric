@@ -31,7 +31,7 @@
       }
     }
   ],
-  "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.6.4-1.12.2.",
+  "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.3.2-1.12.2.",
   "depends": {
     "fabricloader": "${loader_version}"
   }
