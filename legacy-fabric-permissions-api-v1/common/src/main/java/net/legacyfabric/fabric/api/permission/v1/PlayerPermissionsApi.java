@@ -17,9 +17,9 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
-import net.minecraft.server.entity.living.player.ServerPlayerEntity;
-
 import org.jetbrains.annotations.ApiStatus;
+
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 
 /**
  * @deprecated Unstable API, may change in the future.

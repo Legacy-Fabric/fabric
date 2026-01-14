@@ -433,7 +433,7 @@ allprojects {
 			importOrder("java", "javax", "", "net.minecraft", "net.fabricmc", "net.legacyfabric")
 			leadingSpacesToTabs()
 			trimTrailingWhitespace()
-			targetExclude('**/lib/sponge/*.java', '**/lib/sponge/**/*.java')
+			targetExclude('**/lib/sponge/*.java', '**/lib/sponge/**/*.java', "**/test/**")
 		}
 
 		format("sponge", com.diffplug.gradle.spotless.JavaExtension) {

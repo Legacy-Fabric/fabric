@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
-
 import net.minecraft.server.command.source.CommandSource;
 
 /**

@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.impl.permission;
 
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
+
 import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissionsApiHolder;
 import net.legacyfabric.fabric.api.permission.v1.PlayerPermissionsApi;
-
-import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 
 public class PermissionImpl implements ModInitializer {
 	@Override

@@ -17,9 +17,9 @@
 
 package net.legacyfabric.fabric.mixin.permission;
 
-import net.minecraft.server.entity.living.player.ServerPlayerEntity;
-
 import org.spongepowered.asm.mixin.Mixin;
+
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.permission.v1.PermissionsApiHolder;

@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.mixin.permission;
 
-import net.minecraft.entity.living.player.PlayerEntity;
-
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+
+import net.minecraft.entity.living.player.PlayerEntity;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
