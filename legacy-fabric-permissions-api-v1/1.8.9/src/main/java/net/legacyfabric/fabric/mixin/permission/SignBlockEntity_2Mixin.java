@@ -26,15 +26,15 @@ import net.minecraft.entity.living.player.PlayerEntity;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
-@Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$2")
+@Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$24254726")
 public abstract class SignBlockEntity_2Mixin implements PermissibleCommandSource {
 	@Final
 	@Dynamic
 	@Shadow
-	PlayerEntity f_1442607;
+	PlayerEntity f_84207635;
 
 	@Override
 	public boolean hasPermission(String perm) {
-		return ((PermissibleCommandSource) this.f_1442607).hasPermission(perm);
+		return ((PermissibleCommandSource) this.f_84207635).hasPermission(perm);
 	}
 }

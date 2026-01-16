@@ -40,7 +40,7 @@ public class PermissionImpl implements ModInitializer {
 
 		@Override
 		public boolean hasPermission(ServerPlayerEntity player, String perm) {
-			return player.server.getPlayerManager().isOp(player.getSourceName());
+			return player.server.getPlayerManager().isOp(player.getCommandSourceName());
 		}
 	}
 }
