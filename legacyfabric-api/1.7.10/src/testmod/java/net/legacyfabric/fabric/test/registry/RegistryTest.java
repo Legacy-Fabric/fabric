@@ -65,7 +65,7 @@ public class RegistryTest implements ModInitializer {
 	private void registerItems() {
 		Item testItem = new Item()
 				.setItemGroup(ItemGroup.FOOD)
-				.getFromId(new Identifier("legacy-fabric-api", "test_item").toString());
+				.setTextureName(new Identifier("legacy-fabric-api", "test_item").toString());
 		RegistryHelper.register(
 				Item.REGISTRY,
 				new Identifier("legacy-fabric-api", "test_item"), testItem

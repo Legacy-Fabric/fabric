@@ -1,6 +1,6 @@
 accessWidener	v2	named
 
-transitive-accessible method net/minecraft/item/Item getFromId (Ljava/lang/String;)Lnet/minecraft/item/Item;
+transitive-accessible method net/minecraft/item/Item setTextureName (Ljava/lang/String;)Lnet/minecraft/item/Item;
 transitive-accessible method net/minecraft/item/Item setUnbreakable (Z)Lnet/minecraft/item/Item;
 transitive-accessible method net/minecraft/item/Item setMaxDamage (I)Lnet/minecraft/item/Item;
 transitive-accessible method net/minecraft/item/Item setStatusEffectString (Ljava/lang/String;)Lnet/minecraft/item/Item;
