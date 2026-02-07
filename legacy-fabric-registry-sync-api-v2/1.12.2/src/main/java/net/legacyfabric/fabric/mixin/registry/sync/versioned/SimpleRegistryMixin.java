@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import net.minecraft.class_2929;
+import net.minecraft.unmapped.C_53094504;
 import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.SimpleRegistry;
 
@@ -44,7 +44,7 @@ public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<
 	@Mutable
 	@Shadow
 	@Final
-	protected class_2929<V> field_13718;
+	protected C_53094504<V> field_13718;
 
 	@Shadow
 	public abstract K getIdentifier(Object par1);
@@ -107,7 +107,7 @@ public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<
 
 	@Override
 	public void fabric$updateRegistry(IdsHolder<V> ids) {
-		this.field_13718 = (class_2929<V>) ids;
+		this.field_13718 = (C_53094504<V>) ids;
 	}
 
 	@Unique

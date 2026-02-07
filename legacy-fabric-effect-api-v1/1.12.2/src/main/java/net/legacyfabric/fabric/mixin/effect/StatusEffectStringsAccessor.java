@@ -20,30 +20,30 @@ package net.legacyfabric.fabric.mixin.effect;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-import net.minecraft.entity.effect.StatusEffectStrings;
+import net.minecraft.class_1105;
 import net.minecraft.item.Item;
 import net.minecraft.item.PotionItem;
 import net.minecraft.potion.Potion;
 import net.minecraft.recipe.Ingredient;
 
-@Mixin(StatusEffectStrings.class)
+@Mixin(class_1105.class)
 public interface StatusEffectStringsAccessor {
-	@Invoker("method_14241")
+	@Invoker("m_71298295")
 	static void registerPotionType(PotionItem potion) {
 		throw new UnsupportedOperationException();
 	}
 
-	@Invoker("method_11419")
+	@Invoker("m_10569388")
 	static void registerPotionTypeRecipe(PotionItem basePotion, Item ingredient, PotionItem resultingPotion) {
 		throw new UnsupportedOperationException();
 	}
 
-	@Invoker("method_14242")
+	@Invoker("m_55267144")
 	static void registerPotionRecipe(Potion basePotion, Item ingredient, Potion resultingPotion) {
 		throw new UnsupportedOperationException();
 	}
 
-	@Invoker("method_14243")
+	@Invoker("m_03472859")
 	static void registerPotionRecipe(Potion basePotion, Ingredient ingredient, Potion resultingPotion) {
 		throw new UnsupportedOperationException();
 	}

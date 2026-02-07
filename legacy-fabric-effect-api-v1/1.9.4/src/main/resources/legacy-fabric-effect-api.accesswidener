@@ -1,4 +1,4 @@
 accessWidener	v2	named
 
 transitive-accessible method net/minecraft/entity/effect/StatusEffect <init> (ZI)V
-accessible class net/minecraft/entity/effect/StatusEffectStrings$class_2696
+accessible class net/minecraft/class_1105$C_96192416

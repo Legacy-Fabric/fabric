@@ -85,7 +85,7 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 	}
 
 	@Override
-	public int compareTo(@NotNull Object o) {
+	public int compareTo(@NotNull Command o) {
 		return super.compareTo((Command) o);
 	}
 }

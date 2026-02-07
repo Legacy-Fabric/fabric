@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.impl.effect.versioned;
 
 import com.google.common.base.Predicate;
 
-import net.minecraft.entity.effect.StatusEffectStrings;
+import net.minecraft.class_1105;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PotionItem;
@@ -29,27 +29,27 @@ import net.legacyfabric.fabric.mixin.effect.StatusEffectStringsAccessor;
 
 public class PotionHelperImpl {
 	public static void registerPotionType(Item potionItem) {
-		StatusEffectStringsAccessor.registerPotionType(new StatusEffectStrings.class_2696(potionItem));
+		StatusEffectStringsAccessor.registerPotionType(new class_1105.C_96192416(potionItem));
 	}
 
 	public static void registerPotionType(Item potionItem, int meta) {
-		StatusEffectStringsAccessor.registerPotionType(new StatusEffectStrings.class_2696(potionItem, meta));
+		StatusEffectStringsAccessor.registerPotionType(new class_1105.C_96192416(potionItem, meta));
 	}
 
 	public static void registerPotionTypeRecipe(PotionItem basePotion, Item ingredient, PotionItem resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionTypeRecipe(basePotion, new StatusEffectStrings.class_2696(ingredient), resultingPotion);
+		StatusEffectStringsAccessor.registerPotionTypeRecipe(basePotion, new class_1105.C_96192416(ingredient), resultingPotion);
 	}
 
 	public static void registerPotionTypeRecipe(PotionItem basePotion, Item ingredient, int meta, PotionItem resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionTypeRecipe(basePotion, new StatusEffectStrings.class_2696(ingredient, meta), resultingPotion);
+		StatusEffectStringsAccessor.registerPotionTypeRecipe(basePotion, new class_1105.C_96192416(ingredient, meta), resultingPotion);
 	}
 
 	public static void registerPotionRecipe(Potion basePotion, Item ingredient, Potion resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionRecipe(basePotion, new StatusEffectStrings.class_2696(ingredient), resultingPotion);
+		StatusEffectStringsAccessor.registerPotionRecipe(basePotion, new class_1105.C_96192416(ingredient), resultingPotion);
 	}
 
 	public static void registerPotionRecipe(Potion basePotion, Item ingredient, int meta, Potion resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionRecipe(basePotion, new StatusEffectStrings.class_2696(ingredient, meta), resultingPotion);
+		StatusEffectStringsAccessor.registerPotionRecipe(basePotion, new class_1105.C_96192416(ingredient, meta), resultingPotion);
 	}
 
 	public static void registerPotionRecipe(Potion basePotion, Predicate<ItemStack> ingredientPredicate, Potion resultingPotion) {

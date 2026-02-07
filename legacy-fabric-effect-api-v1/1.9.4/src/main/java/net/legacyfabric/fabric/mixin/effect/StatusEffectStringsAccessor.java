@@ -21,24 +21,24 @@ import com.google.common.base.Predicate;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-import net.minecraft.entity.effect.StatusEffectStrings;
+import net.minecraft.class_1105;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PotionItem;
 import net.minecraft.potion.Potion;
 
-@Mixin(StatusEffectStrings.class)
+@Mixin(class_1105.class)
 public interface StatusEffectStringsAccessor {
-	@Invoker("method_11421")
-	static void registerPotionType(StatusEffectStrings.class_2696 potion) {
+	@Invoker("m_71298295")
+	static void registerPotionType(class_1105.C_96192416 potion) {
 		throw new UnsupportedOperationException();
 	}
 
-	@Invoker("method_11419")
-	static void registerPotionTypeRecipe(PotionItem basePotion, StatusEffectStrings.class_2696 ingredient, PotionItem resultingPotion) {
+	@Invoker("m_10569388")
+	static void registerPotionTypeRecipe(PotionItem basePotion, class_1105.C_96192416 ingredient, PotionItem resultingPotion) {
 		throw new UnsupportedOperationException();
 	}
 
-	@Invoker("method_11420")
+	@Invoker("m_03472859")
 	static void registerPotionRecipe(Potion basePotion, Predicate<ItemStack> ingredient, Potion resultingPotion) {
 		throw new UnsupportedOperationException();
 	}

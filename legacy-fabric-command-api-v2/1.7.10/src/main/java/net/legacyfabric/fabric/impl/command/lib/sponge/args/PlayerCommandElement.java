@@ -31,6 +31,7 @@ import java.util.stream.StreamSupport;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -76,7 +77,7 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Object getValue(String choice) throws IllegalArgumentException {
-		Optional<PlayerEntity> ret = this.getServer().getPlayerManager().players.stream().findFirst();
+		Optional<ServerPlayerEntity> ret = this.getServer().getPlayerManager().players.stream().findFirst();
 
 		if (!ret.isPresent()) {
 			throw new IllegalArgumentException("Input value " + choice + " was not a player");

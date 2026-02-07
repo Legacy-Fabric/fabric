@@ -64,7 +64,7 @@ public class CommandWrapper extends AbstractCommand {
 	}
 
 	@Override
-	public void method_3279(MinecraftServer minecraftServer, CommandSource source, String[] args) {
+	public void m_57379810(MinecraftServer minecraftServer, CommandSource source, String[] args) {
 		try {
 			try {
 				this.mapping.getCallable().process((PermissibleCommandSource) source, String.join(" ", args));
@@ -102,12 +102,12 @@ public class CommandWrapper extends AbstractCommand {
 	}
 
 	@Override
-	public boolean method_3278(MinecraftServer server, CommandSource source) {
+	public boolean m_52842527(MinecraftServer server, CommandSource source) {
 		return this.mapping.getCallable().testPermission((PermissibleCommandSource) source);
 	}
 
 	@Override
-	public List<String> method_10738(MinecraftServer server, CommandSource source, String[] strings, @Nullable BlockPos pos) {
+	public List<String> m_74370043(MinecraftServer server, CommandSource source, String[] strings, @Nullable BlockPos pos) {
 		try {
 			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(strings).collect(Collectors.joining(" ")), new Location<>(source.getWorld(), pos));
 		} catch (CommandException e) {

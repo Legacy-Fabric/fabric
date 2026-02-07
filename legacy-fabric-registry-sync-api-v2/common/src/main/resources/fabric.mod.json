@@ -28,12 +28,8 @@
   "mixins": [
     "legacy-fabric-registry-sync-api-v2-common.mixins.json"
   ],
+  "accessWidener": "legacy-fabric-registry-sync-api-v2-common.classtweaker",
   "custom": {
-    "loom:injected_interfaces": {
-      "net/minecraft/unmapped/C_39524089": ["net/legacyfabric/fabric/api/registry/v2/registry/holder/FabricRegistry"],
-      "net/minecraft/unmapped/C_80713356": ["net/legacyfabric/fabric/api/registry/v2/registry/holder/SyncedFabricRegistry"],
-      "net/minecraft/unmapped/C_53094504": ["net/legacyfabric/fabric/api/registry/v2/registry/registrable/IdsHolder"]
-    },
     "modmenu": {
       "badges": [ "library" ],
       "parent": {

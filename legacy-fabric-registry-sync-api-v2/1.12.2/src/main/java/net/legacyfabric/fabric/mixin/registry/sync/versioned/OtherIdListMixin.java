@@ -21,11 +21,11 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.class_2929;
+import net.minecraft.unmapped.C_53094504;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 
-@Mixin(class_2929.class)
+@Mixin(C_53094504.class)
 public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
 	@Shadow
 	@Nullable
@@ -42,7 +42,7 @@ public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
 
 	@Override
 	public IdsHolder<T> fabric$new() {
-		return (IdsHolder<T>) new class_2929<>(256);
+		return (IdsHolder<T>) new C_53094504<>(256);
 	}
 
 	@Override
