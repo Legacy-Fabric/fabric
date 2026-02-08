@@ -27,16 +27,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.resource.DefaultResourcePack;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.resource.pack.BuiltInResourcePack;
+import net.minecraft.resource.Identifier;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-@Mixin(DefaultResourcePack.class)
+@Mixin(BuiltInResourcePack.class)
 public class DefaultResourcePackMixin {
-	@Inject(method = "openClassLoader", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "openResource", at = @At("HEAD"), cancellable = true)
 	protected void onFindInputStream(Identifier identifier, CallbackInfoReturnable<InputStream> callback) {
 		//		if (DefaultResourcePack.resourcePath != null) {
 		// Fall through to Vanilla logic, they have a special case here.
@@ -47,7 +47,7 @@ public class DefaultResourcePackMixin {
 		URL found = null;
 
 		try {
-			Enumeration<URL> candidates = DefaultResourcePack.class.getClassLoader().getResources(path);
+			Enumeration<URL> candidates = BuiltInResourcePack.class.getClassLoader().getResources(path);
 
 			// Get the last element
 			while (candidates.hasMoreElements()) {

@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.mixin.permission;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.server.command.Console;
+import net.minecraft.server.Console;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 

@@ -27,7 +27,7 @@ import net.minecraft.enchantment.Enchantment;
 
 @Mixin(Bootstrap.class)
 public class BootstrapMixin {
-	@Inject(method = "initialize", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;setup()V"))
+	@Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;init()V"))
 	private static void initializeEnchantmentRegistry(CallbackInfo ci) {
 		try {
 			Class.forName(Enchantment.class.getName());

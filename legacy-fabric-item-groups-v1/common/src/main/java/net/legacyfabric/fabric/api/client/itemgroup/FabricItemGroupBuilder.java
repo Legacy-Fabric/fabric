@@ -22,9 +22,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.itemgroup.ItemGroup;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
@@ -33,7 +33,7 @@ import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 public final class FabricItemGroupBuilder {
 	private final Identifier identifier;
 	private Supplier<ItemStack> itemSupplier = () -> new ItemStack((Item) null);;
-	private BiConsumer<List<ItemStack>, ItemGroup> stacksForDisplay;
+	private BiConsumer<List<ItemStack>, CreativeModeTab> stacksForDisplay;
 
 	private FabricItemGroupBuilder(Identifier identifier) {
 		this.identifier = identifier;
@@ -97,7 +97,7 @@ public final class FabricItemGroupBuilder {
 
 	/**
 	 * Set the item stacks of this item group, by having the consumer add them to the passed list.
-	 * This bypasses {@link Item#appendItemStacks(Item, ItemGroup, List)}. If you want to append stacks from your items, consider using {@linkplain #appendItems(BiConsumer) the other overload}.
+	 * This bypasses {@link Item#addToCreativeMenu(Item, CreativeModeTab, List)}. If you want to append stacks from your items, consider using {@linkplain #appendItems(BiConsumer) the other overload}.
 	 *
 	 * @param stacksForDisplay Add ItemStack's to this list to show in the ItemGroup
 	 * @return a reference to the FabricItemGroupBuilder
@@ -109,12 +109,12 @@ public final class FabricItemGroupBuilder {
 	/**
 	 * Set the item stacks of this item group, by having the consumer add them to the passed list.
 	 * Compared to the other overload, this one also passes the new ItemGroup.
-	 * This allows you to call {@link Item#appendItemStacks(Item, ItemGroup, List)} yourself if you want.
+	 * This allows you to call {@link Item#addToCreativeMenu(Item, CreativeModeTab, List)} yourself if you want.
 	 *
 	 * @param stacksForDisplay Add ItemStack's to this list to show in the ItemGroup, and check if the item is in the ItemGroup
 	 * @return a reference to the FabricItemGroupBuilder
 	 */
-	public FabricItemGroupBuilder appendItems(BiConsumer<List<ItemStack>, ItemGroup> stacksForDisplay) {
+	public FabricItemGroupBuilder appendItems(BiConsumer<List<ItemStack>, CreativeModeTab> stacksForDisplay) {
 		this.stacksForDisplay = stacksForDisplay;
 		return this;
 	}
@@ -126,7 +126,7 @@ public final class FabricItemGroupBuilder {
 	 * @param stackSupplier the supplier should return the item that you wish to show on the tab
 	 * @return An instance of the built ItemGroup
 	 */
-	public static ItemGroup buildWithItemStack(Identifier identifier, Supplier<ItemStack> stackSupplier) {
+	public static CreativeModeTab buildWithItemStack(Identifier identifier, Supplier<ItemStack> stackSupplier) {
 		return new FabricItemGroupBuilder(identifier).iconWithItemStack(stackSupplier).build();
 	}
 
@@ -137,7 +137,7 @@ public final class FabricItemGroupBuilder {
 	 * @param stackSupplier the supplier should return the item that you wish to show on the tab
 	 * @return An instance of the built ItemGroup
 	 */
-	public static ItemGroup buildWithItem(Identifier identifier, Supplier<Item> stackSupplier) {
+	public static CreativeModeTab buildWithItem(Identifier identifier, Supplier<Item> stackSupplier) {
 		return new FabricItemGroupBuilder(identifier).iconWithItem(stackSupplier).build();
 	}
 
@@ -150,7 +150,7 @@ public final class FabricItemGroupBuilder {
 	 * @deprecated Use buildWithItem or buildWithItemStack instead.
 	 */
 	@Deprecated
-	public static ItemGroup build(Identifier identifier, Supplier<Item> stackSupplier) {
+	public static CreativeModeTab build(Identifier identifier, Supplier<Item> stackSupplier) {
 		return buildWithItem(identifier, stackSupplier);
 	}
 
@@ -159,10 +159,10 @@ public final class FabricItemGroupBuilder {
 	 *
 	 * @return An instance of the built ItemGroup
 	 */
-	public ItemGroup build() {
-		((ItemGroupExtensions) ItemGroup.BUILDING_BLOCKS).fabric_expandArray();
+	public CreativeModeTab build() {
+		((ItemGroupExtensions) CreativeModeTab.BUILDING_BLOCKS).fabric_expandArray();
 		return FabricCreativeGuiComponents.ITEM_GROUP_CREATOR.create(
-				ItemGroup.itemGroups.length - 1, String.format("%s.%s", identifier.getNamespace(), identifier.getPath()),
+				CreativeModeTab.ALL.length - 1, String.format("%s.%s", identifier.getNamespace(), identifier.getPath()),
 				itemSupplier, stacksForDisplay);
 	}
 }

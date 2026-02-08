@@ -1,0 +1,2 @@
+classTweaker	v1	named
+transitive-inject-interface	net/minecraft/util/Id2ObjectBiMap	net/legacyfabric/fabric/api/registry/v2/registry/registrable/IdsHolder

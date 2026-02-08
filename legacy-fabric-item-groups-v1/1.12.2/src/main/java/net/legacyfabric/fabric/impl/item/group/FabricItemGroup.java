@@ -21,32 +21,32 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.itemgroup.ItemGroup;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.DefaultedList;
 
-public class FabricItemGroup extends ItemGroup {
+public class FabricItemGroup extends CreativeModeTab {
 	private final Supplier<ItemStack> itemSupplier;
-	private final BiConsumer<List<ItemStack>, ItemGroup> stacksForDisplay;
+	private final BiConsumer<List<ItemStack>, CreativeModeTab> stacksForDisplay;
 
-	public FabricItemGroup(int index, String id, Supplier<ItemStack> itemSupplier, BiConsumer<List<ItemStack>, ItemGroup> stacksForDisplay) {
+	public FabricItemGroup(int index, String id, Supplier<ItemStack> itemSupplier, BiConsumer<List<ItemStack>, CreativeModeTab> stacksForDisplay) {
 		super(index, id);
 		this.itemSupplier = itemSupplier;
 		this.stacksForDisplay = stacksForDisplay;
 	}
 
 	@Override
-	public void method_13646(DefaultedList<ItemStack> stacks) {
+	public void addItems(DefaultedList<ItemStack> stacks) {
 		if (stacksForDisplay != null) {
 			stacksForDisplay.accept(stacks, this);
 			return;
 		}
 
-		super.method_13646(stacks);
+		super.addItems(stacks);
 	}
 
 	@Override
-	public ItemStack method_13647() {
+	public ItemStack getIconItem() {
 		return this.itemSupplier.get();
 	}
 }

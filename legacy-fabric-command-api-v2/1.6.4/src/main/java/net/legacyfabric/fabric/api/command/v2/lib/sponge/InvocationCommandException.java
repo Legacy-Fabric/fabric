@@ -25,7 +25,7 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 /**
  * Thrown when invocation of a command fails, wrapping the exception that
@@ -40,7 +40,7 @@ public class InvocationCommandException extends CommandException {
 	 * @param message The detail message
 	 * @param cause   The cause
 	 */
-	public InvocationCommandException(ChatMessage message, Throwable cause) {
+	public InvocationCommandException(Text message, Throwable cause) {
 		super(message, cause);
 	}
 }

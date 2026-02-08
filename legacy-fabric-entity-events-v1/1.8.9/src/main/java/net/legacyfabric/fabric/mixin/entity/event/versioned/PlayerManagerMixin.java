@@ -22,16 +22,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 
 @Mixin(PlayerManager.class)
 abstract class PlayerManagerMixin {
-	@Inject(method = "respawnPlayer", at = @At("TAIL"))
+	@Inject(method = "respawn", at = @At("TAIL"))
 	private void afterRespawn(ServerPlayerEntity oldPlayer, int dimension, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
-		ServerPlayerEvents.AFTER_RESPAWN.invoker().afterRespawn(oldPlayer, cir.getReturnValue(), MinecraftServer.getServer().getWorld(dimension), alive);
+		ServerPlayerEvents.AFTER_RESPAWN.invoker().afterRespawn(oldPlayer, cir.getReturnValue(), MinecraftServer.getInstance().getWorld(dimension), alive);
 	}
 }

@@ -20,17 +20,17 @@ package net.legacyfabric.fabric.mixin.networking.client;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 import net.legacyfabric.fabric.impl.networking.client.MinecraftClientExtensions;
 
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public abstract class MinecraftClientMixin implements MinecraftClientExtensions {
 	@Shadow
-	public abstract boolean isOnThread();
+	public abstract boolean isOnSameThread();
 
 	@Override
 	public boolean isOnGameThread() {
-		return this.isOnThread();
+		return this.isOnSameThread();
 	}
 }

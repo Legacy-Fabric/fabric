@@ -27,7 +27,7 @@ import net.minecraft.world.biome.Biome;
 
 @Mixin(Bootstrap.class)
 public class BootstrapMixin {
-	@Inject(method = "initialize", at = @At(value = "INVOKE", target = "Lnet/minecraft/Bootstrap;setupDispenserBehavior()V"))
+	@Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/Bootstrap;registerDispenseBehaviors()V"))
 	private static void initializeBiomeRegistry(CallbackInfo ci) {
 		try {
 			Class.forName(Biome.class.getName());

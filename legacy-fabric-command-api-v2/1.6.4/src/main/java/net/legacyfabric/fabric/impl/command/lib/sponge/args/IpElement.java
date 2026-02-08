@@ -31,8 +31,8 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.text.ChatMessage;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -42,7 +42,7 @@ import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 public class IpElement extends KeyElement {
 	private final PlayerCommandElement possiblePlayer;
 
-	public IpElement(ChatMessage key) {
+	public IpElement(Text key) {
 		super(key);
 		this.possiblePlayer = new PlayerCommandElement(key, false);
 	}
@@ -56,9 +56,9 @@ public class IpElement extends KeyElement {
 			return InetAddress.getByName(s);
 		} catch (UnknownHostException e) {
 			try {
-				return ((ServerPlayerEntity) Objects.requireNonNull(this.possiblePlayer.parseValue(source, args))).field_2823.connection.getAddress();
+				return ((ServerPlayerEntity) Objects.requireNonNull(this.possiblePlayer.parseValue(source, args))).networkHandler.connection.getAddress();
 			} catch (ArgumentParseException ex) {
-				throw args.createError(ChatMessage.createTextMessage("Invalid IP address!"));
+				throw args.createError(Text.literal("Invalid IP address!"));
 			}
 		}
 	}

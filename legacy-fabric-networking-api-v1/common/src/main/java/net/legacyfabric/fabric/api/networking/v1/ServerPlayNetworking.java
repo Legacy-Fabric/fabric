@@ -20,11 +20,11 @@ package net.legacyfabric.fabric.api.networking.v1;
 import java.util.Objects;
 import java.util.Set;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
+import net.minecraft.server.network.handler.ServerPlayNetworkHandler;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.networking.server.ServerNetworkingImpl;
@@ -348,7 +348,7 @@ public final class ServerPlayNetworking {
 		 * Handles an incoming packet.
 		 *
 		 * <p>This method is executed on {@linkplain io.netty.channel.EventLoop netty's event loops}.
-		 * Modification to the game should be {@linkplain net.minecraft.util.ThreadExecutor#execute(Runnable)}  scheduled} using the provided Minecraft server instance.
+		 * Modification to the game should be {@linkplain net.minecraft.util.BlockableEventLoop#execute(Runnable)}  scheduled} using the provided Minecraft server instance.
 		 *
 		 * <p>An example usage of this is to create an explosion where the player is looking:
 		 * <pre>{@code

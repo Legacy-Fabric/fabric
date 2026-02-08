@@ -18,7 +18,7 @@
 package net.legacyfabric.fabric.api.entity.event.v1;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
 import net.legacyfabric.fabric.api.event.Event;

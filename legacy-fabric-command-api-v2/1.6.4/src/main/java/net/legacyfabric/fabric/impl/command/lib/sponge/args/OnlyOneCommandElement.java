@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -50,13 +50,13 @@ public class OnlyOneCommandElement extends CommandElement {
 		this.element.parse(source, args, context);
 
 		if (context.getAll(this.element.getUntranslatedKey()).size() > 1) {
-			ChatMessage key = this.element.getKey();
-			throw args.createError(ChatMessage.createTextMessage(String.format("Argument %s may have only one value!", key != null ? key.toString() : "unknown")));
+			Text key = this.element.getKey();
+			throw args.createError(Text.literal(String.format("Argument %s may have only one value!", key != null ? key.toString() : "unknown")));
 		}
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
+	public Text getUsage(PermissibleCommandSource src) {
 		return this.element.getUsage(src);
 	}
 

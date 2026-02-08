@@ -41,25 +41,24 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.resource.language.TranslationStorage;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.resource.Resource;
+import net.minecraft.client.resource.manager.ResourceManager;
+import net.minecraft.resource.Identifier;
 
 import net.legacyfabric.fabric.api.util.VersionUtils;
 import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
-@Mixin(TranslationStorage.class)
+@Mixin(net.minecraft.client.resource.language.Locale.class)
 public abstract class TranslationStorageMixin {
 	@Shadow
 	protected abstract void load(List<Resource> resources) throws IOException;
 
 	@Shadow
 	@Final
-	private static Splitter TOKEN_SPLITTER;
+	private static Splitter SPLITTER;
 	@Shadow
 	@Final
-	private static Pattern TOKEN_PATTERN;
+	private static Pattern ILLEGAL_CHARACTERS_PATTERN;
 	@Shadow
 	Map<String, String> translations;
 
@@ -69,23 +68,23 @@ public abstract class TranslationStorageMixin {
 	@Unique
 	private static final JsonParser JSON_PARSER = new JsonParser();
 
-	@Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/language/TranslationStorage;setRightToLeft()V"))
+	@Inject(method = "load(Lnet/minecraft/client/resource/manager/ResourceManager;Ljava/util/List;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/language/Locale;checkUnicodeUsage()V"))
 	private void loadLangFileFromOtherVersion(ResourceManager resourceManager, List<String> languages, CallbackInfo ci) {
 		for (String string : languages) {
 			String langName = String.format("lang/%s.lang", getCorrectLangCode(string, false));
 			String jsonName = String.format("lang/%s.json", getCorrectLangCode(string, true));
 
-			for (String namespace : resourceManager.getAllNamespaces()) {
+			for (String namespace : resourceManager.getNamespaces()) {
 				boolean isStyleHappy = false;
 
 				try {
-					this.load(resourceManager.getAllResources(new Identifier(namespace, langName)));
+					this.load(resourceManager.getResources(new Identifier(namespace, langName)));
 				} catch (IOException ignored) {
 					isStyleHappy = true;
 				}
 
 				try {
-					this.load(resourceManager.getAllResources(new Identifier(namespace, jsonName)));
+					this.load(resourceManager.getResources(new Identifier(namespace, jsonName)));
 				} catch (IOException ignored) {
 					isStyleHappy = true;
 				}
@@ -122,11 +121,11 @@ public abstract class TranslationStorageMixin {
 		} else { // Load as properties/lang
 			for (String string : lines) {
 				if (!string.isEmpty() && string.charAt(0) != '#') {
-					String[] strings = Iterables.toArray(TOKEN_SPLITTER.split(string), String.class);
+					String[] strings = Iterables.toArray(SPLITTER.split(string), String.class);
 
 					if (strings != null && strings.length == 2) {
 						String string2 = strings[0];
-						String string3 = TOKEN_PATTERN.matcher(strings[1]).replaceAll("%$1s");
+						String string3 = ILLEGAL_CHARACTERS_PATTERN.matcher(strings[1]).replaceAll("%$1s");
 						this.translations.put(string2, string3);
 					}
 				}
@@ -152,7 +151,7 @@ public abstract class TranslationStorageMixin {
 				JsonElement value = entry.getValue();
 
 				if (value.isJsonPrimitive()) {
-					this.translations.put(key, TOKEN_PATTERN.matcher(value.getAsString()).replaceAll("%$1s"));
+					this.translations.put(key, ILLEGAL_CHARACTERS_PATTERN.matcher(value.getAsString()).replaceAll("%$1s"));
 				} else {
 					ResourceManagerHelperImpl.LOGGER.warn("Skipping translation key \"" + key + "\" with unsupported format " + value);
 				}

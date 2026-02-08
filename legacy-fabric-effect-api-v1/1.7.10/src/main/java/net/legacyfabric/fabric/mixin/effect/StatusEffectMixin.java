@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.living.effect.StatusEffect;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -41,7 +41,7 @@ public class StatusEffectMixin {
 	@Mutable
 	@Shadow
 	@Final
-	public static StatusEffect[] STATUS_EFFECTS;
+	public static StatusEffect[] BY_ID;
 
 	@Unique
 	private static FabricRegistry<StatusEffect> STATUS_EFFECT_REGISTRY;
@@ -50,7 +50,7 @@ public class StatusEffectMixin {
 	private static void api$registerRegistry(CallbackInfo ci) {
 		STATUS_EFFECT_REGISTRY = new SyncedArrayFabricRegistryWrapper<>(
 				RegistryIds.STATUS_EFFECTS,
-				STATUS_EFFECTS, EarlyInitializer.getVanillaIds(),
+				BY_ID, EarlyInitializer.getVanillaIds(),
 				universal -> universal,
 				id -> id,
 				ids -> {
@@ -70,7 +70,7 @@ public class StatusEffectMixin {
 						array[id] = effect;
 					}
 
-					STATUS_EFFECTS = array;
+					BY_ID = array;
 				},
 				1
 		);

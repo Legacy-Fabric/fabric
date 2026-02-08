@@ -18,8 +18,8 @@
 package net.legacyfabric.fabric.api.networking.v1;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.TrackedEntityInstance;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.TrackedEntity;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
@@ -31,7 +31,7 @@ public final class EntityTrackingEvents {
 	/**
 	 * An event that is called before player starts tracking an entity.
 	 * Typically this occurs when an entity enters a client's view distance.
-	 * This event is called before the player's client is sent the entity's {@link TrackedEntityInstance#method_2182() spawn packet}.
+	 * This event is called before the player's client is sent the entity's {@link TrackedEntity#createAddEntityPacket() spawn packet}.
 	 */
 	public static final Event<StartTracking> START_TRACKING = EventFactory.createArrayBacked(StartTracking.class, callbacks -> (trackedEntity, player) -> {
 		for (StartTracking callback : callbacks) {
@@ -41,7 +41,7 @@ public final class EntityTrackingEvents {
 
 	/**
 	 * An event that is called after a player has stopped tracking an entity.
-	 * The client at this point was sent a packet to {@link net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket destroy} the entity on the client.
+	 * The client at this point was sent a packet to {@link net.minecraft.network.packet.s2c.play.RemoveEntitiesS2CPacket destroy} the entity on the client.
 	 * The entity still exists on the server.
 	 */
 	public static final Event<StopTracking> STOP_TRACKING = EventFactory.createArrayBacked(StopTracking.class, callbacks -> (trackedEntity, player) -> {

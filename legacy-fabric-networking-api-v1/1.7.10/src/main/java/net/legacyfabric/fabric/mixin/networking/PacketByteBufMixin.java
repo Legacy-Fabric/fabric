@@ -19,10 +19,10 @@ package net.legacyfabric.fabric.mixin.networking;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
-import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

@@ -30,7 +30,7 @@ import com.google.common.collect.Multimap;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.HoverEvent;
-import net.minecraft.text.HoverEventAction;
+import net.minecraft.text.HoverEvent__Action;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -132,7 +132,7 @@ public class CommandManagerImpl implements CommandManager {
 							usage = mapping.get().getCallable().getUsage(source);
 						}
 
-						source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", argSplit[0], usage.asUnformattedString()))));
+						source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", argSplit[0], usage.getString()))));
 					}
 				}
 			}
@@ -145,7 +145,7 @@ public class CommandManagerImpl implements CommandManager {
 			}
 
 			Text message = CommandMessageFormatting.error(new LiteralText("An unexpected error happened executing the command"));
-			message.setStyle(message.getStyle().setHoverEvent(new HoverEvent(HoverEventAction.SHOW_TEXT, new LiteralText("Stacktrace: \n" + Arrays.stream(t.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("\n"))))));
+			message.setStyle(message.getStyle().setHoverEvent(new HoverEvent(HoverEvent__Action.SHOW_TEXT, new LiteralText("Stacktrace: \n" + Arrays.stream(t.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("\n"))))));
 			source.sendMessage(message);
 		}
 
@@ -158,7 +158,7 @@ public class CommandManagerImpl implements CommandManager {
 			final String[] argSplit = arguments.split(" ", 2);
 			return Lists.newArrayList(this.dispatcher.getSuggestions(source, arguments, targetPosition));
 		} catch (CommandException e) {
-			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().asUnformattedString()))));
+			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
 			return Collections.emptyList();
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Error occured while tab completing '%s'", arguments), e);

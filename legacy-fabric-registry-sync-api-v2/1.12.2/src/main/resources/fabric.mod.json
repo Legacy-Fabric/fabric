@@ -27,6 +27,7 @@
   "mixins": [
     "legacy-fabric-registry-sync-api-v2.mixins.json"
   ],
+  "accessWidener": "legacy-fabric-registry-sync-api-v2.classtweaker",
   "custom": {
     "modmenu": {
       "badges": [ "library" ],

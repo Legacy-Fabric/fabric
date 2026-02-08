@@ -41,17 +41,17 @@ import net.legacyfabric.fabric.impl.registry.wrapper.MapFabricRegistryWrapper;
 public class BlockEntityMixin {
 	@Shadow
 	@Final
-	private static Map<String, Class<? extends BlockEntity>> stringClassMap;
+	private static Map<String, Class<? extends BlockEntity>> ID_TO_TYPE;
 	@Shadow
 	@Final
-	private static Map<Class<? extends BlockEntity>, String> classStringMap;
+	private static Map<Class<? extends BlockEntity>, String> TYPE_TO_ID;
 	@Unique
 	private static FabricRegistry<Class<? extends BlockEntity>> BLOCK_ENTITY_TYPE_REGISTRY;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
 		BLOCK_ENTITY_TYPE_REGISTRY = new MapFabricRegistryWrapper<>(
-				RegistryIds.BLOCK_ENTITY_TYPES, stringClassMap, classStringMap,
+				RegistryIds.BLOCK_ENTITY_TYPES, ID_TO_TYPE, TYPE_TO_ID,
 				identifier -> BlockEntityUtils.ID_TO_OLD.getOrDefault(identifier, identifier.toString()),
 				string -> BlockEntityUtils.OLD_TO_ID.getOrDefault(string, new Identifier(string))
 		);
@@ -63,7 +63,7 @@ public class BlockEntityMixin {
 		Previous version of LFAPI used to transform vanilla names to id.
 		We don't do that anymore, so we still check for id versions to not break old saves.
 	 */
-	@ModifyArg(method = "create", at = @At(value = "INVOKE", remap = false, target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
+	@ModifyArg(method = "fromNbt", at = @At(value = "INVOKE", remap = false, target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
 	private static Object fixOldSaves(Object oldKey) {
 		Identifier asId = new Identifier(oldKey);
 

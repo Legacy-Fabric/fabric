@@ -33,7 +33,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
@@ -49,7 +49,7 @@ public class ChoicesCommandElement extends CommandElement {
 	private final Function<String, ?> valueSupplier;
 	private final TriState choicesInUsage;
 
-	public ChoicesCommandElement(ChatMessage key, Supplier<Collection<String>> keySupplier, Function<String, ?> valueSupplier, TriState choicesInUsage) {
+	public ChoicesCommandElement(Text key, Supplier<Collection<String>> keySupplier, Function<String, ?> valueSupplier, TriState choicesInUsage) {
 		super(key);
 		this.keySupplier = keySupplier;
 		this.valueSupplier = valueSupplier;
@@ -61,7 +61,7 @@ public class ChoicesCommandElement extends CommandElement {
 		Object value = this.valueSupplier.apply(args.next());
 
 		if (value == null) {
-			throw args.createError(ChatMessage.createTextMessage(String.format("Argument was not a valid choice. Valid choices: %s", this.keySupplier.get().toString())));
+			throw args.createError(Text.literal(String.format("Argument was not a valid choice. Valid choices: %s", this.keySupplier.get().toString())));
 		}
 
 		return value;
@@ -74,23 +74,23 @@ public class ChoicesCommandElement extends CommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource commander) {
+	public Text getUsage(PermissibleCommandSource commander) {
 		Collection<String> keys = this.keySupplier.get();
 
 		if (this.choicesInUsage == TriState.TRUE || (this.choicesInUsage == TriState.DEFAULT && keys.size() <= CUTOFF)) {
-			final ChatMessage build = ChatMessage.createTextMessage("");
-			build.addUsing(CommandMessageFormatting.LT_TEXT);
+			final Text build = Text.literal("");
+			build.append(CommandMessageFormatting.LT_TEXT);
 
 			for (Iterator<String> it = keys.iterator(); it.hasNext(); ) {
-				build.addUsing(ChatMessage.createTextMessage(it.next()));
+				build.append(Text.literal(it.next()));
 
 				if (it.hasNext()) {
-					build.addUsing(CommandMessageFormatting.PIPE_TEXT);
+					build.append(CommandMessageFormatting.PIPE_TEXT);
 				}
 			}
 
-			build.addUsing(CommandMessageFormatting.GT_TEXT);
-			return ChatMessage.createTextMessage(build.toString());
+			build.append(CommandMessageFormatting.GT_TEXT);
+			return Text.literal(build.toString());
 		}
 
 		return super.getUsage(commander);

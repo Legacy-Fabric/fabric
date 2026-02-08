@@ -18,8 +18,8 @@
 package net.legacyfabric.fabric.impl.networking;
 
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

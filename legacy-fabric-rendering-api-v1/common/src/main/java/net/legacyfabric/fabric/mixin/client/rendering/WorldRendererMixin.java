@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.render.WorldRenderer;
+import net.minecraft.client.render.world.WorldRenderer;
 
 import net.legacyfabric.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
 

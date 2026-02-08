@@ -25,8 +25,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.resource.Identifier;
+import net.minecraft.util.registry.IdRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -36,11 +36,11 @@ import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Desynchroniz
 public class BlockEntityMixin {
 	@Shadow
 	@Final
-	private static SimpleRegistry<Identifier, Class<? extends BlockEntity>> BLOCK_ENTITY;
+	private static IdRegistry<Identifier, Class<? extends BlockEntity>> REGISTRY;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
-		((DesynchronizeableRegistrable) BLOCK_ENTITY).fabric$setSynchronize(false);
-		RegistryHelper.addRegistry(RegistryIds.BLOCK_ENTITY_TYPES, BLOCK_ENTITY);
+		((DesynchronizeableRegistrable) REGISTRY).fabric$setSynchronize(false);
+		RegistryHelper.addRegistry(RegistryIds.BLOCK_ENTITY_TYPES, REGISTRY);
 	}
 }

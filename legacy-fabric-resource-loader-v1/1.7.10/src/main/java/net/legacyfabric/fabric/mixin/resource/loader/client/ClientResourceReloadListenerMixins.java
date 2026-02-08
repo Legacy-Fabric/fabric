@@ -23,15 +23,15 @@ import java.util.Locale;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.TextRenderer;
+import net.minecraft.client.render.entity.ItemRenderer;
+import net.minecraft.client.render.texture.TextureManager;
+import net.minecraft.client.render.world.WorldRenderer;
 import net.minecraft.client.resource.language.LanguageManager;
-import net.minecraft.client.sound.SoundManager;
-import net.minecraft.client.texture.TextureManager;
-import net.minecraft.resource.FoliageColorResourceReloadListener;
-import net.minecraft.resource.GrassColorResourceReloadListener;
+import net.minecraft.client.sound.system.SoundManager;
+import net.minecraft.client.world.color.FoliageColorReloader;
+import net.minecraft.client.world.color.GrassColorReloader;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -43,7 +43,7 @@ import net.legacyfabric.fabric.api.resource.ResourceReloadListenerKeys;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin({
-		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorResourceReloadListener.class, FoliageColorResourceReloadListener.class, TextureManager.class,
+		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorReloader.class, FoliageColorReloader.class, TextureManager.class,
 		WorldRenderer.class, ItemRenderer.class, TextRenderer.class
 })
 @Environment(EnvType.CLIENT)

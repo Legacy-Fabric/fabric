@@ -20,7 +20,7 @@ package net.legacyfabric.fabric.impl.effect.versioned;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.living.effect.StatusEffect;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 

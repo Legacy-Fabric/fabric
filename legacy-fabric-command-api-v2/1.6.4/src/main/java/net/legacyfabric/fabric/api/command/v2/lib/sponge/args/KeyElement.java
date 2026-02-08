@@ -28,7 +28,7 @@ package net.legacyfabric.fabric.api.command.v2.lib.sponge.args;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
@@ -37,7 +37,7 @@ import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
  * Useful for inputs with a very large domain, like strings and integers.
  */
 public abstract class KeyElement extends CommandElement {
-	protected KeyElement(ChatMessage key) {
+	protected KeyElement(Text key) {
 		super(key);
 	}
 

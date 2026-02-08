@@ -17,8 +17,8 @@
 
 package net.legacyfabric.fabric.impl.networking.client;
 
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
 
 public interface CustomPayloadS2CPacketExtension {
-	PacketByteBuf getData();
+	PacketByteBuf lf$getData();
 }

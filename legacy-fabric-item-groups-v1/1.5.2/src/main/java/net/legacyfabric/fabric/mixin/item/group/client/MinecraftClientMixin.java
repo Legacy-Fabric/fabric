@@ -28,10 +28,10 @@ import net.legacyfabric.fabric.impl.item.group.MinecraftAccessor;
 @Mixin(Minecraft.class)
 public abstract class MinecraftClientMixin implements MinecraftAccessor {
 	@Shadow
-	public net.minecraft.client.TextureManager textureManager;
+	public net.minecraft.client.render.texture.TextureManager textureManager;
 
 	@Override
 	public void legacy_fabric_api$bindTexture(Identifier location) {
-		textureManager.method_5146("/assets/" + location.getNamespace() + "/" + location.getPath());
+		textureManager.bind("/assets/" + location.getNamespace() + "/" + location.getPath());
 	}
 }

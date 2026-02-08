@@ -348,6 +348,8 @@ allprojects {
 			enableDependencyInterfaceInjection = true
 		}
 
+		enableTransitiveAccessWideners = true
+
 		runs {
 			"testModClient$mcVersion" {
 				client()
@@ -399,8 +401,7 @@ allprojects {
 		minecraft "com.mojang:minecraft:${mcVersion}"
 		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-		mappings "net.legacyfabric:legacy-yarn:${mcVersion}+build.${project.rootProject.feather_build}:v2"
-//		mappings project.ploceus.featherMappings(project.rootProject.feather_build)
+		mappings project.ploceus.featherMappings(project.rootProject.feather_build)
 		if (ravenBuild != null) exceptions project.ploceus.raven(ravenBuild) // remove this line if not using exceptions patches
 		if (sparrowBuild != null) signatures project.ploceus.sparrow(sparrowBuild) // remove this line if not using generics patches
 //		if (nestBuild != null) nests project.ploceus.nests(nestBuild) // remove this line if not using inner class patches

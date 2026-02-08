@@ -27,39 +27,39 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.source.CommandSource;
 
 public enum Selector {
 	ALL_ENTITIES('e') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getWorld().entities);
+			return Sets.newHashSet(sender.getCommandSourceWorld().globalEntities);
 		}
 	},
 	ALL_PLAYERS('a') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return sender.getWorld().playerEntities.stream().map(e -> (Entity) e).collect(Collectors.toSet());
+			return sender.getCommandSourceWorld().players.stream().map(e -> (Entity) e).collect(Collectors.toSet());
 		}
 	},
 	NEAREST_PLAYER('p') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.getPos().x, sender.getPos().y, sender.getPos().z, 50.0D));
+			return Sets.newHashSet(sender.getCommandSourceWorld().getNearestPlayer(sender.getCommandSourcePos().x, sender.getCommandSourcePos().y, sender.getCommandSourcePos().z, 50.0D));
 		}
 	},
 	RANDOM_PLAYER('r') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers().stream().findAny().orElseThrow(NullPointerException::new));
+			return Sets.newHashSet(MinecraftServer.getInstance().getPlayerManager().getAll().stream().findAny().orElseThrow(NullPointerException::new));
 		}
 	},
 	EXECUTING_ENTITY('s') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getEntity());
+			return Sets.newHashSet(sender.asEntity());
 		}
 	};
 

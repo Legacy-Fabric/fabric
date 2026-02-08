@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.client.event.lifecycle.v1;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -51,11 +51,11 @@ public final class ClientLifecycleEvents {
 
 	@FunctionalInterface
 	public interface ClientStarted {
-		void onClientStarted(MinecraftClient client);
+		void onClientStarted(Minecraft client);
 	}
 
 	@FunctionalInterface
 	public interface ClientStopping {
-		void onClientStopping(MinecraftClient client);
+		void onClientStopping(Minecraft client);
 	}
 }

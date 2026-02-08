@@ -66,6 +66,6 @@ public class RemainingJoinedStringsCommandElement extends KeyElement {
 
 	@Override
 	public Text getUsage(PermissibleCommandSource src) {
-		return new LiteralText("").append(CommandMessageFormatting.LT_TEXT.asUnformattedString()).append(this.getKey()).append(CommandMessageFormatting.ELLIPSIS_TEXT).append(CommandMessageFormatting.GT_TEXT);
+		return new LiteralText("").append(CommandMessageFormatting.LT_TEXT.getString()).append(this.getKey()).append(CommandMessageFormatting.ELLIPSIS_TEXT).append(CommandMessageFormatting.GT_TEXT);
 	}
 }

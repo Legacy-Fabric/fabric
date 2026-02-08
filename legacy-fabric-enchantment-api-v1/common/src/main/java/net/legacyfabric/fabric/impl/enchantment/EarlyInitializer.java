@@ -35,6 +35,6 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 	private static void enchantmentRegistryInit(FabricRegistry<?> holder) {
 		SyncedFabricRegistry<Enchantment> registry = (SyncedFabricRegistry<Enchantment>) holder;
 
-		registry.fabric$getBeforeAddedCallback().register((rawId, id, object) -> object.setName(id.toTranslationKey()));
+		registry.fabric$getBeforeAddedCallback().register((rawId, id, object) -> object.setKey(id.toTranslationKey()));
 	}
 }

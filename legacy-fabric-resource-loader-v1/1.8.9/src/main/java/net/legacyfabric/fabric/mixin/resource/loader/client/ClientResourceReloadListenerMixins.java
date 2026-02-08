@@ -23,17 +23,17 @@ import java.util.Locale;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.block.BlockRenderManager;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.BakedModelManager;
+import net.minecraft.client.render.TextRenderer;
+import net.minecraft.client.render.block.BlockRenderDispatcher;
+import net.minecraft.client.render.entity.ItemRenderer;
+import net.minecraft.client.render.texture.TextureManager;
+import net.minecraft.client.render.world.WorldRenderer;
 import net.minecraft.client.resource.language.LanguageManager;
-import net.minecraft.client.sound.SoundManager;
-import net.minecraft.client.texture.TextureManager;
-import net.minecraft.resource.FoliageColorResourceReloadListener;
-import net.minecraft.resource.GrassColorResourceReloadListener;
+import net.minecraft.client.resource.model.ModelManager;
+import net.minecraft.client.sound.system.SoundManager;
+import net.minecraft.client.world.color.FoliageColorReloader;
+import net.minecraft.client.world.color.GrassColorReloader;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -45,8 +45,8 @@ import net.legacyfabric.fabric.api.resource.ResourceReloadListenerKeys;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin({
-		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorResourceReloadListener.class, FoliageColorResourceReloadListener.class, TextureManager.class,
-		WorldRenderer.class, BlockRenderManager.class, ItemRenderer.class, BakedModelManager.class, TextRenderer.class
+		SoundManager.class, GameRenderer.class, LanguageManager.class, GrassColorReloader.class, FoliageColorReloader.class, TextureManager.class,
+		WorldRenderer.class, BlockRenderDispatcher.class, ItemRenderer.class, ModelManager.class, TextRenderer.class
 })
 @Environment(EnvType.CLIENT)
 public abstract class ClientResourceReloadListenerMixins implements IdentifiableResourceReloadListener {
@@ -59,9 +59,9 @@ public abstract class ClientResourceReloadListenerMixins implements Identifiable
 		if (this.fabric_idDeps == null) {
 			Object self = this;
 
-			if (self instanceof BakedModelManager || self instanceof WorldRenderer) {
+			if (self instanceof ModelManager || self instanceof WorldRenderer) {
 				this.fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.TEXTURES);
-			} else if (self instanceof ItemRenderer || self instanceof BlockRenderManager) {
+			} else if (self instanceof ItemRenderer || self instanceof BlockRenderDispatcher) {
 				this.fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.MODELS);
 			} else {
 				this.fabric_idDeps = Collections.emptyList();
@@ -81,7 +81,7 @@ public abstract class ClientResourceReloadListenerMixins implements Identifiable
 				this.fabric_id = ResourceReloadListenerKeys.SOUNDS;
 			} else if (self instanceof TextRenderer) {
 				this.fabric_id = ResourceReloadListenerKeys.FONTS;
-			} else if (self instanceof BakedModelManager) {
+			} else if (self instanceof ModelManager) {
 				this.fabric_id = ResourceReloadListenerKeys.MODELS;
 			} else if (self instanceof LanguageManager) {
 				this.fabric_id = ResourceReloadListenerKeys.LANGUAGES;

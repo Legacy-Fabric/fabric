@@ -25,19 +25,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GameGui;
 
 import net.legacyfabric.fabric.api.client.rendering.v1.HudRenderCallback;
 
-@Mixin(InGameHud.class)
+@Mixin(GameGui.class)
 public class InGameHudMixin {
 	@Shadow
 	@Final
-	private MinecraftClient client;
+	private Minecraft minecraft;
 
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;color(FFFF)V"), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(I)V")))
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/platform/GlStateManager;color4f(FFFF)V"), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/chat/ChatGui;render(I)V")))
 	public void render(float tickDelta, CallbackInfo callbackInfo) {
-		HudRenderCallback.EVENT.invoker().onHudRender(this.client, tickDelta);
+		HudRenderCallback.EVENT.invoker().onHudRender(this.minecraft, tickDelta);
 	}
 }

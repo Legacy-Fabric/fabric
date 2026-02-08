@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.parsing.SingleArg;
 
@@ -89,7 +89,7 @@ public final class CommandArgs {
 	 */
 	public String peek() throws ArgumentParseException {
 		if (!this.hasNext()) {
-			throw this.createError(ChatMessage.createTextMessage("Not enough arguments!"));
+			throw this.createError(Text.literal("Not enough arguments!"));
 		}
 
 		return this.args.get(this.index + 1).getValue();
@@ -103,7 +103,7 @@ public final class CommandArgs {
 	 */
 	public String next() throws ArgumentParseException {
 		if (!this.hasNext()) {
-			throw this.createError(ChatMessage.createTextMessage("Not enough arguments!"));
+			throw this.createError(Text.literal("Not enough arguments!"));
 		}
 
 		return this.args.get(++this.index).getValue();
@@ -127,7 +127,7 @@ public final class CommandArgs {
 	 * @param message The message for the exception
 	 * @return the newly created, but unthrown exception
 	 */
-	public ArgumentParseException createError(ChatMessage message) {
+	public ArgumentParseException createError(Text message) {
 		return new ArgumentParseException(message, this.rawInput, this.index < 0 ? 0 : this.args.get(this.index).getStartIdx());
 	}
 

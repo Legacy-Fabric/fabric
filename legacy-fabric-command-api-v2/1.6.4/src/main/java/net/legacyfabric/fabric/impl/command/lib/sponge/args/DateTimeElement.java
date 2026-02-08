@@ -34,7 +34,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -45,7 +45,7 @@ import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 public class DateTimeElement extends CommandElement {
 	private final boolean returnNow;
 
-	public DateTimeElement(ChatMessage key, boolean returnNow) {
+	public DateTimeElement(Text key, boolean returnNow) {
 		super(key);
 		this.returnNow = returnNow;
 	}
@@ -74,7 +74,7 @@ public class DateTimeElement extends CommandElement {
 						return LocalDateTime.now();
 					}
 
-					throw args.createError(ChatMessage.createTextMessage("Invalid date-time!"));
+					throw args.createError(Text.literal("Invalid date-time!"));
 				}
 			}
 		}
@@ -92,11 +92,11 @@ public class DateTimeElement extends CommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
+	public Text getUsage(PermissibleCommandSource src) {
 		if (!this.returnNow) {
 			return super.getUsage(src);
 		} else {
-			return ChatMessage.createTextMessage("[" + this.getKey().toString() + "]");
+			return Text.literal("[" + this.getKey().toString() + "]");
 		}
 	}
 }

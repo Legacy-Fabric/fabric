@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
@@ -105,7 +105,7 @@ public final class CommandFlags extends CommandElement {
 		if (element == null) {
 			switch (this.unknownLongFlagBehavior) {
 			case ERROR:
-				throw args.createError(ChatMessage.createTextMessage(String.format("Unknown long flag %s specified", flagSplit[0])));
+				throw args.createError(Text.literal(String.format("Unknown long flag %s specified", flagSplit[0])));
 			case ACCEPT_NONVALUE:
 				context.addFlag(flag);
 				context.putArg(flag, flagSplit.length == 2 ? flagSplit[1] : true);
@@ -139,9 +139,9 @@ public final class CommandFlags extends CommandElement {
 						return false;
 					}
 
-					throw args.createError(ChatMessage.createTextMessage(String.format("Unknown short flag %s specified", shortFlag)));
+					throw args.createError(Text.literal(String.format("Unknown short flag %s specified", shortFlag)));
 				case ERROR:
-					throw args.createError(ChatMessage.createTextMessage(String.format("Unknown short flag %s specified", shortFlag)));
+					throw args.createError(Text.literal(String.format("Unknown short flag %s specified", shortFlag)));
 				case ACCEPT_NONVALUE:
 					context.addFlag(shortFlag);
 					context.putArg(shortFlag, true);
@@ -162,7 +162,7 @@ public final class CommandFlags extends CommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
+	public Text getUsage(PermissibleCommandSource src) {
 		final List<Object> builder = new ArrayList<>();
 
 		for (Map.Entry<List<String>, CommandElement> arg : this.usageFlags.entrySet()) {
@@ -178,7 +178,7 @@ public final class CommandFlags extends CommandElement {
 				}
 			}
 
-			ChatMessage usage = arg.getValue().getUsage(src);
+			Text usage = arg.getValue().getUsage(src);
 
 			if (usage.toString().trim().length() > 0) {
 				builder.add(" ");
@@ -193,7 +193,7 @@ public final class CommandFlags extends CommandElement {
 			builder.add(this.childElement.getUsage(src));
 		}
 
-		return ChatMessage.createTextMessage(Arrays.stream(builder.toArray()).map(Object::toString).collect(Collectors.joining()));
+		return Text.literal(Arrays.stream(builder.toArray()).map(Object::toString).collect(Collectors.joining()));
 	}
 
 	@Override
@@ -425,7 +425,7 @@ public final class CommandFlags extends CommandElement {
 		 * @return this
 		 */
 		public Builder flag(String... specs) {
-			return this.flag(input -> new FlagElement(ChatMessage.createTextMessage(input), null), specs);
+			return this.flag(input -> new FlagElement(Text.literal(input), null), specs);
 		}
 
 		/**
@@ -439,7 +439,7 @@ public final class CommandFlags extends CommandElement {
 		 * @see #flag(String...) for details on the format
 		 */
 		public Builder permissionFlag(final String flagPermission, String... specs) {
-			return this.flag(input -> GenericArguments.requiringPermission(new FlagElement(ChatMessage.createTextMessage(input), null), flagPermission), specs);
+			return this.flag(input -> GenericArguments.requiringPermission(new FlagElement(Text.literal(input), null), flagPermission), specs);
 		}
 
 		/**
@@ -454,7 +454,7 @@ public final class CommandFlags extends CommandElement {
 		 * are parsed
 		 */
 		public Builder valueFlag(CommandElement value, String... specs) {
-			return this.flag(input -> new FlagElement(ChatMessage.createTextMessage(input), value), specs);
+			return this.flag(input -> new FlagElement(Text.literal(input), value), specs);
 		}
 
 		/**
@@ -519,7 +519,7 @@ public final class CommandFlags extends CommandElement {
 		@Nullable
 		private final CommandElement valueElement;
 
-		private FlagElement(ChatMessage key, @Nullable CommandElement valueElement) {
+		private FlagElement(Text key, @Nullable CommandElement valueElement) {
 			super(key);
 			this.valueElement = valueElement;
 		}

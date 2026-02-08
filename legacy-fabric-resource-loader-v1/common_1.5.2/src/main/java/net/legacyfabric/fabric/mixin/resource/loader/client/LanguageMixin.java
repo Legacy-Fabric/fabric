@@ -36,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.util.Language;
+import net.minecraft.locale.Language;
 
 import net.legacyfabric.fabric.api.resource.ResourcePackManager;
 import net.legacyfabric.fabric.api.util.Identifier;
@@ -48,7 +48,7 @@ public class LanguageMixin {
 	@Unique
 	private static JsonParser JSON_PARSER;
 
-	@Inject(method = "method_633", at = @At("RETURN"))
+	@Inject(method = "loadTranslations", at = @At("RETURN"))
 	private void loadModTranslations(Properties translations, String language, CallbackInfo ci) {
 		for (String namespace : ResourcePackManager.getNamespaces()) {
 			loadTranslationFiles(translations, new Identifier(namespace, "lang/" + language + ".lang", true), this::loadLangFile);

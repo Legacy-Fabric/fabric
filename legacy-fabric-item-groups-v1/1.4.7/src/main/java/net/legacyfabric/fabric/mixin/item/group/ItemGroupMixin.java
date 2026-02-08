@@ -22,12 +22,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.item.itemgroup.ItemGroup;
+import net.minecraft.item.CreativeModeTab;
 
 import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
 import net.legacyfabric.fabric.impl.item.group.FabricItemGroup;
 
-@Mixin(ItemGroup.class)
+@Mixin(CreativeModeTab.class)
 public class ItemGroupMixin {
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void classInit(CallbackInfo ci) {

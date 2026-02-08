@@ -24,7 +24,7 @@ import java.util.List;
 import com.google.common.base.Charsets;
 import org.apache.commons.io.IOUtils;
 
-import net.minecraft.resource.ResourcePack;
+import net.minecraft.client.resource.pack.ResourcePack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

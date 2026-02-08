@@ -97,7 +97,7 @@ public class DateTimeElement extends CommandElement {
 		if (!this.returnNow) {
 			return super.getUsage(src);
 		} else {
-			return new LiteralText("[" + this.getKey().asUnformattedString() + "]");
+			return new LiteralText("[" + this.getKey().getString() + "]");
 		}
 	}
 }

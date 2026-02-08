@@ -1,4 +1,3 @@
 accessWidener	v2	named
-
-transitive-accessible method net/minecraft/entity/effect/StatusEffect <init> (ZI)V
-accessible class net/minecraft/class_1105$C_96192416
+transitive-accessible	method	net/minecraft/entity/living/effect/StatusEffect	<init>	(ZI)V
+accessible	class	net/minecraft/potion/BrewingRecipes$Ingredient

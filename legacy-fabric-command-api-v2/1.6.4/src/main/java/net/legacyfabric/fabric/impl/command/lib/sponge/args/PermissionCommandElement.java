@@ -30,7 +30,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -64,8 +64,8 @@ public class PermissionCommandElement extends CommandElement {
 		boolean hasPermission = source.hasPermission(this.permission);
 
 		if (!hasPermission && !this.isOptional) {
-			ChatMessage key = this.getKey();
-			throw args.createError(ChatMessage.createTextMessage(String.format("You do not have permission to use the %s argument", key != null ? key.toString() : "unknown")));
+			Text key = this.getKey();
+			throw args.createError(Text.literal(String.format("You do not have permission to use the %s argument", key != null ? key.toString() : "unknown")));
 		}
 
 		return hasPermission;
@@ -90,9 +90,9 @@ public class PermissionCommandElement extends CommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
+	public Text getUsage(PermissibleCommandSource src) {
 		if (this.isOptional && !src.hasPermission(this.permission)) {
-			return ChatMessage.createTextMessage("");
+			return Text.literal("");
 		}
 
 		return this.element.getUsage(src);

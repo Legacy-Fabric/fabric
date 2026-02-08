@@ -1,15 +1,13 @@
 accessWidener	v2	named
-
-transitive-accessible method net/minecraft/block/Block <init> (Lnet/minecraft/block/material/Material;)V
-transitive-accessible method net/minecraft/block/Block method_5546 (Ljava/lang/String;)Lnet/minecraft/block/Block;
-transitive-accessible method net/minecraft/block/Block setBlockSoundGroup (Lnet/minecraft/sound/BlockSoundGroup;)Lnet/minecraft/block/Block;
-transitive-accessible method net/minecraft/block/Block setOpacity (I)Lnet/minecraft/block/Block;
-transitive-accessible method net/minecraft/block/Block setLightLevel (F)Lnet/minecraft/block/Block;
-transitive-accessible method net/minecraft/block/Block setResistance (F)Lnet/minecraft/block/Block;
-transitive-accessible method net/minecraft/block/Block setStrength (F)Lnet/minecraft/block/Block;
-transitive-accessible method net/minecraft/block/Block setUnbreakable ()Lnet/minecraft/block/Block;
-transitive-accessible method net/minecraft/block/Block setTickRandomly (Z)Lnet/minecraft/block/Block;
-transitive-accessible method net/minecraft/block/Block disableStats ()Lnet/minecraft/block/Block;
-
-accessible field net/minecraft/block/Block useNeighbourLight Z
-accessible field net/minecraft/block/Block translucent Z
+transitive-accessible	method	net/minecraft/block/Block	<init>	(Lnet/minecraft/block/material/Material;)V
+transitive-accessible	method	net/minecraft/block/Block	setSpriteName	(Ljava/lang/String;)Lnet/minecraft/block/Block;
+transitive-accessible	method	net/minecraft/block/Block	setSounds	(Lnet/minecraft/block/Block__Sounds;)Lnet/minecraft/block/Block;
+transitive-accessible	method	net/minecraft/block/Block	setOpacity	(I)Lnet/minecraft/block/Block;
+transitive-accessible	method	net/minecraft/block/Block	setLight	(F)Lnet/minecraft/block/Block;
+transitive-accessible	method	net/minecraft/block/Block	setBlastResistance	(F)Lnet/minecraft/block/Block;
+transitive-accessible	method	net/minecraft/block/Block	setStrength	(F)Lnet/minecraft/block/Block;
+transitive-accessible	method	net/minecraft/block/Block	setUnbreakable	()Lnet/minecraft/block/Block;
+transitive-accessible	method	net/minecraft/block/Block	setTicksRandomly	(Z)Lnet/minecraft/block/Block;
+transitive-accessible	method	net/minecraft/block/Block	disableStats	()Lnet/minecraft/block/Block;
+accessible	field	net/minecraft/block/Block	useNeighborLight	Z
+accessible	field	net/minecraft/block/Block	isTranslucent	Z

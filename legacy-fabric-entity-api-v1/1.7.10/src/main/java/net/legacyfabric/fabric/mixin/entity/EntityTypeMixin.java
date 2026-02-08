@@ -27,8 +27,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.entity.Entities;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -36,36 +36,36 @@ import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.entity.MapEntityRegistryWrapper;
 
-@Mixin(EntityType.class)
+@Mixin(Entities.class)
 public class EntityTypeMixin {
 	@Shadow
-	private static Map<String, Class<? extends Entity>> NAME_CLASS_MAP;
+	private static Map<String, Class<? extends Entity>> KEY_TO_TYPE;
 	@Shadow
-	private static Map<Class<? extends Entity>, String> CLASS_NAME_MAP;
+	private static Map<Class<? extends Entity>, String> TYPE_TO_KEY;
 	@Shadow
-	private static Map<Integer, Class<? extends Entity>> ID_CLASS_MAP;
+	private static Map<Integer, Class<? extends Entity>> ID_TO_TYPE;
 	@Shadow
-	private static Map<Class<? extends Entity>, Integer> CLASS_ID_MAP;
+	private static Map<Class<? extends Entity>, Integer> TYPE_TO_ID;
 	@Shadow
-	private static Map<String, Integer> field_3272;
+	private static Map<String, Integer> KEY_TO_ID;
 
 	@Unique
 	private static FabricRegistry<Class<? extends Entity>> ENTITY_TYPE_REGISTRY;
 
-	@Inject(method = "load", at = @At("RETURN"))
+	@Inject(method = "init", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
 		ENTITY_TYPE_REGISTRY = new MapEntityRegistryWrapper<>(
-				NAME_CLASS_MAP,
-				CLASS_NAME_MAP,
-				ID_CLASS_MAP,
-				CLASS_ID_MAP,
-				field_3272
+				KEY_TO_TYPE,
+				TYPE_TO_KEY,
+				ID_TO_TYPE,
+				TYPE_TO_ID,
+				KEY_TO_ID
 		);
 
 		RegistryHelper.addRegistry(RegistryIds.ENTITY_TYPES, ENTITY_TYPE_REGISTRY);
 	}
 
-	@ModifyArg(method = {"createInstanceFromName", "createInstanceFromNbt"},
+	@ModifyArg(method = {"createSilently", "create(Lnet/minecraft/nbt/NbtCompound;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;"},
 			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
 	private static Object fixOldRegistryNames(Object o) {
 		String key = (String) o;
@@ -75,7 +75,7 @@ public class EntityTypeMixin {
 			Class<? extends Entity> clazz = RegistryHelper.getValue(RegistryIds.ENTITY_TYPES, identifier);
 
 			if (clazz != null) {
-				key = CLASS_NAME_MAP.get(clazz);
+				key = TYPE_TO_KEY.get(clazz);
 			}
 		}
 

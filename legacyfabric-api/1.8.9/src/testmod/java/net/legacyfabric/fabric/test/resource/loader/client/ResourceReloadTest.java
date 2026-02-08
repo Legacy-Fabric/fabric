@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.test.resource.loader.client;
 
 import java.util.Arrays;
 
-import net.minecraft.resource.ResourceManager;
+import net.minecraft.client.resource.manager.ResourceManager;
 
 import net.fabricmc.api.ClientModInitializer;
 
@@ -44,7 +44,7 @@ public class ResourceReloadTest implements ClientModInitializer {
 			@Override
 			public void reload(ResourceManager resourceManager) {
 				LOGGER.info("Resources and reloading");
-				LOGGER.info("Namespaces are %s", Arrays.toString(resourceManager.getAllNamespaces().toArray()));
+				LOGGER.info("Namespaces are %s", Arrays.toString(resourceManager.getNamespaces().toArray()));
 			}
 		});
 	}

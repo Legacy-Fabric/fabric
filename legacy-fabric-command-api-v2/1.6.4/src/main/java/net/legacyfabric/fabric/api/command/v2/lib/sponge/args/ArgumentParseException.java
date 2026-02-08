@@ -27,7 +27,7 @@ package net.legacyfabric.fabric.api.command.v2.lib.sponge.args;
 
 import com.google.common.base.Strings;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 
@@ -47,7 +47,7 @@ public class ArgumentParseException extends CommandException {
 	 * @param source   The source string being parsed
 	 * @param position The current position in the source string
 	 */
-	public ArgumentParseException(ChatMessage message, String source, int position) {
+	public ArgumentParseException(Text message, String source, int position) {
 		super(message, true);
 		this.source = source;
 		this.position = position;
@@ -61,26 +61,26 @@ public class ArgumentParseException extends CommandException {
 	 * @param source   The source string being parsed
 	 * @param position The current position in the source string
 	 */
-	public ArgumentParseException(ChatMessage message, Throwable cause, String source, int position) {
+	public ArgumentParseException(Text message, Throwable cause, String source, int position) {
 		super(message, cause, true);
 		this.source = source;
 		this.position = position;
 	}
 
 	@Override
-	public ChatMessage getText() {
-		ChatMessage superText = super.getText();
+	public Text getText() {
+		Text superText = super.getText();
 
 		if (this.source == null || this.source.isEmpty()) {
 			return super.getText();
 		} else if (superText == null) {
-			return ChatMessage.createTextMessage(this.getAnnotatedPosition());
+			return Text.literal(this.getAnnotatedPosition());
 		} else {
-			return ChatMessage.createTextMessage(superText + "\n" + this.getAnnotatedPosition());
+			return Text.literal(superText + "\n" + this.getAnnotatedPosition());
 		}
 	}
 
-	private ChatMessage getSuperText() {
+	private Text getSuperText() {
 		return super.getText();
 	}
 
@@ -139,9 +139,9 @@ public class ArgumentParseException extends CommandException {
 	public static class WithUsage extends ArgumentParseException {
 		private static final long serialVersionUID = -786214501012293475L;
 
-		private final ChatMessage usage;
+		private final Text usage;
 
-		public WithUsage(ArgumentParseException wrapped, ChatMessage usage) {
+		public WithUsage(ArgumentParseException wrapped, Text usage) {
 			super(wrapped.getSuperText(), wrapped.getCause(), wrapped.getSourceString(), wrapped.getPosition());
 			this.usage = usage;
 		}
@@ -151,7 +151,7 @@ public class ArgumentParseException extends CommandException {
 		 *
 		 * @return The usage
 		 */
-		public ChatMessage getUsage() {
+		public Text getUsage() {
 			return this.usage;
 		}
 	}

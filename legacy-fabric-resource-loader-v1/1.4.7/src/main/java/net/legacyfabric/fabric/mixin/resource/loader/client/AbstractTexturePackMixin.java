@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.client.texture.AbstractTexturePack;
+import net.minecraft.client.resource.pack.AbstractTexturePack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -42,20 +42,20 @@ public class AbstractTexturePackMixin {
 	@Unique
 	private List<ModTexturePack> fabric_texturePacks;
 
-	@Inject(method = "<init>(Ljava/lang/String;Ljava/io/File;Ljava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/AbstractTexturePack;readIcon()V"))
+	@Inject(method = "<init>(Ljava/lang/String;Ljava/io/File;Ljava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/pack/AbstractTexturePack;loadIcon()V"))
 	private void registerPacks(String file, File string2, String par3, CallbackInfo ci) {
 		if (this instanceof ModTexturePack) return;
 
 		fabric_texturePacks = TexturePackHelper.getTexturePacks();
 	}
 
-	@Inject(method = "openStream", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "getResource", at = @At(value = "HEAD"), cancellable = true)
 	private void lf$getModResource(String par1, CallbackInfoReturnable<InputStream> cir) {
 		if ("/pack.txt".equals(par1) || "/pack.png".equals(par1)) return;
 
 		for (ModTexturePack pack : fabric_texturePacks) {
 			try {
-				InputStream stream = pack.openStream(par1);
+				InputStream stream = pack.getResource(par1);
 
 				if (stream != null) {
 					cir.setReturnValue(stream);

@@ -22,7 +22,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import net.minecraft.command.AbstractCommand;
+import net.minecraft.server.command.AbstractCommand;
 
 import net.legacyfabric.fabric.api.command.CommandSide;
 import net.legacyfabric.fabric.api.registry.CommandRegistry;

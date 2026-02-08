@@ -22,30 +22,30 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.item.itemgroup.ItemGroup;
+import net.minecraft.item.CreativeModeTab;
 
 import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 
-@Mixin(ItemGroup.class)
+@Mixin(CreativeModeTab.class)
 public abstract class MixinItemGroup implements ItemGroupExtensions {
 	@Shadow
 	@Final
 	@Mutable
-	public static ItemGroup[] itemGroups;
+	public static CreativeModeTab[] ALL;
 
 	@Shadow
 	@Final
-	private String id;
+	private String name;
 
 	@Override
 	public void fabric_expandArray() {
-		ItemGroup[] tempGroups = itemGroups;
-		itemGroups = new ItemGroup[itemGroups.length + 1];
-		System.arraycopy(tempGroups, 0, itemGroups, 0, tempGroups.length);
+		CreativeModeTab[] tempGroups = ALL;
+		ALL = new CreativeModeTab[ALL.length + 1];
+		System.arraycopy(tempGroups, 0, ALL, 0, tempGroups.length);
 	}
 
 	@Override
 	public String getIdentifier() {
-		return this.id;
+		return this.name;
 	}
 }

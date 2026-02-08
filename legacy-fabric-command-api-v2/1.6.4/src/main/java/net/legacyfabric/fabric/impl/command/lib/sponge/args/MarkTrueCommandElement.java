@@ -28,7 +28,7 @@ package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -37,7 +37,7 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class MarkTrueCommandElement extends CommandElement {
-	public MarkTrueCommandElement(ChatMessage key) {
+	public MarkTrueCommandElement(Text key) {
 		super(key);
 	}
 
@@ -52,7 +52,7 @@ public class MarkTrueCommandElement extends CommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
-		return ChatMessage.createTextMessage("");
+	public Text getUsage(PermissibleCommandSource src) {
+		return Text.literal("");
 	}
 }

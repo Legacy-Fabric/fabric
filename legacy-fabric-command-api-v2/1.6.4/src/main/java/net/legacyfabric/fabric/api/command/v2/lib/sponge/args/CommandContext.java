@@ -37,7 +37,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
@@ -90,7 +90,7 @@ public final class CommandContext {
 	 * @param <T> the type of value to get
 	 * @return the collection of all values
 	 */
-	public <T> Collection<T> getAll(ChatMessage key) {
+	public <T> Collection<T> getAll(Text key) {
 		return this.getAll(CommandContext.textToArgKey(key));
 	}
 
@@ -127,7 +127,7 @@ public final class CommandContext {
 	 * @param <T> the expected type of the argument
 	 * @return the argument
 	 */
-	public <T> Optional<T> getOne(ChatMessage key) {
+	public <T> Optional<T> getOne(Text key) {
 		return this.getOne(CommandContext.textToArgKey(key));
 	}
 
@@ -173,7 +173,7 @@ public final class CommandContext {
 	 *                                  context)
 	 * @throws ClassCastException       if the element type is not what is expected
 	 */
-	public <T> T requireOne(ChatMessage key)
+	public <T> T requireOne(Text key)
 			throws NoSuchElementException, IllegalArgumentException, ClassCastException {
 		return this.requireOne(CommandContext.textToArgKey(key));
 	}
@@ -195,7 +195,7 @@ public final class CommandContext {
 	 * @param key   the key to store the arg under
 	 * @param value the value for this argument
 	 */
-	public void putArg(ChatMessage key, Object value) {
+	public void putArg(Text key, Object value) {
 		this.putArg(CommandContext.textToArgKey(key), value);
 	}
 
@@ -213,7 +213,7 @@ public final class CommandContext {
 	 *
 	 * @param key the key for the flag defined
 	 */
-	public void addFlag(ChatMessage key) {
+	public void addFlag(Text key) {
 		this.addFlag(CommandContext.textToArgKey(key));
 	}
 
@@ -227,7 +227,7 @@ public final class CommandContext {
 	 */
 	public void checkPermission(PermissibleCommandSource commander, String permission) throws CommandException {
 		if (!commander.hasPermission(permission)) {
-			throw new CommandException(ChatMessage.createTextMessage("You do not have permission to use this command!"));
+			throw new CommandException(Text.literal("You do not have permission to use this command!"));
 		}
 	}
 
@@ -247,7 +247,7 @@ public final class CommandContext {
 	 * @param key The key to look up
 	 * @return whether there are any values present
 	 */
-	public boolean hasAny(ChatMessage key) {
+	public boolean hasAny(Text key) {
 		return this.hasAny(CommandContext.textToArgKey(key));
 	}
 
@@ -267,7 +267,7 @@ public final class CommandContext {
 	 * @param key The key to look up
 	 * @return whether the flag is defined
 	 */
-	public boolean hasFlag(ChatMessage key) {
+	public boolean hasFlag(Text key) {
 		return this.hasFlag(CommandContext.textToArgKey(key));
 	}
 
@@ -320,15 +320,15 @@ public final class CommandContext {
 	 * @param key the text to be converted into a string key
 	 * @return the string key. if {@code key} is a {@link TranslatableText}, the translation key.
 	 */
-	public static String textToArgKey(@Nullable ChatMessage key) {
+	public static String textToArgKey(@Nullable Text key) {
 		if (key == null) {
 			return null;
 		}
 
-		if (key.getTranslate() != null) { // Use translation key
-			return key.getTranslate();
+		if (key.getTranslated() != null) { // Use translation key
+			return key.getTranslated();
 		}
 
-		return key.toString(true);
+		return key.buildString(true);
 	}
 }

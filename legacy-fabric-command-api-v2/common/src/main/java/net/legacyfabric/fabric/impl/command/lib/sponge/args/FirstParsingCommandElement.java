@@ -105,6 +105,6 @@ public class FirstParsingCommandElement extends CommandElement {
 			}
 		}
 
-		return new LiteralText(ret.asUnformattedString());
+		return new LiteralText(ret.getString());
 	}
 }

@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.class_739;
+import net.minecraft.server.MinecraftServer__98761130;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -48,9 +48,9 @@ public abstract class MinecraftServerMixin implements MinecraftServerExtensions 
 	@Unique
 	private Thread serverThread;
 
-	@Redirect(method = "startServerThread", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/class_739;start()V"))
-	public void startServerThread(class_739 class_739) {
-		this.serverThread = new class_739((MinecraftServer) (Object) this, "Server thread");
+	@Redirect(method = "start", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer__98761130;start()V"))
+	public void startServerThread(MinecraftServer__98761130 class_739) {
+		this.serverThread = new MinecraftServer__98761130((MinecraftServer) (Object) this, "Server thread");
 		this.serverThread.start();
 	}
 
@@ -61,7 +61,7 @@ public abstract class MinecraftServerMixin implements MinecraftServerExtensions 
 
 	@Shadow
 	@Environment(EnvType.SERVER)
-	public boolean isStopped() {
+	public boolean hasStopped() {
 		return false;
 	}
 
@@ -69,7 +69,7 @@ public abstract class MinecraftServerMixin implements MinecraftServerExtensions 
 	private <V> ListenableFuture<V> runCallable(Callable<V> callable) {
 		Validate.notNull(callable);
 
-		if (!this.isOnGameThread() && !this.isStopped()) {
+		if (!this.isOnGameThread() && !this.hasStopped()) {
 			ListenableFutureTask<V> listenableFutureTask = ListenableFutureTask.create(callable);
 			synchronized (this.queue) {
 				this.queue.add(listenableFutureTask);

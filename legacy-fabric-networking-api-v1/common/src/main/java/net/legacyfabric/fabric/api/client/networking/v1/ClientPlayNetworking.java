@@ -20,11 +20,11 @@ package net.legacyfabric.fabric.api.client.networking.v1;
 import java.util.Objects;
 import java.util.Set;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.Packet;
-import net.minecraft.util.PacketByteBuf;
-import net.minecraft.util.ThreadExecutor;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.handler.ClientPlayNetworkHandler;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.util.BlockableEventLoop;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -227,8 +227,8 @@ public final class ClientPlayNetworking {
 	 */
 	public static boolean canSend(String channelName) throws IllegalArgumentException {
 		// You cant send without a client player, so this is fine
-		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-			return ClientNetworkingImpl.getAddon(MinecraftClient.getInstance().getNetworkHandler()).getSendableChannels().contains(channelName);
+		if (Minecraft.getInstance().getNetworkHandler() != null) {
+			return ClientNetworkingImpl.getAddon(Minecraft.getInstance().getNetworkHandler()).getSendableChannels().contains(channelName);
 		}
 
 		return false;
@@ -278,8 +278,8 @@ public final class ClientPlayNetworking {
 	 */
 	public static PacketSender getSender() throws IllegalStateException {
 		// You cant send without a client player, so this is fine
-		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-			return ClientNetworkingImpl.getAddon(MinecraftClient.getInstance().getNetworkHandler());
+		if (Minecraft.getInstance().getNetworkHandler() != null) {
+			return ClientNetworkingImpl.getAddon(Minecraft.getInstance().getNetworkHandler());
 		}
 
 		throw new IllegalStateException("Cannot get packet sender when not in game!");
@@ -294,8 +294,8 @@ public final class ClientPlayNetworking {
 	 */
 	public static void send(String channelName, PacketByteBuf buf) throws IllegalStateException {
 		// You cant send without a client player, so this is fine
-		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-			MinecraftClient.getInstance().getNetworkHandler().sendPacket(createC2SPacket(channelName, buf));
+		if (Minecraft.getInstance().getNetworkHandler() != null) {
+			Minecraft.getInstance().getNetworkHandler().sendPacket(createC2SPacket(channelName, buf));
 			return;
 		}
 
@@ -311,8 +311,8 @@ public final class ClientPlayNetworking {
 	 */
 	public static void send(Identifier channelId, PacketByteBuf buf) throws IllegalStateException {
 		// You cant send without a client player, so this is fine
-		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
-			MinecraftClient.getInstance().getNetworkHandler().sendPacket(createC2SPacket(channelId, buf));
+		if (Minecraft.getInstance().getNetworkHandler() != null) {
+			Minecraft.getInstance().getNetworkHandler().sendPacket(createC2SPacket(channelId, buf));
 			return;
 		}
 
@@ -329,7 +329,7 @@ public final class ClientPlayNetworking {
 		 * Handles an incoming packet.
 		 *
 		 * <p>This method is executed on {@linkplain io.netty.channel.EventLoop netty's event loops}.
-		 * Modification to the game should be {@linkplain ThreadExecutor#execute(Runnable) scheduled} using the provided Minecraft client instance.
+		 * Modification to the game should be {@linkplain BlockableEventLoop#execute(Runnable) scheduled} using the provided Minecraft client instance.
 		 *
 		 * <p>An example usage of this is to display an overlay message:
 		 * <pre>{@code
@@ -348,6 +348,6 @@ public final class ClientPlayNetworking {
 		 * @param buf            the payload of the packet
 		 * @param responseSender the packet sender
 		 */
-		void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender);
+		void receive(Minecraft client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender);
 	}
 }

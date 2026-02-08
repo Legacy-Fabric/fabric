@@ -22,34 +22,34 @@ import java.util.Map;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.entity.effect.StatusEffectStrings;
+import net.minecraft.entity.living.effect.PotionHelper;
 
-@Mixin(StatusEffectStrings.class)
+@Mixin(PotionHelper.class)
 public interface StatusEffectStringsAccessor {
-	@Accessor("field_9162")
+	@Accessor("DURATION_RECIPES")
 	static Map<Integer, String> getLevelsMap() {
 		return null;
 	}
 
-	@Accessor("field_9162")
+	@Accessor("DURATION_RECIPES")
 	static void setLevelsMap(Map<Integer, String> value) {
 	}
 
-	@Accessor("field_9163")
+	@Accessor("AMPLIFIER_RECIPES")
 	static Map<Integer, String> getAmplifyingFactorsMap() {
 		return null;
 	}
 
-	@Accessor("field_9163")
+	@Accessor("AMPLIFIER_RECIPES")
 	static void setAmplifyingFactorsMap(Map<Integer, String> value) {
 	}
 
-	@Accessor("field_9164")
+	@Accessor("COLOR_CACHE")
 	static Map<Integer, Integer> getEffectColorsMap() {
 		return null;
 	}
 
-	@Accessor("field_9164")
+	@Accessor("COLOR_CACHE")
 	static void setEffectColorsMap(Map<Integer, Integer> value) {
 	}
 }

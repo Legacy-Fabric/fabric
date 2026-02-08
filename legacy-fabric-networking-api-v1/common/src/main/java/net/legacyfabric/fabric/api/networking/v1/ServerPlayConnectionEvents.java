@@ -18,7 +18,7 @@
 package net.legacyfabric.fabric.api.networking.v1;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.handler.ServerPlayNetworkHandler;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;

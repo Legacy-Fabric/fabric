@@ -80,15 +80,15 @@ public class Vec3dCommandElement extends CommandElement {
 			yStr = split[1];
 			zStr = split[2];
 		} else if (xStr.equalsIgnoreCase("#me")) {
-			return source.getPosition();
+			return source.getCommandSourceBlockPos();
 		} else {
 			yStr = args.next();
 			zStr = args.next();
 		}
 
-		double x = this.parseRelativeDouble(args, xStr, (double) source.getPosition().x);
-		double y = this.parseRelativeDouble(args, yStr, (double) source.getPosition().y);
-		double z = this.parseRelativeDouble(args, zStr, (double) source.getPosition().z);
+		double x = this.parseRelativeDouble(args, xStr, (double) source.getCommandSourceBlockPos().x);
+		double y = this.parseRelativeDouble(args, yStr, (double) source.getCommandSourceBlockPos().y);
+		double z = this.parseRelativeDouble(args, zStr, (double) source.getCommandSourceBlockPos().z);
 		return Vec3d.of(x, y, z);
 	}
 

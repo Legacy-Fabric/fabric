@@ -24,8 +24,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.resource.Identifier;
+import net.minecraft.util.registry.IdRegistry;
 import net.minecraft.world.biome.Biome;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
@@ -35,9 +35,9 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 public class BiomeMixin {
 	@Shadow
 	@Final
-	public static SimpleRegistry<Identifier, Biome> REGISTRY;
+	public static IdRegistry<Identifier, Biome> REGISTRY;
 
-	@Inject(method = "register()V", at = @At("RETURN"))
+	@Inject(method = "init()V", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
 		RegistryHelper.addRegistry(RegistryIds.BIOMES, REGISTRY);
 	}

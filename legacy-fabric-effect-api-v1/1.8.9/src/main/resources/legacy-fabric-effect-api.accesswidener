@@ -1,3 +1,2 @@
 accessWidener	v2	named
-
-transitive-accessible method net/minecraft/entity/effect/StatusEffect <init> (ILnet/minecraft/util/Identifier;ZI)V
+transitive-accessible	method	net/minecraft/entity/living/effect/StatusEffect	<init>	(ILnet/minecraft/resource/Identifier;ZI)V

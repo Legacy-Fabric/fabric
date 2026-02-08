@@ -22,11 +22,11 @@ import java.util.Map;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.client.render.item.ItemModels;
-import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.client.render.item.ItemModelShaper;
+import net.minecraft.client.resource.ModelIdentifier;
 
-@Mixin(ItemModels.class)
+@Mixin(ItemModelShaper.class)
 public interface ItemModelsAccessor {
-	@Accessor
+	@Accessor("models")
 	Map<Integer, ModelIdentifier> getModelIds();
 }

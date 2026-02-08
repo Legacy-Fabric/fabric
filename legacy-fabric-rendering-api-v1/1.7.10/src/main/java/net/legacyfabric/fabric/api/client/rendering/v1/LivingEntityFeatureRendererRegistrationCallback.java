@@ -18,7 +18,7 @@
 package net.legacyfabric.fabric.api.client.rendering.v1;
 
 import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.living.LivingEntity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

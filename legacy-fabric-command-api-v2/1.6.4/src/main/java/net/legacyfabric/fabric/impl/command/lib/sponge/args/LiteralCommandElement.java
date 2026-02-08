@@ -32,7 +32,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -45,7 +45,7 @@ public class LiteralCommandElement extends CommandElement {
 	@Nullable
 	private final Object putValue;
 
-	public LiteralCommandElement(@Nullable ChatMessage key, List<String> expectedArgs, @Nullable Object putValue) {
+	public LiteralCommandElement(@Nullable Text key, List<String> expectedArgs, @Nullable Object putValue) {
 		super(key);
 		this.expectedArgs = ImmutableList.copyOf(expectedArgs);
 		this.putValue = putValue;
@@ -58,7 +58,7 @@ public class LiteralCommandElement extends CommandElement {
 			String current;
 
 			if (!(current = args.next()).equalsIgnoreCase(arg)) {
-				throw args.createError(ChatMessage.createTextMessage(String.format("Argument %s did not match expected next argument %s", current, arg)));
+				throw args.createError(Text.literal(String.format("Argument %s did not match expected next argument %s", current, arg)));
 			}
 		}
 
@@ -87,7 +87,7 @@ public class LiteralCommandElement extends CommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
-		return ChatMessage.createTextMessage(Joiner.on(' ').join(this.expectedArgs));
+	public Text getUsage(PermissibleCommandSource src) {
+		return Text.literal(Joiner.on(' ').join(this.expectedArgs));
 	}
 }

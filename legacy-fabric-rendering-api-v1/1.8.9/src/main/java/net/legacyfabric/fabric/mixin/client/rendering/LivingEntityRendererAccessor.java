@@ -21,11 +21,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.client.render.entity.layer.EntityRenderLayer;
+import net.minecraft.entity.living.LivingEntity;
 
 @Mixin(LivingEntityRenderer.class)
 public interface LivingEntityRendererAccessor<T extends LivingEntity> {
-	@Invoker("addFeature")
-	boolean callAddFeature(FeatureRenderer<T> featureRenderer);
+	@Invoker("addLayer")
+	boolean callAddFeature(EntityRenderLayer<T> featureRenderer);
 }

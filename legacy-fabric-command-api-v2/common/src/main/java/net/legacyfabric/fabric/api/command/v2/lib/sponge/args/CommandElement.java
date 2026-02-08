@@ -62,7 +62,7 @@ public abstract class CommandElement {
 	 * Return the plain key, to be used when looking up this command element in
 	 * a {@link CommandContext}. If the key is a {@link TranslatableText}, this
 	 * is the translation's id. Otherwise, this is the result of
-	 * {@link Text#computeValue()}.
+	 * {@link Text#getContent()}.
 	 *
 	 * @return the raw key
 	 */
@@ -130,7 +130,7 @@ public abstract class CommandElement {
 	 * @return The formatted usage
 	 */
 	public Text getUsage(PermissibleCommandSource src) {
-		return this.getKey() == null ? new LiteralText("") : new LiteralText("<" + this.getKey().asUnformattedString() + ">");
+		return this.getKey() == null ? new LiteralText("") : new LiteralText("<" + this.getKey().getString() + ">");
 	}
 
 	public MinecraftServer getServer() {

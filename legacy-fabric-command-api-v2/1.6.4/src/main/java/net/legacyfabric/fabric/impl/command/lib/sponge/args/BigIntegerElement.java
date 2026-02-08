@@ -29,7 +29,7 @@ import java.math.BigInteger;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -37,7 +37,7 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class BigIntegerElement extends KeyElement {
-	public BigIntegerElement(ChatMessage key) {
+	public BigIntegerElement(Text key) {
 		super(key);
 	}
 
@@ -49,7 +49,7 @@ public class BigIntegerElement extends KeyElement {
 		try {
 			return new BigInteger(integerString);
 		} catch (NumberFormatException ex) {
-			throw args.createError(ChatMessage.createTextMessage("Expected an integer, but input " + integerString + " was not"));
+			throw args.createError(Text.literal("Expected an integer, but input " + integerString + " was not"));
 		}
 	}
 }

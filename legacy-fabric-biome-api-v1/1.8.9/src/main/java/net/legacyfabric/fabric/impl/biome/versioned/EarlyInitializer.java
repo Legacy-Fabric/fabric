@@ -39,7 +39,7 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 
 		registry.fabric$getEntryAddedCallback().register((rawId, id, object) -> {
 			object.setName(id.toTranslationKey());
-			Biome.MUTATED_BIOMES.put(object.name, object);
+			Biome.BY_NAME.put(object.name, object);
 		});
 
 		registry.fabric$getRegistryRemapCallback().register(changedIdsMap -> {

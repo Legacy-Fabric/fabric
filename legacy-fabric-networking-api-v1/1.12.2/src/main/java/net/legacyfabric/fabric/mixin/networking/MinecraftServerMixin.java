@@ -28,18 +28,18 @@ import net.legacyfabric.fabric.impl.networking.server.MinecraftServerExtensions;
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin implements MinecraftServerExtensions {
 	@Shadow
-	public abstract boolean isOnThread();
+	public abstract boolean isOnSameThread();
 
 	@Shadow
-	public abstract ListenableFuture<Object> submit(Runnable task);
+	public abstract ListenableFuture<Object> execute(Runnable task);
 
 	@Override
 	public boolean isOnGameThread() {
-		return this.isOnThread();
+		return this.isOnSameThread();
 	}
 
 	@Override
 	public ListenableFuture<Object> executeTask(Runnable task) {
-		return this.submit(task);
+		return this.execute(task);
 	}
 }

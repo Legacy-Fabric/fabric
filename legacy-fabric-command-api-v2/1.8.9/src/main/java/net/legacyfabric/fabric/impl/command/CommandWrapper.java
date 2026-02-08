@@ -23,8 +23,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraft.command.AbstractCommand;
-import net.minecraft.command.CommandSource;
+import net.minecraft.server.command.AbstractCommand;
+import net.minecraft.server.command.source.CommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +46,7 @@ public class CommandWrapper extends AbstractCommand {
 	}
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return this.mapping.getPrimaryAlias();
 	}
 
@@ -56,12 +56,12 @@ public class CommandWrapper extends AbstractCommand {
 	}
 
 	@Override
-	public String getUsageTranslationKey(CommandSource source) {
-		return this.mapping.getCallable().getHelp((PermissibleCommandSource) source).map(Text::computeValue).orElse("");
+	public String getUsage(CommandSource source) {
+		return this.mapping.getCallable().getHelp((PermissibleCommandSource) source).map(Text::getContent).orElse("");
 	}
 
 	@Override
-	public void execute(CommandSource source, String[] args) {
+	public void run(CommandSource source, String[] args) {
 		try {
 			try {
 				this.mapping.getCallable().process((PermissibleCommandSource) source, String.join(" ", args));
@@ -89,7 +89,7 @@ public class CommandWrapper extends AbstractCommand {
 						usage = this.mapping.getCallable().getUsage((PermissibleCommandSource) source);
 					}
 
-					source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", this.getCommandName(), usage.asUnformattedString()))));
+					source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Usage: /%s %s", this.getName(), usage.getString()))));
 				}
 			}
 		} catch (Throwable t) {
@@ -99,16 +99,16 @@ public class CommandWrapper extends AbstractCommand {
 	}
 
 	@Override
-	public boolean isAccessible(CommandSource source) {
+	public boolean canUse(CommandSource source) {
 		return this.mapping.getCallable().testPermission((PermissibleCommandSource) source);
 	}
 
 	@Override
-	public List<String> getAutoCompleteHints(CommandSource source, String[] args, BlockPos pos) {
+	public List<String> getSuggestions(CommandSource source, String[] args, BlockPos pos) {
 		try {
-			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getWorld(), pos));
+			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getCommandSourceWorld(), pos));
 		} catch (CommandException e) {
-			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().asUnformattedString()))));
+			source.sendMessage(CommandMessageFormatting.error(new LiteralText(String.format("Error getting suggestions: %s", e.getText().getString()))));
 			return Collections.emptyList();
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Error occurred while providing auto complete hints for '%s'", String.join(" ", args)), e);

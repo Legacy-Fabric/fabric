@@ -27,7 +27,7 @@ package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.StringType;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
@@ -39,7 +39,7 @@ public class StringCommandElement extends KeyElement {
 	private final StringType stringType;
 	private final RemainingJoinedStringsCommandElement joinedElement;
 
-	public StringCommandElement(ChatMessage key, StringType type) {
+	public StringCommandElement(Text key, StringType type) {
 		super(key);
 		this.stringType = type;
 		this.joinedElement = type.isAll() ? new RemainingJoinedStringsCommandElement(key, false) : null;

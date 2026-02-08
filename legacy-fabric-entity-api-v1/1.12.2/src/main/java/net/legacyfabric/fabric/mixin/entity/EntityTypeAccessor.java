@@ -22,9 +22,9 @@ import java.util.List;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Entities;
 
-@Mixin(EntityType.class)
+@Mixin(Entities.class)
 public interface EntityTypeAccessor {
 	@Accessor("NAMES")
 	static List<String> getEntityNameList() {

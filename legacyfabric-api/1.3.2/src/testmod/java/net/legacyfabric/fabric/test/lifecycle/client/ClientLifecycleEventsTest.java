@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.test.lifecycle.client;
 
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Entities;
 
 import net.fabricmc.api.ClientModInitializer;
 
@@ -49,10 +49,10 @@ public class ClientLifecycleEventsTest implements ClientModInitializer {
 			}
 		});
 		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			LOGGER.trace("Client Entity %s loaded", EntityType.getEntityName(entity));
+			LOGGER.trace("Client Entity %s loaded", Entities.getKey(entity));
 		});
 		ClientEntityEvents.ENTITY_REMOVED.register((entity, world) -> {
-			LOGGER.trace("Client Entity %s unloaded", EntityType.getEntityName(entity));
+			LOGGER.trace("Client Entity %s unloaded", Entities.getKey(entity));
 		});
 	}
 }

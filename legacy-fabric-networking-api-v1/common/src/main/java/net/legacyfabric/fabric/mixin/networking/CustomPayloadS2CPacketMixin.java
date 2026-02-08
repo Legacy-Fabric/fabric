@@ -25,7 +25,7 @@ import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 
 @Mixin(CustomPayloadS2CPacket.class)
 public class CustomPayloadS2CPacketMixin {
-	@ModifyArg(method = "read", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/PacketByteBuf;readString(I)Ljava/lang/String;"))
+	@ModifyArg(method = "read", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/PacketByteBuf;readString(I)Ljava/lang/String;"))
 	private int increaseMaxChannelLength(int max) {
 		return 100;
 	}

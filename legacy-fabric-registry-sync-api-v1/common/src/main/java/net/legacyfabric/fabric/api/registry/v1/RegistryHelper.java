@@ -25,7 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.world.biome.Biome;
 

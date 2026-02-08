@@ -31,7 +31,7 @@ import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 

@@ -24,13 +24,13 @@ import net.minecraft.entity.Entity;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
-@Mixin(targets = "net/minecraft/server/command/ExecuteCommand$1")
+@Mixin(targets = "net/minecraft/server/command/ExecuteCommand$42526553")
 public abstract class ExecuteCommand_1Mixin implements PermissibleCommandSource {
 	@Shadow
-	public abstract Entity getEntity();
+	public abstract Entity asEntity();
 
 	@Override
 	public boolean hasPermission(String perm) {
-		return ((PermissibleCommandSource) this.getEntity()).hasPermission(perm);
+		return ((PermissibleCommandSource) this.asEntity()).hasPermission(perm);
 	}
 }

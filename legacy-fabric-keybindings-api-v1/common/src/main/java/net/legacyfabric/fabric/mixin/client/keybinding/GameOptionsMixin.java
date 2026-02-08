@@ -23,18 +23,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.options.GameOptions;
+import net.minecraft.client.options.KeyBinding;
 
 import net.legacyfabric.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
 
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
 	@Shadow
-	public KeyBinding[] allKeys;
+	public KeyBinding[] keyBindings;
 
 	@Inject(at = @At("HEAD"), method = "load()V")
 	public void api$loadHook(CallbackInfo info) {
-		allKeys = KeyBindingRegistryImpl.process(allKeys);
+		keyBindings = KeyBindingRegistryImpl.process(keyBindings);
 	}
 }

@@ -32,7 +32,7 @@ import java.util.Set;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
@@ -113,21 +113,21 @@ public class SequenceCommandElement extends CommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource commander) {
-		final ChatMessage build = ChatMessage.createTextMessage("");
+	public Text getUsage(PermissibleCommandSource commander) {
+		final Text build = Text.literal("");
 
 		for (Iterator<CommandElement> it = this.elements.iterator(); it.hasNext(); ) {
-			ChatMessage usage = it.next().getUsage(commander);
+			Text usage = it.next().getUsage(commander);
 
 			if (!usage.toString().isEmpty()) {
-				build.addUsing(usage);
+				build.append(usage);
 
 				if (it.hasNext()) {
-					build.addUsing(CommandMessageFormatting.SPACE_TEXT);
+					build.append(CommandMessageFormatting.SPACE_TEXT);
 				}
 			}
 		}
 
-		return ChatMessage.createTextMessage(build.toString());
+		return Text.literal(build.toString());
 	}
 }

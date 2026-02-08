@@ -21,9 +21,9 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
+import net.minecraft.entity.Entities;
+import net.minecraft.entity.Entities__SpawnEggData;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.class_868;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
@@ -43,12 +43,12 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		SyncedFabricRegistry<Class<? extends Entity>> registry = (SyncedFabricRegistry<Class<? extends Entity>>) holder;
 
 		registry.fabric$getRegistryRemapCallback().register(changedIdsMap -> {
-			Map<Integer, class_868> newMap = Maps.newLinkedHashMap();
+			Map<Integer, Entities__SpawnEggData> newMap = Maps.newLinkedHashMap();
 
-			for (Object entry1 : EntityType.field_3267.entrySet()) {
+			for (Object entry1 : Entities.SPAWN_EGG_DATA.entrySet()) {
 				Map.Entry<Object, Object> entry = (Map.Entry) entry1;
 				int id = (int) entry.getKey();
-				class_868 spawnEggData = (class_868) entry.getValue();
+				Entities__SpawnEggData spawnEggData = (Entities__SpawnEggData) entry.getValue();
 
 				if (changedIdsMap.containsKey(id)) {
 					id = changedIdsMap.get(id).getId();
@@ -58,8 +58,8 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 				newMap.put(id, spawnEggData);
 			}
 
-			EntityType.field_3267.clear();
-			EntityType.field_3267.putAll(newMap);
+			Entities.SPAWN_EGG_DATA.clear();
+			Entities.SPAWN_EGG_DATA.putAll(newMap);
 		});
 	}
 }

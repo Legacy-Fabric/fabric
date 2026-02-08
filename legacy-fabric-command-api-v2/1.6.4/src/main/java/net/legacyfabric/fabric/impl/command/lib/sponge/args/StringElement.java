@@ -25,7 +25,7 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -33,7 +33,7 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class StringElement extends KeyElement {
-	public StringElement(ChatMessage key) {
+	public StringElement(Text key) {
 		super(key);
 	}
 

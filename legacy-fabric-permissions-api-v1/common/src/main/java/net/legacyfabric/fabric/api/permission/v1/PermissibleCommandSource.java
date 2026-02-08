@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.permission.v1;
 
-import net.minecraft.command.CommandSource;
+import net.minecraft.server.command.source.CommandSource;
 
 /**
  * Represents a {@link CommandSource} that can not be able to run

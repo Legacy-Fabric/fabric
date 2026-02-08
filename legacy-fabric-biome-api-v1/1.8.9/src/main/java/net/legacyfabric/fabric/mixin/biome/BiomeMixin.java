@@ -41,7 +41,7 @@ public class BiomeMixin {
 	@Mutable
 	@Shadow
 	@Final
-	private static Biome[] BIOMES;
+	private static Biome[] BY_ID;
 	@Unique
 	private static FabricRegistry<Biome> REGISTRY;
 
@@ -49,7 +49,7 @@ public class BiomeMixin {
 	private static void api$registerRegistry(CallbackInfo ci) {
 		REGISTRY = new SyncedArrayFabricRegistryWrapper<>(
 				RegistryIds.BIOMES,
-				BIOMES, EarlyInitializer.getVanillaIds(),
+				BY_ID, EarlyInitializer.getVanillaIds(),
 				universal -> universal,
 				id -> id,
 				ids -> {
@@ -69,7 +69,7 @@ public class BiomeMixin {
 						array[id] = enchantment;
 					}
 
-					BIOMES = array;
+					BY_ID = array;
 				}
 		);
 

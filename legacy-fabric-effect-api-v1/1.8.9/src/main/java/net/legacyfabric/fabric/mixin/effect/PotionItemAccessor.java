@@ -23,14 +23,14 @@ import java.util.Map;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.living.effect.StatusEffectInstance;
 import net.minecraft.item.PotionItem;
 
 @Mixin(PotionItem.class)
 public interface PotionItemAccessor {
-	@Accessor("STATUS_EFFECTS_1")
+	@Accessor("potionEffectsByMetadataCache")
 	Map<Integer, List<StatusEffectInstance>> getMetaToEffectListMap();
-	@Accessor("STATUS_EFFECTS_2")
+	@Accessor("ITEM_STACKS")
 	static Map<List<StatusEffectInstance>, Integer> getEffectListToMetaMap() {
 		return null;
 	}

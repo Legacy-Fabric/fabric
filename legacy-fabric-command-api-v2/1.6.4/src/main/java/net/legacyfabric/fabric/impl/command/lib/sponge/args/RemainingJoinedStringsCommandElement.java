@@ -25,7 +25,7 @@
 
 package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
@@ -36,7 +36,7 @@ import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 public class RemainingJoinedStringsCommandElement extends KeyElement {
 	private final boolean raw;
 
-	public RemainingJoinedStringsCommandElement(ChatMessage key, boolean raw) {
+	public RemainingJoinedStringsCommandElement(Text key, boolean raw) {
 		super(key);
 		this.raw = raw;
 	}
@@ -64,7 +64,7 @@ public class RemainingJoinedStringsCommandElement extends KeyElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
-		return ChatMessage.createTextMessage("").addText(CommandMessageFormatting.LT_TEXT.toString()).addUsing(this.getKey()).addUsing(CommandMessageFormatting.ELLIPSIS_TEXT).addUsing(CommandMessageFormatting.GT_TEXT);
+	public Text getUsage(PermissibleCommandSource src) {
+		return Text.literal("").appendLiteral(CommandMessageFormatting.LT_TEXT.toString()).append(this.getKey()).append(CommandMessageFormatting.ELLIPSIS_TEXT).append(CommandMessageFormatting.GT_TEXT);
 	}
 }

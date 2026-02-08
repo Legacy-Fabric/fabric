@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.client.keybinding.v1;
 
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.options.KeyBinding;
 
 import net.legacyfabric.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
 

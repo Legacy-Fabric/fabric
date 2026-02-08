@@ -46,7 +46,7 @@ import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;

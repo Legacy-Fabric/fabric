@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.item.PotionItem;
 
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;

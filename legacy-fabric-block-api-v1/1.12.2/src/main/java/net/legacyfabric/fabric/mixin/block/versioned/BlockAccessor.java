@@ -21,12 +21,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.collection.IdList;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.util.Id2ObjectBiMap;
 
 @Mixin(Block.class)
 public interface BlockAccessor {
-	@Accessor("BLOCK_STATES")
-	static void setBlockStateList(IdList<BlockState> blockStates) {
+	@Accessor("STATE_REGISTRY")
+	static void setBlockStateList(Id2ObjectBiMap<BlockState> blockStates) {
 	}
 }

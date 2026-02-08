@@ -26,21 +26,21 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import net.minecraft.client.gui.screen.inventory.menu.CreativeInventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.render.platform.GlStateManager;
+import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.itemgroup.ItemGroup;
-import net.minecraft.util.CommonI18n;
+import net.minecraft.locale.I18n;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.api.util.VersionUtils;
 
 public class FabricCreativeGuiComponents {
 	private static final Identifier BUTTON_TEX = new Identifier("legacy-fabric", "textures/gui/creative_buttons.png");
-	public static final Set<ItemGroup> COMMON_GROUPS = new HashSet<>();
+	public static final Set<CreativeModeTab> COMMON_GROUPS = new HashSet<>();
 
 	public static final boolean hasHotBar = VersionUtils.matches(">=1.12-alpha.17.06.a <=1.13.2");
 	private static final boolean hasStateManager = VersionUtils.matches(">=1.8");
@@ -49,11 +49,11 @@ public class FabricCreativeGuiComponents {
 	public static ItemGroupCreator ITEM_GROUP_CREATOR;
 
 	static {
-		COMMON_GROUPS.add(ItemGroup.SEARCH);
-		COMMON_GROUPS.add(ItemGroup.INVENTORY);
+		COMMON_GROUPS.add(CreativeModeTab.SEARCH);
+		COMMON_GROUPS.add(CreativeModeTab.INVENTORY);
 
 		if (hasHotBar) {
-			for (ItemGroup itemGroup : ItemGroup.itemGroups) {
+			for (CreativeModeTab itemGroup : CreativeModeTab.ALL) {
 				if (Objects.equals(((ItemGroupExtensions) itemGroup).getIdentifier(), "hotbar")) {
 					COMMON_GROUPS.add(itemGroup);
 					break;
@@ -95,7 +95,7 @@ public class FabricCreativeGuiComponents {
 				if (hasStateManager) {
 					try { // 1.8+
 						GlStateManager.disableLighting();
-						GlStateManager.color(1F, 1F, 1F, 1F);
+						GlStateManager.color4f(1F, 1F, 1F, 1F);
 					} catch (NoClassDefFoundError e) { // 1.7.10-
 						GL11.glDisable(GL11.GL_LIGHTING);
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -108,8 +108,8 @@ public class FabricCreativeGuiComponents {
 				this.drawTexture(this.x, this.y, u + (type == Type.NEXT ? 11 : 0), v, 11, 10);
 
 				if (this.lf$isHovered()) {
-					int pageCount = (int) Math.ceil((ItemGroup.itemGroups.length - COMMON_GROUPS.size()) / 9D);
-					((ScreenAccessor) gui).callRenderTooltip(CommonI18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, pageCount), mouseX, mouseY);
+					int pageCount = (int) Math.ceil((CreativeModeTab.ALL.length - COMMON_GROUPS.size()) / 9D);
+					((ScreenAccessor) gui).callRenderTooltip(I18n.translate("fabric.gui.creativeTabPage", extensions.fabric_currentPage() + 1, pageCount), mouseX, mouseY);
 				}
 			}
 		}
@@ -129,6 +129,6 @@ public class FabricCreativeGuiComponents {
 	}
 
 	public interface ItemGroupCreator {
-		ItemGroup create(int index, String id, Supplier<ItemStack> itemSupplier, BiConsumer<List<ItemStack>, ItemGroup> stacksForDisplay);
+		CreativeModeTab create(int index, String id, Supplier<ItemStack> itemSupplier, BiConsumer<List<ItemStack>, CreativeModeTab> stacksForDisplay);
 	}
 }

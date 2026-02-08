@@ -42,20 +42,20 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 
 		registry.fabric$getEntryAddedCallback().register((rawId, id, block) -> {
 			if (block.getMaterial() == Material.AIR) {
-				block.useNeighbourLight = false;
+				block.useNeighborLight = false;
 			} else {
 				boolean useNeighbourLight = false;
-				boolean isStairs = block.getBlockType() == 10;
+				boolean isStairs = block.getRenderType() == 10;
 				boolean isSlab = block instanceof SlabBlock;
 				boolean isMissingTop = block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("farmland"));
-				boolean isTranslucent = block.translucent;
+				boolean isTranslucent = block.isTranslucent;
 				boolean isNotOpaque = block.getOpacity() == 0;
 
 				if (isStairs || isSlab || isMissingTop || isTranslucent || isNotOpaque) {
 					useNeighbourLight = true;
 				}
 
-				block.useNeighbourLight = useNeighbourLight;
+				block.useNeighborLight = useNeighbourLight;
 			}
 		});
 	}

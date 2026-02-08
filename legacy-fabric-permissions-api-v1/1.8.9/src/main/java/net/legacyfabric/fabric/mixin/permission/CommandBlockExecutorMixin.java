@@ -19,11 +19,11 @@ package net.legacyfabric.fabric.mixin.permission;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.world.CommandBlockExecutor;
+import net.minecraft.server.command.source.CommandExecutor;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
-@Mixin(CommandBlockExecutor.class)
+@Mixin(CommandExecutor.class)
 public abstract class CommandBlockExecutorMixin implements PermissibleCommandSource {
 	@Override
 	public boolean hasPermission(String perm) {

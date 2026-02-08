@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.client.rendering.v1;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
@@ -35,5 +35,5 @@ public interface HudRenderCallback {
 	 * @param client    the client
 	 * @param tickDelta Progress for linearly interpolating between the previous and current game state
 	 */
-	void onHudRender(MinecraftClient client, float tickDelta);
+	void onHudRender(Minecraft client, float tickDelta);
 }

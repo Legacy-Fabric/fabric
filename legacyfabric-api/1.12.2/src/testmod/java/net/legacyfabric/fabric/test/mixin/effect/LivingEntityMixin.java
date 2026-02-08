@@ -24,19 +24,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.entity.EntityGroup;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.MobType;
+import net.minecraft.entity.living.LivingEntity;
+import net.minecraft.entity.living.effect.StatusEffect;
+import net.minecraft.entity.living.effect.StatusEffectInstance;
 
 import net.legacyfabric.fabric.test.registry.RegistryTest;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
 	@Shadow
-	public abstract EntityGroup getGroup();
+	public abstract MobType getMobType();
 
-	@Redirect(method = {"handleFallDamage", "jump"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getEffectInstance(Lnet/minecraft/entity/effect/StatusEffect;)Lnet/minecraft/entity/effect/StatusEffectInstance;"))
+	@Redirect(method = {"takeFallDamage", "jump"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/living/LivingEntity;getEffectInstance(Lnet/minecraft/entity/living/effect/StatusEffect;)Lnet/minecraft/entity/living/effect/StatusEffectInstance;"))
 	private StatusEffectInstance ourEffectJumpsHighAsWell(LivingEntity instance, StatusEffect effect) {
 		StatusEffectInstance instance1 = instance.getEffectInstance(effect);
 
@@ -47,7 +47,7 @@ public abstract class LivingEntityMixin {
 		return instance1;
 	}
 
-	@Redirect(method = {"jump"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
+	@Redirect(method = {"jump"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/living/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/living/effect/StatusEffect;)Z"))
 	private boolean hasOurEffectJumpsHighAsWell(LivingEntity instance, StatusEffect effect) {
 		boolean instance1 = instance.hasStatusEffect(effect);
 
@@ -61,7 +61,7 @@ public abstract class LivingEntityMixin {
 	@Inject(method = "method_2658", at = @At("RETURN"), cancellable = true)
 	private void efffffffect(StatusEffectInstance instance, CallbackInfoReturnable<Boolean> cir) {
 		if (cir.getReturnValue()) {
-			if (this.getGroup() == EntityGroup.UNDEAD && instance.getStatusEffect() == RegistryTest.EFFECT) cir.setReturnValue(false);
+			if (this.getMobType() == MobType.UNDEAD && instance.getEffect() == RegistryTest.EFFECT) cir.setReturnValue(false);
 		}
 	}
 }

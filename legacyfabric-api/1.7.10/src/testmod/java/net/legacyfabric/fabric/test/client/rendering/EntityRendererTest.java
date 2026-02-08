@@ -29,7 +29,7 @@ public class EntityRendererTest implements ClientModInitializer {
 				(dispatcher, context) -> {
 					TestCreeperEntityRenderer renderer = new TestCreeperEntityRenderer();
 
-					renderer.setRenderDispatcher(dispatcher);
+					renderer.init(dispatcher);
 
 					return renderer;
 				});

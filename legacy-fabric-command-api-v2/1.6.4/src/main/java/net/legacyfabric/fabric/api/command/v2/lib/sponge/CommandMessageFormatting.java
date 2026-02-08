@@ -25,19 +25,19 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
-import net.minecraft.text.ChatMessage;
-import net.minecraft.util.Formatting;
+import net.minecraft.text.Formatting;
+import net.minecraft.text.Text;
 
 public class CommandMessageFormatting {
 	private CommandMessageFormatting() {
 	}
 
-	public static final ChatMessage PIPE_TEXT = ChatMessage.createTextMessage("|");
-	public static final ChatMessage SPACE_TEXT = ChatMessage.createTextMessage(" ");
-	public static final ChatMessage STAR_TEXT = ChatMessage.createTextMessage("*");
-	public static final ChatMessage LT_TEXT = ChatMessage.createTextMessage("<");
-	public static final ChatMessage GT_TEXT = ChatMessage.createTextMessage(">");
-	public static final ChatMessage ELLIPSIS_TEXT = ChatMessage.createTextMessage("…");
+	public static final Text PIPE_TEXT = Text.literal("|");
+	public static final Text SPACE_TEXT = Text.literal(" ");
+	public static final Text STAR_TEXT = Text.literal("*");
+	public static final Text LT_TEXT = Text.literal("<");
+	public static final Text GT_TEXT = Text.literal(">");
+	public static final Text ELLIPSIS_TEXT = Text.literal("…");
 
 	/**
 	 * Format text to be output as an error directly to a sender. Not necessary
@@ -46,7 +46,7 @@ public class CommandMessageFormatting {
 	 * @param error The error message
 	 * @return The formatted error message.
 	 */
-	public static ChatMessage error(ChatMessage error) {
+	public static Text error(Text error) {
 		return error.setColor(Formatting.RED);
 	}
 
@@ -56,7 +56,7 @@ public class CommandMessageFormatting {
 	 * @param debug The debug message
 	 * @return The formatted debug message.
 	 */
-	public static ChatMessage debug(ChatMessage debug) {
+	public static Text debug(Text debug) {
 		return debug.setColor(Formatting.GRAY);
 	}
 }

@@ -22,14 +22,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.world.GameRuleManager;
+import net.minecraft.world.GameRules;
 
 import net.legacyfabric.fabric.api.gamerule.v1.GameRulesInitializedCallback;
 
-@Mixin(GameRuleManager.class)
+@Mixin(GameRules.class)
 public class GameRulesMixin {
 	@Inject(at = @At("RETURN"), method = "<init>")
 	public void registerModdedGamerules(CallbackInfo ci) {
-		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRuleManager) (Object) this);
+		GameRulesInitializedCallback.EVENT.invoker().onGameRulesRegistered((GameRules) (Object) this);
 	}
 }

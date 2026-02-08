@@ -57,7 +57,7 @@ public class OptionalCommandElement extends CommandElement {
 			Text key = this.element.getKey();
 
 			if (key != null && this.value != null) {
-				context.putArg(key.computeValue(), this.value);
+				context.putArg(key.getContent(), this.value);
 			}
 
 			return;
@@ -94,10 +94,10 @@ public class OptionalCommandElement extends CommandElement {
 	public Text getUsage(PermissibleCommandSource src) {
 		final Text containingUsage = this.element.getUsage(src);
 
-		if (containingUsage.asUnformattedString().isEmpty()) {
+		if (containingUsage.getString().isEmpty()) {
 			return new LiteralText("");
 		}
 
-		return new LiteralText("[" + this.element.getUsage(src).asUnformattedString() + "]");
+		return new LiteralText("[" + this.element.getUsage(src).getString() + "]");
 	}
 }

@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -37,7 +37,7 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class BigDecimalElement extends KeyElement {
-	public BigDecimalElement(ChatMessage key) {
+	public BigDecimalElement(Text key) {
 		super(key);
 	}
 
@@ -49,7 +49,7 @@ public class BigDecimalElement extends KeyElement {
 		try {
 			return new BigDecimal(next);
 		} catch (NumberFormatException ex) {
-			throw args.createError(ChatMessage.createTextMessage("Expected a number, but input " + next + " was not"));
+			throw args.createError(Text.literal("Expected a number, but input " + next + " was not"));
 		}
 	}
 }

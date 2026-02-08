@@ -31,7 +31,7 @@ import java.net.URL;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -39,7 +39,7 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class UrlElement extends KeyElement {
-	public UrlElement(ChatMessage key) {
+	public UrlElement(Text key) {
 		super(key);
 	}
 
@@ -52,13 +52,13 @@ public class UrlElement extends KeyElement {
 		try {
 			url = new URL(str);
 		} catch (MalformedURLException ex) {
-			throw new ArgumentParseException(ChatMessage.createTextMessage("Invalid URL!"), ex, str, 0);
+			throw new ArgumentParseException(Text.literal("Invalid URL!"), ex, str, 0);
 		}
 
 		try {
 			url.toURI();
 		} catch (URISyntaxException ex) {
-			throw new ArgumentParseException(ChatMessage.createTextMessage("Invalid URL!"), ex, str, 0);
+			throw new ArgumentParseException(Text.literal("Invalid URL!"), ex, str, 0);
 		}
 
 		return url;

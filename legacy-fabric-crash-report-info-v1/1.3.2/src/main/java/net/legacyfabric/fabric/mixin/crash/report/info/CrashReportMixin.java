@@ -35,7 +35,7 @@ import net.fabricmc.loader.api.ModContainer;
 @Mixin(CrashReport.class)
 public abstract class CrashReportMixin {
 	@Shadow
-	public abstract void addSection(String par1, Object par2);
+	public abstract void add(String par1, Object par2);
 
 	@Unique
 	public String getFabricMods() {
@@ -59,6 +59,6 @@ public abstract class CrashReportMixin {
 
 	@Inject(at = @At("RETURN"), method = "fillSystemDetails")
 	private void fillSystemDetails(CallbackInfo info) {
-		this.addSection("Fabric Mods", this.getFabricMods());
+		this.add("Fabric Mods", this.getFabricMods());
 	}
 }

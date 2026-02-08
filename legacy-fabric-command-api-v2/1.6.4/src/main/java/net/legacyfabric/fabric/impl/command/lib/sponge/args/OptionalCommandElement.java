@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -53,10 +53,10 @@ public class OptionalCommandElement extends CommandElement {
 	@Override
 	public void parse(PermissibleCommandSource source, CommandArgs args, CommandContext context) throws ArgumentParseException {
 		if (!args.hasNext()) {
-			ChatMessage key = this.element.getKey();
+			Text key = this.element.getKey();
 
 			if (key != null && this.value != null) {
-				context.putArg(key.toString(true), this.value);
+				context.putArg(key.buildString(true), this.value);
 			}
 
 			return;
@@ -90,13 +90,13 @@ public class OptionalCommandElement extends CommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
-		final ChatMessage containingUsage = this.element.getUsage(src);
+	public Text getUsage(PermissibleCommandSource src) {
+		final Text containingUsage = this.element.getUsage(src);
 
 		if (containingUsage.toString().isEmpty()) {
-			return ChatMessage.createTextMessage("");
+			return Text.literal("");
 		}
 
-		return ChatMessage.createTextMessage("[" + this.element.getUsage(src).toString() + "]");
+		return Text.literal("[" + this.element.getUsage(src).toString() + "]");
 	}
 }

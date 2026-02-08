@@ -23,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.PlayerManager;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
 import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
@@ -35,7 +35,7 @@ public class PlayerManagerMixin {
 	 * This is called by both "moveToWorld" and "teleport".
 	 * So this is suitable to handle the after event from both call sites.
 	 */
-	@Inject(method = "teleportToDimension", at = @At("TAIL"))
+	@Inject(method = "changeDimension(Lnet/minecraft/server/entity/living/player/ServerPlayerEntity;I)V", at = @At("TAIL"))
 	private void afterWorldChanged(ServerPlayerEntity player, int dimension, CallbackInfo ci,
 								@Local(ordinal = 0) ServerWorld serverWorld,
 								@Local(ordinal = 1) ServerWorld serverWorld2) {

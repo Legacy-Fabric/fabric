@@ -25,16 +25,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.living.player.ClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.ItemRenderer;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.texture.TextureManager;
+import net.minecraft.client.render.entity.PlayerRenderer;
+import net.minecraft.client.render.texture.TextureManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.living.LivingEntity;
 
 import net.legacyfabric.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.legacyfabric.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
@@ -46,13 +46,13 @@ public abstract class EntityRenderDispatcherMixin {
 	private Map<Class<? extends Entity>, EntityRenderer<?>> renderers;
 
 	@Shadow
-	private Map<String, PlayerEntityRenderer> modelRenderers;
+	private Map<String, PlayerRenderer> playerRenderers;
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void afterRegisterRenderers(TextureManager textureManager, ItemRenderer itemRenderer, CallbackInfo ci) {
 		final EntityRenderDispatcher me = (EntityRenderDispatcher) (Object) this;
-		EntityRendererRegistry.INSTANCE.initialize(me, textureManager, MinecraftClient.getInstance().getResourceManager(), itemRenderer, renderers);
+		EntityRendererRegistry.INSTANCE.initialize(me, textureManager, Minecraft.getInstance().getResourceManager(), itemRenderer, renderers);
 
 		// Dispatch events to register feature renderers.
 		for (Map.Entry<Class<? extends Entity>, EntityRenderer<?>> entry : this.renderers.entrySet()) {
@@ -64,10 +64,10 @@ public abstract class EntityRenderDispatcherMixin {
 		}
 
 		// Players are a fun case, we need to do these separately and per model type
-		for (Map.Entry<String, PlayerEntityRenderer> entry : this.modelRenderers.entrySet()) {
+		for (Map.Entry<String, PlayerRenderer> entry : this.playerRenderers.entrySet()) {
 			LivingEntityRendererAccessor accessor = (LivingEntityRendererAccessor) entry.getValue();
 
-			LivingEntityFeatureRendererRegistrationCallback.EVENT.invoker().registerRenderers(AbstractClientPlayerEntity.class, entry.getValue(), new RegistrationHelperImpl(accessor::callAddFeature));
+			LivingEntityFeatureRendererRegistrationCallback.EVENT.invoker().registerRenderers(ClientPlayerEntity.class, entry.getValue(), new RegistrationHelperImpl(accessor::callAddFeature));
 		}
 	}
 }

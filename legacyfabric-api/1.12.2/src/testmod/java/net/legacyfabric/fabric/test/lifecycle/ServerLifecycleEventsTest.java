@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.test.lifecycle;
 
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Entities;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -43,10 +43,10 @@ public class ServerLifecycleEventsTest implements ModInitializer {
 			}
 		});
 		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			LOGGER.trace("Server Entity %s loaded", EntityType.getEntityName(entity));
+			LOGGER.trace("Server Entity %s loaded", Entities.getName(entity));
 		});
 		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-			LOGGER.trace("Server Entity %s unloaded", EntityType.getEntityName(entity));
+			LOGGER.trace("Server Entity %s unloaded", Entities.getName(entity));
 		});
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
 			LOGGER.info("Server starting");

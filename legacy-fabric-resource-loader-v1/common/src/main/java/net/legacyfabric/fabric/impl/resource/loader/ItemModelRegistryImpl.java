@@ -24,7 +24,7 @@ import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
+import net.minecraft.resource.Identifier;
 
 @ApiStatus.Internal
 public class ItemModelRegistryImpl {

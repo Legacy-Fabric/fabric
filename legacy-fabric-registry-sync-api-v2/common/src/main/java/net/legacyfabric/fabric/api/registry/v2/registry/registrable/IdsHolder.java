@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.api.registry.v2.registry.registrable;
 
 /**
  * Holds the mappings between registry entries and their numerical ids.<br>
- * Vanilla implementations: {@link net.minecraft.util.collection.IdList}
+ * Vanilla implementations: {@link net.minecraft.util.CrudeIncrementalIntIdentityHashMap}
  * @param <T> type of entries
  */
 public interface IdsHolder<T> extends Iterable<T> {

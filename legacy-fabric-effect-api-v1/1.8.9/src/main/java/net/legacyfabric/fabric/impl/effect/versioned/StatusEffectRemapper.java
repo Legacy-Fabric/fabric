@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.impl.effect.versioned;
 
 import java.util.Map;
 
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.living.effect.StatusEffect;
 
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;

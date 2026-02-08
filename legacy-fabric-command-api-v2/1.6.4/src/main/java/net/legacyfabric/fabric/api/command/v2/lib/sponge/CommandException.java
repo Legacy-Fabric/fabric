@@ -25,7 +25,7 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 /**
  * Thrown when an executed command raises an error or when execution of
@@ -41,7 +41,7 @@ public class CommandException extends TextMessageException {
 	 *
 	 * @param message The detail message
 	 */
-	public CommandException(ChatMessage message) {
+	public CommandException(Text message) {
 		this(message, false);
 	}
 
@@ -52,7 +52,7 @@ public class CommandException extends TextMessageException {
 	 * @param message The detail message
 	 * @param cause   The cause
 	 */
-	public CommandException(ChatMessage message, Throwable cause) {
+	public CommandException(Text message, Throwable cause) {
 		this(message, cause, false);
 	}
 
@@ -62,7 +62,7 @@ public class CommandException extends TextMessageException {
 	 * @param message      The detail message
 	 * @param includeUsage Whether to include usage in the exception
 	 */
-	public CommandException(ChatMessage message, boolean includeUsage) {
+	public CommandException(Text message, boolean includeUsage) {
 		super(message);
 		this.includeUsage = includeUsage;
 	}
@@ -75,7 +75,7 @@ public class CommandException extends TextMessageException {
 	 * @param cause        The cause
 	 * @param includeUsage Whether to include the usage in the exception
 	 */
-	public CommandException(ChatMessage message, Throwable cause, boolean includeUsage) {
+	public CommandException(Text message, Throwable cause, boolean includeUsage) {
 		super(message, cause);
 		this.includeUsage = includeUsage;
 	}

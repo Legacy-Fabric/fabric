@@ -21,11 +21,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.Packet;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.handler.ClientPlayNetworkHandler;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
-import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -40,11 +40,11 @@ import net.legacyfabric.fabric.impl.networking.NetworkingImpl;
 @Environment(EnvType.CLIENT)
 public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<ClientPlayNetworking.PlayChannelHandler> {
 	private final ClientPlayNetworkHandler handler;
-	private final MinecraftClient client;
+	private final Minecraft client;
 	private boolean sentInitialRegisterPacket;
 
-	public ClientPlayNetworkAddon(ClientPlayNetworkHandler handler, MinecraftClient client) {
-		super(ClientNetworkingImpl.PLAY, handler.getClientConnection(), "ClientPlayNetworkAddon for " + getPlayerName(handler));
+	public ClientPlayNetworkAddon(ClientPlayNetworkHandler handler, Minecraft client) {
+		super(ClientNetworkingImpl.PLAY, handler.getConnection(), "ClientPlayNetworkAddon for " + getPlayerName(handler));
 		this.handler = handler;
 		this.client = client;
 
@@ -92,7 +92,7 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 			return false;
 		}
 
-		PacketByteBuf buf = new PacketByteBuf(((CustomPayloadS2CPacketExtension) packet).getData().copy());
+		PacketByteBuf buf = new PacketByteBuf(((CustomPayloadS2CPacketExtension) packet).lf$getData().copy());
 
 		try {
 			return this.handle(packet.getChannel(), buf);
@@ -110,7 +110,7 @@ public final class ClientPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 
 	@Override
 	protected void schedule(Runnable task) {
-		MinecraftClient.getInstance().submit(task);
+		Minecraft.getInstance().execute(task);
 	}
 
 	@Override

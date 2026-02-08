@@ -36,7 +36,7 @@ public abstract class MinecraftServerMixin {
 	@Shadow
 	public ServerWorld[] worlds;
 
-	@Inject(at = @At(value = "TAIL"), method = "method_2980")
+	@Inject(at = @At(value = "TAIL"), method = "deleteWorldAndStop")
 	public void api$serverWorldLoad(CallbackInfo ci) {
 		for (ServerWorld world : this.worlds) {
 			ServerWorldEvents.LOAD.invoker().onWorldLoad((MinecraftServer) (Object) this, world);

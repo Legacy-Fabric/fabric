@@ -331,6 +331,6 @@ public final class CommandContext {
 			return ((TranslatableText) key).getKey();
 		}
 
-		return key.computeValue();
+		return key.getContent();
 	}
 }

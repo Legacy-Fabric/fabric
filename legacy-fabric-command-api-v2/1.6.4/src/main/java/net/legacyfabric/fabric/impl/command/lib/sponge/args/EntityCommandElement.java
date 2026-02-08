@@ -36,9 +36,9 @@ import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -51,7 +51,7 @@ public class EntityCommandElement extends SelectorCommandElement {
 	@Nullable
 	private final Class<? extends Entity> clazz;
 
-	public EntityCommandElement(ChatMessage key, boolean returnSource, boolean returnTarget, @Nullable Class<? extends Entity> clazz) {
+	public EntityCommandElement(Text key, boolean returnSource, boolean returnTarget, @Nullable Class<? extends Entity> clazz) {
 		super(key);
 		this.returnSource = returnSource;
 		this.returnTarget = returnTarget;
@@ -78,8 +78,8 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 			for (Entity entity : entities) {
 				if (!this.checkEntity(entity)) {
-					ChatMessage name = ChatMessage.createTextMessage(this.clazz == null ? "null" : this.clazz.getSimpleName());
-					throw args.createError(ChatMessage.createTextMessage("The entity is not of the required type! (").addUsing(name).addText(")"));
+					Text name = Text.literal(this.clazz == null ? "null" : this.clazz.getSimpleName());
+					throw args.createError(Text.literal("The entity is not of the required type! (").append(name).appendLiteral(")"));
 				}
 			}
 
@@ -96,14 +96,14 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		Set<String> worldEntities = (Set<String>) Arrays.stream(MinecraftServer.getServer().worlds).flatMap(world -> world.entities.stream())
+		Set<String> worldEntities = (Set<String>) Arrays.stream(MinecraftServer.getInstance().worlds).flatMap(world -> world.globalEntities.stream())
 				.filter(o -> this.checkEntity((Entity) o))
 				.map(entity -> ((Entity) entity).getUuid().toString()).collect(Collectors.toSet());
-		Collection<PlayerEntity> players = Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().players);
+		Collection<PlayerEntity> players = Sets.newHashSet(MinecraftServer.getInstance().getPlayerManager().players);
 
 		if (!players.isEmpty() && this.checkEntity(players.iterator().next())) {
 			final Set<String> setToReturn = Sets.newHashSet(worldEntities); // to ensure mutability
-			players.forEach(x -> setToReturn.add(x.getTranslationKey()));
+			players.forEach(x -> setToReturn.add(x.getDisplayName()));
 			return setToReturn;
 		}
 
@@ -118,11 +118,11 @@ public class EntityCommandElement extends SelectorCommandElement {
 			uuid = UUID.fromString(choice);
 		} catch (IllegalArgumentException ignored) {
 			// Player could be a name
-			return Optional.ofNullable(this.getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
+			return Optional.ofNullable(this.getServer().getPlayerManager().get(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
 		}
 
 		boolean found = false;
-		Optional<Entity> ret = Optional.ofNullable((Entity) this.getServer().getWorld().entities.stream()
+		Optional<Entity> ret = Optional.ofNullable((Entity) this.getServer().getCommandSourceWorld().globalEntities.stream()
 				.filter(o -> ((Entity) o).getUuid().equals(uuid)).findFirst().orElse(null));
 
 		if (ret.isPresent()) {
@@ -147,13 +147,13 @@ public class EntityCommandElement extends SelectorCommandElement {
 			return (Entity) source;
 		}
 
-		throw args.createError(ChatMessage.createTextMessage("No entities matched and source was not an entity!"));
+		throw args.createError(Text.literal("No entities matched and source was not an entity!"));
 	}
 
 	// TODO
 	private Entity tryReturnTarget(PermissibleCommandSource source, CommandArgs args) throws ArgumentParseException {
 		Entity entity = this.tryReturnSource(source, args, false);
-		throw args.createError(ChatMessage.createTextMessage("No entities matched and source was not looking at a valid entity!"));
+		throw args.createError(Text.literal("No entities matched and source was not looking at a valid entity!"));
 		// return entity.getWorld().getIntersectingEntities(entity, 10).stream().filter(e -> !e.getEntity().equals(entity)).map(EntityUniverse.EntityHit::getEntity).filter(this::checkEntity).findFirst().orElseThrow(() -> args.createError(new LiteralText("No entities matched and source was not looking at a valid entity!")));
 	}
 
@@ -166,7 +166,7 @@ public class EntityCommandElement extends SelectorCommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
-		return src instanceof Entity && (this.returnSource || this.returnTarget) ? ChatMessage.createTextMessage("[" + this.getKey().toString() + "]") : super.getUsage(src);
+	public Text getUsage(PermissibleCommandSource src) {
+		return src instanceof Entity && (this.returnSource || this.returnTarget) ? Text.literal("[" + this.getKey().toString() + "]") : super.getUsage(src);
 	}
 }

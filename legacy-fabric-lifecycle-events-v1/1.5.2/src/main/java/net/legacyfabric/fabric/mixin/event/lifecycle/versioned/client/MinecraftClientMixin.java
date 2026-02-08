@@ -43,12 +43,12 @@ public class MinecraftClientMixin {
 		ClientTickEvents.END_CLIENT_TICK.invoker().onEndTick((Minecraft) (Object) this);
 	}
 
-	@Inject(at = @At(value = "RETURN"), method = "initializeGame")
+	@Inject(at = @At(value = "RETURN"), method = "init")
 	private void api$onStart(CallbackInfo ci) {
 		ClientLifecycleEvents.CLIENT_STARTED.invoker().onClientStarted((Minecraft) (Object) this);
 	}
 
-	@Inject(at = @At(value = "HEAD"), method = "stop")
+	@Inject(at = @At(value = "HEAD"), method = "shutdown")
 	private void api$onStopping(CallbackInfo ci) {
 		ClientLifecycleEvents.CLIENT_STOPPING.invoker().onClientStopping((Minecraft) (Object) this);
 	}

@@ -20,12 +20,12 @@ package net.legacyfabric.fabric.mixin.networking;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.entity.EntityTracker;
-import net.minecraft.entity.TrackedEntityInstance;
-import net.minecraft.util.collection.IntObjectStorage;
+import net.minecraft.server.EntityMap;
+import net.minecraft.server.TrackedEntity;
+import net.minecraft.util.Int2ObjectHashMap;
 
-@Mixin(EntityTracker.class)
+@Mixin(EntityMap.class)
 public interface EntityTrackerAccessor {
-	@Accessor
-	IntObjectStorage<TrackedEntityInstance> getTrackedEntityIds();
+	@Accessor("entitiesById")
+	Int2ObjectHashMap<TrackedEntity> getTrackedEntityIds();
 }

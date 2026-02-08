@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.test.entity;
 
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Entities;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -33,19 +33,19 @@ public class EntityEventsTest implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((entity, killedEntity) -> {
-			LOGGER.info("%s killed %s", EntityType.getEntityName(entity), EntityType.getEntityName(killedEntity));
+			LOGGER.info("%s killed %s", Entities.getKey(entity), Entities.getKey(killedEntity));
 		});
 		ServerEntityWorldChangeEvents.AFTER_ENTITY_CHANGE_WORLD.register((originalEntity, newEntity, origin, destination) -> {
-			LOGGER.info("%s went from dim %s to dim %s", EntityType.getEntityName(newEntity), origin.dimension.getName(), destination.dimension.getName());
+			LOGGER.info("%s went from dim %s to dim %s", Entities.getKey(newEntity), origin.dimension.getName(), destination.dimension.getName());
 		});
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
 			LOGGER.info("Player went from dim %s to dim %s", origin.dimension.getName(), destination.dimension.getName());
 		});
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, world, alive) -> {
-			LOGGER.info("Player %s respawned", newPlayer.getUsername());
+			LOGGER.info("Player %s respawned", newPlayer.getCommandSourceName());
 		});
 		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
-			LOGGER.info("%s player data is being copied", newPlayer.getUsername());
+			LOGGER.info("%s player data is being copied", newPlayer.getCommandSourceName());
 		});
 	}
 }

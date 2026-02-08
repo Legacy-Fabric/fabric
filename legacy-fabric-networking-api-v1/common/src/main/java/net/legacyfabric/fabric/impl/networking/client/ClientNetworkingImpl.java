@@ -17,13 +17,13 @@
 
 package net.legacyfabric.fabric.impl.networking.client;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.ConnectScreen;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.Packet;
+import net.minecraft.client.network.handler.ClientPlayNetworkHandler;
+import net.minecraft.network.Connection;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
-import net.minecraft.util.PacketByteBuf;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -55,8 +55,8 @@ public final class ClientNetworkingImpl {
 	/**
 	 * Due to the way logging into a integrated or remote dedicated server will differ, we need to obtain the login client connection differently.
 	 */
-	public static ClientConnection getLoginConnection() {
-		final ClientConnection connection = ((MinecraftClientAccessor) MinecraftClient.getInstance()).getClientConnection();
+	public static Connection getLoginConnection() {
+		final Connection connection = ((MinecraftClientAccessor) Minecraft.getInstance()).getClientConnection();
 
 		// Check if we are connecting to an integrated server. This will set the field on MinecraftClient
 		if (connection != null) {
@@ -64,8 +64,8 @@ public final class ClientNetworkingImpl {
 		} else {
 			// We are probably connecting to a remote server.
 			// Check if the ConnectScreen is the currentScreen to determine that:
-			if (MinecraftClient.getInstance().currentScreen instanceof ConnectScreen) {
-				return ((ConnectScreenAccessor) MinecraftClient.getInstance().currentScreen).getConnection();
+			if (Minecraft.getInstance().screen instanceof ConnectScreen) {
+				return ((ConnectScreenAccessor) Minecraft.getInstance().screen).getConnection();
 			}
 		}
 
@@ -76,9 +76,9 @@ public final class ClientNetworkingImpl {
 	public static ClientPlayNetworkAddon getClientPlayAddon() {
 		// Since Minecraft can be a bit weird, we need to check for the play addon in a few ways:
 		// If the client's player is set this will work
-		if (MinecraftClient.getInstance().getNetworkHandler() != null) {
+		if (Minecraft.getInstance().getNetworkHandler() != null) {
 			currentPlayAddon = null; // Shouldn't need this anymore
-			return ClientNetworkingImpl.getAddon(MinecraftClient.getInstance().getNetworkHandler());
+			return ClientNetworkingImpl.getAddon(Minecraft.getInstance().getNetworkHandler());
 		}
 
 		// We haven't hit the end of onGameJoin yet, use our backing field here to access the network handler

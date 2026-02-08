@@ -1,6 +1,5 @@
 accessWidener	v2	named
-
-transitive-accessible method net/minecraft/world/biome/Biome$Settings setBaseHeightModifier (F)Lnet/minecraft/world/biome/Biome$Settings;
-transitive-accessible method net/minecraft/world/biome/Biome$Settings setVariationModifier (F)Lnet/minecraft/world/biome/Biome$Settings;
-transitive-accessible method net/minecraft/world/biome/Biome$Settings setTemperature (F)Lnet/minecraft/world/biome/Biome$Settings;
-transitive-accessible method net/minecraft/world/biome/Biome$Settings setDownfall (F)Lnet/minecraft/world/biome/Biome$Settings;
+transitive-accessible	method	net/minecraft/world/biome/Biome$Settings	depth	(F)Lnet/minecraft/world/biome/Biome$Settings;
+transitive-accessible	method	net/minecraft/world/biome/Biome$Settings	scale	(F)Lnet/minecraft/world/biome/Biome$Settings;
+transitive-accessible	method	net/minecraft/world/biome/Biome$Settings	temperature	(F)Lnet/minecraft/world/biome/Biome$Settings;
+transitive-accessible	method	net/minecraft/world/biome/Biome$Settings	downfall	(F)Lnet/minecraft/world/biome/Biome$Settings;

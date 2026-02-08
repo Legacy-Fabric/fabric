@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 
@@ -125,7 +125,7 @@ class QuotedStringTokenizer implements InputTokenizer {
 		int nextCodePoint = state.next();
 
 		if (nextCodePoint != startQuotation) {
-			throw state.createException(ChatMessage.createTextMessage(String.format("Actual next character '%c' did not match expected quotation character '%c'",
+			throw state.createException(Text.literal(String.format("Actual next character '%c' did not match expected quotation character '%c'",
 					nextCodePoint, startQuotation)));
 		}
 
@@ -135,7 +135,7 @@ class QuotedStringTokenizer implements InputTokenizer {
 					return;
 				}
 
-				throw state.createException(ChatMessage.createTextMessage("Unterminated quoted string found"));
+				throw state.createException(Text.literal("Unterminated quoted string found"));
 			}
 
 			nextCodePoint = state.peek();

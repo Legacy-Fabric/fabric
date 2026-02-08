@@ -30,9 +30,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
@@ -72,7 +72,7 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		return (Iterable<String>) MinecraftServer.getServer().getPlayerManager().players.stream().map(player -> ((PlayerEntity) player).getGameProfile().getName()).collect(Collectors.toSet());
+		return (Iterable<String>) MinecraftServer.getInstance().getPlayerManager().players.stream().map(player -> ((PlayerEntity) player).getGameProfile().getName()).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -96,6 +96,6 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	public Text getUsage(PermissibleCommandSource src) {
-		return src != null && this.returnSource ? new LiteralText("[" + super.getUsage(src).asUnformattedString() + "]") : super.getUsage(src);
+		return src != null && this.returnSource ? new LiteralText("[" + super.getUsage(src).getString() + "]") : super.getUsage(src);
 	}
 }

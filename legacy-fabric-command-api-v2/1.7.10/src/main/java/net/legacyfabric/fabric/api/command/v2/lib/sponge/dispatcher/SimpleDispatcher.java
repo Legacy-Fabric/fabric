@@ -48,11 +48,11 @@ import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.ClickEventAction;
+import net.minecraft.text.ClickEvent__Action;
+import net.minecraft.text.Formatting;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
@@ -401,14 +401,14 @@ public final class SimpleDispatcher implements Dispatcher {
 			CommandMapping mapping = mappingOpt.get();
 			final Optional<Text> description = mapping.getCallable().getShortDescription(source);
 			Text text = new LiteralText(mapping.getPrimaryAlias());
-			build.append(text.setStyle(text.getStyle().setFormatting(Formatting.GREEN).setUnderline(Boolean.TRUE).setClickEvent(new ClickEvent(ClickEventAction.RUN_COMMAND, "/" + mapping.getPrimaryAlias())))).append(CommandMessageFormatting.SPACE_TEXT).append(description.orElse(mapping.getCallable().getUsage(source)));
+			build.append(text.setStyle(text.getStyle().setColor(Formatting.GREEN).setUnderlined(Boolean.TRUE).setClickEvent(new ClickEvent(ClickEvent__Action.RUN_COMMAND, "/" + mapping.getPrimaryAlias())))).append(CommandMessageFormatting.SPACE_TEXT).append(description.orElse(mapping.getCallable().getUsage(source)));
 
 			if (it.hasNext()) {
 				build.append("\n");
 			}
 		}
 
-		return Optional.of(new LiteralText(build.asUnformattedString()));
+		return Optional.of(new LiteralText(build.getString()));
 	}
 
 	private Set<String> filterCommands(final PermissibleCommandSource src) {

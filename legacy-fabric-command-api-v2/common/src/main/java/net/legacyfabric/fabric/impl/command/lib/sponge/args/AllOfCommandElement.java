@@ -87,6 +87,6 @@ public class AllOfCommandElement extends CommandElement {
 
 	@Override
 	public Text getUsage(PermissibleCommandSource context) {
-		return new LiteralText(this.element.getUsage(context).asUnformattedString() + CommandMessageFormatting.STAR_TEXT.computeValue());
+		return new LiteralText(this.element.getUsage(context).getString() + CommandMessageFormatting.STAR_TEXT.getContent());
 	}
 }

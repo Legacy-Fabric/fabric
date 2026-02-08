@@ -24,23 +24,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.gui.screen.inventory.menu.CreativeInventoryScreen;
+import net.minecraft.client.gui.screen.inventory.menu.PlayerInventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.item.itemgroup.ItemGroup;
-import net.minecraft.screen.ScreenHandler;
+import net.minecraft.inventory.menu.InventoryMenu;
+import net.minecraft.item.CreativeModeTab;
 
 import net.legacyfabric.fabric.impl.item.group.CreativeGuiExtensions;
 import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
 
 @Mixin(CreativeInventoryScreen.class)
-public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen implements CreativeGuiExtensions {
-	public MixinCreativePlayerInventoryGui(ScreenHandler screenHandler) {
+public abstract class MixinCreativePlayerInventoryGui extends PlayerInventoryScreen implements CreativeGuiExtensions {
+	public MixinCreativePlayerInventoryGui(InventoryMenu screenHandler) {
 		super(screenHandler);
 	}
 
 	@Shadow
-	protected abstract void setSelectedTab(ItemGroup itemGroup_1);
+	protected abstract void setSelectedTab(CreativeModeTab itemGroup_1);
 
 	@Shadow
 	public abstract int getSelectedTab(); /* XXX getSelectedTab XXX */
@@ -69,7 +69,7 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 
 	@Override
 	public void fabric_nextPage() {
-		if (fabric_getPageOffset(fabric_currentPage + 1) >= ItemGroup.itemGroups.length) {
+		if (fabric_getPageOffset(fabric_currentPage + 1) >= CreativeModeTab.ALL.length) {
 			return;
 		}
 
@@ -89,13 +89,13 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 
 	@Override
 	public boolean fabric_isButtonVisible(FabricCreativeGuiComponents.Type type) {
-		return ItemGroup.itemGroups.length > 12;
+		return CreativeModeTab.ALL.length > 12;
 	}
 
 	@Override
 	public boolean fabric_isButtonEnabled(FabricCreativeGuiComponents.Type type) {
 		if (type == FabricCreativeGuiComponents.Type.NEXT) {
-			return !(fabric_getPageOffset(fabric_currentPage + 1) >= ItemGroup.itemGroups.length);
+			return !(fabric_getPageOffset(fabric_currentPage + 1) >= CreativeModeTab.ALL.length);
 		}
 
 		if (type == FabricCreativeGuiComponents.Type.PREVIOUS) {
@@ -118,7 +118,7 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 		int curPos = getSelectedTab();
 
 		if (curPos < minPos || curPos > maxPos) {
-			setSelectedTab(ItemGroup.itemGroups[fabric_getPageOffset(fabric_currentPage)]);
+			setSelectedTab(CreativeModeTab.ALL[fabric_getPageOffset(fabric_currentPage)]);
 		}
 	}
 
@@ -134,39 +134,39 @@ public abstract class MixinCreativePlayerInventoryGui extends InventoryScreen im
 	}
 
 	@Inject(method = "setSelectedTab", at = @At("HEAD"), cancellable = true)
-	private void setSelectedTab(ItemGroup itemGroup, CallbackInfo info) {
+	private void setSelectedTab(CreativeModeTab itemGroup, CallbackInfo info) {
 		if (!fabric_isGroupVisible(itemGroup)) {
 			info.cancel();
 		}
 	}
 
 	@Inject(method = "renderTabTooltipIfHovered", at = @At("HEAD"), cancellable = true)
-	private void renderTabTooltipIfHovered(ItemGroup itemGroup, int mx, int my, CallbackInfoReturnable<Boolean> info) {
+	private void renderTabTooltipIfHovered(CreativeModeTab itemGroup, int mx, int my, CallbackInfoReturnable<Boolean> info) {
 		if (!fabric_isGroupVisible(itemGroup)) {
 			info.setReturnValue(false);
 		}
 	}
 
-	@Inject(method = "isClickInTab", at = @At("HEAD"), cancellable = true)
-	private void isClickInTab(ItemGroup itemGroup, int mx, int my, CallbackInfoReturnable<Boolean> info) {
+	@Inject(method = "isInRow", at = @At("HEAD"), cancellable = true)
+	private void isClickInTab(CreativeModeTab itemGroup, int mx, int my, CallbackInfoReturnable<Boolean> info) {
 		if (!fabric_isGroupVisible(itemGroup)) {
 			info.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "renderTabIcon", at = @At("HEAD"), cancellable = true)
-	private void renderTabIcon(ItemGroup itemGroup, CallbackInfo info) {
+	private void renderTabIcon(CreativeModeTab itemGroup, CallbackInfo info) {
 		if (!fabric_isGroupVisible(itemGroup)) {
 			info.cancel();
 		}
 	}
 
-	private boolean fabric_isGroupVisible(ItemGroup itemGroup) {
+	private boolean fabric_isGroupVisible(CreativeModeTab itemGroup) {
 		if (FabricCreativeGuiComponents.COMMON_GROUPS.contains(itemGroup)) {
 			return true;
 		}
 
-		return fabric_currentPage == fabric_getOffsetPage(itemGroup.getIndex());
+		return fabric_currentPage == fabric_getOffsetPage(itemGroup.getId());
 	}
 
 	@Override

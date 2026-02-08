@@ -37,7 +37,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
@@ -77,7 +77,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 	 *                         control back to the parent, displaying its own exception message
 	 */
 	public ChildCommandElementExecutor(@Nullable CommandExecutor fallbackExecutor, @Nullable CommandElement fallbackElements, boolean fallbackOnFail) {
-		super(ChatMessage.createTextMessage("child" + COUNTER.getAndIncrement()));
+		super(Text.literal("child" + COUNTER.getAndIncrement()));
 		this.fallbackExecutor = fallbackExecutor;
 		this.fallbackElements = NONE == fallbackElements ? null : fallbackElements;
 		this.fallbackOnFail = fallbackOnFail;
@@ -144,10 +144,10 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 						.getCallable()
 						.getSuggestions(src, arguments, context.<Location<World>>getOne(CommandContext.TARGET_BLOCK_ARG).orElse(null));
 			} catch (CommandException e) {
-				ChatMessage eText = e.getText();
+				Text eText = e.getText();
 
 				if (eText != null) {
-					src.method_5505(CommandMessageFormatting.error(eText));
+					src.sendMessage(CommandMessageFormatting.error(eText));
 				}
 
 				return ImmutableList.of();
@@ -220,10 +220,10 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 
 				if (ex instanceof ArgumentParseException.WithUsage) {
 					// This indicates a previous child failed, so we just prepend our child
-					throw new ArgumentParseException.WithUsage(ex, ChatMessage.createTextMessage(key + " " + ((ArgumentParseException.WithUsage) ex).getUsage().toString()));
+					throw new ArgumentParseException.WithUsage(ex, Text.literal(key + " " + ((ArgumentParseException.WithUsage) ex).getUsage().toString()));
 				}
 
-				throw new ArgumentParseException.WithUsage(ex, ChatMessage.createTextMessage(key + " " + mapping.getCallable().getUsage(source).toString()));
+				throw new ArgumentParseException.WithUsage(ex, Text.literal(key + " " + mapping.getCallable().getUsage(source).toString()));
 			}
 		} else {
 			// Not a child, so let's continue with the fallback.
@@ -233,7 +233,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 			} else {
 				// If we have no elements to parse, then we throw this error - this is the only element
 				// so specifying it implicitly means we have a child command to execute.
-				throw args.createError(ChatMessage.createTextMessage(String.format("Input command %s was not a valid subcommand!", key)));
+				throw args.createError(Text.literal(String.format("Input command %s was not a valid subcommand!", key)));
 			}
 		}
 	}
@@ -249,7 +249,7 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 
 		if (mapping == null) {
 			if (this.fallbackExecutor == null) {
-				throw new CommandException(ChatMessage.createTextMessage(String.format("Invalid subcommand state -- no more than one mapping may be provided for child arg %s", this.getKey())));
+				throw new CommandException(Text.literal(String.format("Invalid subcommand state -- no more than one mapping may be provided for child arg %s", this.getKey())));
 			}
 
 			return this.fallbackExecutor.execute(src, args);
@@ -266,19 +266,19 @@ public class ChildCommandElementExecutor extends CommandElement implements Comma
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
-		ChatMessage usage = this.dispatcher.getUsage(src);
+	public Text getUsage(PermissibleCommandSource src) {
+		Text usage = this.dispatcher.getUsage(src);
 
 		if (this.fallbackElements == null) {
 			return usage;
 		}
 
-		ChatMessage elementUsage = this.fallbackElements.getUsage(src);
+		Text elementUsage = this.fallbackElements.getUsage(src);
 
-		if (elementUsage.toString(true).isEmpty()) {
+		if (elementUsage.buildString(true).isEmpty()) {
 			return usage;
 		}
 
-		return ChatMessage.createTextMessage("").addUsing(usage).addUsing(CommandMessageFormatting.PIPE_TEXT).addUsing(elementUsage);
+		return Text.literal("").append(usage).append(CommandMessageFormatting.PIPE_TEXT).append(elementUsage);
 	}
 }

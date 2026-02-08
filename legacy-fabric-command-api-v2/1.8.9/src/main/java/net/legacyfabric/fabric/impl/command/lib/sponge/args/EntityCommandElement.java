@@ -36,7 +36,7 @@ import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -97,14 +97,14 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		Set<String> worldEntities = Arrays.stream(MinecraftServer.getServer().worlds).flatMap(world -> world.entities.stream())
+		Set<String> worldEntities = Arrays.stream(MinecraftServer.getInstance().worlds).flatMap(world -> world.globalEntities.stream())
 				.filter(this::checkEntity)
 				.map(entity -> entity.getUuid().toString()).collect(Collectors.toSet());
-		Collection<PlayerEntity> players = Sets.newHashSet(MinecraftServer.getServer().getPlayerManager().getPlayers());
+		Collection<PlayerEntity> players = Sets.newHashSet(MinecraftServer.getInstance().getPlayerManager().getAll());
 
 		if (!players.isEmpty() && this.checkEntity(players.iterator().next())) {
 			final Set<String> setToReturn = Sets.newHashSet(worldEntities); // to ensure mutability
-			players.forEach(x -> setToReturn.add(x.getTranslationKey()));
+			players.forEach(x -> setToReturn.add(x.getName()));
 			return setToReturn;
 		}
 
@@ -119,7 +119,7 @@ public class EntityCommandElement extends SelectorCommandElement {
 			uuid = UUID.fromString(choice);
 		} catch (IllegalArgumentException ignored) {
 			// Player could be a name
-			return Optional.ofNullable(this.getServer().getPlayerManager().getPlayer(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
+			return Optional.ofNullable(this.getServer().getPlayerManager().get(choice)).orElseThrow(() -> new IllegalArgumentException("Input value " + choice + " does not represent a valid entity"));
 		}
 
 		boolean found = false;
@@ -167,6 +167,6 @@ public class EntityCommandElement extends SelectorCommandElement {
 
 	@Override
 	public Text getUsage(PermissibleCommandSource src) {
-		return src instanceof Entity && (this.returnSource || this.returnTarget) ? new LiteralText("[" + this.getKey().asUnformattedString() + "]") : super.getUsage(src);
+		return src instanceof Entity && (this.returnSource || this.returnTarget) ? new LiteralText("[" + this.getKey().getString() + "]") : super.getUsage(src);
 	}
 }

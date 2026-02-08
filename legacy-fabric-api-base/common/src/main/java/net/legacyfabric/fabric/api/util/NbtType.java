@@ -20,7 +20,7 @@ package net.legacyfabric.fabric.api.util;
 /**
  * NBT type ID constants. Useful for filtering by value type in a few cases.
  *
- * <p>For the current list of types, check with {@link net.minecraft.nbt.NbtElement#TYPES}.
+ * <p>For the current list of types, check with {@link net.minecraft.nbt.NbtElement#TYPE_NAMES}.
  *
  * @see net.minecraft.nbt.NbtCompound#contains(String, int)
  */

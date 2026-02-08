@@ -31,13 +31,13 @@ import java.util.Optional;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.Selector;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public abstract class SelectorCommandElement extends PatternMatchingCommandElement {
-	protected SelectorCommandElement(@Nullable ChatMessage key) {
+	protected SelectorCommandElement(@Nullable Text key) {
 		super(key);
 	}
 
@@ -50,7 +50,7 @@ public abstract class SelectorCommandElement extends PatternMatchingCommandEleme
 			try {
 				return Selector.parse(args.next()).resolve(source);
 			} catch (IllegalArgumentException ex) {
-				throw args.createError(ChatMessage.createTextMessage(ex.getMessage()));
+				throw args.createError(Text.literal(ex.getMessage()));
 			}
 		}
 

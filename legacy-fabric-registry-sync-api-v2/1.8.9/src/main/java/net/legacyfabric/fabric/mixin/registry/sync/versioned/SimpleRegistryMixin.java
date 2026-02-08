@@ -23,9 +23,9 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import net.minecraft.util.collection.IdList;
-import net.minecraft.util.registry.MutableRegistry;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.util.CrudeIncrementalIntIdentityHashMap;
+import net.minecraft.util.registry.IdRegistry;
+import net.minecraft.util.registry.MappedRegistry;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
@@ -36,24 +36,24 @@ import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
 
-@Mixin(SimpleRegistry.class)
+@Mixin(IdRegistry.class)
 public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
 	@Shadow
-	public abstract void add(int id, K identifier, V object);
+	public abstract void register(int id, K identifier, V object);
 
 	@Shadow
-	public abstract K getIdentifier(Object par1);
+	public abstract K getKey(Object par1);
 
 	@Shadow
-	public abstract int getRawId(Object object);
+	public abstract int getId(Object object);
 
 	@Shadow
-	public abstract Object getByRawId(int index);
+	public abstract Object get(int index);
 
 	@Mutable
 	@Shadow
 	@Final
-	protected IdList<V> ids;
+	protected CrudeIncrementalIntIdentityHashMap<V> ids;
 
 	@Unique
 	private boolean synchronize = true;
@@ -73,9 +73,9 @@ public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<
 		fabric$getBeforeAddedCallback().invoker().onEntryAdding(rawId, identifier, value);
 
 		if (this.synchronize) {
-			add(rawId, fabric$toKeyType(identifier), value);
+			register(rawId, fabric$toKeyType(identifier), value);
 		} else {
-			((MutableRegistry<K, V>) (Object) this).put(fabric$toKeyType(identifier), value);
+			((MappedRegistry<K, V>) (Object) this).put(fabric$toKeyType(identifier), value);
 		}
 
 		fabric$getEntryAddedCallback().invoker().onEntryAdded(rawId, identifier, value);
@@ -88,7 +88,7 @@ public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<
 
 	@Override
 	public Identifier fabric$getId(V value) {
-		K vanillaId = getIdentifier(value);
+		K vanillaId = getKey(value);
 
 		if (vanillaId == null) return null;
 
@@ -97,17 +97,17 @@ public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<
 
 	@Override
 	public int fabric$getRawId(V value) {
-		return getRawId(value);
+		return getId(value);
 	}
 
 	@Override
 	public V fabric$getValue(int rawId) {
-		return (V) getByRawId(rawId);
+		return (V) get(rawId);
 	}
 
 	@Override
 	public void fabric$updateRegistry(IdsHolder<V> ids) {
-		this.ids = (IdList<V>) ids;
+		this.ids = (CrudeIncrementalIntIdentityHashMap<V>) ids;
 	}
 
 	@Unique

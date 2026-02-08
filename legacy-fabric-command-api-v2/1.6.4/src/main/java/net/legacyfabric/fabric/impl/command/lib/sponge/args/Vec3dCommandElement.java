@@ -34,7 +34,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
@@ -57,7 +57,7 @@ import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 public class Vec3dCommandElement extends CommandElement {
 	private static final ImmutableSet<String> SPECIAL_TOKENS = ImmutableSet.of("#target", "#me");
 
-	public Vec3dCommandElement(@Nullable ChatMessage key) {
+	public Vec3dCommandElement(@Nullable Text key) {
 		super(key);
 	}
 
@@ -72,23 +72,23 @@ public class Vec3dCommandElement extends CommandElement {
 			String[] split = xStr.split(",");
 
 			if (split.length != 3) {
-				throw args.createError(ChatMessage.createTextMessage(String.format("Comma-separated location must have 3 elements, not %s", split.length)));
+				throw args.createError(Text.literal(String.format("Comma-separated location must have 3 elements, not %s", split.length)));
 			}
 
 			xStr = split[0];
 			yStr = split[1];
 			zStr = split[2];
 		} else if (xStr.equalsIgnoreCase("#me")) {
-			return source.getPosition();
+			return source.getCommandSourceBlockPos();
 		} else {
 			yStr = args.next();
 			zStr = args.next();
 		}
 
-		double x = this.parseRelativeDouble(args, xStr, (double) source.getPosition().x);
-		double y = this.parseRelativeDouble(args, yStr, (double) source.getPosition().y);
-		double z = this.parseRelativeDouble(args, zStr, (double) source.getPosition().z);
-		return Vec3d.fromXYZ(x, y, z);
+		double x = this.parseRelativeDouble(args, xStr, (double) source.getCommandSourceBlockPos().x);
+		double y = this.parseRelativeDouble(args, yStr, (double) source.getCommandSourceBlockPos().y);
+		double z = this.parseRelativeDouble(args, zStr, (double) source.getCommandSourceBlockPos().z);
+		return Vec3d.of(x, y, z);
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class Vec3dCommandElement extends CommandElement {
 
 		if (relative) {
 			if (relativeTo == null) {
-				throw args.createError(ChatMessage.createTextMessage("Relative position specified but source does not have a position"));
+				throw args.createError(Text.literal("Relative position specified but source does not have a position"));
 			}
 
 			arg = arg.substring(1);
@@ -135,7 +135,7 @@ public class Vec3dCommandElement extends CommandElement {
 			double ret = Double.parseDouble(arg);
 			return relative ? ret + relativeTo : ret;
 		} catch (NumberFormatException e) {
-			throw args.createError(ChatMessage.createTextMessage(String.format("Expected input %s to be a double, but was not", arg)));
+			throw args.createError(Text.literal(String.format("Expected input %s to be a double, but was not", arg)));
 		}
 	}
 }

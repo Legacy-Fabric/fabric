@@ -21,15 +21,15 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.command.AbstractCommand;
-import net.minecraft.command.Command;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.CommandSource;
+import net.minecraft.server.command.AbstractCommand;
+import net.minecraft.server.command.Command;
+import net.minecraft.server.command.exception.CommandException;
+import net.minecraft.server.command.source.CommandSource;
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.ClickEventAction;
+import net.minecraft.text.ClickEvent__Action;
+import net.minecraft.text.Formatting;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
-import net.minecraft.util.Formatting;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -37,17 +37,17 @@ import net.fabricmc.loader.api.metadata.ContactInformation;
 
 public class ModMetadataCommandV1 extends AbstractCommand {
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "modmetadatav1";
 	}
 
 	@Override
-	public String getUsageTranslationKey(CommandSource source) {
+	public String getUsage(CommandSource source) {
 		return "modmetadatav1";
 	}
 
 	@Override
-	public void execute(CommandSource commandSource, String[] args) throws CommandException {
+	public void run(CommandSource commandSource, String[] args) throws CommandException {
 		if (args.length > 0) {
 			Optional<ModContainer> optionalModContainer = FabricLoader.getInstance().getModContainer(args[0]);
 
@@ -63,7 +63,7 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 					LiteralText issueText = new LiteralText("");
 					issueText.append("Issues: ");
 					LiteralText issueUrl = new LiteralText(contact.get("issues").get());
-					issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, issueUrl.computeValue())));
+					issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEvent__Action.OPEN_URL, issueUrl.getContent())));
 					issueText.append(issueUrl);
 					issueText.append("\n");
 					builder.append(issueText);
@@ -73,7 +73,7 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 					LiteralText sourcesText = new LiteralText("");
 					sourcesText.append("Sources: ");
 					LiteralText sourcesUrl = new LiteralText(contact.get("sources").get());
-					sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, sourcesUrl.computeValue())));
+					sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEvent__Action.OPEN_URL, sourcesUrl.getContent())));
 					sourcesText.append(sourcesUrl);
 					sourcesText.append("\n");
 					builder.append(sourcesText);
@@ -83,7 +83,7 @@ public class ModMetadataCommandV1 extends AbstractCommand {
 				commandSource.sendMessage(builder);
 			} else {
 				LiteralText builder = new LiteralText("Couldn't find Mod container for mod id '" + args[0] + "'");
-				builder.setStyle(new Style().setFormatting(Formatting.RED));
+				builder.setStyle(new Style().setColor(Formatting.RED));
 				commandSource.sendMessage(builder);
 			}
 		}

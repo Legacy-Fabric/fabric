@@ -18,7 +18,7 @@
 package net.legacyfabric.fabric.api.entity.event.v1;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.living.LivingEntity;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
@@ -30,7 +30,7 @@ public final class ServerEntityCombatEvents {
 	/**
 	 * An event that is called after an entity is directly responsible for killing another entity.
 	 *
-	 * @see Entity#onKilledOther(LivingEntity)
+	 * @see Entity#onKill(LivingEntity)
 	 */
 	public static final Event<AfterKilledOtherEntity> AFTER_KILLED_OTHER_ENTITY = EventFactory.createArrayBacked(AfterKilledOtherEntity.class, callbacks -> (entity, killedEntity) -> {
 		for (AfterKilledOtherEntity callback : callbacks) {

@@ -28,7 +28,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
@@ -107,20 +107,20 @@ public class CommandManagerImpl implements CommandManager {
 				}
 			} catch (CommandPermissionException e) {
 				if (e.getText() != null) {
-					source.method_5505(CommandMessageFormatting.error(e.getText()));
+					source.sendMessage(CommandMessageFormatting.error(e.getText()));
 				}
 			} catch (CommandException e) {
-				ChatMessage text = e.getText();
+				Text text = e.getText();
 
 				if (text != null) {
-					source.method_5505(CommandMessageFormatting.error(text));
+					source.sendMessage(CommandMessageFormatting.error(text));
 				}
 
 				if (e.shouldIncludeUsage()) {
 					Optional<CommandMapping> mapping = this.dispatcher.get(argSplit[0], source);
 
 					if (mapping.isPresent()) {
-						ChatMessage usage;
+						Text usage;
 
 						if (e instanceof ArgumentParseException.WithUsage) {
 							usage = ((ArgumentParseException.WithUsage) e).getUsage();
@@ -128,7 +128,7 @@ public class CommandManagerImpl implements CommandManager {
 							usage = mapping.get().getCallable().getUsage(source);
 						}
 
-						source.method_5505(CommandMessageFormatting.error(ChatMessage.createTextMessage(String.format("Usage: /%s %s", argSplit[0], usage.toString()))));
+						source.sendMessage(CommandMessageFormatting.error(Text.literal(String.format("Usage: /%s %s", argSplit[0], usage.toString()))));
 					}
 				}
 			}
@@ -140,12 +140,12 @@ public class CommandManagerImpl implements CommandManager {
 				throw (Error) t;
 			}
 
-			ChatMessage message = CommandMessageFormatting.error(ChatMessage.createTextMessage("An unexpected error happened executing the command"));
+			Text message = CommandMessageFormatting.error(Text.literal("An unexpected error happened executing the command"));
 			/*
 			Hover event doesn't exist in this minecraft version
 			message.setStyle(message.getStyle().setHoverEvent(new HoverEvent(HoverEventAction.SHOW_TEXT, ChatMessage.createTextMessage("Stacktrace: \n" + Arrays.stream(t.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("\n"))))));
 			*/
-			source.method_5505(message);
+			source.sendMessage(message);
 		}
 
 		return CommandResult.empty();
@@ -157,7 +157,7 @@ public class CommandManagerImpl implements CommandManager {
 			final String[] argSplit = arguments.split(" ", 2);
 			return Lists.newArrayList(this.dispatcher.getSuggestions(source, arguments, targetPosition));
 		} catch (CommandException e) {
-			source.method_5505(CommandMessageFormatting.error(ChatMessage.createTextMessage(String.format("Error getting suggestions: %s", e.getText().toString()))));
+			source.sendMessage(CommandMessageFormatting.error(Text.literal(String.format("Error getting suggestions: %s", e.getText().toString()))));
 			return Collections.emptyList();
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Error occured while tab completing '%s'", arguments), e);
@@ -172,21 +172,21 @@ public class CommandManagerImpl implements CommandManager {
 	}
 
 	@Override
-	public Optional<ChatMessage> getShortDescription(PermissibleCommandSource source) {
+	public Optional<Text> getShortDescription(PermissibleCommandSource source) {
 		synchronized (this.lock) {
 			return this.dispatcher.getShortDescription(source);
 		}
 	}
 
 	@Override
-	public Optional<ChatMessage> getHelp(PermissibleCommandSource source) {
+	public Optional<Text> getHelp(PermissibleCommandSource source) {
 		synchronized (this.lock) {
 			return this.dispatcher.getHelp(source);
 		}
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource source) {
+	public Text getUsage(PermissibleCommandSource source) {
 		synchronized (this.lock) {
 			return this.dispatcher.getUsage(source);
 		}

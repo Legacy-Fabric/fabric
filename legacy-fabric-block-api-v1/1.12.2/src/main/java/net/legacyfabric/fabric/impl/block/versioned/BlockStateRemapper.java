@@ -20,8 +20,8 @@ package net.legacyfabric.fabric.impl.block.versioned;
 import java.util.Map;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.collection.IdList;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.util.Id2ObjectBiMap;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
@@ -37,7 +37,7 @@ public class BlockStateRemapper implements RegistryRemapCallback<Block> {
 
 	@Override
 	public void callback(Map<Integer, FabricRegistryEntry<Block>> changedIdsMap) {
-		IdsHolder<BlockState> newList = Block.BLOCK_STATES.fabric$new();
+		IdsHolder<BlockState> newList = Block.STATE_REGISTRY.fabric$new();
 
 		for (Block block : Block.REGISTRY) {
 			int blockRawId = RegistryHelper.getRawId(Block.REGISTRY, block);
@@ -51,19 +51,19 @@ public class BlockStateRemapper implements RegistryRemapCallback<Block> {
 			if (blockId.equals(specialCaseId) && hasSpecialCase) {
 				for (int i = 0; i < 15; ++i) {
 					int blockStateId = blockRawId << 4 | i;
-					BlockState state = block.stateFromData(i);
+					BlockState state = block.getStateFromMetadata(i);
 
 					newList.fabric$setValue(state, blockStateId);
 				}
 			} else {
-				for (BlockState state : block.getStateManager().getBlockStates()) {
-					int blockStateId = blockRawId << 4 | block.getData(state);
+				for (BlockState state : block.stateDefinition().all()) {
+					int blockStateId = blockRawId << 4 | block.getMetadataFromState(state);
 
 					newList.fabric$setValue(state, blockStateId);
 				}
 			}
 		}
 
-		BlockAccessor.setBlockStateList((IdList<BlockState>) newList);
+		BlockAccessor.setBlockStateList((Id2ObjectBiMap<BlockState>) newList);
 	}
 }

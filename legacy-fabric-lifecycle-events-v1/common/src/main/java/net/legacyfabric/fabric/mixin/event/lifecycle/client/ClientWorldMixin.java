@@ -33,17 +33,17 @@ import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 @Environment(EnvType.CLIENT)
 @Mixin(ClientWorld.class)
 public class ClientWorldMixin {
-	@Inject(at = @At("TAIL"), method = "onEntitySpawned")
+	@Inject(at = @At("TAIL"), method = "notifyEntityAdded")
 	public void loadEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ClientWorld) (Object) this);
 	}
 
-	@Inject(at = @At("HEAD"), method = "onEntityRemoved")
+	@Inject(at = @At("HEAD"), method = "notifyEntityRemoved")
 	public void unloadEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_REMOVING.invoker().onUnload(entity, (ClientWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "onEntityRemoved")
+	@Inject(at = @At("TAIL"), method = "notifyEntityRemoved")
 	public void unloadedEntity(Entity entity, CallbackInfo ci) {
 		ClientEntityEvents.ENTITY_REMOVED.invoker().onUnload(entity, (ClientWorld) (Object) this);
 	}

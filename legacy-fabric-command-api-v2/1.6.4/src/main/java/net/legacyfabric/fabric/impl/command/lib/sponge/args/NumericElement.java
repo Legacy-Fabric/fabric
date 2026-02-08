@@ -30,7 +30,7 @@ import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -41,9 +41,9 @@ public class NumericElement<T extends Number> extends KeyElement {
 	private final Function<String, T> parseFunc;
 	@Nullable
 	private final BiFunction<String, Integer, T> parseRadixFunction;
-	private final Function<String, ChatMessage> errorSupplier;
+	private final Function<String, Text> errorSupplier;
 
-	public NumericElement(ChatMessage key, Function<String, T> parseFunc, @Nullable BiFunction<String, Integer, T> parseRadixFunction, Function<String, ChatMessage> errorSupplier) {
+	public NumericElement(Text key, Function<String, T> parseFunc, @Nullable BiFunction<String, Integer, T> parseRadixFunction, Function<String, Text> errorSupplier) {
 		super(key);
 		this.parseFunc = parseFunc;
 		this.parseRadixFunction = parseRadixFunction;

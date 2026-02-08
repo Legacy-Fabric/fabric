@@ -25,7 +25,7 @@ import java.util.Set;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.resource.ResourceReloadListener;
+import net.minecraft.client.resource.manager.ResourceReloadListener;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;

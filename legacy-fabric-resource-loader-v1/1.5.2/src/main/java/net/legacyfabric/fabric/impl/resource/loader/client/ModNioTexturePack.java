@@ -22,8 +22,8 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import net.minecraft.client.texture.AbstractTexturePack;
-import net.minecraft.client.texture.ITexturePack;
+import net.minecraft.client.resource.pack.AbstractTexturePack;
+import net.minecraft.client.resource.pack.TexturePack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -38,15 +38,15 @@ public class ModNioTexturePack extends AbstractTexturePack implements ModTexture
 	public ModNioTexturePack(ModResourcePack resourcePack) {
 		super(resourcePack.getFabricModMetadata().getId(), null, resourcePack.getName(), null);
 		this.resourcePack = resourcePack;
-		this.readManifest();
-		this.readIcon();
+		this.loadDescription();
+		this.loadIcon();
 	}
 
 	@Override
-	protected InputStream method_5243(String string) {
+	protected InputStream openResource(String string) {
 		if (this.resourcePack == null) {
 			if ("/pack.png".equals(string) || "/pack.txt".equals(string)) {
-				return ITexturePack.class.getResourceAsStream(string);
+				return TexturePack.class.getResourceAsStream(string);
 			}
 
 			return null;
@@ -60,12 +60,12 @@ public class ModNioTexturePack extends AbstractTexturePack implements ModTexture
 	}
 
 	@Override
-	public boolean method_5244(String string) {
+	public boolean hasResource(String string) {
 		return this.resourcePack.containsFile(string);
 	}
 
 	@Override
-	public boolean method_5247() {
+	public boolean isCompatible() {
 		return true;
 	}
 
@@ -74,11 +74,11 @@ public class ModNioTexturePack extends AbstractTexturePack implements ModTexture
 		return this.resourcePack;
 	}
 
-	private void readIcon() {
+	private void loadIcon() {
 		InputStream var1 = null;
 
 		try {
-			var1 = this.method_5245("/pack.png", false);
+			var1 = this.getResource("/pack.png", false);
 
 			if (var1 == null) {
 				return;

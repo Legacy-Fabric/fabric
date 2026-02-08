@@ -29,9 +29,9 @@ import java.util.Set;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.Packet;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.Connection;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
 
 import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
 import net.legacyfabric.fabric.api.networking.v1.PacketSender;
@@ -42,16 +42,16 @@ import net.legacyfabric.fabric.api.networking.v1.PacketSender;
  * @param <H> the channel handler type
  */
 public abstract class AbstractChanneledNetworkAddon<H> extends AbstractNetworkAddon<H> implements PacketSender {
-	protected final ClientConnection connection;
+	protected final Connection connection;
 	protected final GlobalReceiverRegistry<H> receiver;
 	protected final Set<String> sendableChannels;
 	protected final Set<String> sendableChannelsView;
 
-	protected AbstractChanneledNetworkAddon(GlobalReceiverRegistry<H> receiver, ClientConnection connection, String description) {
+	protected AbstractChanneledNetworkAddon(GlobalReceiverRegistry<H> receiver, Connection connection, String description) {
 		this(receiver, connection, new HashSet<>(), description);
 	}
 
-	protected AbstractChanneledNetworkAddon(GlobalReceiverRegistry<H> receiver, ClientConnection connection, Set<String> sendableChannels, String description) {
+	protected AbstractChanneledNetworkAddon(GlobalReceiverRegistry<H> receiver, Connection connection, Set<String> sendableChannels, String description) {
 		super(receiver, description);
 		this.connection = connection;
 		this.receiver = receiver;

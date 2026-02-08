@@ -26,26 +26,26 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.world.chunk.ServerChunkCache;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ChunkStorage;
-import net.minecraft.world.chunk.ServerChunkProvider;
+import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.world.chunk.storage.ChunkStorage;
 
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 
-@Mixin(ServerChunkProvider.class)
+@Mixin(ServerChunkCache.class)
 public class ServerChunkProviderMixin {
 	@Shadow
 	private ServerWorld world;
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/ChunkStorage;writeChunk(Lnet/minecraft/world/World;Lnet/minecraft/world/chunk/Chunk;)V"), method = "saveChunk")
-	public void api$chunkUnload(Chunk chunk, CallbackInfo ci) {
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/storage/ChunkStorage;saveChunk(Lnet/minecraft/world/World;Lnet/minecraft/world/chunk/WorldChunk;)V"), method = "saveChunk")
+	public void api$chunkUnload(WorldChunk chunk, CallbackInfo ci) {
 		ServerChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload(this.world, chunk);
 	}
 
-	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/ChunkStorage;loadChunk(Lnet/minecraft/world/World;II)Lnet/minecraft/world/chunk/Chunk;"), method = "loadChunk")
-	public Chunk api$chunkLoad(ChunkStorage instance, World world, int i, int j, Operation<Chunk> original) {
-		Chunk chunk = original.call(instance, world, i, j);
+	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/storage/ChunkStorage;loadChunk(Lnet/minecraft/world/World;II)Lnet/minecraft/world/chunk/WorldChunk;"), method = "loadChunkFromStorage")
+	public WorldChunk api$chunkLoad(ChunkStorage instance, World world, int i, int j, Operation<WorldChunk> original) {
+		WorldChunk chunk = original.call(instance, world, i, j);
 		ServerChunkEvents.CHUNK_LOAD.invoker().onChunkLoad(this.world, chunk);
 		return chunk;
 	}

@@ -17,10 +17,10 @@
 
 package net.legacyfabric.fabric.impl.networking.server;
 
-import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.server.network.handler.ServerPlayNetworkHandler;
 
 import net.legacyfabric.fabric.api.networking.v1.ServerPlayNetworking;
 import net.legacyfabric.fabric.impl.networking.GlobalReceiverRegistry;

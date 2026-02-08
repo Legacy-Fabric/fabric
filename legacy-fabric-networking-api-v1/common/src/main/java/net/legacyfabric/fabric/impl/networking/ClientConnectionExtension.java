@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.impl.networking;
 
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 
 public interface ClientConnectionExtension {
 	void sendPacket(Packet packet);

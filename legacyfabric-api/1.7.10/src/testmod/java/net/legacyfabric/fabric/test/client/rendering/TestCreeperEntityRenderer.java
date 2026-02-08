@@ -19,24 +19,24 @@ package net.legacyfabric.fabric.test.client.rendering;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.render.entity.model.CreeperEntityModel;
-import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.entity.MobRenderer;
+import net.minecraft.client.render.model.Model;
+import net.minecraft.client.render.model.entity.CreeperModel;
+import net.minecraft.client.resource.Identifier;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.entity.living.LivingEntity;
+import net.minecraft.entity.living.mob.MobEntity;
 import net.minecraft.util.math.MathHelper;
 
 import net.legacyfabric.fabric.test.registry.RegistryTest;
 
-public class TestCreeperEntityRenderer extends MobEntityRenderer {
+public class TestCreeperEntityRenderer extends MobRenderer {
 	private static final Identifier field_6472 = new Identifier("textures/entity/creeper/creeper_armor.png");
 	private static final Identifier TEXTURE = new Identifier("legacy-fabric-api", "textures/entity/creeper/creeper.png");
-	private EntityModel field_2086 = new CreeperEntityModel(2.0F);
+	private Model field_2086 = new CreeperModel(2.0F);
 
 	public TestCreeperEntityRenderer() {
-		super(new CreeperEntityModel(), 0.5F);
+		super(new CreeperModel(), 0.5F);
 	}
 
 	@Override
@@ -44,9 +44,9 @@ public class TestCreeperEntityRenderer extends MobEntityRenderer {
 		super.render((MobEntity) entity, x, y, z, yaw, tickDelta);
 	}
 
-	protected void scale(LivingEntity entity, float f) {
+	protected void applyScale(LivingEntity entity, float f) {
 		RegistryTest.TestCreeperEntity creeperEntity = (RegistryTest.TestCreeperEntity) entity;
-		float var3 = creeperEntity.getClientFuseTime(f);
+		float var3 = creeperEntity.getFuse(f);
 		float var4 = 1.0F + MathHelper.sin(var3 * 100.0F) * var3 * 0.01F;
 
 		if (var3 < 0.0F) {
@@ -64,9 +64,9 @@ public class TestCreeperEntityRenderer extends MobEntityRenderer {
 		GL11.glScalef(var5, var6, var5);
 	}
 
-	protected int method_5776(LivingEntity entity, float f, float g) {
+	protected int getOverlayColor(LivingEntity entity, float f, float g) {
 		RegistryTest.TestCreeperEntity creeperEntity = (RegistryTest.TestCreeperEntity) entity;
-		float var4 = creeperEntity.getClientFuseTime(g);
+		float var4 = creeperEntity.getFuse(g);
 
 		if ((int) (var4 * 10.0F) % 2 == 0) {
 			return 0;
@@ -88,21 +88,21 @@ public class TestCreeperEntityRenderer extends MobEntityRenderer {
 		}
 	}
 
-	protected int method_5779(LivingEntity entity, int i, float f) {
+	protected int bindTexture(LivingEntity entity, int i, float f) {
 		RegistryTest.TestCreeperEntity creeperEntity = (RegistryTest.TestCreeperEntity) entity;
 
-		if (creeperEntity.method_3074()) {
+		if (creeperEntity.isCharged()) {
 			GL11.glDepthMask(!creeperEntity.isInvisible());
 
 			if (i == 1) {
-				float var4 = (float) creeperEntity.ticksAlive + f;
+				float var4 = (float) creeperEntity.ticks + f;
 				this.bindTexture(field_6472);
 				GL11.glMatrixMode(5890);
 				GL11.glLoadIdentity();
 				float var5 = var4 * 0.01F;
 				float var6 = var4 * 0.01F;
 				GL11.glTranslatef(var5, var6, 0.0F);
-				this.method_5770(this.field_2086);
+				this.setDecorationModel(this.field_2086);
 				GL11.glMatrixMode(5888);
 				GL11.glEnable(3042);
 				float var7 = 0.5F;
@@ -124,12 +124,12 @@ public class TestCreeperEntityRenderer extends MobEntityRenderer {
 		return -1;
 	}
 
-	protected int method_5784(LivingEntity creeperEntity, int i, float f) {
+	protected int bindDecorationTexture(LivingEntity creeperEntity, int i, float f) {
 		return -1;
 	}
 
 	@Override
-	protected Identifier getTexture(Entity entity) {
+	protected Identifier getTextureLocation(Entity entity) {
 		return TEXTURE;
 	}
 }

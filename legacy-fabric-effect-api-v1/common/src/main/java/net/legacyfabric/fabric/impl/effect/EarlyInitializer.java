@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.impl.effect;
 
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.living.effect.StatusEffect;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
@@ -41,6 +41,6 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 	private static void effectRegistryInit(FabricRegistry<?> holder) {
 		SyncedFabricRegistry<StatusEffect> registry = (SyncedFabricRegistry<StatusEffect>) holder;
 
-		registry.fabric$getBeforeAddedCallback().register((rawId, id, object) -> object.setTranslationKey(keyPrefix + "." + id.toTranslationKey()));
+		registry.fabric$getBeforeAddedCallback().register((rawId, id, object) -> object.setKey(keyPrefix + "." + id.toTranslationKey()));
 	}
 }

@@ -22,17 +22,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.ClientConnection;
+import net.minecraft.network.Connection;
 import net.minecraft.server.PlayerManager;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.impl.networking.server.ServerNetworkingImpl;
 
 @Mixin(PlayerManager.class)
 abstract class PlayerManagerMixin {
-	@Inject(method = "onPlayerConnect", at = @At(value = "INVOKE",
-			target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V"))
-	private void handlePlayerConnection(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
+	@Inject(method = "onLogin", at = @At(value = "INVOKE",
+			target = "Lnet/minecraft/server/network/handler/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
+	private void handlePlayerConnection(Connection connection, ServerPlayerEntity player, CallbackInfo ci) {
 		ServerNetworkingImpl.getAddon(player.networkHandler).onClientReady();
 	}
 }

@@ -25,7 +25,7 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 /**
  * A subclass of Exception that contains a rich message that is an instance of
@@ -35,7 +35,7 @@ import net.minecraft.text.ChatMessage;
 public class TextMessageException extends Exception {
 	private static final long serialVersionUID = -5281221645176698853L;
 
-	private final ChatMessage message;
+	private final Text message;
 
 	/**
 	 * Constructs a new {@link TextMessageException}.
@@ -49,7 +49,7 @@ public class TextMessageException extends Exception {
 	 *
 	 * @param message The detail message
 	 */
-	public TextMessageException(ChatMessage message) {
+	public TextMessageException(Text message) {
 		this.message = message;
 	}
 
@@ -60,7 +60,7 @@ public class TextMessageException extends Exception {
 	 * @param message   The detail message
 	 * @param throwable The cause
 	 */
-	public TextMessageException(ChatMessage message, Throwable throwable) {
+	public TextMessageException(Text message, Throwable throwable) {
 		super(throwable);
 		this.message = message;
 	}
@@ -77,8 +77,8 @@ public class TextMessageException extends Exception {
 
 	@Override
 	public String getMessage() {
-		ChatMessage message = this.getText();
-		return message == null ? null : message.toString(true);
+		Text message = this.getText();
+		return message == null ? null : message.buildString(true);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class TextMessageException extends Exception {
 	 *
 	 * @return The text for this message
 	 */
-	public ChatMessage getText() {
+	public Text getText() {
 		return this.message;
 	}
 

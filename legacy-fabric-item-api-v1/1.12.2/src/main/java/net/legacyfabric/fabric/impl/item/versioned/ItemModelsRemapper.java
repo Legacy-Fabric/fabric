@@ -20,9 +20,9 @@ package net.legacyfabric.fabric.impl.item.versioned;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.item.ItemModels;
-import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.item.ItemModelShaper;
+import net.minecraft.client.resource.ModelIdentifier;
 import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
@@ -43,8 +43,8 @@ public class ItemModelsRemapper implements RegistryRemapCallback<Item> {
 		return itemId << 16 | metadata;
 	}
 
-	private ItemModels getModelRegistry() {
-		return MinecraftClient.getInstance().getItemRenderer().getModels();
+	private ItemModelShaper getModelRegistry() {
+		return Minecraft.getInstance().getItemRenderer().getModelShaper();
 	}
 
 	@Override
@@ -67,6 +67,6 @@ public class ItemModelsRemapper implements RegistryRemapCallback<Item> {
 			}
 		}
 
-		getModelRegistry().reloadModels();
+		getModelRegistry().rebuildCache();
 	}
 }

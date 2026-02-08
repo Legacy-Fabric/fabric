@@ -18,9 +18,9 @@
 package net.legacyfabric.fabric.api.client.rendering.v1;
 
 import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.feature.Deadmau5FeatureRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.client.render.entity.layer.Deadmou5Layer;
+import net.minecraft.client.render.entity.layer.EntityRenderLayer;
+import net.minecraft.entity.living.LivingEntity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -29,9 +29,9 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 
 /**
- * Called when {@link FeatureRenderer feature renderers} for a {@link LivingEntityRenderer living entity renderer} are registered.
+ * Called when {@link EntityRenderLayer feature renderers} for a {@link LivingEntityRenderer living entity renderer} are registered.
  *
- * <p>Feature renderers are typically used for rendering additional objects on an entity, such as armor, an elytra or {@link Deadmau5FeatureRenderer Deadmau5's ears}.
+ * <p>Feature renderers are typically used for rendering additional objects on an entity, such as armor, an elytra or {@link Deadmou5Layer Deadmau5's ears}.
  * This callback lets developers add additional feature renderers for use in entity rendering.
  * Listeners should filter out the specific entity renderer they want to hook into, usually through {@code instanceof} checks or filtering by entity type.
  * Once listeners find a suitable entity renderer, they should register their feature renderer via the registration helper.
@@ -74,6 +74,6 @@ public interface LivingEntityFeatureRendererRegistrationCallback {
 		 * @param featureRenderer the feature renderer
 		 * @param <T>             the type of entity
 		 */
-		<T extends LivingEntity> void register(FeatureRenderer<T> featureRenderer);
+		<T extends LivingEntity> void register(EntityRenderLayer<T> featureRenderer);
 	}
 }

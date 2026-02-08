@@ -18,7 +18,7 @@
 package net.legacyfabric.fabric.test.command;
 
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.ClickEventAction;
+import net.minecraft.text.ClickEvent__Action;
 import net.minecraft.text.LiteralText;
 
 import net.fabricmc.loader.api.ModContainer;
@@ -54,7 +54,7 @@ public class ModMetadataCommand {
 			LiteralText issueText = new LiteralText("");
 			issueText.append("Issues: ");
 			LiteralText issueUrl = new LiteralText(contact.get("issues").get());
-			issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, issueUrl.computeValue())));
+			issueUrl.setStyle(issueText.getStyle().setClickEvent(new ClickEvent(ClickEvent__Action.OPEN_URL, issueUrl.getContent())));
 			issueText.append(issueUrl);
 			issueText.append("\n");
 			builder.append(issueText);
@@ -64,7 +64,7 @@ public class ModMetadataCommand {
 			LiteralText sourcesText = new LiteralText("");
 			sourcesText.append("Sources: ");
 			LiteralText sourcesUrl = new LiteralText(contact.get("sources").get());
-			sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEventAction.OPEN_URL, sourcesUrl.computeValue())));
+			sourcesUrl.setStyle(sourcesText.getStyle().setClickEvent(new ClickEvent(ClickEvent__Action.OPEN_URL, sourcesUrl.getContent())));
 			sourcesText.append(sourcesUrl);
 			sourcesText.append("\n");
 			builder.append(sourcesText);

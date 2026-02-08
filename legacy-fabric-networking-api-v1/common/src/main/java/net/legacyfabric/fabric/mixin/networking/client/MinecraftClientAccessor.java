@@ -20,15 +20,15 @@ package net.legacyfabric.fabric.mixin.networking.client;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.ClientConnection;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.Connection;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public interface MinecraftClientAccessor {
-	@Accessor
-	ClientConnection getClientConnection();
+	@Accessor("connection")
+	Connection getClientConnection();
 }

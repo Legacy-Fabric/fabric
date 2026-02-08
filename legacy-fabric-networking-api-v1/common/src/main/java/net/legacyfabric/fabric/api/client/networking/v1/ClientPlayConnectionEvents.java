@@ -17,8 +17,8 @@
 
 package net.legacyfabric.fabric.api.client.networking.v1;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.handler.ClientPlayNetworkHandler;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -72,18 +72,18 @@ public final class ClientPlayConnectionEvents {
 	@Environment(EnvType.CLIENT)
 	@FunctionalInterface
 	public interface Init {
-		void onPlayInit(ClientPlayNetworkHandler handler, MinecraftClient client);
+		void onPlayInit(ClientPlayNetworkHandler handler, Minecraft client);
 	}
 
 	@Environment(EnvType.CLIENT)
 	@FunctionalInterface
 	public interface Join {
-		void onPlayReady(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client);
+		void onPlayReady(ClientPlayNetworkHandler handler, PacketSender sender, Minecraft client);
 	}
 
 	@Environment(EnvType.CLIENT)
 	@FunctionalInterface
 	public interface Disconnect {
-		void onPlayDisconnect(ClientPlayNetworkHandler handler, MinecraftClient client);
+		void onPlayDisconnect(ClientPlayNetworkHandler handler, Minecraft client);
 	}
 }

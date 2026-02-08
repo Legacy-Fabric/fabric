@@ -31,8 +31,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.util.Identifier;
+import net.minecraft.entity.living.effect.StatusEffect;
+import net.minecraft.resource.Identifier;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -44,22 +44,22 @@ public class StatusEffectMixin {
 	@Mutable
 	@Shadow
 	@Final
-	public static StatusEffect[] STATUS_EFFECTS;
+	public static StatusEffect[] BY_ID;
 	@Mutable
 	@Shadow
 	@Final
-	private static Map<Identifier, StatusEffect> STATUS_EFFECTS_BY_ID;
+	private static Map<Identifier, StatusEffect> REGISTRY;
 	@Unique
 	private static FabricRegistry<StatusEffect> STATUS_EFFECT_REGISTRY;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		BiMap<Identifier, StatusEffect> map = HashBiMap.create(STATUS_EFFECTS_BY_ID);
-		STATUS_EFFECTS_BY_ID = map;
+		BiMap<Identifier, StatusEffect> map = HashBiMap.create(REGISTRY);
+		REGISTRY = map;
 
 		STATUS_EFFECT_REGISTRY = new SyncedArrayMapFabricRegistryWrapper<>(
 				RegistryIds.STATUS_EFFECTS,
-				STATUS_EFFECTS, map, false,
+				BY_ID, map, false,
 				universal -> new Identifier(universal.toString()),
 				net.legacyfabric.fabric.api.util.Identifier::new,
 				ids -> {
@@ -79,7 +79,7 @@ public class StatusEffectMixin {
 						array[id] = effect;
 					}
 
-					STATUS_EFFECTS = array;
+					BY_ID = array;
 				},
 				1
 		);

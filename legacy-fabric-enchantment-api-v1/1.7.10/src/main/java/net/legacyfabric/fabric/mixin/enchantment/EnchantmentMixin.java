@@ -43,11 +43,11 @@ public class EnchantmentMixin {
 	@Mutable
 	@Shadow
 	@Final
-	public static Enchantment[] field_5457;
+	public static Enchantment[] ALL;
 	@Mutable
 	@Shadow
 	@Final
-	public static Enchantment[] ALL_ENCHANTMENTS;
+	public static Enchantment[] BY_ID;
 
 	@Unique
 	private static FabricRegistry<Enchantment> ENCHANTMENT_REGISTRY;
@@ -56,7 +56,7 @@ public class EnchantmentMixin {
 	private static void api$registerRegistry(CallbackInfo ci) {
 		ENCHANTMENT_REGISTRY = new SyncedArrayFabricRegistryWrapper<>(
 				RegistryIds.ENCHANTMENTS,
-				ALL_ENCHANTMENTS, EarlyInitializer.getVanillaIds(),
+				BY_ID, EarlyInitializer.getVanillaIds(),
 				universal -> universal,
 				id -> id,
 				ids -> {
@@ -76,17 +76,17 @@ public class EnchantmentMixin {
 						array[id] = enchantment;
 					}
 
-					ALL_ENCHANTMENTS = array;
+					BY_ID = array;
 
 					List<Enchantment> list = Lists.<Enchantment>newArrayList();
 
-					for (Enchantment enchantment : ALL_ENCHANTMENTS) {
+					for (Enchantment enchantment : BY_ID) {
 						if (enchantment != null) {
 							list.add(enchantment);
 						}
 					}
 
-					field_5457 = list.toArray(new Enchantment[list.size()]);
+					ALL = list.toArray(new Enchantment[list.size()]);
 				}
 		);
 

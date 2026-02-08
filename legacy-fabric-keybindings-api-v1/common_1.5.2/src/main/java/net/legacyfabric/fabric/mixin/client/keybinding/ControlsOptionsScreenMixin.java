@@ -27,12 +27,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.OptionButtonWidget;
-import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.options.GameOptions;
+import net.minecraft.client.render.TextRenderer;
 
 import net.legacyfabric.fabric.impl.client.keybinding.ControlsScreenExtensions;
 import net.legacyfabric.fabric.impl.client.keybinding.FabricControlsScreenComponents;
@@ -65,12 +65,12 @@ public class ControlsOptionsScreenMixin extends Screen implements ControlsScreen
 
 	@Override
 	public boolean fabric_isButtonVisible(FabricControlsScreenComponents.Type type) {
-		return this.options.allKeys.length > FabricControlsScreenComponents.AMOUNT_PER_PAGE;
+		return this.options.keyBindings.length > FabricControlsScreenComponents.AMOUNT_PER_PAGE;
 	}
 
 	@Override
 	public void fabric_nextPage() {
-		if (fabric_getPageOffset(fabric_currentPage + 1) >= this.options.allKeys.length) {
+		if (fabric_getPageOffset(fabric_currentPage + 1) >= this.options.keyBindings.length) {
 			return;
 		}
 
@@ -96,7 +96,7 @@ public class ControlsOptionsScreenMixin extends Screen implements ControlsScreen
 	@Override
 	public boolean fabric_isButtonEnabled(FabricControlsScreenComponents.Type type) {
 		if (type == FabricControlsScreenComponents.Type.NEXT) {
-			return !(fabric_getPageOffset(fabric_currentPage + 1) >= this.options.allKeys.length);
+			return !(fabric_getPageOffset(fabric_currentPage + 1) >= this.options.keyBindings.length);
 		}
 
 		if (type == FabricControlsScreenComponents.Type.PREVIOUS) {
@@ -126,14 +126,14 @@ public class ControlsOptionsScreenMixin extends Screen implements ControlsScreen
 		}
 	}
 
-	@ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/OptionButtonWidget;<init>(IIIIILjava/lang/String;)V"), index = 2)
+	@ModifyArg(method = "init()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/OptionButtonWidget;<init>(IIIIILjava/lang/String;)V"), index = 2)
 	private int modifyControlY(int y) {
 		int temp = y - (this.height / 6);
 		int heightOffset = temp / 24;
 		return this.height / 6 + 24 * (heightOffset % 7);
 	}
 
-	@Inject(method = "init", at = @At("RETURN"))
+	@Inject(method = "init()V", at = @At("RETURN"))
 	private void init(CallbackInfo info) {
 		fabric_updateSelection();
 
@@ -141,7 +141,7 @@ public class ControlsOptionsScreenMixin extends Screen implements ControlsScreen
 		buttons.add(new FabricControlsScreenComponents.ControlsButtonWidget(this.width / 2 - 120, this.height / 6 + 168, FabricControlsScreenComponents.Type.PREVIOUS, this));
 	}
 
-	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/options/ControlsOptionsScreen;drawWithShadow(Lnet/minecraft/client/font/TextRenderer;Ljava/lang/String;III)V"))
+	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/options/ControlsOptionsScreen;drawString(Lnet/minecraft/client/render/TextRenderer;Ljava/lang/String;III)V"))
 	private void modifyLabelPos(ControlsOptionsScreen instance, TextRenderer textRenderer, String text, int x, int y, int color, Operation<Void> original, @Local(index = 5) int id) {
 		if (fabric_isControlVisible(id)) {
 			int temp = y - (this.height / 6);

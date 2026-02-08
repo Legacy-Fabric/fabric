@@ -25,7 +25,7 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge.args.parsing;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 
@@ -46,7 +46,7 @@ class TokenizerState {
 
 	public int peek() throws ArgumentParseException {
 		if (!this.hasMore()) {
-			throw this.createException(ChatMessage.createTextMessage("Buffer overrun while parsing args"));
+			throw this.createException(Text.literal("Buffer overrun while parsing args"));
 		}
 
 		return this.buffer.codePointAt(this.index + 1);
@@ -54,13 +54,13 @@ class TokenizerState {
 
 	public int next() throws ArgumentParseException {
 		if (!this.hasMore()) {
-			throw this.createException(ChatMessage.createTextMessage("Buffer overrun while parsing args"));
+			throw this.createException(Text.literal("Buffer overrun while parsing args"));
 		}
 
 		return this.buffer.codePointAt(++this.index);
 	}
 
-	public ArgumentParseException createException(ChatMessage message) {
+	public ArgumentParseException createException(Text message) {
 		return new ArgumentParseException(message, this.buffer, this.index);
 	}
 

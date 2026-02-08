@@ -25,8 +25,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.resource.Identifier;
+import net.minecraft.util.registry.IdRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -35,9 +35,9 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 public class EnchantmentMixin {
 	@Shadow
 	@Final
-	public static SimpleRegistry<Identifier, Enchantment> REGISTRY;
+	public static IdRegistry<Identifier, Enchantment> REGISTRY;
 
-	@Inject(method = "register", at = @At("RETURN"))
+	@Inject(method = "init", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
 		RegistryHelper.addRegistry(RegistryIds.ENCHANTMENTS, REGISTRY);
 	}

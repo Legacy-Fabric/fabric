@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.mixin.client.rendering;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.entity.ItemRenderer;
 
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {

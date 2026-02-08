@@ -29,8 +29,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome__Height;
 import net.minecraft.world.biome.TaigaBiome;
-import net.minecraft.world.biome.class_1742;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -43,7 +43,7 @@ public class BiomeMixin {
 	@Mutable
 	@Shadow
 	@Final
-	private static Biome[] BIOMES;
+	private static Biome[] BY_ID;
 	@Shadow
 	@Final
 	public static Biome MEGA_TAIGA_HILLS;
@@ -55,16 +55,16 @@ public class BiomeMixin {
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		BIOMES[MEGA_TAIGA_HILLS.id + 128] = new TaigaBiome(MEGA_TAIGA_HILLS.id + 128, 2)
-				.seedModifier(5858897, true)
+		BY_ID[MEGA_TAIGA_HILLS.id + 128] = new TaigaBiome(MEGA_TAIGA_HILLS.id + 128, 2)
+				.setColor(5858897, true)
 				.setName("Mega Spruce Taiga")
-				.method_3820(5159473)
+				.setMutatedColor(5159473)
 				.setTemperatureAndDownfall(0.25F, 0.8F)
-				.method_6422(new class_1742(MEGA_TAIGA.depth, MEGA_TAIGA.variationModifier));
+				.setHeight(new Biome__Height(MEGA_TAIGA.baseHeight, MEGA_TAIGA.heightVariation));
 
 		REGISTRY = new SyncedArrayFabricRegistryWrapper<>(
 				RegistryIds.BIOMES,
-				BIOMES, EarlyInitializer.getVanillaIds(),
+				BY_ID, EarlyInitializer.getVanillaIds(),
 				universal -> universal,
 				id -> id,
 				ids -> {
@@ -84,7 +84,7 @@ public class BiomeMixin {
 						array[id] = enchantment;
 					}
 
-					BIOMES = array;
+					BY_ID = array;
 				}
 		);
 

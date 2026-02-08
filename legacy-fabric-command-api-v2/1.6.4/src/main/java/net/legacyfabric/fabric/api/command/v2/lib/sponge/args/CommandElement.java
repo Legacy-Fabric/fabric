@@ -30,7 +30,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 import net.legacyfabric.fabric.api.util.ServerUtils;
@@ -40,9 +40,9 @@ import net.legacyfabric.fabric.api.util.ServerUtils;
  */
 public abstract class CommandElement {
 	@Nullable
-	private final ChatMessage key;
+	private final Text key;
 
-	protected CommandElement(@Nullable ChatMessage key) {
+	protected CommandElement(@Nullable Text key) {
 		this.key = key;
 	}
 
@@ -52,7 +52,7 @@ public abstract class CommandElement {
 	 * @return the user-facing representation of the key
 	 */
 	@Nullable
-	public ChatMessage getKey() {
+	public Text getKey() {
 		return this.key;
 	}
 
@@ -127,8 +127,8 @@ public abstract class CommandElement {
 	 * @param src The source requesting usage
 	 * @return The formatted usage
 	 */
-	public ChatMessage getUsage(PermissibleCommandSource src) {
-		return this.getKey() == null ? ChatMessage.createTextMessage("") : ChatMessage.createTextMessage("<" + this.getKey().toString() + ">");
+	public Text getUsage(PermissibleCommandSource src) {
+		return this.getKey() == null ? Text.literal("") : Text.literal("<" + this.getKey().toString() + ">");
 	}
 
 	public MinecraftServer getServer() {

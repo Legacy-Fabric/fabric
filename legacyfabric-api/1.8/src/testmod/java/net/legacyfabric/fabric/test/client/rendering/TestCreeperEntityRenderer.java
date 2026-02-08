@@ -17,39 +17,38 @@
 
 package net.legacyfabric.fabric.test.client.rendering;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.render.entity.model.CreeperEntityModel;
+import net.minecraft.client.render.entity.MobRenderer;
+import net.minecraft.client.render.model.entity.CreeperModel;
+import net.minecraft.client.render.platform.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.entity.living.LivingEntity;
+import net.minecraft.resource.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 import net.legacyfabric.fabric.test.registry.RegistryTest;
 
-public class TestCreeperEntityRenderer extends MobEntityRenderer {
+public class TestCreeperEntityRenderer extends MobRenderer {
 	private static final Identifier TEXTURE = new Identifier("legacy-fabric-api", "textures/entity/creeper/creeper.png");
 
 	public TestCreeperEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
-		super(entityRenderDispatcher, new CreeperEntityModel(), 0.5F);
+		super(entityRenderDispatcher, new CreeperModel(), 0.5F);
 		//		this.addFeature(new CreeperLightningFeatureRenderer(this));
 	}
 
-	protected void scale(LivingEntity creeperEntity, float f) {
-		float g = ((RegistryTest.TestCreeperEntity) creeperEntity).getClientFuseTime(f);
+	protected void applyScale(LivingEntity creeperEntity, float f) {
+		float g = ((RegistryTest.TestCreeperEntity) creeperEntity).getFuse(f);
 		float h = 1.0F + MathHelper.sin(g * 100.0F) * g * 0.01F;
 		g = MathHelper.clamp(g, 0.0F, 1.0F);
 		g *= g;
 		g *= g;
 		float i = (1.0F + g * 0.4F) * h;
 		float j = (1.0F + g * 0.1F) / h;
-		GlStateManager.scale(i, j, i);
+		GlStateManager.scalef(i, j, i);
 	}
 
-	protected int method_5776(LivingEntity creeperEntity, float f, float g) {
-		float h = ((RegistryTest.TestCreeperEntity) creeperEntity).getClientFuseTime(g);
+	protected int getOverlayColor(LivingEntity creeperEntity, float f, float g) {
+		float h = ((RegistryTest.TestCreeperEntity) creeperEntity).getFuse(g);
 
 		if ((int) (h * 10.0F) % 2 == 0) {
 			return 0;
@@ -60,7 +59,7 @@ public class TestCreeperEntityRenderer extends MobEntityRenderer {
 		}
 	}
 
-	protected Identifier getTexture(Entity creeperEntity) {
+	protected Identifier getTextureLocation(Entity creeperEntity) {
 		return TEXTURE;
 	}
 }

@@ -20,9 +20,9 @@ package net.legacyfabric.fabric.impl.entity.versionned;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.Entities;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.Identifier;
+import net.minecraft.resource.Identifier;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
@@ -42,7 +42,7 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		SyncedFabricRegistry<Class<? extends Entity>> registry = (SyncedFabricRegistry<Class<? extends Entity>>) holder;
 
 		registry.fabric$getEntryAddedCallback().register((rawId, id, object) -> {
-			EntityType.IDENTIFIERS.add(new Identifier(id.toString()));
+			Entities.IDS.add(new Identifier(id.toString()));
 
 			while (rawId >= EntityTypeAccessor.getEntityNameList().size()) {
 				EntityTypeAccessor.getEntityNameList().add(null);

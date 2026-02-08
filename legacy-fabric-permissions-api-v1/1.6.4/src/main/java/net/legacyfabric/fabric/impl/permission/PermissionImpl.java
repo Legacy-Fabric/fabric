@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.impl.permission;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -40,7 +40,7 @@ public class PermissionImpl implements ModInitializer {
 
 		@Override
 		public boolean hasPermission(ServerPlayerEntity player, String perm) {
-			return player.server.getPlayerManager().canCheat(player.getUsername());
+			return player.server.getPlayerManager().isOp(player.getCommandSourceName());
 		}
 	}
 }

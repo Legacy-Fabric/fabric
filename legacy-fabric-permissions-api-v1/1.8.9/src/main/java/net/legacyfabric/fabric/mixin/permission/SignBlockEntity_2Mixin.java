@@ -22,19 +22,19 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.living.player.PlayerEntity;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
-@Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$2")
+@Mixin(targets = "net/minecraft/block/entity/SignBlockEntity$24254726")
 public abstract class SignBlockEntity_2Mixin implements PermissibleCommandSource {
 	@Final
 	@Dynamic
 	@Shadow
-	PlayerEntity field_9859;
+	PlayerEntity f_84207635;
 
 	@Override
 	public boolean hasPermission(String perm) {
-		return ((PermissibleCommandSource) this.field_9859).hasPermission(perm);
+		return ((PermissibleCommandSource) this.f_84207635).hasPermission(perm);
 	}
 }

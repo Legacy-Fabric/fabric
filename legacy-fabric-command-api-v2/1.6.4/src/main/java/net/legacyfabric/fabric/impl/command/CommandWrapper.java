@@ -25,10 +25,10 @@ import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.command.AbstractCommand;
-import net.minecraft.command.Command;
-import net.minecraft.command.CommandSource;
-import net.minecraft.text.ChatMessage;
+import net.minecraft.server.command.AbstractCommand;
+import net.minecraft.server.command.Command;
+import net.minecraft.server.command.source.CommandSource;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMapping;
@@ -47,7 +47,7 @@ public class CommandWrapper extends AbstractCommand {
 	}
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return this.mapping.getPrimaryAlias();
 	}
 
@@ -57,12 +57,12 @@ public class CommandWrapper extends AbstractCommand {
 	}
 
 	@Override
-	public String getUsageTranslationKey(CommandSource source) {
-		return this.mapping.getCallable().getHelp((PermissibleCommandSource) source).map(message -> message.toString(true)).orElse("");
+	public String getUsage(CommandSource source) {
+		return this.mapping.getCallable().getHelp((PermissibleCommandSource) source).map(message -> message.buildString(true)).orElse("");
 	}
 
 	@Override
-	public void execute(CommandSource source, String[] args) {
+	public void run(CommandSource source, String[] args) {
 		try {
 			try {
 				this.mapping.getCallable().process((PermissibleCommandSource) source, String.join(" ", args));
@@ -72,17 +72,17 @@ public class CommandWrapper extends AbstractCommand {
 				}
 			} catch (CommandPermissionException e) {
 				if (e.getText() != null) {
-					source.method_5505(CommandMessageFormatting.error(e.getText()));
+					source.sendMessage(CommandMessageFormatting.error(e.getText()));
 				}
 			} catch (CommandException e) {
-				ChatMessage text = e.getText();
+				Text text = e.getText();
 
 				if (text != null) {
-					source.method_5505(CommandMessageFormatting.error(text));
+					source.sendMessage(CommandMessageFormatting.error(text));
 				}
 
 				if (e.shouldIncludeUsage()) {
-					ChatMessage usage;
+					Text usage;
 
 					if (e instanceof ArgumentParseException.WithUsage) {
 						usage = ((ArgumentParseException.WithUsage) e).getUsage();
@@ -90,7 +90,7 @@ public class CommandWrapper extends AbstractCommand {
 						usage = this.mapping.getCallable().getUsage((PermissibleCommandSource) source);
 					}
 
-					source.method_5505(CommandMessageFormatting.error(ChatMessage.createTextMessage(String.format("Usage: /%s %s", this.getCommandName(), usage.toString()))));
+					source.sendMessage(CommandMessageFormatting.error(Text.literal(String.format("Usage: /%s %s", this.getName(), usage.toString()))));
 				}
 			}
 		} catch (Throwable t) {
@@ -100,16 +100,16 @@ public class CommandWrapper extends AbstractCommand {
 	}
 
 	@Override
-	public boolean isAccessible(CommandSource source) {
+	public boolean canUse(CommandSource source) {
 		return this.mapping.getCallable().testPermission((PermissibleCommandSource) source);
 	}
 
 	@Override
-	public List<String> m_74370043(CommandSource source, String[] args) {
+	public List<String> getSuggestions(CommandSource source, String[] args) {
 		try {
-			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getWorld(), source.getPosition()));
+			return this.mapping.getCallable().getSuggestions((PermissibleCommandSource) source, Arrays.stream(args).collect(Collectors.joining(" ")), new Location<>(source.getCommandSourceWorld(), source.getCommandSourceBlockPos()));
 		} catch (CommandException e) {
-			source.method_5505(CommandMessageFormatting.error(ChatMessage.createTextMessage(String.format("Error getting suggestions: %s", e.getText().toString()))));
+			source.sendMessage(CommandMessageFormatting.error(Text.literal(String.format("Error getting suggestions: %s", e.getText().toString()))));
 			return Collections.emptyList();
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Error occurred while providing auto complete hints for '%s'", String.join(" ", args)), e);

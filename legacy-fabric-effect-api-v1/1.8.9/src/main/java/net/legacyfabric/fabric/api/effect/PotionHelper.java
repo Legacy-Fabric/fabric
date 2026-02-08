@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.effect;
 
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.living.effect.StatusEffect;
 
 import net.legacyfabric.fabric.impl.effect.versioned.PotionHelperImpl;
 

@@ -20,7 +20,7 @@ package net.legacyfabric.fabric.mixin.biome;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.util.collection.IdList;
+import net.minecraft.util.Id2ObjectBiMap;
 import net.minecraft.world.biome.Biome;
 
 @Mixin(Biome.class)
@@ -28,8 +28,8 @@ public interface BiomeAccessor {
 	@Accessor
 	String getParent();
 
-	@Accessor
-	static void setBiomeList(IdList<Biome> idList) {
+	@Accessor("MUTATED_BIOMES")
+	static void setBiomeList(Id2ObjectBiMap<Biome> idList) {
 	}
 
 	@Accessor

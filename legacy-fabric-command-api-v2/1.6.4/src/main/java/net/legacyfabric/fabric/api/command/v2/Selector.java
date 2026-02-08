@@ -27,34 +27,34 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 
-import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.source.CommandSource;
 
 public enum Selector {
 	ALL_ENTITIES('e') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getWorld().entities);
+			return Sets.newHashSet(sender.getCommandSourceWorld().globalEntities);
 		}
 	},
 	ALL_PLAYERS('a') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return (Set<Entity>) sender.getWorld().playerEntities.stream().map(e -> (Entity) e).collect(Collectors.toSet());
+			return (Set<Entity>) sender.getCommandSourceWorld().players.stream().map(e -> (Entity) e).collect(Collectors.toSet());
 		}
 	},
 	NEAREST_PLAYER('p') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
-			return Sets.newHashSet(sender.getWorld().getClosestPlayer(sender.getPosition().x, sender.getPosition().y, sender.getPosition().z, 50.0D));
+			return Sets.newHashSet(sender.getCommandSourceWorld().getNearestPlayer(sender.getCommandSourceBlockPos().x, sender.getCommandSourceBlockPos().y, sender.getCommandSourceBlockPos().z, 50.0D));
 		}
 	},
 	RANDOM_PLAYER('r') {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
 			try {
-				return Sets.newHashSet((Entity) MinecraftServer.getServer().getPlayerManager().players.stream().findAny().orElseThrow(NullPointerException::new));
+				return Sets.newHashSet((Entity) MinecraftServer.getInstance().getPlayerManager().players.stream().findAny().orElseThrow(NullPointerException::new));
 			} catch (Throwable e) {
 				throw new RuntimeException(e);
 			}
@@ -64,7 +64,7 @@ public enum Selector {
 		@Override
 		public Set<Entity> resolve(CommandSource sender) {
 			//TODO @s didn't exist this early in the game's development, and there seems to be no code to handle it, so maybe this'll work?
-			return Sets.newHashSet(sender.getWorld().getPlayerByName(sender.getUsername()));
+			return Sets.newHashSet(sender.getCommandSourceWorld().getPlayer(sender.getCommandSourceName()));
 		}
 	};
 

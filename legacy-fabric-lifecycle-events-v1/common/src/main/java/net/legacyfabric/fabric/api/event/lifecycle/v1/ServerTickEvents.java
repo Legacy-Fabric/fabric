@@ -78,7 +78,7 @@ public final class ServerTickEvents {
 	public static final Event<StartWorldTick> START_WORLD_TICK = EventFactory.createArrayBacked(StartWorldTick.class, callbacks -> world -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = world.profiler;
-			profiler.push("fabricStartServerWorldTick_" + world.getLevelProperties().getLevelName());
+			profiler.push("fabricStartServerWorldTick_" + world.getData().getName());
 
 			for (StartWorldTick callback : callbacks) {
 				profiler.push(EventFactory.getHandlerName(callback));
@@ -102,7 +102,7 @@ public final class ServerTickEvents {
 	public static final Event<EndWorldTick> END_WORLD_TICK = EventFactory.createArrayBacked(EndWorldTick.class, callbacks -> world -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = world.profiler;
-			profiler.push("fabricEndServerWorldTick_" + world.getLevelProperties().getLevelName());
+			profiler.push("fabricEndServerWorldTick_" + world.getData().getName());
 
 			for (EndWorldTick callback : callbacks) {
 				profiler.push(EventFactory.getHandlerName(callback));

@@ -21,15 +21,15 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.itemgroup.ItemGroup;
 
-public class FabricItemGroup extends ItemGroup {
+public class FabricItemGroup extends CreativeModeTab {
 	private final Supplier<ItemStack> itemSupplier;
-	private final BiConsumer<List<ItemStack>, ItemGroup> stacksForDisplay;
+	private final BiConsumer<List<ItemStack>, CreativeModeTab> stacksForDisplay;
 
-	public FabricItemGroup(int index, String id, Supplier<ItemStack> itemSupplier, BiConsumer<List<ItemStack>, ItemGroup> stacksForDisplay) {
+	public FabricItemGroup(int index, String id, Supplier<ItemStack> itemSupplier, BiConsumer<List<ItemStack>, CreativeModeTab> stacksForDisplay) {
 		super(index, id);
 		this.itemSupplier = itemSupplier;
 		this.stacksForDisplay = stacksForDisplay;
@@ -41,12 +41,12 @@ public class FabricItemGroup extends ItemGroup {
 	}
 
 	@Override
-	public void showItems(List<ItemStack> stacks) {
+	public void addItems(List<ItemStack> stacks) {
 		if (stacksForDisplay != null) {
 			stacksForDisplay.accept(stacks, this);
 			return;
 		}
 
-		super.showItems(stacks);
+		super.addItems(stacks);
 	}
 }

@@ -26,13 +26,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.util.registry.BiDefaultedRegistry;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.util.registry.DefaultedIdRegistry;
+import net.minecraft.util.registry.IdRegistry;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 
-@Mixin(BiDefaultedRegistry.class)
-public abstract class BiDefaultedRegistryMixin extends SimpleRegistry {
+@Mixin(DefaultedIdRegistry.class)
+public abstract class BiDefaultedRegistryMixin extends IdRegistry {
 	@Shadow
 	private Object defaultValue;
 

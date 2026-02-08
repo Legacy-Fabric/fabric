@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.item.Item;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.util.registry.IdRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -34,9 +34,9 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 public class ItemMixin {
 	@Shadow
 	@Final
-	public static SimpleRegistry REGISTRY;
+	public static IdRegistry REGISTRY;
 
-	@Inject(method = "setup", at = @At("RETURN"))
+	@Inject(method = "init", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
 		RegistryHelper.addRegistry(RegistryIds.ITEMS, REGISTRY);
 	}

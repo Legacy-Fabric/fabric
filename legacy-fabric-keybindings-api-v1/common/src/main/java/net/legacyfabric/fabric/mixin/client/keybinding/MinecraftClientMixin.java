@@ -20,12 +20,12 @@ package net.legacyfabric.fabric.mixin.client.keybinding;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.options.GameOptions;
 
 import net.legacyfabric.fabric.impl.client.keybinding.MinecraftAccessor;
 
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public class MinecraftClientMixin implements MinecraftAccessor {
 	@Shadow
 	public GameOptions options;

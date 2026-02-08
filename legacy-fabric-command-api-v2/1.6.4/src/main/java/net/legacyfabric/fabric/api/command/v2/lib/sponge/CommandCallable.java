@@ -30,7 +30,7 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.spec.CommandSpec;
@@ -94,7 +94,7 @@ public interface CommandCallable {
 	 * @param source The source of the help request
 	 * @return A description
 	 */
-	Optional<ChatMessage> getShortDescription(PermissibleCommandSource source);
+	Optional<Text> getShortDescription(PermissibleCommandSource source);
 
 	/**
 	 * Gets a longer formatted help message about this command.
@@ -111,7 +111,7 @@ public interface CommandCallable {
 	 * @param source The source of the help request
 	 * @return A help text
 	 */
-	Optional<ChatMessage> getHelp(PermissibleCommandSource source);
+	Optional<Text> getHelp(PermissibleCommandSource source);
 
 	/**
 	 * Gets the usage string of this command.
@@ -124,5 +124,5 @@ public interface CommandCallable {
 	 * @param source The source of the help request
 	 * @return A usage string
 	 */
-	ChatMessage getUsage(PermissibleCommandSource source);
+	Text getUsage(PermissibleCommandSource source);
 }

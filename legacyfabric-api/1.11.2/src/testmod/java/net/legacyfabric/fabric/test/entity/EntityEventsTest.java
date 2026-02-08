@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.test.entity;
 
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Entities;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -33,13 +33,13 @@ public class EntityEventsTest implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((entity, killedEntity) -> {
-			LOGGER.info("%s killed %s", EntityType.getEntityName(entity), EntityType.getEntityName(killedEntity));
+			LOGGER.info("%s killed %s", Entities.getName(entity), Entities.getName(killedEntity));
 		});
 		ServerEntityWorldChangeEvents.AFTER_ENTITY_CHANGE_WORLD.register((originalEntity, newEntity, origin, destination) -> {
-			LOGGER.info("%s went from dim %s to dim %s", EntityType.getEntityName(newEntity), origin.dimension.getDimensionType().getName(), destination.dimension.getDimensionType().getName());
+			LOGGER.info("%s went from dim %s to dim %s", Entities.getName(newEntity), origin.dimension.getType().getName(), destination.dimension.getType().getName());
 		});
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
-			LOGGER.info("Player went from dim %s to dim %s", origin.dimension.getDimensionType().getName(), destination.dimension.getDimensionType().getName());
+			LOGGER.info("Player went from dim %s to dim %s", origin.dimension.getType().getName(), destination.dimension.getType().getName());
 		});
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, world, alive) -> {
 			LOGGER.info("Player %s respawned", newPlayer.getGameProfile().getName());

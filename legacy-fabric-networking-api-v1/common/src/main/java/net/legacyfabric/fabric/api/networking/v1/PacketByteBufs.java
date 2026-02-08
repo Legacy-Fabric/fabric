@@ -22,7 +22,7 @@ import java.util.Objects;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
 
 /**
  * Helper methods for working with and creating {@link PacketByteBuf}s.

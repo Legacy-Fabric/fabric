@@ -25,12 +25,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.Packet;
+import net.minecraft.network.Connection;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.network.packet.s2c.play.DisconnectS2CPacket;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.handler.ServerPlayNetworkHandler;
 import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
@@ -45,7 +45,7 @@ abstract class ServerPlayNetworkHandlerMixin implements ServerPlayNetworkHandler
 	private MinecraftServer server;
 	@Shadow
 	@Final
-	public ClientConnection connection;
+	public Connection connection;
 
 	@Unique
 	private ServerPlayNetworkAddon addon;
@@ -57,7 +57,7 @@ abstract class ServerPlayNetworkHandlerMixin implements ServerPlayNetworkHandler
 		this.addon.lateInit();
 	}
 
-	@Inject(method = "onCustomPayload", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "handleCustomPayload", at = @At("HEAD"), cancellable = true)
 	private void handleCustomPayloadReceivedAsync(CustomPayloadC2SPacket packet, CallbackInfo ci) {
 		if (this.addon.handle(packet)) {
 			// Do not cancel minecraft's packets
@@ -67,7 +67,7 @@ abstract class ServerPlayNetworkHandlerMixin implements ServerPlayNetworkHandler
 		}
 	}
 
-	@Inject(method = "onDisconnected", at = @At("HEAD"))
+	@Inject(method = "onDisconnect", at = @At("HEAD"))
 	private void handleDisconnection(Text reason, CallbackInfo ci) {
 		this.addon.invokeDisconnectEvent();
 	}

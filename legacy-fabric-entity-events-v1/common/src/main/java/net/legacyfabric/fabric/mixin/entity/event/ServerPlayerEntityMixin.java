@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 
@@ -35,13 +35,13 @@ public class ServerPlayerEntityMixin {
 	 * This is a Mojang bug.
 	 * This is implements the method call on the server player entity and then calls the corresponding event.
 	 */
-	@Inject(method = "onKilled", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getOpponent()Lnet/minecraft/entity/LivingEntity;"))
+	@Inject(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/entity/living/player/ServerPlayerEntity;getLastAttacker()Lnet/minecraft/entity/living/LivingEntity;"))
 	private void callOnKillForPlayer(DamageSource source, CallbackInfo ci) {
 		final Entity attacker = source.getAttacker();
 
 		// If the damage source that killed the player was an entity, then fire the event.
 		if (attacker != null) {
-			attacker.onKilledOther((ServerPlayerEntity) (Object) this);
+			attacker.onKill((ServerPlayerEntity) (Object) this);
 			ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(attacker, (ServerPlayerEntity) (Object) this);
 		}
 	}

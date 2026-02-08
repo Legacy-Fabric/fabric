@@ -31,10 +31,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.NetworkSide;
-import net.minecraft.network.Packet;
-import net.minecraft.network.listener.PacketListener;
+import net.minecraft.network.Connection;
+import net.minecraft.network.PacketFlow;
+import net.minecraft.network.handler.PacketHandler;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
@@ -42,10 +42,10 @@ import net.legacyfabric.fabric.impl.networking.ChannelInfoHolder;
 import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
 import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
 
-@Mixin(ClientConnection.class)
+@Mixin(Connection.class)
 abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	@Shadow
-	private PacketListener packetListener;
+	private PacketHandler listener;
 
 	@Shadow
 	public abstract void disconnect(Text disconnectReason);
@@ -57,14 +57,14 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	private Collection<String> playChannels;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
-	private void initAddedFields(NetworkSide side, CallbackInfo ci) {
+	private void initAddedFields(PacketFlow side, CallbackInfo ci) {
 		this.playChannels = Collections.newSetFromMap(new ConcurrentHashMap<>());
 	}
 
 	@SuppressWarnings("UnnecessaryQualifiedMemberReference")
-	@Redirect(method = "Lnet/minecraft/network/ClientConnection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;disconnect(Lnet/minecraft/text/Text;)V"))
-	private void resendOnExceptionCaught(ClientConnection clientConnection, Text disconnectReason) {
-		PacketListener handler = this.packetListener;
+	@Redirect(method = "Lnet/minecraft/network/ClientConnection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/text/Text;)V"))
+	private void resendOnExceptionCaught(Connection clientConnection, Text disconnectReason) {
+		PacketHandler handler = this.listener;
 
 		if (handler instanceof DisconnectPacketSource) {
 			this.send(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)));
@@ -73,10 +73,10 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 		}
 	}
 
-	@Inject(method = "sendImmediately", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false))
+	@Inject(method = "doSend", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false))
 	private void checkPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>>[] genericFutureListeners, CallbackInfo ci) {
-		if (this.packetListener instanceof PacketCallbackListener) {
-			((PacketCallbackListener) this.packetListener).sent(packet);
+		if (this.listener instanceof PacketCallbackListener) {
+			((PacketCallbackListener) this.listener).sent(packet);
 		}
 	}
 

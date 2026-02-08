@@ -20,19 +20,19 @@ package net.legacyfabric.fabric.mixin.item.group;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.TextureManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.texture.TextureManager;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.item.group.MinecraftAccessor;
 
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public abstract class MinecraftClientMixin implements MinecraftAccessor {
 	@Shadow
 	public abstract TextureManager getTextureManager();
 
 	@Override
 	public void legacy_fabric_api$bindTexture(Identifier location) {
-		getTextureManager().bindTexture(new net.minecraft.util.Identifier(location.toString()));
+		getTextureManager().bind(new net.minecraft.resource.Identifier(location.toString()));
 	}
 }

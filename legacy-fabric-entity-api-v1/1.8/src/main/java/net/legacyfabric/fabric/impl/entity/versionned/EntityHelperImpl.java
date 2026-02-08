@@ -17,8 +17,8 @@
 
 package net.legacyfabric.fabric.impl.entity.versionned;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.class_868;
+import net.minecraft.entity.Entities;
+import net.minecraft.entity.Entities__SpawnEggData;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -28,6 +28,6 @@ public class EntityHelperImpl {
 	public static void registerSpawnEgg(Identifier identifier, int color0, int color1) {
 		int mcId = RegistryHelper.getRawId(RegistryIds.ENTITY_TYPES,
 				RegistryHelper.getValue(RegistryIds.ENTITY_TYPES, identifier));
-		EntityType.SPAWN_EGGS.put(mcId, new class_868(mcId, color0, color1));
+		Entities.SPAWN_EGG_DATA.put(mcId, new Entities__SpawnEggData(mcId, color0, color1));
 	}
 }

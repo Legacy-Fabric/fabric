@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import net.minecraft.util.registry.MutableRegistry;
+import net.minecraft.util.registry.MappedRegistry;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
@@ -35,7 +35,7 @@ import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.accessor.RegistryIdSetter;
 
-@Mixin(MutableRegistry.class)
+@Mixin(MappedRegistry.class)
 public abstract class MutableRegistryMixin<K, V> implements FabricRegistry<V>, RegistryIdSetter, Registrable<V> {
 	@Shadow
 	public abstract void put(Object key, Object value);
@@ -45,7 +45,7 @@ public abstract class MutableRegistryMixin<K, V> implements FabricRegistry<V>, R
 
 	@Shadow
 	@Final
-	protected Map<K, V> map;
+	protected Map<K, V> entries;
 	@Unique
 	private Event<RegistryEntryAddedCallback<V>> fabric_addObjectEvent;
 
@@ -110,7 +110,7 @@ public abstract class MutableRegistryMixin<K, V> implements FabricRegistry<V>, R
 
 	@Override
 	public Identifier fabric$getId(V value) {
-		return map.entrySet()
+		return entries.entrySet()
 				.stream()
 				.filter(entry -> entry.getValue().equals(value))
 				.findFirst()

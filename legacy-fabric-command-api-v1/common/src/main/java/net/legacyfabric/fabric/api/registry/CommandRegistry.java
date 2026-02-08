@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.registry;
 
-import net.minecraft.command.AbstractCommand;
+import net.minecraft.server.command.AbstractCommand;
 
 import net.legacyfabric.fabric.api.command.CommandSide;
 import net.legacyfabric.fabric.impl.command.CommandRegistryImpl;

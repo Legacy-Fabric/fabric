@@ -27,7 +27,7 @@ import net.minecraft.block.entity.BlockEntity;
 
 @Mixin(Bootstrap.class)
 public class BootstrapMixin {
-	@Inject(method = "initialize", at = @At(value = "INVOKE", target = "Lnet/minecraft/Bootstrap;setupDispenserBehavior()V"))
+	@Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/Bootstrap;registerDispenseBehaviors()V"))
 	private static void initializeBlockEntityRegistry(CallbackInfo ci) {
 		try {
 			Class.forName(BlockEntity.class.getName());

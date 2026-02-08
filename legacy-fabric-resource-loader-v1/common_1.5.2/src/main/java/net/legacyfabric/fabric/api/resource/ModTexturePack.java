@@ -17,12 +17,12 @@
 
 package net.legacyfabric.fabric.api.resource;
 
-import net.minecraft.client.texture.ITexturePack;
+import net.minecraft.client.resource.pack.TexturePack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-public interface ModTexturePack extends ITexturePack {
+public interface ModTexturePack extends TexturePack {
 	ModResourcePack getResourcePack();
 }

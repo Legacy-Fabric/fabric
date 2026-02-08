@@ -30,7 +30,7 @@ import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin(Item.class)
 public class ItemMixin {
-	@Inject(method = "fromBlock", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "byBlock", at = @At("HEAD"), cancellable = true)
 	private static void fixItemFromBlock(Block block, CallbackInfoReturnable<Item> cir) {
 		Identifier identifier = RegistryHelper.getId(Block.REGISTRY, block);
 

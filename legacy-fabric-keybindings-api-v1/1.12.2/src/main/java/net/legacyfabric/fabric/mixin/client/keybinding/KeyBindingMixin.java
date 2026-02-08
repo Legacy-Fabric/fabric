@@ -26,19 +26,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.options.KeyBinding;
 
 @Mixin(KeyBinding.class)
 public class KeyBindingMixin {
 	@Shadow
 	@Final
-	private static Map<String, Integer> field_15867;
+	private static Map<String, Integer> CATEGORY_SORT_ORDER;
 	private static int lf$category_count = 7;
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void registerCategory(String string, int i, String category, CallbackInfo ci) {
-		if (!field_15867.containsKey(category)) {
-			while (field_15867.containsValue(lf$category_count)) lf$category_count++;
-			field_15867.put(category, lf$category_count);
+		if (!CATEGORY_SORT_ORDER.containsKey(category)) {
+			while (CATEGORY_SORT_ORDER.containsValue(lf$category_count)) lf$category_count++;
+			CATEGORY_SORT_ORDER.put(category, lf$category_count);
 		}
 	}
 }

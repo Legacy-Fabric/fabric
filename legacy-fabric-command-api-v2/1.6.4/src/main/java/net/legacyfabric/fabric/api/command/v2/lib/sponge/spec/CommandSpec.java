@@ -36,7 +36,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
@@ -60,13 +60,13 @@ import net.legacyfabric.fabric.api.util.Location;
 public final class CommandSpec implements CommandCallable {
 	private final CommandElement args;
 	private final CommandExecutor executor;
-	private final Optional<ChatMessage> description;
-	private final Optional<ChatMessage> extendedDescription;
+	private final Optional<Text> description;
+	private final Optional<Text> extendedDescription;
 	@Nullable
 	private final String permission;
 	private final InputTokenizer argumentParser;
 
-	CommandSpec(CommandElement args, CommandExecutor executor, @Nullable ChatMessage description, @Nullable ChatMessage extendedDescription,
+	CommandSpec(CommandElement args, CommandExecutor executor, @Nullable Text description, @Nullable Text extendedDescription,
 				@Nullable String permission, InputTokenizer parser) {
 		this.args = args;
 		this.executor = executor;
@@ -92,9 +92,9 @@ public final class CommandSpec implements CommandCallable {
 		private static final CommandElement DEFAULT_ARG = GenericArguments.none();
 		private CommandElement args = DEFAULT_ARG;
 		@Nullable
-		private ChatMessage description;
+		private Text description;
 		@Nullable
-		private ChatMessage extendedDescription;
+		private Text extendedDescription;
 		@Nullable
 		private String permission;
 		@Nullable
@@ -191,7 +191,7 @@ public final class CommandSpec implements CommandCallable {
 		 * @param description The description to set
 		 * @return this
 		 */
-		public Builder description(@Nullable ChatMessage description) {
+		public Builder description(@Nullable Text description) {
 			this.description = description;
 			return this;
 		}
@@ -204,7 +204,7 @@ public final class CommandSpec implements CommandCallable {
 		 * @param extendedDescription The description to set
 		 * @return this
 		 */
-		public Builder extendedDescription(@Nullable ChatMessage extendedDescription) {
+		public Builder extendedDescription(@Nullable Text extendedDescription) {
 			this.extendedDescription = extendedDescription;
 			return this;
 		}
@@ -343,7 +343,7 @@ public final class CommandSpec implements CommandCallable {
 
 		if (args.hasNext()) {
 			args.next();
-			throw args.createError(ChatMessage.createTextMessage("Too many arguments!"));
+			throw args.createError(Text.literal("Too many arguments!"));
 		}
 	}
 
@@ -416,7 +416,7 @@ public final class CommandSpec implements CommandCallable {
 	 * @return the short description.
 	 */
 	@Override
-	public Optional<ChatMessage> getShortDescription(PermissibleCommandSource source) {
+	public Optional<Text> getShortDescription(PermissibleCommandSource source) {
 		return this.description;
 	}
 
@@ -426,7 +426,7 @@ public final class CommandSpec implements CommandCallable {
 	 * @param source The source to get the description for
 	 * @return the extended description.
 	 */
-	public Optional<ChatMessage> getExtendedDescription(PermissibleCommandSource source) {
+	public Optional<Text> getExtendedDescription(PermissibleCommandSource source) {
 		return this.extendedDescription;
 	}
 
@@ -438,7 +438,7 @@ public final class CommandSpec implements CommandCallable {
 	 * @return the usage for the source
 	 */
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource source) {
+	public Text getUsage(PermissibleCommandSource source) {
 		Preconditions.checkNotNull(source, "source");
 		return this.args.getUsage(source);
 	}
@@ -452,13 +452,13 @@ public final class CommandSpec implements CommandCallable {
 	 * @return the extended description
 	 */
 	@Override
-	public Optional<ChatMessage> getHelp(PermissibleCommandSource source) {
+	public Optional<Text> getHelp(PermissibleCommandSource source) {
 		Preconditions.checkNotNull(source, "source");
 		StringBuilder builder = new StringBuilder();
 		this.getShortDescription(source).ifPresent((a) -> builder.append(a).append("\n"));
 		builder.append(this.getUsage(source));
 		this.getExtendedDescription(source).ifPresent((a) -> builder.append(a).append("\n"));
-		return Optional.of(ChatMessage.createTextMessage(builder.toString()));
+		return Optional.of(Text.literal(builder.toString()));
 	}
 
 	@Override

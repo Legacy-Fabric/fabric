@@ -24,10 +24,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.handler.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
-import net.minecraft.network.packet.s2c.play.GameJoinS2CPacket;
+import net.minecraft.network.packet.s2c.play.LoginS2CPacket;
 import net.minecraft.text.Text;
 
 import net.fabricmc.api.EnvType;
@@ -42,25 +42,25 @@ import net.legacyfabric.fabric.impl.networking.client.ClientPlayNetworkHandlerEx
 @Mixin(value = ClientPlayNetworkHandler.class, priority = 999)
 abstract class ClientPlayNetworkHandlerMixin implements ClientPlayNetworkHandlerExtensions {
 	@Shadow
-	private MinecraftClient client;
+	private Minecraft minecraft;
 
 	@Unique
 	private ClientPlayNetworkAddon addon;
 
 	@Override
 	public void lf$initAddon() {
-		this.addon = new ClientPlayNetworkAddon((ClientPlayNetworkHandler) (Object) this, this.client);
+		this.addon = new ClientPlayNetworkAddon((ClientPlayNetworkHandler) (Object) this, this.minecraft);
 		// A bit of a hack but it allows the field above to be set in case someone registers handlers during INIT event which refers to said field
 		ClientNetworkingImpl.setClientPlayAddon(this.addon);
 		this.addon.lateInit();
 	}
 
-	@Inject(method = "onGameJoin", at = @At("RETURN"))
-	private void handleServerPlayReady(GameJoinS2CPacket packet, CallbackInfo ci) {
+	@Inject(method = "handleLogin", at = @At("RETURN"))
+	private void handleServerPlayReady(LoginS2CPacket packet, CallbackInfo ci) {
 		this.addon.onServerReady();
 	}
 
-	@Inject(method = "onCustomPayload", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "handleCustomPayload", at = @At("HEAD"), cancellable = true)
 	private void handleCustomPayload(CustomPayloadS2CPacket packet, CallbackInfo ci) {
 		if (this.addon.handle(packet)) {
 			// Do not cancel minecraft's packets
@@ -70,7 +70,7 @@ abstract class ClientPlayNetworkHandlerMixin implements ClientPlayNetworkHandler
 		}
 	}
 
-	@Inject(method = "onDisconnected", at = @At("HEAD"))
+	@Inject(method = "onDisconnect", at = @At("HEAD"))
 	private void handleDisconnection(Text reason, CallbackInfo ci) {
 		this.addon.invokeDisconnectEvent();
 	}

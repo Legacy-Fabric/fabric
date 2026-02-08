@@ -40,12 +40,12 @@ public abstract class ServerWorldMixin {
 		ServerTickEvents.END_WORLD_TICK.invoker().onEndTick((ServerWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "onEntitySpawned")
+	@Inject(at = @At("TAIL"), method = "notifyEntityAdded")
 	public void loadEntity(Entity entity, CallbackInfo ci) {
 		ServerEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ServerWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "onEntityRemoved")
+	@Inject(at = @At("TAIL"), method = "notifyEntityRemoved")
 	public void unloadEntity(Entity entity, CallbackInfo ci) {
 		ServerEntityEvents.ENTITY_UNLOAD.invoker().onUnload(entity, (ServerWorld) (Object) this);
 	}

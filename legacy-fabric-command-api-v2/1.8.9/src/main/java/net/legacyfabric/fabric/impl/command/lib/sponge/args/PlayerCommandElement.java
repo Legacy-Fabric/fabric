@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -72,12 +72,12 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		return MinecraftServer.getServer().getPlayerManager().getPlayers().stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
+		return MinecraftServer.getInstance().getPlayerManager().getAll().stream().map(player -> player.getGameProfile().getName()).collect(Collectors.toSet());
 	}
 
 	@Override
 	protected Object getValue(String choice) throws IllegalArgumentException {
-		Optional<PlayerEntity> ret = this.getServer().getPlayerManager().getPlayers().stream().findFirst().map(Function.identity());
+		Optional<PlayerEntity> ret = this.getServer().getPlayerManager().getAll().stream().findFirst().map(Function.identity());
 
 		if (!ret.isPresent()) {
 			throw new IllegalArgumentException("Input value " + choice + " was not a player");
@@ -96,6 +96,6 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	public Text getUsage(PermissibleCommandSource src) {
-		return src != null && this.returnSource ? new LiteralText("[" + super.getUsage(src).asUnformattedString() + "]") : super.getUsage(src);
+		return src != null && this.returnSource ? new LiteralText("[" + super.getUsage(src).getString() + "]") : super.getUsage(src);
 	}
 }

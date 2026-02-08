@@ -26,13 +26,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.resource.ReloadableResourceManagerImpl;
-import net.minecraft.resource.ResourcePack;
-import net.minecraft.resource.ResourceReloadListener;
+import net.minecraft.client.resource.manager.ResourceReloadListener;
+import net.minecraft.client.resource.manager.SimpleReloadableResourceManager;
+import net.minecraft.client.resource.pack.ResourcePack;
 
 import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
-@Mixin(ReloadableResourceManagerImpl.class)
+@Mixin(SimpleReloadableResourceManager.class)
 public class ReloadableResourceManagerImplMixin {
 	@Shadow
 	@Final

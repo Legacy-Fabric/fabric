@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.impl.client.keybinding;
 
-import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.options.GameOptions;
 
 public interface MinecraftAccessor {
 	GameOptions lf$getGameOptions();

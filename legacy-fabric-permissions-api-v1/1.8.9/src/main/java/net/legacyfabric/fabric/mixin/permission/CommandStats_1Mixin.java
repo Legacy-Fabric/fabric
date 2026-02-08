@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
-@Mixin(targets = "net/minecraft/command/CommandStats$1")
+@Mixin(targets = "net/minecraft/server/command/source/CommandResults$84279496")
 public abstract class CommandStats_1Mixin implements PermissibleCommandSource {
 	@Override
 	public boolean hasPermission(String perm) {

@@ -30,10 +30,10 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.text.ChatMessage;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -43,7 +43,7 @@ import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 public class PlayerCommandElement extends SelectorCommandElement {
 	private final boolean returnSource;
 
-	public PlayerCommandElement(ChatMessage key, boolean returnSource) {
+	public PlayerCommandElement(Text key, boolean returnSource) {
 		super(key);
 		this.returnSource = returnSource;
 	}
@@ -71,7 +71,7 @@ public class PlayerCommandElement extends SelectorCommandElement {
 
 	@Override
 	protected Iterable<String> getChoices(PermissibleCommandSource source) {
-		return (Iterable<String>) MinecraftServer.getServer().getPlayerManager().players.stream().map(player -> ((PlayerEntity) player).getUsername()).collect(Collectors.toSet());
+		return (Iterable<String>) MinecraftServer.getInstance().getPlayerManager().players.stream().map(player -> ((PlayerEntity) player).getCommandSourceName()).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -89,12 +89,12 @@ public class PlayerCommandElement extends SelectorCommandElement {
 		if (source instanceof PlayerEntity) {
 			return ((PlayerEntity) source);
 		} else {
-			throw args.createError(ChatMessage.createTextMessage("No players matched and source was not a player!"));
+			throw args.createError(Text.literal("No players matched and source was not a player!"));
 		}
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource src) {
-		return src != null && this.returnSource ? ChatMessage.createTextMessage("[" + super.getUsage(src).toString() + "]") : super.getUsage(src);
+	public Text getUsage(PermissibleCommandSource src) {
+		return src != null && this.returnSource ? Text.literal("[" + super.getUsage(src).toString() + "]") : super.getUsage(src);
 	}
 }

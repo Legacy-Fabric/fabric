@@ -25,9 +25,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.world.chunk.ClientChunkCache;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ClientChunkProvider;
+import net.minecraft.world.chunk.WorldChunk;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -35,18 +35,18 @@ import net.fabricmc.api.Environment;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 
 @Environment(EnvType.CLIENT)
-@Mixin(ClientChunkProvider.class)
+@Mixin(ClientChunkCache.class)
 public abstract class ClientChunkProviderMixin {
 	@Shadow
 	private World world;
 
-	@Inject(at = @At("RETURN"), method = "getOrGenerateChunk")
-	public void chunkLoad(int i, int j, CallbackInfoReturnable<Chunk> cir) {
+	@Inject(at = @At("RETURN"), method = "loadChunk")
+	public void chunkLoad(int i, int j, CallbackInfoReturnable<WorldChunk> cir) {
 		ClientChunkEvents.CHUNK_LOAD.invoker().onChunkLoad((ClientWorld) this.world, cir.getReturnValue());
 	}
 
-	@ModifyReceiver(method = "unloadChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/Chunk;unloadFromWorld()V"))
-	public Chunk chunkUnload(Chunk instance) {
+	@ModifyReceiver(method = "unloadChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/WorldChunk;unload()V"))
+	public WorldChunk chunkUnload(WorldChunk instance) {
 		ClientChunkEvents.CHUNK_UNLOAD.invoker().onChunkUnload((ClientWorld) this.world, instance);
 		return instance;
 	}

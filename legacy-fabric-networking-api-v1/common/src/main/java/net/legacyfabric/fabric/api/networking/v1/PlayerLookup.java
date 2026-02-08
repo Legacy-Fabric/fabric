@@ -24,8 +24,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -54,7 +54,7 @@ public final class PlayerLookup {
 
 		// return an immutable collection to guard against accidental removals.
 		if (server.getPlayerManager() != null) {
-			return Collections.unmodifiableCollection(server.getPlayerManager().getPlayers());
+			return Collections.unmodifiableCollection(server.getPlayerManager().getAll());
 		}
 
 		return Collections.emptyList();
@@ -72,7 +72,7 @@ public final class PlayerLookup {
 		Objects.requireNonNull(world, "The world cannot be null");
 
 		// return an immutable collection to guard against accidental removals.
-		return Collections.unmodifiableCollection(world.getServer().getPlayerManager().getPlayers());
+		return Collections.unmodifiableCollection(world.getServer().getPlayerManager().getAll());
 	}
 
 	/**
@@ -94,10 +94,10 @@ public final class PlayerLookup {
 		if (entity.world instanceof ServerWorld) {
 			return Optional.of(entity.world)
 					.map(ServerWorld.class::cast)
-					.map(ServerWorld::getEntityTracker)
+					.map(ServerWorld::getEntityMap)
 					.map(EntityTrackerAccessor.class::cast)
 					.map(EntityTrackerAccessor::getTrackedEntityIds)
-					.map(c -> c.get(entity.getEntityId()))
+					.map(c -> c.get(entity.getNetworkId()))
 					.map(EntityTrackerEntryAccessor.class::cast)
 					.map(EntityTrackerEntryAccessor::getPlayers)
 					.map(Collections::unmodifiableSet)

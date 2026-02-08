@@ -19,7 +19,7 @@ package net.legacyfabric.fabric.test.client.keybinding;
 
 import org.lwjgl.input.Keyboard;
 
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.options.KeyBinding;
 
 import net.fabricmc.api.ClientModInitializer;
 
@@ -32,8 +32,8 @@ public class KeybindingTest implements ClientModInitializer {
 		KeyBinding keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("api.keybinding.testTranslationKey", Keyboard.KEY_F));
 		KeyBinding keyBinding2 = KeyBindingHelper.registerKeyBinding(new KeyBinding("api.keybinding.testTranslationKey2", Keyboard.KEY_G));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			if (keyBinding.wasPressed()) {
-				System.out.printf("The key %s was pressed%n", Keyboard.getKeyName(keyBinding.code));
+			if (keyBinding.consumeClick()) {
+				System.out.printf("The key %s was pressed%n", Keyboard.getKeyName(keyBinding.keyCode));
 			}
 		});
 	}

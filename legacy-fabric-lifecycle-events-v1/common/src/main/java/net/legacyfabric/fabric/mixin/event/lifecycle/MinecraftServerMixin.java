@@ -46,12 +46,12 @@ public class MinecraftServerMixin {
 		ServerLifecycleEvents.SERVER_STOPPING.invoker().onServerStopping((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At(value = "TAIL"), method = "stopServer")
+	@Inject(at = @At(value = "TAIL"), method = "shutdown")
 	public void api$afterServerShutDown(CallbackInfo ci) {
 		ServerLifecycleEvents.SERVER_STOPPED.invoker().onServerStopped((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setupServer()Z"), method = "run")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;init()Z"), method = "run")
 	public void api$beforeServerStart(CallbackInfo ci) {
 		ServerLifecycleEvents.SERVER_STARTING.invoker().onServerStarting((MinecraftServer) (Object) this);
 	}

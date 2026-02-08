@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import net.minecraft.resource.AbstractFileResourcePack;
+import net.minecraft.client.resource.pack.CustomResourcePack;
 
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -38,7 +38,7 @@ import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.ModResourcePack;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
-public class ModNioResourcePack extends AbstractFileResourcePack implements ModResourcePack, Closeable {
+public class ModNioResourcePack extends CustomResourcePack implements ModResourcePack, Closeable {
 	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "ModNioResourcePack");
 	private static final Pattern RESOURCE_PACK_PATH = Pattern.compile("[a-z0-9-_]+");
 	private final ModContainer container;
@@ -67,7 +67,7 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	}
 
 	@Override
-	protected InputStream openFile(String filename) throws IOException {
+	protected InputStream openResource(String filename) throws IOException {
 		InputStream stream;
 
 		if (DeferredNioExecutionHandler.shouldDefer()) {
@@ -103,7 +103,7 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 	}
 
 	@Override
-	protected boolean containsFile(String filename) {
+	protected boolean hasResource(String filename) {
 		if (ModResourcePackUtil.containsDefault(this.getFabricModMetadata(), filename)) {
 			return true;
 		}

@@ -27,7 +27,7 @@ package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
 import com.google.common.base.Preconditions;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 /**
  * This exception is thrown when a sender tries to execute a command that does
@@ -44,7 +44,7 @@ public class CommandNotFoundException extends CommandException {
 	 * @param command The command that was queried for
 	 */
 	public CommandNotFoundException(String command) {
-		this(ChatMessage.createTextMessage("No such command"), command);
+		this(Text.literal("No such command"), command);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class CommandNotFoundException extends CommandException {
 	 * @param message The message
 	 * @param command The command that was queried for
 	 */
-	public CommandNotFoundException(ChatMessage message, String command) {
+	public CommandNotFoundException(Text message, String command) {
 		super(message);
 		this.command = Preconditions.checkNotNull(command, "command");
 	}

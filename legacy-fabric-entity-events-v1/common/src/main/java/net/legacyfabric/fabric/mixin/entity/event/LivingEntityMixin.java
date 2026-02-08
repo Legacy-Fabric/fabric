@@ -22,14 +22,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.living.LivingEntity;
 
 import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 
 @Mixin(LivingEntity.class)
 abstract class LivingEntityMixin {
-	@Inject(method = "onKilled", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;onKilledOther(Lnet/minecraft/entity/LivingEntity;)V", shift = At.Shift.AFTER))
+	@Inject(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;onKill(Lnet/minecraft/entity/living/LivingEntity;)V", shift = At.Shift.AFTER))
 	public void onEntityKilledOther(DamageSource source, CallbackInfo ci) {
 		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(source.getAttacker(), (LivingEntity) (Object) this);
 	}

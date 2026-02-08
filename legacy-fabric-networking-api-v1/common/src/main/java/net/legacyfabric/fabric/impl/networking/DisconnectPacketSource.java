@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.impl.networking;
 
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.text.Text;
 
 public interface DisconnectPacketSource {

@@ -77,7 +77,7 @@ public class ArgumentParseException extends CommandException {
 		} else if (superText == null) {
 			return new LiteralText(this.getAnnotatedPosition());
 		} else {
-			return new LiteralText(superText.asUnformattedString() + "\n" + this.getAnnotatedPosition());
+			return new LiteralText(superText.getString() + "\n" + this.getAnnotatedPosition());
 		}
 	}
 

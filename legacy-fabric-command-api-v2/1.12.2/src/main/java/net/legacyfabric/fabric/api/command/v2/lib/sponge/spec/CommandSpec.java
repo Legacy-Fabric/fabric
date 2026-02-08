@@ -457,9 +457,9 @@ public final class CommandSpec implements CommandCallable {
 	public Optional<Text> getHelp(PermissibleCommandSource source) {
 		Preconditions.checkNotNull(source, "source");
 		StringBuilder builder = new StringBuilder();
-		this.getShortDescription(source).ifPresent((a) -> builder.append(a.asUnformattedString()).append("\n"));
-		builder.append(this.getUsage(source).asUnformattedString());
-		this.getExtendedDescription(source).ifPresent((a) -> builder.append(a.asUnformattedString()).append("\n"));
+		this.getShortDescription(source).ifPresent((a) -> builder.append(a.getString()).append("\n"));
+		builder.append(this.getUsage(source).getString());
+		this.getExtendedDescription(source).ifPresent((a) -> builder.append(a.getString()).append("\n"));
 		return Optional.of(new LiteralText(builder.toString()));
 	}
 

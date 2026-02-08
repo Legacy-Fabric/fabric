@@ -18,10 +18,10 @@
 package net.legacyfabric.fabric.impl.block.versioned;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 
@@ -48,9 +48,9 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		SyncedFabricRegistry<Block> registry = (SyncedFabricRegistry<Block>) holder;
 
 		registry.fabric$getEntryAddedCallback().register((rawId, id, block) -> {
-			for (BlockState blockState : block.getStateManager().getBlockStates()) {
-				int i = rawId << 4 | block.getData(blockState);
-				Block.BLOCK_STATES.set(blockState, i);
+			for (BlockState blockState : block.stateDefinition().all()) {
+				int i = rawId << 4 | block.getMetadataFromState(blockState);
+				Block.STATE_REGISTRY.put(blockState, i);
 			}
 		});
 
@@ -58,21 +58,21 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 
 		registry.fabric$getEntryAddedCallback().register((rawId, id, block) -> {
 			if (block.material == Material.AIR) {
-				block.useNeighbourLight = false;
+				block.useNeighborLight = false;
 			} else {
 				boolean useNeighbourLight = false;
 				boolean isStairs = block instanceof StairsBlock;
 				boolean isSlab = block instanceof SlabBlock;
 				boolean isMissingTop = block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("farmland"))
 						|| (checkGrass && block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("grass_path")));
-				boolean isTranslucent = block.translucent;
+				boolean isTranslucent = block.isTranslucent;
 				boolean isNotOpaque = block.opacity == 0;
 
 				if (isStairs || isSlab || isMissingTop || isTranslucent || isNotOpaque) {
 					useNeighbourLight = true;
 				}
 
-				block.useNeighbourLight = useNeighbourLight;
+				block.useNeighborLight = useNeighbourLight;
 			}
 		});
 	}

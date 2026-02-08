@@ -29,7 +29,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -37,7 +37,7 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class UuidElement extends KeyElement {
-	public UuidElement(ChatMessage key) {
+	public UuidElement(Text key) {
 		super(key);
 	}
 
@@ -47,7 +47,7 @@ public class UuidElement extends KeyElement {
 		try {
 			return UUID.fromString(args.next());
 		} catch (IllegalArgumentException ex) {
-			throw args.createError(ChatMessage.createTextMessage("Invalid UUID!"));
+			throw args.createError(Text.literal("Invalid UUID!"));
 		}
 	}
 }

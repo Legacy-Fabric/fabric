@@ -34,6 +34,6 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 	private static void itemRegistryInit(FabricRegistry<?> holder) {
 		FabricRegistry<Item> registry = (FabricRegistry<Item>) holder;
 
-		registry.fabric$getBeforeAddedCallback().register((rawId, id, item) -> item.setTranslationKey(id.toTranslationKey()));
+		registry.fabric$getBeforeAddedCallback().register((rawId, id, item) -> item.setKey(id.toTranslationKey()));
 	}
 }

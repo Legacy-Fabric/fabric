@@ -19,8 +19,8 @@ package net.legacyfabric.fabric.mixin.event.lifecycle;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.world.chunk.ServerChunkProvider;
+import net.minecraft.server.world.chunk.ServerChunkCache;
 
-@Mixin(ServerChunkProvider.class)
+@Mixin(ServerChunkCache.class)
 public class ServerChunkProviderMixin {
 }

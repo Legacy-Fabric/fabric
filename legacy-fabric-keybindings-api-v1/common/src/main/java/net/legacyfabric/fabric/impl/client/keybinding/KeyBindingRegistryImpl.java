@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.options.GameOptions;
+import net.minecraft.client.options.KeyBinding;
 
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -36,9 +36,9 @@ public final class KeyBindingRegistryImpl {
 	public static KeyBinding registerKeyBinding(KeyBinding binding) {
 		for (KeyBinding existingKeyBindings : moddedKeyBindings) {
 			if (existingKeyBindings == binding) {
-				throw new RuntimeException("Attempted to register same key binding twice " + binding.translationKey + "!");
-			} else if (existingKeyBindings.translationKey.equals(binding.translationKey)) {
-				throw new RuntimeException("Attempted to register two key bindings with equal ID: " + binding.translationKey + "!");
+				throw new RuntimeException("Attempted to register same key binding twice " + binding.name + "!");
+			} else if (existingKeyBindings.name.equals(binding.name)) {
+				throw new RuntimeException("Attempted to register two key bindings with equal ID: " + binding.name + "!");
 			}
 		}
 
@@ -70,7 +70,7 @@ public final class KeyBindingRegistryImpl {
 		final GameOptions options = ((MinecraftAccessor) FabricLoader.getInstance().getGameInstance()).lf$getGameOptions();
 
 		if (options != null) {
-			options.allKeys = process(options.allKeys);
+			options.keyBindings = process(options.keyBindings);
 			options.load();
 		}
 	}

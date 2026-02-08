@@ -20,10 +20,10 @@ package net.legacyfabric.fabric.mixin.entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.entity.class_868;
+import net.minecraft.entity.Entities__SpawnEggData;
 
-@Mixin(class_868.class)
+@Mixin(Entities__SpawnEggData.class)
 public interface SpawnEggDataAccessor {
-	@Accessor("field_3273")
+	@Accessor("id")
 	void setId(int id);
 }

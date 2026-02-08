@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.impl.biome.versioned;
 
-import net.minecraft.util.collection.IdList;
+import net.minecraft.util.Id2ObjectBiMap;
 import net.minecraft.world.biome.Biome;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
@@ -44,26 +44,26 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		});
 
 		registry.fabric$getEntryAddedCallback().register((rawId, id, object) -> {
-			if (object.hasParent()) {
-				Biome.biomeList.set(object, registry.fabric$getRawId(
+			if (object.isMutated()) {
+				Biome.MUTATED_BIOMES.put(object, registry.fabric$getRawId(
 						new Identifier(((BiomeAccessor) object).getParent())
 				));
 			}
 		});
 
 		registry.fabric$getRegistryRemapCallback().register(changedIdsMap -> {
-			IdList<Biome> list = (IdList<Biome>) Biome.biomeList.fabric$new();
+			Id2ObjectBiMap<Biome> list = (Id2ObjectBiMap<Biome>) Biome.MUTATED_BIOMES.fabric$new();
 
-			for (Biome biome : (IdsHolder<Biome>) Biome.biomeList) {
+			for (Biome biome : (IdsHolder<Biome>) Biome.MUTATED_BIOMES) {
 				if (biome == null) continue;
 
-				int index = Biome.biomeList.fabric$getId(biome);
+				int index = Biome.MUTATED_BIOMES.fabric$getId(biome);
 
 				if (changedIdsMap.containsKey(index)) {
 					index = changedIdsMap.get(index).getId();
 				}
 
-				list.set(biome, index);
+				list.put(biome, index);
 			}
 
 			BiomeAccessor.setBiomeList(list);

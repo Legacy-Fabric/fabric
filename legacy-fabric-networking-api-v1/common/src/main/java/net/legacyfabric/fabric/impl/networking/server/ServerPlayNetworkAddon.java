@@ -21,11 +21,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.server.network.handler.ServerPlayNetworkHandler;
 
 import net.legacyfabric.fabric.api.networking.v1.S2CPlayChannelEvents;
 import net.legacyfabric.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -79,7 +79,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 			return false;
 		}
 
-		return this.handle(packet.getChannel(), ((CustomPayloadC2SPacketExtension) packet).getData());
+		return this.handle(packet.getChannel(), ((CustomPayloadC2SPacketExtension) packet).lf$getData());
 	}
 
 	@Override

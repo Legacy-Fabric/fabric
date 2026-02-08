@@ -46,8 +46,8 @@ import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.ChatMessage;
+import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
 import net.fabricmc.loader.api.ModContainer;
@@ -111,7 +111,7 @@ public class GenericArguments {
 	 * @param key the key to store 'true' under
 	 * @return the argument
 	 */
-	public static CommandElement markTrue(ChatMessage key) {
+	public static CommandElement markTrue(Text key) {
 		return new MarkTrueCommandElement(key);
 	}
 
@@ -137,7 +137,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement playerOrSource(ChatMessage key) {
+	public static CommandElement playerOrSource(Text key) {
 		return new PlayerCommandElement(key, true);
 	}
 
@@ -160,7 +160,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement player(ChatMessage key) {
+	public static CommandElement player(Text key) {
 		return new PlayerCommandElement(key, false);
 	}
 
@@ -172,7 +172,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement vec3d(ChatMessage key) {
+	public static CommandElement vec3d(Text key) {
 		return new Vec3dCommandElement(key);
 	}
 
@@ -193,7 +193,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement mod(ChatMessage key) {
+	public static CommandElement mod(Text key) {
 		return new ModCommandElement(key);
 	}
 
@@ -246,7 +246,7 @@ public class GenericArguments {
 	 * @param choices The choices users can choose from
 	 * @return the element to match the input
 	 */
-	public static CommandElement choices(ChatMessage key, Map<String, ?> choices) {
+	public static CommandElement choices(Text key, Map<String, ?> choices) {
 		return choices(key, choices, choices.size() <= ChoicesCommandElement.CUTOFF, true);
 	}
 
@@ -270,7 +270,7 @@ public class GenericArguments {
 	 * @param choices The choices users can choose from
 	 * @return the element to match the input
 	 */
-	public static CommandElement choicesInsensitive(ChatMessage key, Map<String, ?> choices) {
+	public static CommandElement choicesInsensitive(Text key, Map<String, ?> choices) {
 		return choices(key, choices, choices.size() <= ChoicesCommandElement.CUTOFF, false);
 	}
 
@@ -292,7 +292,7 @@ public class GenericArguments {
 	 *                       the provided key, as part of usage
 	 * @return the element to match the input
 	 */
-	public static CommandElement choices(ChatMessage key, Map<String, ?> choices, boolean choicesInUsage) {
+	public static CommandElement choices(Text key, Map<String, ?> choices, boolean choicesInUsage) {
 		return choices(key, choices, choicesInUsage, true);
 	}
 
@@ -312,7 +312,7 @@ public class GenericArguments {
 	 * @param caseSensitive  Whether the matches should be case sensitive
 	 * @return the element to match the input
 	 */
-	public static CommandElement choices(ChatMessage key, Map<String, ?> choices, boolean choicesInUsage, boolean caseSensitive) {
+	public static CommandElement choices(Text key, Map<String, ?> choices, boolean choicesInUsage, boolean caseSensitive) {
 		if (!caseSensitive) {
 			Map<String, Object> choicesMap = choices.entrySet().stream().collect(Collectors.toMap(x -> x.getKey().toLowerCase(), Map.Entry::getValue));
 			return choices(key, choicesMap::keySet, selection -> choicesMap.get(selection.toLowerCase()), choicesInUsage);
@@ -340,7 +340,7 @@ public class GenericArguments {
 	 *               and any other key to {@code null}
 	 * @return the element to match the input
 	 */
-	public static CommandElement choices(ChatMessage key, Supplier<Collection<String>> keys, Function<String, ?> values) {
+	public static CommandElement choices(Text key, Supplier<Collection<String>> keys, Function<String, ?> values) {
 		return new ChoicesCommandElement(key, keys, values, TriState.DEFAULT);
 	}
 
@@ -359,7 +359,7 @@ public class GenericArguments {
 	 *                       the provided key, as part of usage
 	 * @return the element to match the input
 	 */
-	public static CommandElement choices(ChatMessage key, Supplier<Collection<String>> keys, Function<String, ?> values, boolean choicesInUsage) {
+	public static CommandElement choices(Text key, Supplier<Collection<String>> keys, Function<String, ?> values, boolean choicesInUsage) {
 		return new ChoicesCommandElement(key, keys, values, choicesInUsage ? TriState.TRUE : TriState.FALSE);
 	}
 
@@ -477,7 +477,7 @@ public class GenericArguments {
 	 * @param key The key to store the parsed argument under
 	 * @return the element to match the input
 	 */
-	public static CommandElement string(ChatMessage key) {
+	public static CommandElement string(Text key) {
 		return new StringElement(key);
 	}
 
@@ -490,8 +490,8 @@ public class GenericArguments {
 	 * @param key The key to store the parsed argument under
 	 * @return the element to match the input
 	 */
-	public static CommandElement integer(ChatMessage key) {
-		return new NumericElement<>(key, Integer::parseInt, Integer::parseInt, input -> ChatMessage.createTextMessage(String.format("Expected an integer, but input '%s' was not", input)));
+	public static CommandElement integer(Text key) {
+		return new NumericElement<>(key, Integer::parseInt, Integer::parseInt, input -> Text.literal(String.format("Expected an integer, but input '%s' was not", input)));
 	}
 
 	/**
@@ -503,8 +503,8 @@ public class GenericArguments {
 	 * @param key The key to store the parsed argument under
 	 * @return the element to match the input
 	 */
-	public static CommandElement longNum(ChatMessage key) {
-		return new NumericElement<>(key, Long::parseLong, Long::parseLong, input -> ChatMessage.createTextMessage(String.format("Expected a long, but input '%s' was not", input)));
+	public static CommandElement longNum(Text key) {
+		return new NumericElement<>(key, Long::parseLong, Long::parseLong, input -> Text.literal(String.format("Expected a long, but input '%s' was not", input)));
 	}
 
 	/**
@@ -516,8 +516,8 @@ public class GenericArguments {
 	 * @param key The key to store the parsed argument under
 	 * @return the element to match the input
 	 */
-	public static CommandElement doubleNum(ChatMessage key) {
-		return new NumericElement<>(key, Double::parseDouble, null, input -> ChatMessage.createTextMessage(String.format("Expected a number, but input '%s' was not", input)));
+	public static CommandElement doubleNum(Text key) {
+		return new NumericElement<>(key, Double::parseDouble, null, input -> Text.literal(String.format("Expected a number, but input '%s' was not", input)));
 	}
 
 	private static final Map<String, Boolean> BOOLEAN_CHOICES = ImmutableMap.<String, Boolean>builder()
@@ -565,7 +565,7 @@ public class GenericArguments {
 	 * @param key The key to store the parsed argument under
 	 * @return the element to match the input
 	 */
-	public static CommandElement bool(ChatMessage key) {
+	public static CommandElement bool(Text key) {
 		return GenericArguments.choices(key, BOOLEAN_CHOICES);
 	}
 
@@ -579,7 +579,7 @@ public class GenericArguments {
 	 * @param <T>  The type of enum
 	 * @return the element to match the input
 	 */
-	public static <T extends Enum<T>> CommandElement enumValue(ChatMessage key, Class<T> type) {
+	public static <T extends Enum<T>> CommandElement enumValue(Text key, Class<T> type) {
 		return new EnumValueElement<>(key, type);
 	}
 
@@ -593,7 +593,7 @@ public class GenericArguments {
 	 * @param key The key to store the parsed argument under
 	 * @return the element to match the input
 	 */
-	public static CommandElement remainingJoinedStrings(ChatMessage key) {
+	public static CommandElement remainingJoinedStrings(Text key) {
 		return new RemainingJoinedStringsCommandElement(key, false);
 	}
 
@@ -607,7 +607,7 @@ public class GenericArguments {
 	 * @param key The key to store the parsed argument under
 	 * @return the element to match the input
 	 */
-	public static CommandElement remainingRawJoinedStrings(ChatMessage key) {
+	public static CommandElement remainingRawJoinedStrings(Text key) {
 		return new RemainingJoinedStringsCommandElement(key, true);
 	}
 
@@ -623,7 +623,7 @@ public class GenericArguments {
 	 * @param expectedArgs The sequence of arguments expected
 	 * @return the appropriate command element
 	 */
-	public static CommandElement literal(ChatMessage key, String... expectedArgs) {
+	public static CommandElement literal(Text key, String... expectedArgs) {
 		return new LiteralCommandElement(key, ImmutableList.copyOf(expectedArgs), true);
 	}
 
@@ -640,7 +640,7 @@ public class GenericArguments {
 	 * @param expectedArgs The sequence of arguments expected
 	 * @return the appropriate command element
 	 */
-	public static CommandElement literal(ChatMessage key, @Nullable Object putValue, String... expectedArgs) {
+	public static CommandElement literal(Text key, @Nullable Object putValue, String... expectedArgs) {
 		return new LiteralCommandElement(key, ImmutableList.copyOf(expectedArgs), putValue);
 	}
 
@@ -711,7 +711,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement entity(ChatMessage key) {
+	public static CommandElement entity(Text key) {
 		return new EntityCommandElement(key, false, false, null);
 	}
 
@@ -733,7 +733,7 @@ public class GenericArguments {
 	 * @param clazz The type which the entity must subclass
 	 * @return the argument
 	 */
-	public static CommandElement entity(ChatMessage key, Class<? extends Entity> clazz) {
+	public static CommandElement entity(Text key, Class<? extends Entity> clazz) {
 		return new EntityCommandElement(key, false, false, clazz);
 	}
 
@@ -757,7 +757,7 @@ public class GenericArguments {
 	 * @param clazz The type which the entity must subclass
 	 * @return the argument
 	 */
-	public static CommandElement entityOrTarget(ChatMessage key, Class<? extends Entity> clazz) {
+	public static CommandElement entityOrTarget(Text key, Class<? extends Entity> clazz) {
 		return new EntityCommandElement(key, false, true, clazz);
 	}
 
@@ -769,7 +769,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement url(ChatMessage key) {
+	public static CommandElement url(Text key) {
 		return new UrlElement(key);
 	}
 
@@ -782,7 +782,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement ip(ChatMessage key) {
+	public static CommandElement ip(Text key) {
 		return new IpElement(key);
 	}
 
@@ -792,7 +792,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement bigDecimal(ChatMessage key) {
+	public static CommandElement bigDecimal(Text key) {
 		return new BigDecimalElement(key);
 	}
 
@@ -804,7 +804,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement bigInteger(ChatMessage key) {
+	public static CommandElement bigInteger(Text key) {
 		return new BigIntegerElement(key);
 	}
 
@@ -816,7 +816,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement uuid(ChatMessage key) {
+	public static CommandElement uuid(Text key) {
 		return new UuidElement(key);
 	}
 
@@ -829,7 +829,7 @@ public class GenericArguments {
 	 * @param type The type of parsing to be followed
 	 * @return the argument
 	 */
-	public static CommandElement string(ChatMessage key, StringType type) {
+	public static CommandElement string(Text key, StringType type) {
 		return new StringCommandElement(key, type);
 	}
 
@@ -846,7 +846,7 @@ public class GenericArguments {
 	 * @return the argument
 	 * @see <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a>
 	 */
-	public static CommandElement dateTime(ChatMessage key) {
+	public static CommandElement dateTime(Text key) {
 		return new DateTimeElement(key, false);
 	}
 
@@ -865,7 +865,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement dateTimeOrNow(ChatMessage key) {
+	public static CommandElement dateTimeOrNow(Text key) {
 		return new DateTimeElement(key, true);
 	}
 
@@ -880,7 +880,7 @@ public class GenericArguments {
 	 * @param key The key to store under
 	 * @return the argument
 	 */
-	public static CommandElement duration(ChatMessage key) {
+	public static CommandElement duration(Text key) {
 		return new DurationElement(key);
 	}
 

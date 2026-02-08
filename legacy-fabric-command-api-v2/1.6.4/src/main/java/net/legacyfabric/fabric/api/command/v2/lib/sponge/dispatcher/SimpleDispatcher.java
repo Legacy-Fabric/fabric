@@ -47,8 +47,8 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
-import net.minecraft.util.Formatting;
+import net.minecraft.text.Formatting;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandCallable;
@@ -333,7 +333,7 @@ public final class SimpleDispatcher implements Dispatcher {
 		Optional<CommandMapping> cmdOptional = this.get(argSplit[0], source);
 
 		if (!cmdOptional.isPresent()) {
-			throw new CommandNotFoundException(ChatMessage.createTranslateMessage("commands.generic.notFound"), argSplit[0]);
+			throw new CommandNotFoundException(Text.translatable("commands.generic.notFound"), argSplit[0]);
 		}
 
 		final String arguments = argSplit.length > 1 ? argSplit[1] : "";
@@ -343,9 +343,9 @@ public final class SimpleDispatcher implements Dispatcher {
 		try {
 			return spec.process(source, arguments);
 		} catch (CommandNotFoundException e) {
-			throw new CommandException(ChatMessage.createTextMessage("No such child command: " + e.getCommand()));
+			throw new CommandException(Text.literal("No such child command: " + e.getCommand()));
 		} catch (RuntimeException e) {
-			throw new InvocationCommandException(ChatMessage.createTextMessage("An unexpected error happened executing the command"), e);
+			throw new InvocationCommandException(Text.literal("An unexpected error happened executing the command"), e);
 		}
 	}
 
@@ -375,17 +375,17 @@ public final class SimpleDispatcher implements Dispatcher {
 	}
 
 	@Override
-	public Optional<ChatMessage> getShortDescription(PermissibleCommandSource source) {
+	public Optional<Text> getShortDescription(PermissibleCommandSource source) {
 		return Optional.empty();
 	}
 
 	@Override
-	public Optional<ChatMessage> getHelp(PermissibleCommandSource source) {
+	public Optional<Text> getHelp(PermissibleCommandSource source) {
 		if (this.commands.isEmpty()) {
 			return Optional.empty();
 		}
 
-		ChatMessage build = ChatMessage.createTextMessage("Available commands:\n");
+		Text build = Text.literal("Available commands:\n");
 
 		for (Iterator<String> it = this.filterCommands(source).iterator(); it.hasNext(); ) {
 			final Optional<CommandMapping> mappingOpt = this.get(it.next(), source);
@@ -395,19 +395,19 @@ public final class SimpleDispatcher implements Dispatcher {
 			}
 
 			CommandMapping mapping = mappingOpt.get();
-			final Optional<ChatMessage> description = mapping.getCallable().getShortDescription(source);
-			ChatMessage text = ChatMessage.createTextMessage(mapping.getPrimaryAlias());
-			build.addUsing(text.setColor(Formatting.GREEN).setUnderlined(Boolean.TRUE)
+			final Optional<Text> description = mapping.getCallable().getShortDescription(source);
+			Text text = Text.literal(mapping.getPrimaryAlias());
+			build.append(text.setColor(Formatting.GREEN).setUnderlined(Boolean.TRUE)
 			/*	Click Event not supported in this version
 			.setClickEvent(new ClickEvent(ClickEventAction.RUN_COMMAND, "/" + mapping.getPrimaryAlias())))
-			*/).addUsing(CommandMessageFormatting.SPACE_TEXT).addUsing(description.orElse(mapping.getCallable().getUsage(source)));
+			*/).append(CommandMessageFormatting.SPACE_TEXT).append(description.orElse(mapping.getCallable().getUsage(source)));
 
 			if (it.hasNext()) {
-				build.addText("\n");
+				build.appendLiteral("\n");
 			}
 		}
 
-		return Optional.of(ChatMessage.createTextMessage(build.toString()));
+		return Optional.of(Text.literal(build.toString()));
 	}
 
 	private Set<String> filterCommands(final PermissibleCommandSource src) {
@@ -431,7 +431,7 @@ public final class SimpleDispatcher implements Dispatcher {
 	}
 
 	@Override
-	public ChatMessage getUsage(final PermissibleCommandSource source) {
+	public Text getUsage(final PermissibleCommandSource source) {
 		final StringBuilder build = new StringBuilder();
 		Iterable<String> filteredCommands = this.filterCommands(source).stream()
 				.filter(input -> {
@@ -452,7 +452,7 @@ public final class SimpleDispatcher implements Dispatcher {
 			}
 		}
 
-		return ChatMessage.createTextMessage(build.toString());
+		return Text.literal(build.toString());
 	}
 
 	@Override

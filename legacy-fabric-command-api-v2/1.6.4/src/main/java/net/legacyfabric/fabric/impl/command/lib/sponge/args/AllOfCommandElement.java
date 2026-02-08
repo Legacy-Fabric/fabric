@@ -28,7 +28,7 @@ package net.legacyfabric.fabric.impl.command.lib.sponge.args;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
@@ -85,7 +85,7 @@ public class AllOfCommandElement extends CommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource context) {
-		return ChatMessage.createTextMessage(this.element.getUsage(context).toString() + CommandMessageFormatting.STAR_TEXT.toString(true));
+	public Text getUsage(PermissibleCommandSource context) {
+		return Text.literal(this.element.getUsage(context).toString() + CommandMessageFormatting.STAR_TEXT.buildString(true));
 	}
 }

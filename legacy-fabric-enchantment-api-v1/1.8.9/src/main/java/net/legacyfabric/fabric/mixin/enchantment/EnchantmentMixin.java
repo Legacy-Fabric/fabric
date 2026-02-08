@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.Identifier;
+import net.minecraft.resource.Identifier;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -46,26 +46,26 @@ public class EnchantmentMixin {
 	@Mutable
 	@Shadow
 	@Final
-	private static Map<Identifier, Enchantment> ENCHANTMENT_MAP;
+	private static Map<Identifier, Enchantment> BY_KEY;
 	@Mutable
 	@Shadow
 	@Final
-	private static Enchantment[] ENCHANTMENTS;
+	private static Enchantment[] BY_ID;
 	@Mutable
 	@Shadow
 	@Final
-	public static Enchantment[] ALL_ENCHANTMENTS;
+	public static Enchantment[] ALL;
 	@Unique
 	private static FabricRegistry<Enchantment> ENCHANTMENT_REGISTRY;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		BiMap<Identifier, Enchantment> map = HashBiMap.create(ENCHANTMENT_MAP);
-		ENCHANTMENT_MAP = map;
+		BiMap<Identifier, Enchantment> map = HashBiMap.create(BY_KEY);
+		BY_KEY = map;
 
 		ENCHANTMENT_REGISTRY = new SyncedArrayMapFabricRegistryWrapper<>(
 				RegistryIds.ENCHANTMENTS,
-				ENCHANTMENTS, map, false,
+				BY_ID, map, false,
 				universal -> new Identifier(universal.toString()),
 				net.legacyfabric.fabric.api.util.Identifier::new,
 				ids -> {
@@ -85,17 +85,17 @@ public class EnchantmentMixin {
 						array[id] = enchantment;
 					}
 
-					ENCHANTMENTS = array;
+					BY_ID = array;
 
 					List<Enchantment> list = Lists.<Enchantment>newArrayList();
 
-					for (Enchantment enchantment : ENCHANTMENTS) {
+					for (Enchantment enchantment : BY_ID) {
 						if (enchantment != null) {
 							list.add(enchantment);
 						}
 					}
 
-					ALL_ENCHANTMENTS = list.toArray(new Enchantment[list.size()]);
+					ALL = list.toArray(new Enchantment[list.size()]);
 				}
 		);
 

@@ -21,9 +21,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
 
+import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.itemgroup.ItemGroup;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -32,20 +32,20 @@ import net.legacyfabric.fabric.api.util.Identifier;
 
 public class ItemGroupTest implements ModInitializer {
 	//Adds an item group with all items in it
-	private static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("legacy-fabric-item-groups-v1-testmod", "test_group"))
+	private static final CreativeModeTab ITEM_GROUP = FabricItemGroupBuilder.create(new Identifier("legacy-fabric-item-groups-v1-testmod", "test_group"))
 			.iconWithItemStack(() -> new ItemStack(Item.DIAMOND))
 			.appendItems(stacks ->
-					StreamSupport.stream(Arrays.stream(Item.ITEMS).spliterator(), false)
+					StreamSupport.stream(Arrays.stream(Item.BY_ID).spliterator(), false)
 							.filter(Objects::nonNull)
 							.map(ItemStack::new)
 							.forEach(stacks::add)
 			).build();
 
-	private static final ItemGroup ITEM_GROUP_2 = FabricItemGroupBuilder.create(new Identifier("legacy-fabric-item-groups-v1-testmod", "test_group_two"))
+	private static final CreativeModeTab ITEM_GROUP_2 = FabricItemGroupBuilder.create(new Identifier("legacy-fabric-item-groups-v1-testmod", "test_group_two"))
 			.iconWithItemStack(() -> new ItemStack(Item.REDSTONE))
 			.appendItems((stacks, itemGroup) -> {
-				for (Item item : Item.ITEMS) {
-					if (item != null && (item.getItemGroup() == ItemGroup.FOOD || item.getItemGroup() == itemGroup)) {
+				for (Item item : Item.BY_ID) {
+					if (item != null && (item.getCreativeModeTab() == CreativeModeTab.FOOD || item.getCreativeModeTab() == itemGroup)) {
 						stacks.add(new ItemStack(item));
 					}
 				}

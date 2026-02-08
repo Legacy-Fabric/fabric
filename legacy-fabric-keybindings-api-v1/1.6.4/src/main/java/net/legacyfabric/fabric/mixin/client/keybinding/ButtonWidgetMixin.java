@@ -22,7 +22,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.ButtonWidget;
 
 import net.legacyfabric.fabric.impl.client.keybinding.ButtonWidgetHelper;
@@ -32,8 +32,8 @@ public abstract class ButtonWidgetMixin implements ButtonWidgetHelper {
 	@Shadow
 	protected boolean hovered;
 
-	@WrapMethod(method = "mouseDragged")
-	private void fabric_mouseDragged(MinecraftClient client, int mouseX, int mouseY, Operation<Void> original) {
+	@WrapMethod(method = "renderBackground")
+	private void fabric_mouseDragged(Minecraft client, int mouseX, int mouseY, Operation<Void> original) {
 		this.lf$mouseDragged(mouseX, mouseY, (x, y) -> original.call(client, x, y));
 	}
 

@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.render.entity.ItemRenderer;
 import net.minecraft.item.Item;
 
 import net.fabricmc.api.EnvType;
@@ -33,30 +33,30 @@ import net.legacyfabric.fabric.impl.resource.loader.ItemModelRegistryImpl;
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin implements ItemModelRegistryImpl.Registrar {
 	@Shadow
-	protected abstract void addModel(Item item, int metadata, String id);
+	protected abstract void registerModel(Item item, int metadata, String id);
 
 	@Shadow
-	protected abstract void addModel(Item item, String id);
+	protected abstract void registerModel(Item item, String id);
 
 	@Shadow
-	protected abstract void addModel(Block block, String id);
+	protected abstract void registerModel(Block block, String id);
 
 	@Shadow
-	protected abstract void addModel(Block block, int metadata, String id);
+	protected abstract void registerModel(Block block, int metadata, String id);
 
 	@Override
 	public void fabric_register() {
 		ItemModelRegistryImpl.ITEMS_WITHOUT_META.forEach(pair -> {
-			this.addModel(pair.getObject(), pair.getModel().toString());
+			this.registerModel(pair.getObject(), pair.getModel().toString());
 		});
 		ItemModelRegistryImpl.BLOCKS_WITHOUT_META.forEach(pair -> {
-			this.addModel(pair.getObject(), pair.getModel().toString());
+			this.registerModel(pair.getObject(), pair.getModel().toString());
 		});
 		ItemModelRegistryImpl.ITEMS_WITH_META.forEach(triad -> {
-			this.addModel(triad.getObject(), triad.getMetadata(), triad.getModel().toString());
+			this.registerModel(triad.getObject(), triad.getMetadata(), triad.getModel().toString());
 		});
 		ItemModelRegistryImpl.BLOCKS_WITH_META.forEach(triad -> {
-			this.addModel(triad.getObject(), triad.getMetadata(), triad.getModel().toString());
+			this.registerModel(triad.getObject(), triad.getMetadata(), triad.getModel().toString());
 		});
 	}
 }

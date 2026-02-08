@@ -23,28 +23,28 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.util.collection.IdList;
+import net.minecraft.util.CrudeIncrementalIntIdentityHashMap;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 
-@Mixin(IdList.class)
+@Mixin(CrudeIncrementalIntIdentityHashMap.class)
 public abstract class IdListMixin<T> implements IdsHolder<T> {
 	@Shadow
-	public abstract T fromId(int index);
+	public abstract T get(int index);
 
 	@Shadow
-	public abstract void set(T value, int index);
+	public abstract void put(T value, int index);
 
 	@Shadow
 	public abstract int getId(T value);
 
 	@Shadow
 	@Final
-	private IdentityHashMap<T, Integer> idMap;
+	private IdentityHashMap<T, Integer> ids;
 
 	@Override
 	public IdsHolder<T> fabric$new() {
-		return (IdsHolder<T>) new IdList<>();
+		return (IdsHolder<T>) new CrudeIncrementalIntIdentityHashMap<>();
 	}
 
 	@Override
@@ -58,17 +58,17 @@ public abstract class IdListMixin<T> implements IdsHolder<T> {
 
 	@Override
 	public void fabric$setValue(T value, int id) {
-		set(value, id);
+		put(value, id);
 	}
 
 	@Override
 	public int fabric$size() {
-		return idMap.size();
+		return ids.size();
 	}
 
 	@Override
 	public T fabric$getValue(int rawId) {
-		return this.fromId(rawId);
+		return this.get(rawId);
 	}
 
 	@Override

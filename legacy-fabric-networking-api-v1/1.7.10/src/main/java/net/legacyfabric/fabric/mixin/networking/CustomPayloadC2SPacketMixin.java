@@ -20,8 +20,8 @@ package net.legacyfabric.fabric.mixin.networking;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
-import net.minecraft.util.PacketByteBuf;
 
 import net.legacyfabric.fabric.api.networking.v1.PacketByteBufs;
 import net.legacyfabric.fabric.impl.networking.server.CustomPayloadC2SPacketExtension;
@@ -29,10 +29,10 @@ import net.legacyfabric.fabric.impl.networking.server.CustomPayloadC2SPacketExte
 @Mixin(CustomPayloadC2SPacket.class)
 public abstract class CustomPayloadC2SPacketMixin implements CustomPayloadC2SPacketExtension {
 	@Shadow
-	public abstract byte[] method_7981();
+	public abstract byte[] getData();
 
 	@Override
-	public PacketByteBuf getData() {
-		return new PacketByteBuf(PacketByteBufs.empty().writeBytes(this.method_7981()));
+	public PacketByteBuf lf$getData() {
+		return new PacketByteBuf(PacketByteBufs.empty().writeBytes(this.getData()));
 	}
 }

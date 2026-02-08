@@ -1,5 +1,4 @@
 accessWidener	v2	named
-
-accessible method net/minecraft/text/ChatMessage getText ()Ljava/lang/String;
-accessible method net/minecraft/text/ChatMessage getTranslate ()Ljava/lang/String;
-accessible method net/minecraft/text/ChatMessage getUsing ()Ljava/util/List;
+accessible	method	net/minecraft/text/Text	getText	()Ljava/lang/String;
+accessible	method	net/minecraft/text/Text	getTranslated	()Ljava/lang/String;
+accessible	method	net/minecraft/text/Text	getSiblings	()Ljava/util/List;

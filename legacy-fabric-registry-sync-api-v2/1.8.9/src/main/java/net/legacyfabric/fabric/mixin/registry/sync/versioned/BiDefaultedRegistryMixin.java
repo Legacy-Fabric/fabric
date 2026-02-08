@@ -23,14 +23,14 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.util.registry.BiDefaultedRegistry;
+import net.minecraft.util.registry.DefaultedIdRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
 
-@Mixin(BiDefaultedRegistry.class)
+@Mixin(DefaultedIdRegistry.class)
 public abstract class BiDefaultedRegistryMixin<K, V> implements SyncedFabricRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
 	@Shadow
 	private V defaultValue;
@@ -42,7 +42,7 @@ public abstract class BiDefaultedRegistryMixin<K, V> implements SyncedFabricRegi
 	@Override
 	public V fabric$getValue(Identifier id) {
 		K key = fabric$toKeyType(id);
-		V value = ((BiDefaultedRegistry<K, V>) (Object) this).get(key);
+		V value = ((DefaultedIdRegistry<K, V>) (Object) this).get(key);
 
 		if (value == this.defaultValue && !Objects.equals(this.defaultKey.toString(), key.toString())) return null;
 

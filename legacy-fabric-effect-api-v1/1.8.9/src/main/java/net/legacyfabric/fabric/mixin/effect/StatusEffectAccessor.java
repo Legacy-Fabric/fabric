@@ -20,7 +20,7 @@ package net.legacyfabric.fabric.mixin.effect;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.living.effect.StatusEffect;
 
 @Mixin(StatusEffect.class)
 public interface StatusEffectAccessor {

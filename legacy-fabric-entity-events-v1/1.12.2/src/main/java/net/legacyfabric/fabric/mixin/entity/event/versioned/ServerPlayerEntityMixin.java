@@ -22,13 +22,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 
 import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 
 @Mixin(ServerPlayerEntity.class)
 abstract class ServerPlayerEntityMixin {
-	@Inject(method = "method_14968", at = @At("TAIL"))
+	@Inject(method = "copyFrom", at = @At("TAIL"))
 	private void onCopyFrom(ServerPlayerEntity player, boolean alive, CallbackInfo ci) {
 		ServerPlayerEvents.COPY_FROM.invoker().copyFromPlayer((ServerPlayerEntity) player, (ServerPlayerEntity) (Object) this, alive);
 	}

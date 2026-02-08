@@ -36,7 +36,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
@@ -44,19 +44,19 @@ import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
  * Abstract command element that matches values based on a regex pattern.
  */
 public abstract class PatternMatchingCommandElement extends CommandElement {
-	private static final ChatMessage nullKeyArg = ChatMessage.createTextMessage("argument");
+	private static final Text nullKeyArg = Text.literal("argument");
 	final boolean useRegex;
 
 	/**
 	 * @param yesIWantRegex Specify if you want to allow regex for users of
 	 *                      the command element. Note that this will open up for DoS attacks.
 	 */
-	protected PatternMatchingCommandElement(@Nullable ChatMessage key, boolean yesIWantRegex) {
+	protected PatternMatchingCommandElement(@Nullable Text key, boolean yesIWantRegex) {
 		super(key);
 		this.useRegex = yesIWantRegex;
 	}
 
-	protected PatternMatchingCommandElement(@Nullable ChatMessage key) {
+	protected PatternMatchingCommandElement(@Nullable Text key) {
 		this(key, false);
 	}
 
@@ -84,7 +84,7 @@ public abstract class PatternMatchingCommandElement extends CommandElement {
 		}
 
 		if (!ret.iterator().hasNext()) {
-			throw args.createError(ChatMessage.createTextMessage(String.format("No values matching pattern '%s' present for %s!", arg, this.getKey() == null
+			throw args.createError(Text.literal(String.format("No values matching pattern '%s' present for %s!", arg, this.getKey() == null
 					? nullKeyArg : this.getKey().toString())));
 		}
 

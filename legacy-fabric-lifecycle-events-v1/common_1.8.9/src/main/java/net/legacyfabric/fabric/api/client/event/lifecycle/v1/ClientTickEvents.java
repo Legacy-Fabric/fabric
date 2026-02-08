@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.client.event.lifecycle.v1;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.profiler.Profiler;
 
@@ -124,12 +124,12 @@ public final class ClientTickEvents {
 
 	@FunctionalInterface
 	public interface StartTick {
-		void onStartTick(MinecraftClient client);
+		void onStartTick(Minecraft client);
 	}
 
 	@FunctionalInterface
 	public interface EndTick {
-		void onEndTick(MinecraftClient client);
+		void onEndTick(Minecraft client);
 	}
 
 	@FunctionalInterface

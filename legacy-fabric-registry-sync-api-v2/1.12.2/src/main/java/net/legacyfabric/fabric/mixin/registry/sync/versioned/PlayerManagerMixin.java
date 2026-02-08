@@ -25,10 +25,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.ClientConnection;
+import net.minecraft.network.Connection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
+import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 import net.minecraft.server.integrated.IntegratedServer;
 
 import net.fabricmc.api.EnvType;
@@ -44,8 +44,8 @@ public class PlayerManagerMixin {
 	@Final
 	private MinecraftServer server;
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V", ordinal = 2), method = "method_12827")
-	public void playerConnect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/handler/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 2), method = "onLogin")
+	public void playerConnect(Connection connection, ServerPlayerEntity player, CallbackInfo ci) {
 		if (fabric_shouldSend()) {
 			ServerPlayNetworking.send(player, RegistryHelperImplementation.PACKET_ID, RegistryHelperImplementation.createBuf());
 		}

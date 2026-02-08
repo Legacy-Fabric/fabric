@@ -21,18 +21,18 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.unmapped.C_53094504;
+import net.minecraft.util.Id2ObjectBiMap;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 
-@Mixin(C_53094504.class)
+@Mixin(Id2ObjectBiMap.class)
 public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
 	@Shadow
 	@Nullable
-	public abstract T getById(int id);
+	public abstract T get(int id);
 
 	@Shadow
-	public abstract void add(T value, int id);
+	public abstract void put(T value, int id);
 
 	@Shadow
 	public abstract int getId(T value);
@@ -42,21 +42,21 @@ public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
 
 	@Override
 	public IdsHolder<T> fabric$new() {
-		return (IdsHolder<T>) new C_53094504<>(256);
+		return (IdsHolder<T>) new Id2ObjectBiMap<>(256);
 	}
 
 	@Override
 	public int fabric$nextId() {
 		int id = 1;
 
-		while (this.getById(id) != null) id++;
+		while (this.get(id) != null) id++;
 
 		return id;
 	}
 
 	@Override
 	public void fabric$setValue(T value, int id) {
-		add(value, id);
+		put(value, id);
 	}
 
 	@Override
@@ -71,6 +71,6 @@ public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
 
 	@Override
 	public T fabric$getValue(int rawId) {
-		return this.getById(rawId);
+		return this.get(rawId);
 	}
 }

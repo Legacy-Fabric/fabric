@@ -30,7 +30,7 @@ import java.time.format.DateTimeParseException;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.CommandArgs;
@@ -38,7 +38,7 @@ import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.KeyElement;
 import net.legacyfabric.fabric.api.permission.v1.PermissibleCommandSource;
 
 public class DurationElement extends KeyElement {
-	public DurationElement(ChatMessage key) {
+	public DurationElement(Text key) {
 		super(key);
 	}
 
@@ -68,7 +68,7 @@ public class DurationElement extends KeyElement {
 		try {
 			return Duration.parse(s);
 		} catch (DateTimeParseException ex) {
-			throw args.createError(ChatMessage.createTextMessage("Invalid duration!"));
+			throw args.createError(Text.literal("Invalid duration!"));
 		}
 	}
 }

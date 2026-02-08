@@ -34,14 +34,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.world.WorldSaveHandler;
-import net.minecraft.world.level.LevelProperties;
+import net.minecraft.world.WorldData;
+import net.minecraft.world.storage.AlphaWorldStorage;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
-@Mixin(WorldSaveHandler.class)
+@Mixin(AlphaWorldStorage.class)
 public class WorldSaveHandlerMixin {
 	@Unique
 	private NbtCompound fabric_lastSavedIdMap = null;
@@ -51,7 +51,7 @@ public class WorldSaveHandlerMixin {
 	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "WorldSaveHandler");
 	@Final
 	@Shadow
-	private File worldDir;
+	private File dir;
 
 	@Unique
 	private boolean fabric_readIdMapFile(File file) throws IOException {
@@ -73,7 +73,7 @@ public class WorldSaveHandlerMixin {
 
 	@Unique
 	private File fabric_getWorldIdMapFile(int i) {
-		return new File(new File(this.worldDir, "data"), "fabricRegistry" + ".dat" + (i == 0 ? "" : ("." + i)));
+		return new File(new File(this.dir, "data"), "fabricRegistry" + ".dat" + (i == 0 ? "" : ("." + i)));
 	}
 
 	@Unique
@@ -115,9 +115,9 @@ public class WorldSaveHandlerMixin {
 		}
 	}
 
-	@Inject(method = "saveWorld(Lnet/minecraft/world/level/LevelProperties;Lnet/minecraft/nbt/NbtCompound;)V", at = @At("HEAD"))
-	public void saveWorld(LevelProperties levelProperties, NbtCompound nbt, CallbackInfo info) {
-		if (!worldDir.exists()) {
+	@Inject(method = "saveData(Lnet/minecraft/world/WorldData;Lnet/minecraft/nbt/NbtCompound;)V", at = @At("HEAD"))
+	public void saveWorld(WorldData levelProperties, NbtCompound nbt, CallbackInfo info) {
+		if (!dir.exists()) {
 			return;
 		}
 
@@ -126,8 +126,8 @@ public class WorldSaveHandlerMixin {
 
 	private boolean readRegistryData = false;
 
-	@Inject(method = "getLevelProperties", at = @At("HEAD"))
-	public void readWorldProperties(CallbackInfoReturnable<LevelProperties> callbackInfo) {
+	@Inject(method = "loadData", at = @At("HEAD"))
+	public void readWorldProperties(CallbackInfoReturnable<WorldData> callbackInfo) {
 		if (readRegistryData) return;
 		readRegistryData = true;
 

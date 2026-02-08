@@ -33,7 +33,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.CommandMessageFormatting;
 import net.legacyfabric.fabric.api.command.v2.lib.sponge.args.ArgumentParseException;
@@ -93,17 +93,17 @@ public class FirstParsingCommandElement extends CommandElement {
 	}
 
 	@Override
-	public ChatMessage getUsage(PermissibleCommandSource commander) {
-		final ChatMessage ret = ChatMessage.createTextMessage("");
+	public Text getUsage(PermissibleCommandSource commander) {
+		final Text ret = Text.literal("");
 
 		for (Iterator<CommandElement> it = this.elements.iterator(); it.hasNext(); ) {
-			ret.addUsing(it.next().getUsage(commander));
+			ret.append(it.next().getUsage(commander));
 
 			if (it.hasNext()) {
-				ret.addUsing(CommandMessageFormatting.PIPE_TEXT);
+				ret.append(CommandMessageFormatting.PIPE_TEXT);
 			}
 		}
 
-		return ChatMessage.createTextMessage(ret.toString());
+		return Text.literal(ret.toString());
 	}
 }

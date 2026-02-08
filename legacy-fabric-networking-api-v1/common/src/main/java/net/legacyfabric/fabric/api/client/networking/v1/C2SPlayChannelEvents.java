@@ -19,8 +19,8 @@ package net.legacyfabric.fabric.api.client.networking.v1;
 
 import java.util.List;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.handler.ClientPlayNetworkHandler;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -63,7 +63,7 @@ public final class C2SPlayChannelEvents {
 	@Environment(EnvType.CLIENT)
 	@FunctionalInterface
 	public interface Register {
-		void onChannelRegister(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client, List<String> channels);
+		void onChannelRegister(ClientPlayNetworkHandler handler, PacketSender sender, Minecraft client, List<String> channels);
 	}
 
 	/**
@@ -72,6 +72,6 @@ public final class C2SPlayChannelEvents {
 	@Environment(EnvType.CLIENT)
 	@FunctionalInterface
 	public interface Unregister {
-		void onChannelUnregister(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client, List<String> channels);
+		void onChannelUnregister(ClientPlayNetworkHandler handler, PacketSender sender, Minecraft client, List<String> channels);
 	}
 }

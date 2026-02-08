@@ -17,10 +17,10 @@
 
 package net.legacyfabric.fabric.api.effect;
 
+import net.minecraft.crafting.recipe.Ingredient;
 import net.minecraft.item.Item;
 import net.minecraft.item.PotionItem;
 import net.minecraft.potion.Potion;
-import net.minecraft.recipe.Ingredient;
 
 import net.legacyfabric.fabric.impl.effect.versioned.PotionHelperImpl;
 

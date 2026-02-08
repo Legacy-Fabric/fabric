@@ -28,8 +28,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.client.texture.AbstractTexturePack;
-import net.minecraft.client.texture.ITexturePack;
+import net.minecraft.client.resource.pack.AbstractTexturePack;
+import net.minecraft.client.resource.pack.TexturePack;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -43,21 +43,21 @@ public class AbstractTexturePackMixin {
 	@Unique
 	private List<ModTexturePack> fabric_texturePacks;
 
-	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/AbstractTexturePack;readIcon()V"))
-	private void registerPacks(String file, File string2, String iTexturePack, ITexturePack par4, CallbackInfo ci) {
+	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/pack/AbstractTexturePack;loadIcon()V"))
+	private void registerPacks(String file, File string2, String iTexturePack, TexturePack par4, CallbackInfo ci) {
 		if (this instanceof ModTexturePack) return;
 
 		fabric_texturePacks = TexturePackHelper.getTexturePacks();
 	}
 
-	@Inject(method = "method_5245", at = @At(value = "FIELD", target = "Lnet/minecraft/client/texture/AbstractTexturePack;field_6025:Lnet/minecraft/client/texture/ITexturePack;", ordinal = 0), cancellable = true)
+	@Inject(method = "getResource(Ljava/lang/String;Z)Ljava/io/InputStream;", at = @At(value = "FIELD", target = "Lnet/minecraft/client/resource/pack/AbstractTexturePack;defaultTextures:Lnet/minecraft/client/resource/pack/TexturePack;", ordinal = 0), cancellable = true)
 	private void lf$getModResource(String bl, boolean par2, CallbackInfoReturnable<InputStream> cir) {
 		if (par2) {
 			if ("/pack.txt".equals(bl) || "/pack.png".equals(bl)) return;
 
 			for (ModTexturePack pack : fabric_texturePacks) {
 				try {
-					InputStream stream = pack.openStream(bl);
+					InputStream stream = pack.getResource(bl);
 
 					if (stream != null) {
 						cir.setReturnValue(stream);
@@ -70,13 +70,13 @@ public class AbstractTexturePackMixin {
 		}
 	}
 
-	@Inject(method = "method_5246", at = @At(value = "FIELD", target = "Lnet/minecraft/client/texture/AbstractTexturePack;field_6025:Lnet/minecraft/client/texture/ITexturePack;", ordinal = 0), cancellable = true)
+	@Inject(method = "hasResource(Ljava/lang/String;Z)Z", at = @At(value = "FIELD", target = "Lnet/minecraft/client/resource/pack/AbstractTexturePack;defaultTextures:Lnet/minecraft/client/resource/pack/TexturePack;", ordinal = 0), cancellable = true)
 	private void lf$hasModResource(String bl, boolean par2, CallbackInfoReturnable<Boolean> cir) {
 		if (par2) {
 			if ("/pack.txt".equals(bl) || "/pack.png".equals(bl)) return;
 
 			for (ModTexturePack pack : fabric_texturePacks) {
-				boolean exists = pack.method_5246(bl, false);
+				boolean exists = pack.hasResource(bl, false);
 
 				if (exists) {
 					cir.setReturnValue(true);

@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.api.gamerule.v1;
 
-import net.minecraft.world.GameRuleManager;
+import net.minecraft.world.GameRules;
 
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
@@ -37,5 +37,5 @@ public interface GameRulesInitializedCallback {
 			}
 	);
 
-	void onGameRulesRegistered(GameRuleManager dispatcher);
+	void onGameRulesRegistered(GameRules dispatcher);
 }

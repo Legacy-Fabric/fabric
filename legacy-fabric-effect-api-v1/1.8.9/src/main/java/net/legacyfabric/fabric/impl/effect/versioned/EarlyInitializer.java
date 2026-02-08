@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.impl.effect.versioned;
 
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.living.effect.StatusEffect;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 

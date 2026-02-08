@@ -20,7 +20,7 @@ package net.legacyfabric.fabric.api.resource;
 import java.util.Collection;
 import java.util.Collections;
 
-import net.minecraft.resource.ResourceReloadListener;
+import net.minecraft.client.resource.manager.ResourceReloadListener;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 

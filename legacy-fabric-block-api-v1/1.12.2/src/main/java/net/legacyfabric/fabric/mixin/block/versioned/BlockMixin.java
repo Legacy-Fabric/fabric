@@ -25,8 +25,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BiDefaultedRegistry;
+import net.minecraft.resource.Identifier;
+import net.minecraft.util.registry.DefaultedIdRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -35,9 +35,9 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 public class BlockMixin {
 	@Shadow
 	@Final
-	public static BiDefaultedRegistry<Identifier, Block> REGISTRY;
+	public static DefaultedIdRegistry<Identifier, Block> REGISTRY;
 
-	@Inject(method = "setup", at = @At("RETURN"))
+	@Inject(method = "init", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
 		RegistryHelper.addRegistry(RegistryIds.BLOCKS, REGISTRY);
 	}

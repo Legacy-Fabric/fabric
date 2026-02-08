@@ -25,8 +25,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.potion.Potion;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BiDefaultedRegistry;
+import net.minecraft.resource.Identifier;
+import net.minecraft.util.registry.DefaultedIdRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -35,9 +35,9 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 public class PotionMixin {
 	@Shadow
 	@Final
-	public static BiDefaultedRegistry<Identifier, Potion> REGISTRY;
+	public static DefaultedIdRegistry<Identifier, Potion> REGISTRY;
 
-	@Inject(method = "register()V", at = @At("RETURN"))
+	@Inject(method = "init()V", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
 		RegistryHelper.addRegistry(RegistryIds.POTIONS, REGISTRY);
 	}

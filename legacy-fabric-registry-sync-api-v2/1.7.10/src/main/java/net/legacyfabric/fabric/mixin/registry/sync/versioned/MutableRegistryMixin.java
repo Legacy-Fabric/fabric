@@ -19,12 +19,12 @@ package net.legacyfabric.fabric.mixin.registry.sync.versioned;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.util.registry.MutableRegistry;
+import net.minecraft.util.registry.MappedRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
-@Mixin(MutableRegistry.class)
+@Mixin(MappedRegistry.class)
 public abstract class MutableRegistryMixin<K, V> implements FabricRegistry<V> {
 	@Override
 	public K fabric$toKeyType(Identifier identifier) {

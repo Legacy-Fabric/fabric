@@ -25,7 +25,7 @@
 
 package net.legacyfabric.fabric.api.command.v2.lib.sponge;
 
-import net.minecraft.text.ChatMessage;
+import net.minecraft.text.Text;
 
 /**
  * This exception is thrown when a subject does not have permission to execute
@@ -38,7 +38,7 @@ public class CommandPermissionException extends CommandException {
 	 * Create an exception with the default message.
 	 */
 	public CommandPermissionException() {
-		this(ChatMessage.createTextMessage("You do not have permission to use this command!"));
+		this(Text.literal("You do not have permission to use this command!"));
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class CommandPermissionException extends CommandException {
 	 *
 	 * @param message The message
 	 */
-	public CommandPermissionException(ChatMessage message) {
+	public CommandPermissionException(Text message) {
 		super(message);
 	}
 
@@ -56,7 +56,7 @@ public class CommandPermissionException extends CommandException {
 	 * @param message the message
 	 * @param cause   the cause
 	 */
-	public CommandPermissionException(ChatMessage message, Throwable cause) {
+	public CommandPermissionException(Text message, Throwable cause) {
 		super(message, cause);
 	}
 }

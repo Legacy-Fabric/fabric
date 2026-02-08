@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.handler.ClientPlayNetworkHandler;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

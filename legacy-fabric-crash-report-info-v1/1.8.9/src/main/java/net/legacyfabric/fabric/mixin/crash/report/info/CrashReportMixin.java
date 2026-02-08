@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.util.crash.CrashReport;
-import net.minecraft.util.crash.CrashReportSection;
+import net.minecraft.util.crash.CrashReportCategory;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -38,7 +38,7 @@ import net.fabricmc.loader.api.ModContainer;
 public abstract class CrashReportMixin {
 	@Shadow
 	@Final
-	private CrashReportSection systemDetailsSection;
+	private CrashReportCategory systemDetails;
 
 	@Unique
 	public String getFabricMods() {
@@ -62,6 +62,6 @@ public abstract class CrashReportMixin {
 
 	@Inject(at = @At("RETURN"), method = "fillSystemDetails")
 	private void fillSystemDetails(CallbackInfo info) {
-		this.systemDetailsSection.add("Fabric Mods", getFabricMods());
+		this.systemDetails.add("Fabric Mods", getFabricMods());
 	}
 }

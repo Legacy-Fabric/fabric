@@ -21,13 +21,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-import net.minecraft.client.gui.screen.CustomizeWorldScreen;
+import net.minecraft.client.gui.screen.world.CustomizeWorldScreen;
 import net.minecraft.world.biome.Biome;
 
 @Mixin(CustomizeWorldScreen.class)
 public class CustomizeWorldScreenMixin {
-	@ModifyArg(method = "initPages",
-			at = @At(value = "INVOKE", ordinal = 4, target = "Lnet/minecraft/client/gui/widget/PagedEntryListWidget$LabelSupplierEntry;<init>(ILjava/lang/String;ZLnet/minecraft/client/gui/widget/SliderWidget$LabelSupplier;FFF)V"),
+	@ModifyArg(method = "updateOverworldGeneratorOptions",
+			at = @At(value = "INVOKE", ordinal = 4, target = "Lnet/minecraft/client/gui/screen/world/OverworldGeneratorOptionsWidget$NumberOption;<init>(ILjava/lang/String;ZLnet/minecraft/client/gui/screen/world/GeneratorOptionSlider$ValueFormatter;FFF)V"),
 			index = 5
 	)
 	private float allowSelectingAllBiomesInSelector(float max) {

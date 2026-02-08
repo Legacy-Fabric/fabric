@@ -17,18 +17,18 @@
 
 package net.legacyfabric.fabric.api.util;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 
 public class Location<T> {
 	private final T t;
-	private final BlockPos pos;
+	private final Vec3i pos;
 
-	public Location(T t, BlockPos pos) {
+	public Location(T t, Vec3i pos) {
 		this.t = t;
 		this.pos = pos;
 	}
 
-	public BlockPos getPos() {
+	public Vec3i getPos() {
 		return this.pos;
 	}
 

@@ -1,12 +1,11 @@
 accessWidener	v2	named
-
-transitive-accessible method net/minecraft/world/biome/Biome setName (Ljava/lang/String;)Lnet/minecraft/world/biome/Biome;
-transitive-accessible method net/minecraft/world/biome/Biome getMutatedVariant ()Lnet/minecraft/world/biome/Biome;
-transitive-accessible method net/minecraft/world/biome/Biome seedModifier (IZ)Lnet/minecraft/world/biome/Biome;
-transitive-accessible method net/minecraft/world/biome/Biome method_3827 (I)Lnet/minecraft/world/biome/Biome;
-transitive-accessible method net/minecraft/world/biome/Biome setSeedModifier (I)Lnet/minecraft/world/biome/Biome;
-transitive-accessible method net/minecraft/world/biome/Biome method_3820 (I)Lnet/minecraft/world/biome/Biome;
-transitive-accessible method net/minecraft/world/biome/Biome setMutated ()Lnet/minecraft/world/biome/Biome;
-transitive-accessible method net/minecraft/world/biome/Biome method_3839 ()Lnet/minecraft/world/biome/Biome;
-transitive-accessible method net/minecraft/world/biome/Biome method_6422 (Lnet/minecraft/world/biome/class_1742;)Lnet/minecraft/world/biome/Biome;
-transitive-accessible method net/minecraft/world/biome/Biome setTemperatureAndDownfall (FF)Lnet/minecraft/world/biome/Biome;
+transitive-accessible	method	net/minecraft/world/biome/Biome	setName	(Ljava/lang/String;)Lnet/minecraft/world/biome/Biome;
+transitive-accessible	method	net/minecraft/world/biome/Biome	mutate	()Lnet/minecraft/world/biome/Biome;
+transitive-accessible	method	net/minecraft/world/biome/Biome	setColor	(IZ)Lnet/minecraft/world/biome/Biome;
+transitive-accessible	method	net/minecraft/world/biome/Biome	setBaseColor	(I)Lnet/minecraft/world/biome/Biome;
+transitive-accessible	method	net/minecraft/world/biome/Biome	setColor	(I)Lnet/minecraft/world/biome/Biome;
+transitive-accessible	method	net/minecraft/world/biome/Biome	setMutatedColor	(I)Lnet/minecraft/world/biome/Biome;
+transitive-accessible	method	net/minecraft/world/biome/Biome	setSnowy	()Lnet/minecraft/world/biome/Biome;
+transitive-accessible	method	net/minecraft/world/biome/Biome	disableRain	()Lnet/minecraft/world/biome/Biome;
+transitive-accessible	method	net/minecraft/world/biome/Biome	setHeight	(Lnet/minecraft/world/biome/Biome__Height;)Lnet/minecraft/world/biome/Biome;
+transitive-accessible	method	net/minecraft/world/biome/Biome	setTemperatureAndDownfall	(FF)Lnet/minecraft/world/biome/Biome;

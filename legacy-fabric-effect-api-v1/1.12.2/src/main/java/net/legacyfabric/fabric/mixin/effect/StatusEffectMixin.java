@@ -24,9 +24,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.entity.living.effect.StatusEffect;
+import net.minecraft.resource.Identifier;
+import net.minecraft.util.registry.IdRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
@@ -35,9 +35,9 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 public class StatusEffectMixin {
 	@Shadow
 	@Final
-	public static SimpleRegistry<Identifier, StatusEffect> REGISTRY;
+	public static IdRegistry<Identifier, StatusEffect> REGISTRY;
 
-	@Inject(method = "register", at = @At("RETURN"))
+	@Inject(method = "init", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
 		RegistryHelper.addRegistry(RegistryIds.STATUS_EFFECTS, REGISTRY);
 	}
