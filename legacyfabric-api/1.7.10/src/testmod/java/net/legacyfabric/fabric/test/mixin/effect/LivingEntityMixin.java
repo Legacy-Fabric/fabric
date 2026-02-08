@@ -58,7 +58,7 @@ public abstract class LivingEntityMixin {
 		return instance1;
 	}
 
-	@Inject(method = "method_2658", at = @At("RETURN"), cancellable = true)
+	@Inject(method = "canHaveStatusEffect", at = @At("RETURN"), cancellable = true)
 	private void efffffffect(StatusEffectInstance instance, CallbackInfoReturnable<Boolean> cir) {
 		if (cir.getReturnValue()) {
 			if (this.getMobType() == MobType.UNDEAD && instance.getId() == RegistryTest.EFFECT.id) cir.setReturnValue(false);

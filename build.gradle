@@ -414,10 +414,6 @@ allprojects {
 
 		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0"))
 		implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.4.1"))
-
-//		if (VersionHelper.parsePredicate("<1.6").test(VersionHelper.parseVersion(mcVersion))) {
-//			implementation 'com.google.code.gson:gson:2.8.9'
-//		}
 	}
 
 	tasks.withType(ProcessResources).configureEach { processResourcesTask ->

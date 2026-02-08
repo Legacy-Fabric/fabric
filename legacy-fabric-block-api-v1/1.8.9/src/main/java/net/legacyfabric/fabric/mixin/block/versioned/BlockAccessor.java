@@ -15,15 +15,18 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.resource.loader;
+package net.legacyfabric.fabric.mixin.block.versioned;
 
-import java.util.List;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-import com.bawnorton.mixinsquared.api.MixinCanceller;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.util.CrudeIncrementalIntIdentityHashMap;
 
-public class OSLMixinCanceller implements MixinCanceller {
-	@Override
-	public boolean shouldCancel(List<String> list, String s) {
-		return "net.ornithemc.osl.resource.loader.impl.mixin.client.LocaleMixin".equals(s);
+@Mixin(Block.class)
+public interface BlockAccessor {
+	@Accessor("STATE_REGISTRY")
+	static void setBlockStateList(CrudeIncrementalIntIdentityHashMap<BlockState> blockStates) {
 	}
 }

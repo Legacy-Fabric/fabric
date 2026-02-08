@@ -15,26 +15,30 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.entity.event;
+package net.legacyfabric.fabric.mixin.block.versioned;
 
-import com.llamalad7.mixinextras.sugar.Local;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.block.Block;
+import net.minecraft.resource.Identifier;
+import net.minecraft.util.registry.DefaultedIdRegistry;
 
-import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
+import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 
-@Mixin(Entity.class)
-public abstract class EntityMixin {
-	@Inject(method = "changeDimension", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;addEntity(Lnet/minecraft/entity/Entity;)Z"))
-	private void afterWorldChanged(int dimensionId, CallbackInfo ci,
-								@Local(ordinal = 0) ServerWorld serverWorld,
-								@Local(ordinal = 1) ServerWorld serverWorld2,
-								@Local Entity entity) {
-		ServerEntityWorldChangeEvents.AFTER_ENTITY_CHANGE_WORLD.invoker().afterChangeWorld((Entity) (Object) this, entity, serverWorld, serverWorld2);
+@Mixin(Block.class)
+public class BlockMixin {
+	@Shadow
+	@Final
+	public static DefaultedIdRegistry<Identifier, Block> REGISTRY;
+
+	@Inject(method = "init", at = @At("RETURN"))
+	private static void registerRegistry(CallbackInfo ci) {
+		RegistryHelper.addRegistry(RegistryIds.BLOCKS, REGISTRY);
 	}
 }

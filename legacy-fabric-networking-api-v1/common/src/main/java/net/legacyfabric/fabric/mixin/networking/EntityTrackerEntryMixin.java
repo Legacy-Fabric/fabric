@@ -30,7 +30,7 @@ import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 import net.legacyfabric.fabric.api.networking.v1.EntityTrackingEvents;
 
 @Mixin(TrackedEntity.class)
-abstract class EntityTrackerEntryMixin {
+public abstract class EntityTrackerEntryMixin {
 	@Shadow
 	public Entity entity;
 
@@ -44,12 +44,12 @@ abstract class EntityTrackerEntryMixin {
 		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.entity, player);
 	}
 
-	@Inject(method = "method_2184", at = @At(value = "INVOKE", target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z", shift = At.Shift.AFTER, remap = false))
+	@Inject(method = "updatePlayer", at = @At(value = "INVOKE", target = "Ljava/util/Set;remove(Ljava/lang/Object;)Z", shift = At.Shift.AFTER, remap = false))
 	private void onStopTracking3(ServerPlayerEntity player, CallbackInfo ci) {
 		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.entity, player);
 	}
 
-	@Inject(method = "method_2184", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/Set;add(Ljava/lang/Object;)Z", remap = false))
+	@Inject(method = "updatePlayer", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/Set;add(Ljava/lang/Object;)Z", remap = false))
 	private void onStartTracking(ServerPlayerEntity player, CallbackInfo ci) {
 		EntityTrackingEvents.START_TRACKING.invoker().onStartTracking(this.entity, player);
 	}

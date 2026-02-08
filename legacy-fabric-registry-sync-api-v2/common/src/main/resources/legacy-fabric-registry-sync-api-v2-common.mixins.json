@@ -6,10 +6,10 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "IdListMixin",
     "MutableRegistryMixin",
     "SimpleRegistryMixin",
-    "WorldSaveHandlerMixin"
+    "WorldSaveHandlerMixin",
+    "versioned.IdListMixin"
   ],
   "client": [
   ]

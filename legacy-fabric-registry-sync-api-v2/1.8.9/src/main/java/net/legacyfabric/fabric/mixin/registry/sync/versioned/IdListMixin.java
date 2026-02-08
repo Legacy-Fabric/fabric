@@ -17,7 +17,9 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync.versioned;
 
-import org.jetbrains.annotations.Nullable;
+import java.util.IdentityHashMap;
+
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -26,30 +28,30 @@ import net.minecraft.util.CrudeIncrementalIntIdentityHashMap;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 
 @Mixin(CrudeIncrementalIntIdentityHashMap.class)
-public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
+public abstract class IdListMixin<T> implements IdsHolder<T> {
 	@Shadow
-	@Nullable
-	public abstract T get(int id);
+	public abstract T get(int index);
 
 	@Shadow
-	public abstract void put(T value, int id);
+	public abstract void put(T value, int index);
 
 	@Shadow
 	public abstract int getId(T value);
 
 	@Shadow
-	public abstract int size();
+	@Final
+	private IdentityHashMap<T, Integer> ids;
 
 	@Override
 	public IdsHolder<T> fabric$new() {
-		return (IdsHolder<T>) new CrudeIncrementalIntIdentityHashMap<>(256);
+		return (IdsHolder<T>) new CrudeIncrementalIntIdentityHashMap<>();
 	}
 
 	@Override
 	public int fabric$nextId() {
 		int id = 1;
 
-		while (this.get(id) != null) id++;
+		while (this.fabric$getValue(id) != null) id++;
 
 		return id;
 	}
@@ -61,16 +63,16 @@ public abstract class OtherIdListMixin<T> implements IdsHolder<T> {
 
 	@Override
 	public int fabric$size() {
-		return this.size();
-	}
-
-	@Override
-	public int fabric$getId(T value) {
-		return getId(value);
+		return ids.size();
 	}
 
 	@Override
 	public T fabric$getValue(int rawId) {
 		return this.get(rawId);
+	}
+
+	@Override
+	public int fabric$getId(T value) {
+		return getId(value);
 	}
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.util.Id2ObjectBiMap;
+import net.minecraft.util.CrudeIncrementalIntIdentityHashMap;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
@@ -31,7 +31,6 @@ import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.mixin.block.versioned.BlockAccessor;
 
 public class BlockStateRemapper implements RegistryRemapCallback<Block> {
-	private static final Identifier specialCaseId = new Identifier("tripwire");
 
 	@Override
 	public void callback(Map<Integer, FabricRegistryEntry<Block>> changedIdsMap) {
@@ -46,22 +45,13 @@ public class BlockStateRemapper implements RegistryRemapCallback<Block> {
 
 			Identifier blockId = RegistryHelper.getId(Block.REGISTRY, block);
 
-			if (blockId.equals(specialCaseId)) {
-				for (int i = 0; i < 15; ++i) {
-					int blockStateId = blockRawId << 4 | i;
-					BlockState state = block.getStateFromMetadata(i);
+			for (BlockState state : block.stateDefinition().all()) {
+				int blockStateId = blockRawId << 4 | block.getMetadataFromState(state);
 
-					newList.fabric$setValue(state, blockStateId);
-				}
-			} else {
-				for (BlockState state : block.stateDefinition().all()) {
-					int blockStateId = blockRawId << 4 | block.getMetadataFromState(state);
-
-					newList.fabric$setValue(state, blockStateId);
-				}
+				newList.fabric$setValue(state, blockStateId);
 			}
 		}
 
-		BlockAccessor.setBlockStateList((Id2ObjectBiMap<BlockState>) newList);
+		BlockAccessor.setBlockStateList((CrudeIncrementalIntIdentityHashMap<BlockState>) newList);
 	}
 }

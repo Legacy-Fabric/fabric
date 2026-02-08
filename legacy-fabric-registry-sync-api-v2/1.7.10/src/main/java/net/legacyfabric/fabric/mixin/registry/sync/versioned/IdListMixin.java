@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.registry.sync;
+package net.legacyfabric.fabric.mixin.registry.sync.versioned;
 
 import java.util.IdentityHashMap;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -39,7 +38,6 @@ public abstract class IdListMixin<T> implements IdsHolder<T> {
 	public abstract int getId(T value);
 
 	@Shadow
-	@Final
 	private IdentityHashMap<T, Integer> ids;
 
 	@Override

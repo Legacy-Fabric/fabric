@@ -43,7 +43,7 @@ import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
 import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
 
 @Mixin(Connection.class)
-abstract class ClientConnectionMixin implements ChannelInfoHolder {
+public abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	@Shadow
 	private PacketHandler listener;
 
@@ -62,7 +62,7 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	}
 
 	@SuppressWarnings("UnnecessaryQualifiedMemberReference")
-	@Redirect(method = "Lnet/minecraft/network/ClientConnection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/text/Text;)V"))
+	@Redirect(method = "Lnet/minecraft/network/Connection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/text/Text;)V"))
 	private void resendOnExceptionCaught(Connection clientConnection, Text disconnectReason) {
 		PacketHandler handler = this.listener;
 
