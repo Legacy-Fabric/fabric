@@ -43,7 +43,7 @@ import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
 import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
 
 @Mixin(Connection.class)
-abstract class ClientConnectionMixin implements ChannelInfoHolder {
+public abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	@Shadow
 	private PacketHandler listener;
 
@@ -62,14 +62,14 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	}
 
 	@SuppressWarnings("UnnecessaryQualifiedMemberReference")
-	@Redirect(method = "Lnet/minecraft/network/ClientConnection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/text/Text;)V"))
+	@Redirect(method = "Lnet/minecraft/network/Connection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/text/Text;)V"))
 	private void resendOnExceptionCaught(Connection clientConnection, Text disconnectReason) {
 		PacketHandler handler = this.listener;
 
 		if (handler instanceof DisconnectPacketSource) {
-			this.send(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)));
+			this.send(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason.getContent())));
 		} else {
-			this.disconnect(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)); // Don't send packet if we cannot send proper packets
+			this.disconnect(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason.getContent())); // Don't send packet if we cannot send proper packets
 		}
 	}
 
