@@ -19,6 +19,9 @@ package net.legacyfabric.fabric.mixin.entity;
 
 import java.util.Map;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -71,9 +74,27 @@ public class EntityTypeMixin {
 		RegistryHelper.addRegistry(RegistryIds.ENTITY_TYPES, ENTITY_TYPE_REGISTRY);
 	}
 
-	@ModifyArg(method = {"createSilently", "create(Lnet/minecraft/nbt/NbtCompound;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;", "getId(Ljava/lang/String;)I"},
+	@ModifyArg(method = {"createSilently", "create(Lnet/minecraft/nbt/NbtCompound;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;"},
 			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
 	private static Object fixOldRegistryNames(Object o) {
+		String key = (String) o;
+
+		if (key.contains(":")) {
+			Identifier identifier = new Identifier(key);
+			Class<? extends Entity> clazz = RegistryHelper.getValue(RegistryIds.ENTITY_TYPES, identifier);
+
+			if (clazz != null) {
+				key = TYPE_TO_KEY.get(clazz);
+			}
+		}
+
+		return key;
+	}
+
+	@Environment(EnvType.CLIENT)
+	@ModifyArg(method = {"getId(Ljava/lang/String;)I"},
+			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
+	private static Object client$fixOldRegistryNames(Object o) {
 		String key = (String) o;
 
 		if (key.contains(":")) {
