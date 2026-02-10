@@ -25,10 +25,10 @@ import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public class EntityEventsTest implements ModInitializer {
-	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "EntityEvents");
+	private static final Logger LOGGER = Logger.get(LoggerHelper.API, "Test", "EntityEvents");
 
 	@Override
 	public void onInitialize() {

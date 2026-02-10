@@ -32,10 +32,10 @@ import net.legacyfabric.fabric.api.registry.v2.registry.SyncedRegistrableFabricR
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public class RegistryRemapper<T> {
-	protected static final Logger LOGGER = Logger.get(LoggerImpl.API, "RegistryRemapper");
+	protected static final Logger LOGGER = Logger.get(LoggerHelper.API, "RegistryRemapper");
 	private final SyncedRegistrableFabricRegistry<T> registry;
 	private BiMap<Identifier, Integer> entryDump;
 	private BiMap<Identifier, Integer> missingMap = HashBiMap.create();
