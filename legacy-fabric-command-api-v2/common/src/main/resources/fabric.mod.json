@@ -8,7 +8,6 @@
   "icon": "assets/legacy-fabric-sponge-command-api-v2/icon.png",
   "contact": {
     "homepage": "https://legacyfabric.net",
-    "irc": "irc://irc.esper.net:6667/legacyfabric",
     "issues": "https://github.com/Legacy-Fabric/fabric/issues",
     "sources": "https://github.com/Legacy-Fabric/fabric"
   },
@@ -26,13 +25,7 @@
   "custom": {
     "modmenu": {
       "badges": [ "library" ],
-      "parent": {
-        "id": "legacy-fabric-api",
-        "name": "Legacy Fabric API",
-        "badges": [ "library" ],
-        "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2.",
-        "icon": "assets/legacy-fabric-sponge-command-api-v2/icon.png"
-      }
+      "parent": "legacy-fabric-api"
     }
   }
 }
