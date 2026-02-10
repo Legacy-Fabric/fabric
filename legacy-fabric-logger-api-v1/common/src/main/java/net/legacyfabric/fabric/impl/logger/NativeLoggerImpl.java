@@ -22,11 +22,10 @@ import net.fabricmc.loader.impl.util.log.LogCategory;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 
-public class LoggerImpl implements Logger {
-	public static final String API = "LegacyFabricAPI";
-	private LogCategory category;
+public class NativeLoggerImpl implements Logger {
+	private final LogCategory category;
 
-	public LoggerImpl(String context, String... subs) {
+	public NativeLoggerImpl(String context, String... subs) {
 		this.category = LogCategory.createCustom(context, subs);
 	}
 

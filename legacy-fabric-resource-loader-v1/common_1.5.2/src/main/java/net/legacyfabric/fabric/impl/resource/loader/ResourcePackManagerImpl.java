@@ -27,10 +27,10 @@ import java.util.Set;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.ModResourcePack;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public class ResourcePackManagerImpl {
-	public static final Logger LOGGER = Logger.get(LoggerImpl.API, "ResourcePackManagerImpl");
+	public static final Logger LOGGER = Logger.get(LoggerHelper.API, "ResourcePackManagerImpl");
 	private static final List<ModResourcePack> RESOURCE_PACKS = new ArrayList<>();
 	private static boolean initialized = false;
 

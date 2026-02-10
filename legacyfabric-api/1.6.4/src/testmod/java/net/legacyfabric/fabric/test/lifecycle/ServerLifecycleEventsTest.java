@@ -25,10 +25,10 @@ import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.legacyfabric.fabric.api.logger.v1.Logger;
-import net.legacyfabric.fabric.impl.logger.LoggerImpl;
+import net.legacyfabric.fabric.impl.logger.LoggerHelper;
 
 public class ServerLifecycleEventsTest implements ModInitializer {
-	private static final Logger LOGGER = Logger.get(LoggerImpl.API, "Test", "ServerLifecycleEvents");
+	private static final Logger LOGGER = Logger.get(LoggerHelper.API, "Test", "ServerLifecycleEvents");
 
 	@Override
 	public void onInitialize() {
