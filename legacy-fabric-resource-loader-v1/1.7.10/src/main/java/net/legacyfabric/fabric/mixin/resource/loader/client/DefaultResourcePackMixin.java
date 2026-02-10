@@ -22,14 +22,13 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 
-import net.minecraft.resource.Identifier;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.client.resource.pack.BuiltInResourcePack;
+import net.minecraft.resource.Identifier;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
