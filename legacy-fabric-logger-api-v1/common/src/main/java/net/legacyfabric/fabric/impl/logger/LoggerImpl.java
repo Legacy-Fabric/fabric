@@ -17,76 +17,97 @@
 
 package net.legacyfabric.fabric.impl.logger;
 
-import net.fabricmc.loader.impl.util.log.Log;
-import net.fabricmc.loader.impl.util.log.LogCategory;
+import org.slf4j.LoggerFactory;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 
+/**
+ * @author moehreag
+ */
 public class LoggerImpl implements Logger {
 	public static final String API = "LegacyFabricAPI";
-	private LogCategory category;
+	private final org.slf4j.Logger delegate;
 
-	public LoggerImpl(String context, String... subs) {
-		this.category = LogCategory.createCustom(context, subs);
+	public LoggerImpl(String context, String[] subs) {
+		if (subs.length > 0) {
+			context += "/" + String.join("/", subs);
+		}
+
+		delegate = LoggerFactory.getLogger(context);
 	}
 
+	@Override
 	public void info(String format) {
-		Log.info(this.category, format);
+		delegate.info(format);
 	}
 
+	@Override
 	public void info(String format, Object... args) {
-		Log.info(this.category, format, args);
+		delegate.info(String.format(format, args));
 	}
 
+	@Override
 	public void info(String format, Throwable exc) {
-		Log.info(this.category, format, exc);
+		delegate.info(format, exc);
 	}
 
+	@Override
 	public void error(String format) {
-		Log.error(this.category, format);
+		delegate.error(format);
 	}
 
+	@Override
 	public void error(String format, Object... args) {
-		Log.error(this.category, format, args);
+		delegate.error(String.format(format, args));
 	}
 
+	@Override
 	public void error(String format, Throwable exc) {
-		Log.error(this.category, format, exc);
+		delegate.error(format, exc);
 	}
 
+	@Override
 	public void warn(String format) {
-		Log.warn(this.category, format);
+		delegate.warn(format);
 	}
 
+	@Override
 	public void warn(String format, Object... args) {
-		Log.warn(this.category, format, args);
+		delegate.warn(String.format(format, args));
 	}
 
+	@Override
 	public void warn(String format, Throwable exc) {
-		Log.warn(this.category, format, exc);
+		delegate.warn(format, exc);
 	}
 
+	@Override
 	public void debug(String format) {
-		Log.debug(this.category, format);
+		delegate.debug(format);
 	}
 
+	@Override
 	public void debug(String format, Object... args) {
-		Log.debug(this.category, format, args);
+		delegate.debug(String.format(format, args));
 	}
 
+	@Override
 	public void debug(String format, Throwable exc) {
-		Log.debug(this.category, format, exc);
+		delegate.debug(format, exc);
 	}
 
+	@Override
 	public void trace(String format) {
-		Log.trace(this.category, format);
+		delegate.trace(format);
 	}
 
+	@Override
 	public void trace(String format, Object... args) {
-		Log.trace(this.category, format, args);
+		delegate.trace(String.format(format, args));
 	}
 
+	@Override
 	public void trace(String format, Throwable exc) {
-		Log.trace(this.category, format, exc);
+		delegate.trace(format, exc);
 	}
 }

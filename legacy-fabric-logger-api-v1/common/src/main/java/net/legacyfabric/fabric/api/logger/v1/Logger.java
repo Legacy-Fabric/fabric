@@ -19,6 +19,10 @@ package net.legacyfabric.fabric.api.logger.v1;
 
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
+/**
+ * @deprecated Use {@link org.slf4j.Logger} instead.
+ */
+@Deprecated
 public interface Logger {
 	/**
 	 * Create a Logger implementation with provided context and subs.
@@ -30,7 +34,10 @@ public interface Logger {
 	 * @param context Main logger name
 	 * @param subs    Sub logger name, optional
 	 * @return a Logger implementation
+	 *
+	 * @deprecated Use {@link org.slf4j.LoggerFactory#getLogger(String)} instead.
 	 */
+	@Deprecated
 	static Logger get(String context, String... subs) {
 		return new LoggerImpl(context, subs);
 	}
