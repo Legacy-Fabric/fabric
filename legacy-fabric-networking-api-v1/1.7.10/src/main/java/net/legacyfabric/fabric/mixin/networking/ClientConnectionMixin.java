@@ -21,7 +21,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.apache.logging.log4j.Logger;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -42,7 +45,7 @@ import net.legacyfabric.fabric.impl.networking.DisconnectPacketSource;
 import net.legacyfabric.fabric.impl.networking.PacketCallbackListener;
 
 @Mixin(Connection.class)
-abstract class ClientConnectionMixin implements ChannelInfoHolder, ClientConnectionExtension {
+public abstract class ClientConnectionMixin implements ChannelInfoHolder, ClientConnectionExtension {
 	@Shadow
 	private PacketHandler listener;
 
@@ -52,6 +55,9 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder, ClientConnect
 	@Shadow
 	public abstract void send(Packet par1, GenericFutureListener<?>... par2);
 
+	@Shadow
+	@Final
+	private static Logger LOGGER;
 	@Unique
 	private Collection<String> playChannels;
 
@@ -61,14 +67,16 @@ abstract class ClientConnectionMixin implements ChannelInfoHolder, ClientConnect
 	}
 
 	@SuppressWarnings("UnnecessaryQualifiedMemberReference")
-	@Redirect(method = "Lnet/minecraft/network/ClientConnection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/text/Text;)V"))
-	private void resendOnExceptionCaught(Connection clientConnection, Text disconnectReason) {
+	@Redirect(method = "Lnet/minecraft/network/Connection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/text/Text;)V"))
+	private void resendOnExceptionCaught(Connection clientConnection, Text disconnectReason, @Local(argsOnly = true) Throwable throwable) {
 		PacketHandler handler = this.listener;
 
+		LOGGER.debug("Internal Exception: {}", disconnectReason.getContent(), throwable);
+
 		if (handler instanceof DisconnectPacketSource) {
-			this.send(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)));
+			this.send(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason.getContent())));
 		} else {
-			this.disconnect(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)); // Don't send packet if we cannot send proper packets
+			this.disconnect(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason.getContent())); // Don't send packet if we cannot send proper packets
 		}
 	}
 

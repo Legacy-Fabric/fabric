@@ -21,8 +21,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.apache.logging.log4j.Logger;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -53,6 +56,9 @@ public abstract class ClientConnectionMixin implements ChannelInfoHolder {
 	@Shadow
 	public abstract void send(Packet<?> arg);
 
+	@Shadow
+	@Final
+	private static Logger LOGGER;
 	@Unique
 	private Collection<String> playChannels;
 
@@ -63,13 +69,15 @@ public abstract class ClientConnectionMixin implements ChannelInfoHolder {
 
 	@SuppressWarnings("UnnecessaryQualifiedMemberReference")
 	@Redirect(method = "Lnet/minecraft/network/Connection;exceptionCaught(Lio/netty/channel/ChannelHandlerContext;Ljava/lang/Throwable;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/text/Text;)V"))
-	private void resendOnExceptionCaught(Connection clientConnection, Text disconnectReason) {
+	private void resendOnExceptionCaught(Connection clientConnection, Text disconnectReason, @Local(argsOnly = true) Throwable throwable) {
 		PacketHandler handler = this.listener;
 
+		LOGGER.debug("Internal Exception: {}", disconnectReason.getContent(), throwable);
+
 		if (handler instanceof DisconnectPacketSource) {
-			this.send(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)));
+			this.send(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason.getContent())));
 		} else {
-			this.disconnect(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason)); // Don't send packet if we cannot send proper packets
+			this.disconnect(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason.getContent())); // Don't send packet if we cannot send proper packets
 		}
 	}
 

@@ -401,7 +401,11 @@ allprojects {
 		minecraft "com.mojang:minecraft:${mcVersion}"
 		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-		mappings project.ploceus.featherMappings(project.rootProject.feather_build)
+		mappings loom.layered {
+			mappings project.ploceus.featherMappings(project.rootProject.feather_build)
+			mappings rootProject.file("mappings/patch.tiny")
+		}
+
 		if (ravenBuild != null) exceptions project.ploceus.raven(ravenBuild) // remove this line if not using exceptions patches
 		if (sparrowBuild != null) signatures project.ploceus.sparrow(sparrowBuild) // remove this line if not using generics patches
 //		if (nestBuild != null) nests project.ploceus.nests(nestBuild) // remove this line if not using inner class patches
