@@ -20,7 +20,6 @@ package net.legacyfabric.fabric.impl.block.versioned;
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
@@ -47,7 +46,7 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 				boolean useNeighbourLight = false;
 				boolean isStairs = block.getBlockType() == 10;
 				boolean isSlab = block instanceof SlabBlock;
-				boolean isMissingTop = block == RegistryHelper.getValue(Item.REGISTRY, new Identifier("farmland"));
+				boolean isMissingTop = block == RegistryHelper.getValue(Block.REGISTRY, new Identifier("farmland"));
 				boolean isTranslucent = block.translucent;
 				boolean isNotOpaque = block.getOpacity() == 0;
 
