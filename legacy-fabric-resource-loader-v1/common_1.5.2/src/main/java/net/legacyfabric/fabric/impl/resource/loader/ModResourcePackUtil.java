@@ -23,8 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -34,7 +32,6 @@ import net.legacyfabric.fabric.api.resource.ModResourcePack;
 /**
  * Internal utilities for managing resource packs.
  */
-@Environment(EnvType.CLIENT)
 public final class ModResourcePackUtil {
 	public static final int PACK_FORMAT_VERSION = 1;
 

@@ -30,7 +30,7 @@ import net.legacyfabric.fabric.impl.item.group.MinecraftAccessor;
 
 @Mixin(ButtonWidget.class)
 public class ButtonWidgetMixin implements ButtonWidgetHelper {
-	@WrapMethod(method = "method_891")
+	@WrapMethod(method = "renderBackground")
 	private void fabric_mouseDragged(Minecraft client, int mouseX, int mouseY, Operation<Void> original) {
 		this.lf$mouseDragged((MinecraftAccessor) client, mouseX, mouseY, (x, y) -> original.call(client, x, y));
 	}

@@ -85,7 +85,7 @@ public abstract class MinecraftServerMixin implements MinecraftServerExtensions 
 	}
 
 	@Override
-	public ListenableFuture<Object> executeTask(Runnable task) {
+	public ListenableFuture<Object> lf$executeTask(Runnable task) {
 		Validate.notNull(task);
 		return this.runCallable(Executors.callable(task));
 	}

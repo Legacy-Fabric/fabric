@@ -32,7 +32,7 @@ public abstract class ButtonWidgetMixin implements ButtonWidgetHelper {
 	@Shadow
 	protected boolean hovered;
 
-	@WrapMethod(method = "method_891")
+	@WrapMethod(method = "renderBackground")
 	private void fabric_mouseDragged(Minecraft client, int mouseX, int mouseY, Operation<Void> original) {
 		this.lf$mouseDragged(mouseX, mouseY, (x, y) -> original.call(client, x, y));
 	}

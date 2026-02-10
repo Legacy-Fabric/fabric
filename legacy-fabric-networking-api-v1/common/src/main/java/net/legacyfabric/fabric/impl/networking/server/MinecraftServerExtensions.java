@@ -20,6 +20,6 @@ package net.legacyfabric.fabric.impl.networking.server;
 import com.google.common.util.concurrent.ListenableFuture;
 
 public interface MinecraftServerExtensions {
-	ListenableFuture<Object> executeTask(Runnable task);
+	ListenableFuture<Object> lf$executeTask(Runnable task);
 	boolean isOnGameThread();
 }

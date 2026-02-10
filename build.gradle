@@ -411,6 +411,7 @@ allprojects {
 //		if (nestBuild != null) nests project.ploceus.nests(nestBuild) // remove this line if not using inner class patches
 
 		ploceus.dependOsl(project.osl_version)
+		ploceus.disableLvtPatch()
 
 		implementation "com.mojang:brigadier:1.0.17"
 
