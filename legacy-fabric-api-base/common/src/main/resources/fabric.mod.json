@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-api-base-common",
-  "name": "Legacy Fabric API Base Common",
+  "id": "legacy-fabric-api-base",
+  "name": "Legacy Fabric API Base",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
@@ -19,6 +19,9 @@
     "minecraft": "${minecraft_version}",
     "fabricloader": "${loader_version}"
   },
+  "provides": [
+    "legacy-fabric-api-base-common"
+  ],
   "description": "Shared hooks used by other api modules",
   "custom": {
     "modmenu": {
@@ -29,6 +32,13 @@
         "badges": [ "library" ],
         "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2.",
         "icon": "assets/legacy-fabric-api/icon.png"
+      }
+    },
+    "flap:from_LEGACY_FABRIC_V1": {
+      "<=1.7.10": {
+        "net/legacyfabric/fabric/api/util/Location": {
+          "getPos()": "getPosAsVec3i()"
+        }
       }
     }
   }
