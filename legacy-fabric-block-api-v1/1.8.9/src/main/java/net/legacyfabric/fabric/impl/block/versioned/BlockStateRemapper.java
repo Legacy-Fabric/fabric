@@ -31,7 +31,6 @@ import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.mixin.block.versioned.BlockAccessor;
 
 public class BlockStateRemapper implements RegistryRemapCallback<Block> {
-
 	@Override
 	public void callback(Map<Integer, FabricRegistryEntry<Block>> changedIdsMap) {
 		IdsHolder<BlockState> newList = Block.STATE_REGISTRY.fabric$new();

@@ -255,10 +255,18 @@ def moduleDependencies(Project project, List<String> projectNames) {
 }
 
 def getNestBuild(String mcVersion) {
-	if (mcVersion == "1.7.10") {
-		return "5"
+	if (mcVersion == "1.8") {
+		return "3"
+	} else if (mcVersion == "1.7.10") {
+		return "6"
 	} else if (mcVersion == "1.6.4") {
-		return "2"
+		return "3"
+	} else if (mcVersion == "1.5.2") {
+		return "6"
+	} else if (mcVersion == "1.4.7") {
+		return "8"
+	} else if (mcVersion == "1.3.2") {
+		return "8"
 	}
 
 	return null;
