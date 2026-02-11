@@ -3,7 +3,6 @@
   "package": "net.legacyfabric.fabric.mixin.resource.loader",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "client.ModelIdentifierMixin",
     "client.ReloadableResourceManagerImplMixin",
     "client.TranslationStorageMixin",
     "client.MinecraftClientMixin"
