@@ -426,7 +426,7 @@ allprojects {
 		testmodImplementation sourceSets.main.output
 
 		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0"))
-		implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.4.1"))
+		implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.5.2"))
 	}
 
 	tasks.withType(ProcessResources).configureEach { processResourcesTask ->
@@ -670,7 +670,7 @@ sourceSets {
 
 dependencies {
 	include("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
-	include("io.github.llamalad7:mixinextras-fabric:0.4.1")
+	include("io.github.llamalad7:mixinextras-fabric:0.5.2")
 
 	afterEvaluate {
 		subprojects.each {

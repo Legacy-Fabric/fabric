@@ -17,11 +17,13 @@
 
 package net.legacyfabric.fabric.mixin.resource.loader.client;
 
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.client.resource.ModelIdentifier;
 import net.minecraft.resource.Identifier;
@@ -32,8 +34,10 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 @Mixin(ModelIdentifier.class)
 public class ModelIdentifierMixin {
-	@Inject(method = "splitModelIdentifier", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/String;indexOf(I)I"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void modifyArray(String id, CallbackInfoReturnable<String[]> cir, String[] strings) {
+	@Definition(id = "indexOf", method = "Ljava/lang/String;indexOf(I)I")
+	@Expression("? = ?.indexOf(?)")
+	@Inject(method = "splitModelIdentifier", at = @At(value = "MIXINEXTRAS:EXPRESSION", shift = At.Shift.AFTER))
+	private static void modifyArray(String id, CallbackInfoReturnable<String[]> cir, @Local String[] strings) {
 		Identifier identifier = new Identifier((id));
 
 		if (identifier.getNamespace().equals("minecraft")) {

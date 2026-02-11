@@ -4,10 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "client.ClientResourceReloadListenerMixins",
-    "client.DefaultResourcePackMixin",
-    "client.MinecraftClientMixin",
-    "client.ReloadableResourceManagerImplMixin",
-    "client.ItemRendererMixin"
+    "client.ItemRendererMixin",
+    "client.MinecraftMixin"
   ],
   "injectors": {
     "defaultRequire": 1

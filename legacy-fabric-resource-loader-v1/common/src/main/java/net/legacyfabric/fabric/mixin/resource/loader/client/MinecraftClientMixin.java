@@ -17,15 +17,16 @@
 
 package net.legacyfabric.fabric.mixin.resource.loader.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.entity.ItemRenderer;
@@ -37,9 +38,6 @@ import net.legacyfabric.fabric.impl.resource.loader.ModResourcePackUtil;
 
 @Mixin(Minecraft.class)
 public class MinecraftClientMixin {
-	@Shadow
-	private ItemRenderer itemRenderer;
-
 	private void fabric_modifyResourcePackList(List<ResourcePack> list) {
 		List<ResourcePack> oldList = Lists.newArrayList(list);
 		list.clear();
@@ -68,13 +66,16 @@ public class MinecraftClientMixin {
 		}
 	}
 
-	@Inject(method = "reloadResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/manager/ReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
-	public void reloadResources(CallbackInfo ci, List<ResourcePack> list) {
+	private static boolean is164;
+
+	@Inject(method = "reloadResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/language/LanguageManager;reload(Ljava/util/List;)V"), require = 0)
+	public void reloadResources_164(CallbackInfo ci, @Local(ordinal = 0) ArrayList list) {
+		is164 = true;
 		fabric_modifyResourcePackList(list);
 	}
 
-	@Inject(method = "init", at = @At("TAIL"))
-	public void addItemModels(CallbackInfo ci) {
-		((ItemModelRegistryImpl.Registrar) this.itemRenderer).fabric_register();
+	@Inject(method = "reloadResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/manager/ReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), require = 0)
+	public void reloadResources(CallbackInfo ci, @Local List<ResourcePack> list) {
+		if (!is164) fabric_modifyResourcePackList(list);
 	}
 }

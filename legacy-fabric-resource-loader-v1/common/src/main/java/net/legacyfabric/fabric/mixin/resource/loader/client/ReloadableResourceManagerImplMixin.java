@@ -19,6 +19,8 @@ package net.legacyfabric.fabric.mixin.resource.loader.client;
 
 import java.util.List;
 
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,7 +40,9 @@ public class ReloadableResourceManagerImplMixin {
 	@Final
 	private List<ResourceReloadListener> listeners;
 
-	@Inject(method = "reload", at = @At(value = "INVOKE", remap = false, target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;[Ljava/lang/Object;)V"))
+	@Definition(id = "clear", method = "Lnet/minecraft/client/resource/manager/SimpleReloadableResourceManager;clear()V")
+	@Expression("this.clear()")
+	@Inject(method = "reload", at = @At(value = "MIXINEXTRAS:EXPRESSION", shift = At.Shift.AFTER))
 	public void onReload(List<ResourcePack> resourcePacks, CallbackInfo ci) {
 		ResourceManagerHelperImpl.getInstance().sort(this.listeners);
 	}

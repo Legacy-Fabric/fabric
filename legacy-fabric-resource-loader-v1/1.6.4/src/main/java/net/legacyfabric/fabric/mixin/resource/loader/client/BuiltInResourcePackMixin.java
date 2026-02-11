@@ -19,20 +19,15 @@ package net.legacyfabric.fabric.mixin.resource.loader.client;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Enumeration;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.client.resource.pack.BuiltInResourcePack;
-import net.minecraft.resource.Identifier;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -40,44 +35,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BuiltInResourcePack.class)
-public class DefaultResourcePackMixin {
-	@Inject(method = "openResource", at = @At("HEAD"), cancellable = true)
-	protected void onFindInputStream(Identifier identifier, CallbackInfoReturnable<InputStream> callback) {
-		//		if (DefaultResourcePack.resourcePath != null) {
-		// Fall through to Vanilla logic, they have a special case here.
-		//			return;
-		//		}
-
-		String path = "assets/" + identifier.getNamespace() + "/" + identifier.getPath();
-		URL found = null;
-
-		try {
-			Enumeration<URL> candidates = BuiltInResourcePack.class.getClassLoader().getResources(path);
-
-			// Get the last element
-			while (candidates.hasMoreElements()) {
-				found = candidates.nextElement();
-			}
-
-			if (found == null) {
-				// Mimics vanilla behavior
-
-				callback.setReturnValue(null);
-				return;
-			}
-		} catch (IOException var6) {
-			// Default path
-		}
-
-		try {
-			if (found != null) {
-				callback.setReturnValue(found.openStream());
-			}
-		} catch (Exception e) {
-			// Default path
-		}
-	}
-
+public class BuiltInResourcePackMixin {
 	@WrapOperation(method = "getMetadataSection", at = @At(value = "INVOKE", target = "Ljava/lang/Class;getResourceAsStream(Ljava/lang/String;)Ljava/io/InputStream;"))
 	private InputStream fixPackMetaPath(Class instance, String e, Operation<InputStream> original) throws IOException {
 		Path path = FabricLoader.getInstance().getModContainer("minecraft").get().findPath(e).orElse(null);

@@ -4,9 +4,12 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "client.ModelIdentifierMixin",
-    "client.TranslationStorageMixin"
+    "client.ReloadableResourceManagerImplMixin",
+    "client.TranslationStorageMixin",
+    "client.MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixinextras": {"minVersion": "0.5.0"}
 }
