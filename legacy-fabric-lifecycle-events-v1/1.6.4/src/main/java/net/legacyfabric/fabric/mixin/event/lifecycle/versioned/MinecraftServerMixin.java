@@ -20,30 +20,18 @@ package net.legacyfabric.fabric.mixin.event.lifecycle.versioned;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
 
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
-	@Shadow
-	public ServerWorld[] worlds;
-
-	@Inject(at = @At(value = "TAIL"), method = "deleteWorldAndStop")
-	public void api$serverWorldLoad(CallbackInfo ci) {
-		for (ServerWorld world : this.worlds) {
-			ServerWorldEvents.LOAD.invoker().onWorldLoad((MinecraftServer) (Object) this, world);
-		}
-	}
-
-	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J", ordinal = 0), method = "run")
+	@WrapOperation(at = {
+			@At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J", ordinal = 0),
+			@At(value = "INVOKE", target = "Ljava/lang/System;currentTimeMillis()J", ordinal = 0, remap = false)
+	}, method = "run")
 	public long api$afterServerStart(Operation<Long> original) {
 		long result = original.call();
 		ServerLifecycleEvents.SERVER_STARTED.invoker().onServerStarted((MinecraftServer) (Object) this);

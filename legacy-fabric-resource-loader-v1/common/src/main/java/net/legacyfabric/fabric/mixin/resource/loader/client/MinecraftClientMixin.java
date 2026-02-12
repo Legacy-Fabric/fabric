@@ -23,17 +23,14 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.render.entity.ItemRenderer;
 import net.minecraft.client.resource.pack.BuiltInResourcePack;
 import net.minecraft.client.resource.pack.ResourcePack;
 
-import net.legacyfabric.fabric.impl.resource.loader.ItemModelRegistryImpl;
 import net.legacyfabric.fabric.impl.resource.loader.ModResourcePackUtil;
 
 @Mixin(Minecraft.class)

@@ -18,29 +18,16 @@
 package net.legacyfabric.fabric.mixin.event.lifecycle.versioned;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
 
 import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
-	@Shadow
-	public ServerWorld[] worlds;
-
-	@Inject(at = @At(value = "TAIL"), method = "deleteWorldAndStop")
-	public void serverWorldLoad(CallbackInfo ci) {
-		for (ServerWorld world : this.worlds) {
-			ServerWorldEvents.LOAD.invoker().onWorldLoad((MinecraftServer) (Object) this, world);
-		}
-	}
-
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;setStatus(Lnet/minecraft/server/ServerStatus;)V", shift = At.Shift.AFTER), method = "run")
 	public void api$afterServerStart(CallbackInfo ci) {
 		ServerLifecycleEvents.SERVER_STARTED.invoker().onServerStarted((MinecraftServer) (Object) this);

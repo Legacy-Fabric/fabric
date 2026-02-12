@@ -17,11 +17,14 @@
 
 package net.legacyfabric.fabric.mixin.event.lifecycle;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.MinecraftServer;
@@ -41,7 +44,7 @@ public class MinecraftServerMixin {
 		ServerTickEvents.END_SERVER_TICK.invoker().onEndTick((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/server/MinecraftServer;stopped:Z", opcode = Opcodes.PUTFIELD), method = "run")
+	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;shutdown()V"), method = "run")
 	public void api$beforeServerShutdown(CallbackInfo ci) {
 		ServerLifecycleEvents.SERVER_STOPPING.invoker().onServerStopping((MinecraftServer) (Object) this);
 	}
@@ -61,5 +64,23 @@ public class MinecraftServerMixin {
 		for (ServerWorld world : this.worlds) {
 			ServerWorldEvents.UNLOAD.invoker().onWorldUnload((MinecraftServer) (Object) this, world);
 		}
+	}
+
+	@Inject(at = @At(value = "TAIL"), method = "prepareWorlds")
+	public void serverWorldLoad(CallbackInfo ci) {
+		for (ServerWorld world : this.worlds) {
+			ServerWorldEvents.LOAD.invoker().onWorldLoad((MinecraftServer) (Object) this, world);
+		}
+	}
+
+	@WrapOperation(at = {
+			@At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;getTimeMillis()J"),
+			@At(value = "INVOKE", target = "Ljava/lang/System;currentTimeMillis()J", remap = false)
+	}, method = "run",
+			slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/server/MinecraftServer;running:Z", opcode = Opcodes.GETFIELD)))
+	public long api$startServerTick(Operation<Long> original) {
+		long time = original.call();
+		ServerTickEvents.START_SERVER_TICK.invoker().onStartTick((MinecraftServer) (Object) this);
+		return time;
 	}
 }
