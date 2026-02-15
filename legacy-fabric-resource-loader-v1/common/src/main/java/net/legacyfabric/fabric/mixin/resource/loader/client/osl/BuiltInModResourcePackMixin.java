@@ -15,27 +15,30 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.resource;
+package net.legacyfabric.fabric.mixin.resource.loader.client.osl;
 
-import net.minecraft.client.resource.pack.ResourcePack;
+import net.ornithemc.osl.resource.loader.api.ModResourcePack;
+import net.ornithemc.osl.resource.loader.impl.BuiltInModResourcePack;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 
-/**
- * Interface implemented by mod-provided resource packs.
- * @deprecated Use {@link net.ornithemc.osl.resource.loader.api.ModResourcePack} instead.
- */
-@Deprecated
-public interface ModResourcePack extends ResourcePack {
-	/**
-	 * @return The ModMetadata object associated with the mod providing this
-	 * resource pack.
-	 */
-	ModMetadata getFabricModMetadata();
+@Mixin(BuiltInModResourcePack.class)
+public abstract class BuiltInModResourcePackMixin implements ModResourcePack, net.legacyfabric.fabric.api.resource.ModResourcePack {
+	@Shadow
+	@Final
+	private ModContainer mod;
 
-	/**
-	 * @return The owner ModContainer of this resource pack.
-	 */
-	ModContainer getOwner();
+	@Override
+	public ModMetadata getFabricModMetadata() {
+		return this.getModMetadata();
+	}
+
+	@Override
+	public ModContainer getOwner() {
+		return this.mod;
+	}
 }

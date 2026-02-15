@@ -3,12 +3,17 @@
   "package": "net.legacyfabric.fabric.mixin.resource.loader",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "client.DefaultResourcePackMixin",
     "client.ReloadableResourceManagerImplMixin",
-    "client.TranslationStorageMixin",
-    "client.MinecraftClientMixin"
+    "client.TranslationStorageMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "mixinextras": {"minVersion": "0.5.0"}
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  },
+  "mixins": [
+    "client.osl.BuiltInModResourcePackMixin"
+  ]
 }
