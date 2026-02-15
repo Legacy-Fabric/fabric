@@ -22,12 +22,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.entity.living.player.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
 import net.legacyfabric.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.legacyfabric.fabric.api.entity.event.v1.ServerPlayerEvents;
 
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
@@ -40,5 +42,10 @@ public class PlayerManagerMixin {
 								@Local(ordinal = 0) ServerWorld serverWorld,
 								@Local(ordinal = 1) ServerWorld serverWorld2) {
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.invoker().afterChangeWorld(player, serverWorld, serverWorld2);
+	}
+
+	@Inject(method = "respawn", at = @At("TAIL"))
+	private void afterRespawn(ServerPlayerEntity oldPlayer, int dimension, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
+		ServerPlayerEvents.AFTER_RESPAWN.invoker().afterRespawn(oldPlayer, cir.getReturnValue(), oldPlayer.server.getWorld(dimension), alive);
 	}
 }

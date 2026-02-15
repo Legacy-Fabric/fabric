@@ -93,7 +93,7 @@ public class EntityTypeMixin {
 
 	@Environment(EnvType.CLIENT)
 	@ModifyArg(method = {"getId(Ljava/lang/String;)I"},
-			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
+			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false), require = 0)
 	private static Object client$fixOldRegistryNames(Object o) {
 		String key = (String) o;
 
