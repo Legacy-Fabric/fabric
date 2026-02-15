@@ -71,7 +71,7 @@ public abstract class ClientConnectionMixin implements ChannelInfoHolder, Client
 	private void resendOnExceptionCaught(Connection clientConnection, Text disconnectReason, @Local(argsOnly = true) Throwable throwable) {
 		PacketHandler handler = this.listener;
 
-		LOGGER.debug("Internal Exception: {}", disconnectReason.getContent(), throwable);
+		LOGGER.error("Internal Exception: {}", disconnectReason.getContent(), throwable);
 
 		if (handler instanceof DisconnectPacketSource) {
 			this.send(((DisconnectPacketSource) handler).createDisconnectPacket(new TranslatableText("disconnect.genericReason", "Internal Exception: " + disconnectReason.getContent())));

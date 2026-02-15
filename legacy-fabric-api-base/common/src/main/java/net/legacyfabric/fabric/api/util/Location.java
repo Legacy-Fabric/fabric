@@ -20,6 +20,8 @@ package net.legacyfabric.fabric.api.util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
+import net.legacyfabric.fabric.mixin.base.Vec3iAccessor;
+
 public class Location<T> {
 	private final T t;
 	private final BlockPos pos;
@@ -40,7 +42,7 @@ public class Location<T> {
 	/* Backward compatibility for Legacy Fabric intermediary where BlockPos and Vec3i are swapped before 1.8 */
 
 	public Location(T t, Vec3i pos) {
-		this(t, new BlockPos(pos.getX(), pos.getY(), pos.getZ()));
+		this(t, new BlockPos(((Vec3iAccessor) pos).getX(), ((Vec3iAccessor) pos).getY(), ((Vec3iAccessor) pos).getZ()));
 	}
 
 	public Vec3i getPosAsVec3i() {

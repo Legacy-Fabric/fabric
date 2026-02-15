@@ -33,6 +33,6 @@ public abstract class CustomPayloadC2SPacketMixin implements CustomPayloadC2SPac
 
 	@Override
 	public PacketByteBuf lf$getData() {
-		return new PacketByteBuf(PacketByteBufs.empty().writeBytes(this.getData()));
+		return new PacketByteBuf(PacketByteBufs.create().writeBytes(getData()));
 	}
 }

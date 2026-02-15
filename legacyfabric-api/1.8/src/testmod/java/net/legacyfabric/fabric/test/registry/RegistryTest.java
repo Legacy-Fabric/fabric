@@ -51,6 +51,7 @@ import net.legacyfabric.fabric.api.effect.PotionHelper;
 import net.legacyfabric.fabric.api.entity.EntityHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
 
@@ -71,7 +72,7 @@ public class RegistryTest implements ModInitializer {
 	private void registerItems() {
 		Item testItem = new Item().setCreativeModeTab(CreativeModeTab.FOOD);
 		RegistryHelper.register(
-				Item.REGISTRY,
+				(FabricRegistry<? super Item>) Item.REGISTRY,
 				new Identifier("legacy-fabric-api", "test_item"), testItem
 		);
 		ItemModelRegistry.registerItemModel(testItem, new Identifier("legacy-fabric-api:test_item"));
@@ -84,8 +85,8 @@ public class RegistryTest implements ModInitializer {
 
 		for (Block block : blocks) {
 			Identifier identifier = new Identifier("legacy-fabric-api:conc_block_" + block.getMaterial().getColor().color);
-			RegistryHelper.register(Block.REGISTRY, identifier, block);
-			RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(block));
+			RegistryHelper.register((FabricRegistry<? super Block>) Block.REGISTRY, identifier, block);
+			RegistryHelper.register((FabricRegistry<? super Item>) Item.REGISTRY, identifier, new BlockItem(block));
 		}
 	}
 
@@ -93,8 +94,8 @@ public class RegistryTest implements ModInitializer {
 		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
 
 		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
-		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
-		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
+		RegistryHelper.register((FabricRegistry<? super Block>) Block.REGISTRY, identifier, blockWithEntity);
+		RegistryHelper.register((FabricRegistry<? super Item>) Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
 		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
 	}
 

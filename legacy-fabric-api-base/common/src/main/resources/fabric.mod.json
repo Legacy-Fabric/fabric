@@ -23,6 +23,9 @@
     "legacy-fabric-api-base-common"
   ],
   "description": "Shared hooks used by other api modules",
+  "mixins": [
+    "legacy-fabric-api-base.mixins.json"
+  ],
   "custom": {
     "modmenu": {
       "badges": [ "library" ],

@@ -1,0 +1,3 @@
+classTweaker	v1	named
+transitive-inject-interface	net/minecraft/util/registry/MappedRegistry	net/legacyfabric/fabric/api/registry/v2/registry/holder/FabricRegistry<TV;>
+transitive-inject-interface	net/minecraft/util/registry/IdRegistry	net/legacyfabric/fabric/api/registry/v2/registry/holder/SyncedFabricRegistry<TV;>
