@@ -40,7 +40,6 @@ public class Location<T> {
 	}
 
 	/* Backward compatibility for Legacy Fabric intermediary where BlockPos and Vec3i are swapped before 1.8 */
-
 	public Location(T t, Vec3i pos) {
 		this(t, new BlockPos(((Vec3iAccessor) pos).getX(), ((Vec3iAccessor) pos).getY(), ((Vec3iAccessor) pos).getZ()));
 	}
