@@ -3,8 +3,7 @@
   "package": "net.legacyfabric.fabric.mixin.client.keybinding",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "ButtonWidgetMixin",
-    "MinecraftMixin"
+    "ButtonWidgetMixin"
   ],
   "injectors": {
     "defaultRequire": 1

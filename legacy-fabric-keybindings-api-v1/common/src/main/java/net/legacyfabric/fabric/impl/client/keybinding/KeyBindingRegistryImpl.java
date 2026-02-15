@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
 
@@ -67,7 +68,7 @@ public final class KeyBindingRegistryImpl {
 	 * Update keybinding list and reload game options file.
 	 */
 	private static void reloadGameOptions() {
-		final GameOptions options = ((MinecraftAccessor) FabricLoader.getInstance().getGameInstance()).lf$getGameOptions();
+		final GameOptions options = ((Minecraft) FabricLoader.getInstance().getGameInstance()).options;
 
 		if (options != null) {
 			options.keyBindings = process(options.keyBindings);
