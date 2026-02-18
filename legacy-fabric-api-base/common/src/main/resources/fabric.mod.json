@@ -17,7 +17,9 @@
   ],
   "depends": {
     "minecraft": "${minecraft_version}",
-    "fabricloader": "${loader_version}"
+    "fabricloader": "${loader_version}",
+    "osl-core": ">=0.7.0",
+    "osl-lifecycle-events": ">=0.6.0"
   },
   "provides": [
     "legacy-fabric-api-base-common"
@@ -26,16 +28,11 @@
   "mixins": [
     "legacy-fabric-api-base.mixins.json"
   ],
+  "accessWidener": "legacy-fabric-api-base.classtweaker",
   "custom": {
     "modmenu": {
       "badges": [ "library" ],
-      "parent": {
-        "id": "legacy-fabric-api",
-        "name": "Legacy Fabric API",
-        "badges": [ "library" ],
-        "description": "Core API module providing key hooks and inter-compatibility features for Minecraft 1.7.10-1.12.2.",
-        "icon": "assets/legacy-fabric-api/icon.png"
-      }
+      "parent": "legacy-fabric-api"
     },
     "flap:from_LEGACY_FABRIC_V1": {
       "<=1.7.10": {

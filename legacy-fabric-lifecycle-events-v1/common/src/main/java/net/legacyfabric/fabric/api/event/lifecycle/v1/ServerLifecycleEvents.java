@@ -31,7 +31,9 @@ public final class ServerLifecycleEvents {
 	 * Called when a Minecraft server is starting.
 	 *
 	 * <p>This occurs before the {@link PlayerManager player manager} and any worlds are loaded.
+	 * @deprecated Use {@link net.ornithemc.osl.lifecycle.api.server.MinecraftServerEvents#START} instead.
 	 */
+	@Deprecated
 	public static final Event<ServerStarting> SERVER_STARTING = EventFactory.createArrayBacked(ServerStarting.class, callbacks -> server -> {
 		for (ServerStarting callback : callbacks) {
 			callback.onServerStarting(server);
@@ -56,7 +58,9 @@ public final class ServerLifecycleEvents {
 	 * <p>For example, an integrated server will begin stopping, but it's client may continue to run.
 	 *
 	 * <p>All worlds are still present and can be modified.
+	 * @deprecated Use {@link net.ornithemc.osl.lifecycle.api.server.MinecraftServerEvents#STOP} instead.
 	 */
+	@Deprecated
 	public static final Event<ServerStopping> SERVER_STOPPING = EventFactory.createArrayBacked(ServerStopping.class, (callbacks) -> (server) -> {
 		for (ServerStopping callback : callbacks) {
 			callback.onServerStopping(server);

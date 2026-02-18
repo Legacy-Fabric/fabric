@@ -26,13 +26,16 @@ import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 
 @Environment(EnvType.CLIENT)
+@Deprecated
 public final class ClientLifecycleEvents {
 	private ClientLifecycleEvents() {
 	}
 
 	/**
 	 * Called when Minecraft has started and it's client about to tick for the first time.
+	 * @deprecated Use {@link net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents#READY} instead.
 	 */
+	@Deprecated
 	public static final Event<ClientStarted> CLIENT_STARTED = EventFactory.createArrayBacked(ClientStarted.class, callbacks -> client -> {
 		for (ClientStarted callback : callbacks) {
 			callback.onClientStarted(client);
@@ -42,7 +45,9 @@ public final class ClientLifecycleEvents {
 	/**
 	 * Called when Minecraft's client begins to stop.
 	 * This is caused by quitting while in game, or closing the game window.
+	 * @deprecated Use {@link net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents#STOP} instead.
 	 */
+	@Deprecated
 	public static final Event<ClientStopping> CLIENT_STOPPING = EventFactory.createArrayBacked(ClientStopping.class, callbacks -> client -> {
 		for (ClientStopping callback : callbacks) {
 			callback.onClientStopping(client);

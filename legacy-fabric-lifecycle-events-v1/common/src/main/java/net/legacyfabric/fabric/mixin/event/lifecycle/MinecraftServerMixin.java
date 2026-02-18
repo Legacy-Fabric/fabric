@@ -44,32 +44,15 @@ public class MinecraftServerMixin {
 		ServerTickEvents.END_SERVER_TICK.invoker().onEndTick((MinecraftServer) (Object) this);
 	}
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;shutdown()V"), method = "run")
-	public void api$beforeServerShutdown(CallbackInfo ci) {
-		ServerLifecycleEvents.SERVER_STOPPING.invoker().onServerStopping((MinecraftServer) (Object) this);
-	}
-
 	@Inject(at = @At(value = "TAIL"), method = "shutdown")
 	public void api$afterServerShutDown(CallbackInfo ci) {
 		ServerLifecycleEvents.SERVER_STOPPED.invoker().onServerStopped((MinecraftServer) (Object) this);
-	}
-
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;init()Z"), method = "run")
-	public void api$beforeServerStart(CallbackInfo ci) {
-		ServerLifecycleEvents.SERVER_STARTING.invoker().onServerStarting((MinecraftServer) (Object) this);
 	}
 
 	@Inject(at = @At("HEAD"), method = "saveWorlds")
 	public void api$serverWorldUnload(boolean silent, CallbackInfo ci) {
 		for (ServerWorld world : this.worlds) {
 			ServerWorldEvents.UNLOAD.invoker().onWorldUnload((MinecraftServer) (Object) this, world);
-		}
-	}
-
-	@Inject(at = @At(value = "TAIL"), method = "prepareWorlds")
-	public void serverWorldLoad(CallbackInfo ci) {
-		for (ServerWorld world : this.worlds) {
-			ServerWorldEvents.LOAD.invoker().onWorldLoad((MinecraftServer) (Object) this, world);
 		}
 	}
 

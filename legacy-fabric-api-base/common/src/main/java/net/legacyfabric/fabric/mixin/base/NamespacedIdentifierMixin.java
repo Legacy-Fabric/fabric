@@ -15,23 +15,24 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.util;
+package net.legacyfabric.fabric.mixin.base;
 
-import net.ornithemc.osl.lifecycle.api.server.MinecraftServerInstance;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
-import net.minecraft.server.MinecraftServer;
+import net.legacyfabric.fabric.api.util.OSLIdentifierExtension;
 
-/**
- * @deprecated Use {@link MinecraftServerInstance} instead.
- */
-@Deprecated
-public class ServerUtils {
-	/**
-	 * @return The current server instance
-	 * @deprecated Use {@link MinecraftServerInstance#get()} instead.
-	 */
-	@Deprecated
-	public static MinecraftServer getServer() {
-		return MinecraftServerInstance.get();
+@Mixin(NamespacedIdentifier.class)
+public interface NamespacedIdentifierMixin extends OSLIdentifierExtension {
+	@Shadow
+	String namespace();
+
+	@Shadow
+	String identifier();
+
+	@Override
+	default String asTranslationKey() {
+		return this.namespace() + "." + this.identifier();
 	}
 }

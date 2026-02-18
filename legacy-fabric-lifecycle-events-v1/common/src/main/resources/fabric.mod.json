@@ -18,9 +18,19 @@
   "provides": [
     "legacy-fabric-lifecycle-events-v1-common-versioned"
   ],
+  "entrypoints": {
+    "client-init": [
+      "net.legacyfabric.fabric.impl.event.lifecycle.LifecycleEventClientInit"
+    ],
+    "init": [
+      "net.legacyfabric.fabric.impl.event.lifecycle.LifecycleEventInit"
+    ]
+  },
   "depends": {
     "minecraft": "${minecraft_version}",
-    "fabricloader": "${loader_version}"
+    "fabricloader": "${loader_version}",
+    "osl-entrypoints": ">=0.5.0",
+    "osl-lifecycle-events": ">=0.6.0"
   },
   "mixins": [
     "legacy-fabric-lifecycle-events-v1-common.mixins.json"

@@ -19,7 +19,13 @@ package net.legacyfabric.fabric.api.util;
 
 import java.util.Locale;
 
-public class Identifier implements Comparable<Identifier> {
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
+/**
+ * @deprecated Use {@link net.minecraft.resource.Identifier} or {@link net.ornithemc.osl.core.api.util.NamespacedIdentifiers} instead.
+ */
+@Deprecated
+public class Identifier implements Comparable<Identifier>, NamespacedIdentifier, OSLIdentifierExtension {
 	protected final String namespace;
 	protected final String path;
 
@@ -72,11 +78,11 @@ public class Identifier implements Comparable<Identifier> {
 	}
 
 	public String toString() {
-		return this.namespace + ':' + this.path;
+		return this.namespace + SEPARATOR + this.path;
 	}
 
 	public String toTranslationKey() {
-		return this.namespace + "." + this.path;
+		return this.asTranslationKey();
 	}
 
 	public boolean equals(Object object) {
@@ -102,5 +108,15 @@ public class Identifier implements Comparable<Identifier> {
 		}
 
 		return i;
+	}
+
+	@Override
+	public String namespace() {
+		return namespace;
+	}
+
+	@Override
+	public String identifier() {
+		return path;
 	}
 }

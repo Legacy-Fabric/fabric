@@ -34,7 +34,9 @@ public final class ClientTickEvents {
 
 	/**
 	 * Called at the start of the client tick.
+	 * @deprecated Use {@link net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents#TICK_START} instead.
 	 */
+	@Deprecated
 	public static final Event<StartTick> START_CLIENT_TICK = EventFactory.createArrayBacked(StartTick.class, callbacks -> client -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = client.profiler;
@@ -56,7 +58,9 @@ public final class ClientTickEvents {
 
 	/**
 	 * Called at the end of the client tick.
+	 * @deprecated Use {@link net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents#TICK_END} instead.
 	 */
+	@Deprecated
 	public static final Event<EndTick> END_CLIENT_TICK = EventFactory.createArrayBacked(EndTick.class, callbacks -> client -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = client.profiler;
@@ -102,7 +106,9 @@ public final class ClientTickEvents {
 	 * Called at the end of a ClientWorld's tick.
 	 *
 	 * <p>End of world tick may be used to start async computations for the next tick.
+	 * @deprecated Use {@link net.ornithemc.osl.lifecycle.api.client.ClientWorldEvents#TICK_END} instead.
 	 */
+	@Deprecated
 	public static final Event<EndWorldTick> END_WORLD_TICK = EventFactory.createArrayBacked(EndWorldTick.class, callbacks -> world -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = world.profiler;

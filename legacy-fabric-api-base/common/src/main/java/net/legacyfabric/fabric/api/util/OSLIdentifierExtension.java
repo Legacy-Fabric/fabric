@@ -17,21 +17,8 @@
 
 package net.legacyfabric.fabric.api.util;
 
-import net.ornithemc.osl.lifecycle.api.server.MinecraftServerInstance;
-
-import net.minecraft.server.MinecraftServer;
-
-/**
- * @deprecated Use {@link MinecraftServerInstance} instead.
- */
-@Deprecated
-public class ServerUtils {
-	/**
-	 * @return The current server instance
-	 * @deprecated Use {@link MinecraftServerInstance#get()} instead.
-	 */
-	@Deprecated
-	public static MinecraftServer getServer() {
-		return MinecraftServerInstance.get();
+public interface OSLIdentifierExtension {
+	default String asTranslationKey() {
+		return "";
 	}
 }

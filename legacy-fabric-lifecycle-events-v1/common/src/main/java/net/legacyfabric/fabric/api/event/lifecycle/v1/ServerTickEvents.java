@@ -98,7 +98,9 @@ public final class ServerTickEvents {
 	 * Called at the end of a ServerWorld's tick.
 	 *
 	 * <p>End of world tick may be used to start async computations for the next tick.
+	 * @deprecated Use {@link net.ornithemc.osl.lifecycle.api.server.ServerWorldEvents#TICK_END} instead.
 	 */
+	@Deprecated
 	public static final Event<EndWorldTick> END_WORLD_TICK = EventFactory.createArrayBacked(EndWorldTick.class, callbacks -> world -> {
 		if (EventFactory.isProfilingEnabled()) {
 			final Profiler profiler = world.profiler;

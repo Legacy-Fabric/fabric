@@ -56,9 +56,4 @@ public class ClientWorldMixin {
 		original.call(instance);
 		ClientTickEvents.START_WORLD_TICK.invoker().onStartTick(instance);
 	}
-
-	@Inject(at = @At("RETURN"), method = "tick")
-	public void endWorldTick(CallbackInfo ci) {
-		ClientTickEvents.END_WORLD_TICK.invoker().onEndTick((ClientWorld) (Object) this);
-	}
 }

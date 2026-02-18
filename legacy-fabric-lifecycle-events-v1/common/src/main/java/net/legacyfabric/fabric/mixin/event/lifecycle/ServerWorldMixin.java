@@ -35,11 +35,6 @@ public abstract class ServerWorldMixin {
 		ServerTickEvents.START_WORLD_TICK.invoker().onStartTick((ServerWorld) (Object) this);
 	}
 
-	@Inject(at = @At("TAIL"), method = "tick")
-	public void endWorldTick(CallbackInfo ci) {
-		ServerTickEvents.END_WORLD_TICK.invoker().onEndTick((ServerWorld) (Object) this);
-	}
-
 	@Inject(at = @At("TAIL"), method = "notifyEntityAdded")
 	public void loadEntity(Entity entity, CallbackInfo ci) {
 		ServerEntityEvents.ENTITY_LOAD.invoker().onLoad(entity, (ServerWorld) (Object) this);
