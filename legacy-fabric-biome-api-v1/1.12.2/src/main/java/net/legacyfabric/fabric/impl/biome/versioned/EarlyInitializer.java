@@ -26,7 +26,6 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
-import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.mixin.biome.BiomeAccessor;
 
@@ -54,7 +53,7 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		registry.fabric$getRegistryRemapCallback().register(changedIdsMap -> {
 			Id2ObjectBiMap<Biome> list = (Id2ObjectBiMap<Biome>) Biome.MUTATED_BIOMES.fabric$new();
 
-			for (Biome biome : (IdsHolder<Biome>) Biome.MUTATED_BIOMES) {
+			for (Biome biome : Biome.MUTATED_BIOMES) {
 				if (biome == null) continue;
 
 				int index = Biome.MUTATED_BIOMES.fabric$getId(biome);

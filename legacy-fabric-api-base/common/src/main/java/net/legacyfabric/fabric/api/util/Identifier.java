@@ -21,10 +21,6 @@ import java.util.Locale;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 
-/**
- * @deprecated Use {@link net.minecraft.resource.Identifier} or {@link net.ornithemc.osl.core.api.util.NamespacedIdentifiers} instead.
- */
-@Deprecated
 public class Identifier implements Comparable<Identifier>, NamespacedIdentifier, OSLIdentifierExtension {
 	protected final String namespace;
 	protected final String path;
@@ -52,6 +48,12 @@ public class Identifier implements Comparable<Identifier>, NamespacedIdentifier,
 
 	public Identifier(String namespace, String path, boolean keepCase) {
 		this(keepCase, namespace, path);
+	}
+
+	public static Identifier fromNamespaceIdentifier(NamespacedIdentifier identifier) {
+		if (identifier instanceof Identifier) return (Identifier) identifier;
+
+		return new Identifier(identifier.namespace(), identifier.identifier(), true);
 	}
 
 	protected static String[] parseString(String path) {

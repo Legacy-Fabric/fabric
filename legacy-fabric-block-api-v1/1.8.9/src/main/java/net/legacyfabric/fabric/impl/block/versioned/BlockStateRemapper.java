@@ -27,7 +27,6 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
-import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.mixin.block.versioned.BlockAccessor;
 
 public class BlockStateRemapper implements RegistryRemapCallback<Block> {
@@ -41,8 +40,6 @@ public class BlockStateRemapper implements RegistryRemapCallback<Block> {
 			if (changedIdsMap.containsKey(blockRawId)) {
 				blockRawId = changedIdsMap.get(blockRawId).getId();
 			}
-
-			Identifier blockId = RegistryHelper.getId(Block.REGISTRY, block);
 
 			for (BlockState state : block.stateDefinition().all()) {
 				int blockStateId = blockRawId << 4 | block.getMetadataFromState(state);

@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.block.versioned;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,7 +33,6 @@ import net.minecraft.util.registry.IdRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin(Block.class)
 public class BlockMixin {
@@ -52,7 +52,7 @@ public class BlockMixin {
 			return;
 		}
 
-		Identifier identifier = RegistryHelper.getId(Item.REGISTRY, item);
+		NamespacedIdentifier identifier = RegistryHelper.getId(Item.REGISTRY, item);
 
 		if (identifier != null) {
 			Block blockFromId = RegistryHelper.<Block>getValue(REGISTRY, identifier);

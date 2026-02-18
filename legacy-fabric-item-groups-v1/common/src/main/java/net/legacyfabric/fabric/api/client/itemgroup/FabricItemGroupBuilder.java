@@ -22,6 +22,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,11 +33,11 @@ import net.legacyfabric.fabric.impl.item.group.FabricCreativeGuiComponents;
 import net.legacyfabric.fabric.impl.item.group.ItemGroupExtensions;
 
 public final class FabricItemGroupBuilder {
-	private final Identifier identifier;
+	private final NamespacedIdentifier identifier;
 	private Supplier<ItemStack> itemSupplier = () -> new ItemStack((Item) null);;
 	private BiConsumer<List<ItemStack>, CreativeModeTab> stacksForDisplay;
 
-	private FabricItemGroupBuilder(Identifier identifier) {
+	private FabricItemGroupBuilder(NamespacedIdentifier identifier) {
 		this.identifier = identifier;
 	}
 
@@ -44,8 +46,21 @@ public final class FabricItemGroupBuilder {
 	 *
 	 * @param identifier the id will become the name of the ItemGroup and will be used for the translation key
 	 * @return a FabricItemGroupBuilder
+	 *
+	 * @deprecated Use {@link #create(NamespacedIdentifier)} instead
 	 */
+	@Deprecated
 	public static FabricItemGroupBuilder create(Identifier identifier) {
+		return new FabricItemGroupBuilder(identifier);
+	}
+
+	/**
+	 * Create a new Item Group Builder.
+	 *
+	 * @param identifier the id will become the name of the ItemGroup and will be used for the translation key
+	 * @return a FabricItemGroupBuilder
+	 */
+	public static FabricItemGroupBuilder create(NamespacedIdentifier identifier) {
 		return new FabricItemGroupBuilder(identifier);
 	}
 
@@ -162,7 +177,7 @@ public final class FabricItemGroupBuilder {
 	public CreativeModeTab build() {
 		((ItemGroupExtensions) CreativeModeTab.BUILDING_BLOCKS).fabric_expandArray();
 		return FabricCreativeGuiComponents.ITEM_GROUP_CREATOR.create(
-				CreativeModeTab.ALL.length - 1, String.format("%s.%s", identifier.getNamespace(), identifier.getPath()),
+				CreativeModeTab.ALL.length - 1, String.format("%s.%s", identifier.namespace(), identifier.identifier()),
 				itemSupplier, stacksForDisplay);
 	}
 }

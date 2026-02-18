@@ -32,6 +32,7 @@ def supportedRanges = [
 ]
 
 
+import com.diffplug.spotless.LineEnding
 import groovy.json.JsonSlurper
 import net.fabricmc.loom.task.RemapJarTask
 import net.legacyfabric.VersionHelper
@@ -446,7 +447,7 @@ allprojects {
 	}
 
 	spotless {
-		lineEndings = com.diffplug.spotless.LineEnding.UNIX
+		lineEndings = LineEnding.UNIX
 
 		java {
 			licenseHeaderFile(rootProject.file("HEADER"))

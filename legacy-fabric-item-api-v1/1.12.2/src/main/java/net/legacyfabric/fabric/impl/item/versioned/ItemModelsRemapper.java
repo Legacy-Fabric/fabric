@@ -20,6 +20,8 @@ package net.legacyfabric.fabric.impl.item.versioned;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.item.ItemModelShaper;
 import net.minecraft.client.resource.ModelIdentifier;
@@ -28,13 +30,12 @@ import net.minecraft.item.Item;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
-import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.mixin.item.versioned.ItemModelsAccessor;
 
 public class ItemModelsRemapper implements RegistryRemapCallback<Item> {
-	private static final Map<Identifier, Map<Integer, ModelIdentifier>> modelIds = new HashMap<>();
+	private static final Map<NamespacedIdentifier, Map<Integer, ModelIdentifier>> modelIds = new HashMap<>();
 
-	public static void registerModelId(Identifier id, int metadata, ModelIdentifier modelId) {
+	public static void registerModelId(NamespacedIdentifier id, int metadata, ModelIdentifier modelId) {
 		modelIds.computeIfAbsent(id, k -> new HashMap<>())
 				.put(metadata, modelId);
 	}
@@ -51,8 +52,8 @@ public class ItemModelsRemapper implements RegistryRemapCallback<Item> {
 	public void callback(Map<Integer, FabricRegistryEntry<Item>> changedIdsMap) {
 		((ItemModelsAccessor) getModelRegistry()).getModelIds().clear();
 
-		for (Map.Entry<Identifier, Map<Integer, ModelIdentifier>> entry : modelIds.entrySet()) {
-			Identifier itemId = entry.getKey();
+		for (Map.Entry<NamespacedIdentifier, Map<Integer, ModelIdentifier>> entry : modelIds.entrySet()) {
+			NamespacedIdentifier itemId = entry.getKey();
 
 			Item item = RegistryHelper.<Item>getValue(Item.REGISTRY, itemId);
 			int itemIndex = RegistryHelper.getRawId(Item.REGISTRY, item);

@@ -19,6 +19,8 @@ package net.legacyfabric.fabric.test.registry;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -46,7 +48,6 @@ import net.legacyfabric.fabric.api.effect.PotionHelper;
 import net.legacyfabric.fabric.api.entity.EntityHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryTest implements ModInitializer {
 	public static StatusEffect EFFECT;
@@ -65,10 +66,10 @@ public class RegistryTest implements ModInitializer {
 	private void registerItems() {
 		Item testItem = new Item()
 				.setCreativeModeTab(CreativeModeTab.FOOD)
-				.setSpriteName(new Identifier("legacy-fabric-api", "test_item").toString());
+				.setSpriteName(NamespacedIdentifiers.from("legacy-fabric-api", "test_item").toString());
 		RegistryHelper.register(
 				Item.REGISTRY,
-				new Identifier("legacy-fabric-api", "test_item"), testItem
+				NamespacedIdentifiers.from("legacy-fabric-api", "test_item"), testItem
 		);
 	}
 
@@ -78,14 +79,14 @@ public class RegistryTest implements ModInitializer {
 		Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[]{concBlock, concBlock2} : new Block[]{concBlock2, concBlock};
 
 		for (Block block : blocks) {
-			Identifier identifier = new Identifier("legacy-fabric-api:conc_block_" + block.getMaterial().getColor().color);
+			NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api:conc_block_" + block.getMaterial().getColor().color);
 			RegistryHelper.register(Block.REGISTRY, identifier, block);
 			RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(block));
 		}
 	}
 
 	private void registerBlockEntities() {
-		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
+		NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_block_entity");
 
 		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
 		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
@@ -94,9 +95,9 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	private void registerEffectsAndPotions() {
-		Identifier identifier = new Identifier("legacy-fabric-api", "test_effect");
+		NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_effect");
 
-		EFFECT = net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(RegistryIds.STATUS_EFFECTS, identifier,
+		EFFECT = RegistryHelper.register(RegistryIds.STATUS_EFFECTS, identifier,
 				id -> new TestStatusEffect(id, false, 1234567)
 						.setIcon(3, 1)
 						.setDurationMultiplier(0.25)
@@ -106,18 +107,18 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	private void registerEntities() {
-		Identifier creeperId = new Identifier("legacy-fabric-api", "test_entity");
+		NamespacedIdentifier creeperId = NamespacedIdentifiers.from("legacy-fabric-api", "test_entity");
 		RegistryHelper.register(RegistryIds.ENTITY_TYPES, creeperId, TestCreeperEntity.class);
 		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
 	}
 
 	private void registerEnchantments() {
-		Identifier enchantmentId = new Identifier("legacy-fabric-api", "test_enchantment");
+		NamespacedIdentifier enchantmentId = NamespacedIdentifiers.from("legacy-fabric-api", "test_enchantment");
 		RegistryHelper.register(RegistryIds.ENCHANTMENTS, enchantmentId, TestEnchantment::new);
 	}
 
 	private void registerBiomes() {
-		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
+		NamespacedIdentifier biomeId = NamespacedIdentifiers.from("legacy-fabric-api", "test_biome");
 		RegistryHelper.register(RegistryIds.BIOMES, biomeId,
 				id -> new TestBiome(id)
 						.setColor(4446496)

@@ -30,6 +30,7 @@ import net.minecraft.util.registry.DefaultedIdRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 
 @Mixin(Potion.class)
 public class PotionMixin {
@@ -39,6 +40,6 @@ public class PotionMixin {
 
 	@Inject(method = "init()V", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		RegistryHelper.addRegistry(RegistryIds.POTIONS, REGISTRY);
+		RegistryHelper.addRegistry(RegistryIds.POTIONS, (FabricRegistry<?>) REGISTRY);
 	}
 }

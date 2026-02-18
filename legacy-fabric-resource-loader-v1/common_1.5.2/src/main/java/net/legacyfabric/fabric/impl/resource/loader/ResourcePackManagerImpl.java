@@ -24,9 +24,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.ModResourcePack;
-import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ResourcePackManagerImpl {
@@ -54,7 +55,7 @@ public class ResourcePackManagerImpl {
 		return null;
 	}
 
-	public static InputStream openFile(Identifier fileName) throws IOException {
+	public static InputStream openFile(NamespacedIdentifier fileName) throws IOException {
 		init();
 
 		for (ModResourcePack pack : RESOURCE_PACKS) {
@@ -64,7 +65,7 @@ public class ResourcePackManagerImpl {
 		return null;
 	}
 
-	public static List<InputStream> openAllFiles(Identifier fileName) {
+	public static List<InputStream> openAllFiles(NamespacedIdentifier fileName) {
 		init();
 
 		List<InputStream> streams = new ArrayList<>();

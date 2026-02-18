@@ -38,7 +38,7 @@ public class ClientRemapInitializer implements ClientModInitializer {
 				throw new UncheckedIOException(e);
 			}
 
-			client.executeTask(() -> RegistryHelperImplementation.readAndRemap(nbt));
+			client.execute(() -> RegistryHelperImplementation.readAndRemap(nbt));
 		});
 	}
 }

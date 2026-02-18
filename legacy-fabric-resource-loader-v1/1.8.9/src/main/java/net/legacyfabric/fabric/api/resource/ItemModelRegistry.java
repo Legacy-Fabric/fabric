@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.api.resource;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
@@ -33,19 +35,48 @@ import net.legacyfabric.fabric.impl.resource.loader.ItemModelRegistryImpl;
  * correct namespace.</p>
  */
 public final class ItemModelRegistry {
+	/**
+	 * @deprecated Use {@link #registerItemModel(Item, NamespacedIdentifier)} instead.
+	 */
+	@Deprecated
 	public static void registerItemModel(Item item, Identifier modelId) {
 		ItemModelRegistryImpl.registerItemModel(item, modelId.toString());
 	}
 
+	public static void registerItemModel(Item item, NamespacedIdentifier modelId) {
+		ItemModelRegistryImpl.registerItemModel(item, modelId.toString());
+	}
+
+	/**
+	 * @deprecated Use {@link #registerItemModel(Item, int, NamespacedIdentifier)} instead.
+	 */
 	public static void registerItemModel(Item item, int metadata, Identifier modelId) {
 		ItemModelRegistryImpl.registerItemModel(item, metadata, modelId.toString());
 	}
 
+	public static void registerItemModel(Item item, int metadata, NamespacedIdentifier modelId) {
+		ItemModelRegistryImpl.registerItemModel(item, metadata, modelId.toString());
+	}
+
+	/**
+	 * @deprecated Use {@link #registerBlockItemModel(Block, NamespacedIdentifier)} instead.
+	 */
 	public static void registerBlockItemModel(Block block, Identifier modelId) {
 		ItemModelRegistryImpl.registerBlockItemModel(block, modelId.toString());
 	}
 
+	public static void registerBlockItemModel(Block block, NamespacedIdentifier modelId) {
+		ItemModelRegistryImpl.registerBlockItemModel(block, modelId.toString());
+	}
+
+	/**
+	 * @deprecated Use {@link #registerBlockItemModel(Block, int, NamespacedIdentifier)} instead.
+	 */
 	public static void registerBlockItemModel(Block block, int metadata, Identifier modelId) {
+		ItemModelRegistryImpl.registerBlockItemModel(block, metadata, modelId.toString());
+	}
+
+	public static void registerBlockItemModel(Block block, int metadata, NamespacedIdentifier modelId) {
 		ItemModelRegistryImpl.registerBlockItemModel(block, metadata, modelId.toString());
 	}
 }

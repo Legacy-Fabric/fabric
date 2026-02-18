@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.item.versioned;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,14 +28,13 @@ import net.minecraft.client.resource.ModelIdentifier;
 import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.item.versioned.ItemModelsRemapper;
 
 @Mixin(ItemModelShaper.class)
 public class ItemModelsMixin {
 	@Inject(method = "register(Lnet/minecraft/item/Item;ILnet/minecraft/client/resource/ModelIdentifier;)V", at = @At("RETURN"))
 	private void lf$registerModelId(Item item, int metadata, ModelIdentifier id, CallbackInfo ci) {
-		Identifier identifier = RegistryHelper.getId(Item.REGISTRY, item);
+		NamespacedIdentifier identifier = RegistryHelper.getId(Item.REGISTRY, item);
 
 		if (identifier != null) ItemModelsRemapper.registerModelId(identifier, metadata, id);
 	}

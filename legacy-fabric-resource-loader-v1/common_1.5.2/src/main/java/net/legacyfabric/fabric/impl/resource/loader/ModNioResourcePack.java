@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 
@@ -125,20 +127,30 @@ public class ModNioResourcePack implements ModResourcePack, Closeable {
 
 	@Override
 	public InputStream openFile(Identifier id) throws IOException {
+		return this.openFile((NamespacedIdentifier) id);
+	}
+
+	@Override
+	public InputStream openFile(NamespacedIdentifier id) throws IOException {
 		return this.openFile(getFilename(id));
 	}
 
 	@Override
 	public boolean containsFile(Identifier id) {
-		if (!this.namespaceCache.contains(id.getNamespace())) {
+		return this.containsFile((NamespacedIdentifier) id);
+	}
+
+	@Override
+	public boolean containsFile(NamespacedIdentifier id) {
+		if (!this.namespaceCache.contains(id.namespace())) {
 			return false;
 		}
 
 		return this.containsFile(getFilename(id));
 	}
 
-	private static String getFilename(Identifier id) {
-		return String.format("%s/%s/%s", "assets", id.getNamespace(), id.getPath());
+	private static String getFilename(NamespacedIdentifier id) {
+		return String.format("%s/%s/%s", "assets", id.namespace(), id.identifier());
 	}
 
 	//	@Override

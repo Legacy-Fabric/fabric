@@ -19,6 +19,8 @@ package net.legacyfabric.fabric.api.registry.v2.event;
 
 import java.util.Map;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistryEntry;
@@ -46,8 +48,22 @@ public interface RegistryRemapCallback<T> {
 	 * @param registryId the id of the registry to get the event for
 	 * @return the event
 	 * @throws IllegalArgumentException When the provided registry doesn't support remapping.
+	 *
+	 * @deprecated Use {@link #event(NamespacedIdentifier)} instead.
 	 */
+	@Deprecated
 	static <T> Event<RegistryRemapCallback<T>> event(Identifier registryId) {
+		return RegistryEventHelper.remapCallbackEvent(registryId);
+	}
+
+	/**
+	 * Get the {@link Event} for the {@link RegistryRemapCallback} for the given registry.
+	 *
+	 * @param registryId the id of the registry to get the event for
+	 * @return the event
+	 * @throws IllegalArgumentException When the provided registry doesn't support remapping.
+	 */
+	static <T> Event<RegistryRemapCallback<T>> event(NamespacedIdentifier registryId) {
 		return RegistryEventHelper.remapCallbackEvent(registryId);
 	}
 

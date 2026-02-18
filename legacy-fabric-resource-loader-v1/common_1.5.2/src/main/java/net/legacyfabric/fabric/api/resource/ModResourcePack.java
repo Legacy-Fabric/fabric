@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 
@@ -43,8 +45,29 @@ public interface ModResourcePack {
 
 	InputStream openFile(String filename) throws IOException;
 	boolean containsFile(String filename);
+
+	/**
+	 * @deprecated Use {@link #openFile(NamespacedIdentifier)} instead.
+	 */
+	@Deprecated
 	InputStream openFile(Identifier id) throws IOException;
+	default InputStream openFile(NamespacedIdentifier id) throws IOException {
+		if (id instanceof Identifier) return this.openFile((Identifier) id);
+
+		return this.openFile(new Identifier(id.namespace(), id.identifier(), true));
+	}
+
+	/**
+	 * @deprecated Use {@link #containsFile(NamespacedIdentifier)} instead.
+	 */
+	@Deprecated
 	boolean containsFile(Identifier id);
+	default boolean containsFile(NamespacedIdentifier id) {
+		if (id instanceof Identifier) return this.containsFile((Identifier) id);
+
+		return this.containsFile(new Identifier(id.namespace(), id.identifier(), true));
+	}
+
 	Set<String> getNamespaces();
 	String getName();
 }

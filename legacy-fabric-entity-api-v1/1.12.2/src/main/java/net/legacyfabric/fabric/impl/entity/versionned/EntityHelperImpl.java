@@ -17,13 +17,21 @@
 
 package net.legacyfabric.fabric.impl.entity.versionned;
 
-import net.minecraft.entity.Entities;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 
-import net.legacyfabric.fabric.api.util.Identifier;
+import net.minecraft.entity.Entities;
+import net.minecraft.resource.Identifier;
 
 public class EntityHelperImpl {
-	public static void registerSpawnEgg(Identifier identifier, int color0, int color1) {
-		net.minecraft.resource.Identifier mcId = new net.minecraft.resource.Identifier(identifier.toString());
+	public static void registerSpawnEgg(NamespacedIdentifier identifier, int color0, int color1) {
+		Identifier mcId;
+
+		if (identifier instanceof Identifier) {
+			mcId = (Identifier) identifier;
+		} else {
+			mcId = new Identifier(identifier.toString());
+		}
+
 		Entities.SPAWN_EGG_DATA.put(mcId, new Entities.SpawnEggData(mcId, color0, color1));
 	}
 }

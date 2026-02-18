@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
@@ -44,23 +46,21 @@ import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.RegistryEntryCreator;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.api.util.VersionUtils;
 import net.legacyfabric.fabric.impl.networking.PacketByteBufExtension;
 import net.legacyfabric.fabric.impl.registry.accessor.RegistryIdSetter;
 
 public class RegistryHelperImplementation {
 	public static final Identifier PACKET_ID = new Identifier("lf-api:registry");
-	public static final boolean hasFlatteningBegun = VersionUtils.matches(">=1.8 <=1.12.2");
-	public static final Map<Identifier, Event<RegistryInitializedEvent>> INITIALIZATION_EVENTS = new HashMap<>();
-	private static final Map<Identifier, FabricRegistry<?>> REGISTRIES = new HashMap<>();
-	private static final Map<Identifier, RegistryRemapper<?>> REMAPPERS = new HashMap<>();
+	private static final Map<NamespacedIdentifier, Event<RegistryInitializedEvent>> INITIALIZATION_EVENTS = new HashMap<>();
+	private static final Map<NamespacedIdentifier, FabricRegistry<?>> REGISTRIES = new HashMap<>();
+	private static final Map<NamespacedIdentifier, RegistryRemapper<?>> REMAPPERS = new HashMap<>();
 	private static final List<Consumer<Identifier>> REGISTRY_REGISTERED = new ArrayList<>();
 
 	public static void registerRegisterEvent(Consumer<Identifier> callback) {
 		REGISTRY_REGISTERED.add(callback);
 	}
 
-	public static Event<RegistryInitializedEvent> getInitializationEvent(Identifier registryId) {
+	public static Event<RegistryInitializedEvent> getInitializationEvent(NamespacedIdentifier registryId) {
 		Event<RegistryInitializedEvent> event;
 
 		if (INITIALIZATION_EVENTS.containsKey(registryId)) {
@@ -82,15 +82,17 @@ public class RegistryHelperImplementation {
 		return event;
 	}
 
-	public static <T> FabricRegistry<T> getRegistry(Identifier identifier) {
+	public static <T> FabricRegistry<T> getRegistry(NamespacedIdentifier identifier) {
 		return (FabricRegistry<T>) REGISTRIES.get(identifier);
 	}
 
-	public static <T> void registerRegistry(Identifier identifier, FabricRegistry<T> holder) {
+	public static <T> void registerRegistry(NamespacedIdentifier identifier, FabricRegistry<T> holder) {
 		if (REGISTRIES.containsKey(identifier)) throw new IllegalArgumentException("Attempted to register registry " + identifier.toString() + " twices!");
 		REGISTRIES.put(identifier, holder);
 
-		if (holder instanceof RegistryIdSetter) ((RegistryIdSetter) holder).fabric$setId(identifier);
+		Identifier compatIdentifier = Identifier.fromNamespaceIdentifier(identifier);
+
+		if (holder instanceof RegistryIdSetter) ((RegistryIdSetter) holder).fabric$setId(compatIdentifier);
 
 		boolean remappable = true;
 
@@ -102,7 +104,7 @@ public class RegistryHelperImplementation {
 			REMAPPERS.put(identifier, new RegistryRemapper<>((SyncedRegistrableFabricRegistry<?>) holder));
 		}
 
-		REGISTRY_REGISTERED.forEach(c -> c.accept(identifier));
+		REGISTRY_REGISTERED.forEach(c -> c.accept(compatIdentifier));
 
 		getInitializationEvent(identifier).invoker().initialized(holder);
 
@@ -127,7 +129,7 @@ public class RegistryHelperImplementation {
 		}
 	}
 
-	public static <T> void register(FabricRegistry<T> registry, Identifier identifier, T value) {
+	public static <T> void register(FabricRegistry<T> registry, NamespacedIdentifier identifier, T value) {
 		if (registry == null) throw new IllegalArgumentException("Can't register to a null registry!");
 		if (!(registry instanceof Registrable)) throw new IllegalArgumentException("Can't register object to non registrable registry " + registry.fabric$getId());
 
@@ -144,10 +146,10 @@ public class RegistryHelperImplementation {
 			computedId = ((SyncedRegistrable<T>) registrable).fabric$nextId();
 		}
 
-		registrable.fabric$register(computedId, identifier, value);
+		registrable.fabric$register(computedId, Identifier.fromNamespaceIdentifier(identifier), value);
 	}
 
-	public static <T> T register(FabricRegistry<T> registry, Identifier identifier, Function<Integer, T> valueConstructor) {
+	public static <T> T register(FabricRegistry<T> registry, NamespacedIdentifier identifier, Function<Integer, T> valueConstructor) {
 		if (registry == null) throw new IllegalArgumentException("Can't register to a null registry!");
 		if (!(registry instanceof SyncedRegistrable)) throw new IllegalArgumentException("Can't register object to non registrable registry " + registry.fabric$getId());
 
@@ -156,7 +158,7 @@ public class RegistryHelperImplementation {
 
 		T value = valueConstructor.apply(computedId);
 
-		registrable.fabric$register(computedId, identifier, value);
+		registrable.fabric$register(computedId, Identifier.fromNamespaceIdentifier(identifier), value);
 
 		return value;
 	}
@@ -252,7 +254,7 @@ public class RegistryHelperImplementation {
 	public static NbtCompound toNbt() {
 		NbtCompound compound = new NbtCompound();
 
-		for (Map.Entry<Identifier, RegistryRemapper<?>> entry : REMAPPERS.entrySet()) {
+		for (Map.Entry<NamespacedIdentifier, RegistryRemapper<?>> entry : REMAPPERS.entrySet()) {
 			compound.put(entry.getKey().toString(), entry.getValue().toNbt());
 		}
 

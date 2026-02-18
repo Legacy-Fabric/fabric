@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.resource.loader.ResourcePackManagerImpl;
 
@@ -30,11 +32,27 @@ public class ResourcePackManager {
 		return ResourcePackManagerImpl.openFile(path);
 	}
 
+	/**
+	 * @deprecated Use {@link #openFile(NamespacedIdentifier)} instead.
+	 */
+	@Deprecated
 	public static InputStream openFile(Identifier id) throws IOException {
 		return ResourcePackManagerImpl.openFile(id);
 	}
 
+	public static InputStream openFile(NamespacedIdentifier id) throws IOException {
+		return ResourcePackManagerImpl.openFile(id);
+	}
+
+	/**
+	 * @deprecated Use {@link #openAllFiles(NamespacedIdentifier)} instead.
+	 */
+	@Deprecated
 	public static List<InputStream> openAllFiles(Identifier id) {
+		return ResourcePackManagerImpl.openAllFiles(id);
+	}
+
+	public static List<InputStream> openAllFiles(NamespacedIdentifier id) {
 		return ResourcePackManagerImpl.openAllFiles(id);
 	}
 
@@ -50,7 +68,14 @@ public class ResourcePackManager {
 		return ResourcePackManagerImpl.getResourcePacks();
 	}
 
+	/**
+	 * @deprecated Use {@link #getAssetPath(NamespacedIdentifier)} instead.
+	 */
 	public static String getAssetPath(Identifier id) {
 		return "/assets/" + id.getNamespace() + "/" + id.getPath();
+	}
+
+	public static String getAssetPath(NamespacedIdentifier id) {
+		return "/assets/" + id.namespace() + "/" + id.identifier();
 	}
 }

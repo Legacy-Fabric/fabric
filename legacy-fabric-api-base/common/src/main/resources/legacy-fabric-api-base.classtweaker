@@ -1,3 +1,3 @@
 classTweaker	v1	named
-transitive-inject-interface	net/ornithemc/osl/core/api/util/NamespacedIdentifier net/legacyfabric/fabric/api/util/OSLIdentifierExtension
+#transitive-inject-interface	net/ornithemc/osl/core/api/util/NamespacedIdentifier net/legacyfabric/fabric/api/util/OSLIdentifierExtension
 transitive-inject-interface net/minecraft/resource/Identifier net/ornithemc/osl/core/api/util/NamespacedIdentifier

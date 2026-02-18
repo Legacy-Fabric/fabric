@@ -38,6 +38,7 @@ import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
+import net.minecraft.resource.Identifier;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -53,7 +54,6 @@ import net.legacyfabric.fabric.api.entity.EntityHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
-import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryTest implements ModInitializer {
 	public static StatusEffect EFFECT;

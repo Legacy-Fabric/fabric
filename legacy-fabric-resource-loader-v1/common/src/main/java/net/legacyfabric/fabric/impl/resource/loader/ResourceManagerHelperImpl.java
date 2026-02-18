@@ -24,20 +24,20 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Lists;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 
 import net.minecraft.client.resource.manager.ResourceReloadListener;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
-import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
 public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 	private static final ResourceManagerHelperImpl INSTANCE = new ResourceManagerHelperImpl();
 	public static final Logger LOGGER = Logger.get(LoggerImpl.API, "ResourceManagerHelperImpl");
 
-	private final Set<Identifier> addedListenerIds = new HashSet<>();
+	private final Set<NamespacedIdentifier> addedListenerIds = new HashSet<>();
 	private final Set<IdentifiableResourceReloadListener> addedListeners = new LinkedHashSet<>();
 
 	public static ResourceManagerHelperImpl getInstance() {
@@ -54,7 +54,7 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 		// - We addReloadListener all custom listeners after vanilla listeners. Same reasons.
 
 		List<IdentifiableResourceReloadListener> listenersToAdd = Lists.newArrayList(addedListeners);
-		Set<Identifier> resolvedIds = new HashSet<>();
+		Set<NamespacedIdentifier> resolvedIds = new HashSet<>();
 
 		for (ResourceReloadListener listener : listeners) {
 			if (listener instanceof IdentifiableResourceReloadListener) {

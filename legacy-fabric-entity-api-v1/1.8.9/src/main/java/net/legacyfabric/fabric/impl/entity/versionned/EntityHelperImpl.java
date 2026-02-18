@@ -17,14 +17,15 @@
 
 package net.legacyfabric.fabric.impl.entity.versionned;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.minecraft.entity.Entities;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.util.Identifier;
 
 public class EntityHelperImpl {
-	public static void registerSpawnEgg(Identifier identifier, int color0, int color1) {
+	public static void registerSpawnEgg(NamespacedIdentifier identifier, int color0, int color1) {
 		int mcId = RegistryHelper.getRawId(RegistryIds.ENTITY_TYPES,
 				RegistryHelper.getValue(RegistryIds.ENTITY_TYPES, identifier));
 		Entities.SPAWN_EGG_DATA.put(mcId, new Entities.SpawnEggData(mcId, color0, color1));

@@ -29,6 +29,8 @@ import java.util.Properties;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -39,7 +41,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.locale.Language;
 
 import net.legacyfabric.fabric.api.resource.ResourcePackManager;
-import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.resource.loader.IOBiConsumer;
 import net.legacyfabric.fabric.impl.resource.loader.ResourcePackManagerImpl;
 
@@ -51,9 +52,9 @@ public class LanguageMixin {
 	@Inject(method = "loadTranslations", at = @At("RETURN"))
 	private void loadModTranslations(Properties translations, String language, CallbackInfo ci) {
 		for (String namespace : ResourcePackManager.getNamespaces()) {
-			loadTranslationFiles(translations, new Identifier(namespace, "lang/" + language + ".lang", true), this::loadLangFile);
-			loadTranslationFiles(translations, new Identifier(namespace, "lang/" + getLowercaseLangCode(language) + ".lang"), this::loadLangFile);
-			loadTranslationFiles(translations, new Identifier(namespace, "lang/" + getLowercaseLangCode(language) + ".json"), this::loadJsonLangFile);
+			loadTranslationFiles(translations, NamespacedIdentifiers.from(namespace, "lang/" + language + ".lang"), this::loadLangFile);
+			loadTranslationFiles(translations, NamespacedIdentifiers.from(namespace, "lang/" + getLowercaseLangCode(language) + ".lang"), this::loadLangFile);
+			loadTranslationFiles(translations, NamespacedIdentifiers.from(namespace, "lang/" + getLowercaseLangCode(language) + ".json"), this::loadJsonLangFile);
 		}
 	}
 
@@ -61,7 +62,7 @@ public class LanguageMixin {
 		return original.toLowerCase(Locale.ENGLISH);
 	}
 
-	private void loadTranslationFiles(Properties translations, Identifier path, IOBiConsumer<Properties, InputStream> consumer) {
+	private void loadTranslationFiles(Properties translations, NamespacedIdentifier path, IOBiConsumer<Properties, InputStream> consumer) {
 		for (InputStream stream : ResourcePackManager.openAllFiles(path)) {
 			try {
 				consumer.accept(translations, stream);

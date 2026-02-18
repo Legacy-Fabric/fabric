@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.block.versioned;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,13 +27,12 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.util.Identifier;
 
 @Mixin(Item.class)
 public class ItemMixin {
 	@Inject(method = "byBlock", at = @At("HEAD"), cancellable = true)
 	private static void fixItemFromBlock(Block block, CallbackInfoReturnable<Item> cir) {
-		Identifier identifier = RegistryHelper.getId(Block.REGISTRY, block);
+		NamespacedIdentifier identifier = RegistryHelper.getId(Block.REGISTRY, block);
 
 		if (identifier != null) {
 			Item item = RegistryHelper.<Item>getValue(Item.REGISTRY, identifier);

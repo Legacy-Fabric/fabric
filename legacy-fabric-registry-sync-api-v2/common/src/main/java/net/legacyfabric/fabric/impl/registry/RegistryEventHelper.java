@@ -20,6 +20,8 @@ package net.legacyfabric.fabric.impl.registry;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.event.EventFactory;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
@@ -27,14 +29,13 @@ import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.event.RegistryRemapCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
-import net.legacyfabric.fabric.api.util.Identifier;
 
 public class RegistryEventHelper {
-	protected static final Map<Identifier, Event<RegistryBeforeAddCallback<?>>> IDENTIFIER_BEFORE_MAP = new HashMap<>();
-	protected static final Map<Identifier, Event<RegistryEntryAddedCallback<?>>> IDENTIFIER_ADDED_MAP = new HashMap<>();
-	protected static final Map<Identifier, Event<RegistryRemapCallback<?>>> IDENTIFIER_REMAP_MAP = new HashMap<>();
+	protected static final Map<NamespacedIdentifier, Event<RegistryBeforeAddCallback<?>>> IDENTIFIER_BEFORE_MAP = new HashMap<>();
+	protected static final Map<NamespacedIdentifier, Event<RegistryEntryAddedCallback<?>>> IDENTIFIER_ADDED_MAP = new HashMap<>();
+	protected static final Map<NamespacedIdentifier, Event<RegistryRemapCallback<?>>> IDENTIFIER_REMAP_MAP = new HashMap<>();
 
-	public static <T> Event<RegistryBeforeAddCallback<T>> addRegistryBeforeCallback(Identifier registryId) {
+	public static <T> Event<RegistryBeforeAddCallback<T>> addRegistryBeforeCallback(NamespacedIdentifier registryId) {
 		FabricRegistry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
 
 		if (registry != null) return registry.fabric$getBeforeAddedCallback();
@@ -53,7 +54,7 @@ public class RegistryEventHelper {
 		return (Event<RegistryBeforeAddCallback<T>>) (Object) IDENTIFIER_BEFORE_MAP.get(registryId);
 	}
 
-	public static <T> Event<RegistryEntryAddedCallback<T>> addedCallbackEvent(Identifier registryId) {
+	public static <T> Event<RegistryEntryAddedCallback<T>> addedCallbackEvent(NamespacedIdentifier registryId) {
 		FabricRegistry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
 
 		if (registry != null) return registry.fabric$getEntryAddedCallback();
@@ -72,7 +73,7 @@ public class RegistryEventHelper {
 		return (Event<RegistryEntryAddedCallback<T>>) (Object) IDENTIFIER_ADDED_MAP.get(registryId);
 	}
 
-	public static <T> Event<RegistryRemapCallback<T>> remapCallbackEvent(Identifier registryId) {
+	public static <T> Event<RegistryRemapCallback<T>> remapCallbackEvent(NamespacedIdentifier registryId) {
 		FabricRegistry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
 
 		if (registry != null) return ((SyncedFabricRegistry<T>) registry).fabric$getRegistryRemapCallback();

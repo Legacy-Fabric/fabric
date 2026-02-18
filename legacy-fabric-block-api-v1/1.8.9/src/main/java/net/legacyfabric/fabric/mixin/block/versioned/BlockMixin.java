@@ -30,6 +30,7 @@ import net.minecraft.util.registry.DefaultedIdRegistry;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
+import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 
 @Mixin(Block.class)
 public class BlockMixin {
@@ -39,6 +40,6 @@ public class BlockMixin {
 
 	@Inject(method = "init", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
-		RegistryHelper.addRegistry(RegistryIds.BLOCKS, REGISTRY);
+		RegistryHelper.addRegistry(RegistryIds.BLOCKS, (FabricRegistry<?>) REGISTRY);
 	}
 }

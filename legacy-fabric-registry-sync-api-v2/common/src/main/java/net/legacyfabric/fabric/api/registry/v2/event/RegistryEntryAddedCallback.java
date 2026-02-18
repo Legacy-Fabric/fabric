@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.api.registry.v2.event;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
@@ -43,8 +45,21 @@ public interface RegistryEntryAddedCallback<T> {
 	 *
 	 * @param registryId the id of the registry to get the event for
 	 * @return the event
+	 *
+	 * @deprecated Use {@link #event(NamespacedIdentifier)} instead.
 	 */
+	@Deprecated
 	static <T> Event<RegistryEntryAddedCallback<T>> event(Identifier registryId) {
+		return RegistryEventHelper.addedCallbackEvent(registryId);
+	}
+
+	/**
+	 * Get the {@link Event} for the {@link RegistryEntryAddedCallback} for the given registry.
+	 *
+	 * @param registryId the id of the registry to get the event for
+	 * @return the event
+	 */
+	static <T> Event<RegistryEntryAddedCallback<T>> event(NamespacedIdentifier registryId) {
 		return RegistryEventHelper.addedCallbackEvent(registryId);
 	}
 

@@ -43,6 +43,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
+import net.minecraft.resource.Identifier;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -58,7 +59,7 @@ import net.legacyfabric.fabric.api.entity.EntityHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
-import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.api.util.OSLIdentifierExtension;
 
 public class RegistryTest implements ModInitializer {
 	public static StatusEffect EFFECT;
@@ -117,7 +118,7 @@ public class RegistryTest implements ModInitializer {
 		RegistryHelper.register(StatusEffect.REGISTRY, effectIdentifier, EFFECT);
 
 		Identifier potionIdentifier = new Identifier("legacy-fabric-api", "test_potion");
-		Potion potion = new Potion(potionIdentifier.toTranslationKey(), new StatusEffectInstance(EFFECT, 3600, 5));
+		Potion potion = new Potion(((OSLIdentifierExtension) potionIdentifier).asTranslationKey(), new StatusEffectInstance(EFFECT, 3600, 5));
 		RegistryHelper.register(Potion.REGISTRY, potionIdentifier, potion);
 		PotionHelper.registerPotionRecipe(Potions.LEAPING, Items.SPECKLED_MELON, potion);
 	}

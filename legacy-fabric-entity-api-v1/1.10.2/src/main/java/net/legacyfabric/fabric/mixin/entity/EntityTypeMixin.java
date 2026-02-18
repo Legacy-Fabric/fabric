@@ -30,11 +30,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.Entities;
 import net.minecraft.entity.Entity;
+import net.minecraft.resource.Identifier;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.entity.MapEntityRegistryWrapper;
 
 @Mixin(Entities.class)

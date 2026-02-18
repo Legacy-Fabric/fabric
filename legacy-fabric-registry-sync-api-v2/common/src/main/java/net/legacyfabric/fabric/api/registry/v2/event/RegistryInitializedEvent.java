@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.api.registry.v2.event;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
 import net.legacyfabric.fabric.api.event.Event;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 import net.legacyfabric.fabric.api.util.Identifier;
@@ -29,7 +31,15 @@ import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 public interface RegistryInitializedEvent {
 	<T> void initialized(FabricRegistry<T> registry);
 
+	/**
+	 * @deprecated Use {@link #event(NamespacedIdentifier)} instead.
+	 */
+	@Deprecated
 	static Event<RegistryInitializedEvent> event(Identifier registryId) {
+		return RegistryHelperImplementation.getInitializationEvent(registryId);
+	}
+
+	static Event<RegistryInitializedEvent> event(NamespacedIdentifier registryId) {
 		return RegistryHelperImplementation.getInitializationEvent(registryId);
 	}
 }
