@@ -409,9 +409,13 @@ allprojects {
 		minecraft "com.mojang:minecraft:${mcVersion}"
 		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-		mappings loom.layered {
+		if (rootProject.file("mappings/${mcVersion}.tiny").exists()) {
+			mappings loom.layered {
+				mappings project.ploceus.featherMappings(project.rootProject.feather_build)
+				mappings rootProject.file("mappings/${mcVersion}.tiny")
+			}
+		} else {
 			mappings project.ploceus.featherMappings(project.rootProject.feather_build)
-			mappings rootProject.file("mappings/patch.tiny")
 		}
 
 		if (ravenBuild != null) exceptions project.ploceus.raven(ravenBuild) // remove this line if not using exceptions patches
