@@ -411,8 +411,8 @@ allprojects {
 		modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 		if (rootProject.file("mappings/${mcVersion}.tiny").exists()) {
-			mappings loom.layered {
-				mappings project.ploceus.featherMappings(project.rootProject.feather_build)
+			mappings project.ploceus.layeredMappings {
+				mappings "net.ornithemc:feather-gen2:${mcVersion}+build.${project.rootProject.feather_build}:v2"
 				mappings rootProject.file("mappings/${mcVersion}.tiny")
 			}
 		} else {
