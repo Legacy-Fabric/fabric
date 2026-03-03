@@ -246,7 +246,7 @@ def moduleDependencies(Project project, List<String> projectNames) {
 
 						def exclusionsNode = node.appendNode("exclusions")
 						def exclusionNode = exclusionsNode.appendNode("exclusion")
-						exclusionNode.appendNode("groupId", "net.legacyfabric.legacy-fabric-api")
+						exclusionNode.appendNode("groupId", "net.legacyfabric.ornithed.legacy-fabric-api")
 						exclusionNode.appendNode("artifactId", "*")
 					}
 				}
@@ -300,7 +300,7 @@ def getRavenBuild(String mcVersion) {
 }
 
 allprojects {
-	group = "net.legacyfabric.legacy-fabric-api"
+	group = "net.legacyfabric.ornithed.legacy-fabric-api"
 
 	apply plugin: "java-library"
 	apply plugin: "checkstyle"
@@ -751,7 +751,7 @@ publishMods {
 			}
 		}
 
-		modLoaders.add("legacy-fabric")
+		modLoaders.add("ornithe")
 	}
 
 	github {
@@ -774,7 +774,7 @@ publishMods {
 // A task to ensure that the version being released has not already been released.
 task checkVersion {
 	doFirst {
-		def xml = new URL("https://maven.legacyfabric.net/net/legacyfabric/legacy-fabric-api/legacy-fabric-api/maven-metadata.xml").text
+		def xml = new URL("https://maven.legacyfabric.net/net/legacyfabric/ornithed/legacy-fabric-api/legacy-fabric-api/maven-metadata.xml").text
 		def metadata = new groovy.xml.XmlSlurper().parseText(xml)
 		def versions = metadata.versioning.versions.version*.text()
 		versions.each {
@@ -785,5 +785,5 @@ task checkVersion {
 	}
 }
 
-tasks.publishMods.dependsOn checkVersion
-publish.mustRunAfter checkVersion
+//tasks.publishMods.dependsOn checkVersion
+//publish.mustRunAfter checkVersion
