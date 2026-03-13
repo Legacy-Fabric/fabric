@@ -3,13 +3,15 @@
   "package": "net.legacyfabric.fabric.mixin.resource.loader",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "client.ModelIdentifierMixin",
+    "client.BlockModelShaperMixin",
     "client.ClientResourceReloadListenerMixins",
     "client.ItemRendererMixin",
-    "client.MinecraftMixin"
+    "client.MinecraftMixin",
+    "client.ModelIdentifierMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "mixinextras": {"minVersion": "0.5.0"}
+  "mixinextras": {
+    "minVersion": "0.5.0"}
 }
