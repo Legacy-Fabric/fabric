@@ -785,5 +785,5 @@ task checkVersion {
 	}
 }
 
-//tasks.publishMods.dependsOn checkVersion
-//publish.mustRunAfter checkVersion
+tasks.publishMods.dependsOn checkVersion
+publish.mustRunAfter checkVersion
