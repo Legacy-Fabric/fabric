@@ -7,7 +7,8 @@
     "client.ClientResourceReloadListenerMixins",
     "client.ItemRendererMixin",
     "client.MinecraftMixin",
-    "client.ModelIdentifierMixin"
+    "client.ModelIdentifierMixin",
+    "client.VariantBlockModelProviderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
