@@ -37,6 +37,9 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 	private static void itemRegistryInit(FabricRegistry<?> holder) {
 		SyncedFabricRegistry<Item> registry = (SyncedFabricRegistry<Item>) holder;
 
-		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) registry.fabric$getRegistryRemapCallback().register(new ItemModelsRemapper());
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			registry.fabric$getEntryAddedCallback().register(new ItemModelsInitializer());
+			registry.fabric$getRegistryRemapCallback().register(new ItemModelsRemapper());
+		}
 	}
 }
