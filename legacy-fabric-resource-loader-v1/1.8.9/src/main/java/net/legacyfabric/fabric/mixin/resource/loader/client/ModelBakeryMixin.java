@@ -49,6 +49,7 @@ public class ModelBakeryMixin {
 
 		for (ItemModelRegistryImpl.ModelTriad<Block> triad : ItemModelRegistryImpl.BLOCKS_WITH_META) {
 			Item item = Item.byBlock(triad.getObject());
+
 			if (item != null && item.hasCustomData() && triad.getModel() != null) {
 				this.itemVariants.computeIfAbsent(item, key -> new ArrayList<>())
 						.add(triad.getModelPath());
