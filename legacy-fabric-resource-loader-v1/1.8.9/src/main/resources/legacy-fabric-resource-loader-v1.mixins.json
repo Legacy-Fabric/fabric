@@ -5,8 +5,10 @@
   "client": [
     "client.BlockModelShaperMixin",
     "client.ClientResourceReloadListenerMixins",
+    "client.ItemModelShaperMixin",
     "client.ItemRendererMixin",
     "client.MinecraftMixin",
+    "client.ModelBakeryMixin",
     "client.ModelIdentifierMixin",
     "client.VariantBlockModelProviderMixin"
   ],

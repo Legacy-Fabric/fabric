@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.impl.resource.loader;
 
+import java.util.Objects;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
@@ -34,19 +35,19 @@ public class ItemModelRegistryImpl {
 	public static final Set<ModelTriad<Block>> BLOCKS_WITH_META = Sets.newHashSet();
 
 	public static void registerItemModel(Item item, int metadata, String id) {
-		ITEMS_WITH_META.add(new ModelTriad<>(item, new Identifier(id), metadata));
+		ITEMS_WITH_META.add(new ModelTriad<>(item, id != null ? new Identifier(id) : null, metadata));
 	}
 
 	public static void registerItemModel(Item item, String id) {
-		ITEMS_WITHOUT_META.add(new ModelPair<>(item, new Identifier(id)));
+		ITEMS_WITHOUT_META.add(new ModelPair<>(item, id != null ? new Identifier(id) : null));
 	}
 
 	public static void registerBlockItemModel(Block block, int metadata, String id) {
-		BLOCKS_WITH_META.add(new ModelTriad<>(block, new Identifier(id), metadata));
+		BLOCKS_WITH_META.add(new ModelTriad<>(block, id != null ? new Identifier(id) : null, metadata));
 	}
 
 	public static void registerBlockItemModel(Block block, String id) {
-		BLOCKS_WITHOUT_META.add(new ModelPair<>(block, new Identifier(id)));
+		BLOCKS_WITHOUT_META.add(new ModelPair<>(block, id != null ? new Identifier(id) : null));
 	}
 
 	public static class ModelPair<T> {
@@ -65,6 +66,24 @@ public class ItemModelRegistryImpl {
 		public Identifier getModel() {
 			return model;
 		}
+
+		public String getModelPath() {
+			if (model == null) return null;
+
+			return model.toString();
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof ModelPair)) return false;
+			ModelPair<?> modelPair = (ModelPair<?>) o;
+			return Objects.equals(object, modelPair.object) && Objects.equals(model, modelPair.model);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(object, model);
+		}
 	}
 
 	public static class ModelTriad<T> extends ModelPair<T> {
@@ -77,6 +96,19 @@ public class ItemModelRegistryImpl {
 
 		public int getMetadata() {
 			return metadata;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof ModelTriad)) return false;
+			if (!super.equals(o)) return false;
+			ModelTriad<?> that = (ModelTriad<?>) o;
+			return metadata == that.metadata;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(super.hashCode(), metadata);
 		}
 	}
 
