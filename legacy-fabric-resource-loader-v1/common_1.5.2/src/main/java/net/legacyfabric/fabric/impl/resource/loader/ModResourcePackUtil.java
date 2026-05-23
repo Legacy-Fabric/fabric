@@ -34,7 +34,6 @@ import net.legacyfabric.fabric.api.resource.ModResourcePack;
 /**
  * Internal utilities for managing resource packs.
  */
-@Environment(EnvType.CLIENT)
 public final class ModResourcePackUtil {
 	public static final int PACK_FORMAT_VERSION = 1;
 
