@@ -30,7 +30,9 @@ import net.legacyfabric.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
  * KeyBinding left = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.example.left", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_P, "key.category.example"));
  * KeyBinding right = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.example.right", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U, "key.category.example"));
  * </code></pre>
+ * @deprecated Use {@link net.ornithemc.osl.keybinds.api.KeyBindingEvents#REGISTER_KEYBINDS} instead.
  */
+@Deprecated
 public final class KeyBindingHelper {
 	private KeyBindingHelper() {
 	}
@@ -40,7 +42,9 @@ public final class KeyBindingHelper {
 	 *
 	 * @param keyBinding the keybinding
 	 * @return the keybinding itself
+	 * @deprecated Use {@link net.ornithemc.osl.keybinds.api.KeyBindingEvents#REGISTER_KEYBINDS} instead.
 	 */
+	@Deprecated
 	public static KeyBinding registerKeyBinding(KeyBinding keyBinding) {
 		return KeyBindingRegistryImpl.registerKeyBinding(keyBinding);
 	}
