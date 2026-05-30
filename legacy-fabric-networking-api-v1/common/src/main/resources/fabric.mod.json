@@ -17,7 +17,8 @@
   ],
   "depends": {
     "minecraft": "${minecraft_version}",
-    "fabricloader": "${loader_version}"
+    "fabricloader": "${loader_version}",
+    "osl-executors": ">=0.1.0"
   },
   "description": "Low-level, vanilla protocol oriented networking hooks.",
   "mixins": [

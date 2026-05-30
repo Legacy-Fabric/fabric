@@ -5,13 +5,11 @@
   "mixins": [
     "ClientConnectionMixin",
     "CustomPayloadC2SPacketMixin",
-    "MinecraftServerMixin",
     "PlayerManagerMixin",
     "versioned.PacketByteBufMixin"
   ],
   "client": [
     "client.CustomPayloadS2CPacketMixin",
-    "client.MinecraftClientMixin",
     "versioned.client.ClientPlayNetworkHandlerMixin"
   ],
   "injectors": {

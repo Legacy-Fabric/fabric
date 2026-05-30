@@ -20,6 +20,7 @@ package net.legacyfabric.fabric.impl.networking.server;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.Packet;
@@ -75,7 +76,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 	 */
 	public boolean handle(CustomPayloadC2SPacket packet) {
 		// Do not handle the packet on game thread
-		if (((MinecraftServerExtensions) this.server).isOnGameThread()) {
+		if (this.server.isRunningOnSameThread()) {
 			return false;
 		}
 
@@ -91,7 +92,7 @@ public final class ServerPlayNetworkAddon extends AbstractChanneledNetworkAddon<
 
 	@Override
 	protected void schedule(Runnable task) {
-		((MinecraftServerExtensions) this.handler.player.server).lf$executeTask(task);
+		((Executor) this.handler.player.server).execute(task);
 	}
 
 	@Override
