@@ -6,7 +6,7 @@ plugins {
 	id "ploceus" version "1.15.6" apply false
 	id "com.diffplug.spotless" version "7.2.1"
 	id "org.ajoberstar.grgit" version "5.3.2"
-	id "me.modmuss50.mod-publish-plugin" version "1.1.0"
+	id "me.modmuss50.mod-publish-plugin" version "2.0.0-beta.1"
 }
 
 def ENV = System.getenv()
@@ -752,13 +752,15 @@ publishMods {
 		}
 
 		modLoaders.add("ornithe")
+
+		requires("EHGtwpJv")
 	}
 
-	github {
-		accessToken = providers.environmentVariable("GITHUB_TOKEN")
-		repository = providers.environmentVariable("GITHUB_REPOSITORY").getOrElse("LegacyFabric/dryrun")
-		commitish = providers.environmentVariable("GITHUB_REF_NAME").getOrElse("dryrun")
-	}
+//	github {
+//		accessToken = providers.environmentVariable("GITHUB_TOKEN")
+//		repository = providers.environmentVariable("GITHUB_REPOSITORY").getOrElse("LegacyFabric/dryrun")
+//		commitish = providers.environmentVariable("GITHUB_REF_NAME").getOrElse("dryrun")
+//	}
 
 	discord {
 		webhookUrl = providers.environmentVariable("DISCORD_WEBHOOK")

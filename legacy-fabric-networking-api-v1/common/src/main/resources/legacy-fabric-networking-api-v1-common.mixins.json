@@ -6,8 +6,7 @@
     "EntityTrackerAccessor",
     "EntityTrackerEntryAccessor",
     "EntityTrackerEntryMixin",
-    "ServerPlayNetworkHandlerMixin",
-    "CustomPayloadS2CPacketMixin"
+    "ServerPlayNetworkHandlerMixin"
   ],
   "client": [
     "client.ClientPlayNetworkHandlerMixin",
