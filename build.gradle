@@ -125,18 +125,7 @@ def getSubprojectVersion(Project project) {
 		version = version + "+" + mcVersion
 	}
 
-	if (moduleName == "legacyfabric-api") return version
-
-	if (grgit == null) {
-		return version + "+nogit"
-	}
-	def latestCommits = grgit.log(paths: [rootProject.projectDir.toPath().relativize(project.projectDir.toPath()).toString()], maxCommits: 1)
-	if (latestCommits.isEmpty()) {
-		return version + "+uncommited"
-	} else {
-		return version + "+" + latestCommits.get(0).id.substring(0, 8) +
-			DigestUtils.sha256Hex("${rootProject.version}").substring(0, 4)
-	}
+	return version
 }
 
 def getBranch() {
@@ -169,6 +158,28 @@ def setupRepositories(RepositoryHandler repositories) {
 			}
 		}
 	}
+}
+
+def shouldPublish(project) {
+	def groupId = project.publishing.publications.mavenJava.groupId
+	def artifactId = project.publishing.publications.mavenJava.artifactId
+	def version = project.publishing.publications.mavenJava.version
+
+	def exists = false
+
+	try {
+		def mavenPathUrl = "https://maven.legacyfabric.net/${groupId.replace('.', '/')}/${artifactId}/maven-metadata.xml";
+		def xml = new URL(mavenPathUrl).text
+		def metadata = new groovy.xml.XmlSlurper().parseText(xml)
+
+		exists = metadata.versioning.versions.version.stream().filter({
+			return it == version
+		}).findFirst().isPresent()
+	} catch (FileNotFoundException ignored) {
+		// only happens if no publications exist yet
+	}
+
+	return !exists
 }
 
 def moduleDependencies(Project project, List<String> projectNames) {
@@ -236,21 +247,27 @@ def moduleDependencies(Project project, List<String> projectNames) {
 				pom.withXml {
 					def depsNode = asNode().appendNode("dependencies")
 
-					for (def depNode in depNodes) {
-						def node = depsNode.appendNode("dependency")
+					if (moduleName == "legacyfabric-api") {
+						for (def depNode in depNodes) {
+							def node = depsNode.appendNode("dependency")
 
-						for (def entry in depNode) {
-							node.appendNode(entry.key, entry.value)
+							for (def entry in depNode) {
+								node.appendNode(entry.key, entry.value)
+							}
+
+							def exclusionsNode = node.appendNode("exclusions")
+							def exclusionNode = exclusionsNode.appendNode("exclusion")
+							exclusionNode.appendNode("groupId", "net.legacyfabric.legacy-fabric-api")
+							exclusionNode.appendNode("artifactId", "*")
 						}
-
-						def exclusionsNode = node.appendNode("exclusions")
-						def exclusionNode = exclusionsNode.appendNode("exclusion")
-						exclusionNode.appendNode("groupId", "net.legacyfabric.legacy-fabric-api")
-						exclusionNode.appendNode("artifactId", "*")
 					}
 				}
 			}
 		}
+	}
+
+	if (shouldPublish(project)) {
+		setupRepositories(project.publishing.repositories)
 	}
 }
 
@@ -270,7 +287,6 @@ allprojects {
 	}
 
 	publishing {
-		setupRepositories(repositories)
 	}
 
 	tasks.withType(JavaCompile).configureEach {
@@ -685,11 +701,11 @@ publishMods {
 		modLoaders.add("legacy-fabric")
 	}
 
-	github {
-		accessToken = providers.environmentVariable("GITHUB_TOKEN")
-		repository = providers.environmentVariable("GITHUB_REPOSITORY").getOrElse("LegacyFabric/dryrun")
-		commitish = providers.environmentVariable("GITHUB_REF_NAME").getOrElse("dryrun")
-	}
+//	github {
+//		accessToken = providers.environmentVariable("GITHUB_TOKEN")
+//		repository = providers.environmentVariable("GITHUB_REPOSITORY").getOrElse("LegacyFabric/dryrun")
+//		commitish = providers.environmentVariable("GITHUB_REF_NAME").getOrElse("dryrun")
+//	}
 
 	discord {
 		webhookUrl = providers.environmentVariable("DISCORD_WEBHOOK")
