@@ -30,10 +30,22 @@ import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerTickEvents;
 public class LifecycleEventInit implements ModInitializer {
 	@Override
 	public void init() {
-		MinecraftServerEvents.START.register(ServerLifecycleEvents.SERVER_STARTING.invoker()::onServerStarting);
-		MinecraftServerEvents.STOP.register(ServerLifecycleEvents.SERVER_STOPPING.invoker()::onServerStopping);
+		MinecraftServerEvents.START.register(LifecycleEventInit::serverStarting);
+		MinecraftServerEvents.STOP.register(LifecycleEventInit::serverStopping);
 		MinecraftServerEvents.READY_WORLD.register(LifecycleEventInit::loadWorldsEvent);
-		ServerWorldEvents.TICK_END.register(ServerTickEvents.END_WORLD_TICK.invoker()::onEndTick);
+		ServerWorldEvents.TICK_END.register(LifecycleEventInit::worldTickEnd);
+	}
+
+	private static void serverStarting(MinecraftServer server) {
+		ServerLifecycleEvents.SERVER_STARTING.invoker().onServerStarting(server);
+	}
+
+	private static void serverStopping(MinecraftServer server) {
+		ServerLifecycleEvents.SERVER_STOPPING.invoker().onServerStopping(server);
+	}
+
+	private static void worldTickEnd(ServerWorld world) {
+		ServerTickEvents.END_WORLD_TICK.invoker().onEndTick(world);
 	}
 
 	private static void loadWorldsEvent(MinecraftServer server) {
