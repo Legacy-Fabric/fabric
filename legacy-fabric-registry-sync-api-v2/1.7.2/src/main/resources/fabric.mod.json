@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "legacy-fabric-registry-sync-api-v2",
+  "name": "Legacy Fabric Registry Sync API (V2)",
+  "version": "${version}",
+  "environment": "*",
+  "license": "Apache-2.0",
+  "icon": "assets/legacy-fabric/icon.png",
+  "contact": {
+    "homepage": "https://legacyfabric.net/",
+    "issues": "https://github.com/Legacy-Fabric/fabric/issues",
+    "sources": "https://github.com/Legacy-Fabric/fabric"
+  },
+  "authors": [
+    "Legacy-Fabric"
+  ],
+  "depends": {
+    "minecraft": "${minecraft_version}",
+    "fabricloader": "${loader_version}"
+  },
+  "description": "Registry hooks",
+  "entrypoints": {
+    "preLaunch": [
+    ]
+  },
+  "mixins": [
+    "legacy-fabric-registry-sync-api-v2.mixins.json"
+  ],
+  "accessWidener": "legacy-fabric-registry-sync-api-v2.classtweaker",
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ],
+      "parent": "legacy-fabric-api"
+    }
+  }
+}

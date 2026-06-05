@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.permission",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "CommandBlockExecutorMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
