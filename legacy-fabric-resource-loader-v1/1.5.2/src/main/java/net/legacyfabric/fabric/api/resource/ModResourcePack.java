@@ -30,7 +30,9 @@ import net.legacyfabric.fabric.api.util.Identifier;
 
 /**
  * Interface implemented by mod-provided resource packs.
+ * @deprecated Not implemented anymore, use Ornithe's Resource Loader API instead.
  */
+@Deprecated
 public interface ModResourcePack {
 	/**
 	 * @return The ModMetadata object associated with the mod providing this

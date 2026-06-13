@@ -21,16 +21,39 @@ import net.ornithemc.osl.entrypoints.api.client.ClientModInitializer;
 import net.ornithemc.osl.lifecycle.api.client.ClientWorldEvents;
 import net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.world.ClientWorld;
+
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.legacyfabric.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 public class LifecycleEventClientInit implements ClientModInitializer {
 	@Override
 	public void initClient() {
-		MinecraftClientEvents.READY.register(ClientLifecycleEvents.CLIENT_STARTED.invoker()::onClientStarted);
-		MinecraftClientEvents.STOP.register(ClientLifecycleEvents.CLIENT_STOPPING.invoker()::onClientStopping);
-		MinecraftClientEvents.TICK_START.register(ClientTickEvents.START_CLIENT_TICK.invoker()::onStartTick);
-		MinecraftClientEvents.TICK_END.register(ClientTickEvents.END_CLIENT_TICK.invoker()::onEndTick);
-		ClientWorldEvents.TICK_END.register(ClientTickEvents.END_WORLD_TICK.invoker()::onEndTick);
+		MinecraftClientEvents.READY.register(LifecycleEventClientInit::clientStarted);
+		MinecraftClientEvents.STOP.register(LifecycleEventClientInit::clientStopping);
+		MinecraftClientEvents.TICK_START.register(LifecycleEventClientInit::clientTickStart);
+		MinecraftClientEvents.TICK_END.register(LifecycleEventClientInit::clientTickEnd);
+		ClientWorldEvents.TICK_END.register(LifecycleEventClientInit::clientWorldTickEnd);
+	}
+
+	private static void clientStarted(Minecraft client) {
+		ClientLifecycleEvents.CLIENT_STARTED.invoker().onClientStarted(client);
+	}
+
+	private static void clientStopping(Minecraft client) {
+		ClientLifecycleEvents.CLIENT_STOPPING.invoker().onClientStopping(client);
+	}
+
+	private static void clientTickStart(Minecraft client) {
+		ClientTickEvents.START_CLIENT_TICK.invoker().onStartTick(client);
+	}
+
+	private static void clientTickEnd(Minecraft client) {
+		ClientTickEvents.END_CLIENT_TICK.invoker().onEndTick(client);
+	}
+
+	private static void clientWorldTickEnd(ClientWorld world) {
+		ClientTickEvents.END_WORLD_TICK.invoker().onEndTick(world);
 	}
 }

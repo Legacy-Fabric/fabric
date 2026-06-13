@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.impl.resource.loader;
+package net.legacyfabric.fabric.api.resource;
 
-import java.util.List;
+import net.minecraft.client.resource.pack.TexturePack;
 
-import com.bawnorton.mixinsquared.api.MixinCanceller;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-public class OSLMixinCanceller implements MixinCanceller {
-	@Override
-	public boolean shouldCancel(List<String> list, String s) {
-		return "net.ornithemc.osl.resource.loader.impl.mixin.client.LanguageManagerMixin".equals(s);
-	}
+@Environment(EnvType.CLIENT)
+@Deprecated
+public interface ModTexturePack extends TexturePack {
+	ModResourcePack getResourcePack();
 }

@@ -17,11 +17,11 @@
   "depends": {
     "minecraft": "${minecraft_version}",
     "fabricloader": "${loader_version}",
-    "osl-resource-loader": ">=0.6.0"
+    "osl-resource-loader": ">=0.7.0-"
   },
   "entrypoints": {
-    "mixinsquared": [
-      "net.legacyfabric.fabric.impl.resource.loader.OSLMixinCanceller"
+    "client-init": [
+      "net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl"
     ]
   },
   "description": "Asset loading",

@@ -23,11 +23,20 @@ import java.util.List;
 import java.util.Set;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.resource.loader.api.resource.manager.ResourceManager;
 
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.resource.loader.ResourcePackManagerImpl;
 
+/**
+ * @deprecated Use {@link ResourceManager} instead.
+ */
+@Deprecated
 public class ResourcePackManager {
+	/**
+	 * @deprecated Use {@link ResourceManager#getResource(String)} instead.
+	 */
+	@Deprecated
 	public static InputStream openFile(String path) throws IOException {
 		return ResourcePackManagerImpl.openFile(path);
 	}
@@ -40,6 +49,10 @@ public class ResourcePackManager {
 		return ResourcePackManagerImpl.openFile(id);
 	}
 
+	/**
+	 * @deprecated Use {@link ResourceManager#getResource(NamespacedIdentifier)} instead.
+	 */
+	@Deprecated
 	public static InputStream openFile(NamespacedIdentifier id) throws IOException {
 		return ResourcePackManagerImpl.openFile(id);
 	}
@@ -52,18 +65,34 @@ public class ResourcePackManager {
 		return ResourcePackManagerImpl.openAllFiles(id);
 	}
 
+	/**
+	 * @deprecated Use {@link ResourceManager#getResourceStack(NamespacedIdentifier)} instead.
+	 */
+	@Deprecated
 	public static List<InputStream> openAllFiles(NamespacedIdentifier id) {
 		return ResourcePackManagerImpl.openAllFiles(id);
 	}
 
+	/**
+	 * @deprecated Use {@link ResourceManager#getNamespaces()} instead.
+	 */
+	@Deprecated
 	public static Set<String> getNamespaces() {
 		return ResourcePackManagerImpl.getNamespaces();
 	}
 
+	/**
+	 * @deprecated Use {@link ResourceManager#getResourcePacks()} instead.
+	 */
+	@Deprecated
 	public static ModResourcePack getModResourcePack(String modId) {
 		return ResourcePackManagerImpl.getModResourcePack(modId);
 	}
 
+	/**
+	 * @deprecated Use {@link ResourceManager#getResourcePacks()} instead.
+	 */
+	@Deprecated
 	public static List<ModResourcePack> getResourcePacks() {
 		return ResourcePackManagerImpl.getResourcePacks();
 	}
@@ -71,10 +100,12 @@ public class ResourcePackManager {
 	/**
 	 * @deprecated Use {@link #getAssetPath(NamespacedIdentifier)} instead.
 	 */
+	@Deprecated
 	public static String getAssetPath(Identifier id) {
 		return "/assets/" + id.getNamespace() + "/" + id.getPath();
 	}
 
+	@Deprecated
 	public static String getAssetPath(NamespacedIdentifier id) {
 		return "/assets/" + id.namespace() + "/" + id.identifier();
 	}

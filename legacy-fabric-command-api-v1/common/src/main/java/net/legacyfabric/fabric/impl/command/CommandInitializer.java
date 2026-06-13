@@ -17,18 +17,19 @@
 
 package net.legacyfabric.fabric.impl.command;
 
+import net.ornithemc.osl.lifecycle.api.server.MinecraftServerEvents;
+
 import net.minecraft.server.command.handler.CommandManager;
 
 import net.fabricmc.api.ModInitializer;
 
-import net.legacyfabric.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.legacyfabric.fabric.api.registry.CommandRegistrationCallback;
 import net.legacyfabric.fabric.api.registry.CommandRegistry;
 
 public class CommandInitializer implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+		MinecraftServerEvents.START.register(server -> {
 			CommandRegistrationCallback.EVENT.invoker().register(CommandRegistry.INSTANCE);
 
 			boolean dedicated = server.isDedicated();

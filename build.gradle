@@ -2,8 +2,8 @@ plugins {
 	id "java-library"
 	id "eclipse"
 	id "maven-publish"
-	id "net.fabricmc.fabric-loom-remap" version "1.15.3" apply false
-	id "ploceus" version "1.15.6" apply false
+	id "net.fabricmc.fabric-loom-remap" version "1.17-SNAPSHOT" apply false
+	id "ploceus" version "1.17-SNAPSHOT" apply false
 	id "com.diffplug.spotless" version "7.2.1"
 	id "org.ajoberstar.grgit" version "5.3.2"
 	id "me.modmuss50.mod-publish-plugin" version "2.0.0-beta.1"
@@ -446,19 +446,24 @@ allprojects {
 
 		testmodImplementation sourceSets.main.output
 
-		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0"))
+//		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0"))
 		implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.5.2"))
+
+		implementation "org.quiltmc.parsers:json:${project.rootProject.quilt_parsers_version}"
 	}
 
 	tasks.withType(ProcessResources).configureEach { processResourcesTask ->
 		inputs.property "version", project.version
 		inputs.property "minecraft_version", getMCRange(project)
 		inputs.property "loader_version", ">=${project.loader_version}"
+		inputs.property "osl_version", ">=${project.osl_version}"
 
 		filesMatching("fabric.mod.json") {
 			expand "version": processResourcesTask.inputs.properties.version,
 				"minecraft_version": processResourcesTask.inputs.properties.minecraft_version,
-				"loader_version": processResourcesTask.inputs.properties.loader_version
+				"loader_version": processResourcesTask.inputs.properties.loader_version,
+				"osl_version": processResourcesTask.inputs.properties.osl_version
+
 		}
 	}
 
@@ -690,7 +695,7 @@ sourceSets {
 }
 
 dependencies {
-	include("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
+//	include("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
 	include("io.github.llamalad7:mixinextras-fabric:0.5.2")
 
 	afterEvaluate {

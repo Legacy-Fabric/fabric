@@ -79,7 +79,7 @@ public class RegistryTest implements ModInitializer {
 		Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[]{concBlock, concBlock2} : new Block[]{concBlock2, concBlock};
 
 		for (Block block : blocks) {
-			NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api:conc_block_" + block.getMaterial().getColor().color);
+			NamespacedIdentifier identifier = NamespacedIdentifiers.parse("legacy-fabric-api:conc_block_" + block.getMaterial().getColor().color);
 			RegistryHelper.register(Block.REGISTRY, identifier, block);
 			RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(block));
 		}

@@ -73,7 +73,7 @@ public class RegistryTest implements ModInitializer {
 		Item testItem = new Item().setCreativeModeTab(CreativeModeTab.FOOD);
 		RegistryHelper.register(
 				(FabricRegistry<? super Item>) Item.REGISTRY,
-				new Identifier("legacy-fabric-api", "test_item"), testItem
+				new Identifier("legacy-fabric-api:test_item"), testItem
 		);
 		ItemModelRegistry.registerItemModel(testItem, new Identifier("legacy-fabric-api:test_item"));
 	}
@@ -91,7 +91,7 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	private void registerBlockEntities() {
-		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
+		Identifier identifier = new Identifier("legacy-fabric-api:test_block_entity");
 
 		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
 		RegistryHelper.register((FabricRegistry<? super Block>) Block.REGISTRY, identifier, blockWithEntity);
@@ -100,7 +100,7 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	private void registerEffectsAndPotions() {
-		Identifier identifier = new Identifier("legacy-fabric-api", "test_effect");
+		Identifier identifier = new Identifier("legacy-fabric-api:test_effect");
 
 		EFFECT = net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(RegistryIds.STATUS_EFFECTS, identifier,
 				id -> new TestStatusEffect(id, identifier, false, 1234567)
@@ -112,18 +112,18 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	private void registerEntities() {
-		Identifier creeperId = new Identifier("legacy-fabric-api", "test_entity");
+		Identifier creeperId = new Identifier("legacy-fabric-api:test_entity");
 		RegistryHelper.register(RegistryIds.ENTITY_TYPES, creeperId, TestCreeperEntity.class);
 		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
 	}
 
 	private void registerEnchantments() {
-		Identifier enchantmentId = new Identifier("legacy-fabric-api", "test_enchantment");
+		Identifier enchantmentId = new Identifier("legacy-fabric-api:test_enchantment");
 		RegistryHelper.register(RegistryIds.ENCHANTMENTS, enchantmentId, id -> new TestEnchantment(id, enchantmentId));
 	}
 
 	private void registerBiomes() {
-		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
+		Identifier biomeId = new Identifier("legacy-fabric-api:test_biome");
 		RegistryHelper.register(RegistryIds.BIOMES, biomeId,
 				id -> new TestBiome(id)
 						.setColor(4446496)

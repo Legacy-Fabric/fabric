@@ -23,11 +23,8 @@ import java.util.Locale;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.TextRenderer;
-import net.minecraft.client.render.entity.ItemRenderer;
 import net.minecraft.client.render.texture.TextureManager;
-import net.minecraft.client.render.world.WorldRenderer;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.sound.SoundEngine;
 import net.minecraft.client.world.color.FoliageColorReloader;
@@ -42,9 +39,8 @@ import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.api.resource.ResourceReloadListenerKeys;
 import net.legacyfabric.fabric.api.util.Identifier;
 
-@Mixin({
-		SoundEngine.class, GameRenderer.class, LanguageManager.class, GrassColorReloader.class, FoliageColorReloader.class, TextureManager.class,
-		WorldRenderer.class, ItemRenderer.class, TextRenderer.class
+@Mixin(value = {
+		SoundEngine.class, LanguageManager.class, GrassColorReloader.class, FoliageColorReloader.class, TextureManager.class, TextRenderer.class
 })
 @Environment(EnvType.CLIENT)
 public abstract class ClientResourceReloadListenerMixins implements IdentifiableResourceReloadListener {
@@ -56,14 +52,7 @@ public abstract class ClientResourceReloadListenerMixins implements Identifiable
 	public Collection<Identifier> getFabricDependencies() {
 		if (this.fabric_idDeps == null) {
 			Object self = this;
-
-			if (self instanceof WorldRenderer) {
-				this.fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.TEXTURES);
-			} else if (self instanceof ItemRenderer) {
-				this.fabric_idDeps = Collections.singletonList(ResourceReloadListenerKeys.MODELS);
-			} else {
-				this.fabric_idDeps = Collections.emptyList();
-			}
+			this.fabric_idDeps = Collections.emptyList();
 		}
 
 		return this.fabric_idDeps;
