@@ -20,6 +20,9 @@
     "osl-resource-loader": ">=0.7.0-"
   },
   "entrypoints": {
+    "client-init": [
+      "net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl"
+    ]
   },
   "description": "Asset loading",
   "mixins": [

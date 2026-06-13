@@ -15,35 +15,25 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.mixin.resource.loader.client;
+package net.legacyfabric.fabric.mixin.resource.loader.client.osl;
 
-import java.util.List;
-
-import com.llamalad7.mixinextras.expression.Definition;
-import com.llamalad7.mixinextras.expression.Expression;
-import org.spongepowered.asm.mixin.Final;
+import net.ornithemc.osl.resource.loader.impl.adapter.ResourceManagerAdapter;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.resource.manager.ResourceReloadListener;
-import net.minecraft.client.resource.manager.SimpleReloadableResourceManager;
-import net.minecraft.client.resource.pack.ResourcePack;
 
+import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
-@Mixin(SimpleReloadableResourceManager.class)
-public class ReloadableResourceManagerImplMixin {
-	@Shadow
-	@Final
-	private List<ResourceReloadListener> listeners;
-
-	@Definition(id = "clear", method = "Lnet/minecraft/client/resource/manager/SimpleReloadableResourceManager;clear()V")
-	@Expression("this.clear()")
-	@Inject(method = "reload", at = @At(value = "MIXINEXTRAS:EXPRESSION", shift = At.Shift.AFTER))
-	public void onReload(List<ResourcePack> resourcePacks, CallbackInfo ci) {
-		ResourceManagerHelperImpl.getInstance().sort(this.listeners);
+@Mixin(ResourceManagerAdapter.class)
+public class ResourceManagerAdapterMixin {
+	@Inject(method = "addListener", at = @At("HEAD"))
+	private void lf$captureWrappedId(ResourceReloadListener listener, CallbackInfo ci) {
+		if (listener instanceof IdentifiableResourceReloadListener) {
+			ResourceManagerHelperImpl.getInstance().registerWrappedListener((IdentifiableResourceReloadListener) listener);
+		}
 	}
 }

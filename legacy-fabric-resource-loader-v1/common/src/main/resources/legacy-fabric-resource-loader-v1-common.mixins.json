@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "client.DefaultResourcePackMixin",
-    "client.ReloadableResourceManagerImplMixin"
+    "client.osl.ReloadableResourceManagerImplMixin",
+    "client.osl.ResourceManagerAdapterMixin"
   ],
   "injectors": {
     "defaultRequire": 1

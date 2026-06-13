@@ -17,76 +17,103 @@
 
 package net.legacyfabric.fabric.impl.resource.loader;
 
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.entrypoints.api.client.ClientModInitializer;
+import net.ornithemc.osl.lifecycle.api.client.MinecraftInstance;
+import net.ornithemc.osl.resource.loader.api.client.ClientResourceLoaderEvents;
+import net.ornithemc.osl.resource.loader.api.resource.reload.ResourceReloader;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.resource.manager.ResourceReloadListener;
+import net.minecraft.client.resource.manager.ReloadableResourceManager;
 
 import net.legacyfabric.fabric.api.logger.v1.Logger;
 import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloader;
 import net.legacyfabric.fabric.api.resource.ResourceManagerHelper;
 import net.legacyfabric.fabric.impl.logger.LoggerImpl;
 
-public class ResourceManagerHelperImpl implements ResourceManagerHelper {
+public class ResourceManagerHelperImpl implements ResourceManagerHelper, ClientModInitializer {
 	private static final ResourceManagerHelperImpl INSTANCE = new ResourceManagerHelperImpl();
 	public static final Logger LOGGER = Logger.get(LoggerImpl.API, "ResourceManagerHelperImpl");
 
-	private final Set<NamespacedIdentifier> addedListenerIds = new HashSet<>();
-	private final Set<IdentifiableResourceReloadListener> addedListeners = new LinkedHashSet<>();
+	private static final Set<NamespacedIdentifier> addedListenerIds = new HashSet<>();
+	private static final Set<IdentifiableResourceReloadListener> addedListeners = new LinkedHashSet<>();
+	private final Map<String, IdentifiableResourceReloadListener> wrappedListener = new HashMap<>();
+	private static boolean initialized = false;
 
 	public static ResourceManagerHelperImpl getInstance() {
 		return INSTANCE;
 	}
 
-	public void sort(List<ResourceReloadListener> listeners) {
-		listeners.removeAll(addedListeners);
+	public void sort(List<ResourceReloader> listeners) {
+		listeners.sort(Comparator.comparing(
+				this::getReloaderInfos,
+				(firstReloader, secondReloader) -> {
+					if (firstReloader != null && secondReloader != null) {
+						if (secondReloader.getRight().contains(firstReloader.getLeft())) {
+							return -1;
+						} else if (firstReloader.getRight().contains(secondReloader.getLeft())) {
+							return 1;
+						}
+					}
 
-		// General rules:
-		// - We *do not* touch the ordering of vanilla listeners. Ever.
-		//   While dependency values are provided where possible, we cannot
-		//   trust them 100%. Only code doesn't lie.
-		// - We addReloadListener all custom listeners after vanilla listeners. Same reasons.
+					return 0;
+				}
+		));
 
-		List<IdentifiableResourceReloadListener> listenersToAdd = Lists.newArrayList(addedListeners);
 		Set<NamespacedIdentifier> resolvedIds = new HashSet<>();
 
-		for (ResourceReloadListener listener : listeners) {
-			if (listener instanceof IdentifiableResourceReloadListener) {
-				resolvedIds.add(((IdentifiableResourceReloadListener) listener).getFabricId());
+		for (ResourceReloader listener : listeners) {
+			Pair<? extends NamespacedIdentifier, ? extends Collection<? extends NamespacedIdentifier>> infos = getReloaderInfos(listener);
+
+			if (infos != null) {
+				resolvedIds.add(infos.getLeft());
 			}
 		}
 
-		int lastSize = -1;
+		for (ResourceReloader reloader: listeners) {
+			Pair<? extends NamespacedIdentifier, ? extends Collection<? extends NamespacedIdentifier>> infos = getReloaderInfos(reloader);
 
-		while (listeners.size() != lastSize) {
-			lastSize = listeners.size();
+			if (infos != null) {
+				Set<NamespacedIdentifier> missing = new HashSet<>(infos.getRight());
+				missing.removeIf(resolvedIds::contains);
 
-			Iterator<IdentifiableResourceReloadListener> it = listenersToAdd.iterator();
-
-			while (it.hasNext()) {
-				IdentifiableResourceReloadListener listener = it.next();
-
-				if (resolvedIds.containsAll(listener.getFabricDependencies())) {
-					resolvedIds.add(listener.getFabricId());
-					listeners.add(listener);
-					it.remove();
+				if (!missing.isEmpty()) {
+					LOGGER.warn("Could not resolve dependencies for listener: " + infos.getLeft() + "! Missing: " + missing);
 				}
 			}
 		}
+	}
 
-		for (IdentifiableResourceReloadListener listener : listenersToAdd) {
-			LOGGER.warn("Could not resolve dependencies for listener: " + listener.getFabricId() + "!");
+	private @Nullable Pair<? extends NamespacedIdentifier, ? extends Collection<? extends NamespacedIdentifier>> getReloaderInfos(ResourceReloader reloader) {
+		if (reloader instanceof IdentifiableResourceReloader) {
+			return Pair.of(((IdentifiableResourceReloader) reloader).getFabricId(), ((IdentifiableResourceReloader) reloader).getFabricDependencies());
+		} else if (reloader.getClass().getName().equals("net.minecraft.resource.ReloadListener")) {
+			if (wrappedListener.containsKey(reloader.getClass().getName())) {
+				IdentifiableResourceReloadListener resourceReloadListener = wrappedListener.get(reloader.getClass().getName());
+				return Pair.of(resourceReloadListener.getFabricId(), resourceReloadListener.getFabricDependencies());
+			}
 		}
+
+		return null;
 	}
 
 	@Override
 	public void registerReloadListener(IdentifiableResourceReloadListener listener) {
+		if (initialized) {
+			throw new RuntimeException("Tried to register resource reload listener " + listener.getFabricId() + " after initialization!");
+		}
+
 		if (!addedListenerIds.add(listener.getFabricId())) {
 			LOGGER.warn("Tried to register resource reload listener " + listener.getFabricId() + " twice!");
 			return;
@@ -95,5 +122,20 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 		if (!addedListeners.add(listener)) {
 			throw new RuntimeException("Listener with previously unknown ID " + listener.getFabricId() + " already in listener set!");
 		}
+	}
+
+	public void registerWrappedListener(IdentifiableResourceReloadListener listener) {
+		wrappedListener.put(listener.getClass().getSimpleName(), listener);
+	}
+
+	@Override
+	public void initClient() {
+		ClientResourceLoaderEvents.INIT_RESOURCE_MANAGER.register(reloadableResourceManager -> {
+			for (IdentifiableResourceReloadListener listener : addedListeners) {
+				((ReloadableResourceManager) MinecraftInstance.get().getResourceManager()).addListener(listener);
+			}
+
+			initialized = true;
+		});
 	}
 }

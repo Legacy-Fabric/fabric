@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.api.resource;
 
+import net.ornithemc.osl.resource.loader.api.resource.reload.ResourceReloader;
+
 import net.minecraft.client.resource.manager.ResourceManager;
 
 import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
@@ -24,12 +26,15 @@ import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 /**
  * Helper for working with {@link ResourceManager} instances.
  */
+@Deprecated
 public interface ResourceManagerHelper {
 	/**
 	 * Register a resource reload listener for a given resource manager type.
 	 *
 	 * @param listener The resource reload listener.
+	 * @deprecated Register {@link IdentifiableResourceReloader} during {@link net.ornithemc.osl.resource.loader.api.client.ClientResourceLoaderEvents#INIT_RESOURCE_MANAGER} with {@link net.ornithemc.osl.resource.loader.api.resource.manager.ReloadableResourceManager#addReloader(ResourceReloader)}
 	 */
+	@Deprecated
 	void registerReloadListener(IdentifiableResourceReloadListener listener);
 
 	/**

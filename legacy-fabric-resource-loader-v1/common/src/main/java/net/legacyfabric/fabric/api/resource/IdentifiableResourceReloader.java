@@ -20,33 +20,26 @@ package net.legacyfabric.fabric.api.resource;
 import java.util.Collection;
 import java.util.Collections;
 
-import net.minecraft.client.resource.manager.ResourceReloadListener;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.resource.loader.api.resource.reload.ResourceReloader;
 
-import net.legacyfabric.fabric.api.util.Identifier;
-
-/**
- * Interface for "identifiable" resource reload listeners.
- *
- * <p>"Identifiable" listeners have an unique identifier, which can be depended on,
- * and can provide dependencies that they would like to see executed before
- * themselves.
- *
- * @see ResourceReloadListenerKeys
- * @deprecated Use {@link IdentifiableResourceReloader} instead.
- */
-@Deprecated
-public interface IdentifiableResourceReloadListener extends ResourceReloadListener {
+public interface IdentifiableResourceReloader extends ResourceReloader {
 	/**
 	 * @return The unique identifier of this listener.
 	 */
-	Identifier getFabricId();
+	NamespacedIdentifier getFabricId();
 
 	/**
 	 * @return The identifiers of listeners this listener expects to have been
 	 * executed before itself. Please keep in mind that this only takes effect
 	 * during the application stage!
 	 */
-	default Collection<Identifier> getFabricDependencies() {
+	default Collection<NamespacedIdentifier> getFabricDependencies() {
 		return Collections.emptyList();
+	}
+
+	@Override
+	default String getName() {
+		return getFabricId().toString();
 	}
 }
