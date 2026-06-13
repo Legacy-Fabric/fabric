@@ -34,7 +34,10 @@ public abstract class EntityTrackerEntryMixin {
 	@Shadow
 	public Entity entity;
 
-	@Inject(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/entity/living/player/ServerPlayerEntity;sendRemoveEntity(Lnet/minecraft/entity/Entity;)V", shift = At.Shift.AFTER))
+	@Inject(method = "onPlayerRespawn", at = {
+			@At(value = "INVOKE", target = "Lnet/minecraft/server/entity/living/player/ServerPlayerEntity;sendRemoveEntity(Lnet/minecraft/entity/Entity;)V", shift = At.Shift.AFTER),
+			@At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", remap = false, shift = At.Shift.AFTER)
+	}, require = 1)
 	private void onStopTracking1(ServerPlayerEntity player, CallbackInfo ci) {
 		EntityTrackingEvents.STOP_TRACKING.invoker().onStopTracking(this.entity, player);
 	}
