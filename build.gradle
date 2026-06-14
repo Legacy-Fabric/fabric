@@ -18,12 +18,23 @@ def supportedVersions = [
 ]
 
 // third parameter is whether or not to include snapshots in the range.
-def supportedRanges = [
+def supportedCommonRanges = [
 	["1.12", "1.12.2", true],
 	["1.11", "1.11.2", true],
 	["1.10", "1.10.2", true],
 	["1.9", "1.9.4", true],
-    ["1.8", "1.8.9", true],
+    ["1.8", "1.8.9", true]
+]
+
+def supportedCurseforgeRanges = [
+    ["1.7.2", "1.7.10"],
+	["1.6.1", "1.6.4"],
+	["1.5.0", "1.5.2"],
+	["1.4.2", "1.4.7"],
+	["1.3.1", "1.3.2"]
+]
+
+def supportedModrinthRanges = [
 	["1.7", "1.7.10", true],
 	["1.6", "1.6.4", true],
 	["1.5", "1.5.2", true],
@@ -744,8 +755,17 @@ publishMods {
 
 		minecraftVersions.addAll(supportedVersions)
 
-		if (!supportedRanges.isEmpty()) {
-			supportedRanges.each { range ->
+		if (!supportedCommonRanges.isEmpty()) {
+			supportedCommonRanges.each { range ->
+				minecraftVersionRange {
+					start = range[0]
+					end = range[1]
+				}
+			}
+		}
+
+		if (!supportedCurseforgeRanges.isEmpty()) {
+			supportedCurseforgeRanges.each { range ->
 				minecraftVersionRange {
 					start = range[0]
 					end = range[1]
@@ -760,8 +780,19 @@ publishMods {
 
 		minecraftVersions.addAll(supportedVersions)
 
-		if (!supportedRanges.isEmpty()) {
-			supportedRanges.each { range ->
+		if (!supportedCommonRanges.isEmpty()) {
+			supportedCommonRanges.each { range ->
+				minecraftVersionRange {
+					start = range[0]
+					end = range[1]
+
+					includeSnapshots = range[2]
+				}
+			}
+		}
+
+		if (!supportedModrinthRanges.isEmpty()) {
+			supportedModrinthRanges.each { range ->
 				minecraftVersionRange {
 					start = range[0]
 					end = range[1]
