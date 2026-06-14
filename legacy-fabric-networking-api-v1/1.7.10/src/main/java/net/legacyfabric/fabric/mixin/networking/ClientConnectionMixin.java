@@ -80,8 +80,15 @@ public abstract class ClientConnectionMixin implements ChannelInfoHolder, Client
 		}
 	}
 
-	@Inject(method = "doSend", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false))
+	@Inject(method = "doSend", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false), require = 0)
 	private void checkPacket(Packet packet, GenericFutureListener<?>[] genericFutureListeners, CallbackInfo ci) {
+		if (this.listener instanceof PacketCallbackListener) {
+			((PacketCallbackListener) this.listener).sent(packet);
+		}
+	}
+
+	@Inject(method = "send(Lnet/minecraft/network/packet/Packet;[Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At(value = "INVOKE_ASSIGN", target = "Lio/netty/util/Attribute;get()Ljava/lang/Object;", remap = false), require = 0)
+	private void checkPacket171(Packet packet, GenericFutureListener<?>[] genericFutureListeners, CallbackInfo ci) {
 		if (this.listener instanceof PacketCallbackListener) {
 			((PacketCallbackListener) this.listener).sent(packet);
 		}
