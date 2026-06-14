@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-keybinding-api-v1-common-versioned",
+  "id": "legacy-fabric-keybinding-api-v1-common",
   "name": "Legacy Fabric Keybinding API (V1)",
   "version": "${version}",
   "environment": "client",
@@ -15,12 +15,21 @@
     "Legacy Fabric",
     "FabricMC"
   ],
+  "provides": [
+    "legacy-fabric-keybinding-api-v1-common-versioned"
+  ],
   "depends": {
     "minecraft": "${minecraft_version}",
-    "fabricloader": "${loader_version}"
+    "fabricloader": "${loader_version}",
+    "osl-keybinds": ">=0.3.0-"
+  },
+  "entrypoints": {
+    "client-init": [
+      "net.legacyfabric.fabric.impl.client.keybinding.KeyBindingRegistryImpl"
+    ]
   },
   "mixins": [
-    "legacy-fabric-keybinding-api-v1-common-versioned.mixins.json"
+    "legacy-fabric-keybinding-api-v1-common.mixins.json"
   ],
   "description": "Hooks that help adding keybindings",
   "custom": {

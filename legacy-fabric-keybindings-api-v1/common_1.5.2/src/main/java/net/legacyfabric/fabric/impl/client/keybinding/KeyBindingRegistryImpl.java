@@ -18,21 +18,19 @@
 package net.legacyfabric.fabric.impl.client.keybinding;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
+import net.ornithemc.osl.entrypoints.api.client.ClientModInitializer;
+import net.ornithemc.osl.keybinds.api.KeybindEvents;
+import net.ornithemc.osl.keybinds.api.KeybindRegistry;
+import net.ornithemc.osl.lifecycle.api.client.MinecraftInstance;
+
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
 
-import net.fabricmc.loader.api.FabricLoader;
-
-public final class KeyBindingRegistryImpl {
+public final class KeyBindingRegistryImpl implements ClientModInitializer {
 	private static final List<KeyBinding> moddedKeyBindings = new ArrayList<>();
 	private static boolean processed = false;
-
-	private KeyBindingRegistryImpl() {
-	}
 
 	public static KeyBinding registerKeyBinding(KeyBinding binding) {
 		for (KeyBinding existingKeyBindings : moddedKeyBindings) {
@@ -46,33 +44,28 @@ public final class KeyBindingRegistryImpl {
 		moddedKeyBindings.add(binding);
 
 		// In 1.7.10 Game Options are loaded before any client entrypoint, so we need to reload when a new keybinding is registered.
-		if (processed) reloadGameOptions();
+		if (processed) reloadGameOptions(binding);
 
 		return binding;
-	}
-
-	// Processes the keybindings array for our modded ones by
-	// first removing existing modded keybindings and re-adding
-	// them, we can make sure that there are no duplicates this way.
-	public static KeyBinding[] process(KeyBinding[] keysAll) {
-		List<KeyBinding> newKeysAll = new ArrayList<>(Arrays.asList(keysAll));
-		newKeysAll.removeAll(moddedKeyBindings);
-		newKeysAll.addAll(moddedKeyBindings);
-
-		processed = true;
-
-		return newKeysAll.toArray(new KeyBinding[0]);
 	}
 
 	/**
 	 * Update keybinding list and reload game options file.
 	 */
-	private static void reloadGameOptions() {
-		final GameOptions options = ((Minecraft) FabricLoader.getInstance().getGameInstance()).options;
+	private static void reloadGameOptions(KeyBinding keyBinding) {
+		KeybindRegistry.register(keyBinding, "Legacy Fabric API Compatibility");
+		final GameOptions options = MinecraftInstance.get().options;
 
 		if (options != null) {
-			options.keyBindings = process(options.keyBindings);
 			options.load();
 		}
+	}
+
+	@Override
+	public void initClient() {
+		KeybindEvents.REGISTER_KEYBINDS.register(() -> {
+			moddedKeyBindings.forEach(b -> KeybindRegistry.register(b, "Legacy Fabric API Compatibility"));
+			processed = true;
+		});
 	}
 }
