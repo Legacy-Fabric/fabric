@@ -15,15 +15,15 @@ setVersion("${project.base_version}")
 logger.lifecycle("Building Fabric: " + version)
 
 def supportedVersions = [
-    "1.12.2",
-	"1.11.2",
-	"1.10.2",
-	"1.9.4",
-	"1.8.9",
-	"1.8"
 ]
+
+// third parameter is whether or not to include snapshots in the range.
 def supportedRanges = [
-//    ["1.8", "1.8.9", false] // third parameter is whether or not to include snapshots in the range.
+	["1.12", "1.12.2", true],
+	["1.11", "1.11.2", true],
+	["1.10", "1.10.2", true],
+	["1.9", "1.9.4", true],
+    ["1.8", "1.8.9", true],
 	["1.7", "1.7.10", true],
 	["1.6", "1.6.4", true],
 	["1.5", "1.5.2", true],
