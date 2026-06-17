@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync.versioned;
 
+import net.ornithemc.osl.core.api.util.function.TriFunction;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -35,9 +36,10 @@ import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Desynchroniz
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.IdsHolder;
 import net.legacyfabric.fabric.api.registry.v2.registry.registrable.SyncedRegistrable;
 import net.legacyfabric.fabric.api.util.Identifier;
+import net.legacyfabric.fabric.impl.registry.OrnithableRegistry;
 
 @Mixin(IdRegistry.class)
-public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable {
+public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<V>, SyncedRegistrable<V>, DesynchronizeableRegistrable, OrnithableRegistry<K, V> {
 	@Shadow
 	public abstract void register(int id, K identifier, V object);
 
@@ -73,12 +75,31 @@ public abstract class SimpleRegistryMixin<K, V> implements SyncedFabricRegistry<
 		fabric$getBeforeAddedCallback().invoker().onEntryAdding(rawId, identifier, value);
 
 		if (this.synchronize) {
-			register(rawId, fabric$toKeyType(identifier), value);
+			this.getRegisterFunction().apply(rawId, fabric$toKeyType(identifier), value);
 		} else {
 			((MappedRegistry) (Object) this).put(fabric$toKeyType(identifier), value);
 		}
 
 		fabric$getEntryAddedCallback().invoker().onEntryAdded(rawId, identifier, value);
+	}
+
+	private TriFunction<Integer, K, V, Void> registerFunction;
+
+	@Override
+	public TriFunction<Integer, K, V, Void> getRegisterFunction() {
+		if (registerFunction == null) {
+			registerFunction = (id, key, object) -> {
+				this.register(id, key, object);
+				return null;
+			};
+		}
+
+		return registerFunction;
+	}
+
+	@Override
+	public void setRegisterFunction(TriFunction<Integer, K, V, Void> registerFunction) {
+		this.registerFunction = registerFunction;
 	}
 
 	@Override

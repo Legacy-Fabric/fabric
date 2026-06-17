@@ -17,35 +17,20 @@
 
 package net.legacyfabric.fabric.mixin.block.versioned;
 
-import net.ornithemc.osl.blocks.api.BlockRegistry;
-import org.spongepowered.asm.mixin.Final;
+import net.ornithemc.osl.blocks.impl.BlockRegistryImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.block.Block;
-import net.minecraft.resource.Identifier;
-import net.minecraft.util.registry.DefaultedIdRegistry;
-
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.registry.OrnithableRegistry;
-
-@Mixin(Block.class)
-public class BlockMixin {
+@Mixin(BlockRegistryImpl.class)
+public class BlockRegistryImplMixin {
 	@Shadow
-	@Final
-	public static DefaultedIdRegistry<Identifier, Block> REGISTRY;
+	private static boolean locked;
 
-	@Inject(method = "init", at = @At("RETURN"))
-	private static void registerRegistry(CallbackInfo ci) {
-		RegistryHelper.addRegistry(RegistryIds.BLOCKS, (FabricRegistry<?>) REGISTRY);
-		((OrnithableRegistry<Identifier, Block>) REGISTRY).setRegisterFunction((id, key, value) -> {
-			BlockRegistry.register(id, key, value);
-			return null;
-		});
+	@Inject(method = "lock", at = @At("RETURN"))
+	private static void dontLock(CallbackInfo ci) {
+		locked = false;
 	}
 }

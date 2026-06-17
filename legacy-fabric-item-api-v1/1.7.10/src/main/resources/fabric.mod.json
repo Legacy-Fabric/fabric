@@ -16,7 +16,8 @@
   ],
   "depends": {
     "minecraft": "${minecraft_version}",
-    "fabricloader": "${loader_version}"
+    "fabricloader": "${loader_version}",
+    "osl-items": ">=0.1.0-"
   },
   "description": "Item utils",
   "entrypoints": {
@@ -25,7 +26,6 @@
   "mixins": [
     "legacy-fabric-item-api-v1.mixins.json"
   ],
-  "accessWidener": "legacy-fabric-item-api.accesswidener",
   "custom": {
     "loom:injected_interfaces": {
     },

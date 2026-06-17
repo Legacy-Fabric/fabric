@@ -20,7 +20,6 @@ package net.legacyfabric.fabric.impl.block.versioned;
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -55,7 +54,7 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		registry.fabric$getRegistryRemapCallback().register(new BlockStateRemapper());
 
 		registry.fabric$getEntryAddedCallback().register((rawId, id, block) -> {
-			if (block.material == Material.AIR) {
+			if (block.isAir()) {
 				block.useNeighborLight = false;
 			} else {
 				boolean useNeighbourLight = false;

@@ -1,5 +1,0 @@
-accessWidener	v2	named
-transitive-accessible	method	net/minecraft/item/Item	setSpriteName	(Ljava/lang/String;)Lnet/minecraft/item/Item;
-transitive-accessible	method	net/minecraft/item/Item	setHasCustomData	(Z)Lnet/minecraft/item/Item;
-transitive-accessible	method	net/minecraft/item/Item	setMaxDamage	(I)Lnet/minecraft/item/Item;
-transitive-accessible	method	net/minecraft/item/Item	setPotionIngredient	(Ljava/lang/String;)Lnet/minecraft/item/Item;

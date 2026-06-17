@@ -6,7 +6,8 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "ItemMixin"
+    "ItemMixin",
+    "ItemRegistryImplMixin"
   ],
   "client": [
   ]

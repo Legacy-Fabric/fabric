@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.block.versioned;
 
+import net.ornithemc.osl.blocks.api.BlockRegistry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,6 +32,7 @@ import net.minecraft.util.registry.DefaultedIdRegistry;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.impl.registry.OrnithableRegistry;
 
 @Mixin(Block.class)
 public class BlockMixin {
@@ -41,5 +43,9 @@ public class BlockMixin {
 	@Inject(method = "init", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
 		RegistryHelper.addRegistry(RegistryIds.BLOCKS, (FabricRegistry<?>) REGISTRY);
+		((OrnithableRegistry<Identifier, Block>) REGISTRY).setRegisterFunction((id, key, value) -> {
+			BlockRegistry.register(id, key, value);
+			return null;
+		});
 	}
 }
