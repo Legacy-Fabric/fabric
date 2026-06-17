@@ -193,6 +193,7 @@ public abstract class ControlsOptionsScreenMixin extends Screen implements Contr
 		bindPerCategory.clear();
 
 		Set<String> cat = new HashSet<>();
+
 		for (KeyBinding keyBinding : this.options.keyBindings) {
 			cat.add(keyBinding.getCategory());
 		}
@@ -203,6 +204,7 @@ public abstract class ControlsOptionsScreenMixin extends Screen implements Contr
 
 		for (int i = 0; i < this.options.keyBindings.length; i++) {
 			KeyBinding keyBinding = this.options.keyBindings[i];
+
 			if (!bindPerCategory.containsKey(keyBinding.getCategory())) {
 				bindPerCategory.put(keyBinding.getCategory(), 0);
 			}
@@ -213,6 +215,7 @@ public abstract class ControlsOptionsScreenMixin extends Screen implements Contr
 		}
 
 		maxPageOffset = 0;
+
 		for (String category : categories) {
 			int tempTotalInCategory = bindPerCategory.getInt(category);
 			maxPageOffset += (int) Math.ceil((double) tempTotalInCategory / FabricControlsScreenComponents.AMOUNT_PER_PAGE);
