@@ -19,7 +19,6 @@ package net.legacyfabric.fabric.impl.block.versioned;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
-import net.minecraft.block.material.Material;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
@@ -40,7 +39,7 @@ public class EarlyInitializer implements PreLaunchEntrypoint {
 		SyncedFabricRegistry<Block> registry = (SyncedFabricRegistry<Block>) holder;
 
 		registry.fabric$getEntryAddedCallback().register((rawId, id, block) -> {
-			if (block.getMaterial() == Material.AIR) {
+			if (block.isAir()) {
 				block.useNeighborLight = false;
 			} else {
 				boolean useNeighbourLight = false;

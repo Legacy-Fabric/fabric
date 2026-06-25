@@ -17,14 +17,25 @@
 
 package net.legacyfabric.fabric.mixin.client.keybinding;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.gui.screen.Screen;
@@ -32,17 +43,34 @@ import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.OptionButtonWidget;
 import net.minecraft.client.options.GameOptions;
+import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.render.TextRenderer;
 
 import net.legacyfabric.fabric.impl.client.keybinding.ControlsScreenExtensions;
 import net.legacyfabric.fabric.impl.client.keybinding.FabricControlsScreenComponents;
 
 @Mixin(ControlsOptionsScreen.class)
-public class ControlsOptionsScreenMixin extends Screen implements ControlsScreenExtensions {
+public abstract class ControlsOptionsScreenMixin extends Screen implements ControlsScreenExtensions {
 	@Shadow
 	private GameOptions options;
 
-	private static int fabric_currentPage = 0;
+	@Shadow
+	protected abstract int getControlsListX();
+
+	@Unique
+	private int fabric_currentPage = 0;
+
+	@Unique
+	private List<String> categories = new ArrayList<>();
+
+	@Unique
+	private Int2IntMap bindToVirtualIndex = new Int2IntArrayMap();
+
+	@Unique
+	private Object2IntMap<String> bindPerCategory = new Object2IntArrayMap<>();
+
+	@Unique
+	private int maxPageOffset;
 
 	private int fabric_getPageOffset(int page) {
 		switch (page) {
@@ -56,11 +84,42 @@ public class ControlsOptionsScreenMixin extends Screen implements ControlsScreen
 	}
 
 	private int fabric_getOffsetPage(int offset) {
-		if (offset < FabricControlsScreenComponents.AMOUNT_PER_PAGE) {
-			return 0;
+		String category = this.options.keyBindings[offset].getCategory();
+		int categoryIndex = categories.indexOf(category);
+		int virtualIndex = bindToVirtualIndex.get(offset);
+
+		int pageOffset;
+
+		if (virtualIndex < FabricControlsScreenComponents.AMOUNT_PER_PAGE) {
+			pageOffset = 0;
 		} else {
-			return 1 + ((offset - FabricControlsScreenComponents.AMOUNT_PER_PAGE) / FabricControlsScreenComponents.AMOUNT_PER_PAGE);
+			pageOffset = 1 + ((virtualIndex - FabricControlsScreenComponents.AMOUNT_PER_PAGE) / FabricControlsScreenComponents.AMOUNT_PER_PAGE);
 		}
+
+		int tempCat = categoryIndex;
+
+		while (tempCat > 0) {
+			tempCat--;
+			int tempTotalInCategory = bindPerCategory.getInt(categories.get(tempCat));
+			pageOffset += (int) Math.ceil((double) tempTotalInCategory / FabricControlsScreenComponents.AMOUNT_PER_PAGE);
+		}
+
+		return pageOffset;
+	}
+
+	private String fabric_getCategoryForPage() {
+		int pageOffset = 0;
+
+		for (String category : categories) {
+			int tempTotalInCategory = bindPerCategory.getInt(category);
+			pageOffset += (int) Math.ceil((double) tempTotalInCategory / FabricControlsScreenComponents.AMOUNT_PER_PAGE);
+
+			if (pageOffset > fabric_currentPage) {
+				return category;
+			}
+		}
+
+		return null;
 	}
 
 	@Override
@@ -70,7 +129,7 @@ public class ControlsOptionsScreenMixin extends Screen implements ControlsScreen
 
 	@Override
 	public void fabric_nextPage() {
-		if (fabric_getPageOffset(fabric_currentPage + 1) >= this.options.keyBindings.length) {
+		if (fabric_getPageOffset(fabric_currentPage + 1) >= fabric_getPageOffset(maxPageOffset)) {
 			return;
 		}
 
@@ -96,7 +155,7 @@ public class ControlsOptionsScreenMixin extends Screen implements ControlsScreen
 	@Override
 	public boolean fabric_isButtonEnabled(FabricControlsScreenComponents.Type type) {
 		if (type == FabricControlsScreenComponents.Type.NEXT) {
-			return !(fabric_getPageOffset(fabric_currentPage + 1) >= this.options.keyBindings.length);
+			return !(fabric_getPageOffset(fabric_currentPage + 1) >= fabric_getPageOffset(maxPageOffset));
 		}
 
 		if (type == FabricControlsScreenComponents.Type.PREVIOUS) {
@@ -126,11 +185,53 @@ public class ControlsOptionsScreenMixin extends Screen implements ControlsScreen
 		}
 	}
 
-	@ModifyArg(method = "init()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/OptionButtonWidget;<init>(IIIIILjava/lang/String;)V"), index = 2)
-	private int modifyControlY(int y) {
-		int temp = y - (this.height / 6);
+	@Inject(method = "init", at = @At("HEAD"))
+	private void collectCategories(CallbackInfo ci) {
+		fabric_currentPage = 0;
+		categories.clear();
+		bindToVirtualIndex.clear();
+		bindPerCategory.clear();
+
+		Set<String> cat = new HashSet<>();
+
+		for (KeyBinding keyBinding : this.options.keyBindings) {
+			cat.add(keyBinding.getCategory());
+		}
+
+		categories.addAll(cat);
+		categories.remove("Vanilla");
+		categories.add(0, "Vanilla");
+
+		for (int i = 0; i < this.options.keyBindings.length; i++) {
+			KeyBinding keyBinding = this.options.keyBindings[i];
+
+			if (!bindPerCategory.containsKey(keyBinding.getCategory())) {
+				bindPerCategory.put(keyBinding.getCategory(), 0);
+			}
+
+			bindToVirtualIndex.put(i, bindPerCategory.getInt(keyBinding.getCategory()));
+
+			bindPerCategory.put(keyBinding.getCategory(), bindPerCategory.getInt(keyBinding.getCategory()) + 1);
+		}
+
+		maxPageOffset = 0;
+
+		for (String category : categories) {
+			int tempTotalInCategory = bindPerCategory.getInt(category);
+			maxPageOffset += (int) Math.ceil((double) tempTotalInCategory / FabricControlsScreenComponents.AMOUNT_PER_PAGE);
+		}
+	}
+
+	@Definition(id = "OptionButtonWidget", type = OptionButtonWidget.class)
+	@Expression("new OptionButtonWidget(?, ?, ?, ?, ?, ?)")
+	@WrapOperation(method = "init", at = @At("MIXINEXTRAS:EXPRESSION"))
+	private OptionButtonWidget fabric_createButton(int i, int j, int k, int l, int m, String string, Operation<OptionButtonWidget> original) {
+		int var2 = this.getControlsListX();
+		int virtualIndex = bindToVirtualIndex.get(i);
+		int temp = (this.height / 6 + 24 * (virtualIndex >> 1)) - (this.height / 6);
 		int heightOffset = temp / 24;
-		return this.height / 6 + 24 * (heightOffset % 7);
+		int resultingY = this.height / 6 + 24 * (heightOffset % (FabricControlsScreenComponents.AMOUNT_PER_PAGE / 2));
+		return original.call(i, var2 + virtualIndex % 2 * 160, resultingY, l, m, string);
 	}
 
 	@Inject(method = "init()V", at = @At("RETURN"))
@@ -141,13 +242,21 @@ public class ControlsOptionsScreenMixin extends Screen implements ControlsScreen
 		buttons.add(new FabricControlsScreenComponents.ControlsButtonWidget(this.width / 2 - 120, this.height / 6 + 168, FabricControlsScreenComponents.Type.PREVIOUS, this));
 	}
 
+	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/options/ControlsOptionsScreen;drawCenteredString(Lnet/minecraft/client/render/TextRenderer;Ljava/lang/String;III)V"))
+	private void modifyTitle(ControlsOptionsScreen instance, TextRenderer textRenderer, String s, int i, int j, int k, Operation<Void> original) {
+		original.call(instance, textRenderer, s + " - " + fabric_getCategoryForPage(), i, j, k);
+	}
+
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/options/ControlsOptionsScreen;drawString(Lnet/minecraft/client/render/TextRenderer;Ljava/lang/String;III)V"))
 	private void modifyLabelPos(ControlsOptionsScreen instance, TextRenderer textRenderer, String text, int x, int y, int color, Operation<Void> original, @Local(index = 5) int id) {
 		if (fabric_isControlVisible(id)) {
-			int temp = y - (this.height / 6);
+			int offsetPerPage = FabricControlsScreenComponents.AMOUNT_PER_PAGE / 2;
+			int var2 = this.getControlsListX();
+			int virtualIndex = bindToVirtualIndex.get(id);
+			int temp = (this.height / 6 + 24 * (virtualIndex >> 1)) - (this.height / 6);
 			int heightOffset = temp / 24;
-			y = this.height / 6 + 24 * (heightOffset % 7) + 7;
-			original.call(instance, textRenderer, text, x, y, color);
+			y = this.height / 6 + 24 * (heightOffset % offsetPerPage) + offsetPerPage;
+			original.call(instance, textRenderer, text, var2 + virtualIndex % 2 * 160 + 70 + 6, y, color);
 		}
 	}
 }
