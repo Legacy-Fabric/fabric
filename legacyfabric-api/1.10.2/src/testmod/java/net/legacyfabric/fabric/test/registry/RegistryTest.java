@@ -62,17 +62,17 @@ import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 import net.legacyfabric.fabric.api.util.OSLIdentifierExtension;
 
 public class RegistryTest implements ModInitializer {
-	public static StatusEffect EFFECT;
+//	public static StatusEffect EFFECT;
 
 	@Override
 	public void onInitialize() {
 		this.registerItems();
 		this.registerBlocks();
-		this.registerBlockEntities();
-		this.registerEffectsAndPotions();
-		this.registerEntities();
-		this.registerEnchantments();
-		this.registerBiomes();
+//		this.registerBlockEntities();
+//		this.registerEffectsAndPotions();
+//		this.registerEntities();
+//		this.registerEnchantments();
+//		this.registerBiomes();
 	}
 
 	private void registerItems() {
@@ -103,132 +103,132 @@ public class RegistryTest implements ModInitializer {
 		}
 	}
 
-	private void registerBlockEntities() {
-		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
-
-		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
-		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
-		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
-		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
-	}
-
-	private void registerEffectsAndPotions() {
-		Identifier effectIdentifier = new Identifier("legacy-fabric-api", "test_effect");
-		EFFECT = new TestStatusEffect(false, 1234567).setIcon(3, 1).setDurationMultiplier(0.25).setUsable();
-		RegistryHelper.register(StatusEffect.REGISTRY, effectIdentifier, EFFECT);
-
-		Identifier potionIdentifier = new Identifier("legacy-fabric-api", "test_potion");
-		Potion potion = new Potion(((OSLIdentifierExtension) potionIdentifier).asTranslationKey(), new StatusEffectInstance(EFFECT, 3600, 5));
-		RegistryHelper.register(Potion.REGISTRY, potionIdentifier, potion);
-		PotionHelper.registerPotionRecipe(Potions.LEAPING, Items.SPECKLED_MELON, potion);
-	}
-
-	private void registerEntities() {
-		Identifier creeperId = new Identifier("legacy-fabric-api", "test_entity");
-		RegistryHelper.register(RegistryIds.ENTITY_TYPES, creeperId, TestCreeperEntity.class);
-		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
-	}
-
-	private void registerEnchantments() {
-		Identifier enchantmentId = new Identifier("legacy-fabric-api", "test_enchantment");
-		RegistryHelper.register(Enchantment.REGISTRY, enchantmentId, new TestEnchantment());
-	}
-
-	private void registerBiomes() {
-		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
-		RegistryHelper.register(Biome.REGISTRY, biomeId, new TestBiome(false,
-				new Biome.Settings("Test Biome").depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
-	}
-
-	public static class TestBlockWithEntity extends BlockWithBlockEntity {
-		protected TestBlockWithEntity(Material material) {
-			super(material);
-		}
-
-		@Override
-		public @Nullable BlockEntity createBlockEntity(World world, int id) {
-			return new TestBlockEntity();
-		}
-
-		@Override
-		public boolean use(World world, BlockPos blockPos, BlockState blockState, PlayerEntity playerEntity, InteractionHand hand, @Nullable ItemStack itemStack, Direction direction, float f, float g, float h) {
-			if (!world.isClient) {
-				BlockEntity entity = world.getBlockEntity(blockPos);
-
-				if (entity instanceof TestBlockEntity) {
-					playerEntity.sendMessage(new LiteralText(entity + " at " + blockPos.toString()));
-				}
-			}
-
-			return true;
-		}
-	}
-
-	public static class TestBlockEntity extends BlockEntity {
-	}
-
-	public static class TestStatusEffect extends StatusEffect {
-		public TestStatusEffect(boolean bl, int i) {
-			super(bl, i);
-		}
-
-		@Override
-		public void apply(LivingEntity livingEntity, int i) {
-			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
-				livingEntity.heal(1.0F);
-			}
-		}
-
-		@Override
-		public boolean shouldApply(int duration, int amplifier) {
-			int i;
-
-			i = 50 >> amplifier;
-
-			if (i > 0) {
-				return duration % i == 0;
-			} else {
-				return true;
-			}
-		}
-	}
-
-	public static class TestCreeperEntity extends CreeperEntity {
-		public TestCreeperEntity(World world) {
-			super(world);
-		}
-
-		@Override
-		public void tick() {
-			if (this.isAlive()) {
-				if (this.hasStatusEffect(EFFECT)) {
-					this.setIgnited();
-				}
-			}
-
-			super.tick();
-		}
-	}
-
-	public static class TestEnchantment extends Enchantment {
-		protected TestEnchantment() {
-			super(Rarity.COMMON, EnchantmentCategory.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
-		}
-
-		@Override
-		public void applyDamageWildcard(LivingEntity bearer, Entity entity, int power) {
-			bearer.addStatusEffect(new StatusEffectInstance(EFFECT, 50, 10));
-		}
-
-		@Override
-		public void applyProtectionWildcard(LivingEntity bearer, Entity entity, int power) {
-			bearer.addStatusEffect(new StatusEffectInstance(EFFECT, 50, 10));
-		}
-	}
-
-	public static class TestBiome extends PlainsBiome {
-		protected TestBiome(boolean bl, Settings settings) {
-			super(bl, settings);
-		}
-	}
+//	private void registerBlockEntities() {
+//		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
+//
+//		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
+//		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
+//		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
+//		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
+//	}
+//
+//	private void registerEffectsAndPotions() {
+//		Identifier effectIdentifier = new Identifier("legacy-fabric-api", "test_effect");
+//		EFFECT = new TestStatusEffect(false, 1234567).setIcon(3, 1).setDurationMultiplier(0.25).setUsable();
+//		RegistryHelper.register(StatusEffect.REGISTRY, effectIdentifier, EFFECT);
+//
+//		Identifier potionIdentifier = new Identifier("legacy-fabric-api", "test_potion");
+//		Potion potion = new Potion(((OSLIdentifierExtension) potionIdentifier).asTranslationKey(), new StatusEffectInstance(EFFECT, 3600, 5));
+//		RegistryHelper.register(Potion.REGISTRY, potionIdentifier, potion);
+//		PotionHelper.registerPotionRecipe(Potions.LEAPING, Items.SPECKLED_MELON, potion);
+//	}
+//
+//	private void registerEntities() {
+//		Identifier creeperId = new Identifier("legacy-fabric-api", "test_entity");
+//		RegistryHelper.register(RegistryIds.ENTITY_TYPES, creeperId, TestCreeperEntity.class);
+//		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
+//	}
+//
+//	private void registerEnchantments() {
+//		Identifier enchantmentId = new Identifier("legacy-fabric-api", "test_enchantment");
+//		RegistryHelper.register(Enchantment.REGISTRY, enchantmentId, new TestEnchantment());
+//	}
+//
+//	private void registerBiomes() {
+//		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
+//		RegistryHelper.register(Biome.REGISTRY, biomeId, new TestBiome(false,
+//				new Biome.Settings("Test Biome").depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
+//	}
+//
+//	public static class TestBlockWithEntity extends BlockWithBlockEntity {
+//		protected TestBlockWithEntity(Material material) {
+//			super(material);
+//		}
+//
+//		@Override
+//		public @Nullable BlockEntity createBlockEntity(World world, int id) {
+//			return new TestBlockEntity();
+//		}
+//
+//		@Override
+//		public boolean use(World world, BlockPos blockPos, BlockState blockState, PlayerEntity playerEntity, InteractionHand hand, @Nullable ItemStack itemStack, Direction direction, float f, float g, float h) {
+//			if (!world.isClient) {
+//				BlockEntity entity = world.getBlockEntity(blockPos);
+//
+//				if (entity instanceof TestBlockEntity) {
+//					playerEntity.sendMessage(new LiteralText(entity + " at " + blockPos.toString()));
+//				}
+//			}
+//
+//			return true;
+//		}
+//	}
+//
+//	public static class TestBlockEntity extends BlockEntity {
+//	}
+//
+//	public static class TestStatusEffect extends StatusEffect {
+//		public TestStatusEffect(boolean bl, int i) {
+//			super(bl, i);
+//		}
+//
+//		@Override
+//		public void apply(LivingEntity livingEntity, int i) {
+//			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
+//				livingEntity.heal(1.0F);
+//			}
+//		}
+//
+//		@Override
+//		public boolean shouldApply(int duration, int amplifier) {
+//			int i;
+//
+//			i = 50 >> amplifier;
+//
+//			if (i > 0) {
+//				return duration % i == 0;
+//			} else {
+//				return true;
+//			}
+//		}
+//	}
+//
+//	public static class TestCreeperEntity extends CreeperEntity {
+//		public TestCreeperEntity(World world) {
+//			super(world);
+//		}
+//
+//		@Override
+//		public void tick() {
+//			if (this.isAlive()) {
+//				if (this.hasStatusEffect(EFFECT)) {
+//					this.setIgnited();
+//				}
+//			}
+//
+//			super.tick();
+//		}
+//	}
+//
+//	public static class TestEnchantment extends Enchantment {
+//		protected TestEnchantment() {
+//			super(Rarity.COMMON, EnchantmentCategory.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
+//		}
+//
+//		@Override
+//		public void applyDamageWildcard(LivingEntity bearer, Entity entity, int power) {
+//			bearer.addStatusEffect(new StatusEffectInstance(EFFECT, 50, 10));
+//		}
+//
+//		@Override
+//		public void applyProtectionWildcard(LivingEntity bearer, Entity entity, int power) {
+//			bearer.addStatusEffect(new StatusEffectInstance(EFFECT, 50, 10));
+//		}
+//	}
+//
+//	public static class TestBiome extends PlainsBiome {
+//		protected TestBiome(boolean bl, Settings settings) {
+//			super(bl, settings);
+//		}
+//	}
 }

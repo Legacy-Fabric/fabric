@@ -50,17 +50,17 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 
 public class RegistryTest implements ModInitializer {
-	public static StatusEffect EFFECT;
+//	public static StatusEffect EFFECT;
 
 	@Override
 	public void onInitialize() {
 		this.registerItems();
 		this.registerBlocks();
-		this.registerBlockEntities();
-		this.registerEffectsAndPotions();
-		this.registerEntities();
-		this.registerEnchantments();
-		this.registerBiomes();
+//		this.registerBlockEntities();
+//		this.registerEffectsAndPotions();
+//		this.registerEntities();
+//		this.registerEnchantments();
+//		this.registerBiomes();
 	}
 
 	private void registerItems() {
@@ -85,135 +85,135 @@ public class RegistryTest implements ModInitializer {
 		}
 	}
 
-	private void registerBlockEntities() {
-		NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_block_entity");
-
-		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
-		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
-		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
-		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
-	}
-
-	private void registerEffectsAndPotions() {
-		NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_effect");
-
-		EFFECT = RegistryHelper.register(RegistryIds.STATUS_EFFECTS, identifier,
-				id -> new TestStatusEffect(id, false, 1234567)
-						.setIcon(3, 1)
-						.setDurationMultiplier(0.25)
-		);
-		PotionHelper.registerLevels(EFFECT, "!0 & !1 & !2 & !3 & 1+6");
-		PotionHelper.registerAmplifyingFactor(EFFECT, "5");
-	}
-
-	private void registerEntities() {
-		NamespacedIdentifier creeperId = NamespacedIdentifiers.from("legacy-fabric-api", "test_entity");
-		RegistryHelper.register(RegistryIds.ENTITY_TYPES, creeperId, TestCreeperEntity.class);
-		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
-	}
-
-	private void registerEnchantments() {
-		NamespacedIdentifier enchantmentId = NamespacedIdentifiers.from("legacy-fabric-api", "test_enchantment");
-		RegistryHelper.register(RegistryIds.ENCHANTMENTS, enchantmentId, TestEnchantment::new);
-	}
-
-	private void registerBiomes() {
-		NamespacedIdentifier biomeId = NamespacedIdentifiers.from("legacy-fabric-api", "test_biome");
-		RegistryHelper.register(RegistryIds.BIOMES, biomeId,
-				id -> new TestBiome(id)
-						.setColor(4446496)
-						.setTemperatureAndDownfall(0.3F, 0.7F));
-	}
-
-	public static class TestBlockWithEntity extends BlockWithBlockEntity {
-		protected TestBlockWithEntity(Material material) {
-			super(material);
-		}
-
-		@Override
-		public @Nullable BlockEntity createBlockEntity(World world, int id) {
-			return new TestBlockEntity();
-		}
-
-		@Override
-		public boolean use(World world, int x, int y, int z, PlayerEntity player, int i, float f, float g, float h) {
-			if (!world.isMultiplayer) {
-				BlockEntity entity = world.getBlockEntity(x, y, z);
-
-				if (entity instanceof TestBlockEntity) {
-					player.sendMessage(new LiteralText(entity + " at " + x + "," + y + "," + z));
-				}
-			}
-
-			return true;
-		}
-	}
-
-	public static class TestBlockEntity extends BlockEntity {
-	}
-
-	public static class TestStatusEffect extends StatusEffect {
-		public TestStatusEffect(int i, boolean bl, int j) {
-			super(i, bl, j);
-		}
-
-		@Override
-		public void apply(LivingEntity livingEntity, int i) {
-			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
-				livingEntity.heal(1.0F);
-			}
-		}
-
-		@Override
-		public boolean shouldApply(int duration, int amplifier) {
-			int i;
-
-			i = 50 >> amplifier;
-
-			if (i > 0) {
-				return duration % i == 0;
-			} else {
-				return true;
-			}
-		}
-	}
-
-	public static class TestCreeperEntity extends CreeperEntity {
-		public TestCreeperEntity(World world) {
-			super(world);
-		}
-
-		@Override
-		public void tick() {
-			if (this.isAlive()) {
-				if (this.hasStatusEffect(EFFECT)) {
-					this.setIgnited();
-				}
-			}
-
-			super.tick();
-		}
-	}
-
-	public static class TestEnchantment extends Enchantment {
-		protected TestEnchantment(int id) {
-			super(id, 2, EnchantmentCategory.ARMOR_FEET);
-		}
-
-		@Override
-		public void applyDamageWildcard(LivingEntity bearer, Entity entity, int power) {
-			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
-		}
-
-		@Override
-		public void applyProtectionWildcard(LivingEntity bearer, Entity entity, int power) {
-			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
-		}
-	}
-
-	public static class TestBiome extends PlainsBiome {
-		protected TestBiome(int id) {
-			super(id);
-		}
-	}
+//	private void registerBlockEntities() {
+//		NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_block_entity");
+//
+//		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
+//		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
+//		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
+//		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
+//	}
+//
+//	private void registerEffectsAndPotions() {
+//		NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_effect");
+//
+//		EFFECT = RegistryHelper.register(RegistryIds.STATUS_EFFECTS, identifier,
+//				id -> new TestStatusEffect(id, false, 1234567)
+//						.setIcon(3, 1)
+//						.setDurationMultiplier(0.25)
+//		);
+//		PotionHelper.registerLevels(EFFECT, "!0 & !1 & !2 & !3 & 1+6");
+//		PotionHelper.registerAmplifyingFactor(EFFECT, "5");
+//	}
+//
+//	private void registerEntities() {
+//		NamespacedIdentifier creeperId = NamespacedIdentifiers.from("legacy-fabric-api", "test_entity");
+//		RegistryHelper.register(RegistryIds.ENTITY_TYPES, creeperId, TestCreeperEntity.class);
+//		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
+//	}
+//
+//	private void registerEnchantments() {
+//		NamespacedIdentifier enchantmentId = NamespacedIdentifiers.from("legacy-fabric-api", "test_enchantment");
+//		RegistryHelper.register(RegistryIds.ENCHANTMENTS, enchantmentId, TestEnchantment::new);
+//	}
+//
+//	private void registerBiomes() {
+//		NamespacedIdentifier biomeId = NamespacedIdentifiers.from("legacy-fabric-api", "test_biome");
+//		RegistryHelper.register(RegistryIds.BIOMES, biomeId,
+//				id -> new TestBiome(id)
+//						.setColor(4446496)
+//						.setTemperatureAndDownfall(0.3F, 0.7F));
+//	}
+//
+//	public static class TestBlockWithEntity extends BlockWithBlockEntity {
+//		protected TestBlockWithEntity(Material material) {
+//			super(material);
+//		}
+//
+//		@Override
+//		public @Nullable BlockEntity createBlockEntity(World world, int id) {
+//			return new TestBlockEntity();
+//		}
+//
+//		@Override
+//		public boolean use(World world, int x, int y, int z, PlayerEntity player, int i, float f, float g, float h) {
+//			if (!world.isMultiplayer) {
+//				BlockEntity entity = world.getBlockEntity(x, y, z);
+//
+//				if (entity instanceof TestBlockEntity) {
+//					player.sendMessage(new LiteralText(entity + " at " + x + "," + y + "," + z));
+//				}
+//			}
+//
+//			return true;
+//		}
+//	}
+//
+//	public static class TestBlockEntity extends BlockEntity {
+//	}
+//
+//	public static class TestStatusEffect extends StatusEffect {
+//		public TestStatusEffect(int i, boolean bl, int j) {
+//			super(i, bl, j);
+//		}
+//
+//		@Override
+//		public void apply(LivingEntity livingEntity, int i) {
+//			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
+//				livingEntity.heal(1.0F);
+//			}
+//		}
+//
+//		@Override
+//		public boolean shouldApply(int duration, int amplifier) {
+//			int i;
+//
+//			i = 50 >> amplifier;
+//
+//			if (i > 0) {
+//				return duration % i == 0;
+//			} else {
+//				return true;
+//			}
+//		}
+//	}
+//
+//	public static class TestCreeperEntity extends CreeperEntity {
+//		public TestCreeperEntity(World world) {
+//			super(world);
+//		}
+//
+//		@Override
+//		public void tick() {
+//			if (this.isAlive()) {
+//				if (this.hasStatusEffect(EFFECT)) {
+//					this.setIgnited();
+//				}
+//			}
+//
+//			super.tick();
+//		}
+//	}
+//
+//	public static class TestEnchantment extends Enchantment {
+//		protected TestEnchantment(int id) {
+//			super(id, 2, EnchantmentCategory.ARMOR_FEET);
+//		}
+//
+//		@Override
+//		public void applyDamageWildcard(LivingEntity bearer, Entity entity, int power) {
+//			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
+//		}
+//
+//		@Override
+//		public void applyProtectionWildcard(LivingEntity bearer, Entity entity, int power) {
+//			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
+//		}
+//	}
+//
+//	public static class TestBiome extends PlainsBiome {
+//		protected TestBiome(int id) {
+//			super(id);
+//		}
+//	}
 }

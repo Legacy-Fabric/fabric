@@ -30,12 +30,12 @@ import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegis
 
 @Mixin(CustomizeWorldScreen.class)
 public class CustomizeWorldScreenMixin {
-	@ModifyArg(method = "updateOverworldGeneratorOptions",
-			at = @At(value = "INVOKE", ordinal = 4, target = "Lnet/minecraft/client/gui/screen/world/OverworldGeneratorOptionsWidget$NumberOption;<init>(ILjava/lang/String;ZLnet/minecraft/client/gui/screen/world/GeneratorOptionSlider$ValueFormatter;FFF)V"),
-			index = 5
-	)
-	private float allowSelectingAllBiomesInSelector(float max) {
-		SyncedFabricRegistry<Biome> registry = (SyncedFabricRegistry<Biome>) (Object) RegistryHelper.getRegistry(RegistryIds.BIOMES);
-		return registry.stream().mapToInt(b -> registry.fabric$getRawId(b)).max().orElse((int) max) - 1;
-	}
+//	@ModifyArg(method = "updateOverworldGeneratorOptions",
+//			at = @At(value = "INVOKE", ordinal = 4, target = "Lnet/minecraft/client/gui/screen/world/OverworldGeneratorOptionsWidget$NumberOption;<init>(ILjava/lang/String;ZLnet/minecraft/client/gui/screen/world/GeneratorOptionSlider$ValueFormatter;FFF)V"),
+//			index = 5
+//	)
+//	private float allowSelectingAllBiomesInSelector(float max) {
+//		SyncedFabricRegistry<Biome> registry = (SyncedFabricRegistry<Biome>) (Object) RegistryHelper.getRegistry(RegistryIds.BIOMES);
+//		return registry.stream().mapToInt(b -> registry.fabric$getRawId(b)).max().orElse((int) max) - 1;
+//	}
 }
