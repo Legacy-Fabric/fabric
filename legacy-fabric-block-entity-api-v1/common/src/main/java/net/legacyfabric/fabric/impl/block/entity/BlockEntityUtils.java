@@ -21,11 +21,12 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds;
-import net.legacyfabric.fabric.api.util.Identifier;
+
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 
 public class BlockEntityUtils {
-	public static final BiMap<String, Identifier> OLD_TO_ID = HashBiMap.create();
-	public static final BiMap<Identifier, String> ID_TO_OLD = OLD_TO_ID.inverse();
+	public static final BiMap<String, NamespacedIdentifier> OLD_TO_ID = HashBiMap.create();
+	public static final BiMap<NamespacedIdentifier, String> ID_TO_OLD = OLD_TO_ID.inverse();
 
 	static {
 		OLD_TO_ID.put("Furnace", BlockEntityTypeIds.FURNACE);

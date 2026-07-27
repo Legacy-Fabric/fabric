@@ -68,7 +68,7 @@ public class RegistryTest implements ModInitializer {
 	public void onInitialize() {
 		this.registerItems();
 		this.registerBlocks();
-//		this.registerBlockEntities();
+		this.registerBlockEntities();
 //		this.registerEffectsAndPotions();
 //		this.registerEntities();
 //		this.registerEnchantments();
@@ -103,15 +103,15 @@ public class RegistryTest implements ModInitializer {
 		}
 	}
 
-//	private void registerBlockEntities() {
-//		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
-//
-//		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
-//		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
-//		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
-//		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
-//	}
-//
+	private void registerBlockEntities() {
+		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
+
+		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
+		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
+		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
+		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
+	}
+
 //	private void registerEffectsAndPotions() {
 //		Identifier effectIdentifier = new Identifier("legacy-fabric-api", "test_effect");
 //		EFFECT = new TestStatusEffect(false, 1234567).setIcon(3, 1).setDurationMultiplier(0.25).setUsable();
@@ -139,34 +139,34 @@ public class RegistryTest implements ModInitializer {
 //		RegistryHelper.register(Biome.REGISTRY, biomeId, new TestBiome(false,
 //				new Biome.Settings("Test Biome").depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
 //	}
-//
-//	public static class TestBlockWithEntity extends BlockWithBlockEntity {
-//		protected TestBlockWithEntity(Material material) {
-//			super(material);
-//		}
-//
-//		@Override
-//		public @Nullable BlockEntity createBlockEntity(World world, int id) {
-//			return new TestBlockEntity();
-//		}
-//
-//		@Override
-//		public boolean use(World world, BlockPos pos, BlockState state, PlayerEntity player, InteractionHand hand, Direction direction, float f, float g, float h) {
-//			if (!world.isClient) {
-//				BlockEntity entity = world.getBlockEntity(pos);
-//
-//				if (entity instanceof TestBlockEntity) {
-//					player.sendMessage(new LiteralText(entity + " at " + pos.toString()));
-//				}
-//			}
-//
-//			return true;
-//		}
-//	}
-//
-//	public static class TestBlockEntity extends BlockEntity {
-//	}
-//
+
+	public static class TestBlockWithEntity extends BlockWithBlockEntity {
+		protected TestBlockWithEntity(Material material) {
+			super(material);
+		}
+
+		@Override
+		public @Nullable BlockEntity createBlockEntity(World world, int id) {
+			return new TestBlockEntity();
+		}
+
+		@Override
+		public boolean use(World world, BlockPos pos, BlockState state, PlayerEntity player, InteractionHand hand, Direction direction, float f, float g, float h) {
+			if (!world.isClient) {
+				BlockEntity entity = world.getBlockEntity(pos);
+
+				if (entity instanceof TestBlockEntity) {
+					player.sendMessage(new LiteralText(entity + " at " + pos.toString()));
+				}
+			}
+
+			return true;
+		}
+	}
+
+	public static class TestBlockEntity extends BlockEntity {
+	}
+
 //	public static class TestStatusEffect extends StatusEffect {
 //		public TestStatusEffect(boolean bl, int i) {
 //			super(bl, i);
