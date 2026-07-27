@@ -21,7 +21,7 @@
   },
   "description": "Item utils",
   "entrypoints": {
-    "preLaunch": [
+    "init": [
       "net.legacyfabric.fabric.impl.item.EarlyInitializer"
     ]
   },

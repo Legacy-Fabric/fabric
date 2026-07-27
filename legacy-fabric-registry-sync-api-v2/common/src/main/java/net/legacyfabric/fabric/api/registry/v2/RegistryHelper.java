@@ -20,17 +20,17 @@ package net.legacyfabric.fabric.api.registry.v2;
 import java.util.function.Function;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
-import org.jetbrains.annotations.ApiStatus;
+import net.ornithemc.osl.registries.api.registry.Registry;
 
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
-import net.legacyfabric.fabric.api.registry.v2.registry.registrable.RegistryEntryCreator;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
 /**
  * A utility class helping to manage registries and their entries.
+ * @deprecated Use dedicated content registry events from OSL and LFAPI
  */
+@Deprecated
 public class RegistryHelper {
 	/**
 	 * Register an entry to a registry.
@@ -43,7 +43,7 @@ public class RegistryHelper {
 	 */
 	@Deprecated
 	public static <T> void register(FabricRegistry<T> registry, Identifier identifier, T value) {
-		RegistryHelperImplementation.register(registry, identifier, value);
+		RegistryHelperImplementation.register(RegistryHelperImplementation.getRegistryCompat(registry), identifier, value);
 	}
 
 	/**
@@ -53,8 +53,9 @@ public class RegistryHelper {
 	 * @param value The entry
 	 * @param <T> The entry type
 	 */
+	@Deprecated
 	public static <T> void register(FabricRegistry<T> registry, NamespacedIdentifier identifier, T value) {
-		RegistryHelperImplementation.register(registry, identifier, value);
+		RegistryHelperImplementation.register(RegistryHelperImplementation.getRegistryCompat(registry), identifier, value);
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class RegistryHelper {
 	 */
 	@Deprecated
 	public static <T> void register(Identifier registryId, Identifier identifier, T value) {
-		register(RegistryHelperImplementation.getRegistry(registryId), identifier, value);
+		RegistryHelperImplementation.register(RegistryHelperImplementation.getRegistryCompat(registryId), identifier, value);
 	}
 
 	/**
@@ -78,8 +79,9 @@ public class RegistryHelper {
 	 * @param value The entry
 	 * @param <T> The entry type
 	 */
+	@Deprecated
 	public static <T> void register(NamespacedIdentifier registryId, NamespacedIdentifier identifier, T value) {
-		register(RegistryHelperImplementation.getRegistry(registryId), identifier, value);
+		RegistryHelperImplementation.register(RegistryHelperImplementation.getRegistryCompat(registryId), identifier, value);
 	}
 
 	/**
@@ -94,7 +96,7 @@ public class RegistryHelper {
 	 */
 	@Deprecated
 	public static <T> T register(FabricRegistry<T> registry, Identifier identifier, Function<Integer, T> valueConstructor) {
-		return RegistryHelperImplementation.register(registry, identifier, valueConstructor);
+		return RegistryHelperImplementation.register(RegistryHelperImplementation.getRegistryCompat(registry), identifier, valueConstructor);
 	}
 
 	/**
@@ -105,8 +107,9 @@ public class RegistryHelper {
 	 * @param <T> The entry type
 	 * @return The entry
 	 */
+	@Deprecated
 	public static <T> T register(FabricRegistry<T> registry, NamespacedIdentifier identifier, Function<Integer, T> valueConstructor) {
-		return RegistryHelperImplementation.register(registry, identifier, valueConstructor);
+		return RegistryHelperImplementation.register(RegistryHelperImplementation.getRegistryCompat(registry), identifier, valueConstructor);
 	}
 
 	/**
@@ -121,7 +124,7 @@ public class RegistryHelper {
 	 */
 	@Deprecated
 	public static <T> T register(Identifier registryId, Identifier identifier, Function<Integer, T> valueConstructor) {
-		return register(RegistryHelperImplementation.<T>getRegistry(registryId), identifier, valueConstructor);
+		return RegistryHelperImplementation.register(RegistryHelperImplementation.<T>getRegistryCompat(registryId), identifier, valueConstructor);
 	}
 
 	/**
@@ -132,52 +135,9 @@ public class RegistryHelper {
 	 * @param <T> The entry type
 	 * @return The entry
 	 */
+	@Deprecated
 	public static <T> T register(NamespacedIdentifier registryId, NamespacedIdentifier identifier, Function<Integer, T> valueConstructor) {
-		return register(RegistryHelperImplementation.<T>getRegistry(registryId), identifier, valueConstructor);
-	}
-
-	/**
-	 * Register a registry.
-	 * @param identifier The registry's identifier
-	 * @param registry The registry
-	 *
-	 * @deprecated Use {@link #addRegistry(NamespacedIdentifier, FabricRegistry)} instead.
-	 */
-	@Deprecated
-	public static void addRegistry(Identifier identifier, FabricRegistry<?> registry) {
-		RegistryHelperImplementation.registerRegistry(identifier, registry);
-	}
-
-	/**
-	 * Register a registry.
-	 * @param identifier The registry's identifier
-	 * @param registry The registry
-	 */
-	public static void addRegistry(NamespacedIdentifier identifier, FabricRegistry<?> registry) {
-		RegistryHelperImplementation.registerRegistry(identifier, registry);
-	}
-
-	/**
-	 * Get a registry by its identifier.
-	 * @param identifier The registry identifier
-	 * @param <T> The registry's entry type
-	 * @return The associated registry
-	 *
-	 * @deprecated Use {@link #getRegistry(NamespacedIdentifier)} instead.
-	 */
-	@Deprecated
-	public static <T> FabricRegistry<T> getRegistry(Identifier identifier) {
-		return RegistryHelperImplementation.getRegistry(identifier);
-	}
-
-	/**
-	 * Get a registry by its identifier.
-	 * @param identifier The registry identifier
-	 * @param <T> The registry's entry type
-	 * @return The associated registry
-	 */
-	public static <T> FabricRegistry<T> getRegistry(NamespacedIdentifier identifier) {
-		return RegistryHelperImplementation.getRegistry(identifier);
+		return RegistryHelperImplementation.register(RegistryHelperImplementation.<T>getRegistryCompat(registryId), identifier, valueConstructor);
 	}
 
 	/**
@@ -191,7 +151,8 @@ public class RegistryHelper {
 	 */
 	@Deprecated
 	public static <T> T getValue(FabricRegistry<T> registry, Identifier identifier) {
-		return registry.fabric$getValue(identifier);
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registry);
+		return oslRegistry.get(identifier);
 	}
 
 	/**
@@ -201,8 +162,10 @@ public class RegistryHelper {
 	 * @param <T> The entry type
 	 * @return The entry associated to that identifier
 	 */
+	@Deprecated
 	public static <T> T getValue(FabricRegistry<T> registry, NamespacedIdentifier identifier) {
-		return registry.fabric$getValue(Identifier.fromNamespaceIdentifier(identifier));
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registry);
+		return oslRegistry.get(identifier);
 	}
 
 	/**
@@ -216,8 +179,8 @@ public class RegistryHelper {
 	 */
 	@Deprecated
 	public static <T> T getValue(Identifier registryId, Identifier identifier) {
-		return RegistryHelperImplementation.<T>getRegistry(registryId)
-				.fabric$getValue(identifier);
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registryId);
+		return oslRegistry.get(identifier);
 	}
 
 	/**
@@ -227,9 +190,10 @@ public class RegistryHelper {
 	 * @param <T> The entry type
 	 * @return The entry associated to that identifier
 	 */
+	@Deprecated
 	public static <T> T getValue(NamespacedIdentifier registryId, NamespacedIdentifier identifier) {
-		return RegistryHelperImplementation.<T>getRegistry(registryId)
-				.fabric$getValue(Identifier.fromNamespaceIdentifier(identifier));
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registryId);
+		return oslRegistry.get(identifier);
 	}
 
 	/**
@@ -239,8 +203,10 @@ public class RegistryHelper {
 	 * @param <T> The entry type
 	 * @return The identifier associated to that entry
 	 */
+	@Deprecated
 	public static <T> Identifier getId(FabricRegistry<T> registry, T object) {
-		return registry.fabric$getId(object);
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registry);
+		return Identifier.fromNamespaceIdentifier(oslRegistry.getIdentifier(object));
 	}
 
 	/**
@@ -254,7 +220,8 @@ public class RegistryHelper {
 	 */
 	@Deprecated
 	public static <T> Identifier getId(Identifier registryId, T object) {
-		return getId(RegistryHelperImplementation.getRegistry(registryId), object);
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registryId);
+		return Identifier.fromNamespaceIdentifier(oslRegistry.getIdentifier(object));
 	}
 
 	/**
@@ -264,8 +231,10 @@ public class RegistryHelper {
 	 * @param <T> The entry type
 	 * @return The identifier associated to that entry
 	 */
+	@Deprecated
 	public static <T> NamespacedIdentifier getId(NamespacedIdentifier registryId, T object) {
-		return getId(RegistryHelperImplementation.getRegistry(registryId), object);
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registryId);
+		return oslRegistry.getIdentifier(object);
 	}
 
 	/**
@@ -276,12 +245,11 @@ public class RegistryHelper {
 	 * @return The numerical id associated to that entry
 	 * @throws IllegalArgumentException When the registry doesn't support numerical ids.
 	 */
+	@Deprecated
 	public static <T> int getRawId(FabricRegistry<T> registry, T object) {
-		if (!(registry instanceof SyncedFabricRegistry)) {
-			throw new IllegalArgumentException("Cannot get raw id of " + object + " of non synced registry " + registry.fabric$getId());
-		}
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registry);
 
-		return ((SyncedFabricRegistry<T>) registry).fabric$getRawId(object);
+		return oslRegistry.getId(object);
 	}
 
 	/**
@@ -296,7 +264,9 @@ public class RegistryHelper {
 	 */
 	@Deprecated
 	public static <T> int getRawId(Identifier registryId, T object) {
-		return getRawId(RegistryHelperImplementation.getRegistry(registryId), object);
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registryId);
+
+		return oslRegistry.getId(object);
 	}
 
 	/**
@@ -307,8 +277,11 @@ public class RegistryHelper {
 	 * @return The numerical associated to that entry
 	 * @throws IllegalArgumentException When the registry doesn't support numerical ids.
 	 */
+	@Deprecated
 	public static <T> int getRawId(NamespacedIdentifier registryId, T object) {
-		return getRawId(RegistryHelperImplementation.getRegistry(registryId), object);
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registryId);
+
+		return oslRegistry.getId(object);
 	}
 
 	/**
@@ -319,12 +292,11 @@ public class RegistryHelper {
 	 * @return The entry associated to that numerical id
 	 * @throws IllegalArgumentException When the registry doesn't support numerical ids.
 	 */
+	@Deprecated
 	public static <T> T getValue(FabricRegistry<T> registry, int rawId) {
-		if (!(registry instanceof SyncedFabricRegistry)) {
-			throw new IllegalArgumentException("Cannot get value of id " + rawId + " of non synced registry " + registry.fabric$getId());
-		}
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registry);
 
-		return ((SyncedFabricRegistry<T>) registry).fabric$getValue(rawId);
+		return oslRegistry.get(rawId);
 	}
 
 	/**
@@ -339,7 +311,9 @@ public class RegistryHelper {
 	 */
 	@Deprecated
 	public static <T> T getValue(Identifier registryId, int rawId) {
-		return getValue(RegistryHelperImplementation.getRegistry(registryId), rawId);
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registryId);
+
+		return oslRegistry.get(rawId);
 	}
 
 	/**
@@ -350,36 +324,10 @@ public class RegistryHelper {
 	 * @return The entry associated to that numerical id
 	 * @throws IllegalArgumentException When the registry doesn't support numerical ids.
 	 */
+	@Deprecated
 	public static <T> T getValue(NamespacedIdentifier registryId, int rawId) {
-		return getValue(RegistryHelperImplementation.getRegistry(registryId), rawId);
-	}
+		Registry<T> oslRegistry = RegistryHelperImplementation.getRegistryCompat(registryId);
 
-	@ApiStatus.Experimental
-	public static <T> RegistryEntryCreator<T> createEntryCreator(Identifier identifier, Function<Integer, T> valueConstructor, int offset) {
-		return RegistryHelperImplementation.createEntryCreator(identifier, valueConstructor, offset);
+		return oslRegistry.get(rawId);
 	}
-
-	@ApiStatus.Experimental
-	public static <T> RegistryEntryCreator<T> createEntryCreator(Identifier identifier, T value, int offset) {
-		return createEntryCreator(identifier, (id) -> value, offset);
-	}
-
-	@ApiStatus.Experimental
-	public static <T> RegistryEntryCreator<T> createEntryCreator(Identifier identifier, Function<Integer, T> valueConstructor) {
-		return createEntryCreator(identifier, valueConstructor, 0);
-	}
-
-	@ApiStatus.Experimental
-	public static <T> RegistryEntryCreator<T> createEntryCreator(Identifier identifier, T value) {
-		return createEntryCreator(identifier, value, 0);
-	}
-
-	// TODO Finish remapping part of it
-	//	public static <T> List<RegistryEntry<T>> registerMultiple(Registry<T> registry, RegistryEntryCreator<T>... creators) {
-	//		return RegistryHelperImplementation.register(registry, creators);
-	//	}
-	//
-	//	public static <T> List<RegistryEntry<T>> registerMultiple(Identifier registryId, RegistryEntryCreator<T>... creators) {
-	//		return registerMultiple(RegistryHelperImplementation.getRegistry(registryId), creators);
-	//	}
 }

@@ -17,21 +17,11 @@
 
 package net.legacyfabric.fabric.impl.item.versioned;
 
-import net.minecraft.item.Item;
+import net.ornithemc.osl.entrypoints.api.ModInitializer;
 
-import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
-
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-
-public class EarlyInitializer implements PreLaunchEntrypoint {
+public class EarlyInitializer implements ModInitializer {
 	@Override
-	public void onPreLaunch() {
-		RegistryInitializedEvent.event(RegistryIds.ITEMS).register(EarlyInitializer::itemRegistryInit);
-	}
+	public void init() {
 
-	private static void itemRegistryInit(FabricRegistry<?> holder) {
-		FabricRegistry<Item> registry = (FabricRegistry<Item>) holder;
 	}
 }

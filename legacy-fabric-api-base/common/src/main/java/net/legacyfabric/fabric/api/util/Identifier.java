@@ -121,4 +121,14 @@ public class Identifier implements Comparable<Identifier>, NamespacedIdentifier,
 	public String identifier() {
 		return path;
 	}
+
+	@Override
+	public NamespacedIdentifier prefixed(String prefix) {
+		return new Identifier(namespace, prefix + path);
+	}
+
+	@Override
+	public NamespacedIdentifier suffixed(String suffix) {
+		return new Identifier(namespace, path + suffix);
+	}
 }

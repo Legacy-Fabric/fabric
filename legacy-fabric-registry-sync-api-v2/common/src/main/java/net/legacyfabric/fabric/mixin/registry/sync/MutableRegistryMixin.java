@@ -17,104 +17,12 @@
 
 package net.legacyfabric.fabric.mixin.registry.sync;
 
-import java.util.Map;
-
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 
 import net.minecraft.util.registry.MappedRegistry;
 
-import net.legacyfabric.fabric.api.event.Event;
-import net.legacyfabric.fabric.api.event.EventFactory;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryBeforeAddCallback;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryEntryAddedCallback;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.api.registry.v2.registry.registrable.Registrable;
-import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.impl.registry.accessor.RegistryIdSetter;
 
 @Mixin(MappedRegistry.class)
-public abstract class MutableRegistryMixin<K, V> implements FabricRegistry<V>, RegistryIdSetter, Registrable<V> {
-	@Shadow
-	public abstract void put(Object key, Object value);
-
-	@Shadow
-	public abstract Object get(Object key);
-
-	@Shadow
-	@Final
-	protected Map<K, V> entries;
-	@Unique
-	private Event<RegistryEntryAddedCallback<V>> fabric_addObjectEvent;
-
-	@Unique
-	private Event<RegistryBeforeAddCallback<V>> fabric_beforeAddObjectEvent;
-
-	@Unique
-	private Identifier fabric_id;
-
-	@Override
-	public Event<RegistryEntryAddedCallback<V>> fabric$getEntryAddedCallback() {
-		if (this.fabric_addObjectEvent == null) {
-			fabric_addObjectEvent = EventFactory.createArrayBacked(RegistryEntryAddedCallback.class,
-					(callbacks) -> (rawId, id, object) -> {
-						for (RegistryEntryAddedCallback<V> callback : callbacks) {
-							callback.onEntryAdded(rawId, id, object);
-						}
-					}
-			);
-		}
-
-		return this.fabric_addObjectEvent;
-	}
-
-	@Override
-	public Event<RegistryBeforeAddCallback<V>> fabric$getBeforeAddedCallback() {
-		if (this.fabric_beforeAddObjectEvent == null) {
-			fabric_beforeAddObjectEvent = EventFactory.createArrayBacked(RegistryBeforeAddCallback.class,
-					(callbacks) -> (rawId, id, object) -> {
-						for (RegistryBeforeAddCallback<V> callback : callbacks) {
-							callback.onEntryAdding(rawId, id, object);
-						}
-					}
-			);
-		}
-
-		return this.fabric_beforeAddObjectEvent;
-	}
-
-	@Override
-	public Identifier fabric$getId() {
-		return this.fabric_id;
-	}
-
-	@Override
-	public void fabric$setId(Identifier identifier) {
-		assert this.fabric_id == null;
-		this.fabric_id = identifier;
-	}
-
-	@Override
-	public void fabric$register(int rawId, Identifier identifier, V value) {
-		fabric$getBeforeAddedCallback().invoker().onEntryAdding(rawId, identifier, value);
-		put(fabric$toKeyType(identifier), value);
-		fabric$getEntryAddedCallback().invoker().onEntryAdded(rawId, identifier, value);
-	}
-
-	@Override
-	public V fabric$getValue(Identifier id) {
-		return (V) get(fabric$toKeyType(id));
-	}
-
-	@Override
-	public Identifier fabric$getId(V value) {
-		return entries.entrySet()
-				.stream()
-				.filter(entry -> entry.getValue().equals(value))
-				.findFirst()
-				.map(entry -> new Identifier(entry.getKey()))
-				.orElse(null);
-	}
+public abstract class MutableRegistryMixin<K, V> implements FabricRegistry<V> {
 }

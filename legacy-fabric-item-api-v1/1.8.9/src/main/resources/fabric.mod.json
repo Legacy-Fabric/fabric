@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-block-api-v1",
-  "name": "Legacy Fabric Block API (V1)",
+  "id": "legacy-fabric-item-api-v1",
+  "name": "Legacy Fabric Item API (V1)",
   "version": "${version}",
   "environment": "*",
   "license": "Apache-2.0",
@@ -17,18 +17,17 @@
   "depends": {
     "minecraft": "${minecraft_version}",
     "fabricloader": "${loader_version}",
-    "osl-blocks": ">=0.1.0-"
+    "osl-items": ">=0.1.0-"
   },
-  "description": "Block utils",
+  "description": "Item utils",
   "entrypoints": {
     "init": [
-      "net.legacyfabric.fabric.impl.block.versioned.EarlyInitializer"
+      "net.legacyfabric.fabric.impl.item.versioned.EarlyInitializer"
     ]
   },
   "mixins": [
-    "legacy-fabric-block-api-v1.mixins.json"
+    "legacy-fabric-item-api-v1.mixins.json"
   ],
-  "accessWidener": "legacy-fabric-block-api-v1.accesswidener",
   "custom": {
     "loom:injected_interfaces": {
     },

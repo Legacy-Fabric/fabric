@@ -33,7 +33,6 @@ import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegis
 public class RegistryEventHelper {
 	protected static final Map<NamespacedIdentifier, Event<RegistryBeforeAddCallback<?>>> IDENTIFIER_BEFORE_MAP = new HashMap<>();
 	protected static final Map<NamespacedIdentifier, Event<RegistryEntryAddedCallback<?>>> IDENTIFIER_ADDED_MAP = new HashMap<>();
-	protected static final Map<NamespacedIdentifier, Event<RegistryRemapCallback<?>>> IDENTIFIER_REMAP_MAP = new HashMap<>();
 
 	public static <T> Event<RegistryBeforeAddCallback<T>> addRegistryBeforeCallback(NamespacedIdentifier registryId) {
 		FabricRegistry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
@@ -71,24 +70,5 @@ public class RegistryEventHelper {
 		}
 
 		return (Event<RegistryEntryAddedCallback<T>>) (Object) IDENTIFIER_ADDED_MAP.get(registryId);
-	}
-
-	public static <T> Event<RegistryRemapCallback<T>> remapCallbackEvent(NamespacedIdentifier registryId) {
-		FabricRegistry<T> registry = RegistryHelperImplementation.getRegistry(registryId);
-
-		if (registry != null) return ((SyncedFabricRegistry<T>) registry).fabric$getRegistryRemapCallback();
-
-		if (!IDENTIFIER_REMAP_MAP.containsKey(registryId)) {
-			Event<RegistryRemapCallback<T>> event = EventFactory.createArrayBacked(RegistryRemapCallback.class,
-					(callbacks) -> (changeMap) -> {
-						for (RegistryRemapCallback<T> callback : callbacks) {
-							callback.callback(changeMap);
-						}
-					}
-			);
-			IDENTIFIER_REMAP_MAP.put(registryId, (Event<RegistryRemapCallback<?>>) (Object) event);
-		}
-
-		return (Event<RegistryRemapCallback<T>>) (Object) IDENTIFIER_REMAP_MAP.get(registryId);
 	}
 }

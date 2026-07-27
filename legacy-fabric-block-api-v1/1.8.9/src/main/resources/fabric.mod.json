@@ -21,7 +21,7 @@
   },
   "description": "Block utils",
   "entrypoints": {
-    "preLaunch": [
+    "init": [
       "net.legacyfabric.fabric.impl.block.versioned.EarlyInitializer"
     ]
   },

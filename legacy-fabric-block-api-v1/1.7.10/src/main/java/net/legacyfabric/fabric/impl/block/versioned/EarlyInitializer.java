@@ -17,44 +17,19 @@
 
 package net.legacyfabric.fabric.impl.block.versioned;
 
+import net.ornithemc.osl.blocks.api.BlockEvents;
+import net.ornithemc.osl.blocks.api.BlockRegistry;
+import net.ornithemc.osl.entrypoints.api.ModInitializer;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.SlabBlock;
 
-import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
-import net.legacyfabric.fabric.api.util.Identifier;
-
-public class EarlyInitializer implements PreLaunchEntrypoint {
+public class EarlyInitializer implements ModInitializer {
 	@Override
-	public void onPreLaunch() {
-		RegistryInitializedEvent.event(RegistryIds.BLOCKS).register(EarlyInitializer::blockRegistryInit);
-	}
-
-	private static void blockRegistryInit(FabricRegistry<?> holder) {
-		SyncedFabricRegistry<Block> registry = (SyncedFabricRegistry<Block>) holder;
-
-		registry.fabric$getEntryAddedCallback().register((rawId, id, block) -> {
-			if (block.isAir()) {
-				block.useNeighborLight = false;
-			} else {
-				boolean useNeighbourLight = false;
-				boolean isStairs = block.getRenderType() == 10;
-				boolean isSlab = block instanceof SlabBlock;
-				boolean isMissingTop = block == RegistryHelper.getValue(Block.REGISTRY, new Identifier("farmland"));
-				boolean isTranslucent = block.isTranslucent;
-				boolean isNotOpaque = block.getOpacity() == 0;
-
-				if (isStairs || isSlab || isMissingTop || isTranslucent || isNotOpaque) {
-					useNeighbourLight = true;
-				}
-
-				block.useNeighborLight = useNeighbourLight;
-			}
+	public void init() {
+		BlockEvents.REGISTER_BLOCKS.register(() -> {
+			RegistryHelperImplementation.registerCompatRegistry(Block.REGISTRY, BlockRegistry.REGISTRY);
 		});
 	}
 }

@@ -21,7 +21,7 @@
   },
   "description": "Item utils",
   "entrypoints": {
-    "preLaunch": []
+    "init": []
   },
   "mixins": [
     "legacy-fabric-item-api-v1.mixins.json"

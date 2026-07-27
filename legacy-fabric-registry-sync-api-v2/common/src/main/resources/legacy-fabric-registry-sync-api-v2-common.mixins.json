@@ -7,9 +7,9 @@
   },
   "mixins": [
     "MutableRegistryMixin",
-    "SimpleRegistryMixin",
-    "WorldSaveHandlerMixin",
-    "versioned.IdListMixin"
+    "osl.OSLAlphaWorldStorageMixin",
+    "osl.SyncedRegistriesNbtSerializerMixin",
+    "osl.WrappedIdRegistryMixin"
   ],
   "client": [
   ]

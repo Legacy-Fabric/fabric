@@ -6,10 +6,6 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "BlockAccessor",
-    "BlockMixin",
-    "BlockRegistryImplMixin",
-    "ItemAccessor"
   ],
   "client": [
   ]

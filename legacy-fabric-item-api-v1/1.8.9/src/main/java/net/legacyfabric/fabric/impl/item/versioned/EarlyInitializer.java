@@ -15,8 +15,21 @@
  * limitations under the License.
  */
 
-package net.legacyfabric.fabric.api.registry.v2.registry.holder;
+package net.legacyfabric.fabric.impl.item.versioned;
 
-@Deprecated
-public interface FabricRegistry<T> {
+import net.legacyfabric.fabric.impl.registry.accessor.RegistryWithEvents;
+
+import net.minecraft.item.Item;
+
+import net.ornithemc.osl.entrypoints.api.ModInitializer;
+import net.ornithemc.osl.items.api.ItemEvents;
+import net.ornithemc.osl.items.api.ItemRegistry;
+
+public class EarlyInitializer implements ModInitializer {
+	@Override
+	public void init() {
+		ItemEvents.REGISTER_ITEMS.register(() -> {
+			((RegistryWithEvents<Item>) ItemRegistry.REGISTRY).fabric$getEntryAddedCallback().register(new ItemModelsInitializer());
+		});
+	}
 }

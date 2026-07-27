@@ -17,23 +17,23 @@
 
 package net.legacyfabric.fabric.impl.item;
 
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
+
 import net.minecraft.item.Item;
 
-import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
-
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
 import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 
-public class EarlyInitializer implements PreLaunchEntrypoint {
+import net.ornithemc.osl.entrypoints.api.ModInitializer;
+import net.ornithemc.osl.items.api.ItemEvents;
+import net.ornithemc.osl.items.api.ItemRegistry;
+
+public class EarlyInitializer implements ModInitializer {
 	@Override
-	public void onPreLaunch() {
-		RegistryInitializedEvent.event(RegistryIds.ITEMS).register(EarlyInitializer::itemRegistryInit);
-	}
-
-	private static void itemRegistryInit(FabricRegistry<?> holder) {
-		FabricRegistry<Item> registry = (FabricRegistry<Item>) holder;
-
-		registry.fabric$getBeforeAddedCallback().register((rawId, id, item) -> item.setKey(id.toTranslationKey()));
+	public void init() {
+		ItemEvents.REGISTER_ITEMS.register(() -> {
+			RegistryHelperImplementation.registerCompatId(RegistryIds.ITEMS, ItemRegistry.REGISTRY);
+			RegistryHelperImplementation.registerCompatRegistry((FabricRegistry<Item>) Item.REGISTRY, ItemRegistry.REGISTRY);
+		});
 	}
 }

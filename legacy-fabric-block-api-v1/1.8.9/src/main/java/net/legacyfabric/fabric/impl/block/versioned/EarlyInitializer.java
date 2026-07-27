@@ -17,69 +17,19 @@
 
 package net.legacyfabric.fabric.impl.block.versioned;
 
+import net.ornithemc.osl.blocks.api.BlockEvents;
+import net.ornithemc.osl.blocks.api.BlockRegistry;
+import net.ornithemc.osl.entrypoints.api.ModInitializer;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 
-import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
-import net.legacyfabric.fabric.api.util.Identifier;
-import net.legacyfabric.fabric.mixin.block.versioned.ItemAccessor;
-
-public class EarlyInitializer implements PreLaunchEntrypoint {
+public class EarlyInitializer implements ModInitializer {
 	@Override
-	public void onPreLaunch() {
-		RegistryInitializedEvent.event(RegistryIds.BLOCKS).register(EarlyInitializer::blockRegistryInit);
-		RegistryInitializedEvent.event(RegistryIds.ITEMS).register(EarlyInitializer::itemRegistryInit);
-	}
-
-	private static void blockRegistryInit(FabricRegistry<?> holder) {
-		SyncedFabricRegistry<Block> registry = (SyncedFabricRegistry<Block>) holder;
-
-		registry.fabric$getEntryAddedCallback().register((rawId, id, block) -> {
-			for (BlockState blockState : block.stateDefinition().all()) {
-				int i = rawId << 4 | block.getMetadataFromState(blockState);
-				Block.STATE_REGISTRY.put(blockState, i);
-			}
-		});
-
-		registry.fabric$getRegistryRemapCallback().register(new BlockStateRemapper());
-
-		registry.fabric$getEntryAddedCallback().register((rawId, id, block) -> {
-			if (block.isAir()) {
-				block.useNeighborLight = false;
-			} else {
-				boolean useNeighbourLight = false;
-				boolean isStairs = block instanceof StairsBlock;
-				boolean isSlab = block instanceof SlabBlock;
-				boolean isMissingTop = block == RegistryHelper.getValue(Block.REGISTRY, new Identifier("farmland"));
-				boolean isTranslucent = block.isTranslucent;
-				boolean isNotOpaque = block.opacity == 0;
-
-				if (isStairs || isSlab || isMissingTop || isTranslucent || isNotOpaque) {
-					useNeighbourLight = true;
-				}
-
-				block.useNeighborLight = useNeighbourLight;
-			}
-		});
-	}
-
-	private static void itemRegistryInit(FabricRegistry<?> holder) {
-		SyncedFabricRegistry<Item> registry = (SyncedFabricRegistry<Item>) holder;
-
-		registry.fabric$getEntryAddedCallback().register((rawId, id, item) -> {
-			if (item instanceof BlockItem) {
-				ItemAccessor.getBlockItemsMap().put(((BlockItem) item).getBlock(), item);
-			}
+	public void init() {
+		BlockEvents.REGISTER_BLOCKS.register(() -> {
+			RegistryHelperImplementation.registerCompatRegistry(Block.REGISTRY, BlockRegistry.REGISTRY);
 		});
 	}
 }

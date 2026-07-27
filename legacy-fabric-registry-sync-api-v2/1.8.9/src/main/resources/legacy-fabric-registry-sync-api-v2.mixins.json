@@ -6,10 +6,6 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "versioned.BiDefaultedRegistryMixin",
-    "versioned.MutableRegistryMixin",
-    "versioned.PlayerManagerMixin",
-    "versioned.SimpleRegistryMixin"
   ],
   "client": [
   ]

@@ -17,23 +17,19 @@
 
 package net.legacyfabric.fabric.impl.block;
 
-import net.minecraft.block.Block;
-
-import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.event.RegistryInitializedEvent;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
 
-public class EarlyInitializer implements PreLaunchEntrypoint {
+import net.ornithemc.osl.blocks.api.BlockEvents;
+import net.ornithemc.osl.blocks.api.BlockRegistry;
+import net.ornithemc.osl.entrypoints.api.ModInitializer;
+
+public class EarlyInitializer implements ModInitializer {
 	@Override
-	public void onPreLaunch() {
-		RegistryInitializedEvent.event(RegistryIds.BLOCKS).register(EarlyInitializer::blockRegistryInit);
-	}
-
-	private static void blockRegistryInit(FabricRegistry<?> holder) {
-		FabricRegistry<Block> registry = (FabricRegistry<Block>) holder;
-
-		registry.fabric$getBeforeAddedCallback().register((rawId, id, block) -> block.setKey(id.toTranslationKey()));
+	public void init() {
+		BlockEvents.REGISTER_BLOCKS.register(() -> {
+			RegistryHelperImplementation.registerCompatId(RegistryIds.BLOCKS, BlockRegistry.REGISTRY);
+		});
 	}
 }

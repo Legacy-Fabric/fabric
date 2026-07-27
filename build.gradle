@@ -456,7 +456,7 @@ allprojects {
 
 		testmodImplementation sourceSets.main.output
 
-//		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0"))
+		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.7-beta.3"))
 		implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.5.2"))
 
 		implementation "org.quiltmc.parsers:json:${project.rootProject.quilt_parsers_version}"
@@ -705,7 +705,7 @@ sourceSets {
 }
 
 dependencies {
-//	include("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
+	include("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.7-beta.3")
 	include("io.github.llamalad7:mixinextras-fabric:0.5.2")
 
 	afterEvaluate {
