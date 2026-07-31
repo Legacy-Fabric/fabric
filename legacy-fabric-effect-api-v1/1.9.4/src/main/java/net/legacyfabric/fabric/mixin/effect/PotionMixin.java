@@ -28,9 +28,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.resource.Identifier;
 import net.minecraft.util.registry.DefaultedIdRegistry;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.impl.effect.versioned.PotionRegistryImpl;
 
 @Mixin(Potion.class)
 public class PotionMixin {
@@ -38,8 +36,13 @@ public class PotionMixin {
 	@Final
 	public static DefaultedIdRegistry<Identifier, Potion> REGISTRY;
 
+	@Inject(method = "init", at = @At("HEAD"))
+	private static void api$unlockRegistry(CallbackInfo ci) {
+		PotionRegistryImpl.unlock();
+	}
+
 	@Inject(method = "init()V", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		RegistryHelper.addRegistry(RegistryIds.POTIONS, (FabricRegistry<?>) REGISTRY);
+		PotionRegistryImpl.registerPotions();
 	}
 }

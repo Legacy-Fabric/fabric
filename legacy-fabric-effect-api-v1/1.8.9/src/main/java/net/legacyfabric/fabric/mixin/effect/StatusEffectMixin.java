@@ -17,73 +17,90 @@
 
 package net.legacyfabric.fabric.mixin.effect;
 
-import java.util.Arrays;
-import java.util.Map;
+import net.legacyfabric.fabric.api.effect.StatusEffectExtension;
+import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
+import net.legacyfabric.fabric.impl.effect.versioned.StatusEffectRegistryImpl;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.core.impl.util.Util;
+import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
+import net.ornithemc.osl.registries.api.registry.sync.DynamicArrays;
+import net.ornithemc.osl.registries.api.registry.sync.ObjectArrayMapper;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.resource.Identifier;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayMapFabricRegistryWrapper;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(StatusEffect.class)
-public class StatusEffectMixin {
+public class StatusEffectMixin implements StatusEffectExtension {
 	@Mutable
 	@Shadow
 	@Final
 	public static StatusEffect[] BY_ID;
-	@Mutable
+
 	@Shadow
-	@Final
-	private static Map<Identifier, StatusEffect> REGISTRY;
-	@Unique
-	private static FabricRegistry<StatusEffect> STATUS_EFFECT_REGISTRY;
+	private String key;
+
+	@Inject(method = "<clinit>", at = @At("HEAD"))
+	private static void lf$unlockRegistry(CallbackInfo ci) {
+		StatusEffectRegistryImpl.unlock();
+	}
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		BiMap<Identifier, StatusEffect> map = HashBiMap.create(REGISTRY);
-		REGISTRY = map;
+		StatusEffectRegistryImpl.registerEffects();
+		SyncedRegistries.registerMapper(VanillaRegistryKeys.STATUS_EFFECT, NamespacedIdentifiers.from("status_effect/by_id"), ObjectArrayMapper.of(BY_ID));
+	}
 
-		STATUS_EFFECT_REGISTRY = new SyncedArrayMapFabricRegistryWrapper<>(
-				RegistryIds.STATUS_EFFECTS,
-				BY_ID, map, false,
-				universal -> new Identifier(universal.toString()),
-				net.legacyfabric.fabric.api.util.Identifier::new,
-				ids -> {
-					StatusEffect[] array = new StatusEffect[ids.fabric$size() + 1];
-					Arrays.fill(array, null);
+	@ModifyVariable(method = "<init>", argsOnly = true, ordinal = 0, at = @At("HEAD"))
+	private static int lf$autoIdAssignment(int id) {
+		if (id == REGISTRY_AUTO_ASSIGN_ID) {
+			// the Block[] array must contain all blocks so this should
+			// give us a valid ID for the Block registry to use.
+			id = DynamicArrays.length(BY_ID);
+		}
 
-					for (StatusEffect effect : ids) {
-						int id = ids.fabric$getId(effect);
+		return id;
+	}
 
-						if (id >= array.length - 1) {
-							StatusEffect[] newArray = new StatusEffect[id + 2];
-							Arrays.fill(newArray, null);
-							System.arraycopy(array, 0, newArray, 0, array.length);
-							array = newArray;
-						}
+	@Inject(method = "<init>", at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/entity/living/effect/StatusEffect;BY_ID:[Lnet/minecraft/entity/living/effect/StatusEffect;",
+			opcode = Opcodes.GETSTATIC,
+			args = "array=set"
+	))
+	private void lf$growArray(int id, Identifier key, boolean harmful, int potionColor, CallbackInfo ci) {
+		int capacity = id + 1;
 
-						array[id] = effect;
-					}
+		BY_ID = DynamicArrays.grow(BY_ID, capacity);
+	}
 
-					BY_ID = array;
-				},
-				1
-		);
+	@Inject(
+			method = "getTranslationKey",
+			at = @At(
+					value = "HEAD"
+			)
+	)
+	private void osl$blocks$autoAssignTranslationKey(CallbackInfoReturnable<String> cir) {
+		if (this.key == null) {
+			NamespacedIdentifier identifier = StatusEffectRegistryImpl.getIdentifier((StatusEffect) (Object) this);
 
-		RegistryHelper.addRegistry(RegistryIds.STATUS_EFFECTS, STATUS_EFFECT_REGISTRY);
+			if (identifier == null) {
+				this.key = "potion.unknown";
+			} else {
+				this.key = Util.makeTranslationKey("potion", identifier);
+			}
+		}
 	}
 }

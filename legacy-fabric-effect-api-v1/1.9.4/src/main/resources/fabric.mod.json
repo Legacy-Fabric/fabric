@@ -20,7 +20,9 @@
   },
   "description": "Effect and Potion utils",
   "entrypoints": {
-    "preLaunch": [
+    "init": [
+      "net.legacyfabric.fabric.impl.effect.versioned.StatusEffectRegistryImpl::init",
+      "net.legacyfabric.fabric.impl.effect.versioned.PotionRegistryImpl::init"
     ]
   },
   "accessWidener": "legacy-fabric-effect-api.accesswidener",

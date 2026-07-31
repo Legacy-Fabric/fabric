@@ -83,6 +83,7 @@ public class Identifier implements Comparable<Identifier>, NamespacedIdentifier,
 		return this.namespace + SEPARATOR + this.path;
 	}
 
+	@Deprecated
 	public String toTranslationKey() {
 		return this.asTranslationKey();
 	}

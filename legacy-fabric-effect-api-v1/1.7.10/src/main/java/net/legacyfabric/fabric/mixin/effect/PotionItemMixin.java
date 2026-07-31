@@ -17,19 +17,46 @@
 
 package net.legacyfabric.fabric.mixin.effect;
 
+import java.util.List;
+import java.util.Map;
+
+import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.entity.living.effect.StatusEffectInstance;
+import net.minecraft.item.Item;
 import net.minecraft.item.PotionItem;
 
-import net.legacyfabric.fabric.impl.effect.versioned.PotionItemRemapper;
+import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 
 @Mixin(PotionItem.class)
-public class PotionItemMixin {
+public class PotionItemMixin extends Item {
+	@Shadow
+	@Final
+	private static Map<List<StatusEffectInstance>, Integer> ITEM_STACKS;
+
+	@Shadow
+	private Map<Integer, List<StatusEffectInstance>> potionEffectsByMetadataCache;
+
+	@Unique
+	private static int lf$potionItemCount;
+
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void api$trackPotionItems(CallbackInfo ci) {
-		PotionItemRemapper.POTION_ITEMS.add((PotionItem) (Object) this);
+		SyncedRegistries.registerFixer(VanillaRegistryKeys.STATUS_EFFECT,
+				NamespacedIdentifiers.from("potion/" + (lf$potionItemCount++) + "/potion_effect_by_metadata_cache"),
+				() -> potionEffectsByMetadataCache.clear());
+	}
+
+	@Inject(method = "<clinit>", at = @At("RETURN"))
+	private static void api$registerStackFixer(CallbackInfo ci) {
+		SyncedRegistries.registerFixer(VanillaRegistryKeys.STATUS_EFFECT, NamespacedIdentifiers.from("potion/item_stacks"), () -> ITEM_STACKS.clear());
 	}
 }

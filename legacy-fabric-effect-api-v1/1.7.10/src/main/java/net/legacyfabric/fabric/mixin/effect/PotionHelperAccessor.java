@@ -25,31 +25,14 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import net.minecraft.entity.living.effect.PotionHelper;
 
 @Mixin(PotionHelper.class)
-public interface StatusEffectStringsAccessor {
+public interface PotionHelperAccessor {
 	@Accessor("DURATION_RECIPES")
-	static HashMap<Integer, String> getLevelsMap() {
-		return null;
-	}
-
-	@Accessor("DURATION_RECIPES")
-	static void setLevelsMap(HashMap<Integer, String> value) {
-	}
-
-	@Accessor("AMPLIFIER_RECIPES")
-	static HashMap<Integer, String> getAmplifyingFactorsMap() {
+	static HashMap<Integer, String> getDurationRecipesMap() {
 		return null;
 	}
 
 	@Accessor("AMPLIFIER_RECIPES")
-	static void setAmplifyingFactorsMap(HashMap<Integer, String> value) {
-	}
-
-	@Accessor("COLOR_CACHE")
-	static HashMap<Integer, Integer> getEffectColorsMap() {
+	static HashMap<Integer, String> getAmplifierRecipesMap() {
 		return null;
-	}
-
-	@Accessor("COLOR_CACHE")
-	static void setEffectColorsMap(HashMap<Integer, Integer> value) {
 	}
 }

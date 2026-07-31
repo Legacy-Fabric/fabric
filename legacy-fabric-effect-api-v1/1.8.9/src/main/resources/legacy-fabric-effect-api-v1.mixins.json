@@ -6,11 +6,10 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "PotionItemAccessor",
+    "PotionHelperMixin",
     "PotionItemMixin",
-    "StatusEffectAccessor",
     "StatusEffectMixin",
-    "StatusEffectStringsAccessor"
+    "PotionHelperAccessor"
   ],
   "client": [
   ]

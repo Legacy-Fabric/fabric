@@ -83,7 +83,7 @@ public interface PotionHelper {
 	 * @param resultingPotion Resulting potion
 	 */
 	static void registerPotionRecipe(Potion basePotion, Item ingredient, int meta, Potion resultingPotion) {
-		PotionHelperImpl.registerPotionRecipe(basePotion, ingredient, resultingPotion);
+		PotionHelperImpl.registerPotionRecipe(basePotion, ingredient, meta, resultingPotion);
 	}
 
 	/**

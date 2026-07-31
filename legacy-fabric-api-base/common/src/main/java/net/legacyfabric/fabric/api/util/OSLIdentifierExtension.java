@@ -17,7 +17,14 @@
 
 package net.legacyfabric.fabric.api.util;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+
+@Deprecated
 public interface OSLIdentifierExtension {
+	/**
+	 * @deprecated Use {@link net.ornithemc.osl.core.impl.util.Util#makeTranslationKey(NamespacedIdentifier)}
+	 */
+	@Deprecated
 	default String asTranslationKey() {
 		return "";
 	}

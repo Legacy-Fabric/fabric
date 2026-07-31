@@ -6,6 +6,8 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "PotionHelperAccessor",
+    "PotionHelperMixin",
     "PotionItemAccessor",
     "PotionItemMixin",
     "StatusEffectAccessor",

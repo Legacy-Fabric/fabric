@@ -17,13 +17,22 @@
 
 package net.legacyfabric.fabric.mixin.effect;
 
+import java.util.Map;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.entity.living.effect.StatusEffect;
+import net.minecraft.entity.living.effect.PotionHelper;
 
-@Mixin(StatusEffect.class)
-public interface StatusEffectAccessor {
-	@Accessor
-	void setId(int id);
+@Mixin(PotionHelper.class)
+public interface PotionHelperAccessor {
+	@Accessor("DURATION_RECIPES")
+	static Map<Integer, String> getDurationRecipesMap() {
+		return null;
+	}
+
+	@Accessor("AMPLIFIER_RECIPES")
+	static Map<Integer, String> getAmplifierRecipesMap() {
+		return null;
+	}
 }

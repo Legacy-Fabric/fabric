@@ -19,6 +19,7 @@ package net.legacyfabric.fabric.test.registry;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.ornithemc.osl.core.impl.util.Util;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -62,14 +63,14 @@ import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 import net.legacyfabric.fabric.api.util.OSLIdentifierExtension;
 
 public class RegistryTest implements ModInitializer {
-//	public static StatusEffect EFFECT;
+	public static StatusEffect EFFECT;
 
 	@Override
 	public void onInitialize() {
 		this.registerItems();
 		this.registerBlocks();
 		this.registerBlockEntities();
-//		this.registerEffectsAndPotions();
+		this.registerEffectsAndPotions();
 //		this.registerEntities();
 //		this.registerEnchantments();
 //		this.registerBiomes();
@@ -112,17 +113,17 @@ public class RegistryTest implements ModInitializer {
 		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
 	}
 
-//	private void registerEffectsAndPotions() {
-//		Identifier effectIdentifier = new Identifier("legacy-fabric-api", "test_effect");
-//		EFFECT = new TestStatusEffect(false, 1234567).setIcon(3, 1).setDurationMultiplier(0.25).setUsable();
-//		RegistryHelper.register(StatusEffect.REGISTRY, effectIdentifier, EFFECT);
-//
-//		Identifier potionIdentifier = new Identifier("legacy-fabric-api", "test_potion");
-//		Potion potion = new Potion(((OSLIdentifierExtension) potionIdentifier).asTranslationKey(), new StatusEffectInstance(EFFECT, 3600, 5));
-//		RegistryHelper.register(Potion.REGISTRY, potionIdentifier, potion);
-//		PotionHelper.registerPotionRecipe(Potions.LEAPING, Items.SPECKLED_MELON, potion);
-//	}
-//
+	private void registerEffectsAndPotions() {
+		Identifier effectIdentifier = new Identifier("legacy-fabric-api", "test_effect");
+		EFFECT = new TestStatusEffect(false, 1234567).setIcon(3, 1).setDurationMultiplier(0.25).setUsable();
+		RegistryHelper.register(StatusEffect.REGISTRY, effectIdentifier, EFFECT);
+
+		Identifier potionIdentifier = new Identifier("legacy-fabric-api", "test_potion");
+		Potion potion = new Potion(Util.makeTranslationKey(potionIdentifier), new StatusEffectInstance(EFFECT, 3600, 5));
+		RegistryHelper.register(Potion.REGISTRY, potionIdentifier, potion);
+		PotionHelper.registerPotionRecipe(Potions.LEAPING, Items.SPECKLED_MELON, potion);
+	}
+
 //	private void registerEntities() {
 //		Identifier creeperId = new Identifier("legacy-fabric-api", "test_entity");
 //		RegistryHelper.register(Entities.REGISTRY, creeperId, TestCreeperEntity.class);
@@ -167,32 +168,32 @@ public class RegistryTest implements ModInitializer {
 	public static class TestBlockEntity extends BlockEntity {
 	}
 
-//	public static class TestStatusEffect extends StatusEffect {
-//		public TestStatusEffect(boolean bl, int i) {
-//			super(bl, i);
-//		}
-//
-//		@Override
-//		public void apply(LivingEntity livingEntity, int i) {
-//			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
-//				livingEntity.heal(1.0F);
-//			}
-//		}
-//
-//		@Override
-//		public boolean shouldApply(int duration, int amplifier) {
-//			int i;
-//
-//			i = 50 >> amplifier;
-//
-//			if (i > 0) {
-//				return duration % i == 0;
-//			} else {
-//				return true;
-//			}
-//		}
-//	}
-//
+	public static class TestStatusEffect extends StatusEffect {
+		public TestStatusEffect(boolean bl, int i) {
+			super(bl, i);
+		}
+
+		@Override
+		public void apply(LivingEntity livingEntity, int i) {
+			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
+				livingEntity.heal(1.0F);
+			}
+		}
+
+		@Override
+		public boolean shouldApply(int duration, int amplifier) {
+			int i;
+
+			i = 50 >> amplifier;
+
+			if (i > 0) {
+				return duration % i == 0;
+			} else {
+				return true;
+			}
+		}
+	}
+
 //	public static class TestCreeperEntity extends CreeperEntity {
 //		public TestCreeperEntity(World world) {
 //			super(world);

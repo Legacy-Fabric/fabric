@@ -50,14 +50,14 @@ import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 
 public class RegistryTest implements ModInitializer {
-//	public static StatusEffect EFFECT;
+	public static StatusEffect EFFECT;
 
 	@Override
 	public void onInitialize() {
 		this.registerItems();
 		this.registerBlocks();
 		this.registerBlockEntities();
-//		this.registerEffectsAndPotions();
+		this.registerEffectsAndPotions();
 //		this.registerEntities();
 //		this.registerEnchantments();
 //		this.registerBiomes();
@@ -94,18 +94,18 @@ public class RegistryTest implements ModInitializer {
 		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
 	}
 
-//	private void registerEffectsAndPotions() {
-//		NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_effect");
-//
-//		EFFECT = RegistryHelper.register(RegistryIds.STATUS_EFFECTS, identifier,
-//				id -> new TestStatusEffect(id, false, 1234567)
-//						.setIcon(3, 1)
-//						.setDurationMultiplier(0.25)
-//		);
-//		PotionHelper.registerLevels(EFFECT, "!0 & !1 & !2 & !3 & 1+6");
-//		PotionHelper.registerAmplifyingFactor(EFFECT, "5");
-//	}
-//
+	private void registerEffectsAndPotions() {
+		NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_effect");
+
+		EFFECT = RegistryHelper.register(RegistryIds.STATUS_EFFECTS, identifier,
+				id -> new TestStatusEffect(id, false, 1234567)
+						.setIcon(3, 1)
+						.setDurationMultiplier(0.25)
+		);
+		PotionHelper.registerDurationRecipe(EFFECT, "!0 & !1 & !2 & !3 & 1+6");
+		PotionHelper.registerAmplifierRecipe(EFFECT, "5");
+	}
+
 //	private void registerEntities() {
 //		NamespacedIdentifier creeperId = NamespacedIdentifiers.from("legacy-fabric-api", "test_entity");
 //		RegistryHelper.register(RegistryIds.ENTITY_TYPES, creeperId, TestCreeperEntity.class);
@@ -152,32 +152,32 @@ public class RegistryTest implements ModInitializer {
 	public static class TestBlockEntity extends BlockEntity {
 	}
 
-//	public static class TestStatusEffect extends StatusEffect {
-//		public TestStatusEffect(int i, boolean bl, int j) {
-//			super(i, bl, j);
-//		}
-//
-//		@Override
-//		public void apply(LivingEntity livingEntity, int i) {
-//			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
-//				livingEntity.heal(1.0F);
-//			}
-//		}
-//
-//		@Override
-//		public boolean shouldApply(int duration, int amplifier) {
-//			int i;
-//
-//			i = 50 >> amplifier;
-//
-//			if (i > 0) {
-//				return duration % i == 0;
-//			} else {
-//				return true;
-//			}
-//		}
-//	}
-//
+	public static class TestStatusEffect extends StatusEffect {
+		public TestStatusEffect(int i, boolean bl, int j) {
+			super(i, bl, j);
+		}
+
+		@Override
+		public void apply(LivingEntity livingEntity, int i) {
+			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
+				livingEntity.heal(1.0F);
+			}
+		}
+
+		@Override
+		public boolean shouldApply(int duration, int amplifier) {
+			int i;
+
+			i = 50 >> amplifier;
+
+			if (i > 0) {
+				return duration % i == 0;
+			} else {
+				return true;
+			}
+		}
+	}
+
 //	public static class TestCreeperEntity extends CreeperEntity {
 //		public TestCreeperEntity(World world) {
 //			super(world);
