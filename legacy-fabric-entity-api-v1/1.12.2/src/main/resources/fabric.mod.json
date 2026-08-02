@@ -20,8 +20,8 @@
   },
   "description": "Entity utils",
   "entrypoints": {
-    "preLaunch": [
-      "net.legacyfabric.fabric.impl.entity.versionned.EarlyInitializer"
+    "init": [
+      "net.legacyfabric.fabric.impl.entity.versionned.EntityRegistryImpl::init"
     ]
   },
   "mixins": [

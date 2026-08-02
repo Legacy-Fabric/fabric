@@ -6,7 +6,8 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "EntityTypeMixin"
+    "EntitiesAccessor",
+    "EntitiesMixin"
   ],
   "client": [
   ]

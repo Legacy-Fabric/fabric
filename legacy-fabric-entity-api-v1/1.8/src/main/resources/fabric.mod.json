@@ -20,13 +20,14 @@
   },
   "description": "Entity utils",
   "entrypoints": {
-    "preLaunch": [
-      "net.legacyfabric.fabric.impl.entity.versionned.EarlyInitializer"
+    "init": [
+      "net.legacyfabric.fabric.impl.entity.versionned.EntityRegistryImpl::init"
     ]
   },
   "mixins": [
     "legacy-fabric-entity-api-v1.mixins.json"
   ],
+  "accessWidener": "legacy-fabric-entity-api.accesswidener",
   "custom": {
     "loom:injected_interfaces": {
     },

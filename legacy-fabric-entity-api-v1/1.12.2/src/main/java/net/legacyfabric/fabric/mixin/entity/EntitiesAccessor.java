@@ -17,13 +17,21 @@
 
 package net.legacyfabric.fabric.mixin.entity;
 
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.entity.Entities;
 
-@Mixin(Entities.SpawnEggData.class)
-public interface SpawnEggDataAccessor {
-	@Accessor
-	void setId(int id);
+@Mixin(Entities.class)
+public interface EntitiesAccessor {
+	@Accessor("NAMES")
+	static List<String> getEntityNameList() {
+		return null;
+	}
+
+	@Accessor("NAMES")
+	static void setEntityNameList(List<String> names) {
+	}
 }

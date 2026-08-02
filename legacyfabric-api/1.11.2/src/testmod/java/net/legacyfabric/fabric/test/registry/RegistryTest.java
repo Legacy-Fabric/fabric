@@ -28,6 +28,10 @@ import net.legacyfabric.fabric.api.effect.PotionRegistry;
 import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
 import net.legacyfabric.fabric.api.effect.StatusEffectRegistry;
 
+import net.legacyfabric.fabric.api.entity.EntityEvents;
+
+import net.legacyfabric.fabric.api.entity.EntityRegistry;
+
 import net.ornithemc.osl.blocks.api.BlockEvents;
 import net.ornithemc.osl.blocks.api.BlockRegistry;
 import net.ornithemc.osl.core.impl.util.Util;
@@ -83,7 +87,7 @@ public class RegistryTest implements ModInitializer {
 		this.registerBlocks();
 		this.registerBlockEntities();
 		this.registerEffectsAndPotions();
-//		this.registerEntities();
+		EntityEvents.REGISTER_ENTITIES.register(this::registerEntities);
 //		this.registerEnchantments();
 //		this.registerBiomes();
 	}
@@ -156,12 +160,12 @@ public class RegistryTest implements ModInitializer {
 		});
 	}
 
-//	private void registerEntities() {
-//		Identifier creeperId = new Identifier("legacy-fabric-api", "test_entity");
-//		RegistryHelper.register(Entities.REGISTRY, creeperId, TestCreeperEntity.class);
-//		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
-//	}
-//
+	private void registerEntities() {
+		Identifier creeperId = new Identifier("legacy-fabric-api", "test_entity");
+		EntityRegistry.register(creeperId, TestCreeperEntity.class);
+		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
+	}
+
 //	private void registerEnchantments() {
 //		Identifier enchantmentId = new Identifier("legacy-fabric-api", "test_enchantment");
 //		RegistryHelper.register(Enchantment.REGISTRY, enchantmentId, new TestEnchantment());
@@ -226,23 +230,23 @@ public class RegistryTest implements ModInitializer {
 		}
 	}
 
-//	public static class TestCreeperEntity extends CreeperEntity {
-//		public TestCreeperEntity(World world) {
-//			super(world);
-//		}
-//
-//		@Override
-//		public void tick() {
-//			if (this.isAlive()) {
-//				if (this.hasStatusEffect(EFFECT)) {
-//					this.setIgnited();
-//				}
-//			}
-//
-//			super.tick();
-//		}
-//	}
-//
+	public static class TestCreeperEntity extends CreeperEntity {
+		public TestCreeperEntity(World world) {
+			super(world);
+		}
+
+		@Override
+		public void tick() {
+			if (this.isAlive()) {
+				if (this.hasStatusEffect(EFFECT)) {
+					this.setIgnited();
+				}
+			}
+
+			super.tick();
+		}
+	}
+
 //	public static class TestEnchantment extends Enchantment {
 //		protected TestEnchantment() {
 //			super(Rarity.COMMON, EnchantmentCategory.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});

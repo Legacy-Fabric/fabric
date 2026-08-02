@@ -17,7 +17,9 @@
 
 package net.legacyfabric.fabric.mixin.entity;
 
-import java.util.List;
+import java.util.Map;
+
+import net.minecraft.entity.Entity;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -25,13 +27,29 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import net.minecraft.entity.Entities;
 
 @Mixin(Entities.class)
-public interface EntityTypeAccessor {
-	@Accessor("NAMES")
-	static List<String> getEntityNameList() {
+public interface EntitiesAccessor {
+	@Accessor("KEY_TO_TYPE")
+	static Map<String, Class<? extends Entity>> getKey2Type() {
 		return null;
 	}
 
-	@Accessor("NAMES")
-	static void setEntityNameList(List<String> names) {
+	@Accessor("TYPE_TO_KEY")
+	static Map<Class<? extends Entity>, String> getType2Key() {
+		return null;
+	}
+
+	@Accessor("ID_TO_TYPE")
+	static Map<Integer, Class<? extends Entity>> getId2Type() {
+		return null;
+	}
+
+	@Accessor("TYPE_TO_ID")
+	static Map<Class<? extends Entity>, Integer> getType2Id() {
+		return null;
+	}
+
+	@Accessor("KEY_TO_ID")
+	static Map<String, Integer> getKey2Id() {
+		return null;
 	}
 }

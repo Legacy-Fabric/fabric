@@ -22,13 +22,9 @@ import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.minecraft.entity.Entities;
 import net.minecraft.entity.Entities__SpawnEggData;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-
 public class EntityHelperImpl {
 	public static void registerSpawnEgg(NamespacedIdentifier identifier, int color0, int color1) {
-		int mcId = RegistryHelper.getRawId(RegistryIds.ENTITY_TYPES,
-				RegistryHelper.getValue(RegistryIds.ENTITY_TYPES, identifier));
+		int mcId = EntityRegistryImpl.getId(EntityRegistryImpl.getEntityType(identifier));
 		Entities.SPAWN_EGG_DATA.put(mcId, new Entities__SpawnEggData(mcId, color0, color1));
 	}
 }

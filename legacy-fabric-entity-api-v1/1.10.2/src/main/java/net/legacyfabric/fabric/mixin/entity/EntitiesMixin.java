@@ -19,12 +19,18 @@ package net.legacyfabric.fabric.mixin.entity;
 
 import java.util.Map;
 
+import net.legacyfabric.fabric.api.entity.EntityRegistry;
+
+import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
+import net.legacyfabric.fabric.impl.entity.versionned.EntityRegistryImpl;
+
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
+import net.ornithemc.osl.registries.api.registry.sync.IntegerMapMapper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -33,19 +39,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.entity.Entities;
 import net.minecraft.entity.Entity;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.entity.MapEntityRegistryWrapper;
-
 @Mixin(Entities.class)
-public class EntityTypeMixin {
-	@Shadow
-	@Final
-	private static Map<String, Class<? extends Entity>> KEY_TO_TYPE;
+public class EntitiesMixin {
 	@Shadow
 	@Final
 	private static Map<Class<? extends Entity>, String> TYPE_TO_KEY;
@@ -59,48 +54,40 @@ public class EntityTypeMixin {
 	@Final
 	private static Map<String, Integer> KEY_TO_ID;
 
-	@Unique
-	private static FabricRegistry<Class<? extends Entity>> ENTITY_TYPE_REGISTRY;
+	@Inject(method = "init", at = @At("HEAD"))
+	private static void lf$unlockRegistry(CallbackInfo ci) {
+		EntityRegistryImpl.unlock();
+	}
 
 	@Inject(method = "init", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
-		ENTITY_TYPE_REGISTRY = new MapEntityRegistryWrapper<>(
-				KEY_TO_TYPE,
-				TYPE_TO_KEY,
-				ID_TO_TYPE,
-				TYPE_TO_ID,
-				KEY_TO_ID
-		);
+		EntityRegistryImpl.registerEffects();
 
-		RegistryHelper.addRegistry(RegistryIds.ENTITY_TYPES, ENTITY_TYPE_REGISTRY);
+		SyncedRegistries.registerMapper(VanillaRegistryKeys.ENTITY_TYPE, NamespacedIdentifiers.parse("entity_type/id_to_type"), IntegerMapMapper.of(ID_TO_TYPE));
+		SyncedRegistries.registerFixer(VanillaRegistryKeys.ENTITY_TYPE, NamespacedIdentifiers.parse("entity_type/type_to_id"), () -> {
+			TYPE_TO_ID.clear();
+
+			for (Map.Entry<Integer, Class<? extends Entity>> entry : ID_TO_TYPE.entrySet()) {
+				TYPE_TO_ID.put(entry.getValue(), entry.getKey());
+			}
+		});
+		SyncedRegistries.registerFixer(VanillaRegistryKeys.ENTITY_TYPE, NamespacedIdentifiers.parse("entity_type/key_to_id"), () -> {
+			KEY_TO_ID.clear();
+
+			for (Map.Entry<Integer, Class<? extends Entity>> entry : ID_TO_TYPE.entrySet()) {
+				KEY_TO_ID.put(TYPE_TO_KEY.get(entry.getValue()), entry.getKey());
+			}
+		});
 	}
 
-	@ModifyArg(method = {"createSilently", "create(Lnet/minecraft/nbt/NbtCompound;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;"},
+	@ModifyArg(method = {"createSilently", "create(Lnet/minecraft/nbt/NbtCompound;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;", "getId(Ljava/lang/String;)I"},
 			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
 	private static Object fixOldRegistryNames(Object o) {
 		String key = (String) o;
 
 		if (key.contains(":")) {
 			NamespacedIdentifier identifier = NamespacedIdentifiers.parse(key);
-			Class<? extends Entity> clazz = RegistryHelper.getValue(RegistryIds.ENTITY_TYPES, identifier);
-
-			if (clazz != null) {
-				key = TYPE_TO_KEY.get(clazz);
-			}
-		}
-
-		return key;
-	}
-
-	@Environment(EnvType.CLIENT)
-	@ModifyArg(method = {"getId(Ljava/lang/String;)I"},
-			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false), require = 0)
-	private static Object client$fixOldRegistryNames(Object o) {
-		String key = (String) o;
-
-		if (key.contains(":")) {
-			NamespacedIdentifier identifier = NamespacedIdentifiers.parse(key);
-			Class<? extends Entity> clazz = RegistryHelper.getValue(RegistryIds.ENTITY_TYPES, identifier);
+			Class<? extends Entity> clazz = EntityRegistry.getEntityType(identifier);
 
 			if (clazz != null) {
 				key = TYPE_TO_KEY.get(clazz);

@@ -36,32 +36,32 @@ public abstract class LivingEntityMixin {
 	@Shadow
 	public abstract MobType getMobType();
 
-//	@Redirect(method = {"takeFallDamage", "jump"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/living/LivingEntity;getEffectInstance(Lnet/minecraft/entity/living/effect/StatusEffect;)Lnet/minecraft/entity/living/effect/StatusEffectInstance;"))
-//	private StatusEffectInstance ourEffectJumpsHighAsWell(LivingEntity instance, StatusEffect effect) {
-//		StatusEffectInstance instance1 = instance.getEffectInstance(effect);
-//
-//		if (instance1 == null) {
-//			instance1 = instance.getEffectInstance(RegistryTest.EFFECT);
-//		}
-//
-//		return instance1;
-//	}
-//
-//	@Redirect(method = {"jump"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/living/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/living/effect/StatusEffect;)Z"))
-//	private boolean hasOurEffectJumpsHighAsWell(LivingEntity instance, StatusEffect effect) {
-//		boolean instance1 = instance.hasStatusEffect(effect);
-//
-//		if (!instance1) {
-//			instance1 = instance.hasStatusEffect(RegistryTest.EFFECT);
-//		}
-//
-//		return instance1;
-//	}
-//
-//	@Inject(method = "canHaveStatusEffect", at = @At("RETURN"), cancellable = true)
-//	private void efffffffect(StatusEffectInstance instance, CallbackInfoReturnable<Boolean> cir) {
-//		if (cir.getReturnValue()) {
-//			if (this.getMobType() == MobType.UNDEAD && instance.getEffect() == RegistryTest.EFFECT) cir.setReturnValue(false);
-//		}
-//	}
+	@Redirect(method = {"takeFallDamage", "jump"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/living/LivingEntity;getEffectInstance(Lnet/minecraft/entity/living/effect/StatusEffect;)Lnet/minecraft/entity/living/effect/StatusEffectInstance;"))
+	private StatusEffectInstance ourEffectJumpsHighAsWell(LivingEntity instance, StatusEffect effect) {
+		StatusEffectInstance instance1 = instance.getEffectInstance(effect);
+
+		if (instance1 == null) {
+			instance1 = instance.getEffectInstance(RegistryTest.EFFECT);
+		}
+
+		return instance1;
+	}
+
+	@Redirect(method = {"jump"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/living/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/living/effect/StatusEffect;)Z"))
+	private boolean hasOurEffectJumpsHighAsWell(LivingEntity instance, StatusEffect effect) {
+		boolean instance1 = instance.hasStatusEffect(effect);
+
+		if (!instance1) {
+			instance1 = instance.hasStatusEffect(RegistryTest.EFFECT);
+		}
+
+		return instance1;
+	}
+
+	@Inject(method = "canHaveStatusEffect", at = @At("RETURN"), cancellable = true)
+	private void efffffffect(StatusEffectInstance instance, CallbackInfoReturnable<Boolean> cir) {
+		if (cir.getReturnValue()) {
+			if (this.getMobType() == MobType.UNDEAD && instance.getEffect() == RegistryTest.EFFECT) cir.setReturnValue(false);
+		}
+	}
 }

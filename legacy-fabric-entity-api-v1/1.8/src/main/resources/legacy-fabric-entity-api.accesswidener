@@ -1,0 +1,3 @@
+classTweaker v1 named
+
+mutable field net/minecraft/entity/Entities__SpawnEggData id I

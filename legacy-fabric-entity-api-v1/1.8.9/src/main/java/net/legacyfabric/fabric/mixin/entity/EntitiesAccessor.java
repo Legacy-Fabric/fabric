@@ -17,13 +17,38 @@
 
 package net.legacyfabric.fabric.mixin.entity;
 
+import java.util.Map;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.entity.Entities__SpawnEggData;
+import net.minecraft.entity.Entities;
+import net.minecraft.entity.Entity;
 
-@Mixin(Entities__SpawnEggData.class)
-public interface SpawnEggDataAccessor {
-	@Accessor("id")
-	void setId(int id);
+@Mixin(Entities.class)
+public interface EntitiesAccessor {
+	@Accessor("KEY_TO_TYPE")
+	static Map<String, Class<? extends Entity>> getKey2Type() {
+		return null;
+	}
+
+	@Accessor("TYPE_TO_KEY")
+	static Map<Class<? extends Entity>, String> getType2Key() {
+		return null;
+	}
+
+	@Accessor("ID_TO_TYPE")
+	static Map<Integer, Class<? extends Entity>> getId2Type() {
+		return null;
+	}
+
+	@Accessor("TYPE_TO_ID")
+	static Map<Class<? extends Entity>, Integer> getType2Id() {
+		return null;
+	}
+
+	@Accessor("KEY_TO_ID")
+	static Map<String, Integer> getKey2Id() {
+		return null;
+	}
 }

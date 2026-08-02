@@ -17,6 +17,12 @@
 
 package net.legacyfabric.fabric.mixin.entity;
 
+import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
+import net.legacyfabric.fabric.impl.entity.versionned.EntityRegistryImpl;
+
+import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
+import net.ornithemc.osl.registries.api.registry.sync.ListMapper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,21 +31,24 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.Entities;
-import net.minecraft.entity.Entity;
-import net.minecraft.resource.Identifier;
-import net.minecraft.util.registry.IdRegistry;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
+import java.util.List;
 
 @Mixin(Entities.class)
-public class EntityTypeMixin {
+public class EntitiesMixin {
 	@Shadow
 	@Final
-	public static IdRegistry<Identifier, Class<? extends Entity>> REGISTRY;
+	private static List<String> NAMES;
+
+	@Inject(method = "init", at = @At("HEAD"))
+	private static void lf$unlockRegistry(CallbackInfo ci) {
+		EntityRegistryImpl.unlock();
+	}
 
 	@Inject(method = "init", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
-		RegistryHelper.addRegistry(RegistryIds.ENTITY_TYPES, REGISTRY);
+		EntityRegistryImpl.registerEffects();
+
+		SyncedRegistries.registerMapper(VanillaRegistryKeys.ENTITY_TYPE, NamespacedIdentifiers.from("entity_type/names"), ListMapper.of(NAMES));
 	}
 }

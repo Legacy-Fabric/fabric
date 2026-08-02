@@ -88,7 +88,7 @@ public class EntityTypeIds {
 	public static final Identifier HOPPER_MINECART = id("hopper_minecart");
 	public static final Identifier SPAWNER_MINECART = id("spawner_minecart");
 	@BeforeMC("1.11")
-	public static final Identifier MOB = id("mod");
+	public static final Identifier MOB = id("mob");
 	@BeforeMC("1.11")
 	public static final Identifier MONSTER = id("monster");
 	public static final Identifier CREEPER = id("creeper");

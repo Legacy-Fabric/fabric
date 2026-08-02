@@ -6,8 +6,8 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "EntityTypeMixin",
-    "SpawnEggDataAccessor"
+    "EntitiesAccessor",
+    "EntitiesMixin"
   ],
   "client": [
   ]
