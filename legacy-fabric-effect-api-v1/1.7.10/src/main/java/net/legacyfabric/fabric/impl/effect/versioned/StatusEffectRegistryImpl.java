@@ -2,8 +2,6 @@ package net.legacyfabric.fabric.impl.effect.versioned;
 
 import java.util.Set;
 
-import net.legacyfabric.fabric.api.effect.StatusEffectExtension;
-
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.registries.api.registry.Registry;
@@ -15,9 +13,7 @@ import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.util.registry.IdRegistry;
 
 import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
 public class StatusEffectRegistryImpl {
 	public static final Registry<StatusEffect> REGISTRY = VanillaRegistries.registerSimple(VanillaRegistryKeys.STATUS_EFFECT, new IdRegistry<>());
@@ -97,7 +93,5 @@ public class StatusEffectRegistryImpl {
 	public static void registerEffects() {
 		VanillaStatusEffects.init();
 		StatusEffectEvents.REGISTER_EFFECTS.invoker().run();
-		RegistryHelperImplementation.registerCompatId(RegistryIds.STATUS_EFFECTS, REGISTRY);
-		RegistryHelperImplementation.registerAutoAssign(REGISTRY, StatusEffectExtension.REGISTRY_AUTO_ASSIGN_ID);
 	}
 }

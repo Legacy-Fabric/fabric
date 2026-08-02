@@ -8,5 +8,6 @@
   "mixins": [
   ],
   "client": [
+    "versioned.ItemRegistryImplMixin"
   ]
 }

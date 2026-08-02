@@ -66,8 +66,6 @@ public class StatusEffectMixin implements StatusEffectExtension {
 	@ModifyVariable(method = "<init>", argsOnly = true, ordinal = 0, at = @At("HEAD"))
 	private static int lf$autoIdAssignment(int id) {
 		if (id == REGISTRY_AUTO_ASSIGN_ID) {
-			// the Block[] array must contain all blocks so this should
-			// give us a valid ID for the Block registry to use.
 			id = DynamicArrays.length(BY_ID);
 		}
 

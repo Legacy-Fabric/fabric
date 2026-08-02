@@ -1,11 +1,7 @@
 package net.legacyfabric.fabric.impl.effect.versioned;
 
 import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
-
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
 import net.minecraft.entity.living.effect.StatusEffect;
 
@@ -80,7 +76,5 @@ public class StatusEffectRegistryImpl {
 
 	public static void registerEffects() {
 		StatusEffectEvents.REGISTER_EFFECTS.invoker().run();
-		RegistryHelperImplementation.registerCompatId(RegistryIds.STATUS_EFFECTS, REGISTRY);
-		RegistryHelperImplementation.registerCompatRegistry((FabricRegistry<StatusEffect>) StatusEffect.REGISTRY, REGISTRY);
 	}
 }

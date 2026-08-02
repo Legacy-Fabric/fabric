@@ -17,29 +17,34 @@
 
 package net.legacyfabric.fabric.mixin.effect;
 
-import com.google.common.base.Predicate;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.crafting.recipe.Ingredient;
+import net.minecraft.item.Item;
 import net.minecraft.item.PotionItem;
 import net.minecraft.potion.BrewingRecipes;
 import net.minecraft.potion.Potion;
 
 @Mixin(BrewingRecipes.class)
-public interface StatusEffectStringsAccessor {
+public interface BrewingRecipesAccessor {
 	@Invoker("registerBottleItem")
-	static void registerPotionType(BrewingRecipes.Ingredient potion) {
+	static void registerBottleItem(PotionItem potion) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Invoker("registerBottleRecipe")
-	static void registerPotionTypeRecipe(PotionItem basePotion, BrewingRecipes.Ingredient ingredient, PotionItem resultingPotion) {
+	static void registerBottleRecipe(PotionItem basePotion, Item ingredient, PotionItem resultingPotion) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Invoker("registerPotionRecipe")
-	static void registerPotionRecipe(Potion basePotion, Predicate<ItemStack> ingredient, Potion resultingPotion) {
+	static void registerPotionRecipe(Potion basePotion, Item ingredient, Potion resultingPotion) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Invoker("registerPotionRecipe")
+	static void registerPotionRecipe(Potion basePotion, Ingredient ingredient, Potion resultingPotion) {
 		throw new UnsupportedOperationException();
 	}
 }

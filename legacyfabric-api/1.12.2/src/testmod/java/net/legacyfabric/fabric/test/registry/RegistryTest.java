@@ -17,9 +17,25 @@
 
 package net.legacyfabric.fabric.test.registry;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
 
+import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
+
+import net.legacyfabric.fabric.api.effect.PotionEvents;
+import net.legacyfabric.fabric.api.effect.PotionRegistry;
+import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
+
+import net.legacyfabric.fabric.api.effect.StatusEffectRegistry;
+
+import net.ornithemc.osl.blocks.api.BlockEvents;
+import net.ornithemc.osl.blocks.api.BlockRegistry;
 import net.ornithemc.osl.core.impl.util.Util;
+import net.ornithemc.osl.entrypoints.api.ModInitializer;
+import net.ornithemc.osl.items.api.ItemEvents;
+import net.ornithemc.osl.items.api.ItemRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -28,15 +44,9 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentCategory;
-import net.minecraft.entity.Entities;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.entity.living.effect.StatusEffectInstance;
-import net.minecraft.entity.living.mob.monster.CreeperEntity;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.CreativeModeTab;
@@ -50,24 +60,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.PlainsBiome;
-
-import net.fabricmc.api.ModInitializer;
 
 import net.legacyfabric.fabric.api.effect.PotionHelper;
 import net.legacyfabric.fabric.api.entity.EntityHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
-import net.legacyfabric.fabric.api.util.OSLIdentifierExtension;
 
 public class RegistryTest implements ModInitializer {
 	public static StatusEffect EFFECT;
 
 	@Override
-	public void onInitialize() {
-		this.registerItems();
+	public void init() {
+		ItemEvents.REGISTER_ITEMS.register(this::registerItems);
 		this.registerBlocks();
 		this.registerBlockEntities();
 		this.registerEffectsAndPotions();
@@ -78,50 +83,70 @@ public class RegistryTest implements ModInitializer {
 
 	private void registerItems() {
 		Item testItem = new Item().setCreativeModeTab(CreativeModeTab.FOOD);
-		RegistryHelper.register(
-				Item.REGISTRY,
+		ItemRegistry.register(
 				new Identifier("legacy-fabric-api", "test_item"), testItem
 		);
 		ItemModelRegistry.registerItemModel(testItem, new Identifier("legacy-fabric-api:test_item"));
 	}
 
 	private void registerBlocks() {
-		Block concBlock = new Block(Material.STONE, MapColor.BLACK).setCreativeModeTab(CreativeModeTab.FOOD);
-		Block concBlock2 = new Block(Material.STONE, MapColor.BLUE).setCreativeModeTab(CreativeModeTab.FOOD);
-		Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[]{concBlock, concBlock2} : new Block[]{concBlock2, concBlock};
+		List<Object> blockList = new ArrayList<>();
 
-		for (Block block : blocks) {
-			int color = 1644825;
+		BlockEvents.REGISTER_BLOCKS.register(() -> {
+			Block concBlock = new Block(Material.STONE, MapColor.BLACK).setCreativeModeTab(CreativeModeTab.FOOD);
+			Block concBlock2 = new Block(Material.STONE, MapColor.BLUE).setCreativeModeTab(CreativeModeTab.FOOD);
+			Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[]{concBlock, concBlock2} : new Block[]{concBlock2, concBlock};
 
-			if (block == concBlock2) {
-				color = 3361970;
+			for (Block block : blocks) {
+				int color = 1644825;
+
+				if (block == concBlock2) {
+					color = 3361970;
+				}
+
+				Identifier identifier = new Identifier("legacy-fabric-api", "conc_block_" + color);
+
+				BlockRegistry.register(identifier, block);
+				blockList.add(block);
 			}
+		});
 
-			Identifier identifier = new Identifier("legacy-fabric-api", "conc_block_" + color);
-
-			RegistryHelper.register(Block.REGISTRY, identifier, block);
-			RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(block));
-		}
+		ItemEvents.REGISTER_ITEMS.register(() -> {
+			for (Object o : blockList) {
+				ItemRegistry.register((Block) o);
+			}
+		});
 	}
 
 	private void registerBlockEntities() {
 		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
 
-		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
-		RegistryHelper.register(Block.REGISTRY, identifier, blockWithEntity);
-		RegistryHelper.register(Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
-		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
+		AtomicReference<Block> blockWithEntity = new AtomicReference<>();
+		BlockEvents.REGISTER_BLOCKS.register(() -> {
+			blockWithEntity.set(new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD));
+			BlockRegistry.register(identifier, blockWithEntity.get());
+		});
+
+		ItemEvents.REGISTER_ITEMS.register(() -> ItemRegistry.register(blockWithEntity.get()));
+
+		BlockEntityEvents.REGISTER_BLOCK_ENTITIES.register((func) -> {
+			func.accept(identifier, TestBlockEntity.class);
+		});
 	}
 
 	private void registerEffectsAndPotions() {
-		Identifier effectIdentifier = new Identifier("legacy-fabric-api", "test_effect");
-		EFFECT = new TestStatusEffect(false, 1234567).setIcon(3, 1).setDurationMultiplier(0.25).setUsable();
-		RegistryHelper.register(StatusEffect.REGISTRY, effectIdentifier, EFFECT);
+		StatusEffectEvents.REGISTER_EFFECTS.register(() -> {
+			Identifier effectIdentifier = new Identifier("legacy-fabric-api", "test_effect");
+			EFFECT = new TestStatusEffect(false, 1234567).setIcon(3, 1).setDurationMultiplier(0.25).setUsable();
+			StatusEffectRegistry.register(effectIdentifier, EFFECT);
+		});
 
-		Identifier potionIdentifier = new Identifier("legacy-fabric-api", "test_potion");
-		Potion potion = new Potion(Util.makeTranslationKey(potionIdentifier), new StatusEffectInstance(EFFECT, 3600, 5));
-		RegistryHelper.register(Potion.REGISTRY, potionIdentifier, potion);
-		PotionHelper.registerPotionRecipe(Potions.LEAPING, Items.SPECKLED_MELON, potion);
+		PotionEvents.REGISTER_POTIONS.register(() -> {
+			Identifier potionIdentifier = new Identifier("legacy-fabric-api", "test_potion");
+			Potion potion = new Potion(Util.makeTranslationKey(potionIdentifier), new StatusEffectInstance(EFFECT, 3600, 5));
+			PotionRegistry.register(potionIdentifier, potion);
+			PotionHelper.registerPotionRecipe(Potions.LEAPING, Items.SPECKLED_MELON, potion);
+		});
 	}
 
 //	private void registerEntities() {

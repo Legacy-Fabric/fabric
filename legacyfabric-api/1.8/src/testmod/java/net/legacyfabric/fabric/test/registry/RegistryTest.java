@@ -17,8 +17,22 @@
 
 package net.legacyfabric.fabric.test.registry;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
 
+import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
+import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
+import net.legacyfabric.fabric.api.effect.StatusEffectRegistry;
+
+import net.minecraft.block.material.MapColor;
+
+import net.ornithemc.osl.blocks.api.BlockEvents;
+import net.ornithemc.osl.blocks.api.BlockRegistry;
+import net.ornithemc.osl.entrypoints.api.ModInitializer;
+import net.ornithemc.osl.items.api.ItemEvents;
+import net.ornithemc.osl.items.api.ItemRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
@@ -46,8 +60,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MutatedBiome;
 import net.minecraft.world.biome.PlainsBiome;
 
-import net.fabricmc.api.ModInitializer;
-
 import net.legacyfabric.fabric.api.effect.PotionHelper;
 import net.legacyfabric.fabric.api.entity.EntityHelper;
 import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
@@ -59,8 +71,8 @@ public class RegistryTest implements ModInitializer {
 	public static StatusEffect EFFECT;
 
 	@Override
-	public void onInitialize() {
-		this.registerItems();
+	public void init() {
+		ItemEvents.REGISTER_ITEMS.register(this::registerItems);
 		this.registerBlocks();
 		this.registerBlockEntities();
 		this.registerEffectsAndPotions();
@@ -71,44 +83,65 @@ public class RegistryTest implements ModInitializer {
 
 	private void registerItems() {
 		Item testItem = new Item().setCreativeModeTab(CreativeModeTab.FOOD);
-		RegistryHelper.register(
-				(FabricRegistry<? super Item>) Item.REGISTRY,
-				new Identifier("legacy-fabric-api:test_item"), testItem
+		ItemRegistry.register(
+				new Identifier("legacy-fabric-api", "test_item"), testItem
 		);
 		ItemModelRegistry.registerItemModel(testItem, new Identifier("legacy-fabric-api:test_item"));
 	}
 
 	private void registerBlocks() {
-		Block concBlock = new Block(Material.STONE).setCreativeModeTab(CreativeModeTab.FOOD);
-		Block concBlock2 = new Block(Material.GLASS).setCreativeModeTab(CreativeModeTab.FOOD);
-		Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[]{concBlock, concBlock2} : new Block[]{concBlock2, concBlock};
+		List<Object> blockList = new ArrayList<>();
 
-		for (Block block : blocks) {
-			Identifier identifier = new Identifier("legacy-fabric-api:conc_block_" + block.getMaterial().getColor().color);
-			RegistryHelper.register((FabricRegistry<? super Block>) Block.REGISTRY, identifier, block);
-			RegistryHelper.register((FabricRegistry<? super Item>) Item.REGISTRY, identifier, new BlockItem(block));
-		}
+		BlockEvents.REGISTER_BLOCKS.register(() -> {
+			Block concBlock = new Block(Material.STONE).setCreativeModeTab(CreativeModeTab.FOOD);
+			Block concBlock2 = new Block(Material.STONE).setCreativeModeTab(CreativeModeTab.FOOD);
+			Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[]{concBlock, concBlock2} : new Block[]{concBlock2, concBlock};
+
+			for (Block block : blocks) {
+				int color = 1644825;
+
+				if (block == concBlock2) {
+					color = 3361970;
+				}
+
+				Identifier identifier = new Identifier("legacy-fabric-api", "conc_block_" + color);
+
+				BlockRegistry.register(identifier, block);
+				blockList.add(block);
+			}
+		});
+
+		ItemEvents.REGISTER_ITEMS.register(() -> {
+			for (Object o : blockList) {
+				ItemRegistry.register((Block) o);
+			}
+		});
 	}
 
 	private void registerBlockEntities() {
-		Identifier identifier = new Identifier("legacy-fabric-api:test_block_entity");
+		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
 
-		Block blockWithEntity = new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD);
-		RegistryHelper.register((FabricRegistry<? super Block>) Block.REGISTRY, identifier, blockWithEntity);
-		RegistryHelper.register((FabricRegistry<? super Item>) Item.REGISTRY, identifier, new BlockItem(blockWithEntity));
-		RegistryHelper.register(RegistryIds.BLOCK_ENTITY_TYPES, identifier, TestBlockEntity.class);
+		AtomicReference<Block> blockWithEntity = new AtomicReference<>();
+		BlockEvents.REGISTER_BLOCKS.register(() -> {
+			blockWithEntity.set(new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD));
+			BlockRegistry.register(identifier, blockWithEntity.get());
+		});
+
+		ItemEvents.REGISTER_ITEMS.register(() -> ItemRegistry.register(blockWithEntity.get()));
+
+		BlockEntityEvents.REGISTER_BLOCK_ENTITIES.register((func) -> {
+			func.accept(identifier, TestBlockEntity.class);
+		});
 	}
 
 	private void registerEffectsAndPotions() {
-		Identifier identifier = new Identifier("legacy-fabric-api:test_effect");
-
-		EFFECT = net.legacyfabric.fabric.api.registry.v2.RegistryHelper.register(RegistryIds.STATUS_EFFECTS, identifier,
-				id -> new TestStatusEffect(id, identifier, false, 1234567)
-						.setIcon(3, 1)
-						.setDurationMultiplier(0.25)
-		);
-		PotionHelper.registerDurationRecipe(EFFECT, "!0 & !1 & !2 & !3 & 1+6");
-		PotionHelper.registerAmplifierRecipe(EFFECT, "5");
+		StatusEffectEvents.REGISTER_EFFECTS.register(() -> {
+			Identifier effectIdentifier = new Identifier("legacy-fabric-api", "test_effect");
+			EFFECT = new TestStatusEffect(effectIdentifier, false, 1234567).setIcon(3, 1).setDurationMultiplier(0.25);
+			StatusEffectRegistry.register(effectIdentifier, EFFECT);
+			PotionHelper.registerDurationRecipe(EFFECT, "!0 & !1 & !2 & !3 & 1+6");
+			PotionHelper.registerAmplifierRecipe(EFFECT, "5");
+		});
 	}
 
 //	private void registerEntities() {
@@ -158,8 +191,8 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	public static class TestStatusEffect extends StatusEffect {
-		public TestStatusEffect(int i, Identifier identifier, boolean bl, int j) {
-			super(i, new net.minecraft.resource.Identifier(identifier.toString()), bl, j);
+		public TestStatusEffect(Identifier identifier, boolean bl, int j) {
+			super(REGISTRY_AUTO_ASSIGN_ID, identifier, bl, j);
 		}
 
 		@Override

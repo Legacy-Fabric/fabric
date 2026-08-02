@@ -9,16 +9,13 @@ import net.minecraft.potion.Potion;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.registries.api.registry.DefaultedRegistry;
 import net.ornithemc.osl.registries.api.registry.Registry;
+import net.ornithemc.osl.registries.api.registry.RegistryKeys;
 import net.ornithemc.osl.registries.api.registry.ResourceKey;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
 import net.ornithemc.osl.registries.impl.registry.VanillaRegistries;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
-
 public class PotionRegistryImpl {
-	public static final ResourceKey<Registry<Potion>> KEY = net.ornithemc.osl.registries.api.registry.RegistryKeys.from("potion");
+	public static final ResourceKey<Registry<Potion>> KEY = RegistryKeys.from("potion");
 	public static final DefaultedRegistry<Potion> REGISTRY = VanillaRegistries.registerDefaulted(KEY, Potion.REGISTRY);
 
 	private static boolean locked = true;
@@ -81,7 +78,5 @@ public class PotionRegistryImpl {
 
 	public static void registerPotions() {
 		PotionEvents.REGISTER_POTIONS.invoker().run();
-		RegistryHelperImplementation.registerCompatId(RegistryIds.POTIONS, REGISTRY);
-		RegistryHelperImplementation.registerCompatRegistry((FabricRegistry<Potion>) Potion.REGISTRY, REGISTRY);
 	}
 }

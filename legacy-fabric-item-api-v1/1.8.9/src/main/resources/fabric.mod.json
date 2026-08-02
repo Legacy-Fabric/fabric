@@ -20,10 +20,10 @@
     "osl-items": ">=0.1.0-"
   },
   "description": "Item utils",
+  "provides": [
+    "legacy-fabric-item-api-v1-common"
+  ],
   "entrypoints": {
-    "init": [
-      "net.legacyfabric.fabric.impl.item.versioned.EarlyInitializer"
-    ]
   },
   "mixins": [
     "legacy-fabric-item-api-v1.mixins.json"

@@ -20,9 +20,6 @@
   },
   "description": "Effect and Potion utils",
   "entrypoints": {
-    "preLaunch": [
-      "net.legacyfabric.fabric.impl.effect.EarlyInitializer"
-    ]
   },
   "accessWidener": "legacy-fabric-effect-api-common.accesswidener",
   "mixins": [

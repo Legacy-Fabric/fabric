@@ -6,7 +6,6 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "MutableRegistryMixin",
     "osl.OSLAlphaWorldStorageMixin",
     "osl.SyncedRegistriesNbtSerializerMixin",
     "osl.WrappedIdRegistryMixin"

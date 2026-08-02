@@ -45,7 +45,8 @@ final class VanillaStatusEffects {
 					if (effect != null) {
 						register(effect);
 					}
-				} catch (Throwable t) {
+				} catch (Throwable ignored) {
+					// ignored
 				}
 			}
 		}

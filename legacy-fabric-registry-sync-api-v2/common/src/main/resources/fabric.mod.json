@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-registry-sync-api-v2-common",
+  "id": "legacy-fabric-registry-sync-api-v2",
   "name": "Legacy Fabric Registry Sync API (V2)",
   "version": "${version}",
   "environment": "*",
@@ -19,15 +19,15 @@
     "fabricloader": "${loader_version}"
   },
   "description": "Registry hooks",
+  "provides": [
+    "legacy-fabric-registry-sync-api-v2-common"
+  ],
   "entrypoints": {
-    "client": [
-      "net.legacyfabric.fabric.impl.registry.ClientRemapInitializer"
-    ]
   },
   "mixins": [
-    "legacy-fabric-registry-sync-api-v2-common.mixins.json"
+    "legacy-fabric-registry-sync-api-v2.mixins.json"
   ],
-  "accessWidener": "legacy-fabric-registry-sync-api-v2-common.classtweaker",
+  "accessWidener": "legacy-fabric-registry-sync-api-v2.classtweaker",
   "custom": {
     "modmenu": {
       "badges": [ "library" ],

@@ -11,10 +11,7 @@ import net.ornithemc.osl.registries.impl.registry.VanillaRegistries;
 import net.minecraft.entity.living.effect.StatusEffect;
 
 import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.registry.RegistryHelperImplementation;
 
 public class StatusEffectRegistryImpl {
 	public static final Registry<StatusEffect> REGISTRY = VanillaRegistries.registerSimple(VanillaRegistryKeys.STATUS_EFFECT, StatusEffect.REGISTRY);
@@ -79,7 +76,5 @@ public class StatusEffectRegistryImpl {
 
 	public static void registerEffects() {
 		StatusEffectEvents.REGISTER_EFFECTS.invoker().run();
-		RegistryHelperImplementation.registerCompatId(RegistryIds.STATUS_EFFECTS, REGISTRY);
-		RegistryHelperImplementation.registerCompatRegistry((FabricRegistry<StatusEffect>) StatusEffect.REGISTRY, REGISTRY);
 	}
 }

@@ -1,6 +1,5 @@
 package net.legacyfabric.fabric.mixin.effect;
 
-
 import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 
 import net.minecraft.entity.living.effect.PotionHelper;

@@ -25,34 +25,34 @@ import net.minecraft.item.PotionItem;
 import net.minecraft.potion.BrewingRecipes;
 import net.minecraft.potion.Potion;
 
-import net.legacyfabric.fabric.mixin.effect.StatusEffectStringsAccessor;
+import net.legacyfabric.fabric.mixin.effect.BrewingRecipesAccessor;
 
 public class PotionHelperImpl {
 	public static void registerPotionType(Item potionItem) {
-		StatusEffectStringsAccessor.registerPotionType(new BrewingRecipes.Ingredient(potionItem));
+		BrewingRecipesAccessor.registerBottleItem(new BrewingRecipes.Ingredient(potionItem));
 	}
 
 	public static void registerPotionType(Item potionItem, int meta) {
-		StatusEffectStringsAccessor.registerPotionType(new BrewingRecipes.Ingredient(potionItem, meta));
+		BrewingRecipesAccessor.registerBottleItem(new BrewingRecipes.Ingredient(potionItem, meta));
 	}
 
 	public static void registerPotionTypeRecipe(PotionItem basePotion, Item ingredient, PotionItem resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionTypeRecipe(basePotion, new BrewingRecipes.Ingredient(ingredient), resultingPotion);
+		BrewingRecipesAccessor.registerBottleRecipe(basePotion, new BrewingRecipes.Ingredient(ingredient), resultingPotion);
 	}
 
 	public static void registerPotionTypeRecipe(PotionItem basePotion, Item ingredient, int meta, PotionItem resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionTypeRecipe(basePotion, new BrewingRecipes.Ingredient(ingredient, meta), resultingPotion);
+		BrewingRecipesAccessor.registerBottleRecipe(basePotion, new BrewingRecipes.Ingredient(ingredient, meta), resultingPotion);
 	}
 
 	public static void registerPotionRecipe(Potion basePotion, Item ingredient, Potion resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionRecipe(basePotion, new BrewingRecipes.Ingredient(ingredient), resultingPotion);
+		BrewingRecipesAccessor.registerPotionRecipe(basePotion, new BrewingRecipes.Ingredient(ingredient), resultingPotion);
 	}
 
 	public static void registerPotionRecipe(Potion basePotion, Item ingredient, int meta, Potion resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionRecipe(basePotion, new BrewingRecipes.Ingredient(ingredient, meta), resultingPotion);
+		BrewingRecipesAccessor.registerPotionRecipe(basePotion, new BrewingRecipes.Ingredient(ingredient, meta), resultingPotion);
 	}
 
 	public static void registerPotionRecipe(Potion basePotion, Predicate<ItemStack> ingredientPredicate, Potion resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionRecipe(basePotion, ingredientPredicate, resultingPotion);
+		BrewingRecipesAccessor.registerPotionRecipe(basePotion, ingredientPredicate, resultingPotion);
 	}
 }
