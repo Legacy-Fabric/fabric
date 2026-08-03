@@ -20,13 +20,14 @@
   },
   "description": "Enchantment utils",
   "entrypoints": {
-    "preLaunch": [
-      "net.legacyfabric.fabric.impl.enchantment.versioned.EarlyInitializer"
+    "init": [
+      "net.legacyfabric.fabric.impl.enchantment.versioned.EnchantmentRegistryImpl::init"
     ]
   },
   "mixins": [
     "legacy-fabric-enchantment-api-v1.mixins.json"
   ],
+  "accessWidener": "legacy-fabric-enchantment-api.accesswidener",
   "custom": {
     "loom:injected_interfaces": {
     },

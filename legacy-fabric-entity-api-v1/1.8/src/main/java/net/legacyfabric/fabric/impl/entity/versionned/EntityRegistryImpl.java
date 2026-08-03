@@ -95,7 +95,7 @@ public class EntityRegistryImpl {
 		locked = false;
 	}
 
-	public static void registerEffects() {
+	public static void registerEntityTypes() {
 		VanillaEntityTypes.init(EntitiesAccessor.getId2Type(), REGISTRY);
 		EntityEvents.REGISTER_ENTITIES.invoker().run();
 	}

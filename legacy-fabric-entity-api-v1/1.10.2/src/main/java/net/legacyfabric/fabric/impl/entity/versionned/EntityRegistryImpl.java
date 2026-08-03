@@ -13,9 +13,7 @@ import net.ornithemc.osl.registries.api.registry.ResourceKey;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
 import net.ornithemc.osl.registries.impl.registry.VanillaRegistries;
 
-import net.minecraft.entity.Entities;
 import net.minecraft.entity.Entity;
-import net.minecraft.resource.Identifier;
 
 import net.legacyfabric.fabric.api.entity.EntityEvents;
 import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
@@ -97,7 +95,7 @@ public class EntityRegistryImpl {
 		locked = false;
 	}
 
-	public static void registerEffects() {
+	public static void registerEntityTypes() {
 		VanillaEntityTypes.init(EntitiesAccessor.getId2Type(), REGISTRY);
 		EntityEvents.REGISTER_ENTITIES.invoker().run();
 	}

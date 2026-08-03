@@ -47,7 +47,7 @@ public class EntitiesMixin {
 
 	@Inject(method = "init", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
-		EntityRegistryImpl.registerEffects();
+		EntityRegistryImpl.registerEntityTypes();
 
 		SyncedRegistries.registerMapper(VanillaRegistryKeys.ENTITY_TYPE, NamespacedIdentifiers.from("entity_type/names"), ListMapper.of(NAMES));
 	}

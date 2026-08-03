@@ -26,6 +26,8 @@ import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
 import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
 import net.legacyfabric.fabric.api.effect.StatusEffectRegistry;
 
+import net.legacyfabric.fabric.api.enchantment.EnchantmentEvents;
+import net.legacyfabric.fabric.api.enchantment.EnchantmentRegistry;
 import net.legacyfabric.fabric.api.entity.EntityEvents;
 
 import net.legacyfabric.fabric.api.entity.EntityRegistry;
@@ -82,7 +84,7 @@ public class RegistryTest implements ModInitializer {
 		this.registerBlockEntities();
 		this.registerEffectsAndPotions();
 		EntityEvents.REGISTER_ENTITIES.register(this::registerEntities);
-//		this.registerEnchantments();
+		EnchantmentEvents.REGISTER_ENCHANTMENTS.register(this::registerEnchantments);
 //		this.registerBiomes();
 	}
 
@@ -155,11 +157,11 @@ public class RegistryTest implements ModInitializer {
 		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
 	}
 
-//	private void registerEnchantments() {
-//		Identifier enchantmentId = new Identifier("legacy-fabric-api:test_enchantment");
-//		RegistryHelper.register(RegistryIds.ENCHANTMENTS, enchantmentId, id -> new TestEnchantment(id, enchantmentId));
-//	}
-//
+	private void registerEnchantments() {
+		Identifier enchantmentId = new Identifier("legacy-fabric-api:test_enchantment");
+		EnchantmentRegistry.register(enchantmentId, new TestEnchantment(enchantmentId));
+	}
+
 //	private void registerBiomes() {
 //		Identifier biomeId = new Identifier("legacy-fabric-api:test_biome");
 //		RegistryHelper.register(RegistryIds.BIOMES, biomeId,
@@ -239,22 +241,22 @@ public class RegistryTest implements ModInitializer {
 		}
 	}
 
-//	public static class TestEnchantment extends Enchantment {
-//		protected TestEnchantment(int id, Identifier identifier) {
-//			super(id, new net.minecraft.resource.Identifier(identifier.toString()), 2, EnchantmentCategory.ARMOR_FEET);
-//		}
-//
-//		@Override
-//		public void applyDamageWildcard(LivingEntity bearer, Entity entity, int power) {
-//			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
-//		}
-//
-//		@Override
-//		public void applyProtectionWildcard(LivingEntity bearer, Entity entity, int power) {
-//			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
-//		}
-//	}
-//
+	public static class TestEnchantment extends Enchantment {
+		protected TestEnchantment(Identifier identifier) {
+			super(REGISTRY_AUTO_ASSIGN_ID, identifier, 2, EnchantmentCategory.ARMOR_FEET);
+		}
+
+		@Override
+		public void applyDamageWildcard(LivingEntity bearer, Entity entity, int power) {
+			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
+		}
+
+		@Override
+		public void applyProtectionWildcard(LivingEntity bearer, Entity entity, int power) {
+			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
+		}
+	}
+
 //	public static class TestBiome extends PlainsBiome {
 //		protected TestBiome(int id) {
 //			super(id);

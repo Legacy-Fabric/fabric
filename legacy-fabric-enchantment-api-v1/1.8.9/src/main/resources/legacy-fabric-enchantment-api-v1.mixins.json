@@ -6,8 +6,6 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "BootstrapMixin",
-    "EnchantmentAccessor",
     "EnchantmentMixin"
   ],
   "client": [

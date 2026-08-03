@@ -96,7 +96,7 @@ public class EntityRegistryImpl {
 		locked = false;
 	}
 
-	public static void registerEffects() {
+	public static void registerEntityTypes() {
 		EntityEvents.REGISTER_ENTITIES.invoker().run();
 	}
 }

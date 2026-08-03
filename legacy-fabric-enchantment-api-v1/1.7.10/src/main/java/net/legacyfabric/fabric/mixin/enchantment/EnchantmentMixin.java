@@ -17,79 +17,61 @@
 
 package net.legacyfabric.fabric.mixin.enchantment;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.google.common.collect.Lists;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.core.impl.util.Util;
+import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
+import net.ornithemc.osl.registries.api.registry.sync.ObjectArrayMapper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.enchantment.Enchantment;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.enchantment.versioned.EarlyInitializer;
-import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayFabricRegistryWrapper;
+import net.legacyfabric.fabric.api.enchantment.EnchantmentExtension;
+import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
+import net.legacyfabric.fabric.impl.enchantment.versioned.EnchantmentRegistryImpl;
 
 @Mixin(Enchantment.class)
-public class EnchantmentMixin {
-	@Mutable
+public class EnchantmentMixin implements EnchantmentExtension {
 	@Shadow
-	@Final
-	public static Enchantment[] ALL;
-	@Mutable
+	protected String key;
+
 	@Shadow
 	@Final
 	public static Enchantment[] BY_ID;
 
-	@Unique
-	private static FabricRegistry<Enchantment> ENCHANTMENT_REGISTRY;
+	@Inject(method = "<clinit>", at = @At("HEAD"))
+	private static void lf$unlockRegistry(CallbackInfo ci) {
+		EnchantmentRegistryImpl.unlock();
+	}
 
-	@Inject(method = "<clinit>", at = @At("RETURN"))
+	@Inject(method = "<clinit>", at = @At(value = "NEW", target = "()Ljava/util/ArrayList;", remap = false))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		ENCHANTMENT_REGISTRY = new SyncedArrayFabricRegistryWrapper<>(
-				RegistryIds.ENCHANTMENTS,
-				BY_ID, EarlyInitializer.getVanillaIds(),
-				universal -> universal,
-				id -> id,
-				ids -> {
-					Enchantment[] array = new Enchantment[ids.fabric$size() + 1];
-					Arrays.fill(array, null);
+		EnchantmentRegistryImpl.registerEnchantments();
 
-					for (Enchantment enchantment : ids) {
-						int id = ids.fabric$getId(enchantment);
+		SyncedRegistries.registerMapper(VanillaRegistryKeys.ENCHANTMENT, NamespacedIdentifiers.from("enchantment/by_id"), ObjectArrayMapper.of(BY_ID));
+	}
 
-						if (id >= array.length - 1) {
-							Enchantment[] newArray = new Enchantment[id + 2];
-							Arrays.fill(newArray, null);
-							System.arraycopy(array, 0, newArray, 0, array.length);
-							array = newArray;
-						}
+	@Inject(
+			method = "getTranslationKey",
+			at = @At(
+					value = "HEAD"
+			)
+	)
+	private void osl$blocks$autoAssignTranslationKey(CallbackInfoReturnable<String> cir) {
+		if (this.key == null) {
+			NamespacedIdentifier identifier = EnchantmentRegistryImpl.getIdentifier((Enchantment) (Object) this);
 
-						array[id] = enchantment;
-					}
-
-					BY_ID = array;
-
-					List<Enchantment> list = Lists.<Enchantment>newArrayList();
-
-					for (Enchantment enchantment : BY_ID) {
-						if (enchantment != null) {
-							list.add(enchantment);
-						}
-					}
-
-					ALL = list.toArray(new Enchantment[list.size()]);
-				}
-		);
-
-		RegistryHelper.addRegistry(RegistryIds.ENCHANTMENTS, ENCHANTMENT_REGISTRY);
+			if (identifier == null) {
+				this.key = "unknown";
+			} else {
+				this.key = Util.makeTranslationKey(identifier);
+			}
+		}
 	}
 }

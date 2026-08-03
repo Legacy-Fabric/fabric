@@ -20,9 +20,6 @@
   },
   "description": "Enchantment utils",
   "entrypoints": {
-    "preLaunch": [
-      "net.legacyfabric.fabric.impl.enchantment.EarlyInitializer"
-    ]
   },
   "mixins": [
   ],
