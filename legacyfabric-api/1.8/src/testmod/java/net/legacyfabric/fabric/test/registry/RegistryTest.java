@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
+import net.legacyfabric.fabric.api.biome.BiomeEvents;
+import net.legacyfabric.fabric.api.biome.BiomeRegistry;
 import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
 import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
 import net.legacyfabric.fabric.api.effect.StatusEffectRegistry;
@@ -84,7 +86,7 @@ public class RegistryTest implements ModInitializer {
 		this.registerEffectsAndPotions();
 		EntityEvents.REGISTER_ENTITIES.register(this::registerEntities);
 		EnchantmentEvents.REGISTER_ENCHANTMENTS.register(this::registerEnchantments);
-//		this.registerBiomes();
+		BiomeEvents.REGISTER_BIOMES.register(this::registerBiomes);
 	}
 
 	private void registerItems() {
@@ -161,13 +163,12 @@ public class RegistryTest implements ModInitializer {
 		EnchantmentRegistry.register(enchantmentId, new TestEnchantment(enchantmentId));
 	}
 
-//	private void registerBiomes() {
-//		Identifier biomeId = new Identifier("legacy-fabric-api:test_biome");
-//		RegistryHelper.register(RegistryIds.BIOMES, biomeId,
-//				id -> new TestBiome(id)
-//						.setColor(4446496)
-//						.setTemperatureAndDownfall(0.3F, 0.7F));
-//	}
+	private void registerBiomes() {
+		Identifier biomeId = new Identifier("legacy-fabric-api:test_biome");
+		BiomeRegistry.register(biomeId, new TestBiome()
+					.setColor(4446496)
+					.setTemperatureAndDownfall(0.3F, 0.7F));
+	}
 
 	public static class TestBlockWithEntity extends BlockWithBlockEntity {
 		protected TestBlockWithEntity(Material material) {
@@ -255,14 +256,14 @@ public class RegistryTest implements ModInitializer {
 		}
 	}
 
-//	public static class TestBiome extends PlainsBiome {
-//		protected TestBiome(int id) {
-//			super(id);
-//		}
-//
-//		@Override
-//		public Biome mutate(int id) {
-//			return new MutatedBiome(id, this);
-//		}
-//	}
+	public static class TestBiome extends PlainsBiome {
+		protected TestBiome() {
+			super(REGISTRY_AUTO_ASSIGN_ID);
+		}
+
+		@Override
+		public Biome mutate(int id) {
+			return new MutatedBiome(id, this);
+		}
+	}
 }

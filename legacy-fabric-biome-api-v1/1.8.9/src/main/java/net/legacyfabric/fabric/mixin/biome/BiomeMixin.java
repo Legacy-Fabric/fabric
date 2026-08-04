@@ -17,62 +17,38 @@
 
 package net.legacyfabric.fabric.mixin.biome;
 
-import java.util.Arrays;
+import net.legacyfabric.fabric.api.biome.BiomeExtension;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
+import net.ornithemc.osl.registries.api.registry.sync.ObjectArrayMapper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.world.biome.Biome;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.biome.EarlyInitializer;
-import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayFabricRegistryWrapper;
+import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
+import net.legacyfabric.fabric.impl.biome.versioned.BiomeRegistryImpl;
 
 @Mixin(Biome.class)
-public class BiomeMixin {
-	@Mutable
+public class BiomeMixin implements BiomeExtension {
 	@Shadow
 	@Final
-	private static Biome[] BY_ID;
-	@Unique
-	private static FabricRegistry<Biome> REGISTRY;
+	public static Biome[] BY_ID;
 
-	@Inject(method = "<clinit>", at = @At("RETURN"))
+	@Inject(method = "<clinit>", at = @At("HEAD"))
+	private static void lf$unlockRegistry(CallbackInfo ci) {
+		BiomeRegistryImpl.unlock();
+	}
+
+	@Inject(method = "<clinit>", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/biome/Biome;setName(Ljava/lang/String;)Lnet/minecraft/world/biome/Biome;", ordinal = 38))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		REGISTRY = new SyncedArrayFabricRegistryWrapper<>(
-				RegistryIds.BIOMES,
-				BY_ID, EarlyInitializer.getVanillaIds(),
-				universal -> universal,
-				id -> id,
-				ids -> {
-					Biome[] array = new Biome[ids.fabric$size() + 1];
-					Arrays.fill(array, null);
+		BiomeRegistryImpl.registerBiomes();
 
-					for (Biome enchantment : ids) {
-						int id = ids.fabric$getId(enchantment);
-
-						if (id >= array.length - 1) {
-							Biome[] newArray = new Biome[id + 2];
-							Arrays.fill(newArray, null);
-							System.arraycopy(array, 0, newArray, 0, array.length);
-							array = newArray;
-						}
-
-						array[id] = enchantment;
-					}
-
-					BY_ID = array;
-				}
-		);
-
-		RegistryHelper.addRegistry(RegistryIds.BIOMES, REGISTRY);
+		SyncedRegistries.registerMapper(VanillaRegistryKeys.BIOME, NamespacedIdentifiers.from("biome/by_id"), ObjectArrayMapper.of(BY_ID));
 	}
 }

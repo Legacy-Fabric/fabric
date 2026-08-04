@@ -20,9 +20,6 @@
   },
   "description": "Biome utils",
   "entrypoints": {
-    "preLaunch": [
-      "net.legacyfabric.fabric.impl.biome.EarlyInitializer"
-    ]
   },
   "mixins": [
   ],

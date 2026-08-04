@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
+import net.legacyfabric.fabric.api.biome.BiomeEvents;
+import net.legacyfabric.fabric.api.biome.BiomeRegistry;
 import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
 import net.legacyfabric.fabric.api.effect.PotionEvents;
 import net.legacyfabric.fabric.api.effect.PotionRegistry;
@@ -91,7 +93,7 @@ public class RegistryTest implements ModInitializer {
 		this.registerEffectsAndPotions();
 		EntityEvents.REGISTER_ENTITIES.register(this::registerEntities);
 		EnchantmentEvents.REGISTER_ENCHANTMENTS.register(this::registerEnchantments);
-//		this.registerBiomes();
+		BiomeEvents.REGISTER_BIOMES.register(this::registerBiomes);
 	}
 
 	private void registerItems() {
@@ -173,11 +175,11 @@ public class RegistryTest implements ModInitializer {
 		EnchantmentRegistry.register(enchantmentId, new TestEnchantment());
 	}
 
-//	private void registerBiomes() {
-//		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
-//		RegistryHelper.register(Biome.REGISTRY, biomeId, new TestBiome(false,
-//				new Biome.Settings("Test Biome").depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
-//	}
+	private void registerBiomes() {
+		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
+		BiomeRegistry.register(biomeId, new TestBiome(false,
+				new Biome.Settings(Util.makeTranslationKey(biomeId)).depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
+	}
 
 	public static class TestBlockWithEntity extends BlockWithBlockEntity {
 		protected TestBlockWithEntity(Material material) {
@@ -265,9 +267,9 @@ public class RegistryTest implements ModInitializer {
 		}
 	}
 
-//	public static class TestBiome extends PlainsBiome {
-//		protected TestBiome(boolean bl, Settings settings) {
-//			super(bl, settings);
-//		}
-//	}
+	public static class TestBiome extends PlainsBiome {
+		protected TestBiome(boolean bl, Settings settings) {
+			super(bl, settings);
+		}
+	}
 }

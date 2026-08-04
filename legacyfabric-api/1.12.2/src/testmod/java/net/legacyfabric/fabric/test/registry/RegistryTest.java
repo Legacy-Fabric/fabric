@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
+import net.legacyfabric.fabric.api.biome.BiomeEvents;
+import net.legacyfabric.fabric.api.biome.BiomeRegistry;
 import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
 
 import net.legacyfabric.fabric.api.effect.PotionEvents;
@@ -41,6 +43,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.living.mob.monster.CreeperEntity;
 
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.PlainsBiome;
+
 import net.ornithemc.osl.blocks.api.BlockEvents;
 import net.ornithemc.osl.blocks.api.BlockRegistry;
 import net.ornithemc.osl.core.impl.util.Util;
@@ -59,7 +64,6 @@ import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.entity.living.effect.StatusEffectInstance;
 import net.minecraft.entity.living.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -74,8 +78,6 @@ import net.minecraft.world.World;
 
 import net.legacyfabric.fabric.api.effect.PotionHelper;
 import net.legacyfabric.fabric.api.entity.EntityHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 
 public class RegistryTest implements ModInitializer {
@@ -89,7 +91,7 @@ public class RegistryTest implements ModInitializer {
 		this.registerEffectsAndPotions();
 		EntityEvents.REGISTER_ENTITIES.register(this::registerEntities);
 		EnchantmentEvents.REGISTER_ENCHANTMENTS.register(this::registerEnchantments);
-//		this.registerBiomes();
+		BiomeEvents.REGISTER_BIOMES.register(this::registerBiomes);
 	}
 
 	private void registerItems() {
@@ -171,11 +173,11 @@ public class RegistryTest implements ModInitializer {
 		EnchantmentRegistry.register(enchantmentId, new TestEnchantment());
 	}
 
-//	private void registerBiomes() {
-//		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
-//		RegistryHelper.register(Biome.REGISTRY, biomeId, new TestBiome(false,
-//				new Biome.Settings("Test Biome").depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
-//	}
+	private void registerBiomes() {
+		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
+		BiomeRegistry.register(biomeId, new TestBiome(false,
+				new Biome.Settings(Util.makeTranslationKey(biomeId)).depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
+	}
 
 	public static class TestBlockWithEntity extends BlockWithBlockEntity {
 		protected TestBlockWithEntity(Material material) {
@@ -263,9 +265,9 @@ public class RegistryTest implements ModInitializer {
 		}
 	}
 
-//	public static class TestBiome extends PlainsBiome {
-//		protected TestBiome(boolean bl, Settings settings) {
-//			super(bl, settings);
-//		}
-//	}
+	public static class TestBiome extends PlainsBiome {
+		protected TestBiome(boolean bl, Settings settings) {
+			super(bl, settings);
+		}
+	}
 }

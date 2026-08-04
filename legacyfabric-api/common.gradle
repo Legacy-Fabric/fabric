@@ -18,5 +18,5 @@ moduleDependencies(project, [
 	"legacy-fabric-effect-api-v1",
 	"legacy-fabric-entity-api-v1",
 	"legacy-fabric-enchantment-api-v1",
-//	"legacy-fabric-biome-api-v1"
+	"legacy-fabric-biome-api-v1"
 ])
