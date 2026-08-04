@@ -34,11 +34,8 @@ import net.legacyfabric.fabric.api.entity.EntityEvents;
 
 import net.legacyfabric.fabric.api.entity.EntityRegistry;
 
-import net.minecraft.item.Items;
-
 import net.ornithemc.osl.blocks.api.BlockEvents;
 import net.ornithemc.osl.blocks.api.BlockRegistry;
-import net.ornithemc.osl.core.impl.util.Util;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 import net.ornithemc.osl.items.api.ItemEvents;
 import net.ornithemc.osl.items.api.ItemRegistry;
@@ -58,7 +55,6 @@ import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.entity.living.effect.StatusEffectInstance;
 import net.minecraft.entity.living.mob.monster.CreeperEntity;
 import net.minecraft.entity.living.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
 import net.minecraft.resource.Identifier;
@@ -72,8 +68,6 @@ import net.minecraft.world.biome.PlainsBiome;
 
 import net.legacyfabric.fabric.api.effect.PotionHelper;
 import net.legacyfabric.fabric.api.entity.EntityHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 
 public class RegistryTest implements ModInitializer {

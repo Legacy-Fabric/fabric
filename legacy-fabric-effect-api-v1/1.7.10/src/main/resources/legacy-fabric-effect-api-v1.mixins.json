@@ -8,11 +8,8 @@
   "mixins": [
     "PotionHelperAccessor",
     "PotionHelperMixin",
-    "PotionItemAccessor",
     "PotionItemMixin",
-    "StatusEffectAccessor",
-    "StatusEffectMixin",
-    "StatusEffectStringsAccessor"
+    "StatusEffectMixin"
   ],
   "client": [
   ]

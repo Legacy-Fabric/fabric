@@ -55,7 +55,6 @@ import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.entity.living.effect.StatusEffectInstance;
 import net.minecraft.entity.living.mob.monster.CreeperEntity;
 import net.minecraft.entity.living.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
 import net.minecraft.text.LiteralText;
@@ -64,8 +63,6 @@ import net.minecraft.world.biome.PlainsBiome;
 
 import net.legacyfabric.fabric.api.effect.PotionHelper;
 import net.legacyfabric.fabric.api.entity.EntityHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
 
 public class RegistryTest implements ModInitializer {
 	public static StatusEffect EFFECT;
@@ -95,7 +92,7 @@ public class RegistryTest implements ModInitializer {
 
 		BlockEvents.REGISTER_BLOCKS.register(() -> {
 			Block concBlock = new Block(Material.STONE).setCreativeModeTab(CreativeModeTab.FOOD);
-			Block concBlock2 = new Block(Material.STONE).setCreativeModeTab(CreativeModeTab.FOOD);
+			Block concBlock2 = new Block(Material.GLASS).setCreativeModeTab(CreativeModeTab.FOOD);
 			Block[] blocks = ThreadLocalRandom.current().nextBoolean() ? new Block[]{concBlock, concBlock2} : new Block[]{concBlock2, concBlock};
 
 			for (Block block : blocks) {

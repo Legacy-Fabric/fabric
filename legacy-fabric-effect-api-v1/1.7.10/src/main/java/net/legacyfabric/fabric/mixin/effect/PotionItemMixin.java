@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.effect;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class PotionItemMixin extends Item {
 	private static Map<List<StatusEffectInstance>, Integer> ITEM_STACKS;
 
 	@Shadow
-	private Map<Integer, List<StatusEffectInstance>> potionEffectsByMetadataCache;
+	private HashMap<Integer, List<StatusEffectInstance>> potionEffectsByMetadataCache;
 
 	@Unique
 	private static int lf$potionItemCount;

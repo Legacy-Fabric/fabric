@@ -16,7 +16,9 @@ import net.legacyfabric.fabric.api.biome.BiomeEvents;
 import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 
 public class BiomeRegistryImpl {
-	public static final Registry<Biome> REGISTRY = Registries.registerSimple(VanillaRegistryKeys.BIOME, () -> {});
+	public static final Registry<Biome> REGISTRY = Registries.registerSimple(VanillaRegistryKeys.BIOME, () -> {
+		Biome.getAll();
+	});
 
 	private static boolean locked = true;
 

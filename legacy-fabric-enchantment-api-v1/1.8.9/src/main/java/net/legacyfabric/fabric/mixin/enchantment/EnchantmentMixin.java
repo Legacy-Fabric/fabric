@@ -20,16 +20,24 @@ package net.legacyfabric.fabric.mixin.enchantment;
 import net.legacyfabric.fabric.api.enchantment.EnchantmentExtension;
 import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 
+import net.minecraft.enchantment.EnchantmentCategory;
+
+import net.minecraft.resource.Identifier;
+
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.core.impl.util.Util;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
+import net.ornithemc.osl.registries.api.registry.sync.DynamicArrays;
 import net.ornithemc.osl.registries.api.registry.sync.ObjectArrayMapper;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -42,9 +50,10 @@ public class EnchantmentMixin implements EnchantmentExtension {
 	@Shadow
 	protected String key;
 
+	@Mutable
 	@Shadow
 	@Final
-	private static Enchantment[] BY_ID;
+	public static Enchantment[] BY_ID;
 
 	@Inject(method = "<clinit>", at = @At("HEAD"))
 	private static void lf$unlockRegistry(CallbackInfo ci) {
@@ -74,5 +83,26 @@ public class EnchantmentMixin implements EnchantmentExtension {
 				this.key = Util.makeTranslationKey(identifier);
 			}
 		}
+	}
+
+	@ModifyVariable(method = "<init>", argsOnly = true, ordinal = 0, at = @At("HEAD"))
+	private static int lf$autoIdAssignment(int id) {
+		if (id == REGISTRY_AUTO_ASSIGN_ID) {
+			id = DynamicArrays.length(BY_ID);
+		}
+
+		return id;
+	}
+
+	@Inject(method = "<init>", at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/enchantment/Enchantment;BY_ID:[Lnet/minecraft/enchantment/Enchantment;",
+			opcode = Opcodes.GETSTATIC,
+			args = "array=set"
+	))
+	private void lf$growArray(int id, Identifier key, int type, EnchantmentCategory category, CallbackInfo ci) {
+		int capacity = id + 1;
+
+		BY_ID = DynamicArrays.grow(BY_ID, capacity);
 	}
 }

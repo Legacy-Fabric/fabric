@@ -7,8 +7,7 @@
   },
   "mixins": [
     "osl.OSLAlphaWorldStorageMixin",
-    "osl.SyncedRegistriesNbtSerializerMixin",
-    "osl.WrappedIdRegistryMixin"
+    "osl.SyncedRegistriesNbtSerializerMixin"
   ],
   "client": [
   ]

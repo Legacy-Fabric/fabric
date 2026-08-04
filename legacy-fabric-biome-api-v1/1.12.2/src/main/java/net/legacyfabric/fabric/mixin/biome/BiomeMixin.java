@@ -57,4 +57,9 @@ public class BiomeMixin {
 
 		SyncedRegistries.registerMapper(VanillaRegistryKeys.BIOME, NamespacedIdentifiers.from("biome/mutated_biomes"), Id2ObjectBiMapMapper.of(MUTATED_BIOMES));
 	}
+
+	@Inject(method = "<clinit>", at = @At("RETURN"))
+	private static void lf$initRegistry(CallbackInfo ci) {
+		BiomeRegistryImpl.init();
+	}
 }

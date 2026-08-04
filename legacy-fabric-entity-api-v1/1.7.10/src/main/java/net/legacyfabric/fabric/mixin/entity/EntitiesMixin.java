@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.entity;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
@@ -50,14 +51,14 @@ public class EntitiesMixin {
 	private static Map<String, Integer> KEY_TO_ID;
 
 	@Shadow
-	public static Map<Integer, Entities__SpawnEggData> SPAWN_EGG_DATA;
+	public static HashMap<Integer, Entities__SpawnEggData> SPAWN_EGG_DATA;
 
-	@Inject(method = "init", at = @At("HEAD"))
+	@Inject(method = "<clinit>", at = @At("HEAD"))
 	private static void lf$unlockRegistry(CallbackInfo ci) {
 		EntityRegistryImpl.unlock();
 	}
 
-	@Inject(method = "init", at = @At("RETURN"))
+	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
 		EntityRegistryImpl.registerEntityTypes();
 

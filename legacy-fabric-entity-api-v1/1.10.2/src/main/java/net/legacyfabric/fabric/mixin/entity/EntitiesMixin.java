@@ -54,12 +54,12 @@ public class EntitiesMixin {
 	@Final
 	private static Map<String, Integer> KEY_TO_ID;
 
-	@Inject(method = "init", at = @At("HEAD"))
+	@Inject(method = "<clinit>", at = @At("HEAD"))
 	private static void lf$unlockRegistry(CallbackInfo ci) {
 		EntityRegistryImpl.unlock();
 	}
 
-	@Inject(method = "init", at = @At("RETURN"))
+	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
 		EntityRegistryImpl.registerEntityTypes();
 

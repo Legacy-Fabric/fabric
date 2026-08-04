@@ -4,10 +4,12 @@ import java.util.Set;
 
 import net.legacyfabric.fabric.impl.entity.VanillaEntityTypes;
 
+import net.minecraft.entity.Entities;
 import net.minecraft.util.registry.IdRegistry;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.impl.util.Util;
+import net.ornithemc.osl.registries.api.registry.Registries;
 import net.ornithemc.osl.registries.api.registry.Registry;
 import net.ornithemc.osl.registries.api.registry.ResourceKey;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
@@ -20,7 +22,9 @@ import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 import net.legacyfabric.fabric.mixin.entity.EntitiesAccessor;
 
 public class EntityRegistryImpl {
-	public static final Registry<Class<? extends Entity>> REGISTRY = VanillaRegistries.registerSimple(VanillaRegistryKeys.ENTITY_TYPE, new IdRegistry<>());
+	public static final Registry<Class<? extends Entity>> REGISTRY = Registries.registerSimple(VanillaRegistryKeys.ENTITY_TYPE, () -> {
+		Entities.init();
+	});
 
 	private static boolean locked = true;
 

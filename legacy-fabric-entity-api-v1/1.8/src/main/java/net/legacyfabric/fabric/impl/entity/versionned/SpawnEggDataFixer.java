@@ -2,6 +2,8 @@ package net.legacyfabric.fabric.impl.entity.versionned;
 
 import java.util.Map;
 
+import net.minecraft.entity.Entities__SpawnEggData;
+
 import net.ornithemc.osl.registries.api.registry.sync.IdFixer;
 
 import net.minecraft.entity.Entities;
@@ -9,9 +11,9 @@ import net.minecraft.entity.Entities;
 public class SpawnEggDataFixer implements IdFixer {
 	@Override
 	public void apply() {
-		for (Map.Entry<Integer, Entities.SpawnEggData> entry : Entities.SPAWN_EGG_DATA.entrySet()) {
+		for (Map.Entry<Integer, Entities__SpawnEggData> entry : ((Map<Integer, Entities__SpawnEggData>) Entities.SPAWN_EGG_DATA).entrySet()) {
 			int newId = entry.getKey();
-			Entities.SpawnEggData data = entry.getValue();
+			Entities__SpawnEggData data = entry.getValue();
 
 			data.id = newId;
 		}

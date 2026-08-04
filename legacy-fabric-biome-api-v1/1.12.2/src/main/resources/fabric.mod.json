@@ -20,9 +20,7 @@
   },
   "description": "Biome utils",
   "entrypoints": {
-    "init": [
-      "net.legacyfabric.fabric.impl.biome.versioned.BiomeRegistryImpl::init"
-    ]
+
   },
   "mixins": [
     "legacy-fabric-biome-api-v1.mixins.json"

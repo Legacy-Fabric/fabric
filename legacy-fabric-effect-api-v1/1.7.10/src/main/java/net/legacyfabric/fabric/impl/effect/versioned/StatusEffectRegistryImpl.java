@@ -4,6 +4,7 @@ import java.util.Set;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.registries.api.registry.Registries;
 import net.ornithemc.osl.registries.api.registry.Registry;
 import net.ornithemc.osl.registries.api.registry.ResourceKey;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
@@ -16,7 +17,7 @@ import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
 import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 
 public class StatusEffectRegistryImpl {
-	public static final Registry<StatusEffect> REGISTRY = VanillaRegistries.registerSimple(VanillaRegistryKeys.STATUS_EFFECT, new IdRegistry<>());
+	public static final Registry<StatusEffect> REGISTRY = Registries.registerSimple(VanillaRegistryKeys.STATUS_EFFECT, () -> {});
 
 	private static boolean locked = true;
 

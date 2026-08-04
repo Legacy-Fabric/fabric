@@ -1,4 +1,4 @@
-classTweaker v2 named
+classTweaker v1 named
 mutable field net/minecraft/enchantment/Enchantment id I
 accessible field net/minecraft/enchantment/Enchantment BY_ID [Lnet/minecraft/enchantment/Enchantment;
 transitive-inject-interface net/minecraft/enchantment/Enchantment net/legacyfabric/fabric/api/enchantment/EnchantmentExtension

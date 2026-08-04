@@ -24,10 +24,6 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.OverworldGeneratorOptions__Serializer;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
-
 @Mixin(OverworldGeneratorOptions__Serializer.class)
 public class CustomizedWorldPropertiesSerializerMixin {
 //	@ModifyConstant(method = "deserialize(Lcom/google/gson/JsonElement;Ljava/lang/reflect/Type;Lcom/google/gson/JsonDeserializationContext;)Lnet/minecraft/world/gen/chunk/OverworldGeneratorOptions__Builder;",

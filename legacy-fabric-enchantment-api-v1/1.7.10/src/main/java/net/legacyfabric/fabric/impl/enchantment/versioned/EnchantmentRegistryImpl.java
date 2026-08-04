@@ -4,6 +4,7 @@ import java.util.Set;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.registries.api.registry.Registries;
 import net.ornithemc.osl.registries.api.registry.Registry;
 import net.ornithemc.osl.registries.api.registry.ResourceKey;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
@@ -16,7 +17,9 @@ import net.legacyfabric.fabric.api.enchantment.EnchantmentEvents;
 import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 
 public class EnchantmentRegistryImpl {
-	public static final Registry<Enchantment> REGISTRY = VanillaRegistries.registerSimple(VanillaRegistryKeys.ENCHANTMENT, new IdRegistry<>());
+	public static final Registry<Enchantment> REGISTRY = Registries.registerSimple(VanillaRegistryKeys.ENCHANTMENT, () -> {
+		Enchantment[] temp = Enchantment.BY_ID;
+	});
 
 	private static boolean locked = true;
 

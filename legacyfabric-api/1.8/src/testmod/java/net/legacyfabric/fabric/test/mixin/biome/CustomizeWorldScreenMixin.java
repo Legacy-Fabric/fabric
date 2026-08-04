@@ -24,10 +24,6 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import net.minecraft.client.gui.screen.world.CustomizeWorldScreen;
 import net.minecraft.world.biome.Biome;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
-
 @Mixin(CustomizeWorldScreen.class)
 public class CustomizeWorldScreenMixin {
 //	@ModifyArg(method = "updateOverworldGeneratorOptions",

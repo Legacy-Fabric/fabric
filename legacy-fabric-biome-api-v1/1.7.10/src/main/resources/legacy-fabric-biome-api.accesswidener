@@ -1,4 +1,4 @@
-classTweaker v2 named
+classTweaker v1 named
 transitive-accessible	method	net/minecraft/world/biome/Biome	setName	(Ljava/lang/String;)Lnet/minecraft/world/biome/Biome;
 transitive-accessible	method	net/minecraft/world/biome/Biome	mutate	()Lnet/minecraft/world/biome/Biome;
 transitive-accessible	method	net/minecraft/world/biome/Biome	setColor	(IZ)Lnet/minecraft/world/biome/Biome;

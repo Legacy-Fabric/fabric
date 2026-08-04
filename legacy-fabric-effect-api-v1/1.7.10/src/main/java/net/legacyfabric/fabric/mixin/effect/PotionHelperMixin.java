@@ -1,7 +1,6 @@
 package net.legacyfabric.fabric.mixin.effect;
 
-
-import java.util.Map;
+import java.util.HashMap;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
@@ -21,15 +20,15 @@ import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 public class PotionHelperMixin {
 	@Shadow
 	@Final
-	private static Map<Integer, String> DURATION_RECIPES;
+	private static HashMap<Integer, String> DURATION_RECIPES;
 
 	@Shadow
 	@Final
-	private static Map<Integer, String> AMPLIFIER_RECIPES;
+	private static HashMap<Integer, String> AMPLIFIER_RECIPES;
 
 	@Shadow
 	@Final
-	private static Map<Integer, Integer> COLOR_CACHE;
+	private static HashMap<Integer, Integer> COLOR_CACHE;
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void lf$registerRemappers(CallbackInfo ci) {
