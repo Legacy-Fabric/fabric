@@ -79,7 +79,7 @@ public class BiomeRegistryImpl {
 				biome.setName(Util.makeTranslationKey(identifier));
 			}
 
-			return Registry.register(REGISTRY, identifier, biome);
+			return Registry.register(REGISTRY, biome.id, identifier, biome);
 		}
 	}
 
@@ -91,7 +91,7 @@ public class BiomeRegistryImpl {
 				biome.setName(Util.makeTranslationKey(identifier.identifier()));
 			}
 
-			return Registry.register(REGISTRY, identifier, biome);
+			return Registry.register(REGISTRY, biome.id, identifier, biome);
 		}
 	}
 

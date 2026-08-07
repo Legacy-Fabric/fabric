@@ -70,19 +70,19 @@ public class EnchantmentRegistryImpl {
 		return REGISTRY.keySet();
 	}
 
-	public static <T extends Enchantment> T register(NamespacedIdentifier identifier, T type) {
+	public static <T extends Enchantment> T register(NamespacedIdentifier identifier, T enchantment) {
 		if (locked) {
 			throw new IllegalStateException("register called too early: registry locked!");
 		} else {
-			return Registry.register(REGISTRY, identifier, type);
+			return Registry.register(REGISTRY, enchantment.id, identifier, enchantment);
 		}
 	}
 
-	public static <T extends Enchantment> T register(ResourceKey<Enchantment> identifier, T type) {
+	public static <T extends Enchantment> T register(ResourceKey<Enchantment> identifier, T enchantment) {
 		if (locked) {
 			throw new IllegalStateException("register called too early: registry locked!");
 		} else {
-			return Registry.register(REGISTRY, identifier, type);
+			return Registry.register(REGISTRY, enchantment.id, identifier, enchantment);
 		}
 	}
 

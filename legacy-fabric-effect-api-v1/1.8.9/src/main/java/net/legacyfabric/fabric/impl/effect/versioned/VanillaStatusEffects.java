@@ -69,13 +69,12 @@ final class VanillaStatusEffects {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private static void register(StatusEffect effect) {
 		if (effect.id >= 0 && effect.id < IDENTIFIERS.length) {
 			String identifier = IDENTIFIERS[effect.id];
 
 			if (identifier != null) {
-				StatusEffectRegistryImpl.register(effect.id, NamespacedIdentifiers.from(identifier), effect);
+				StatusEffectRegistryImpl.register(NamespacedIdentifiers.from(identifier), effect);
 			}
 		}
 	}

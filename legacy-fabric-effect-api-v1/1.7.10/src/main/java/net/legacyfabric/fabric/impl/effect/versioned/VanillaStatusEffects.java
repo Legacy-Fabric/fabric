@@ -75,7 +75,7 @@ final class VanillaStatusEffects {
 			String identifier = IDENTIFIERS[effect.id];
 
 			if (identifier != null) {
-				StatusEffectRegistryImpl.register(effect.id, NamespacedIdentifiers.from(identifier), effect);
+				StatusEffectRegistryImpl.register(NamespacedIdentifiers.from(identifier), effect);
 			}
 		}
 	}

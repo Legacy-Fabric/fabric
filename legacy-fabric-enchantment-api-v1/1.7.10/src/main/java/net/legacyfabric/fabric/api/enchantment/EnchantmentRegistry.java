@@ -63,11 +63,11 @@ public final class EnchantmentRegistry {
 		return EnchantmentRegistryImpl.keySet();
 	}
 
-	public static <T extends Enchantment> T register(NamespacedIdentifier identifier, T type) {
-		return EnchantmentRegistryImpl.register(identifier, type);
+	public static <T extends Enchantment> T register(NamespacedIdentifier identifier, T enchantment) {
+		return EnchantmentRegistryImpl.register(identifier, enchantment);
 	}
 
-	public static <T extends Enchantment> T register(ResourceKey<Enchantment> key, T type) {
-		return EnchantmentRegistryImpl.register(key, type);
+	public static <T extends Enchantment> T register(ResourceKey<Enchantment> key, T enchantment) {
+		return EnchantmentRegistryImpl.register(key, enchantment);
 	}
 }

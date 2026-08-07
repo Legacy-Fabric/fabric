@@ -66,95 +66,10 @@ final class VanillaBiomes {
 			"savanna_rock",
 			"mesa",
 			"mesa_rock",
-			"mesa_clear_rock",
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
+			"mesa_clear_rock"
+	};
+
+	private static final String[] MUTATED = {
 			null,
 			"mutated_plains",
 			"mutated_desert",
@@ -198,18 +113,8 @@ final class VanillaBiomes {
 	};
 
 	static void init() {
-		for (Field f : Biome.class.getDeclaredFields()) {
-			if (Modifier.isStatic(f.getModifiers()) && Biome.class.isAssignableFrom(f.getType())) {
-				try {
-					Biome biome = (Biome) f.get(null);
-
-					if (biome != null) {
-						register(biome);
-					}
-				} catch (Throwable ignored) {
-					// ignored
-				}
-			}
+		for (Biome biome : Biome.BY_ID) {
+			if (biome != null) register(biome);
 		}
 	}
 
@@ -217,6 +122,12 @@ final class VanillaBiomes {
 	private static void register(Biome biome) {
 		if (biome.id >= 0 && biome.id < IDENTIFIERS.length) {
 			String identifier = IDENTIFIERS[biome.id];
+
+			if (identifier != null) {
+				Registry.register(BiomeRegistryImpl.REGISTRY, biome.id, NamespacedIdentifiers.from(identifier), biome);
+			}
+		} else if (biome.id >= 128 && biome.id - 128 < MUTATED.length) {
+			String identifier = MUTATED[biome.id - 128];
 
 			if (identifier != null) {
 				Registry.register(BiomeRegistryImpl.REGISTRY, biome.id, NamespacedIdentifiers.from(identifier), biome);

@@ -73,7 +73,7 @@ public class StatusEffectRegistryImpl {
 		if (locked) {
 			throw new IllegalStateException("register called too early: registry locked!");
 		} else {
-			return Registry.register(REGISTRY, identifier, effect);
+			return Registry.register(REGISTRY, effect.id, identifier, effect);
 		}
 	}
 
@@ -81,20 +81,7 @@ public class StatusEffectRegistryImpl {
 		if (locked) {
 			throw new IllegalStateException("register called too early: registry locked!");
 		} else {
-			return Registry.register(REGISTRY, identifier, effect);
-		}
-	}
-
-	@Deprecated
-	public static <T extends StatusEffect> T register(int id, NamespacedIdentifier key, T effect) {
-		if (locked) {
-			throw new IllegalStateException("register called too early: registry locked!");
-		} else {
-			if (effect.id != id) {
-				throw new IllegalArgumentException("ID " + id + " does not match status effect ID " + effect.id + " for " + key);
-			}
-
-			return Registry.register(REGISTRY, id, key, effect);
+			return Registry.register(REGISTRY, effect.id, identifier, effect);
 		}
 	}
 
