@@ -22,30 +22,6 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
-import net.legacyfabric.fabric.api.biome.BiomeEvents;
-import net.legacyfabric.fabric.api.biome.BiomeRegistry;
-import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
-
-import net.legacyfabric.fabric.api.effect.PotionEvents;
-import net.legacyfabric.fabric.api.effect.PotionRegistry;
-import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
-
-import net.legacyfabric.fabric.api.effect.StatusEffectRegistry;
-
-import net.legacyfabric.fabric.api.enchantment.EnchantmentEvents;
-import net.legacyfabric.fabric.api.enchantment.EnchantmentRegistry;
-import net.legacyfabric.fabric.api.entity.EntityEvents;
-import net.legacyfabric.fabric.api.entity.EntityRegistry;
-
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentCategory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.living.mob.monster.CreeperEntity;
-
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.PlainsBiome;
-
 import net.ornithemc.osl.blocks.api.BlockEvents;
 import net.ornithemc.osl.blocks.api.BlockRegistry;
 import net.ornithemc.osl.core.impl.util.Util;
@@ -60,9 +36,14 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentCategory;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.entity.living.effect.StatusEffectInstance;
+import net.minecraft.entity.living.mob.monster.CreeperEntity;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
@@ -75,9 +56,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.PlainsBiome;
 
+import net.legacyfabric.fabric.api.biome.BiomeEvents;
+import net.legacyfabric.fabric.api.biome.BiomeRegistry;
+import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
+import net.legacyfabric.fabric.api.effect.PotionEvents;
 import net.legacyfabric.fabric.api.effect.PotionHelper;
+import net.legacyfabric.fabric.api.effect.PotionRegistry;
+import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
+import net.legacyfabric.fabric.api.effect.StatusEffectRegistry;
+import net.legacyfabric.fabric.api.enchantment.EnchantmentEvents;
+import net.legacyfabric.fabric.api.enchantment.EnchantmentRegistry;
+import net.legacyfabric.fabric.api.entity.EntityEvents;
 import net.legacyfabric.fabric.api.entity.EntityHelper;
+import net.legacyfabric.fabric.api.entity.EntityRegistry;
 import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 
 public class RegistryTest implements ModInitializer {

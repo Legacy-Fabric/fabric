@@ -18,11 +18,8 @@
 package net.legacyfabric.fabric.test.mixin.biome;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import net.minecraft.client.gui.screen.world.CustomizeWorldScreen;
-import net.minecraft.world.biome.Biome;
 
 @Mixin(CustomizeWorldScreen.class)
 public class CustomizeWorldScreenMixin {

@@ -17,10 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.biome;
 
-import net.legacyfabric.fabric.api.biome.BiomeExtension;
-import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
-import net.legacyfabric.fabric.impl.biome.versioned.BiomeRegistryImpl;
-
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
 import net.ornithemc.osl.registries.api.registry.sync.DynamicArrays;
@@ -37,6 +33,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.world.biome.Biome;
 
+import net.legacyfabric.fabric.api.biome.BiomeExtension;
+import net.legacyfabric.fabric.impl.biome.versioned.BiomeRegistryImpl;
+
 @Mixin(Biome.class)
 public class BiomeMixin implements BiomeExtension {
 	@Mutable
@@ -51,16 +50,9 @@ public class BiomeMixin implements BiomeExtension {
 
 	@Inject(method = "<clinit>", at = @At(value = "FIELD", target = "Lnet/minecraft/world/biome/Biome;BY_ID:[Lnet/minecraft/world/biome/Biome;", ordinal = 2, opcode = Opcodes.GETSTATIC))
 	private static void api$registerRegistry(CallbackInfo ci) {
-//		BY_ID[MEGA_TAIGA_HILLS.id + 128] = new TaigaBiome(MEGA_TAIGA_HILLS.id + 128, 2)
-//				.setColor(5858897, true)
-//				.setName("Mega Spruce Taiga")
-//				.setMutatedColor(5159473)
-//				.setTemperatureAndDownfall(0.25F, 0.8F)
-//				.setHeight(new Biome__Height(MEGA_TAIGA.baseHeight, MEGA_TAIGA.heightVariation));
-
 		BiomeRegistryImpl.registerBiomes();
 
-		SyncedRegistries.registerMapper(VanillaRegistryKeys.BIOME, NamespacedIdentifiers.from("biome/by_id"), ObjectArrayMapper.of(BY_ID));
+		SyncedRegistries.registerMapper(BiomeRegistryImpl.KEY, NamespacedIdentifiers.from("biome/by_id"), ObjectArrayMapper.of(BY_ID));
 	}
 
 	@ModifyVariable(method = "<init>", argsOnly = true, ordinal = 0, at = @At("HEAD"))
@@ -76,8 +68,7 @@ public class BiomeMixin implements BiomeExtension {
 			value = "FIELD",
 			target = "Lnet/minecraft/world/biome/Biome;BY_ID:[Lnet/minecraft/world/biome/Biome;",
 			opcode = Opcodes.GETSTATIC,
-			args = "array=set"
-	))
+			args = "array=set"))
 	private void lf$growArray(int id, CallbackInfo ci) {
 		int capacity = id + 1;
 

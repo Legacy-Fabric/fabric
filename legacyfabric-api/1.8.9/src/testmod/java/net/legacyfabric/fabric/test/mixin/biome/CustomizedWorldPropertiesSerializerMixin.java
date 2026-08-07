@@ -18,10 +18,7 @@
 package net.legacyfabric.fabric.test.mixin.biome;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.OverworldGeneratorOptions;
 
 @Mixin(OverworldGeneratorOptions.Serializer.class)

@@ -17,14 +17,14 @@
 
 package net.legacyfabric.fabric.mixin.effect;
 
-import net.legacyfabric.fabric.impl.effect.versioned.PotionRegistryImpl;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.potion.Potion;
+
+import net.legacyfabric.fabric.impl.effect.versioned.PotionRegistryImpl;
 
 @Mixin(Potion.class)
 public class PotionMixin {

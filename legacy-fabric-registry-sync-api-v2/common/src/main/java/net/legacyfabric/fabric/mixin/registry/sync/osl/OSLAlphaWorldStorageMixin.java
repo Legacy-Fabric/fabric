@@ -27,7 +27,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Desc;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -63,8 +62,7 @@ public class OSLAlphaWorldStorageMixin {
 					File.class,
 					boolean.class
 			},
-			ret = boolean.class
-	), ordinal = 0))
+			ret = boolean.class), ordinal = 0))
 	private boolean lf$readLegacyFabricRegistryMappings(AlphaWorldStorage instance, File file, boolean throwOnException, Operation<Boolean> original) {
 		for (int i = 0; i < FABRIC_ID_REGISTRY_BACKUPS; i++) {
 			LOGGER.trace("[legacy-fabric-registry-sync-api-v1] Loading old Legacy Fabric registry mappings [file " + (i + 1) + "/" + (FABRIC_ID_REGISTRY_BACKUPS + 1) + "]");

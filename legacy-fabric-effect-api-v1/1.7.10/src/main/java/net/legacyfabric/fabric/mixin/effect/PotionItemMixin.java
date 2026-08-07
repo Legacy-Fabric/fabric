@@ -35,7 +35,7 @@ import net.minecraft.entity.living.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.PotionItem;
 
-import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
+import net.legacyfabric.fabric.impl.effect.versioned.StatusEffectRegistryImpl;
 
 @Mixin(PotionItem.class)
 public class PotionItemMixin extends Item {
@@ -51,13 +51,13 @@ public class PotionItemMixin extends Item {
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void api$trackPotionItems(CallbackInfo ci) {
-		SyncedRegistries.registerFixer(VanillaRegistryKeys.STATUS_EFFECT,
+		SyncedRegistries.registerFixer(StatusEffectRegistryImpl.KEY,
 				NamespacedIdentifiers.from("potion/" + (lf$potionItemCount++) + "/potion_effect_by_metadata_cache"),
 				() -> potionEffectsByMetadataCache.clear());
 	}
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void api$registerStackFixer(CallbackInfo ci) {
-		SyncedRegistries.registerFixer(VanillaRegistryKeys.STATUS_EFFECT, NamespacedIdentifiers.from("potion/item_stacks"), () -> ITEM_STACKS.clear());
+		SyncedRegistries.registerFixer(StatusEffectRegistryImpl.KEY, NamespacedIdentifiers.from("potion/item_stacks"), () -> ITEM_STACKS.clear());
 	}
 }

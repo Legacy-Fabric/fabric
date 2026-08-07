@@ -19,9 +19,6 @@ package net.legacyfabric.fabric.impl.block.entity;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-
-import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityTypeIds;
-
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 
 public class BlockEntityUtils {

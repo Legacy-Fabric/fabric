@@ -19,12 +19,11 @@ package net.legacyfabric.fabric.mixin.entity;
 
 import java.util.Map;
 
-import net.minecraft.entity.Entity;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import net.minecraft.entity.Entities;
+import net.minecraft.entity.Entity;
 
 @Mixin(Entities.class)
 public interface EntitiesAccessor {

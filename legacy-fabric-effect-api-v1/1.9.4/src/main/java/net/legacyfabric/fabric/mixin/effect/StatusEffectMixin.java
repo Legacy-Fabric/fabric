@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.mixin.effect;
 
+import java.util.Objects;
+
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.impl.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
@@ -52,7 +54,7 @@ public class StatusEffectMixin {
 			)
 	)
 	private void osl$blocks$autoAssignTranslationKey(CallbackInfoReturnable<String> cir) {
-		if (this.key == null || this.key == "") {
+		if (this.key == null || Objects.equals(this.key, "")) {
 			NamespacedIdentifier identifier = StatusEffectRegistryImpl.getIdentifier((StatusEffect) (Object) this);
 
 			if (identifier == null) {

@@ -17,8 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.entity;
 
-import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
-import net.legacyfabric.fabric.impl.entity.versionned.EntityRegistryImpl;
+import java.util.List;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
@@ -32,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.Entities;
 
-import java.util.List;
+import net.legacyfabric.fabric.impl.entity.versionned.EntityRegistryImpl;
 
 @Mixin(Entities.class)
 public class EntitiesMixin {
@@ -49,6 +48,6 @@ public class EntitiesMixin {
 	private static void registerRegistry(CallbackInfo ci) {
 		EntityRegistryImpl.registerEntityTypes();
 
-		SyncedRegistries.registerMapper(VanillaRegistryKeys.ENTITY_TYPE, NamespacedIdentifiers.from("entity_type/names"), ListMapper.of(NAMES));
+		SyncedRegistries.registerMapper(EntityRegistryImpl.KEY, NamespacedIdentifiers.from("entity_type/names"), ListMapper.of(NAMES));
 	}
 }

@@ -19,8 +19,6 @@ package net.legacyfabric.fabric.mixin.entity;
 
 import java.util.Map;
 
-import net.minecraft.entity.Entities__SpawnEggData;
-
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
@@ -34,13 +32,13 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.entity.Entities;
+import net.minecraft.entity.Entities__SpawnEggData;
 import net.minecraft.entity.Entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 import net.legacyfabric.fabric.api.entity.EntityRegistry;
-import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 import net.legacyfabric.fabric.impl.entity.versionned.EntityRegistryImpl;
 
 @Mixin(Entities.class)
@@ -71,22 +69,22 @@ public class EntitiesMixin {
 	private static void registerRegistry(CallbackInfo ci) {
 		EntityRegistryImpl.registerEntityTypes();
 
-		SyncedRegistries.registerMapper(VanillaRegistryKeys.ENTITY_TYPE, NamespacedIdentifiers.parse("entity_type/id_to_type"), IntegerMapMapper.of(ID_TO_TYPE));
-		SyncedRegistries.registerFixer(VanillaRegistryKeys.ENTITY_TYPE, NamespacedIdentifiers.parse("entity_type/type_to_id"), () -> {
+		SyncedRegistries.registerMapper(EntityRegistryImpl.KEY, NamespacedIdentifiers.parse("entity_type/id_to_type"), IntegerMapMapper.of(ID_TO_TYPE));
+		SyncedRegistries.registerFixer(EntityRegistryImpl.KEY, NamespacedIdentifiers.parse("entity_type/type_to_id"), () -> {
 			TYPE_TO_ID.clear();
 
 			for (Map.Entry<Integer, Class<? extends Entity>> entry : ID_TO_TYPE.entrySet()) {
 				TYPE_TO_ID.put(entry.getValue(), entry.getKey());
 			}
 		});
-		SyncedRegistries.registerFixer(VanillaRegistryKeys.ENTITY_TYPE, NamespacedIdentifiers.parse("entity_type/key_to_id"), () -> {
+		SyncedRegistries.registerFixer(EntityRegistryImpl.KEY, NamespacedIdentifiers.parse("entity_type/key_to_id"), () -> {
 			KEY_TO_ID.clear();
 
 			for (Map.Entry<Integer, Class<? extends Entity>> entry : ID_TO_TYPE.entrySet()) {
 				KEY_TO_ID.put(TYPE_TO_KEY.get(entry.getValue()), entry.getKey());
 			}
 		});
-		SyncedRegistries.registerMapper(VanillaRegistryKeys.ENTITY_TYPE, NamespacedIdentifiers.parse("entity_type/spawn_egg_data"), IntegerMapMapper.of(SPAWN_EGG_DATA));
+		SyncedRegistries.registerMapper(EntityRegistryImpl.KEY, NamespacedIdentifiers.parse("entity_type/spawn_egg_data"), IntegerMapMapper.of(SPAWN_EGG_DATA));
 	}
 
 	@ModifyArg(method = {"createSilently", "create(Lnet/minecraft/nbt/NbtCompound;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;"},

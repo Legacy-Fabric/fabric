@@ -17,7 +17,7 @@
 
 package net.legacyfabric.fabric.mixin.effect;
 
-import net.legacyfabric.fabric.impl.effect.versioned.StatusEffectRegistryImpl;
+import java.util.Objects;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.impl.util.Util;
@@ -26,10 +26,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.entity.living.effect.StatusEffect;
 
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import net.legacyfabric.fabric.impl.effect.versioned.StatusEffectRegistryImpl;
 
 @Mixin(StatusEffect.class)
 public class StatusEffectMixin {
@@ -53,7 +54,7 @@ public class StatusEffectMixin {
 			)
 	)
 	private void osl$blocks$autoAssignTranslationKey(CallbackInfoReturnable<String> cir) {
-		if (this.key == null || this.key == "") {
+		if (this.key == null || Objects.equals(this.key, "")) {
 			NamespacedIdentifier identifier = StatusEffectRegistryImpl.getIdentifier((StatusEffect) (Object) this);
 
 			if (identifier == null) {

@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.enchantment;
 
-import net.legacyfabric.fabric.impl.enchantment.versioned.EnchantmentRegistryImpl;
-
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.impl.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,10 +24,11 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.enchantment.Enchantment;
 
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import net.legacyfabric.fabric.impl.enchantment.versioned.EnchantmentRegistryImpl;
 
 @Mixin(Enchantment.class)
 public class EnchantmentMixin {

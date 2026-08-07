@@ -17,11 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.biome;
 
-import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
-import net.legacyfabric.fabric.impl.biome.versioned.BiomeRegistryImpl;
-
-import net.minecraft.util.Id2ObjectBiMap;
-
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
 import net.ornithemc.osl.registries.api.registry.sync.Id2ObjectBiMapMapper;
@@ -33,8 +28,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.resource.Identifier;
+import net.minecraft.util.Id2ObjectBiMap;
 import net.minecraft.util.registry.IdRegistry;
 import net.minecraft.world.biome.Biome;
+
+import net.legacyfabric.fabric.impl.biome.versioned.BiomeRegistryImpl;
 
 @Mixin(Biome.class)
 public class BiomeMixin {
@@ -55,7 +53,7 @@ public class BiomeMixin {
 	private static void api$registerRegistry(CallbackInfo ci) {
 		BiomeRegistryImpl.registerBiomes();
 
-		SyncedRegistries.registerMapper(VanillaRegistryKeys.BIOME, NamespacedIdentifiers.from("biome/mutated_biomes"), Id2ObjectBiMapMapper.of(MUTATED_BIOMES));
+		SyncedRegistries.registerMapper(BiomeRegistryImpl.KEY, NamespacedIdentifiers.from("biome/mutated_biomes"), Id2ObjectBiMapMapper.of(MUTATED_BIOMES));
 	}
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))

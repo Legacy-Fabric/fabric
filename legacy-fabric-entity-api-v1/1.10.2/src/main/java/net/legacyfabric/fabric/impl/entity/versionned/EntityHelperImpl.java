@@ -18,12 +18,9 @@
 package net.legacyfabric.fabric.impl.entity.versionned;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.core.impl.util.Util;
 
 import net.minecraft.entity.Entities;
-
-import net.legacyfabric.fabric.api.util.OSLIdentifierExtension;
-
-import net.ornithemc.osl.core.impl.util.Util;
 
 public class EntityHelperImpl {
 	public static void registerSpawnEgg(NamespacedIdentifier identifier, int color0, int color1) {

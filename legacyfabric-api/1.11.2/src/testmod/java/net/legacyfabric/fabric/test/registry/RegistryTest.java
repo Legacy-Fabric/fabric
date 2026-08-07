@@ -22,20 +22,6 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
-import net.legacyfabric.fabric.api.biome.BiomeEvents;
-import net.legacyfabric.fabric.api.biome.BiomeRegistry;
-import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
-import net.legacyfabric.fabric.api.effect.PotionEvents;
-import net.legacyfabric.fabric.api.effect.PotionRegistry;
-import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
-import net.legacyfabric.fabric.api.effect.StatusEffectRegistry;
-
-import net.legacyfabric.fabric.api.enchantment.EnchantmentEvents;
-import net.legacyfabric.fabric.api.enchantment.EnchantmentRegistry;
-import net.legacyfabric.fabric.api.entity.EntityEvents;
-
-import net.legacyfabric.fabric.api.entity.EntityRegistry;
-
 import net.ornithemc.osl.blocks.api.BlockEvents;
 import net.ornithemc.osl.blocks.api.BlockRegistry;
 import net.ornithemc.osl.core.impl.util.Util;
@@ -73,8 +59,19 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.PlainsBiome;
 
+import net.legacyfabric.fabric.api.biome.BiomeEvents;
+import net.legacyfabric.fabric.api.biome.BiomeRegistry;
+import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
+import net.legacyfabric.fabric.api.effect.PotionEvents;
 import net.legacyfabric.fabric.api.effect.PotionHelper;
+import net.legacyfabric.fabric.api.effect.PotionRegistry;
+import net.legacyfabric.fabric.api.effect.StatusEffectEvents;
+import net.legacyfabric.fabric.api.effect.StatusEffectRegistry;
+import net.legacyfabric.fabric.api.enchantment.EnchantmentEvents;
+import net.legacyfabric.fabric.api.enchantment.EnchantmentRegistry;
+import net.legacyfabric.fabric.api.entity.EntityEvents;
 import net.legacyfabric.fabric.api.entity.EntityHelper;
+import net.legacyfabric.fabric.api.entity.EntityRegistry;
 import net.legacyfabric.fabric.api.resource.ItemModelRegistry;
 
 public class RegistryTest implements ModInitializer {

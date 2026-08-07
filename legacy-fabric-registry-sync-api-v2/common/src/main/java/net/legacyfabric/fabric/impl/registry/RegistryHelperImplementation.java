@@ -32,6 +32,7 @@ public class RegistryHelperImplementation {
 		BACKWARD_COMPATIBILITY.put("Enchantments", RegistryIds.ENCHANTMENTS.toString());
 		BACKWARD_COMPATIBILITY.put("EntityTypes", RegistryIds.ENTITY_TYPES.toString());
 		BACKWARD_COMPATIBILITY.put("StatusEffects", RegistryIds.STATUS_EFFECTS.toString());
+		BACKWARD_COMPATIBILITY.put("Potions", RegistryIds.POTIONS.toString());
 	}
 
 	public static String convertRegistryId(String key) {

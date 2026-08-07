@@ -17,6 +17,8 @@
 
 package net.legacyfabric.fabric.mixin.effect;
 
+import java.util.Objects;
+
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.core.impl.util.Util;
@@ -37,7 +39,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.entity.living.effect.StatusEffect;
 
 import net.legacyfabric.fabric.api.effect.StatusEffectExtension;
-import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 import net.legacyfabric.fabric.impl.effect.versioned.StatusEffectRegistryImpl;
 
 @Mixin(StatusEffect.class)
@@ -58,7 +59,7 @@ public class StatusEffectMixin implements StatusEffectExtension {
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
 		StatusEffectRegistryImpl.registerEffects();
-		SyncedRegistries.registerMapper(VanillaRegistryKeys.STATUS_EFFECT, NamespacedIdentifiers.from("status_effect/by_id"), ObjectArrayMapper.of(BY_ID));
+		SyncedRegistries.registerMapper(StatusEffectRegistryImpl.KEY, NamespacedIdentifiers.from("status_effect/by_id"), ObjectArrayMapper.of(BY_ID));
 	}
 
 	@ModifyVariable(method = "<init>", argsOnly = true, ordinal = 0, at = @At("HEAD"))
@@ -74,8 +75,7 @@ public class StatusEffectMixin implements StatusEffectExtension {
 			value = "FIELD",
 			target = "Lnet/minecraft/entity/living/effect/StatusEffect;BY_ID:[Lnet/minecraft/entity/living/effect/StatusEffect;",
 			opcode = Opcodes.GETSTATIC,
-			args = "array=set"
-	))
+			args = "array=set"))
 	private void lf$growArray(int id, boolean harmful, int color, CallbackInfo ci) {
 		int capacity = id + 1;
 
@@ -89,7 +89,7 @@ public class StatusEffectMixin implements StatusEffectExtension {
 			)
 	)
 	private void osl$blocks$autoAssignTranslationKey(CallbackInfoReturnable<String> cir) {
-		if (this.key == null || this.key == "") {
+		if (this.key == null || Objects.equals(this.key, "")) {
 			NamespacedIdentifier identifier = StatusEffectRegistryImpl.getIdentifier((StatusEffect) (Object) this);
 
 			if (identifier == null) {

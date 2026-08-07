@@ -17,8 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.enchantment;
 
-import net.minecraft.enchantment.EnchantmentCategory;
-
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.core.impl.util.Util;
@@ -37,9 +35,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentCategory;
 
 import net.legacyfabric.fabric.api.enchantment.EnchantmentExtension;
-import net.legacyfabric.fabric.api.registry.v2.VanillaRegistryKeys;
 import net.legacyfabric.fabric.impl.enchantment.versioned.EnchantmentRegistryImpl;
 
 @Mixin(Enchantment.class)
@@ -61,7 +59,7 @@ public class EnchantmentMixin implements EnchantmentExtension {
 	private static void api$registerRegistry(CallbackInfo ci) {
 		EnchantmentRegistryImpl.registerEnchantments();
 
-		SyncedRegistries.registerMapper(VanillaRegistryKeys.ENCHANTMENT, NamespacedIdentifiers.from("enchantment/by_id"), ObjectArrayMapper.of(BY_ID));
+		SyncedRegistries.registerMapper(EnchantmentRegistryImpl.KEY, NamespacedIdentifiers.from("enchantment/by_id"), ObjectArrayMapper.of(BY_ID));
 	}
 
 	@Inject(
@@ -95,8 +93,7 @@ public class EnchantmentMixin implements EnchantmentExtension {
 			value = "FIELD",
 			target = "Lnet/minecraft/enchantment/Enchantment;BY_ID:[Lnet/minecraft/enchantment/Enchantment;",
 			opcode = Opcodes.GETSTATIC,
-			args = "array=set"
-	))
+			args = "array=set"))
 	private void lf$growArray(int id, int category, EnchantmentCategory par3, CallbackInfo ci) {
 		int capacity = id + 1;
 
