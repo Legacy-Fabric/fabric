@@ -17,9 +17,6 @@
 
 package net.legacyfabric.fabric.impl.biome.versioned;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.registries.api.registry.Registry;
 
