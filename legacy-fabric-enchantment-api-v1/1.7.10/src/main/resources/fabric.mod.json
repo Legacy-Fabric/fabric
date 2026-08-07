@@ -16,7 +16,8 @@
   ],
   "depends": {
     "minecraft": "${minecraft_version}",
-    "fabricloader": "${loader_version}"
+    "fabricloader": "${loader_version}",
+    "osl-registries": ">=0.1.0-"
   },
   "description": "Enchantment utils",
   "entrypoints": {
