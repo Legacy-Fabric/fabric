@@ -53,7 +53,7 @@ public class StatusEffectMixin {
 			)
 	)
 	private void osl$blocks$autoAssignTranslationKey(CallbackInfoReturnable<String> cir) {
-		if (this.key == null) {
+		if (this.key == null || this.key == "") {
 			NamespacedIdentifier identifier = StatusEffectRegistryImpl.getIdentifier((StatusEffect) (Object) this);
 
 			if (identifier == null) {
