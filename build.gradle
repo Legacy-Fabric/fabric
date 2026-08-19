@@ -277,7 +277,7 @@ def moduleDependencies(Project project, List<String> projectNames) {
 		}
 	}
 
-	if (shouldPublish(project)) {
+	if (providers.environmentVariable("CI").present && shouldPublish(project)) {
 		setupRepositories(project.publishing.repositories)
 	}
 }

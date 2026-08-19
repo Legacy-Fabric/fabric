@@ -19,6 +19,9 @@
     "client": [
       "net.legacyfabric.fabric.test.lifecycle.client.ClientLifecycleEventsTest",
       "net.legacyfabric.fabric.test.client.keybinding.KeybindingTest"
+    ],
+    "init": [
+      "net.legacyfabric.fabric.test.registry.RegistryTest"
     ]
   },
   "authors": [
