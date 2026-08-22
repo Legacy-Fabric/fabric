@@ -73,5 +73,4 @@ public class RegistryTest implements ModInitializer {
 			}
 		});
 	}
-
 }
