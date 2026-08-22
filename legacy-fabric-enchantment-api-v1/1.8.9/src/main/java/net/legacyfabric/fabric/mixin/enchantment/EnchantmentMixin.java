@@ -21,8 +21,8 @@ import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.core.impl.util.Util;
 import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
-import net.ornithemc.osl.registries.api.registry.sync.DynamicArrays;
-import net.ornithemc.osl.registries.api.registry.sync.ObjectArrayMapper;
+import net.ornithemc.osl.registries.api.registry.sync.ArrayMapper;
+import net.ornithemc.osl.registries.api.registry.sync.DynamicArray;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -60,7 +60,7 @@ public class EnchantmentMixin implements EnchantmentExtension {
 	private static void api$registerRegistry(CallbackInfo ci) {
 		EnchantmentRegistryImpl.registerEnchantments();
 
-		SyncedRegistries.registerMapper(EnchantmentRegistryImpl.KEY, NamespacedIdentifiers.from("enchantment/by_id"), ObjectArrayMapper.of(BY_ID));
+		SyncedRegistries.registerMapper(EnchantmentRegistryImpl.KEY, NamespacedIdentifiers.from("enchantment/by_id"), ArrayMapper.of(() -> BY_ID, a -> BY_ID = a));
 	}
 
 	@Inject(
@@ -84,7 +84,7 @@ public class EnchantmentMixin implements EnchantmentExtension {
 	@ModifyVariable(method = "<init>", argsOnly = true, ordinal = 0, at = @At("HEAD"))
 	private static int lf$autoIdAssignment(int id) {
 		if (id == REGISTRY_AUTO_ASSIGN_ID) {
-			id = DynamicArrays.length(BY_ID);
+			id = DynamicArray.length(BY_ID);
 		}
 
 		return id;
@@ -98,6 +98,6 @@ public class EnchantmentMixin implements EnchantmentExtension {
 	private void lf$growArray(int id, Identifier key, int type, EnchantmentCategory category, CallbackInfo ci) {
 		int capacity = id + 1;
 
-		BY_ID = DynamicArrays.grow(BY_ID, capacity);
+		BY_ID = DynamicArray.grow(BY_ID, capacity);
 	}
 }
