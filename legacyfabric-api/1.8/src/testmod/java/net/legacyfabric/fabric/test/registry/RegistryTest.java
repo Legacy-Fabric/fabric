@@ -22,8 +22,12 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
+import net.minecraft.resource.Identifier;
+
 import net.ornithemc.osl.blocks.api.BlockEvents;
 import net.ornithemc.osl.blocks.api.BlockRegistry;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 import net.ornithemc.osl.items.api.ItemEvents;
 import net.ornithemc.osl.items.api.ItemRegistry;
@@ -44,7 +48,6 @@ import net.minecraft.entity.living.mob.monster.CreeperEntity;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
-import net.minecraft.resource.Identifier;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -83,9 +86,9 @@ public class RegistryTest implements ModInitializer {
 	private void registerItems() {
 		Item testItem = new Item().setCreativeModeTab(CreativeModeTab.FOOD);
 		ItemRegistry.register(
-				new Identifier("legacy-fabric-api", "test_item"), testItem
+				NamespacedIdentifiers.from("legacy-fabric-api", "test_item"), testItem
 		);
-		ItemModelRegistry.registerItemModel(testItem, new Identifier("legacy-fabric-api:test_item"));
+		ItemModelRegistry.registerItemModel(testItem, NamespacedIdentifiers.from("legacy-fabric-api:test_item"));
 	}
 
 	private void registerBlocks() {
@@ -103,7 +106,7 @@ public class RegistryTest implements ModInitializer {
 					color = 3361970;
 				}
 
-				Identifier identifier = new Identifier("legacy-fabric-api", "conc_block_" + color);
+				NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "conc_block_" + color);
 
 				BlockRegistry.register(identifier, block);
 				blockList.add(block);
@@ -118,7 +121,7 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	private void registerBlockEntities() {
-		Identifier identifier = new Identifier("legacy-fabric-api", "test_block_entity");
+		NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_block_entity");
 
 		AtomicReference<Block> blockWithEntity = new AtomicReference<>();
 		BlockEvents.REGISTER_BLOCKS.register(() -> {
@@ -135,7 +138,7 @@ public class RegistryTest implements ModInitializer {
 
 	private void registerEffectsAndPotions() {
 		StatusEffectEvents.REGISTER_EFFECTS.register(() -> {
-			Identifier effectIdentifier = new Identifier("legacy-fabric-api", "test_effect");
+			NamespacedIdentifier effectIdentifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_effect");
 			EFFECT = new TestStatusEffect(effectIdentifier, false, 1234567).setIcon(3, 1).setDurationMultiplier(0.25);
 			StatusEffectRegistry.register(effectIdentifier, EFFECT);
 			PotionHelper.registerDurationRecipe(EFFECT, "!0 & !1 & !2 & !3 & 1+6");
@@ -144,18 +147,18 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	private void registerEntities() {
-		Identifier creeperId = new Identifier("legacy-fabric-api:test_entity");
+		NamespacedIdentifier creeperId = NamespacedIdentifiers.from("legacy-fabric-api:test_entity");
 		EntityRegistry.register(creeperId, TestCreeperEntity.class);
 		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
 	}
 
 	private void registerEnchantments() {
-		Identifier enchantmentId = new Identifier("legacy-fabric-api:test_enchantment");
+		NamespacedIdentifier enchantmentId = NamespacedIdentifiers.from("legacy-fabric-api:test_enchantment");
 		EnchantmentRegistry.register(enchantmentId, new TestEnchantment(enchantmentId));
 	}
 
 	private void registerBiomes() {
-		Identifier biomeId = new Identifier("legacy-fabric-api:test_biome");
+		NamespacedIdentifier biomeId = NamespacedIdentifiers.from("legacy-fabric-api:test_biome");
 		BiomeRegistry.register(biomeId, new TestBiome()
 					.setColor(4446496)
 					.setTemperatureAndDownfall(0.3F, 0.7F));
@@ -189,8 +192,8 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	public static class TestStatusEffect extends StatusEffect {
-		public TestStatusEffect(Identifier identifier, boolean bl, int j) {
-			super(REGISTRY_AUTO_ASSIGN_ID, identifier, bl, j);
+		public TestStatusEffect(NamespacedIdentifier identifier, boolean bl, int j) {
+			super(REGISTRY_AUTO_ASSIGN_ID, new Identifier(identifier.toString()), bl, j);
 		}
 
 		@Override
@@ -232,8 +235,8 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	public static class TestEnchantment extends Enchantment {
-		protected TestEnchantment(Identifier identifier) {
-			super(REGISTRY_AUTO_ASSIGN_ID, identifier, 2, EnchantmentCategory.ARMOR_FEET);
+		protected TestEnchantment(NamespacedIdentifier identifier) {
+			super(REGISTRY_AUTO_ASSIGN_ID, new Identifier(identifier.toString()), 2, EnchantmentCategory.ARMOR_FEET);
 		}
 
 		@Override

@@ -1,3 +1,0 @@
-loom {
-	accessWidenerPath = file("src/testmod/resources/legacy-fabric-api-test-mod.accesswidener")
-}
