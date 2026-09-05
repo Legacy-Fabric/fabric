@@ -88,7 +88,7 @@ public class RegistryTest implements ModInitializer {
 		ItemRegistry.register(
 				NamespacedIdentifiers.from("legacy-fabric-api", "test_item"), testItem
 		);
-		ItemModelRegistry.registerItemModel(testItem, NamespacedIdentifiers.from("legacy-fabric-api:test_item"));
+		ItemModelRegistry.registerItemModel(testItem, NamespacedIdentifiers.from("legacy-fabric-api", "test_item"));
 	}
 
 	private void registerBlocks() {
@@ -147,18 +147,18 @@ public class RegistryTest implements ModInitializer {
 	}
 
 	private void registerEntities() {
-		NamespacedIdentifier creeperId = NamespacedIdentifiers.from("legacy-fabric-api:test_entity");
+		NamespacedIdentifier creeperId = NamespacedIdentifiers.from("legacy-fabric-api", "test_entity");
 		EntityRegistry.register(creeperId, TestCreeperEntity.class);
 		EntityHelper.registerSpawnEgg(creeperId, 12222, 563933);
 	}
 
 	private void registerEnchantments() {
-		NamespacedIdentifier enchantmentId = NamespacedIdentifiers.from("legacy-fabric-api:test_enchantment");
+		NamespacedIdentifier enchantmentId = NamespacedIdentifiers.from("legacy-fabric-api", "test_enchantment");
 		EnchantmentRegistry.register(enchantmentId, new TestEnchantment(enchantmentId));
 	}
 
 	private void registerBiomes() {
-		NamespacedIdentifier biomeId = NamespacedIdentifiers.from("legacy-fabric-api:test_biome");
+		NamespacedIdentifier biomeId = NamespacedIdentifiers.from("legacy-fabric-api", "test_biome");
 		BiomeRegistry.register(biomeId, new TestBiome()
 				.setColor(4446496)
 				.setHeight(new Biome.Height(0.525F, 0.95F))
