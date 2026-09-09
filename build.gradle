@@ -6,7 +6,7 @@ plugins {
 	id "ploceus" version "1.17-SNAPSHOT" apply false
 	id "com.diffplug.spotless" version "7.2.1"
 	id "org.ajoberstar.grgit" version "5.3.2"
-	id "me.modmuss50.mod-publish-plugin" version "2.0.0-beta.1"
+	id "me.modmuss50.mod-publish-plugin" version "2.2.0"
 }
 
 def ENV = System.getenv()
@@ -752,6 +752,9 @@ publishMods {
 		accessToken = providers.environmentVariable("CURSE_API_KEY")
 		projectId = "400281"
 		projectSlug = "legacy-fabric-api"
+
+		client = true
+		server = true
 
 		minecraftVersions.addAll(supportedVersions)
 
