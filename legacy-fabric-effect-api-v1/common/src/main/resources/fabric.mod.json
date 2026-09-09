@@ -16,13 +16,11 @@
   ],
   "depends": {
     "minecraft": "${minecraft_version}",
-    "fabricloader": "${loader_version}"
+    "fabricloader": "${loader_version}",
+    "osl-registries": ">=0.1.0-"
   },
   "description": "Effect and Potion utils",
   "entrypoints": {
-    "preLaunch": [
-      "net.legacyfabric.fabric.impl.effect.EarlyInitializer"
-    ]
   },
   "accessWidener": "legacy-fabric-effect-api-common.accesswidener",
   "mixins": [

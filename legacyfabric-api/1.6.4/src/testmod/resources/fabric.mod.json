@@ -24,6 +24,9 @@
       "net.legacyfabric.fabric.test.entity.EntityEventsTest",
       "net.legacyfabric.fabric.test.command.SpongeCommandTest",
       "net.legacyfabric.fabric.test.command.CommandV1Test"
+    ],
+    "init": [
+      "net.legacyfabric.fabric.test.registry.RegistryTest"
     ]
   },
   "authors": [

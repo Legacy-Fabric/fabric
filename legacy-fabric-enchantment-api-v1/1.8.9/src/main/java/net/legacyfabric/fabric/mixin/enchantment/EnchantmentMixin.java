@@ -17,88 +17,87 @@
 
 package net.legacyfabric.fabric.mixin.enchantment;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Lists;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.core.impl.util.Util;
+import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
+import net.ornithemc.osl.registries.api.registry.sync.ArrayMapper;
+import net.ornithemc.osl.registries.api.registry.sync.DynamicArray;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentCategory;
 import net.minecraft.resource.Identifier;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayMapFabricRegistryWrapper;
+import net.legacyfabric.fabric.api.enchantment.EnchantmentExtension;
+import net.legacyfabric.fabric.impl.enchantment.versioned.EnchantmentRegistryImpl;
 
 @Mixin(Enchantment.class)
-public class EnchantmentMixin {
-	@Mutable
+public class EnchantmentMixin implements EnchantmentExtension {
 	@Shadow
-	@Final
-	private static Map<Identifier, Enchantment> BY_KEY;
-	@Mutable
-	@Shadow
-	@Final
-	private static Enchantment[] BY_ID;
-	@Mutable
-	@Shadow
-	@Final
-	public static Enchantment[] ALL;
-	@Unique
-	private static FabricRegistry<Enchantment> ENCHANTMENT_REGISTRY;
+	protected String key;
 
-	@Inject(method = "<clinit>", at = @At("RETURN"))
+	@Mutable
+	@Shadow
+	@Final
+	public static Enchantment[] BY_ID;
+
+	@Inject(method = "<clinit>", at = @At("HEAD"))
+	private static void lf$unlockRegistry(CallbackInfo ci) {
+		EnchantmentRegistryImpl.unlock();
+	}
+
+	@Inject(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Lists;newArrayList()Ljava/util/ArrayList;", remap = false))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		BiMap<Identifier, Enchantment> map = HashBiMap.create(BY_KEY);
-		BY_KEY = map;
+		EnchantmentRegistryImpl.registerEnchantments();
 
-		ENCHANTMENT_REGISTRY = new SyncedArrayMapFabricRegistryWrapper<>(
-				RegistryIds.ENCHANTMENTS,
-				BY_ID, map, false,
-				universal -> new Identifier(universal.toString()),
-				net.legacyfabric.fabric.api.util.Identifier::new,
-				ids -> {
-					Enchantment[] array = new Enchantment[ids.fabric$size() + 1];
-					Arrays.fill(array, null);
+		SyncedRegistries.registerMapper(EnchantmentRegistryImpl.KEY, NamespacedIdentifiers.from("enchantment/by_id"), ArrayMapper.of(() -> BY_ID, a -> BY_ID = a));
+	}
 
-					for (Enchantment enchantment : ids) {
-						int id = ids.fabric$getId(enchantment);
+	@Inject(
+			method = "getTranslationKey",
+			at = @At(
+					value = "HEAD"
+			)
+	)
+	private void osl$blocks$autoAssignTranslationKey(CallbackInfoReturnable<String> cir) {
+		if (this.key == null) {
+			NamespacedIdentifier identifier = EnchantmentRegistryImpl.getIdentifier((Enchantment) (Object) this);
 
-						if (id >= array.length - 1) {
-							Enchantment[] newArray = new Enchantment[id + 2];
-							Arrays.fill(newArray, null);
-							System.arraycopy(array, 0, newArray, 0, array.length);
-							array = newArray;
-						}
+			if (identifier == null) {
+				this.key = "unknown";
+			} else {
+				this.key = Util.makeTranslationKey(identifier);
+			}
+		}
+	}
 
-						array[id] = enchantment;
-					}
+	@ModifyVariable(method = "<init>", argsOnly = true, ordinal = 0, at = @At("HEAD"))
+	private static int lf$autoIdAssignment(int id) {
+		if (id == REGISTRY_AUTO_ASSIGN_ID) {
+			id = DynamicArray.length(BY_ID);
+		}
 
-					BY_ID = array;
+		return id;
+	}
 
-					List<Enchantment> list = Lists.<Enchantment>newArrayList();
+	@Inject(method = "<init>", at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/enchantment/Enchantment;BY_ID:[Lnet/minecraft/enchantment/Enchantment;",
+			opcode = Opcodes.GETSTATIC,
+			args = "array=set"))
+	private void lf$growArray(int id, Identifier key, int type, EnchantmentCategory category, CallbackInfo ci) {
+		int capacity = id + 1;
 
-					for (Enchantment enchantment : BY_ID) {
-						if (enchantment != null) {
-							list.add(enchantment);
-						}
-					}
-
-					ALL = list.toArray(new Enchantment[list.size()]);
-				}
-		);
-
-		RegistryHelper.addRegistry(RegistryIds.ENCHANTMENTS, ENCHANTMENT_REGISTRY);
+		BY_ID = DynamicArray.grow(BY_ID, capacity);
 	}
 }

@@ -17,28 +17,51 @@
 
 package net.legacyfabric.fabric.mixin.effect;
 
-import org.spongepowered.asm.mixin.Final;
+import java.util.Objects;
+
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.core.impl.util.Util;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.entity.living.effect.StatusEffect;
-import net.minecraft.resource.Identifier;
-import net.minecraft.util.registry.IdRegistry;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
+import net.legacyfabric.fabric.impl.effect.versioned.StatusEffectRegistryImpl;
 
 @Mixin(StatusEffect.class)
 public class StatusEffectMixin {
 	@Shadow
-	@Final
-	public static IdRegistry<Identifier, StatusEffect> REGISTRY;
+	private String key;
+
+	@Inject(method = "init", at = @At("HEAD"))
+	private static void lf$unlockRegistry(CallbackInfo ci) {
+		StatusEffectRegistryImpl.unlock();
+	}
 
 	@Inject(method = "init", at = @At("RETURN"))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		RegistryHelper.addRegistry(RegistryIds.STATUS_EFFECTS, REGISTRY);
+		StatusEffectRegistryImpl.registerEffects();
+	}
+
+	@Inject(
+			method = "getTranslationKey",
+			at = @At(
+					value = "HEAD"
+			)
+	)
+	private void osl$blocks$autoAssignTranslationKey(CallbackInfoReturnable<String> cir) {
+		if (this.key == null || Objects.equals(this.key, "")) {
+			NamespacedIdentifier identifier = StatusEffectRegistryImpl.getIdentifier((StatusEffect) (Object) this);
+
+			if (identifier == null) {
+				this.key = "effect.unknown";
+			} else {
+				this.key = "effect." + Util.makeTranslationKey(identifier);
+			}
+		}
 	}
 }

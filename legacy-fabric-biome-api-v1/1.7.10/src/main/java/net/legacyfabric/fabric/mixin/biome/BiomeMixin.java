@@ -17,77 +17,61 @@
 
 package net.legacyfabric.fabric.mixin.biome;
 
-import java.util.Arrays;
-
+import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.registries.api.registry.SyncedRegistries;
+import net.ornithemc.osl.registries.api.registry.sync.ArrayMapper;
+import net.ornithemc.osl.registries.api.registry.sync.DynamicArray;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biome__Height;
-import net.minecraft.world.biome.TaigaBiome;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
-import net.legacyfabric.fabric.impl.biome.EarlyInitializer;
-import net.legacyfabric.fabric.impl.registry.wrapper.SyncedArrayFabricRegistryWrapper;
+import net.legacyfabric.fabric.api.biome.BiomeExtension;
+import net.legacyfabric.fabric.impl.biome.versioned.BiomeRegistryImpl;
 
 @Mixin(Biome.class)
-public class BiomeMixin {
+public class BiomeMixin implements BiomeExtension {
 	@Mutable
 	@Shadow
 	@Final
-	private static Biome[] BY_ID;
-	@Shadow
-	@Final
-	public static Biome MEGA_TAIGA_HILLS;
-	@Shadow
-	@Final
-	public static Biome MEGA_TAIGA;
-	@Unique
-	private static FabricRegistry<Biome> REGISTRY;
+	public static Biome[] BY_ID;
 
-	@Inject(method = "<clinit>", at = @At("RETURN"))
+	@Inject(method = "<clinit>", at = @At("HEAD"))
+	private static void lf$unlockRegistry(CallbackInfo ci) {
+		BiomeRegistryImpl.unlock();
+	}
+
+	@Inject(method = "<clinit>", at = @At(value = "FIELD", target = "Lnet/minecraft/world/biome/Biome;BY_ID:[Lnet/minecraft/world/biome/Biome;", ordinal = 2, opcode = Opcodes.GETSTATIC))
 	private static void api$registerRegistry(CallbackInfo ci) {
-		BY_ID[MEGA_TAIGA_HILLS.id + 128] = new TaigaBiome(MEGA_TAIGA_HILLS.id + 128, 2)
-				.setColor(5858897, true)
-				.setName("Mega Spruce Taiga")
-				.setMutatedColor(5159473)
-				.setTemperatureAndDownfall(0.25F, 0.8F)
-				.setHeight(new Biome__Height(MEGA_TAIGA.baseHeight, MEGA_TAIGA.heightVariation));
+		BiomeRegistryImpl.registerBiomes();
 
-		REGISTRY = new SyncedArrayFabricRegistryWrapper<>(
-				RegistryIds.BIOMES,
-				BY_ID, EarlyInitializer.getVanillaIds(),
-				universal -> universal,
-				id -> id,
-				ids -> {
-					Biome[] array = new Biome[ids.fabric$size() + 1];
-					Arrays.fill(array, null);
+		SyncedRegistries.registerMapper(BiomeRegistryImpl.KEY, NamespacedIdentifiers.from("biome/by_id"), ArrayMapper.of(() -> BY_ID, a -> BY_ID = a));
+	}
 
-					for (Biome enchantment : ids) {
-						int id = ids.fabric$getId(enchantment);
+	@ModifyVariable(method = "<init>", argsOnly = true, ordinal = 0, at = @At("HEAD"))
+	private static int lf$autoIdAssignment(int id) {
+		if (id == REGISTRY_AUTO_ASSIGN_ID) {
+			id = DynamicArray.length(BY_ID);
+		}
 
-						if (id >= array.length - 1) {
-							Biome[] newArray = new Biome[id + 2];
-							Arrays.fill(newArray, null);
-							System.arraycopy(array, 0, newArray, 0, array.length);
-							array = newArray;
-						}
+		return id;
+	}
 
-						array[id] = enchantment;
-					}
+	@Inject(method = "<init>", at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/world/biome/Biome;BY_ID:[Lnet/minecraft/world/biome/Biome;",
+			opcode = Opcodes.GETSTATIC,
+			args = "array=set"))
+	private void lf$growArray(int id, CallbackInfo ci) {
+		int capacity = id + 1;
 
-					BY_ID = array;
-				}
-		);
-
-		RegistryHelper.addRegistry(RegistryIds.BIOMES, REGISTRY);
+		BY_ID = DynamicArray.grow(BY_ID, capacity);
 	}
 }

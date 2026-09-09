@@ -1,4 +1,4 @@
-accessWidener	v2	named
+classTweaker v1 named
 transitive-accessible	method	net/minecraft/world/biome/Biome	setName	(Ljava/lang/String;)Lnet/minecraft/world/biome/Biome;
 transitive-accessible	method	net/minecraft/world/biome/Biome	mutate	()Lnet/minecraft/world/biome/Biome;
 transitive-accessible	method	net/minecraft/world/biome/Biome	mutate	(I)Lnet/minecraft/world/biome/Biome;
@@ -10,3 +10,7 @@ transitive-accessible	method	net/minecraft/world/biome/Biome	setSnowy	()Lnet/min
 transitive-accessible	method	net/minecraft/world/biome/Biome	disableRain	()Lnet/minecraft/world/biome/Biome;
 transitive-accessible	method	net/minecraft/world/biome/Biome	setHeight	(Lnet/minecraft/world/biome/Biome$Height;)Lnet/minecraft/world/biome/Biome;
 transitive-accessible	method	net/minecraft/world/biome/Biome	setTemperatureAndDownfall	(FF)Lnet/minecraft/world/biome/Biome;
+transitive-inject-interface net/minecraft/world/biome/Biome net/legacyfabric/fabric/api/biome/BiomeExtension
+
+accessible field net/minecraft/world/biome/Biome BY_ID [Lnet/minecraft/world/biome/Biome;
+mutable field net/minecraft/world/biome/Biome id I

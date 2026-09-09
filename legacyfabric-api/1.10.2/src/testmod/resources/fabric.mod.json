@@ -22,13 +22,16 @@
       "net.legacyfabric.fabric.test.client.rendering.EntityRendererTest"
     ],
     "main": [
-      "net.legacyfabric.fabric.test.registry.RegistryTest",
       "net.legacyfabric.fabric.test.network.ServerNetworkingTest",
       "net.legacyfabric.fabric.test.lifecycle.ServerLifecycleEventsTest",
       "net.legacyfabric.fabric.test.item.group.ItemGroupTest",
       "net.legacyfabric.fabric.test.entity.EntityEventsTest",
       "net.legacyfabric.fabric.test.command.SpongeCommandTest",
       "net.legacyfabric.fabric.test.command.CommandV1Test"
+    ],
+    "init": [
+      "net.legacyfabric.fabric.test.registry.RegistryTest"
+
     ]
   },
   "mixins": [

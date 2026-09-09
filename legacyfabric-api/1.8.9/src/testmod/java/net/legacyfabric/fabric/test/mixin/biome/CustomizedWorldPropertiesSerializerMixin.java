@@ -18,22 +18,15 @@
 package net.legacyfabric.fabric.test.mixin.biome;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.OverworldGeneratorOptions;
-
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.SyncedFabricRegistry;
 
 @Mixin(OverworldGeneratorOptions.Serializer.class)
 public class CustomizedWorldPropertiesSerializerMixin {
-	@ModifyConstant(method = "deserialize(Lcom/google/gson/JsonElement;Ljava/lang/reflect/Type;Lcom/google/gson/JsonDeserializationContext;)Lnet/minecraft/world/gen/chunk/OverworldGeneratorOptions$Builder;",
-			constant = @Constant(intValue = 38))
-	private int fixBiomeSelector(int max) {
-		SyncedFabricRegistry<Biome> registry = (SyncedFabricRegistry<Biome>) (Object) RegistryHelper.getRegistry(RegistryIds.BIOMES);
-		return registry.stream().mapToInt(b -> registry.fabric$getRawId(b)).max().orElse(max) - 1;
-	}
+//	@ModifyConstant(method = "deserialize(Lcom/google/gson/JsonElement;Ljava/lang/reflect/Type;Lcom/google/gson/JsonDeserializationContext;)Lnet/minecraft/world/gen/chunk/OverworldGeneratorOptions$Builder;",
+//			constant = @Constant(intValue = 38))
+//	private int fixBiomeSelector(int max) {
+//		SyncedFabricRegistry<Biome> registry = (SyncedFabricRegistry<Biome>) (Object) RegistryHelper.getRegistry(RegistryIds.BIOMES);
+//		return registry.stream().mapToInt(b -> registry.fabric$getRawId(b)).max().orElse(max) - 1;
+//	}
 }

@@ -1,2 +1,5 @@
-accessWidener	v2	named
+classTweaker v1 named
 transitive-accessible	method	net/minecraft/entity/living/effect/StatusEffect	<init>	(IZI)V
+transitive-inject-interface net/minecraft/entity/living/effect/StatusEffect net/legacyfabric/fabric/api/effect/StatusEffectExtension
+
+mutable field net/minecraft/entity/living/effect/StatusEffect id I

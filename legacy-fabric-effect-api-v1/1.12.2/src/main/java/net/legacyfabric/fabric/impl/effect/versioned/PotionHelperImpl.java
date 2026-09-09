@@ -22,22 +22,22 @@ import net.minecraft.item.Item;
 import net.minecraft.item.PotionItem;
 import net.minecraft.potion.Potion;
 
-import net.legacyfabric.fabric.mixin.effect.StatusEffectStringsAccessor;
+import net.legacyfabric.fabric.mixin.effect.BrewingRecipesAccessor;
 
 public class PotionHelperImpl {
 	public static void registerPotionType(PotionItem potionItem) {
-		StatusEffectStringsAccessor.registerPotionType(potionItem);
+		BrewingRecipesAccessor.registerBottleItem(potionItem);
 	}
 
 	public static void registerPotionTypeRecipe(PotionItem basePotion, Item ingredient, PotionItem resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionTypeRecipe(basePotion, ingredient, resultingPotion);
+		BrewingRecipesAccessor.registerBottleRecipe(basePotion, ingredient, resultingPotion);
 	}
 
 	public static void registerPotionRecipe(Potion basePotion, Ingredient ingredient, Potion resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionRecipe(basePotion, ingredient, resultingPotion);
+		BrewingRecipesAccessor.registerPotionRecipe(basePotion, ingredient, resultingPotion);
 	}
 
 	public static void registerPotionRecipe(Potion basePotion, Item ingredient, Potion resultingPotion) {
-		StatusEffectStringsAccessor.registerPotionRecipe(basePotion, ingredient, resultingPotion);
+		BrewingRecipesAccessor.registerPotionRecipe(basePotion, ingredient, resultingPotion);
 	}
 }

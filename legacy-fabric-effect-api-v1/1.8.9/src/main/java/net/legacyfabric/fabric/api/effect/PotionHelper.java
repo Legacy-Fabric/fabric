@@ -22,11 +22,21 @@ import net.minecraft.entity.living.effect.StatusEffect;
 import net.legacyfabric.fabric.impl.effect.versioned.PotionHelperImpl;
 
 public interface PotionHelper {
+	@Deprecated
 	static void registerLevels(StatusEffect effect, String levels) {
-		PotionHelperImpl.registerLevels(effect, levels);
+		registerDurationRecipe(effect, levels);
 	}
 
+	static void registerDurationRecipe(StatusEffect effect, String recipe) {
+		PotionHelperImpl.registerDurationRecipe(effect, recipe);
+	}
+
+	@Deprecated
 	static void registerAmplifyingFactor(StatusEffect effect, String amplifyingFactor) {
-		PotionHelperImpl.registerAmplifyingFactor(effect, amplifyingFactor);
+		registerAmplifierRecipe(effect, amplifyingFactor);
+	}
+
+	static void registerAmplifierRecipe(StatusEffect effect, String recipe) {
+		PotionHelperImpl.registerAmplifierRecipe(effect, recipe);
 	}
 }

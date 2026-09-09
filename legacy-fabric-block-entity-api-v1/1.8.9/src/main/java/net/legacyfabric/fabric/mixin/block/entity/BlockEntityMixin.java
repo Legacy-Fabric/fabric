@@ -17,12 +17,8 @@
 
 package net.legacyfabric.fabric.mixin.block.entity;
 
-import java.util.Map;
-
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -30,33 +26,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.block.entity.BlockEntity;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.holder.FabricRegistry;
+import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
 import net.legacyfabric.fabric.api.util.Identifier;
 import net.legacyfabric.fabric.impl.block.entity.BlockEntityUtils;
-import net.legacyfabric.fabric.impl.registry.wrapper.MapFabricRegistryWrapper;
 
 @Mixin(BlockEntity.class)
 public class BlockEntityMixin {
 	@Shadow
-	@Final
-	private static Map<String, Class<? extends BlockEntity>> ID_TO_TYPE;
-	@Shadow
-	@Final
-	private static Map<Class<? extends BlockEntity>, String> TYPE_TO_ID;
-	@Unique
-	private static FabricRegistry<Class<? extends BlockEntity>> BLOCK_ENTITY_TYPE_REGISTRY;
+	private static void register(Class<? extends BlockEntity> type, String id) {
+		throw new UnsupportedOperationException("Implemented via mixin");
+	}
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
-		BLOCK_ENTITY_TYPE_REGISTRY = new MapFabricRegistryWrapper<>(
-				RegistryIds.BLOCK_ENTITY_TYPES, ID_TO_TYPE, TYPE_TO_ID,
-				identifier -> BlockEntityUtils.ID_TO_OLD.getOrDefault(identifier, identifier.toString()),
-				string -> BlockEntityUtils.OLD_TO_ID.getOrDefault(string, new Identifier(string))
-		);
-
-		RegistryHelper.addRegistry(RegistryIds.BLOCK_ENTITY_TYPES, BLOCK_ENTITY_TYPE_REGISTRY);
+		BlockEntityEvents.REGISTER_BLOCK_ENTITIES.invoker().accept((id, clazz) -> register(clazz, id.toString()));
 	}
 
 	/*

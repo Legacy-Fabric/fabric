@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.mixin.block.entity;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,22 +24,18 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.resource.Identifier;
-import net.minecraft.util.registry.IdRegistry;
 
-import net.legacyfabric.fabric.api.registry.v2.RegistryHelper;
-import net.legacyfabric.fabric.api.registry.v2.RegistryIds;
-import net.legacyfabric.fabric.api.registry.v2.registry.registrable.DesynchronizeableRegistrable;
+import net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents;
 
 @Mixin(BlockEntity.class)
 public class BlockEntityMixin {
 	@Shadow
-	@Final
-	private static IdRegistry<Identifier, Class<? extends BlockEntity>> REGISTRY;
+	private static void register(String par1, Class<? extends BlockEntity> par2) {
+		throw new UnsupportedOperationException("Implemented via mixin");
+	}
 
 	@Inject(method = "<clinit>", at = @At("RETURN"))
 	private static void registerRegistry(CallbackInfo ci) {
-		((DesynchronizeableRegistrable) REGISTRY).fabric$setSynchronize(false);
-		RegistryHelper.addRegistry(RegistryIds.BLOCK_ENTITY_TYPES, REGISTRY);
+		BlockEntityEvents.REGISTER_BLOCK_ENTITIES.invoker().accept((id, clazz) -> register(id.toString(), clazz));
 	}
 }

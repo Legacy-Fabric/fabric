@@ -1,5 +1,0 @@
-accessWidener	v2	named
-transitive-accessible	method	net/minecraft/block/Block	<init>	(Lnet/minecraft/block/material/Material;)V
-transitive-accessible	method	net/minecraft/block/Block	disableStats	()Lnet/minecraft/block/Block;
-accessible	field	net/minecraft/block/Block	useNeighborLight	Z
-accessible	field	net/minecraft/block/Block	isTranslucent	Z

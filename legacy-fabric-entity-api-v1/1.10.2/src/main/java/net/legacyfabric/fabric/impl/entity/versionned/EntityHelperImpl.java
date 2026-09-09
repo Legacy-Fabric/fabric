@@ -18,14 +18,13 @@
 package net.legacyfabric.fabric.impl.entity.versionned;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
+import net.ornithemc.osl.core.impl.util.Util;
 
 import net.minecraft.entity.Entities;
 
-import net.legacyfabric.fabric.api.util.OSLIdentifierExtension;
-
 public class EntityHelperImpl {
 	public static void registerSpawnEgg(NamespacedIdentifier identifier, int color0, int color1) {
-		String mcId = ((OSLIdentifierExtension) identifier).asTranslationKey();
+		String mcId = Util.makeTranslationKey(identifier);
 		Entities.SPAWN_EGG_DATA.put(mcId, new Entities.SpawnEggData(mcId, color0, color1));
 	}
 }

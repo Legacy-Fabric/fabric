@@ -1,3 +1,0 @@
-loom {
-	accessWidenerPath = file("src/main/resources/legacy-fabric-registry-sync-api-v2-common.classtweaker")
-}
