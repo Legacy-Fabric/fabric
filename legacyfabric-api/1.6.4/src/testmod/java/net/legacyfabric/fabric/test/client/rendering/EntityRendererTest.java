@@ -17,11 +17,10 @@
 
 package net.legacyfabric.fabric.test.client.rendering;
 
-import net.legacyfabric.fabric.api.client.rendering.v1.EntityRendererRegistry;
-
-import net.legacyfabric.fabric.test.registry.TestCreeperEntity;
-
 import net.ornithemc.osl.entrypoints.api.client.ClientModInitializer;
+
+import net.legacyfabric.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.legacyfabric.fabric.test.registry.TestCreeperEntity;
 
 public class EntityRendererTest implements ClientModInitializer {
 	@Override

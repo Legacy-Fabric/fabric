@@ -17,13 +17,12 @@
 
 package net.legacyfabric.fabric.test.client.rendering;
 
-import net.minecraft.entity.mob.MobEntity;
-
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.render.entity.MobRenderer;
 import net.minecraft.client.render.model.Model;
 import net.minecraft.client.render.model.entity.CreeperModel;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.util.math.MathHelper;
 
 import net.legacyfabric.fabric.test.registry.TestCreeperEntity;

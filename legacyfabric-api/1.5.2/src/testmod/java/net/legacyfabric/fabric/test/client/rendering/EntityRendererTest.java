@@ -26,7 +26,7 @@ public class EntityRendererTest implements ClientModInitializer {
 	@Override
 	public void initClient() {
 		EntityRenderingEvents.REGISTER_ENTITY_RENDERERS.register((registry) -> {
-			registry.register(TestCreeperEntity.class, TestCreeperEntityRenderer::new);
+			registry.registerUnsafe(TestCreeperEntity.class, TestCreeperEntityRenderer::new);
 		});
 	}
 }

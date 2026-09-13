@@ -17,7 +17,6 @@
 
 package net.legacyfabric.fabric.test.client.rendering;
 
-import net.legacyfabric.fabric.test.registry.TestCreeperEntity;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.render.entity.MobRenderer;
@@ -28,6 +27,8 @@ import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.mob.MobEntity;
 import net.minecraft.resource.Identifier;
 import net.minecraft.util.math.MathHelper;
+
+import net.legacyfabric.fabric.test.registry.TestCreeperEntity;
 
 public class TestCreeperEntityRenderer extends MobRenderer {
 	private static final Identifier field_6472 = new Identifier("textures/entity/creeper/creeper_armor.png");

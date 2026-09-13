@@ -17,13 +17,14 @@
 
 package net.legacyfabric.fabric.test.client.rendering;
 
-import net.legacyfabric.fabric.test.registry.TestCreeperEntity;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.MobRenderer;
 import net.minecraft.client.render.model.entity.CreeperModel;
 import net.minecraft.client.render.platform.GlStateManager;
 import net.minecraft.resource.Identifier;
 import net.minecraft.util.math.MathHelper;
+
+import net.legacyfabric.fabric.test.registry.TestCreeperEntity;
 
 public class TestCreeperEntityRenderer extends MobRenderer<TestCreeperEntity> {
 	private static final Identifier TEXTURE = new Identifier("legacy-fabric-api", "textures/entity/creeper/creeper.png");
