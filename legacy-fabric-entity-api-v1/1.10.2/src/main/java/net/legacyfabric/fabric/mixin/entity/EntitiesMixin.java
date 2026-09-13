@@ -42,8 +42,8 @@ public class EntitiesMixin {
 	private static Object fixOldRegistryNames(Object o) {
 		String key = (String) o;
 
-		if (key.contains(":")) {
-			NamespacedIdentifier identifier = NamespacedIdentifiers.parse(key);
+		if (key.contains(".")) {
+			NamespacedIdentifier identifier = NamespacedIdentifiers.parse(key.replace(".", ":"));
 			Class<? extends Entity> clazz = EntityTypeRegistry.getEntityType(identifier);
 
 			if (clazz != null) {
