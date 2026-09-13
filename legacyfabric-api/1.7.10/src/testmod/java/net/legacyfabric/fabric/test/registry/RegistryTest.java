@@ -29,25 +29,12 @@ import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 import net.ornithemc.osl.items.api.ItemEvents;
 import net.ornithemc.osl.items.api.ItemRegistry;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockWithBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentCategory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.effect.StatusEffect;
-import net.minecraft.entity.living.effect.StatusEffectInstance;
-import net.minecraft.entity.living.mob.monster.CreeperEntity;
-import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
-import net.minecraft.text.LiteralText;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.PlainsBiome;
 
 import net.legacyfabric.fabric.api.biome.BiomeEvents;
 import net.legacyfabric.fabric.api.biome.BiomeRegistry;
@@ -149,97 +136,5 @@ public class RegistryTest implements ModInitializer {
 		BiomeRegistry.register(biomeId, new TestBiome()
 					.setColor(4446496)
 					.setTemperatureAndDownfall(0.3F, 0.7F));
-	}
-
-	public static class TestBlockWithEntity extends BlockWithBlockEntity {
-		protected TestBlockWithEntity(Material material) {
-			super(material);
-		}
-
-		@Override
-		public @Nullable BlockEntity createBlockEntity(World world, int id) {
-			return new TestBlockEntity();
-		}
-
-		@Override
-		public boolean use(World world, int x, int y, int z, PlayerEntity player, int i, float f, float g, float h) {
-			if (!world.isMultiplayer) {
-				BlockEntity entity = world.getBlockEntity(x, y, z);
-
-				if (entity instanceof TestBlockEntity) {
-					player.sendMessage(new LiteralText(entity + " at " + x + "," + y + "," + z));
-				}
-			}
-
-			return true;
-		}
-	}
-
-	public static class TestBlockEntity extends BlockEntity {
-	}
-
-	public static class TestStatusEffect extends StatusEffect {
-		public TestStatusEffect(boolean bl, int j) {
-			super(REGISTRY_AUTO_ASSIGN_ID, bl, j);
-		}
-
-		@Override
-		public void apply(LivingEntity livingEntity, int i) {
-			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
-				livingEntity.heal(1.0F);
-			}
-		}
-
-		@Override
-		public boolean shouldApply(int duration, int amplifier) {
-			int i;
-
-			i = 50 >> amplifier;
-
-			if (i > 0) {
-				return duration % i == 0;
-			} else {
-				return true;
-			}
-		}
-	}
-
-	public static class TestCreeperEntity extends CreeperEntity {
-		public TestCreeperEntity(World world) {
-			super(world);
-		}
-
-		@Override
-		public void tick() {
-			if (this.isAlive()) {
-				if (this.hasStatusEffect(EFFECT)) {
-					this.setIgnited();
-				}
-			}
-
-			super.tick();
-		}
-	}
-
-	public static class TestEnchantment extends Enchantment {
-		protected TestEnchantment() {
-			super(REGISTRY_AUTO_ASSIGN_ID, 2, EnchantmentCategory.ARMOR_FEET);
-		}
-
-		@Override
-		public void applyDamageWildcard(LivingEntity bearer, Entity entity, int power) {
-			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
-		}
-
-		@Override
-		public void applyProtectionWildcard(LivingEntity bearer, Entity entity, int power) {
-			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
-		}
-	}
-
-	public static class TestBiome extends PlainsBiome {
-		protected TestBiome() {
-			super(REGISTRY_AUTO_ASSIGN_ID);
-		}
 	}
 }

@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.test.client.rendering;
 
+import net.legacyfabric.fabric.test.registry.TestCreeperEntity;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.MobRenderer;
 import net.minecraft.client.render.model.entity.CreeperModel;
@@ -24,9 +25,7 @@ import net.minecraft.client.render.platform.GlStateManager;
 import net.minecraft.resource.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-import net.legacyfabric.fabric.test.registry.RegistryTest;
-
-public class TestCreeperEntityRenderer extends MobRenderer<RegistryTest.TestCreeperEntity> {
+public class TestCreeperEntityRenderer extends MobRenderer<TestCreeperEntity> {
 	private static final Identifier TEXTURE = new Identifier("legacy-fabric-api", "textures/entity/creeper/creeper.png");
 
 	public TestCreeperEntityRenderer(EntityRenderDispatcher entityRenderDispatcher) {
@@ -34,7 +33,7 @@ public class TestCreeperEntityRenderer extends MobRenderer<RegistryTest.TestCree
 		//		this.addFeature(new CreeperLightningFeatureRenderer(this));
 	}
 
-	protected void applyScale(RegistryTest.TestCreeperEntity creeperEntity, float f) {
+	protected void applyScale(TestCreeperEntity creeperEntity, float f) {
 		float g = creeperEntity.getFuse(f);
 		float h = 1.0F + MathHelper.sin(g * 100.0F) * g * 0.01F;
 		g = MathHelper.clamp(g, 0.0F, 1.0F);
@@ -45,7 +44,7 @@ public class TestCreeperEntityRenderer extends MobRenderer<RegistryTest.TestCree
 		GlStateManager.scalef(i, j, i);
 	}
 
-	protected int getOverlayColor(RegistryTest.TestCreeperEntity creeperEntity, float f, float g) {
+	protected int getOverlayColor(TestCreeperEntity creeperEntity, float f, float g) {
 		float h = creeperEntity.getFuse(g);
 
 		if ((int) (h * 10.0F) % 2 == 0) {
@@ -57,7 +56,7 @@ public class TestCreeperEntityRenderer extends MobRenderer<RegistryTest.TestCree
 		}
 	}
 
-	protected Identifier getTextureLocation(RegistryTest.TestCreeperEntity creeperEntity) {
+	protected Identifier getTextureLocation(TestCreeperEntity creeperEntity) {
 		return TEXTURE;
 	}
 }

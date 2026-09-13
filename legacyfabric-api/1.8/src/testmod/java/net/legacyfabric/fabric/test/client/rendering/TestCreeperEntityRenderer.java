@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.test.client.rendering;
 
+import net.legacyfabric.fabric.test.registry.TestCreeperEntity;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.MobRenderer;
 import net.minecraft.client.render.model.entity.CreeperModel;
@@ -25,8 +26,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.resource.Identifier;
 import net.minecraft.util.math.MathHelper;
-
-import net.legacyfabric.fabric.test.registry.RegistryTest;
 
 public class TestCreeperEntityRenderer extends MobRenderer {
 	private static final Identifier TEXTURE = new Identifier("legacy-fabric-api", "textures/entity/creeper/creeper.png");
@@ -37,7 +36,7 @@ public class TestCreeperEntityRenderer extends MobRenderer {
 	}
 
 	protected void applyScale(LivingEntity creeperEntity, float f) {
-		float g = ((RegistryTest.TestCreeperEntity) creeperEntity).getFuse(f);
+		float g = ((TestCreeperEntity) creeperEntity).getFuse(f);
 		float h = 1.0F + MathHelper.sin(g * 100.0F) * g * 0.01F;
 		g = MathHelper.clamp(g, 0.0F, 1.0F);
 		g *= g;
@@ -48,7 +47,7 @@ public class TestCreeperEntityRenderer extends MobRenderer {
 	}
 
 	protected int getOverlayColor(LivingEntity creeperEntity, float f, float g) {
-		float h = ((RegistryTest.TestCreeperEntity) creeperEntity).getFuse(g);
+		float h = ((TestCreeperEntity) creeperEntity).getFuse(g);
 
 		if ((int) (h * 10.0F) % 2 == 0) {
 			return 0;
