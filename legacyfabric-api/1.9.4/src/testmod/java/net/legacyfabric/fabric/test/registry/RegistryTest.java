@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
+import net.ornithemc.osl.biomes.api.biome.BiomeSettings;
 import net.ornithemc.osl.blocks.api.BlockEvents;
 import net.ornithemc.osl.blocks.api.BlockRegistry;
 import net.ornithemc.osl.core.impl.util.Util;
@@ -40,7 +41,6 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.resource.Identifier;
-import net.minecraft.world.biome.Biome;
 
 import net.legacyfabric.fabric.api.biome.BiomeEvents;
 import net.legacyfabric.fabric.api.biome.BiomeRegistry;
@@ -153,6 +153,6 @@ public class RegistryTest implements ModInitializer {
 	private void registerBiomes() {
 		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
 		BiomeRegistry.register(biomeId, new TestBiome(false,
-				new Biome.Settings(Util.makeTranslationKey(biomeId)).depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
+				BiomeSettings.builder().depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
 	}
 }

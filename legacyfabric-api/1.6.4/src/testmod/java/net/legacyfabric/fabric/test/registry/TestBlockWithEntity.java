@@ -36,7 +36,7 @@ public class TestBlockWithEntity extends BlockWithBlockEntity {
 	@Override
 	@Deprecated
 	public boolean use(World world, int x, int y, int z, PlayerEntity player, int face, float faceX, float faceY, float faceZ) {
-		return this.use(world, BlockPos.of(x, y, z), world.getBlockState(x, y, z), player, Direction.byData3d(face), faceX, faceY, faceZ);
+		return this.use(world, BlockPos.pooled(x, y, z), world.getBlockState(x, y, z), player, Direction.byData3d(face), faceX, faceY, faceZ);
 	}
 
 	@Override

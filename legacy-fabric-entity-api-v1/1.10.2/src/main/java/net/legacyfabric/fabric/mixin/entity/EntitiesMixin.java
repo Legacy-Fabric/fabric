@@ -19,17 +19,17 @@ package net.legacyfabric.fabric.mixin.entity;
 
 import java.util.Map;
 
-import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
-import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
-import net.ornithemc.osl.entities.api.EntityTypeRegistry;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import net.minecraft.entity.Entities;
 import net.minecraft.entity.Entity;
+
+import net.legacyfabric.fabric.impl.entity.EntityEventsImpl;
 
 @Mixin(Entities.class)
 public class EntitiesMixin {
@@ -37,20 +37,15 @@ public class EntitiesMixin {
 	@Final
 	private static Map<Class<? extends Entity>, String> TYPE_TO_KEY;
 
-	@ModifyArg(method = {"createSilently", "create(Lnet/minecraft/nbt/NbtCompound;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;", "getId(Ljava/lang/String;)I"},
+	@WrapOperation(method = {"createSilently", "create(Lnet/minecraft/nbt/NbtCompound;Lnet/minecraft/world/World;)Lnet/minecraft/entity/Entity;"},
 			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false))
-	private static Object fixOldRegistryNames(Object o) {
-		String key = (String) o;
+	private static Object fixOldRegistryNames$1(Map<String, Class<? extends Entity>> instance, Object o, Operation<Class<? extends Entity>> original) {
+		return EntityEventsImpl.fixOldRegistryName((String) o, (key) -> original.call(instance, key), TYPE_TO_KEY);
+	}
 
-		if (key.contains(".")) {
-			NamespacedIdentifier identifier = NamespacedIdentifiers.parse(key.replace(".", ":"));
-			Class<? extends Entity> clazz = EntityTypeRegistry.getEntityType(identifier);
-
-			if (clazz != null) {
-				key = TYPE_TO_KEY.get(clazz);
-			}
-		}
-
-		return key;
+	@WrapOperation(method = {"getId(Ljava/lang/String;)I"},
+			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false), require = 0)
+	private static Object fixOldRegistryNames$2(Map<String, Class<? extends Entity>> instance, Object o, Operation<Class<? extends Entity>> original) {
+		return EntityEventsImpl.fixOldRegistryName((String) o, (key) -> original.call(instance, key), TYPE_TO_KEY);
 	}
 }
