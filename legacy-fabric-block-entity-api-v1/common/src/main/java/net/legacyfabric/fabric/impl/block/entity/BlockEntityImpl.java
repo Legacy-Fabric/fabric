@@ -17,15 +17,40 @@
 
 package net.legacyfabric.fabric.impl.block.entity;
 
+import java.lang.reflect.Constructor;
+import java.util.function.Supplier;
+
 import net.ornithemc.osl.blockentities.api.BlockEntityEvents;
 import net.ornithemc.osl.blockentities.api.BlockEntityTypeRegistry;
+import net.ornithemc.osl.blockentities.api.blockentity.BlockEntityType;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
+
+import net.minecraft.block.entity.BlockEntity;
 
 public class BlockEntityImpl implements ModInitializer {
 	@Override
 	public void init() {
 		BlockEntityEvents.REGISTER_BLOCK_ENTITY_TYPES.register(() -> {
-			net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents.REGISTER_BLOCK_ENTITIES.invoker().accept(BlockEntityTypeRegistry::register);
+			net.legacyfabric.fabric.api.block.entity.v1.BlockEntityEvents.REGISTER_BLOCK_ENTITIES.invoker()
+					.accept((id, type) -> {
+						Constructor<? extends BlockEntity> constructor;
+
+						try {
+							constructor = type.getConstructor();
+						} catch (NoSuchMethodException e) {
+							throw new IllegalArgumentException("Invalid class " + type + ": no constructor taking no arguments");
+						}
+
+						Supplier<? extends BlockEntity> factory = () -> {
+							try {
+								return constructor.newInstance();
+							} catch (Throwable t) {
+								throw new IllegalStateException("error creating block entity of type " + type, t);
+							}
+						};
+
+						BlockEntityTypeRegistry.register(id, BlockEntityType.Builder.of(type, factory));
+					});
 		});
 	}
 }

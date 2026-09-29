@@ -24,5 +24,5 @@ import net.minecraft.world.biome.Biome;
 import net.legacyfabric.fabric.api.biome.BiomeExtension;
 
 @Mixin(Biome.class)
-public class BiomeMixin implements BiomeExtension {
+public abstract class BiomeMixin implements BiomeExtension {
 }

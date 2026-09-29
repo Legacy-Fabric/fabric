@@ -17,61 +17,83 @@
 
 package net.legacyfabric.fabric.api.entity;
 
+import java.lang.reflect.Constructor;
 import java.util.Set;
+import java.util.function.Function;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.entities.api.EntityTypeRegistry;
-import net.ornithemc.osl.registries.api.registry.Registry;
-import net.ornithemc.osl.registries.api.registry.RegistryKeys;
-import net.ornithemc.osl.registries.api.registry.ResourceKey;
+import net.ornithemc.osl.entities.api.entity.EntityType;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
 
 /**
  * @deprecated Use {@link EntityTypeRegistry}
  */
 @Deprecated
 public final class EntityRegistry {
-	public static final ResourceKey<Registry<Class<? extends Entity>>> KEY = RegistryKeys.ENTITY_TYPE;
-	public static final Registry<Class<? extends Entity>> REGISTRY = EntityTypeRegistry.REGISTRY;
-
 	public static int getId(Class<? extends Entity> type) {
-		return EntityTypeRegistry.getId(type);
+		return EntityTypeRegistry.getId(toEntityType(type));
 	}
 
 	public static NamespacedIdentifier getIdentifier(Class<? extends Entity> type) {
-		return EntityTypeRegistry.getIdentifier(type);
-	}
-
-	public static ResourceKey<Class<? extends Entity>> getKey(Class<? extends Entity> type) {
-		return EntityTypeRegistry.getKey(type);
+		return EntityTypeRegistry.getIdentifier(toEntityType(type));
 	}
 
 	public static Class<? extends Entity> getEntityType(int id) {
-		return EntityTypeRegistry.getEntityType(id);
+		return EntityTypeRegistry.getEntityType(id).getType();
 	}
 
 	public static Class<? extends Entity> getEntityType(NamespacedIdentifier identifier) {
-		return EntityTypeRegistry.getEntityType(identifier);
-	}
-
-	public static Class<? extends Entity> getEntityType(ResourceKey<Class<? extends Entity>> key) {
-		return EntityTypeRegistry.getEntityType(key);
+		return EntityTypeRegistry.getEntityType(identifier).getType();
 	}
 
 	public static Set<NamespacedIdentifier> identifierSet() {
 		return EntityTypeRegistry.identifierSet();
 	}
 
-	public static Set<ResourceKey<Class<? extends Entity>>> keySet() {
-		return EntityTypeRegistry.keySet();
-	}
-
 	public static <T extends Entity> Class<T> register(NamespacedIdentifier identifier, Class<T> type) {
-		return EntityTypeRegistry.register(identifier, type);
+		return (Class<T>) EntityTypeRegistry.register(identifier, builder(type)).getType();
 	}
 
-	public static <T extends Entity> Class<T> register(ResourceKey<Class<? extends Entity>> key, Class<T> type) {
-		return EntityTypeRegistry.register(key, type);
+	private static <T extends Entity> EntityType<T> toEntityType(Class<T> type) {
+		EntityType<T> entityType = null;
+
+		for (EntityType<?> eType : EntityTypeRegistry.REGISTRY) {
+			if (eType.getType() == type) {
+				entityType = (EntityType<T>) eType;
+				break;
+			}
+		}
+
+		return entityType;
+	}
+
+	private static <T extends Entity> EntityType.Builder<T> builder(Class<T> type) {
+		Constructor<? extends T> constructor = null;
+
+		try {
+			constructor = type.getConstructor(World.class);
+		} catch (NoSuchMethodException e) {
+			// empty
+		}
+
+		Constructor<? extends T> method = constructor;
+		boolean instantiable = (constructor != null);
+
+		Function<? super World, ? extends T> factory = world -> {
+			if (instantiable) {
+				try {
+					return method.newInstance(world);
+				} catch (Throwable t) {
+					throw new IllegalStateException("error creating entity of type " + type, t);
+				}
+			} else {
+				throw new UnsupportedOperationException();
+			}
+		};
+
+		return EntityType.Builder.of(type, factory);
 	}
 }

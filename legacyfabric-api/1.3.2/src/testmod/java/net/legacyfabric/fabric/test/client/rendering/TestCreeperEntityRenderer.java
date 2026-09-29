@@ -80,6 +80,7 @@ public class TestCreeperEntityRenderer extends MobRenderer {
 
 	protected int bindTexture(MobEntity entity, int i, float f) {
 		TestCreeperEntity creeperEntity = (TestCreeperEntity) entity;
+
 		if (creeperEntity.isCharged()) {
 			if (i == 1) {
 				float var4 = (float) creeperEntity.ticks + f;

@@ -22,7 +22,7 @@ import net.ornithemc.osl.core.api.events.Event;
 @Deprecated
 public class EntityEvents {
 	/**
-	 * Use {@link net.ornithemc.osl.entities.api.EntityEvents#REGISTER_ENTITY_TYPES}
+	 * Use {@link net.ornithemc.osl.entities.api.EntityEvents#REGISTER_ENTITY_TYPES}.
 	 */
 	@Deprecated
 	public static final Event<Runnable> REGISTER_ENTITIES = Event.runnable();

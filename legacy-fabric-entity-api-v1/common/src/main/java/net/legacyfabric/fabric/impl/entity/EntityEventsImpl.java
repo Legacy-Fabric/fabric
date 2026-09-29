@@ -24,6 +24,7 @@ import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.entities.api.EntityEvents;
 import net.ornithemc.osl.entities.api.EntityTypeRegistry;
+import net.ornithemc.osl.entities.api.entity.EntityType;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 
 import net.minecraft.entity.Entity;
@@ -44,10 +45,10 @@ public class EntityEventsImpl implements ModInitializer {
 		}
 
 		NamespacedIdentifier identifier = NamespacedIdentifiers.parse(entityId);
-		Class<? extends Entity> clazz = EntityTypeRegistry.getEntityType(identifier);
+		EntityType<? extends Entity> clazz = EntityTypeRegistry.getEntityType(identifier);
 
 		if (clazz != null) {
-			return getter.apply(TYPE_TO_KEY.get(clazz));
+			return getter.apply(TYPE_TO_KEY.get(clazz.getType()));
 		}
 
 		return null;

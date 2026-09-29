@@ -26,12 +26,14 @@ import net.ornithemc.osl.biomes.api.BiomeEvents;
 import net.ornithemc.osl.biomes.api.BiomeRegistry;
 import net.ornithemc.osl.blockentities.api.BlockEntityEvents;
 import net.ornithemc.osl.blockentities.api.BlockEntityTypeRegistry;
+import net.ornithemc.osl.blockentities.api.blockentity.BlockEntityType;
 import net.ornithemc.osl.blocks.api.BlockEvents;
 import net.ornithemc.osl.blocks.api.BlockRegistry;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.entities.api.EntityEvents;
 import net.ornithemc.osl.entities.api.EntityTypeRegistry;
+import net.ornithemc.osl.entities.api.entity.EntityType;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 import net.ornithemc.osl.items.api.ItemEvents;
 import net.ornithemc.osl.items.api.ItemRegistry;
@@ -95,14 +97,15 @@ public class RegistryTest implements ModInitializer {
 		ItemEvents.REGISTER_BLOCK_ITEMS.register(() -> ItemRegistry.register(blockWithEntity.get()));
 
 		BlockEntityEvents.REGISTER_BLOCK_ENTITY_TYPES.register(() -> {
-			BlockEntityTypeRegistry.register(identifier, TestBlockEntity.class);
+			BlockEntityTypeRegistry.register(identifier, BlockEntityType.Builder.of(TestBlockEntity.class, TestBlockEntity::new));
 		});
 	}
 
 	private void registerEntities() {
 		NamespacedIdentifier creeperId = NamespacedIdentifiers.from("legacy-fabric-api", "test_entity");
-		EntityTypeRegistry.register(creeperId, TestCreeperEntity.class);
-		EntityTypeRegistry.registerSpawnEggData(creeperId, 12222, 563933);
+		EntityTypeRegistry.registerSpawnEgg(
+				EntityTypeRegistry.register(64, creeperId, EntityType.Builder.of(TestCreeperEntity.class, TestCreeperEntity::new)),
+				12222, 563933);
 	}
 
 	private void registerBiomes() {
@@ -110,7 +113,6 @@ public class RegistryTest implements ModInitializer {
 		BiomeRegistry.register(biomeId, new TestBiome()
 				.setBaseColor(4446496)
 				.setTemperatureAndDownfall(0.3F, 0.7F)
-				.setName(biomeId.namespace() + "." + biomeId.identifier())
 		);
 	}
 }

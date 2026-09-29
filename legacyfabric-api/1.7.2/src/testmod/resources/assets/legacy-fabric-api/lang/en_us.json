@@ -1,7 +1,7 @@
 {
   "api.keybinding.testTranslationKey": "Test Keybinding",
   "enchantment.legacy-fabric-api.test_enchantment": "Test Enchantment",
-  "entity.legacy-fabric-api.test_entity.name": "Test Entity",
+  "entity.legacy-fabric-api.TestEntity.name": "Test Entity",
   "item.legacy-fabric-api.test_item.name": "Test Item",
   "legacyfabric.api.youreTesting": "You're Testing Fabric API!",
   "potion.legacy-fabric-api.test_effect": "Test Effect",
