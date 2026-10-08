@@ -20,11 +20,20 @@ package net.legacyfabric.fabric.test.registry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
 
+import net.ornithemc.osl.biomes.api.BiomeEvents;
+import net.ornithemc.osl.biomes.api.BiomeRegistry;
+import net.ornithemc.osl.blockentities.api.BlockEntityEvents;
+import net.ornithemc.osl.blockentities.api.BlockEntityTypeRegistry;
+import net.ornithemc.osl.blockentities.api.blockentity.BlockEntityType;
 import net.ornithemc.osl.blocks.api.BlockEvents;
 import net.ornithemc.osl.blocks.api.BlockRegistry;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
+import net.ornithemc.osl.entities.api.EntityEvents;
+import net.ornithemc.osl.entities.api.EntityTypeRegistry;
+import net.ornithemc.osl.entities.api.entity.EntityType;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 import net.ornithemc.osl.items.api.ItemEvents;
 import net.ornithemc.osl.items.api.ItemRegistry;
@@ -40,6 +49,9 @@ public class RegistryTest implements ModInitializer {
 	public void init() {
 		ItemEvents.REGISTER_ITEMS.register(this::registerItems);
 		this.registerBlocks();
+		this.registerBlockEntities();
+		EntityEvents.REGISTER_ENTITY_TYPES.register(this::registerEntities);
+		BiomeEvents.REGISTER_BIOMES.register(this::registerBiomes);
 	}
 
 	private void registerItems() {
@@ -71,5 +83,36 @@ public class RegistryTest implements ModInitializer {
 				BlockItem item = ItemRegistry.register((Block) o);
 			}
 		});
+	}
+
+	private void registerBlockEntities() {
+		NamespacedIdentifier identifier = NamespacedIdentifiers.from("legacy-fabric-api", "test_block_entity");
+
+		AtomicReference<Block> blockWithEntity = new AtomicReference<>();
+		BlockEvents.REGISTER_BLOCKS.register(() -> {
+			blockWithEntity.set(new TestBlockWithEntity(Material.DIRT).setCreativeModeTab(CreativeModeTab.FOOD));
+			BlockRegistry.register(identifier, blockWithEntity.get());
+		});
+
+		ItemEvents.REGISTER_BLOCK_ITEMS.register(() -> ItemRegistry.register(blockWithEntity.get()));
+
+		BlockEntityEvents.REGISTER_BLOCK_ENTITY_TYPES.register(() -> {
+			BlockEntityTypeRegistry.register(identifier, BlockEntityType.Builder.of(TestBlockEntity.class, TestBlockEntity::new));
+		});
+	}
+
+	private void registerEntities() {
+		NamespacedIdentifier creeperId = NamespacedIdentifiers.from("legacy-fabric-api", "test_entity");
+		EntityTypeRegistry.registerSpawnEgg(
+				EntityTypeRegistry.register(64, creeperId, EntityType.Builder.of(TestCreeperEntity.class, TestCreeperEntity::new)),
+				12222, 563933);
+	}
+
+	private void registerBiomes() {
+		NamespacedIdentifier biomeId = NamespacedIdentifiers.from("legacy-fabric-api", "test_biome");
+		BiomeRegistry.register(biomeId, new TestBiome()
+				.setBaseColor(4446496)
+				.setTemperatureAndDownfall(0.3F, 0.7F)
+		);
 	}
 }

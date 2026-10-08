@@ -29,31 +29,12 @@ import net.ornithemc.osl.core.api.util.NamespacedIdentifiers;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 import net.ornithemc.osl.items.api.ItemEvents;
 import net.ornithemc.osl.items.api.ItemRegistry;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockWithBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentCategory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.effect.StatusEffect;
-import net.minecraft.entity.living.effect.StatusEffectInstance;
-import net.minecraft.entity.living.mob.monster.CreeperEntity;
-import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
-import net.minecraft.resource.Identifier;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.MutatedBiome;
-import net.minecraft.world.biome.PlainsBiome;
 
 import net.legacyfabric.fabric.api.biome.BiomeEvents;
 import net.legacyfabric.fabric.api.biome.BiomeRegistry;
@@ -161,102 +142,5 @@ public class RegistryTest implements ModInitializer {
 		BiomeRegistry.register(biomeId, new TestBiome()
 					.setColor(4446496)
 					.setTemperatureAndDownfall(0.3F, 0.7F));
-	}
-
-	public static class TestBlockWithEntity extends BlockWithBlockEntity {
-		protected TestBlockWithEntity(Material material) {
-			super(material);
-		}
-
-		@Override
-		public @Nullable BlockEntity createBlockEntity(World world, int id) {
-			return new TestBlockEntity();
-		}
-
-		@Override
-		public boolean use(World world, BlockPos pos, BlockState state, PlayerEntity player, Direction direction, float posX, float posY, float posZ) {
-			if (!world.isClient) {
-				BlockEntity entity = world.getBlockEntity(pos);
-
-				if (entity instanceof TestBlockEntity) {
-					player.sendMessage(new LiteralText(entity + " at " + pos.toString()));
-				}
-			}
-
-			return true;
-		}
-	}
-
-	public static class TestBlockEntity extends BlockEntity {
-	}
-
-	public static class TestStatusEffect extends StatusEffect {
-		public TestStatusEffect(NamespacedIdentifier identifier, boolean bl, int j) {
-			super(REGISTRY_AUTO_ASSIGN_ID, new Identifier(identifier.toString()), bl, j);
-		}
-
-		@Override
-		public void apply(LivingEntity livingEntity, int i) {
-			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
-				livingEntity.heal(1.0F);
-			}
-		}
-
-		@Override
-		public boolean shouldApply(int duration, int amplifier) {
-			int i;
-
-			i = 50 >> amplifier;
-
-			if (i > 0) {
-				return duration % i == 0;
-			} else {
-				return true;
-			}
-		}
-	}
-
-	public static class TestCreeperEntity extends CreeperEntity {
-		public TestCreeperEntity(World world) {
-			super(world);
-		}
-
-		@Override
-		public void tick() {
-			if (this.isAlive()) {
-				if (this.hasStatusEffect(EFFECT)) {
-					this.setIgnited();
-				}
-			}
-
-			super.tick();
-		}
-	}
-
-	public static class TestEnchantment extends Enchantment {
-		protected TestEnchantment(NamespacedIdentifier identifier) {
-			super(REGISTRY_AUTO_ASSIGN_ID, new Identifier(identifier.toString()), 2, EnchantmentCategory.ARMOR_FEET);
-		}
-
-		@Override
-		public void applyDamageWildcard(LivingEntity bearer, Entity entity, int power) {
-			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
-		}
-
-		@Override
-		public void applyProtectionWildcard(LivingEntity bearer, Entity entity, int power) {
-			bearer.addStatusEffect(new StatusEffectInstance(EFFECT.id, 50, 10));
-		}
-	}
-
-	public static class TestBiome extends PlainsBiome {
-		protected TestBiome() {
-			super(REGISTRY_AUTO_ASSIGN_ID);
-		}
-
-		@Override
-		public Biome mutate(int id) {
-			return new MutatedBiome(id, this);
-		}
 	}
 }

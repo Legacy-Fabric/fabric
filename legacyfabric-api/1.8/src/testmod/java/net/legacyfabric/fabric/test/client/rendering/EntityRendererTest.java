@@ -17,12 +17,17 @@
 
 package net.legacyfabric.fabric.test.client.rendering;
 
+import net.ornithemc.osl.entities.api.client.EntityRenderingEvents;
+
 import net.fabricmc.api.ClientModInitializer;
+
+import net.legacyfabric.fabric.test.registry.TestCreeperEntity;
 
 public class EntityRendererTest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		//		EntityRendererRegistry.INSTANCE.register(RegistryTest.TestCreeperEntity.class,
-		//				(dispatcher, context) -> new TestCreeperEntityRenderer(dispatcher));
+		EntityRenderingEvents.REGISTER_ENTITY_RENDERERS.register((registry) -> {
+			registry.registerUnsafe(TestCreeperEntity.class, TestCreeperEntityRenderer::new);
+		});
 	}
 }

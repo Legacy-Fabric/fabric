@@ -19,6 +19,11 @@ package net.legacyfabric.fabric.api.biome;
 
 import net.ornithemc.osl.core.api.events.Event;
 
+@Deprecated
 public class BiomeEvents {
+	/**
+	 * @deprecated Use {@link net.ornithemc.osl.biomes.api.BiomeEvents#REGISTER_BIOMES}
+	 */
+	@Deprecated
 	public static final Event<Runnable> REGISTER_BIOMES = Event.runnable();
 }

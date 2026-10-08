@@ -20,11 +20,17 @@ package net.legacyfabric.fabric.api.block.entity.v1;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import net.ornithemc.osl.blockentities.api.BlockEntityTypeRegistry;
 import net.ornithemc.osl.core.api.events.Event;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 
 import net.minecraft.block.entity.BlockEntity;
 
+@Deprecated
 public class BlockEntityEvents {
+	/**
+	 * @deprecated Use {@link BlockEntityTypeRegistry#register} with {@link net.ornithemc.osl.blockentities.api.BlockEntityEvents#REGISTER_BLOCK_ENTITY_TYPES} instead.
+	 */
+	@Deprecated
 	public static final Event<Consumer<BiConsumer<NamespacedIdentifier, Class<? extends BlockEntity>>>> REGISTER_BLOCK_ENTITIES = Event.consumer();
 }

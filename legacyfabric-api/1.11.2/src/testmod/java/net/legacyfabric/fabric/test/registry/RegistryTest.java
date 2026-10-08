@@ -22,42 +22,25 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 
+import net.ornithemc.osl.biomes.api.biome.BiomeSettings;
 import net.ornithemc.osl.blocks.api.BlockEvents;
 import net.ornithemc.osl.blocks.api.BlockRegistry;
 import net.ornithemc.osl.core.impl.util.Util;
 import net.ornithemc.osl.entrypoints.api.ModInitializer;
 import net.ornithemc.osl.items.api.ItemEvents;
 import net.ornithemc.osl.items.api.ItemRegistry;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockWithBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentCategory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.effect.StatusEffect;
 import net.minecraft.entity.living.effect.StatusEffectInstance;
-import net.minecraft.entity.living.mob.monster.CreeperEntity;
-import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.CreativeModeTab;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.resource.Identifier;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.PlainsBiome;
 
 import net.legacyfabric.fabric.api.biome.BiomeEvents;
 import net.legacyfabric.fabric.api.biome.BiomeRegistry;
@@ -170,98 +153,6 @@ public class RegistryTest implements ModInitializer {
 	private void registerBiomes() {
 		Identifier biomeId = new Identifier("legacy-fabric-api", "test_biome");
 		BiomeRegistry.register(biomeId, new TestBiome(false,
-				new Biome.Settings(Util.makeTranslationKey(biomeId)).depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
-	}
-
-	public static class TestBlockWithEntity extends BlockWithBlockEntity {
-		protected TestBlockWithEntity(Material material) {
-			super(material);
-		}
-
-		@Override
-		public @Nullable BlockEntity createBlockEntity(World world, int id) {
-			return new TestBlockEntity();
-		}
-
-		@Override
-		public boolean use(World world, BlockPos pos, BlockState state, PlayerEntity player, InteractionHand hand, Direction direction, float f, float g, float h) {
-			if (!world.isClient) {
-				BlockEntity entity = world.getBlockEntity(pos);
-
-				if (entity instanceof TestBlockEntity) {
-					player.sendMessage(new LiteralText(entity + " at " + pos.toString()));
-				}
-			}
-
-			return true;
-		}
-	}
-
-	public static class TestBlockEntity extends BlockEntity {
-	}
-
-	public static class TestStatusEffect extends StatusEffect {
-		public TestStatusEffect(boolean bl, int i) {
-			super(bl, i);
-		}
-
-		@Override
-		public void apply(LivingEntity livingEntity, int i) {
-			if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
-				livingEntity.heal(1.0F);
-			}
-		}
-
-		@Override
-		public boolean shouldApply(int duration, int amplifier) {
-			int i;
-
-			i = 50 >> amplifier;
-
-			if (i > 0) {
-				return duration % i == 0;
-			} else {
-				return true;
-			}
-		}
-	}
-
-	public static class TestCreeperEntity extends CreeperEntity {
-		public TestCreeperEntity(World world) {
-			super(world);
-		}
-
-		@Override
-		public void tick() {
-			if (this.isAlive()) {
-				if (this.hasStatusEffect(EFFECT)) {
-					this.setIgnited();
-				}
-			}
-
-			super.tick();
-		}
-	}
-
-	public static class TestEnchantment extends Enchantment {
-		protected TestEnchantment() {
-			super(Rarity.COMMON, EnchantmentCategory.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
-		}
-
-		@Override
-		public void applyDamageWildcard(LivingEntity bearer, Entity entity, int power) {
-			bearer.addStatusEffect(new StatusEffectInstance(EFFECT, 50, 10));
-		}
-
-		@Override
-		public void applyProtectionWildcard(LivingEntity bearer, Entity entity, int power) {
-			bearer.addStatusEffect(new StatusEffectInstance(EFFECT, 50, 10));
-		}
-	}
-
-	public static class TestBiome extends PlainsBiome {
-		protected TestBiome(boolean bl, Settings settings) {
-			super(bl, settings);
-		}
+				BiomeSettings.builder().depth(0.525F).scale(0.95F).temperature(0.3F).downfall(0.7F)));
 	}
 }

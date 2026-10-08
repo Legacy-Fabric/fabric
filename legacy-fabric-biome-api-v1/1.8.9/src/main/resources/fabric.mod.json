@@ -22,7 +22,6 @@
   "description": "Biome utils",
   "entrypoints": {
     "init": [
-      "net.legacyfabric.fabric.impl.biome.versioned.BiomeRegistryImpl::init"
     ]
   },
   "mixins": [

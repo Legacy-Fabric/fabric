@@ -21,7 +21,8 @@
   },
   "description": "Entity utils",
   "entrypoints": {
-    "preLaunch": [
+    "init": [
+      "net.legacyfabric.fabric.impl.entity.EntityEventsImpl"
     ]
   },
   "mixins": [

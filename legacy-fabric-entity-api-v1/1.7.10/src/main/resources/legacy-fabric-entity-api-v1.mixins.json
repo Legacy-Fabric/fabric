@@ -6,7 +6,6 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "EntitiesAccessor",
     "EntitiesMixin"
   ],
   "client": [

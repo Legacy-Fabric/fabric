@@ -21,53 +21,56 @@ import java.util.Set;
 
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.registries.api.registry.Registry;
+import net.ornithemc.osl.registries.api.registry.RegistryKeys;
 import net.ornithemc.osl.registries.api.registry.ResourceKey;
 
 import net.minecraft.world.biome.Biome;
 
-import net.legacyfabric.fabric.impl.biome.versioned.BiomeRegistryImpl;
-
+/**
+ * @deprecated Use {@link net.ornithemc.osl.biomes.api.BiomeRegistry}
+ */
+@Deprecated
 public final class BiomeRegistry {
-	public static final ResourceKey<Registry<Biome>> KEY = BiomeRegistryImpl.KEY;
-	public static final Registry<Biome> REGISTRY = BiomeRegistryImpl.REGISTRY;
+	public static final ResourceKey<Registry<Biome>> KEY = RegistryKeys.BIOME;
+	public static final Registry<Biome> REGISTRY = Biome.REGISTRY;
 
 	public static int getId(Biome biome) {
-		return BiomeRegistryImpl.getId(biome);
+		return net.ornithemc.osl.biomes.api.BiomeRegistry.getId(biome);
 	}
 
 	public static NamespacedIdentifier getIdentifier(Biome biome) {
-		return BiomeRegistryImpl.getIdentifier(biome);
+		return net.ornithemc.osl.biomes.api.BiomeRegistry.getIdentifier(biome);
 	}
 
 	public static ResourceKey<Biome> getKey(Biome biome) {
-		return BiomeRegistryImpl.getKey(biome);
+		return net.ornithemc.osl.biomes.api.BiomeRegistry.getKey(biome);
 	}
 
 	public static Biome getBiome(int id) {
-		return BiomeRegistryImpl.getBiome(id);
+		return net.ornithemc.osl.biomes.api.BiomeRegistry.getBiome(id);
 	}
 
 	public static Biome getBiome(NamespacedIdentifier identifier) {
-		return BiomeRegistryImpl.getBiome(identifier);
+		return net.ornithemc.osl.biomes.api.BiomeRegistry.getBiome(identifier);
 	}
 
 	public static Biome getBiome(ResourceKey<Biome> key) {
-		return BiomeRegistryImpl.getBiome(key);
+		return net.ornithemc.osl.biomes.api.BiomeRegistry.getBiome(key);
 	}
 
 	public static Set<NamespacedIdentifier> identifierSet() {
-		return BiomeRegistryImpl.identifierSet();
+		return net.ornithemc.osl.biomes.api.BiomeRegistry.identifierSet();
 	}
 
 	public static Set<ResourceKey<Biome>> keySet() {
-		return BiomeRegistryImpl.keySet();
+		return net.ornithemc.osl.biomes.api.BiomeRegistry.keySet();
 	}
 
 	public static <T extends Biome> T register(NamespacedIdentifier identifier, T type) {
-		return BiomeRegistryImpl.register(identifier, type);
+		return net.ornithemc.osl.biomes.api.BiomeRegistry.register(identifier, type);
 	}
 
 	public static <T extends Biome> T register(ResourceKey<Biome> key, T type) {
-		return BiomeRegistryImpl.register(key, type);
+		return net.ornithemc.osl.biomes.api.BiomeRegistry.register(key, type);
 	}
 }

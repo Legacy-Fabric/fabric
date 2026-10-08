@@ -28,7 +28,7 @@ import net.minecraft.entity.living.mob.MobEntity;
 import net.minecraft.resource.Identifier;
 import net.minecraft.util.math.MathHelper;
 
-import net.legacyfabric.fabric.test.registry.RegistryTest;
+import net.legacyfabric.fabric.test.registry.TestCreeperEntity;
 
 public class TestCreeperEntityRenderer extends MobRenderer {
 	private static final Identifier field_6472 = new Identifier("textures/entity/creeper/creeper_armor.png");
@@ -45,7 +45,7 @@ public class TestCreeperEntityRenderer extends MobRenderer {
 	}
 
 	protected void applyScale(LivingEntity entity, float f) {
-		RegistryTest.TestCreeperEntity creeperEntity = (RegistryTest.TestCreeperEntity) entity;
+		TestCreeperEntity creeperEntity = (TestCreeperEntity) entity;
 		float var3 = creeperEntity.getFuse(f);
 		float var4 = 1.0F + MathHelper.sin(var3 * 100.0F) * var3 * 0.01F;
 
@@ -65,7 +65,7 @@ public class TestCreeperEntityRenderer extends MobRenderer {
 	}
 
 	protected int getOverlayColor(LivingEntity entity, float f, float g) {
-		RegistryTest.TestCreeperEntity creeperEntity = (RegistryTest.TestCreeperEntity) entity;
+		TestCreeperEntity creeperEntity = (TestCreeperEntity) entity;
 		float var4 = creeperEntity.getFuse(g);
 
 		if ((int) (var4 * 10.0F) % 2 == 0) {
@@ -89,7 +89,7 @@ public class TestCreeperEntityRenderer extends MobRenderer {
 	}
 
 	protected int bindTexture(LivingEntity entity, int i, float f) {
-		RegistryTest.TestCreeperEntity creeperEntity = (RegistryTest.TestCreeperEntity) entity;
+		TestCreeperEntity creeperEntity = (TestCreeperEntity) entity;
 
 		if (creeperEntity.isCharged()) {
 			GL11.glDepthMask(!creeperEntity.isInvisible());

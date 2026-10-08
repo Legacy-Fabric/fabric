@@ -20,6 +20,9 @@
       "net.legacyfabric.fabric.test.lifecycle.client.ClientLifecycleEventsTest",
       "net.legacyfabric.fabric.test.client.keybinding.KeybindingTest"
     ],
+    "client-init": [
+      "net.legacyfabric.fabric.test.client.rendering.EntityRendererTest"
+    ],
     "init": [
       "net.legacyfabric.fabric.test.registry.RegistryTest"
     ]

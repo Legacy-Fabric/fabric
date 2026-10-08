@@ -25,6 +25,9 @@
       "net.legacyfabric.fabric.test.command.SpongeCommandTest",
       "net.legacyfabric.fabric.test.command.CommandV1Test"
     ],
+    "client-init": [
+      "net.legacyfabric.fabric.test.client.rendering.EntityRendererTest"
+    ],
     "init": [
       "net.legacyfabric.fabric.test.registry.RegistryTest"
     ]

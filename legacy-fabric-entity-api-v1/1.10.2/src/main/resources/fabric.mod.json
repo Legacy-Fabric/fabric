@@ -22,7 +22,6 @@
   "description": "Entity utils",
   "entrypoints": {
     "init": [
-      "net.legacyfabric.fabric.impl.entity.versionned.EntityRegistryImpl::init"
     ]
   },
   "mixins": [

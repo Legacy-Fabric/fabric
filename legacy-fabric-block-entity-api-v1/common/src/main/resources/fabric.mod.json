@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "legacy-fabric-block-entity-api-v1-common",
+  "id": "legacy-fabric-block-entity-api-v1",
   "name": "Legacy Fabric Block Entity API (V1)",
   "version": "${version}",
   "environment": "*",
@@ -19,8 +19,12 @@
     "fabricloader": "${loader_version}"
   },
   "description": "Block Entity utils",
+  "provides": [
+    "legacy-fabric-block-entity-api-v1-common"
+  ],
   "entrypoints": {
-    "preLaunch": [
+    "init": [
+      "net.legacyfabric.fabric.impl.block.entity.BlockEntityImpl"
     ]
   },
   "mixins": [

@@ -1,0 +1,47 @@
+/*
+ * Copyright (c) 2020 - 2026 Legacy Fabric
+ * Copyright (c) 2016 - 2022 FabricMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package net.legacyfabric.fabric.test.registry;
+
+import net.minecraft.entity.living.LivingEntity;
+import net.minecraft.entity.living.effect.StatusEffect;
+
+public class TestStatusEffect extends StatusEffect {
+	public TestStatusEffect(boolean bl, int j) {
+		super(REGISTRY_AUTO_ASSIGN_ID, bl, j);
+	}
+
+	@Override
+	public void apply(LivingEntity livingEntity, int i) {
+		if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
+			livingEntity.heal(1.0F);
+		}
+	}
+
+	@Override
+	public boolean shouldApply(int duration, int amplifier) {
+		int i;
+
+		i = 50 >> amplifier;
+
+		if (i > 0) {
+			return duration % i == 0;
+		} else {
+			return true;
+		}
+	}
+}
