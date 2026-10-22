@@ -124,6 +124,11 @@ public class Identifier implements Comparable<Identifier>, NamespacedIdentifier,
 	}
 
 	@Override
+	public Identifier namespaced(String namespace) {
+		return new Identifier(namespace, path);
+	}
+
+	@Override
 	public NamespacedIdentifier prefixed(String prefix) {
 		return new Identifier(namespace, prefix + path);
 	}
@@ -131,5 +136,15 @@ public class Identifier implements Comparable<Identifier>, NamespacedIdentifier,
 	@Override
 	public NamespacedIdentifier suffixed(String suffix) {
 		return new Identifier(namespace, path + suffix);
+	}
+
+	@Override
+	public NamespacedIdentifier subidentifier(int beginIndex) {
+		return new Identifier(namespace, path.substring(beginIndex));
+	}
+
+	@Override
+	public NamespacedIdentifier subidentifier(int beginIndex, int endIndex) {
+		return new Identifier(namespace, path.substring(beginIndex, endIndex));
 	}
 }

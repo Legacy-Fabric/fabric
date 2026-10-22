@@ -453,6 +453,7 @@ allprojects {
 		ploceus.disableLvtPatch()
 
 		implementation "com.mojang:brigadier:1.0.17"
+		implementation("net.ornithemc:conditional-mixin:1.0.0")
 
 		testmodImplementation sourceSets.main.output
 
