@@ -1,6 +1,7 @@
 {
   "required": true,
   "package": "net.legacyfabric.fabric.mixin.resource.loader",
+  "plugin": "net.ornithemc.conditionalmixin.mixin.ConditionalMixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "client": [
     "client.BuiltInResourcePackMixin"

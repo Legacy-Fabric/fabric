@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.legacyfabric.fabric.mixin.entity",
+  "plugin": "net.ornithemc.conditionalmixin.mixin.ConditionalMixinPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "EntitiesMixin"
+  ],
+  "client": [
+  ]
+}
