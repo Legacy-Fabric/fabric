@@ -17,6 +17,7 @@
 
 package net.legacyfabric.fabric.api.resource;
 
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.resource.loader.api.resource.reload.ResourceReloader;
 
 import net.minecraft.client.resource.manager.ResourceManager;
@@ -32,7 +33,7 @@ public interface ResourceManagerHelper {
 	 * Register a resource reload listener for a given resource manager type.
 	 *
 	 * @param listener The resource reload listener.
-	 * @deprecated Register {@link IdentifiableResourceReloader} during {@link net.ornithemc.osl.resource.loader.api.client.ClientResourceLoaderEvents#INIT_RESOURCE_MANAGER} with {@link net.ornithemc.osl.resource.loader.api.resource.manager.ReloadableResourceManager#addReloader(ResourceReloader)}
+	 * @deprecated Use {@link net.ornithemc.osl.resource.loader.api.resource.manager.ReloadableResourceManager#registerReloader(NamespacedIdentifier, ResourceReloader)} with {@link net.ornithemc.osl.resource.loader.api.resource.manager.ReloadableResourceManager#registerReloaderDependencies(NamespacedIdentifier, NamespacedIdentifier...)} instead.
 	 */
 	@Deprecated
 	void registerReloadListener(IdentifiableResourceReloadListener listener);

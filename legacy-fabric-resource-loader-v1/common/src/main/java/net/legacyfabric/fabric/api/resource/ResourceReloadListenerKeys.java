@@ -20,16 +20,20 @@ package net.legacyfabric.fabric.api.resource;
 import net.legacyfabric.fabric.api.util.Identifier;
 
 /**
- * This class contains default keys for various Minecraft resource reload listeners.
- *
- * @see IdentifiableResourceReloadListener
+ * @deprecated Use {@link net.ornithemc.osl.resource.loader.api.client.resource.reload.AssetsReloaders} instead.
  */
+@Deprecated
 public final class ResourceReloadListenerKeys {
 	// client
+	@Deprecated
 	public static final Identifier SOUNDS = new Identifier("minecraft:sounds");
+	@Deprecated
 	public static final Identifier FONTS = new Identifier("minecraft:fonts");
+	@Deprecated
 	public static final Identifier MODELS = new Identifier("minecraft:models");
+	@Deprecated
 	public static final Identifier LANGUAGES = new Identifier("minecraft:languages");
+	@Deprecated
 	public static final Identifier TEXTURES = new Identifier("minecraft:textures");
 
 	private ResourceReloadListenerKeys() {

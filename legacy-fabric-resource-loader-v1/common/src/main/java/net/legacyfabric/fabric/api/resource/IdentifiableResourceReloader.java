@@ -23,6 +23,7 @@ import java.util.Collections;
 import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.resource.loader.api.resource.reload.ResourceReloader;
 
+@Deprecated
 public interface IdentifiableResourceReloader extends ResourceReloader {
 	/**
 	 * @return The unique identifier of this listener.
