@@ -24,6 +24,8 @@ import java.nio.file.Path;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.ornithemc.conditionalmixin.annotations.Conditional;
+import net.ornithemc.conditionalmixin.annotations.Version;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -33,6 +35,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 
+@Conditional(minecraftVersion = {
+		@Version(">=1.6"),
+		@Version("<=1.6.4")
+})
 @Environment(EnvType.CLIENT)
 @Mixin(BuiltInResourcePack.class)
 public class BuiltInResourcePackMixin {

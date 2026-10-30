@@ -17,8 +17,19 @@
 
 package net.legacyfabric.fabric.mixin.resource.loader.client.osl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.resource.loader.impl.adapter.ResourceManagerAdapter;
+import net.ornithemc.osl.resource.loader.impl.adapter.ResourceReloaderIdentifier;
+import net.ornithemc.osl.resource.loader.impl.resource.manager.SimpleReloadableResourceManager;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -30,10 +41,25 @@ import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
 @Mixin(ResourceManagerAdapter.class)
 public class ResourceManagerAdapterMixin {
-	@Inject(method = "addListener", at = @At("HEAD"))
-	private void lf$captureWrappedId(ResourceReloadListener listener, CallbackInfo ci) {
-		if (listener instanceof IdentifiableResourceReloadListener) {
-			ResourceManagerHelperImpl.getInstance().registerWrappedListener((IdentifiableResourceReloadListener) listener);
+	@Shadow
+	@Final
+	private SimpleReloadableResourceManager resourceManager;
+
+	@WrapOperation(method = "addListener", at = @At(value = "INVOKE", target = "Lnet/ornithemc/osl/resource/loader/impl/adapter/ResourceReloaderIdentifier;identify(Lnet/minecraft/client/resource/manager/ResourceReloadListener;)Lnet/ornithemc/osl/core/api/util/NamespacedIdentifier;"))
+	private NamespacedIdentifier lf$getListenerIdentifier(ResourceReloaderIdentifier instance, ResourceReloadListener resourceReloadListener, Operation<NamespacedIdentifier> original) {
+		if (resourceReloadListener instanceof IdentifiableResourceReloadListener) {
+			return ((IdentifiableResourceReloadListener) resourceReloadListener).getFabricId();
+		}
+
+		return original.call(instance, resourceReloadListener);
+	}
+
+	@Inject(method = "addListener", at = @At("RETURN"))
+	private void lf$registerDependencies(ResourceReloadListener listener, CallbackInfo ci,
+										@Local NamespacedIdentifier identifier) {
+		if (listener instanceof IdentifiableResourceReloadListener && identifier != null) {
+			List<NamespacedIdentifier> dependencies = ((IdentifiableResourceReloadListener) listener).getFabricDependencies().stream().map(ResourceManagerHelperImpl::mapDependencyId).collect(Collectors.toList());
+			if (!dependencies.isEmpty()) this.resourceManager.registerReloaderDependencies(identifier, dependencies.toArray(new NamespacedIdentifier[0]));
 		}
 	}
 }

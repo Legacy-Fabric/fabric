@@ -18,34 +18,39 @@
 package net.legacyfabric.fabric.mixin.resource.loader.client.osl;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
-import com.llamalad7.mixinextras.expression.Definition;
-import com.llamalad7.mixinextras.expression.Expression;
-import net.ornithemc.osl.resource.loader.api.resource.reload.ResourceReload;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.ornithemc.osl.core.api.util.NamespacedIdentifier;
 import net.ornithemc.osl.resource.loader.api.resource.reload.ResourceReloader;
 import net.ornithemc.osl.resource.loader.impl.resource.manager.SimpleReloadableResourceManager;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.legacyfabric.fabric.api.resource.IdentifiableResourceReloader;
 import net.legacyfabric.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 
 @Mixin(SimpleReloadableResourceManager.class)
-public class ReloadableResourceManagerImplMixin {
+public abstract class ReloadableResourceManagerImplMixin {
 	@Shadow
-	@Final
-	private List<ResourceReloader> registeredReloaders;
+	public abstract void registerReloader(NamespacedIdentifier identifier, ResourceReloader reloader);
 
-	@Definition(id = "clear", method = "Lnet/minecraft/client/resource/manager/SimpleReloadableResourceManager;clear()V")
-	@Definition(id = "registeredReloaders", field = "Lnet/ornithemc/osl/resource/loader/impl/resource/manager/SimpleReloadableResourceManager;registeredReloaders:Ljava/util/List;")
-	@Expression("this.registeredReloaders")
-	@Inject(method = "startReload(Ljava/util/List;Ljava/util/concurrent/Executor;Ljava/util/concurrent/Executor;Ljava/util/concurrent/CompletableFuture;)Lnet/ornithemc/osl/resource/loader/api/resource/reload/ResourceReload;", at = @At(value = "MIXINEXTRAS:EXPRESSION"))
-	public void onReload(List<net.ornithemc.osl.resource.loader.api.resource.pack.ResourcePack> packs, Executor backgroundExecutor, Executor mainThreadExecutor, CompletableFuture<?> initialTask, CallbackInfoReturnable<ResourceReload> cir) {
-		ResourceManagerHelperImpl.getInstance().sort(this.registeredReloaders);
+	@Shadow
+	public abstract void registerReloaderDependencies(NamespacedIdentifier identifier, NamespacedIdentifier... dependencies);
+
+	@WrapMethod(method = "addReloader")
+	private void lf$handleIdentifierReloaders(ResourceReloader reloader, Operation<Void> original) {
+		if (reloader instanceof IdentifiableResourceReloader) {
+			this.registerReloader(((IdentifiableResourceReloader) reloader).getFabricId(), reloader);
+
+			List<NamespacedIdentifier> dependencies = ((IdentifiableResourceReloader) reloader).getFabricDependencies().stream().map(ResourceManagerHelperImpl::mapDependencyId).collect(Collectors.toList());
+
+			if (!dependencies.isEmpty()) {
+				this.registerReloaderDependencies(((IdentifiableResourceReloader) reloader).getFabricId(), dependencies.toArray(new NamespacedIdentifier[0]));
+			}
+		} else {
+			original.call(reloader);
+		}
 	}
 }

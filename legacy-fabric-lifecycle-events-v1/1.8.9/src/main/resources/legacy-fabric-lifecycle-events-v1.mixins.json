@@ -1,11 +1,16 @@
 {
   "required": true,
   "package": "net.legacyfabric.fabric.mixin.event.lifecycle",
+  "plugin": "net.ornithemc.conditionalmixin.mixin.ConditionalMixinPlugin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "versioned.MinecraftServerMixin"
+    "MinecraftServerMixin",
+    "ServerChunkProviderMixin",
+    "ServerWorldMixin"
   ],
   "client": [
+    "client.ClientChunkProviderMixin",
+    "client.ClientWorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1
