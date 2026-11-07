@@ -23,6 +23,7 @@ import net.fabricmc.loader.api.FabricLoader;
 /**
  * Specifies the side(s) on which the command should be registered.
  */
+@Deprecated
 public enum CommandSide {
 	INTEGRATED(false, true),
 	DEDICATED(true, false),

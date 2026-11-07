@@ -454,6 +454,7 @@ allprojects {
 
 		testmodImplementation sourceSets.main.output
 
+		implementation("net.ornithemc:conditional-mixin:1.0.0")
 		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.7"))
 		implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.5.2"))
 
