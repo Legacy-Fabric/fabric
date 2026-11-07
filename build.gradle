@@ -452,12 +452,9 @@ allprojects {
 		ploceus.dependOsl(project.osl_version)
 		ploceus.disableLvtPatch()
 
-		implementation "com.mojang:brigadier:1.0.17"
-		implementation("net.ornithemc:conditional-mixin:1.0.0")
-
 		testmodImplementation sourceSets.main.output
 
-		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.7-beta.3"))
+		modImplementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.7"))
 		implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.5.2"))
 
 		implementation "org.quiltmc.parsers:json:${project.rootProject.quilt_parsers_version}"
@@ -706,7 +703,7 @@ sourceSets {
 }
 
 dependencies {
-	include("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.7-beta.3")
+	include("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.3.7")
 	include("io.github.llamalad7:mixinextras-fabric:0.5.2")
 
 	afterEvaluate {
