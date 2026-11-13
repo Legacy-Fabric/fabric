@@ -25,7 +25,9 @@ import net.legacyfabric.fabric.impl.command.CommandRegistryImpl;
 /**
  * Base class for registration of commands.
  */
+@Deprecated
 public interface CommandRegistry {
+	@Deprecated
 	CommandRegistry INSTANCE = CommandRegistryImpl.INSTANCE;
 
 	void register(AbstractCommand command, CommandSide side);

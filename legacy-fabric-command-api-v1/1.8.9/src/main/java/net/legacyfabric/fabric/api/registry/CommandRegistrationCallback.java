@@ -22,9 +22,15 @@ import net.legacyfabric.fabric.api.event.EventFactory;
 
 /**
  * An event for registering commands to the {@link CommandRegistry}.
+ * @deprecated Use {@link net.ornithemc.osl.commands.api.server.ServerCommandEvents} instead.
  */
+@Deprecated
 @FunctionalInterface
 public interface CommandRegistrationCallback {
+	/**
+	 * @deprecated Use {@link net.ornithemc.osl.commands.api.server.ServerCommandEvents#REGISTER_LEGACY_COMMANDS} instead.
+	 */
+	@Deprecated
 	Event<CommandRegistrationCallback> EVENT = EventFactory.createArrayBacked(CommandRegistrationCallback.class, listeners -> registry -> {
 		for (CommandRegistrationCallback registrar : listeners) {
 			registrar.register(registry);

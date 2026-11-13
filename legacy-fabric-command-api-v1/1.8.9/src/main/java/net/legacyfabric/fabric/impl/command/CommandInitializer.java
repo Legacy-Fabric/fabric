@@ -17,9 +17,7 @@
 
 package net.legacyfabric.fabric.impl.command;
 
-import net.ornithemc.osl.lifecycle.api.server.MinecraftServerEvents;
-
-import net.minecraft.server.command.handler.CommandManager;
+import net.ornithemc.osl.commands.api.server.ServerCommandEvents;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -29,14 +27,12 @@ import net.legacyfabric.fabric.api.registry.CommandRegistry;
 public class CommandInitializer implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		MinecraftServerEvents.START.register(server -> {
+		ServerCommandEvents.REGISTER_LEGACY_COMMANDS.register((commands, selection, context) -> {
 			CommandRegistrationCallback.EVENT.invoker().register(CommandRegistry.INSTANCE);
 
-			boolean dedicated = server.isDedicated();
-			CommandManager manager = (CommandManager) server.getCommandHandler();
 			CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
-				if ((dedicated && commandSide.isDedicated()) || (!dedicated && commandSide.isIntegrated())) {
-					manager.register(command);
+				if ((selection.includesDedicated() && commandSide.isDedicated()) || (!selection.includesDedicated() && commandSide.isIntegrated())) {
+					commands.accept(command);
 				}
 			});
 		});
