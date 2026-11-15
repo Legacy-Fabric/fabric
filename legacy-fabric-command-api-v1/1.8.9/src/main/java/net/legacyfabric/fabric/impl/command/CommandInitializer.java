@@ -36,7 +36,7 @@ public class CommandInitializer implements ModInitializer {
 				CommandRegistrationCallback.EVENT.invoker().register(CommandRegistry.INSTANCE);
 
 				CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
-					if ((selection.includesDedicated() && commandSide.isDedicated()) || (!selection.includesDedicated() && commandSide.isIntegrated())) {
+					if ((selection.includesDedicated() && commandSide.isDedicated()) || (selection.includesIntegrated() && commandSide.isIntegrated())) {
 						commands.accept(command);
 					}
 				});
