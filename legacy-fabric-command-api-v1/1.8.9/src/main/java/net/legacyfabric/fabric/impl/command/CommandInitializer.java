@@ -17,6 +17,10 @@
 
 package net.legacyfabric.fabric.impl.command;
 
+import net.fabricmc.loader.api.FabricLoader;
+
+import net.minecraft.server.command.handler.CommandManager;
+
 import net.ornithemc.osl.commands.api.server.ServerCommandEvents;
 
 import net.fabricmc.api.ModInitializer;
@@ -24,17 +28,33 @@ import net.fabricmc.api.ModInitializer;
 import net.legacyfabric.fabric.api.registry.CommandRegistrationCallback;
 import net.legacyfabric.fabric.api.registry.CommandRegistry;
 
+import net.ornithemc.osl.lifecycle.api.server.MinecraftServerEvents;
+
 public class CommandInitializer implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		ServerCommandEvents.REGISTER_LEGACY_COMMANDS.register((commands, selection, context) -> {
-			CommandRegistrationCallback.EVENT.invoker().register(CommandRegistry.INSTANCE);
+		if (FabricLoader.getInstance().isModLoaded("osl-commands")) {
+			ServerCommandEvents.REGISTER_LEGACY_COMMANDS.register((commands, selection, context) -> {
+				CommandRegistrationCallback.EVENT.invoker().register(CommandRegistry.INSTANCE);
 
-			CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
-				if ((selection.includesDedicated() && commandSide.isDedicated()) || (!selection.includesDedicated() && commandSide.isIntegrated())) {
-					commands.accept(command);
-				}
+				CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
+					if ((selection.includesDedicated() && commandSide.isDedicated()) || (!selection.includesDedicated() && commandSide.isIntegrated())) {
+						commands.accept(command);
+					}
+				});
 			});
-		});
+		} else {
+			MinecraftServerEvents.START.register(server -> {
+				CommandRegistrationCallback.EVENT.invoker().register(CommandRegistry.INSTANCE);
+
+				boolean dedicated = server.isDedicated();
+				CommandManager manager = (CommandManager) server.getCommandHandler();
+				CommandRegistryImpl.getCommandMap().forEach((command, commandSide) -> {
+					if ((dedicated && commandSide.isDedicated()) || (!dedicated && commandSide.isIntegrated())) {
+						manager.register(command);
+					}
+				});
+			});
+		}
 	}
 }
