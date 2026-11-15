@@ -21,10 +21,6 @@ import java.util.Map;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import net.ornithemc.conditionalmixin.annotations.Conditional;
 import net.ornithemc.conditionalmixin.annotations.Version;
 import org.spongepowered.asm.mixin.Final;
@@ -34,6 +30,9 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.entity.Entities;
 import net.minecraft.entity.Entity;
+
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 import net.legacyfabric.fabric.impl.entity.EntityEventsImpl;
 
