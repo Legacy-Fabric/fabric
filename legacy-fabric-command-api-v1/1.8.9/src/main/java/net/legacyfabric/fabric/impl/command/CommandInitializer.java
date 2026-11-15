@@ -17,18 +17,16 @@
 
 package net.legacyfabric.fabric.impl.command;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.ornithemc.osl.commands.api.server.ServerCommandEvents;
+import net.ornithemc.osl.lifecycle.api.server.MinecraftServerEvents;
 
 import net.minecraft.server.command.handler.CommandManager;
 
-import net.ornithemc.osl.commands.api.server.ServerCommandEvents;
-
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 
 import net.legacyfabric.fabric.api.registry.CommandRegistrationCallback;
 import net.legacyfabric.fabric.api.registry.CommandRegistry;
-
-import net.ornithemc.osl.lifecycle.api.server.MinecraftServerEvents;
 
 public class CommandInitializer implements ModInitializer {
 	@Override
