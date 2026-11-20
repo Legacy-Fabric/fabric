@@ -31,6 +31,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import net.minecraft.entity.Entities;
 import net.minecraft.entity.Entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
 import net.legacyfabric.fabric.impl.entity.EntityEventsImpl;
 
 @Conditional(minecraftVersion = @Version("<=1.10.2"))
@@ -46,10 +49,11 @@ public class EntitiesMixin {
 		return EntityEventsImpl.fixOldRegistryName((String) o, (key) -> original.call(instance, key), TYPE_TO_KEY);
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Conditional(minecraftVersion = @Version(">=1.8"))
 	@WrapOperation(method = {"getId(Ljava/lang/String;)I"},
 			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", remap = false), require = 0)
-	private static Object fixOldRegistryNames$2(Map<String, Class<? extends Entity>> instance, Object o, Operation<Class<? extends Entity>> original) {
+	private static Object fixOldRegistryNames$2(Map<String, Integer> instance, Object o, Operation<Integer> original) {
 		return EntityEventsImpl.fixOldRegistryName((String) o, (key) -> original.call(instance, key), TYPE_TO_KEY);
 	}
 }
